@@ -1,4 +1,6 @@
-const { buildDisadvantages } = require("engine/character/js/disadvantages");
+const {
+  buildDisadvantages,
+} = require("engine/character/js/traitsDisadvantages");
 
 describe("DISADVANTAGES", () => {
   test("Should correctly calculate the selected disadvantages.", () => {
