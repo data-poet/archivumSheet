@@ -1,0 +1,877 @@
+disadvantage_id,disadvantage_box_name,disadvantage_name,disadvantage_cost,disadvantage_type,disadvantage_description,disadvantage_source_book,disadvantage_source_page
+DIS-000,APARÊNCIA DESAGRADÁVEL | -5,APARÊNCIA DESAGRADÁVEL,-5,Física,"
+- Nada que se possa precisar com exatidão. O personagem tem algo indefinido, que provoca antipatia.
+- Deve ser submetido a um redutor de -1 em Testes de Reação com membros de sua própria raça, mas não existe penalidade para membros de outras raças (o problema é muito sutil para que eles o percebam).",Módulo Básico,15
+DIS-001,FEIO | -10,FEIO,-10,Física,"
+- Idem só que não tão intensamente. Talvez cabelos oleosos ou dentes encavalados ou cariados.
+- Redutor igual a -2 em Testes de Reação, com as mesmas exceções expostas no parágrafo anterior.",Módulo Básico,15
+DIS-002,HEDIONDO | -20,HEDIONDO,-20,Física,"
+- Pode ser qualquer coisa especificada pelo jogador que cause aversão: corcunda, doença grave de pele, estrabismo, etc... De preferência várias coisas juntas.
+- O personagem estará submetido a um redutor igual a -4 em qualquer Teste de Reação, com exceção daqueles relativos a criaturas alienígenas ou a pessoas que não o(a) podem ver (que ficarão muito surpresas quando, finalmente, o encontrarem. O Mestre poderá exigir um novo Teste de Reação quando isto acontecer).",Módulo Básico,15
+DIS-003,BATALHADOR | -10,BATALHADOR,-10,Social,"
+- A quantidade inicial de recursos é apenas a metade da “média” da sociedade onde ele vive.
+- Gasta 40 horas por semana no emprego. 
+- Todos os cargos estão a seu alcance (pode ser um médico ou ator em início de carreira), mas o salário não é alto. Esta categoria seria apropriada, por exemplo, para um estudante do século XX.",Módulo Básico,16
+DIS-004,POBRE | -15,POBRE,-15,Social,"
+- O personagem é criado com recursos da ordem de 1/5 da “média” da sociedade onde ele vive.
+- Ele passa 50 horas por semana trabalhando.
+- Alguns cargos não estão a seu alcance e nenhum emprego que ele possa conseguir irá lhe pagar um bom salário.",Módulo Básico,16
+DIS-005,FALIDO | -25,FALIDO,-25,Social,"
+- Você não tem emprego ou fonte de renda, nenhum dinheiro ou outro patrimônio qualquer, que não seja a roupa do corpo.
+- Você é incapaz de conseguir ttrabalho ou não existe emprego disponível.",Módulo Básico,16
+DIS-006,REPUTAÇÃO -1 | -5,REPUTAÇÃO -1,-5,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+DIS-007,REPUTAÇÃO -2 | -10,REPUTAÇÃO -2,-10,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+DIS-008,REPUTAÇÃO -3 | 15,REPUTAÇÃO -3,15,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+DIS-009,REPUTAÇÃO -4 | 20,REPUTAÇÃO -4,20,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+DIS-010,HABITO LEVE | -5,HABITO LEVE,-5,Social,"
+- O personagem se comporta parte do (ou todo o) tempo de maneira repugnante aos outros.
+- Quanto pior o seu comportamento, maior o número de pontos.
+- Pode-se especificar o comportamento no momento em que o personagem é criado e estimar o bônus junto com o Mestre.
+- Alguns exemplos: Odor de suor, coceira crônica e cantarolar o tempo todo fora de tom poderiam valer -5 pontos cada. Fazer trocadilhos de mau gosto ou cuspir no chão poderiam valer -10 pontos cada. Hábitos
+dignos de um bônus de -15 pontos são possíveis, mas serão deixados a cargo da imaginação daqueles que são depravados o suficiente para desejá-los.
+- Subtraia 1 ponto de todos os testes de reação feitos por pessoas capazes de observar seu hábito para cada -5 pontos de bônus conseguidos com ele.
+- Lembre-se que certos hábitos repugnantes não incomodarão aos não-humanos. Um camarada que fique babando irritaria outras pessoas, mas um marciano nem notaria e um troll poderia achar atraente.
+- O redutor devido a um hábito detestável deve ser usado com membros da raça do personagem e o Mestre deverá cuidar das diferentes reações de outras raças.",Módulo Básico,26
+DIS-011,HABITO DETESTÁVEL | -10,HABITO DETESTÁVEL,-10,Social,"
+- O personagem se comporta parte do (ou todo o) tempo de maneira repugnante aos outros.
+- Quanto pior o seu comportamento, maior o número de pontos.
+- Pode-se especificar o comportamento no momento em que o personagem é criado e estimar o bônus junto com o Mestre.
+- Alguns exemplos: Odor de suor, coceira crônica e cantarolar o tempo todo fora de tom poderiam valer -5 pontos cada. Fazer trocadilhos de mau gosto ou cuspir no chão poderiam valer -10 pontos cada. Hábitos
+dignos de um bônus de -15 pontos são possíveis, mas serão deixados a cargo da imaginação daqueles que são depravados o suficiente para desejá-los.
+- Subtraia 1 ponto de todos os testes de reação feitos por pessoas capazes de observar seu hábito para cada -5 pontos de bônus conseguidos com ele.
+- Lembre-se que certos hábitos repugnantes não incomodarão aos não-humanos. Um camarada que fique babando irritaria outras pessoas, mas um marciano nem notaria e um troll poderia achar atraente.
+- O redutor devido a um hábito detestável deve ser usado com membros da raça do personagem e o Mestre deverá cuidar das diferentes reações de outras raças.",Módulo Básico,26
+DIS-012,HABITO PESADO | -15,HABITO PESADO,-15,Social,"
+- O personagem se comporta parte do (ou todo o) tempo de maneira repugnante aos outros.
+- Quanto pior o seu comportamento, maior o número de pontos.
+- Pode-se especificar o comportamento no momento em que o personagem é criado e estimar o bônus junto com o Mestre.
+- Alguns exemplos: Odor de suor, coceira crônica e cantarolar o tempo todo fora de tom poderiam valer -5 pontos cada. Fazer trocadilhos de mau gosto ou cuspir no chão poderiam valer -10 pontos cada. Hábitos
+dignos de um bônus de -15 pontos são possíveis, mas serão deixados a cargo da imaginação daqueles que são depravados o suficiente para desejá-los.
+- Subtraia 1 ponto de todos os testes de reação feitos por pessoas capazes de observar seu hábito para cada -5 pontos de bônus conseguidos com ele.
+- Lembre-se que certos hábitos repugnantes não incomodarão aos não-humanos. Um camarada que fique babando irritaria outras pessoas, mas um marciano nem notaria e um troll poderia achar atraente.
+- O redutor devido a um hábito detestável deve ser usado com membros da raça do personagem e o Mestre deverá cuidar das diferentes reações de outras raças.",Módulo Básico,26
+DIS-013,PRIMITIVISMO 1 | -5,PRIMITIVISMO 1,-5,Social,"
+- Você pertence a uma cultura com NT mais baixo que o da campanha e, por isso, não tem nenhum conhecimento (ou nível pré-definido para testes de habilidade) relacionado com equipamentos de nível tecnológico maior do que o seu.
+- Só lhe é permitido começar com perícias ou equipamentos de sua cultura. (Para representar um personagem de uma raça primitiva sem esta desvantagem, assuma que ele vem de uma área quase “civilizada”.)
+- O valor desta desvantagem é 5 pontos para cada ponto de diferença entre o seu nível tecnológico original e o da campanha.
+- Se a raça ou cultura dominante tratar sua raça com desprezo, isto será uma desvantagem diferente (Estigma Social).
+- Você não poderá desenvolver habilidade em Perícias Mentais relacionadas com equipamentos de NT elevado enquanto não recomprar esta desvantagem. Se você conseguir encontrar um professor, as Perícias Físicas poderão ser adquiridas sem nenhuma penalidade.",Módulo Básico,26
+DIS-014,PRIMITIVISMO 2 | -10,PRIMITIVISMO 2,-10,Social,"
+- Você pertence a uma cultura com NT mais baixo que o da campanha e, por isso, não tem nenhum conhecimento (ou nível pré-definido para testes de habilidade) relacionado com equipamentos de nível tecnológico maior do que o seu.
+- Só lhe é permitido começar com perícias ou equipamentos de sua cultura. (Para representar um personagem de uma raça primitiva sem esta desvantagem, assuma que ele vem de uma área quase “civilizada”.)
+- O valor desta desvantagem é 5 pontos para cada ponto de diferença entre o seu nível tecnológico original e o da campanha.
+- Se a raça ou cultura dominante tratar sua raça com desprezo, isto será uma desvantagem diferente (Estigma Social).
+- Você não poderá desenvolver habilidade em Perícias Mentais relacionadas com equipamentos de NT elevado enquanto não recomprar esta desvantagem. Se você conseguir encontrar um professor, as Perícias Físicas poderão ser adquiridas sem nenhuma penalidade.",Módulo Básico,26
+DIS-015,PRIMITIVISMO 3 | -15,PRIMITIVISMO 3,-15,Social,"
+- Você pertence a uma cultura com NT mais baixo que o da campanha e, por isso, não tem nenhum conhecimento (ou nível pré-definido para testes de habilidade) relacionado com equipamentos de nível tecnológico maior do que o seu.
+- Só lhe é permitido começar com perícias ou equipamentos de sua cultura. (Para representar um personagem de uma raça primitiva sem esta desvantagem, assuma que ele vem de uma área quase “civilizada”.)
+- O valor desta desvantagem é 5 pontos para cada ponto de diferença entre o seu nível tecnológico original e o da campanha.
+- Se a raça ou cultura dominante tratar sua raça com desprezo, isto será uma desvantagem diferente (Estigma Social).
+- Você não poderá desenvolver habilidade em Perícias Mentais relacionadas com equipamentos de NT elevado enquanto não recomprar esta desvantagem. Se você conseguir encontrar um professor, as Perícias Físicas poderão ser adquiridas sem nenhuma penalidade.",Módulo Básico,26
+DIS-016,PRIMITIVISMO 4 | -20,PRIMITIVISMO 4,-20,Social,"
+- Você pertence a uma cultura com NT mais baixo que o da campanha e, por isso, não tem nenhum conhecimento (ou nível pré-definido para testes de habilidade) relacionado com equipamentos de nível tecnológico maior do que o seu.
+- Só lhe é permitido começar com perícias ou equipamentos de sua cultura. (Para representar um personagem de uma raça primitiva sem esta desvantagem, assuma que ele vem de uma área quase “civilizada”.)
+- O valor desta desvantagem é 5 pontos para cada ponto de diferença entre o seu nível tecnológico original e o da campanha.
+- Se a raça ou cultura dominante tratar sua raça com desprezo, isto será uma desvantagem diferente (Estigma Social).
+- Você não poderá desenvolver habilidade em Perícias Mentais relacionadas com equipamentos de NT elevado enquanto não recomprar esta desvantagem. Se você conseguir encontrar um professor, as Perícias Físicas poderão ser adquiridas sem nenhuma penalidade.",Módulo Básico,26
+DIS-017,ALBINISMO | -10,ALBINISMO,-10,Física,"
+- O Personagem não possui a pigmentação natural no corpo; seus pelos, cabelos e pele são brancos e os olhos são cor-de-rosa.
+- Quando estivermos escolhendo a aparência do personagem ele poderá ser atraente ou feio, mas nunca será considerado “comum”.
+- Um albino será sempre lembrado e não é capaz de se misturar em uma multidão. 
+- Eles devem evitar o sol direto e não têm resistência à queimadura solar.
+- Ele recebe 1 ponto de dano para cada 30 minutos de exposição ao sol comum, ou 1 ponto para cada 15 minutos de exposição ao sol quente do verão ou de um deserto.
+- Além disso, o personagem estará sempre submetido a um redutor de -2 em testes de Visão ou ataques com armas de longo alcance, feitos à luz do sol.",Módulo Básico,27
+DIS-018,CEGUEIRA | -50,CEGUEIRA,-50,Física,"- O personagem não enxerga.
+- Como uma compensação parcial, ele poderia começar com o Ouvido Aguçado e/ou Olfato/Paladar Apurado, pagando somente a metade dos pontos necessários.
+- Além disso, ele não estará submetido a nenhuma penalidade por atuar no escuro. O personagem deverá viajar mais lenta e cuidadosamente em terreno desconhecido, ou ser guiado por um companheiro ou animal.
+- Muitos atos e habilidades (um número muito grande para listar aqui) são completa- mente impossíveis para um cego. O Mestre deveria usar o bom senso nestes casos.
+- Um personagem cego está submetido a um redutor de -6 em todas as perícias de combate. Ele pode usar armas de mão, mas não é capaz de dirigir um golpe para uma parte específica do corpo do oponente, e não pode disparar uma arma de projétil (a não ser aleatoriamente ou em
+direção a um alvo próximo o suficiente para ser ouvido).
+- Tudo isto supõe que o personagem já está acostumado à sua cegueira. Qualquer um que perca a visão subitamente lutará sempre com um redutor de -10 como se estivesse no escuro.
+- Em países civilizados os cegos receberão um bônus de +1 em todos os testes de reação.",Módulo Básico,27
+DIS-019,DISOPIA GRAVE | -25,DISOPIA GRAVE,-25,Física,"
+- O personagem pode tanto ser míope, quanto hipermétrope, a escolha é sua. Se for míope, ele não será capaz de ler letras pequenas, etc., a uma distância maior do que 30 cm, ou placas de estrada, etc., a mais de 10 m.
+- Estará sempre submetido a um redutor de -2 em testes de habilidade com armas de mão. No caso de estar usando armas de arremesso ou de projétil, use o modificador apropriado para dobrar a distância real do alvo.
+- Se o personagem for hipermétrope, ele terá grandes dificuldades para ler um livro (triplique o tempo normal), e sua DX estará submetida a um redutor de -3 no caso de trabalhos manuais.
+- Qualquer personagem vivendo em NT 5+ poderá adquirir óculos, capazes de corrigir completamente seus problemas com os olhos enquanto estiverem em uso.
+- As lentes de contato estarão disponíveis a partir do século XX. Lembre-se que acidentes e pancadas na cabeça podem derrubar os óculos, que poderiam ser apanhados pelos oponentes, etc.
+- Esta desvantagem vale apenas -10 pontos para qualquer personagem criado em uma cultura com NT elevado o suficiente para sanar problemas de visão, ou -25 para aqueles oriundos de uma época em que este tipo de anomalia não pode ser corrigido.",Módulo Básico,27
+DIS-020,DISOPIA LEVE | -10,DISOPIA LEVE,-10,Física,"
+- O personagem pode tanto ser míope, quanto hipermétrope, a escolha é sua. Se for míope, ele não será capaz de ler letras pequenas, etc., a uma distância maior do que 30 cm, ou placas de estrada, etc., a mais de 10 m.
+- Estará sempre submetido a um redutor de -2 em testes de habilidade com armas de mão. No caso de estar usando armas de arremesso ou de projétil, use o modificador apropriado para dobrar a distância real do alvo.
+- Se o personagem for hipermétrope, ele terá grandes dificuldades para ler um livro (triplique o tempo normal), e sua DX estará submetida a um redutor de -3 no caso de trabalhos manuais.
+- Qualquer personagem vivendo em NT 5+ poderá adquirir óculos, capazes de corrigir completamente seus problemas com os olhos enquanto estiverem em uso.
+- As lentes de contato estarão disponíveis a partir do século XX. Lembre-se que acidentes e pancadas na cabeça podem derrubar os óculos, que poderiam ser apanhados pelos oponentes, etc.
+- Esta desvantagem vale apenas -10 pontos para qualquer personagem criado em uma cultura com NT elevado o suficiente para sanar problemas de visão, ou -25 para aqueles oriundos de uma época em que este tipo de anomalia não pode ser corrigido.",Módulo Básico,27
+DIS-021,DALTONISMO | -10,DALTONISMO,-10,Física,"
+- O personagem não é capaz de distinguir nenhuma cor (i.e. acromatopsia).
+- No dia-a-dia, esta anomalia não é mais do que um transtorno.
+- No entanto, em situações que exijam a identificação das cores (compra de pedras preciosas, identificação de um uniforme ou apertar o botão vermelho para dar a partida num motor), o Mestre deverá lhe impor as dificuldades adequadas ao caso.
+- Certas perícias serão sempre mais difíceis para um daltônico.
+- Ele estará submetido automaticamente a um redutor de -1 nos testes de Condução, Pilotagem, Química, Rastreamento e Comércio.",Módulo Básico,28
+DIS-022,DURO DE OUVIDO | -10,DURO DE OUVIDO,-10,Física,"
+- O personagem não é surdo, mas perdeu uma parte da audição.
+- Ele estará submetido a um redutor de - 4 em todos os testes de Audição e nos de perícias com línguas (nas situações em que ele precisa entender o que alguém esta dizendo).
+- Isso significa que as jogadas acima serão feitas contra IQ-4.
+- Esta desvantagem não o afeta, quando é ele quem está falando.",Módulo Básico,28
+DIS-023,EPILEPSIA | -30,EPILEPSIA,-30,Física,"
+- O personagem está sujeito a crises, durante as quais seus membros ficam imobilizados e ele é incapaz de falar ou pensar claramente. (Esta é uma doença grave.)
+- Sempre que ele estiver numa situação de tensão (principalmente se sua vida, ou a de um companheiro, estiver em perigo), deverá fazer um teste de HT. 
+- Uma falha causará a crise que terá 1d6 minutos de duração.
+- É desnecessário dizer que o personagem não é capaz de fazer nada durante a crise, além de receber 1d6 pontos de Mana
+-  Se o personagem tiver algum tipo de fobia, a exposição ao objeto de sua fobia se constitui automaticamente em uma situação de tensão.
+- Faça um teste de HT a cada 10 minutos.
+- É possível tentar induzir uma crise através da auto-hipnose. Isto exige um minuto e um sucesso em um teste de IQ. 
+- Uma crise em uma região com um nível de alta intensidade de mana provocará visões as quais, dependendo da vontade do Mestre, poderão ser verdadeiras ou até mesmo proféticas.
+- Por não entenderem sua causa, raças primitivas podem ser atemorizadas por uma crise e achar que se trata de uma mensagem dos deuses.
+- Faça um teste de reação com um bônus de +1.
+- Resultados muito bons significarão adoração enquanto resultados ruins farão com que os primitivo fujam — nunca que ataquem.",Módulo Básico,28
+DIS-024,EUNUCO | -5,EUNUCO,-5,Física,"
+- O personagem (homens apenas) perdeu sua masculinidade através de um acidente ou de uma ação hostil.
+- Ele estará imune à sedução e será incapaz de seduzir outros.
+- Qualquer pessoa ciente de sua condição estará submetida a um redutor de -1 nos testes de reação.",Módulo Básico,28
+DIS-025,GIGANTISMO | -10,GIGANTISMO,-10,Física,"- O personagem é um gigante por questões genéticas, anormalmente grande para a sua espécie.
+- Determine sua altura normalmente (pág. 15) e depois aumente-a em 20%.
+- Se ele ainda tiver menos do que 2,10 m de altura (para os humanos), aumente-a para este mínimo.
+- O tamanho mínimo para gigantes de outras raças é deixado a cargo do Mestre.
+- O peso deve ser determinado em proporção à altura. 
+- ST e HT não são afetadas.
+- Ele estará submetido a um redutor de -2 em todos os testes de reação, com exceção das situações de combate iminente, onde ele receberá um bônus de +1 por parte de seus inimigos ou aliados.
+- Ele deve ser considerado automaticamente como pelo menos 30 cm mais alto do que seus oponentes normais.
+- Como os gigantes vivem em um mundo proporcionalmente menor, eles têm uma série de pequenos problemas como roupas, cadeiras, etc., que simplesmente não lhes servem.
+- No entanto, esta não é uma desvantagem desastrosa.",Módulo Básico,28
+DIS-026,HEMOFILIA | -30,HEMOFILIA,-30,Física,"
+- O personagem é um hemofílico. Um ferimento, por menor que seja, não cicatrizará, a menos que seja enfaixado, e o personagem sangrará até morrer.
+- Qualquer ferimento não tratado sangrará numa taxa igual ao número de pontos de dano original por minuto.
+- Exemplo: um ferimento que provoque a perda de 3 pontos de vida não tratado provocará a perda de outros 3 pontos de vida depois do primeiro minuto e assim por diante até ser estancado.
+- Um hemofílico não pode ter uma HT básica maior do que 10.
+- Primeiros Socorros serão satisfatórios para cuidar da maioria dos ferimentos.
+- No entanto, qualquer ferimento perfurante no tronco provocará uma lenta hemorragia interna.
+- Um ferimento deste tipo causará dano como explicado no parágrafo anterior, até ser tratado com Primeiros Socorros.
+- Ele continuará a produzir um dano igual ao original uma vez por dia, até ser tratado convenientemente.
+- Somente um Cirurgião ou um curandeiro mágico/psíquico será capaz de curar este tipo de ferimento ou restaurar a HT perdida devido à hemorragia interna.
+- O personagem morrerá se não houver tratamento adequado à disposição.",Módulo Básico,28
+DIS-027,NANISMO | -15,NANISMO,-15,Física,"
+- O personagem é um anão por motivos genéticos, anormalmente baixo para a sua espécie.
+- Determine sua altura normalmente (pág. 15), e depois reduza-a a 60%.
+- Ele também não poderá ter uma Aparência Física igual à média e será considerado “atraente e charmoso” ou particularmente desagradável.
+- Qualquer oponente que o ataque com uma arma de arremesso ou de projétil estará submetido a um redutor de -1 (ele é um alvo difícil).
+- Em combate, ele estará sempre meio metro abaixo de qualquer adversário humano normal.
+- Devido à sua estatura, certas coisas são impossíveis para um anão, outras muito mais fáceis. O Mestre deve usar a imaginação aqui.
+- Nanismo é uma condição encontrada em todas as espécies. Um anão neste caso não é a mesma coisa que um membro da raça dos Anões (apesar de ser possível existir um Anão anão).
+- A ST e HT de um anão são determinadas normalmente e muitos deles são fortes para o tamanho que têm.
+- No entanto, seu atributo Deslocamento está submetido a um redutor de -1, e saltam como se sua ST fosse 4 pontos menor.",Módulo Básico,28
+DIS-028,OBESIDADE GRAVE | -20,OBESIDADE GRAVE,-20,Física,"- O personagem será extraordinariamente gordo para sua raça.
+- Para uma obesidade equivalente a -10 pontos, determine seu peso normalmente a partir de sua Força (pág. 15) e depois aumente-o em 50%. Isto resultará em um redutor de -1 em todos os testes de reação e sua HT nunca poderá ser maior do que 15.
+- Para o caso de -20 pontos, o peso deve ser determinado normalmente e depois dobrado. Isto resultará em um redutor de -2 em todos testes de reação e a HT nunca poderá ser maior do que 13.
+- Em qualquer um dos casos, o peso extra contará como uma Carga (v. pág. 76) a mais, da qual ele não pode se livrar. (Exceção: A Carga devido à gordura não conta contra o personagem quando ele está nadando).
+- Roupas e armaduras normais não servirão no personagem.
+- Ele estará submetido a um redutor de -3 em testes de Disfarce e Sombra, se estiver ttentando seguir alguém numa multidão.
+- Como regra, pessoas obesas têm pequenos problemas que o Mestre deveria interpretar criativamente.
+- No entanto, existem algumas poucas vantagens. 
+- Por exemplo, pessoas obesas recebem um bônus de +5 em seus testes de Natação e são muito difíceis de desalojar, se decidirem a prender alguém sentando-se em cima.
+- Um personagem obeso recebe também um bônus de +2 quando dá (ou tenta resistir a) um Encontrão.",Módulo Básico,28
+DIS-029,OBESIDADE LEVE | -10,OBESIDADE LEVE,-10,Física,"- O personagem será extraordinariamente gordo para sua raça.
+- Para uma obesidade equivalente a -10 pontos, determine seu peso normalmente a partir de sua Força (pág. 15) e depois aumente-o em 50%. Isto resultará em um redutor de -1 em todos os testes de reação e sua HT nunca poderá ser maior do que 15.
+- Para o caso de -20 pontos, o peso deve ser determinado normalmente e depois dobrado. Isto resultará em um redutor de -2 em todos testes de reação e a HT nunca poderá ser maior do que 13.
+- Em qualquer um dos casos, o peso extra contará como uma Carga (v. pág. 76) a mais, da qual ele não pode se livrar. (Exceção: A Carga devido à gordura não conta contra o personagem quando ele está nadando).
+- Roupas e armaduras normais não servirão no personagem.
+- Ele estará submetido a um redutor de -3 em testes de Disfarce e Sombra, se estiver ttentando seguir alguém numa multidão.
+- Como regra, pessoas obesas têm pequenos problemas que o Mestre deveria interpretar criativamente.
+- No entanto, existem algumas poucas vantagens. 
+- Por exemplo, pessoas obesas recebem um bônus de +5 em seus testes de Natação e são muito difíceis de desalojar, se decidirem a prender alguém sentando-se em cima.
+- Um personagem obeso recebe também um bônus de +2 quando dá (ou tenta resistir a) um Encontrão.",Módulo Básico,28
+DIS-030,SURDEZ | -20,SURDEZ,-20,Física,"
+- Você não é capaz de ouvir nada.
+- Qualquer informação deve lhe ser transmitida através da escrita (se você for alfabetizado) ou linguagem de sinais.
+- Estará também submetido a um redutor de -3 em seu atributo IQ quando estiver aprendendo qualquer língua que não seja a sua.
+- No entanto, receberá um bônus de +3 em todos os testes de Mímica/Pantomima, Linguagem de Sinais (pág. 55) ou Leitura Labial (pág. 66).",Módulo Básico,28
+DIS-031,DISOSMIA / AGEUSIA | -5,DISOSMIA / AGEUSIA,-5,Física,"
+- Esta é uma doença rara... o personagem não é capaz de sentir nem o cheiro nem o sabor de nada.
+-Será, portanto, incapaz de detectar certos perigos que as pessoas normais percebem rapidamente.
+- No entanto, esta deficiência tem suas vantagens.
+- Um personagem que a tenha nunca será afetado por gambás e sempre será capaz de comer qualquer coisa que lhe ponham na frente.",Módulo Básico,29
+DIS-032,EXCESSO DE PESO | -5,EXCESSO DE PESO,-5,Física,"
+- Você não chega a ser obeso — seu peso está um pouco acima da média de sua raça.
+- Determine o peso normalmente a partir do atributo ST para depois aumentá-lo em 30%.
+- Isto aumenta a Carga como no caso de Obesidade.
+- Personagens com Excesso de Peso recebem um bônus de +2 em testes de Natação.
+- Ser gordo significa um redutor de -1 em testes de reação feitos por membros de sociedades que têm consciência dos problemas que isto acarreta à saúde, e em áreas onde a disponibilidade de comida é limitada.
+- Não existe nenhum outro bônus ou penalidade.
+- O personagem consegue roupas com facilidade e é capaz de se misturar na multidão porque existe um bom número de pessoas gordas.",Módulo Básico,29
+DIS-033,GAGUEIRA | -10,GAGUEIRA,-10,Física,"
+- O personagem sofre de gagueira ou outro problema de fala que o Mestre pode pedir para o jogador representar.
+- Ele estará submetido a um redutor de -2 em todos os testes de reação onde for necessária uma conversa, e certas ocupações e perícias como Diplomacia, Lábia, Oratória, Atuação ou Noticiarista, são impossíveis.",Módulo Básico,29
+DIS-034,HIPERALGIA | -10,HIPERALGIA,-10,Física,"
+- O personagem é muito sensível a dores de todos os tipos.
+- Ele estará sempre submetido a um redutor de -4 ao tentar resistir à tortura.
+- Sempre que ele receber um ferimento com mais de um ponto de dano, precisará conseguir um sucesso em um teste de Vontade para evitar chorar (possivelmente revelando sua presença).
+- Soldados, bárbaros, assassinos, etc., reagirão ao personagem com um redutor de -1 se souberem que ele tem esta Desvantagem.",Módulo Básico,29
+DIS-035,MAGREZA | -5,MAGREZA,-5,Física,"
+- O personagem é excessivamente magro.
+- Depois de descobrir sua altura, verifique o peso “médio” para aquela altura (v. pág. 15) e diminua-o em 1/3.
+- Ele nunca poderá ser Elegante ou Muito Elegante e seu atributo HT nunca poderá ser maior do que 14.
+- Roupas e armaduras normais não lhe servirão, e seu atributo ST estará submetido a um redutor de -2 quando ele tentar dar (ou resistir a) um Encontrão.
+- Haverá um redutor de -2 também, para testes de Disfarce e Sombra se ele estiver tentando seguir alguém no meio de uma multidão.",Módulo Básico,29
+DIS-036,MANETA (UM BRAÇO) | -20,MANETA (UM BRAÇO),-20,Física,"
+- O personagem perdeu um braço (ou nasceu sem ele).
+- Assume-se que o braço perdido é o esquerdo se ele for destro e vice-versa.
+- Ele não poderá usar uma espada e um escudo simultaneamente, ou qualquer arma ou coisa que exija o uso de duas mãos.
+- A decisão do Mestre é definitiva em caso de discussão.
+- Qualquer coisa que exija uma só mão poderá ser feita sem nenhuma penalidade.
+- Nos casos limites é melhor deixar que o personagem tente realizar a ação submetido a um redutor de -4 em seu atributo DX ou tentar uma rápida verificação prática, se possível.",Módulo Básico,29
+DIS-037,MANETA (UMA MÃO) | -15,MANETA (UMA MÃO),-15,Física,"
+- O personagem perdeu uma das mãos.
+- Ela pode ser substituída por uma prótese apropriada (gancho, mão mecânica ou biônica).
+- Uma substituição biônica (NT 8+) é tão boa quanto a original e por isso não dá direito a nenhum bônus.
+- Uma prótese obviamente mecânica submeterá o personagem a um redutor de -1 em todos os testes de reação e seu atributo DX ficará “reduzido” em 2 pontos (para a mão mecânica) ou -4 (no caso de uma garra).
+- No entanto, um gancho ou uma garra equivalem a uma faca que o personagem nunca deixará cair em situações de combate (use o NH com Facas ).
+- Eles podem ser bastante intimidadores quando brandidos diante do oponente.",Módulo Básico,29
+DIS-038,MUDEZ | -25,MUDEZ,-25,Física,"
+- O personagem não é capaz de falar.
+- Toda a comunicação com outros (e a comunicação do jogador com os outros jogadores) deverá ser feita por escrito ou com linguagem de sinais.
+- O Mestre e o jogador poderão ir a uma outra sala, se necessário, para falar sobre o que o personagem está fazendo.
+- Um personagem Mudo recebe um bônus de +3 em todos os testes de Mímica/Pantomima ou Linguagem de Sinais (v. pág. 55).
+- No entanto, não será exigido (nem permitido) nenhum teste quando ele tentar se comunicar com outros PCs que não conhecem sua linguagem de sinais; represente isto por sua própria conta!",Módulo Básico,29
+DIS-039,PERNA MUTILADA | -15,PERNA MUTILADA,-15,Física,"
+- O personagem tem uma perna ruim.
+- Seu Deslocamento fica reduzido em 3 pontos e ele estará submetido a um redutor de -3 em todos os testes de habilidade que exigem andar ou correr.
+- Isto sem dúvida inclui todas as perícias com armas de mão e todas as artes marciais (as perícias com armas de projétil não são prejudicadas).",Módulo Básico,29
+DIS-040,PERNETA | -25,PERNETA,-25,Física,"
+- O personagem perdeu uma das pernas.
+- Ele estará submetido a um redutor de -6 em todos os testes de habilidade que exigem o uso das pernas.
+- O personagem é incapaz de correr e terá um Deslocamento igual a no máximo 2, usando muletas ou perna de pau.
+- Se o personagem tiver acesso à cirurgia protética do NT 6 (século XX), ele poderá reduzir o efeito da perna aleijada, mas precisará recomprar a diferença em pontos de alguma forma.
+- Civilizações de NT 8+ poderiam substituir a perna, possivelmente por uma melhor que a original, mas depois disto não haverá mais desvantagem.",Módulo Básico,29
+DIS-041,SEM PERNAS | -35,SEM PERNAS,-35,Física,"
+- O personagem está confinado a uma cadeira de rodas ou a uma plataforma com rodas.
+- Sua velocidade será 1/4 de seu atributo ST (arredondado para baixo) se ele a impulsionar com as próprias mãos.
+- Ele poderá ser carregado na garupa ou transportado em uma maca.
+- O Mestre deverá impor todas as penalidades razoáveis devidas a esta deficiência.
+- Exemplos: Ele não será capaz de passar por portas estreitas, subir escadas ou calçadas com degraus, viajar (a não ser em veículos equipados especialmente), lutar efetivamente (a não ser usando revólveres e bestas), etc. Ele estará submetido a um redutor de -6 se precisar lutar com uma espada.",Módulo Básico,29
+DIS-042,ZAROLHO | -15,ZAROLHO,-15,Física,"
+- O personagem tem apenas um olho bom.
+- Ele pode usar um olho de vidro ou cobrir a vista defeituosa com um tapa-olho.
+- Seu atributo DX estará submetido a um redutor de -1 em situações de combate e/ou que envolvam a coordenação entre mãos e olhos, e -3 em situações que envolvam armas de projétil, arremesso de objetos ou a condução de qualquer veículo mais rápido que um cavalo ou uma charrete.
+- Estará também submetido a um redutor de -1 em testes de reação, com exceção daqueles feitos por seres totalmente alienígenas. Exceção: Se você tiver Carisma, ou for Elegante ou Muito Elegante, o tapa-olho parecerá romântico e, neste caso, não afetará os testes de Reação.",Módulo Básico,29
+DIS-043,ALCOOLISMO | -15,ALCOOLISMO,-15,Mental,"
+- O personagem é um viciado em álcool.
+- Um alcoólatra pode, em circunstâncias normais, limitar o uso do álcool ao período noturno e, desta maneira, ser capaz de (pelo menos doponto de vista do jogo) agir normalmente.
+- No entanto, toda vez que um alcoólatra se vir frente a frente com o álcool, ele deverá obter um sucesso em um teste de Vontade, para evitar participar.
+- Uma falha significa que ele tomará um porre que durará 2d6 horas, seguido de uma ressaca durando o dobro, durante as quais todos os seus atributos e perícias estarão submetidos a um redutor de -3.
+- Alcoólatras numa bebedeira caracterizam-se pela oscilação súbita de seu humor (da cordialidade àhostilidade extremas) e podem vir a atacar seus amigos, falar demais ou cometer outros erros do gênero.
+- O outro inconveniente do alcoolismo é que é difícil se libertar dele.
+- Quando um personagem alcoólatra se “regenerar”, ele não precisará mais ingerir álcool diariamente, mas terá que fazer um teste de Vontade, com um bônus de +4, sempre que estiver em presença de álcool.
+- Uma falha não significa que ele voltará ao vício, mas indica uma bebedeira. (Três porres em uma semana trarão o vício de volta).
+- Isto significa que não há nenhuma maneira normal de “recomprar” esta desvantagem.
+- Um alcoólatra deve fazer todo ano um teste contra HT+2, até abandonar o vício.
+- Uma falha significa que ele deve perder um ponto de um de seus quatro atributos básicos,  aleatoriamente.",Módulo Básico,30
+DIS-044,DISTRAÇÃO | -15,DISTRAÇÃO,-15,Mental,"
+- A desvantagem clássica dos gênios excêntricos.
+- O personagem tem dificuldade em prestar atenção a qualquer coisa que não seja de interesse imediato.
+- Um personagem distraído estará submetido a um redutor de -5 em qualquer teste de IQ, com exceção daqueles ligados ao trabalho no qual ele está concentrado no momento.
+- Se não aparecer nenhum assunto ou tarefa que o atraia, sua atenção se desviará para assuntos mais interessantes em 5 minutos.
+- Ele ignorará tudo o que está à sua volta, até que alguma coisa chame sua atenção e o traga de volta.
+- Uma vez absorto em seus próprios pensamentos, um personagem Distraído precisa conseguir um sucesso em um teste contra IQ-5 para reparar em qualquer evento que não lhe cause dano físico.
+- Um personagem distraído pode tentar concentrar sua atenção em um assunto maçante, usando toda sua força de vontade.
+- Para consegui-lo, ele precisa de um sucesso em um teste de Vontade com um redutor de -5, a cada 5 minutos.
+- Entre os “assuntos enfadonhos” incluem-se turno de guarda, conversa fiada, trabalhos manuais repetitivos, dirigir em uma estrada vazia, etc...
+- As pessoas distraídas têm, também, uma tendência a se esquecer de objetos (como as chaves do carro e o talão de cheques) e tarefas triviais (como pagar contas).
+- Sempre que a realização de uma destas tarefas tiver alguma relevância, o Mestre poderá exigir um teste contra IQ-2.",Módulo Básico,30
+DIS-045,VICIO | -10,VICIO,-10,Mental,"
+O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+- Se a dose diária custa $20 ou menos: -5 pontos.
+- Se a dose diária custa de $21 a $100: -10 pontos.
+- Se a dose diária custa mais de $100: -20 pontos.
+- Se a droga for alucinógena ou incapacitante: -10 pontos.
+- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+
+Efeitos das Drogas:
+- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+
+Regeneração:
+- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+- Todo dia o viciado faz um teste de HT, + ou - Vontade.
+- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico,30
+DIS-046,VICIO GRAVE | -15,VICIO GRAVE,-15,Mental,"
+O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+- Se a dose diária custa $20 ou menos: -5 pontos.
+- Se a dose diária custa de $21 a $100: -10 pontos.
+- Se a dose diária custa mais de $100: -20 pontos.
+- Se a droga for alucinógena ou incapacitante: -10 pontos.
+- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+
+Efeitos das Drogas:
+- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+
+Regeneração:
+- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+- Todo dia o viciado faz um teste de HT, + ou - Vontade.
+- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico,30
+DIS-047,VICIO LEVE | -5,VICIO LEVE,-5,Mental,"
+O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+- Se a dose diária custa $20 ou menos: -5 pontos.
+- Se a dose diária custa de $21 a $100: -10 pontos.
+- Se a dose diária custa mais de $100: -20 pontos.
+- Se a droga for alucinógena ou incapacitante: -10 pontos.
+- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+
+Efeitos das Drogas:
+- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+
+Regeneração:
+- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+- Todo dia o viciado faz um teste de HT, + ou - Vontade.
+- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico,30
+DIS-048,VICIO MUITO GRAVE | -20,VICIO MUITO GRAVE,-20,Mental,"
+O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+- Se a dose diária custa $20 ou menos: -5 pontos.
+- Se a dose diária custa de $21 a $100: -10 pontos.
+- Se a dose diária custa mais de $100: -20 pontos.
+- Se a droga for alucinógena ou incapacitante: -10 pontos.
+- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+
+Efeitos das Drogas:
+- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+
+Regeneração:
+- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+- Todo dia o viciado faz um teste de HT, + ou - Vontade.
+- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico,30
+DIS-049,CODIGO DE HONRA LEVE | -5,CODIGO DE HONRA LEVE,-5,Mental,"
+- O personagem tem orgulho de um conjunto de princípios que ele segue
+todo o tempo.
+- Em qualquer cultura existem aqueles que fingem respeitar, mas não têm nenhum, e outros que realmente tentam seguir um código mas não conseguem viver todo o tempo segundo seus princípios. Mas só alguém que realmente siga um código de honra pode receber os pontos relativos a esta desvantagem.
+- Um Código de Honra é uma desvantagem porque ele exigirá, com frequência, um comportamento perigoso (se não imprudente).
+- Além disso, uma pessoa honrada pode ser forçada a situações desfavoráveis, porque seus inimigos sabem que ela tem honra.
+- Não é o mesmo que Dever ou Senso de Dever, que levariam um samurai ou um granadeiro inglês, por exemplo, a se lançarem em batalha contra inimigos terríveis por um questão de obrigação, e não por honra pessoal (embora seja evidente que eles ficariam desonrados, se fugissem).
+- Os riscos que uma pessoa enfrenta por sua honra só dizem respeito a ela mesma.",Módulo Básico,31
+DIS-050,CODIGO DE HONRA MEDIO | -10,CODIGO DE HONRA MEDIO,-10,Mental,"
+- O personagem tem orgulho de um conjunto de princípios que ele segue
+todo o tempo.
+- Em qualquer cultura existem aqueles que fingem respeitar, mas não têm nenhum, e outros que realmente tentam seguir um código mas não conseguem viver todo o tempo segundo seus princípios. Mas só alguém que realmente siga um código de honra pode receber os pontos relativos a esta desvantagem.
+- Um Código de Honra é uma desvantagem porque ele exigirá, com frequência, um comportamento perigoso (se não imprudente).
+- Além disso, uma pessoa honrada pode ser forçada a situações desfavoráveis, porque seus inimigos sabem que ela tem honra.
+- Não é o mesmo que Dever ou Senso de Dever, que levariam um samurai ou um granadeiro inglês, por exemplo, a se lançarem em batalha contra inimigos terríveis por um questão de obrigação, e não por honra pessoal (embora seja evidente que eles ficariam desonrados, se fugissem).
+- Os riscos que uma pessoa enfrenta por sua honra só dizem respeito a ela mesma.",Módulo Básico,31
+DIS-051,CODIGO DE HONRA PESADO | -15,CODIGO DE HONRA PESADO,-15,Mental,"
+- O personagem tem orgulho de um conjunto de princípios que ele segue
+todo o tempo.
+- Em qualquer cultura existem aqueles que fingem respeitar, mas não têm nenhum, e outros que realmente tentam seguir um código mas não conseguem viver todo o tempo segundo seus princípios. Mas só alguém que realmente siga um código de honra pode receber os pontos relativos a esta desvantagem.
+- Um Código de Honra é uma desvantagem porque ele exigirá, com frequência, um comportamento perigoso (se não imprudente).
+- Além disso, uma pessoa honrada pode ser forçada a situações desfavoráveis, porque seus inimigos sabem que ela tem honra.
+- Não é o mesmo que Dever ou Senso de Dever, que levariam um samurai ou um granadeiro inglês, por exemplo, a se lançarem em batalha contra inimigos terríveis por um questão de obrigação, e não por honra pessoal (embora seja evidente que eles ficariam desonrados, se fugissem).
+- Os riscos que uma pessoa enfrenta por sua honra só dizem respeito a ela mesma.",Módulo Básico,31
+DIS-052,FANFARRONICE | -10,FANFARRONICE,-10,Mental,"
+- Você gosta de intimidar as pessoas sempre que é possível fazê-lo impunemente.
+- Dependendo de sua personalidade e de sua posição, isto pode tomar a forma de agressões físicas, hostilidade intelectual ou “gelo” social.
+- Faça um teste de Vontade para tentar evitar uma bravata grosseira quando você sabe que não deveria, mas para representar seu personagem de maneira apropriada você precisa provocar a tantas pessoas, quantas puder.
+- Como ninguém gosta de um fanfarrão, seus testes de reação estarão submetidos a um redutor de -2.",Módulo Básico,31
+DIS-053,FURIA | -15,FURIA,-15,Mental,"
+- Como o Mau Humor, só que pior.
+- O personagem tende a perder o controle de si próprio quando submetido a alguma tensão, passando a atacar freneticamente quem ou o que quer que creia ser a causa de seu problema. (Não se pode assumir as duas desvantagens, Fúria e Mau Humor.)
+- Sempre que ele for atingido por mais de 3 vezes numa rodada, deverá fazer um teste de Vontade.
+- Uma falha significa que ele ficou enfurecido.
+- Outras situações de extrema tensão (opção do Mestre) podem, também, requerer este tipo de teste, para evitar o enfurecimento.
+- Um personagem com esta desvantagem pode se enfurecer deliberadamente, fazendo uma manobra de “Concentração”, e obtendo sucesso num teste de Vontade.
+- Enquanto ele estiver enfurecido, deverá fazer um Ataque Total sempre que um oponente estiver ao alcance, ou então uma manobra de Deslocamento para aproximar-se ao máximo de um oponente, quando não houver nenhum por perto.
+- No caso do inimigo estar a mais de 20 m de distância, o “enfurecido” pode atacar com armas de longo alcance, sem gastar tempo para mirar o alvo.
+- Fúria Tecnológica: Se um atirador experiente ficar enfurecido, ele vai disparar tantos tiros quantos puder em cada turno, até descarregar sua arma. Ele não irá recarregá-la, a menos que tenha as perícias Sacar Rápido e Rapidez de Recarga, que lhe permitirão fazê-lo “sem pensar”. Quando
+sua arma estiver descarregada, ele atacará com as próprias mãos ou com outra arma, e nunca perderá tempo fazendo pontaria.
+- Enquanto estiver enfurecido, ele não sofrerá atordoamento e os ferimento não acarretarão penalidades ao seu Deslocamento nem às jogadas de ataque.
+- Todo os testes para mantê-lo vivo ou consciente são feitos contra HT+4. Se ele for bem sucedido em todos, permanecerá vivo e atacando desvairadamente até que sua HT fique reduzida a (-5xHT). Então, ele cairá morto!
+- Quando um personagem enfurecido derrota seu oponente, ele pode (se o jogador quiser) fazer um teste de Vontade, para sair do estado de Fúria.
+- Se ele falhar (ou não fizer a jogada), continuará enfurecido e atacará o próximo oponente.
+- Qualquer amigo que tente pará-lo será encarado como um inimigo! 
+- O “furioso” faz um teste de Vontade para cada adversário derrotado, e uma jogada extra ao vencer o último oponente. Se falhar, significa que passará a atacar os amigos...
+- Ao sair do estado de Fúria, todos os ferimentos sofridos irão afetá-lo imediatamente.
+- Faça um teste de HT, para saber se ele continuará vivo e consciente.",Módulo Básico,31
+DIS-054,MAU HUMOR | -10,MAU HUMOR,-10,,"
+- O personagem não tem um controle total de suas emoções.
+- Ele deverá fazer um teste de Vontade em qualquer situação de tensão.
+- Uma falha significa que ele perdeu a paciência e deve insultar, atacar ou agir de alguma maneira contra a causa de sua explosão.",Módulo Básico,31
+DIS-055,SANGUINOLÊNCIA | -10,SANGUINOLÊNCIA,-10,Mental,"
+- O personagem deseja ver seus oponentes mortos.
+- Em uma batalha ele preferirá os golpes mortais, dará um tiro a mais para ter certeza de ter matado um oponente vencido, atacará guardas quando isto poderia ser evitado, etc.
+- Ele precisará ser bem sucedido em um teste de Vontade para aceitar a rendição de um inimigo ou mesmo fazer um prisioneiro quando isto lhe for ordenado.
+-Ele nunca esquecerá que um inimigo é um inimigo, mesmo que não estejam em um combate.
+- Esta pode ser uma característica realmente maligna, mas a maioria dos heróis ficcionais sofre dela.
+- O personagem não é fanático nem sádico; sua animosidade se limita aos inimigos “legítimos”, sejam eles criminosos, soldados inimigos, membros de uma família tradicionalmente inimiga ou um bêbado em uma taverna.
+- Frequentemente, ele tem uma boa razão para se sentir desta maneira e numa briga comum em uma taverna ele usará os punhos como todo mundo. Por outro lado, um gladiador ou duelista com esta desvantagem seria extremamente impopular. Um guarda logo estaria enrascado.",Módulo Básico,31
+DIS-056,COMPULSÃO | -10,COMPULSÃO,-10,Mental,"
+- Você tem algum hábito (geralmente, mas nem sempre, um vício) que se sente compelido a praticar diariamente.
+- Você gasta uma boa parte de seu tempo satisfazendo esta tendência.
+- Entre os exemplos de Compulsão incluem-se o jogo, atração por uma outra pessoa, discutir (ou mesmo brigar).
+- Em geral, é exigido um teste de Vontade no caso do jogador querer evitar sua compulsão numa determinada situação (ou num dia específico). Note que tentar evitar a compulsão com frequência significa má atuação.
+- O valor da desvantagem, em pontos, depende de qual o hábito, o seu custo e em quanta confusão ela colocará o PC.
+- O Mestre tem a palavra final.",Módulo Básico,32
+DIS-057,COMPULSÃO LEVE | -5,COMPULSÃO LEVE,-5,Mental,"
+- Você tem algum hábito (geralmente, mas nem sempre, um vício) que se sente compelido a praticar diariamente.
+- Você gasta uma boa parte de seu tempo satisfazendo esta tendência.
+- Entre os exemplos de Compulsão incluem-se o jogo, atração por uma outra pessoa, discutir (ou mesmo brigar).
+- Em geral, é exigido um teste de Vontade no caso do jogador querer evitar sua compulsão numa determinada situação (ou num dia específico). Note que tentar evitar a compulsão com frequência significa má atuação.
+- O valor da desvantagem, em pontos, depende de qual o hábito, o seu custo e em quanta confusão ela colocará o PC.
+- O Mestre tem a palavra final.",Módulo Básico,32
+DIS-058,COMPULSÃO PESADA | -15,COMPULSÃO PESADA,-15,Mental,"
+- Você tem algum hábito (geralmente, mas nem sempre, um vício) que se sente compelido a praticar diariamente.
+- Você gasta uma boa parte de seu tempo satisfazendo esta tendência.
+- Entre os exemplos de Compulsão incluem-se o jogo, atração por uma outra pessoa, discutir (ou mesmo brigar).
+- Em geral, é exigido um teste de Vontade no caso do jogador querer evitar sua compulsão numa determinada situação (ou num dia específico). Note que tentar evitar a compulsão com frequência significa má atuação.
+- O valor da desvantagem, em pontos, depende de qual o hábito, o seu custo e em quanta confusão ela colocará o PC.
+- O Mestre tem a palavra final.",Módulo Básico,32
+DIS-059,COVARDIA | -10,COVARDIA,-10,Mental,"
+- O personagem é extremamente cuidadoso com relação ao seu bem estar físico.
+- Toda vez que surgir a necessidade de se arriscar fisicamente,ele deverá fazer um teste de Vontade.
+- Se houver risco de vida, a jogada será feita com um redutor de -5.
+- Se o resultado for um fracasso, ele deverá se recusar a se arriscar, a menos que seja ameaçado com um perigo maior. Testes de reação de soldados, policiais, etc., estarão submetidos a um redutor de -2, a partir do momento em que eles tomarem conhecimento de sua covardia",Módulo Básico,32
+DIS-060,FANTASIA | -10,FANTASIA,-10,Mental,"
+- O personagem acredita em alguma coisa (ou em várias) que simplesmente não é (são) de verdade.
+- Isto pode levar os outros a pensarem que ele é maluco.
+- Eles podem ter razão. Se o personagem tiver uma fantasia, o jogador deverá atuar segundo sua crença todo o tempo.
+- Este tipo de ilusão afeta significativamente o comportamento do personagem, mas não impede que ele leve uma vida quase normal.
+",Módulo Básico,32
+DIS-061,FANTASIA GRAVE | -15,FANTASIA GRAVE,-15,Mental,"
+- O personagem acredita em alguma coisa (ou em várias) que simplesmente não é (são) de verdade.
+- Isto pode levar os outros a pensarem que ele é maluco.
+- Eles podem ter razão. Se o personagem tiver uma fantasia, o jogador deverá atuar segundo sua crença todo o tempo.
+- Esta ilusão afeta tão intensamente o comportamento do personagem, que pode chegar a impedir que ele viva no mundo cotidiano.
+",Módulo Básico,32
+DIS-062,FANTASIA LEVE | -5,FANTASIA LEVE,-5,Mental,"
+- O personagem acredita em alguma coisa (ou em várias) que simplesmente não é (são) de verdade.
+- Isto pode levar os outros a pensarem que ele é maluco.
+- Eles podem ter razão. Se o personagem tiver uma fantasia, o jogador deverá atuar segundo sua crença todo o tempo.
+- Este tipo de ilusão afeta o comportamento do personagem e existe chance dela ser percebida rapidamente por qualquer um, apesar de ela não impedir que ele aja com certa normalidade.
+",Módulo Básico,32
+DIS-063,INVEJA | -10,INVEJA,-10,Mental,"
+- O personagem terá, automaticamente, uma reação ruim frente a qualquer um que pareça mais inteligente, mais atraente ou em melhor situação do que ele.
+-Pode também se opor a qualquer plano proposto por um “rival”, e odiará se alguma outra pessoa estiver em evidência. (Esta desvantagem combina bem com Megalomania).
+- Se um NPC for invejoso, o Mestre deverá subtrair de 2 a 4 pontos de suas reações junto às vítimas de sua inveja.",Módulo Básico,32
+DIS-064,MENTIR COMPULSIVAMENTE | -15,MENTIR COMPULSIVAMENTE,-15,Mental,"- O personagem mente constantemente, por nenhuma outra razão que não seja a alegria de mentir.
+- Um mentiroso compulsivo se delicia inventando histórias sobre suas façanhas, linhagem, riqueza — qualquer coisa que possa impressionar sua audiência.
+- Mesmo quando desmascarado, ele se apega tenazmente a suas histórias, chamando seu denunciador de mentiroso e salafrário.
+-Para ser capaz de dizer a verdade pura e simples, um mentiroso compulsivo precisa conseguir um sucesso em um teste contra Vontade-4.
+- Um Mestre caridoso poderia deixar um mentiroso contar uma versão ligeiramente distorcida da verdade, se ele falhar por pouco em sua jogada.
+- Quando um PC mentiroso faz uma jogada para dizer a verdade para os membros de seu grupo, ele deverá fazê-la de modo que os jogadores não vejam o resultado.
+- Desta maneira eles nunca terão certeza se estão recebendo uma informação acurada de seu companheiro.",Módulo Básico,32
+DIS-065,PARALISIA FRENTE A COMBATE | -15,PARALISIA FRENTE A COMBATE,-15,Mental,"
+- Este é a situação oposta a Reflexos em Combate; o personagem tende a ficar paralisado quando se vê em um combate.
+- Não é Covardia, você não deve representar medo. Pelo contrário, deve ser corajoso, mas é atraiçoado pelo corpo.
+-Em qualquer situação onde uma lesão física parecer iminente, o personagem deverá fazer um teste de HT (não IQ).
+- Qualquer resultado maior do que 13 é um fracasso, mesmo que o personagem tenha uma HT alta.
+- A jogada não deve ser feita até o momento em que ele tem que lutar, correr, puxar o gatilho e assim por diante.
+- Um sucesso significa que ele pode agir normalmente.
+- Uma falha significa que ele está mentalmente atordoado (v. pág 122). O personagem deve fazer um teste de sua HT efetiva, com um bônus cumulativo igual a +1 em cada turno, a fim de sair do torpor.
+- Um tapa de um companheiro adicionará 1 ponto ao valor acumulado de sua HT.
+- Depois de sair do estado de torpor, ele não acontecerá de novo enquanto durar o perigo.
+- Mais tarde, ao se deparar com uma nova situação de perigo, ele poderá se repetir.",Módulo Básico,32
+DIS-066,ANALFABETISMO | -10,ANALFABETISMO,-10,Mental,"
+- Esta é a condição normal em uma cultura de baixo NT e neste caso não oferece nenhum bônus.
+- Em culturas com NT 5+, onde a imprensa é comum, ela será uma desvantagem. Veja pág. 17.",Módulo Básico,33
+DIS-067,COBIÇA | -15,COBIÇA,-15,Mental,"
+- Você tem paixão por dinheiro.
+-Toda vez que algum patrimônio for oferecido como pagamento por um trabalho lícito, proventos de uma aventura, pilhagem ou apenas isca, você terá que conseguir um sucesso em um teste de Vontade para resistir à tentação.
+- O Mestre pode modificar esta jogada se a soma envolvida for pequena em comparação com seus bens.
+- Pequenas quantias não tentarão (muito) um personagem rico.
+- Já um personagem pobre terá que fazer a jogada com um redutor de -5 ou até mais, se houver um rico prêmio à vista. Personagens honestos (veja a seguir) fazem jogadas com um bônus de +5 para resistir a um negócio escuso, e +10 para resistir a um crime inequívoco.
+- No entanto, praticamente todos os personagens irão, mais cedo ou mais tarde, fazer alguma coisa ilegal.",Módulo Básico,33
+DIS-068,CREDULIDADE | -10,CREDULIDADE,-10,Mental,"
+- Nasce um crédulo por minuto e o seu personagem é um deles.
+- Uma pessoa crédula acredita em tudo o que ouvir. Ela engolirá a história mais absurda, se ela for contada com convicção.
+- Para não acreditar em uma mentira ou em uma verdade improvável, ele deverá ser bem sucedido em um teste de IQ modificado segundo a plausibilidade da história.
+- Uma mentira bem contada, ou que envolva algum aspecto com o qual o personagem não tenha familiaridade (“Meu pai é o chefe de polícia desta cidade e ele não irá tolerar isto.”), exige um redutor de -6.
+- Uma mentira envolvendo um tópico com o qual o crédulo está familiarizado (“Você não sabia que eles criam patos em sua vila, Torg?”) pede um redutor de -3 e, mesmo uma história totalmente bizarra (“É claro que os esquimós descendem dos conquistadores espanhóis, todo mundo sabe disso”) será engolida, se a vítima falhar em seu teste de IQ.
+- Além disso, um personagem crédulo está submetido a um redutor de -3 em qualquer teste de Comércio, ou em qualquer situação onde sua Credulidade possa ser explorada.
+- Um crédulo nunca será capaz de aprender a perícia Detecção de Mentiras.",Módulo Básico,33
+DIS-069,DISLEXIA GRAVE | -15,DISLEXIA GRAVE,-15,Mental,"
+- Você tem uma deficiência grave. (Formas mais amenas de dislexia que não incapacitam são comuns, mas pouco significativas em termos de jogo, a não ser, talvez, como uma peculiaridades.)
+- Você é incapaz de aprender a er ou escrever; até mesmo mapas simples e placas de estrada estão além de sua compreensão.
+- Você é capaz de estudar qualquer perícia na velocidade normal se tiver um professor.
+- Se você tentar estudar uma perícia mental sem um professor, sua velocidade será apenas 1/4 da normal e isto, se a perícia puder ser aprendida através de auto-estudo sem livros (o Mestre pode variar isto conforme as circunstâncias).
+- Você é, também, incapaz de aprender magia (pois não é capaz de manejar o simbolismo necessário) embora seja capaz de usar objetos encantados.
+- O valor desta desvantagem depende do tipo de cultura na qual o personagem foi criado.
+- Primitiva ou medieval (NT menor ou igual a 4):-5 pontos. A maioria das pessoas também não sabe ler.
+- Pós-imprensa (NT 5+):-15 pontos. 
+- Esta falha lhe trará problemas no dia-a-dia.
+- Você será automaticamente analfabeto, mas não receberá pontos por isso.",Módulo Básico,33
+DIS-070,DISLEXIA LEVE | -5,DISLEXIA LEVE,-5,Mental,"
+- Você tem uma deficiência grave. (Formas mais amenas de dislexia que não incapacitam são comuns, mas pouco significativas em termos de jogo, a não ser, talvez, como uma peculiaridades.)
+- Você é incapaz de aprender a er ou escrever; até mesmo mapas simples e placas de estrada estão além de sua compreensão.
+- Você é capaz de estudar qualquer perícia na velocidade normal se tiver um professor.
+- Se você tentar estudar uma perícia mental sem um professor, sua velocidade será apenas 1/4 da normal e isto, se a perícia puder ser aprendida através de auto-estudo sem livros (o Mestre pode variar isto conforme as circunstâncias).
+- Você é, também, incapaz de aprender magia (pois não é capaz de manejar o simbolismo necessário) embora seja capaz de usar objetos encantados.
+- O valor desta desvantagem depende do tipo de cultura na qual o personagem foi criado.
+- Primitiva ou medieval (NT menor ou igual a 4):-5 pontos. A maioria das pessoas também não sabe ler.
+- Pós-imprensa (NT 5+):-15 pontos. 
+- Esta falha lhe trará problemas no dia-a-dia.
+- Você será automaticamente analfabeto, mas não receberá pontos por isso.",Módulo Básico,33
+DIS-071,FANATISMO | -15,FANATISMO,-15,Mental,"
+- Você crê intensamente em um país, religião, etc., e isto é mais importante do que qualquer outra coisa.
+- Pode ser que você não morra por ela (depende de sua coragem pessoal), mas certamente a colocará à frente de todo o resto.
+- Se seu país/religião/sei-lá-o-quê exigir obediência a um determinado código de comportamento, você o seguirá rigidamente.
+- Se ele exigir a obediência a um líder, você o seguirá com toda a lealdade.
+- Você precisa representar seu fanatismo.
+- Note que fanáticos não precisam ser necessariamente insensatos ou perversos.
+- O objeto de seu fanatismo é que faz a diferença.",Módulo Básico,33
+DIS-072,GULA | -5,GULA,-5,Mental,"
+- Você gosta demais de boa comida e bebida. Se tiver chance, você sempre se sobrecarregará com provisões extras e não deverá nunca perder uma refeição por vontade própria.
+- Você precisa de um sucesso em um teste de Vontade para resistir a uma iguaria tentadora ou a um bom vinho, se por alguma razão precisar fazê-lo.
+- A Gula não é uma fraqueza terrível, mas sua natureza ficará logo óbvia para todos que o conhecerem.",Módulo Básico,33
+DIS-073,HONESTIDADE | -10,HONESTIDADE,-10,Mental,"
+ O personagem DEVE obedecer a lei sempre e dar o melhor de si para que os outros também o façam. Ele será compulsivo com relação à lei. Em sua essência, é um outro tipo de Código de Honra (veja pág. 31).
+- Numa região onde exista pouca ou nenhuma lei, ele não ficará fora de si, mas agirá como se as leis de seu lugar de origem estivessem em vigor.
+- Isto é uma desvantagem, porque frequentemente limitará suas opções.
+- Ele deverá fazer um teste de IQ sempre que se defrontar com leis irracionais, para ver se há necessidade de violá-las, e conseguir um sucesso em um teste de Vontade para não se entregar depois.
+- Se em algum momento seu personagem agir desonestamente, o Mestre poderá penalizá-lo por má atuação.
+- O personagem pode brigar (ou mesmo começar uma briga, se ele o fizer dentro da lei). Ele pode até matar num duelo legal ou em defesa própria, mas nunca poderá assassinar. Ele poderá roubar se houver uma necessidade muito grande, mas apenas como último recurso, e deverá tentar reembolsar as vítimas mais tarde. - Se for preso por um crime que não cometeu, mas tratado de maneira justa e receber a promessa de um julgamento, o personagem não tentará escapar.
+- Ele sempre manterá a palavra. (Numa guerra ele poderá agir “desonestamente” contra o inimigo, mas não se sentirá bem com isto).
+- O personagem assumirá também que os outros são honestos até saber o contrário (faça um teste de IQ para ver se percebe que uma determinada pessoa pode estar sendo desonesta, se não tiver visto uma prova).
+- Naturalmente, a Honestidade traz suas recompensas. Se o personagem conseguir sobreviver e num só lugar por tempo suficiente, ele acabará conhecido por sua honestidade.
+- O Mestre poderia lhe conceder um bônus de +1, para ser usado em todos os testes de reação que não envolvam possibilidade de combate, ou +3 em questões que envolvam a verdade ou a honra.
+- Este bônus é, em sua essência, um bônus de “reputação” grátis.
+- O personagem pode mentir se isto não significar violar a lei.
+- A Veracidade (pág. 37) é uma desvantagem distinta.",Módulo Básico,33
+DIS-074,IMPULSIVIDADE | -10,IMPULSIVIDADE,-10,Mental,"
+- O personagem odeia falar e pensar. Ele prefere a ação.
+- Quando estiver só, ele agirá primeiro e pensará depois.
+- Em um grupo, quando seus companheiros quiserem parar e discutir uma situação, ele dará sua opinião rapidamente, se o fizer, e depois partirá para a ação.
+- Represente esta característica.
+- O personagem deverá conseguir um sucesso em um teste de Vontade para ser capaz de esperar e ponderar, se isto for absolutamente necessário.",Módulo Básico,33
+DIS-075,AVAREZA | -10,AVAREZA,-10,Mental,"
+- Semelhante à Cobiça (pág. 33) exceto que o personagem está muito mais interessado naquilo que ele já tem.
+- Um personagem pode ser ambicioso e avarento.
+- Ele deverá conseguir um sucesso em um teste de Vontade, toda vez que tiver que gastar algum dinheiro, e deverá procurar sempre o melhor preço.
+- Se a despesa for grande, o teste de Vontade deverá estar submetido a um redutor de -5 (ou até maior).
+- Uma falha significa que ele se recusará a gastar o dinheiro ou, se houver necessidade absoluta da transação, o personagem deverá regatear e reclamar interminavelmente.",Módulo Básico,34
+DIS-076,CLEPTOMANIA | -15,CLEPTOMANIA,-15,Mental,"
+- O personagem se sente compelido a roubar, não necessariamente coisas de valor, mas qualquer coisa que ele possa levar.
+- Sempre que tiver uma chance de roubar, o personagem deverá fazer um teste de Vontade com um redutor que pode ir até -3, se o objeto tiver um interesse especial para ele (não necessariamente valor, a menos que ele seja pobre ou ambicioso, mas simplesmente “interesse”).
+- Se o resultado for uma falha, o personagem deverá tentar furtar o objeto.
+- As coisas roubadas deverão ser mantidas ou vendidas — nunca devolvidas ou abandonadas.",Módulo Básico,34
+DIS-077,EXCESSO DE CONFIANÇA | -10,EXCESSO DE CONFIANÇA,-10,Mental,"
+- Você acha que é mais poderoso, inteligente e/ou competente do que realmente é, e deverá se comportar desta maneira.
+- Toda vez que (na opinião do Mestre) você demonstrar um grau de cautela exagerado, deverá fazer um teste de IQ.
+- Uma falha significará que você não pode ser cauteloso e deve ir em frente como se fosse capaz de dominar a situação.
+- Um personagem com excesso de confiança receberá um bônus de +2 em testes de reação de pessoas jovens ou ingênuas (elas acreditam que ele é tão bom quanto diz ser), e um redutor de -2 de NPCs experientes.
+- Esta desvantagem funciona como a Megalomania, só que numa escala reduzida. Robin Hood tinha Excesso de Confiança — ele desafiava estranhos para duelar. Hitler era Megalomaníaco — ele invadiu a Rússia.
+- Os heróis normalmente não são megalomaníacos e sim excessivamente auto-confiantes.
+- Esta característica exige uma boa atuação.
+- Um personagem com excesso de confiança pode ser orgulhoso e jactancioso, ou apenas calmamente determinado. Represente-a!",Módulo Básico,34
+DIS-078,INTOLERÂNCIA | -10,INTOLERÂNCIA,-10,Mental,"
+- Você não gosta e não confia em pessoas que são diferentes de você.
+- Um personagem completamente intolerante (-10 pontos) terá um redutor de -3 em seus testes de reação frente a qualquer pessoa que não pertença à sua raça e/ou classe.
+- No caso de uma reação “boa” ele tolerará a pessoa e será tão cortês quanto possível (apesar de frio e reservado).
+-No caso de uma reação “neutra” ele ainda tolerará a pessoa, mas deixará claro em palavras e atitudes que ele não faz a mínima questão de vê-la por perto e a considera inferior e/ou repugnante.
+- Se a reação for pior, o personagem poderá atacar ou se recusar a se associar com a vítima.
+- Uma intolerância dirigida contra uma raça ou classe específica vale desde -5 pontos, quando uma vítima puder ser encontrada com frequência, até -1 (nada mais que uma peculiaridade desagradável), se as vítimas forem raras.
+- Os membros de um grupo hostilizado sentirão a intolerância e normalmente reagirão com um redutor de -1 a -5 em relação à pessoa intolerante.
+- A Intolerância pode se manifestar também de outras maneiras.
+- A Intolerância religiosa pode tomar a forma de um redutor de -3 em testes de reação frente a membros de uma seita em particular (-5 pontos) ou a qualquer um que não pertença à sua própria seita (-10 pontos).
+- No caso de uma reação neutra ou melhor, uma pessoa intolerante tentará converter os incréus à sua própria fé.",Módulo Básico,34
+DIS-079,INTOLERÂNCIA LEVE | -5,INTOLERÂNCIA LEVE,-5,Mental,"
+- Você não gosta e não confia em pessoas que são diferentes de você.
+- Um personagem completamente intolerante (-10 pontos) terá um redutor de -3 em seus testes de reação frente a qualquer pessoa que não pertença à sua raça e/ou classe.
+- No caso de uma reação “boa” ele tolerará a pessoa e será tão cortês quanto possível (apesar de frio e reservado).
+-No caso de uma reação “neutra” ele ainda tolerará a pessoa, mas deixará claro em palavras e atitudes que ele não faz a mínima questão de vê-la por perto e a considera inferior e/ou repugnante.
+- Se a reação for pior, o personagem poderá atacar ou se recusar a se associar com a vítima.
+- Uma intolerância dirigida contra uma raça ou classe específica vale desde -5 pontos, quando uma vítima puder ser encontrada com frequência, até -1 (nada mais que uma peculiaridade desagradável), se as vítimas forem raras.
+- Os membros de um grupo hostilizado sentirão a intolerância e normalmente reagirão com um redutor de -1 a -5 em relação à pessoa intolerante.
+- A Intolerância pode se manifestar também de outras maneiras.
+- A Intolerância religiosa pode tomar a forma de um redutor de -3 em testes de reação frente a membros de uma seita em particular (-5 pontos) ou a qualquer um que não pertença à sua própria seita (-10 pontos).
+- No caso de uma reação neutra ou melhor, uma pessoa intolerante tentará converter os incréus à sua própria fé.",Módulo Básico,34
+DIS-080,LUXÚRIA | -15,LUXÚRIA,-15,Mental,"
+- O personagem sofre de um desejo incontrolável por romance.
+- Em qualquer contato com um membro atraente diante de sua sexualidade, o personagem deverá fazer um teste de Vontade (com um redutor de -5 se a outra pessoa for bonita ou -10 se for muito bonita).
+- Uma falha significa que ele deverá tentar uma “cantada”, usando todos os artifícios e perícias de que for capaz.
+- Deverá também sofrer as consequências de seus atos, bem sucedidos ou não... punição física, cadeia, doença transmissível ou (possivelmente) alguém apaixonado.
+- A menos que o objeto de sua afeição seja Muito Elegante ou Bonito, o personagem precisará apenas de um sucesso por dia em um teste de Vontade para evitar a tentativa de “aproximação”.
+- Se um outro personagem o rejeitar com firmeza (ex. um olho preto, ou denúncia por abuso sexual), o Mestre poderá permitir um bônus nas jogadas seguintes.
+- Lembre-se, também, que uma pessoa lasciva pode mudar seus padrões de beleza, se nenhum membro realmente atraente do sexo oposto estiver disponível.",Módulo Básico,34
+DIS-081,MEGALOMANIA | -10,MEGALOMANIA,-10,Mental,"
+- Você acredita que é o super-homem, ou que foi o escolhido para uma grande tarefa, ou que seu destino é conquistar.
+- Comece por adotar a desvantagem do Fanatismo, sendo que você é fanático por si próprio!
+- Você deve escolher algum objetivo muito grande — normalmente conquistar ou terminar uma tarefa fantástica, e jamais permitirá que algo se interponha entre você e seu objetivo.
+- Você poderá atrair seguidores que também serão Fanáticos; mas ninguém além deles gostará de ouvi-lo falar sobre seu talento e planos maravilhosos.
+- Personagens jovens ou ingênuos e Fanáticos à procura de uma nova causa terão suas reaçõesmelhoradas com um bônus de +2.
+-As reações de outras pessoas estarão submetidas a um redutor de -2.
+- Esta é uma desvantagem muito mais adequada a NPCs do que a personagens de jogador.",Módulo Básico,34
+DIS-082,PREGUIÇA | -10,PREGUIÇA,-10,Mental,"
+- O personagem tem uma aversão muito grande pelo trabalho físico.
+- Suas chances de conseguir um aumento ou promoção em qualqueremprego são reduzidas à metade.
+- Se ele trabalhar por conta própria, sua renda mensal cairá para a metade.
+- O personagem deve tentar evitar o trabalho, principalmente trabalho duro, a qualquer custo. Represente!",Módulo Básico,34
+DIS-083,FOBIA GRAVE | -30,FOBIA GRAVE,-30,Mental,"
+- Uma “fobia” é um medo de um objeto, criatura ou circunstância específicos. Alguns medos são razoáveis, mas uma fobia é um medo mórbido, irracional e ilógico.
+- Quanto mais comum for o objeto ou situação, maior será o valor em pontos da fobia. O medo do escuro vale muito mais do que o medo de encanadores canhotos. As fobias podem ser suaves ou graves. A versão grave vale o dobro.
+- Se você sofre de uma fobia suave, será capaz de controlá-la através de sucessos em testes de Vontade. Este tipo de jogada é também chamado de “Verificação de Pânico” (v. pág. 93). Exemplo: Se você sofrer de acrofobia (medo de altura), até poderá subir ao telhado de um edifício alto, se conseguir
+antes um sucesso em um teste de Vontade. No entanto, o medo persiste. No caso de conseguir controlar uma fobia suave, você estará submetido a um redutor de -2 em seus atributos IQ e DX enquanto a causa do medo persistir, e deverá fazer uma jogada a cada 10 minutos para ver se o medo não o dominou. Se isto tiver acontecido (i.e., você tiver falhado em sua Verificação de Pânico), sua reação deverá ser escolhida dentre as descritas na tabela existente na pág. 94.
+- Se seu caso de fobia for grave (valendo o dobro dos pontos), você estará morto de medo. Em circunstâncias normais você deve simplesmente se recusar ao contato com o objeto de seu medo. Se for forçado a este contato, você deverá fazer uma Verificação de Pânico com um redutor de -4. Enquanto a causa de seu medo persistir, seus atributos DX e IQ estarão submetidos a um redutor de -3 ; novamente fazendo jogadas de teste a cada 10 minutos.
+- Se uma vítima de fobia for ameaçada com o objeto temido, ela deverá fazer imediatamente uma Verificação de Pânico com um bônus de +4 (independente do fato de a fobia ser suave ou grave). Se os inimigos realmente lhe infligirem o objeto do medo, ele deverá fazer a Verificação de Pânico normal
+(como descrito acima). No caso de uma falha na jogada, a vítima sucumbe mas não necessariamente fala. Veja a perícia Interrogatório. Algumas pessoas podem entrar em pânico e sucumbir, mas continuar se recusando a falar da mesma maneira que algumas pessoas não falam sob tortura.
+- Uma situação fóbica é, por definição, carregada de tensão. Qualquer pessoa propensa a mudanças de personalidades, enfurecimento, etc., tem grande chance de sofrer estas reações quando encontra alguma coisa da qual tem medo e falha em sua Verificação de Pânico.",Módulo Básico,35
+DIS-084,FOBIA LEVE | -10,FOBIA LEVE,-10,Mental,"
+- Uma “fobia” é um medo de um objeto, criatura ou circunstância específicos. Alguns medos são razoáveis, mas uma fobia é um medo mórbido, irracional e ilógico.
+- Quanto mais comum for o objeto ou situação, maior será o valor em pontos da fobia. O medo do escuro vale muito mais do que o medo de encanadores canhotos. As fobias podem ser suaves ou graves. A versão grave vale o dobro.
+- Se você sofre de uma fobia suave, será capaz de controlá-la através de sucessos em testes de Vontade. Este tipo de jogada é também chamado de “Verificação de Pânico” (v. pág. 93). Exemplo: Se você sofrer de acrofobia (medo de altura), até poderá subir ao telhado de um edifício alto, se conseguir
+antes um sucesso em um teste de Vontade. No entanto, o medo persiste. No caso de conseguir controlar uma fobia suave, você estará submetido a um redutor de -2 em seus atributos IQ e DX enquanto a causa do medo persistir, e deverá fazer uma jogada a cada 10 minutos para ver se o medo não o dominou. Se isto tiver acontecido (i.e., você tiver falhado em sua Verificação de Pânico), sua reação deverá ser escolhida dentre as descritas na tabela existente na pág. 94.
+- Se seu caso de fobia for grave (valendo o dobro dos pontos), você estará morto de medo. Em circunstâncias normais você deve simplesmente se recusar ao contato com o objeto de seu medo. Se for forçado a este contato, você deverá fazer uma Verificação de Pânico com um redutor de -4. Enquanto a causa de seu medo persistir, seus atributos DX e IQ estarão submetidos a um redutor de -3 ; novamente fazendo jogadas de teste a cada 10 minutos.
+- Se uma vítima de fobia for ameaçada com o objeto temido, ela deverá fazer imediatamente uma Verificação de Pânico com um bônus de +4 (independente do fato de a fobia ser suave ou grave). Se os inimigos realmente lhe infligirem o objeto do medo, ele deverá fazer a Verificação de Pânico normal
+(como descrito acima). No caso de uma falha na jogada, a vítima sucumbe mas não necessariamente fala. Veja a perícia Interrogatório. Algumas pessoas podem entrar em pânico e sucumbir, mas continuar se recusando a falar da mesma maneira que algumas pessoas não falam sob tortura.
+- Uma situação fóbica é, por definição, carregada de tensão. Qualquer pessoa propensa a mudanças de personalidades, enfurecimento, etc., tem grande chance de sofrer estas reações quando encontra alguma coisa da qual tem medo e falha em sua Verificação de Pânico.",Módulo Básico,35
+DIS-085,FOBIA MÉDIA | -15,FOBIA MÉDIA,-15,Mental,"
+- Uma “fobia” é um medo de um objeto, criatura ou circunstância específicos. Alguns medos são razoáveis, mas uma fobia é um medo mórbido, irracional e ilógico.
+- Quanto mais comum for o objeto ou situação, maior será o valor em pontos da fobia. O medo do escuro vale muito mais do que o medo de encanadores canhotos. As fobias podem ser suaves ou graves. A versão grave vale o dobro.
+- Se você sofre de uma fobia suave, será capaz de controlá-la através de sucessos em testes de Vontade. Este tipo de jogada é também chamado de “Verificação de Pânico” (v. pág. 93). Exemplo: Se você sofrer de acrofobia (medo de altura), até poderá subir ao telhado de um edifício alto, se conseguir
+antes um sucesso em um teste de Vontade. No entanto, o medo persiste. No caso de conseguir controlar uma fobia suave, você estará submetido a um redutor de -2 em seus atributos IQ e DX enquanto a causa do medo persistir, e deverá fazer uma jogada a cada 10 minutos para ver se o medo não o dominou. Se isto tiver acontecido (i.e., você tiver falhado em sua Verificação de Pânico), sua reação deverá ser escolhida dentre as descritas na tabela existente na pág. 94.
+- Se seu caso de fobia for grave (valendo o dobro dos pontos), você estará morto de medo. Em circunstâncias normais você deve simplesmente se recusar ao contato com o objeto de seu medo. Se for forçado a este contato, você deverá fazer uma Verificação de Pânico com um redutor de -4. Enquanto a causa de seu medo persistir, seus atributos DX e IQ estarão submetidos a um redutor de -3 ; novamente fazendo jogadas de teste a cada 10 minutos.
+- Se uma vítima de fobia for ameaçada com o objeto temido, ela deverá fazer imediatamente uma Verificação de Pânico com um bônus de +4 (independente do fato de a fobia ser suave ou grave). Se os inimigos realmente lhe infligirem o objeto do medo, ele deverá fazer a Verificação de Pânico normal
+(como descrito acima). No caso de uma falha na jogada, a vítima sucumbe mas não necessariamente fala. Veja a perícia Interrogatório. Algumas pessoas podem entrar em pânico e sucumbir, mas continuar se recusando a falar da mesma maneira que algumas pessoas não falam sob tortura.
+- Uma situação fóbica é, por definição, carregada de tensão. Qualquer pessoa propensa a mudanças de personalidades, enfurecimento, etc., tem grande chance de sofrer estas reações quando encontra alguma coisa da qual tem medo e falha em sua Verificação de Pânico.",Módulo Básico,35
+DIS-086,PACIFISMO (AUTO-DEFESA) | -15,PACIFISMO (AUTO-DEFESA),-15,Mental,"
+- Apenas significa que o personagem lutará somente para defender a si mesmo ou àqueles de quem ele gosta, usando apenas a força necessária (nenhum golpe preventivo deve ser permitido).
+- O personagem deve dar o melhor de si para desencorajar os outros de começar uma briga.",Módulo Básico,35
+DIS-087,PACIFISMO (INCAPAZ DE MATAR) | -15,PACIFISMO (INCAPAZ DE MATAR),-15,Mental,"
+- Significa que o personagem pode lutar livremente e até mesmo começar uma briga, mas nunca deverá fazer algo que possa provocar a morte de outra pessoa. Isto inclui abandonar um inimigo ferido para morrer “por sua própria conta”.
+- Ele deverá, também, fazer todo o possível para evitar que seus companheiros matem.
+- O personagem será vítima de um colapso nervoso se matar alguém (ou se sentir-se responsável por uma morte).
+- Jogue 3d6 e mostre-se completamente casmurro e inútil (represente!) durante um número de dias igual ao resultado dos dados.
+- Durante este período, o personagem precisará de um sucesso em um de teste de Vontade para tentar qualquer tipo de violência contra qualquer pessoa por qualquer motivo.",Módulo Básico,35
+DIS-088,PACIFISMO (NÃO-VIOLÊNCIA TOTAL) | -30,PACIFISMO (NÃO-VIOLÊNCIA TOTAL),-30,Mental,"
+- Significa exatamente isto.
+- Você não levantará a mão contra outra criatura inteligente, por razão nenhuma e deve dar o melhor de sua não-violência para desencorajar o comportamento violento dos outros.
+- Você pode se defender contra o ataque de alimais, mosquitos, etc.",Módulo Básico,35
+DIS-089,PARANÓIA | -10,PARANÓIA,-10,Mental,"
+- Você perdeu o contato com a realidade.
+- Especificamente, você acredita que alguém está planejando alguma coisa contra sua pessoa, e nunca confiará em ninguém exceto seus velhos amigos — assim mesmo, sem perdê-los de vista.
+- Os outros personagens, compreensivelmente, terão suas reações sub- metidas a um redutor de -2.
+- A reação de um NPC paranóico a qualquer pessoa estranha estará sempre submetida a um redutor de -4 e qualquer penalidade “legítima” à reação (ex.: raça ou nacionalidade inamistosa) será dobrada.
+- Esta desvantagem casa muito bem com Fantasias que, é claro, tem seu próprio valor como Desvantagem.",Módulo Básico,35
+DIS-090,PIROMANIA | -5,PIROMANIA,-5,Mental,"
+- Você ama o fogo e gosta de acendê-lo.
+- Para uma boa atuação, você não deveria perder nenhuma oportunidade de começar um incêndio ou apreciar um, quando encontrar.
+- Faça um teste de Vontade quando for absolutamente necessário reprimir seu amor pelas chamas.",Módulo Básico,36
+DIS-091,SADISMO | -15,SADISMO,-15,Mental,"
+- Você se delicia com a crueldade... física, mental, ou ambas. (Esta é uma característica particularmente “maligna”, mais adequada para vilões NPCs do que para personagens heróicos.)
+-O Mestre pode proibir terminantemente esta desvantagem (ou qualquer outra vantagem ou desvantagem), se ele não desejar que ninguém a represente em sua campanha.
+- A reação das pessoas a um sádico conhecido está sempre submetida a um redutor de -3, a menos que elas venham de uma cultura que tenha pouca estima pela vida.
+- Quando um sádico tem uma oportunidade de satisfazer seus desejos, mas sabe que não deveria (ex.: porque um prisioneiro deve ser libertado ileso) ele deverá obter um sucesso em um teste de Vontade, a fim de se controlar.
+- Note que é possível, apesar de indigno, ser valentão e sádico.",Módulo Básico,36
+DIS-092,AZAR | -10,AZAR,-10,Mental,"
+- O personagem é simplesmente um azarado. 
+- Tudo dá errado para ele e, normalmente, na pior hora possível.
+- O Mestre irá, arbitrária e maliciosamente, fazer alguma coisa sair errada para você uma vez em cada sessão de jogo.
+- Você fracassará numa jogada de importância vital, ou o inimigo irá aparecer (contra todas as chances do mundo) na pior hora.
+- Se o enredo da aventura necessitar que alguma coisa de ruim aconteç a alguém, você será o escolhido.
+- O Mestre não pode matar de imediato um personagem com “má sorte”, mas qualquer coisa menos que isso está ótimo.",Módulo Básico,37
+DIS-093,DUPLA PERSONALIDADE | -15,DUPLA PERSONALIDADE,-15,Mental,"
+- Você tem duas ou mais personalidades, cada uma das quais pode ter seu próprio conjunto de problemas mentais ou padrão de comportamento.
+- Isto permite que você tenha Desvantagens Mentais que seriam incompatíveis de outra maneira (ex.: Pacifismo e Fúria, ou Paranóia e Luxúria).
+- Cada personalidade deveria ter sua própria ficha.
+ - Os atributos básicos podem variar um pouco (ST, DX e HT sendo artificalmente diminuídos por personalidades que “acreditam” ser fracas, desajeitadas ou doentes).
+- IQ e Perícias podem ser diferentes e os traços da personalidade podem ser completamente diferentes.
+- Em qualquer situação de tensão, O GM fará um teste de IQ. Neste caso, uma falha significará uma mudança para uma outra personalidade.
+- Não se exige mais do que um teste/hora (tempo de jogo).
+-Qualquer NPC que esteja ciente de seu problema acreditará (possivelmente com razão) que você é um maluco perigoso e suas reações frente a você terão um redutor de -3 pontos.
+- Se suas personalidades forem facetas de um único “indivíduo”, esta desvantagem valerá -10 pontos.
+- Se as personalidades tiverem pouca consciência umas das outras, interprete suas memórias diferentemente e tenha nomes diferentes. Neste caso, a desvantagem vale -15 pontos.
+",Módulo Básico,37
+DIS-094,DUPLA PERSONALIDADE LEVE | -10,DUPLA PERSONALIDADE LEVE,-10,Mental,"
+- Você tem duas ou mais personalidades, cada uma das quais pode ter seu próprio conjunto de problemas mentais ou padrão de comportamento.
+- Isto permite que você tenha Desvantagens Mentais que seriam incompatíveis de outra maneira (ex.: Pacifismo e Fúria, ou Paranóia e Luxúria).
+- Cada personalidade deveria ter sua própria ficha.
+ - Os atributos básicos podem variar um pouco (ST, DX e HT sendo artificalmente diminuídos por personalidades que “acreditam” ser fracas, desajeitadas ou doentes).
+- IQ e Perícias podem ser diferentes e os traços da personalidade podem ser completamente diferentes.
+- Em qualquer situação de tensão, O GM fará um teste de IQ. Neste caso, uma falha significará uma mudança para uma outra personalidade.
+- Não se exige mais do que um teste/hora (tempo de jogo).
+-Qualquer NPC que esteja ciente de seu problema acreditará (possivelmente com razão) que você é um maluco perigoso e suas reações frente a você terão um redutor de -3 pontos.
+- Se suas personalidades forem facetas de um único “indivíduo”, esta desvantagem valerá -10 pontos.
+- Se as personalidades tiverem pouca consciência umas das outras, interprete suas memórias diferentemente e tenha nomes diferentes. Neste caso, a desvantagem vale -15 pontos.
+",Módulo Básico,37
+DIS-095,TEIMOSIA | -5,TEIMOSIA,-5,Mental,"
+- Você sempre quer fazer as coisas a seu modo e deverá ser uma pessoal difícil de se conviver. Represente!
+- Seus amigos podem vir a ter de fazer um bocado de testes de Lábia para conseguir que você os acompanhe em planos perfeitamente razoáveis.
+- A reação das outras pessoas com relação a você estará submetida a um redutor de -1 ponto.",Módulo Básico,37
+DIS-096,TIMIDEZ GRAVE | -10,TIMIDEZ GRAVE,-10,Mental,"
+- Você se sente desconfortável com pessoas estranhas por perto.
+- Esta desvantagem existe em três níveis: Suave, Grave e Paralizante. Você deve representar sua timidez.
+- Esta desvantagem pode ser recomprada à razão de um nível por vez.
+- Timidez Grave: Você se sente muito desconfortável na presença de estranhos e tende a permanecer calado mesmo entre amigos. Todas as perícias que o obrigam a lidar com o público (especialmente Dissimulação, Trovador, Boemia, Diplomacia, Lábia, Liderança, Comércio, Política, Trato Social, Sex-Appeal e Pedagogia) estarão reduzidas em 2 pontos.",Módulo Básico,37
+DIS-097,TIMIDEZ PARALIZANTE | -15,TIMIDEZ PARALIZANTE,-15,Mental,"
+- Você se sente desconfortável com pessoas estranhas por perto.
+- Esta desvantagem existe em três níveis: Suave, Grave e Paralizante. Você deve representar sua timidez.
+- Esta desvantagem pode ser recomprada à razão de um nível por vez.
+- Você evita estranhos sempre que possível e é incapaz de falar em público. Não poderá aprender nenhuma perícia que envolva o trato com o público. Seus testes nestas perícias com valor pré-definido estarão submetidos a um redutor de -4.",Módulo Básico,37
+DIS-098,TIMIDEZ SUAVE | -5,TIMIDEZ SUAVE,-5,Mental,"
+- Você se sente desconfortável com pessoas estranhas por perto.
+- Esta desvantagem existe em três níveis: Suave, Grave e Paralizante. Você deve representar sua timidez.
+- Esta desvantagem pode ser recomprada à razão de um nível por vez.
+- Timidez Suave: Um tanto desconfortável na presença de pessoas estranhas, especialmente se elas forem agressivas ou atraentes. Todas as perícias que o obrigam a lidar com o público (especialmente Dissimulação, Trovador, Boemia, Diplomacia, Lábia, Liderança, Comércio, Política, Trato Social, Sex-Appeal e Pedagogia) estarão submetidas a um redutor de -1.",Módulo Básico,37
+DIS-099,VERACIDADE | -5,VERACIDADE,-5,Mental,"
+- Você odeia dizer uma mentira ou o faz muito mal.
+- Para conseguir se manter calado sobre a uma verdade desconfortável (mentir por omissão), você precisa de um sucesso em um teste de Vontade.
+- Para chegar a realmente dizer uma mentira o teste precisará ser feito com um redutor de -5.
+- Uma falha significará que você deixou escapar a verdade ou gaguejou tanto que sua mentira ficou óbvia. (Se alguém estiver usando Detecção de Mentiras em você, haverá um redutor adicional de -5.)",Módulo Básico,37
+DIS-100,VONTADE -1 | -8,VONTADE -1,-8,Mental,"
+- Você é facilmente persuadido, atemorizado, intimidado, coagido, tentado, etc.
+- Para cada nível adotado, seu atributo IQ será efetivamente diminuído em 1 ponto sempre que você fizer um teste de Vontade, inclusive tentativas de resistir à Diplomacia, Lábia, Sex-appeal, Interrogatório, Hipnotismo ou tentativas mágicas ou psíquicas de assumir o comando, ler ou influenciar sua mente.
+- A Vontade Fraca também afetaas tentativas de controlar fobias, resistir à magia hostil, fazer Verificação de Pânico (veja pág. 93) e evitar ceder a um vício, comportamento furioso e coisas similares.
+- Um personagem não pode ter simultaneamente Força de Vontade e Vontade Fraca.",Módulo Básico,37
+DIS-101,VONTADE -2 | -16,VONTADE -2,-16,Mental,"
+- Você é facilmente persuadido, atemorizado, intimidado, coagido, tentado, etc.
+- Para cada nível adotado, seu atributo IQ será efetivamente diminuído em 1 ponto sempre que você fizer um teste de Vontade, inclusive tentativas de resistir à Diplomacia, Lábia, Sex-appeal, Interrogatório, Hipnotismo ou tentativas mágicas ou psíquicas de assumir o comando, ler ou influenciar sua mente.
+- A Vontade Fraca também afetaas tentativas de controlar fobias, resistir à magia hostil, fazer Verificação de Pânico (veja pág. 93) e evitar ceder a um vício, comportamento furioso e coisas similares.
+- Um personagem não pode ter simultaneamente Força de Vontade e Vontade Fraca.",Módulo Básico,37
+DIS-102,VONTADE -3 | -24,VONTADE -3,-24,Mental,"
+- Você é facilmente persuadido, atemorizado, intimidado, coagido, tentado, etc.
+- Para cada nível adotado, seu atributo IQ será efetivamente diminuído em 1 ponto sempre que você fizer um teste de Vontade, inclusive tentativas de resistir à Diplomacia, Lábia, Sex-appeal, Interrogatório, Hipnotismo ou tentativas mágicas ou psíquicas de assumir o comando, ler ou influenciar sua mente.
+- A Vontade Fraca também afetaas tentativas de controlar fobias, resistir à magia hostil, fazer Verificação de Pânico (veja pág. 93) e evitar ceder a um vício, comportamento furioso e coisas similares.
+- Um personagem não pode ter simultaneamente Força de Vontade e Vontade Fraca.",Módulo Básico,37
+DIS-103,VONTADE -4 | -32,VONTADE -4,-32,Mental,"
+- Você é facilmente persuadido, atemorizado, intimidado, coagido, tentado, etc.
+- Para cada nível adotado, seu atributo IQ será efetivamente diminuído em 1 ponto sempre que você fizer um teste de Vontade, inclusive tentativas de resistir à Diplomacia, Lábia, Sex-appeal, Interrogatório, Hipnotismo ou tentativas mágicas ou psíquicas de assumir o comando, ler ou influenciar sua mente.
+- A Vontade Fraca também afetaas tentativas de controlar fobias, resistir à magia hostil, fazer Verificação de Pânico (veja pág. 93) e evitar ceder a um vício, comportamento furioso e coisas similares.
+- Um personagem não pode ter simultaneamente Força de Vontade e Vontade Fraca.",Módulo Básico,37
+DIS-104,VONTADE -5 | -40,VONTADE -5,-40,Mental,"
+- Você é facilmente persuadido, atemorizado, intimidado, coagido, tentado, etc.
+- Para cada nível adotado, seu atributo IQ será efetivamente diminuído em 1 ponto sempre que você fizer um teste de Vontade, inclusive tentativas de resistir à Diplomacia, Lábia, Sex-appeal, Interrogatório, Hipnotismo ou tentativas mágicas ou psíquicas de assumir o comando, ler ou influenciar sua mente.
+- A Vontade Fraca também afetaas tentativas de controlar fobias, resistir à magia hostil, fazer Verificação de Pânico (veja pág. 93) e evitar ceder a um vício, comportamento furioso e coisas similares.
+- Um personagem não pode ter simultaneamente Força de Vontade e Vontade Fraca.",Módulo Básico,37
+DIS-105,VOTO | -10,VOTO,-10,Mental,"
+- Você fez um juramento de que faria (ou não faria) uma determinada coisa.
+- Esta desvantagem é especialmente adequada para cavaleiros, homens santos e fanáticos.
+- Lembre-se que, qualquer que seja o voto, você o levará a sério. Se você não agir assim, ele não será uma desvantagem.
+- O valor preciso de um voto é decidido pelo Mestre, mas deveria estar diretamente relacionado ao transtorno que ele causa ao personagem.
+- Se você fizer um “voto de pobreza” você não poderá receber também os pontos por ser falido. Nem poderá, também, fazer um voto de nunca matar e receber os pontos pelo Pacifismo “Incapaz de Matar”... e assim por diante.
+- A maioria dos votos termina depois de um determinado período de tempo. Você deverá recomprar os pontos devidos ao voto quando isto acontecer. Votos por períodos menores que um ano são frívolos. O Mestre deverá exigir uma penalidade, se um personagem desejar abandonar um voto antes do tempo determinado. Num cenário medieval, por exemplo, uma busca ou outra penitência seria apropriado (uma busca pode, por si só, ser um voto).
+- Voto: Não usar armas afiadas; ficar em silêncio todo o tempo, nunca dormir sob um teto, não possuir nada além do que o cavalo pode carregar.",Módulo Básico,37
+DIS-106,VOTO GRAVE | -15,VOTO GRAVE,-15,Mental,"
+- Você fez um juramento de que faria (ou não faria) uma determinada coisa.
+- Esta desvantagem é especialmente adequada para cavaleiros, homens santos e fanáticos.
+- Lembre-se que, qualquer que seja o voto, você o levará a sério. Se você não agir assim, ele não será uma desvantagem.
+- O valor preciso de um voto é decidido pelo Mestre, mas deveria estar diretamente relacionado ao transtorno que ele causa ao personagem.
+- Se você fizer um “voto de pobreza” você não poderá receber também os pontos por ser falido. Nem poderá, também, fazer um voto de nunca matar e receber os pontos pelo Pacifismo “Incapaz de Matar”... e assim por diante.
+- A maioria dos votos termina depois de um determinado período de tempo. Você deverá recomprar os pontos devidos ao voto quando isto acontecer. Votos por períodos menores que um ano são frívolos. O Mestre deverá exigir uma penalidade, se um personagem desejar abandonar um voto antes do tempo determinado. Num cenário medieval, por exemplo, uma busca ou outra penitência seria apropriado (uma busca pode, por si só, ser um voto).
+- Voto Grave: Nunca recusar nenhum pedido de ajuda, sempre lutar com a mão trocada, caçar um inimigo até destruílo, desafiar todos os cavaleiros que encontrar para um combate.",Módulo Básico,37
+DIS-107,VOTO LEVE | -5,VOTO LEVE,-5,Mental,"
+- Você fez um juramento de que faria (ou não faria) uma determinada coisa.
+- Esta desvantagem é especialmente adequada para cavaleiros, homens santos e fanáticos.
+- Lembre-se que, qualquer que seja o voto, você o levará a sério. Se você não agir assim, ele não será uma desvantagem.
+- O valor preciso de um voto é decidido pelo Mestre, mas deveria estar diretamente relacionado ao transtorno que ele causa ao personagem.
+- Se você fizer um “voto de pobreza” você não poderá receber também os pontos por ser falido. Nem poderá, também, fazer um voto de nunca matar e receber os pontos pelo Pacifismo “Incapaz de Matar”... e assim por diante.
+- A maioria dos votos termina depois de um determinado período de tempo. Você deverá recomprar os pontos devidos ao voto quando isto acontecer. Votos por períodos menores que um ano são frívolos. O Mestre deverá exigir uma penalidade, se um personagem desejar abandonar um voto antes do tempo determinado. Num cenário medieval, por exemplo, uma busca ou outra penitência seria apropriado (uma busca pode, por si só, ser um voto).
+- Voto Leve:  Voto de silêncio durante o dia, vegetarianismo, castidade (é isso sim! Para efeito de jogo este é um voto de pouca importância.).",Módulo Básico,37
+DIS-108,VOTO TRIVIAL | -1,VOTO TRIVIAL,-1,Mental,"
+- Você fez um juramento de que faria (ou não faria) uma determinada coisa.
+- Esta desvantagem é especialmente adequada para cavaleiros, homens santos e fanáticos.
+- Lembre-se que, qualquer que seja o voto, você o levará a sério. Se você não agir assim, ele não será uma desvantagem.
+- O valor preciso de um voto é decidido pelo Mestre, mas deveria estar diretamente relacionado ao transtorno que ele causa ao personagem.
+- Se você fizer um “voto de pobreza” você não poderá receber também os pontos por ser falido. Nem poderá, também, fazer um voto de nunca matar e receber os pontos pelo Pacifismo “Incapaz de Matar”... e assim por diante.
+- A maioria dos votos termina depois de um determinado período de tempo. Você deverá recomprar os pontos devidos ao voto quando isto acontecer. Votos por períodos menores que um ano são frívolos. O Mestre deverá exigir uma penalidade, se um personagem desejar abandonar um voto antes do tempo determinado. Num cenário medieval, por exemplo, uma busca ou outra penitência seria apropriado (uma busca pode, por si só, ser um voto).
+- Voto Trivial (uma peculiaridade): Sempre usar vermelho; nunca ingerir álcool, tratar todas as damas com cortesia; doar 10% de sua renda para uma igreja.",Módulo Básico,37
+DIS-109,SENSO DO DEVER | -10,SENSO DO DEVER,-10,Mental,"
+- Esta desvantagem é diferente de um dever de verdade.
+- Um Dever pode ser imposto a você. O Senso do Dever vem de dentro.
+- Não é, também, a mesma coisa que Honestidade (v. pág. 33). Uma pessoa desonesta pode ter um senso do dever. Robin Hood era desones- to; ele roubava! Mas tinha um forte Senso do Dever com relação a seus homens e aos pobres de sua região.
+-Se você sente um dever para com alguma pessoa, nunca a trairá ou abandonará quando ela estiver enfrentando um problema, nem deixará que ela sofra ou passe fome, se você puder ajudar.
+- Se você for conhecido por ter Senso do Dever, a reação das outras pessoas com relação a você terá um bônus de +2, por confiarem em você numa situação de perigo.
+- Se você tiver senso de dever e agir contra ele, agindo contra os interesses daqueles por quem supostamente você sente este dever, o Mestre o penalizará por má atuação.
+- O jogador define o grupo pelo qual o personagem terá seu senso de dever e o GM transformará isto em pontos.
+- Exemplos: apenas com relação aos companheiros e amigos íntimos (-5 pontos); com relação a uma nação ou um grupo grande de pessoas (-10 pontos); com relação a todas as pessoas que você conhece pessoalmente (-10 pontos); com relação a toda a humanidade (-15 pontos) ou todos os seres vivos (-20 pontos... e você será um santo muito difícil de suportar).",Módulo Básico,39
+DIS-110,SENSO DO DEVER GRAVE | -15,SENSO DO DEVER GRAVE,-15,Mental,"
+- Esta desvantagem é diferente de um dever de verdade.
+- Um Dever pode ser imposto a você. O Senso do Dever vem de dentro.
+- Não é, também, a mesma coisa que Honestidade (v. pág. 33). Uma pessoa desonesta pode ter um senso do dever. Robin Hood era desones- to; ele roubava! Mas tinha um forte Senso do Dever com relação a seus homens e aos pobres de sua região.
+-Se você sente um dever para com alguma pessoa, nunca a trairá ou abandonará quando ela estiver enfrentando um problema, nem deixará que ela sofra ou passe fome, se você puder ajudar.
+- Se você for conhecido por ter Senso do Dever, a reação das outras pessoas com relação a você terá um bônus de +2, por confiarem em você numa situação de perigo.
+- Se você tiver senso de dever e agir contra ele, agindo contra os interesses daqueles por quem supostamente você sente este dever, o Mestre o penalizará por má atuação.
+- O jogador define o grupo pelo qual o personagem terá seu senso de dever e o GM transformará isto em pontos.
+- Exemplos: apenas com relação aos companheiros e amigos íntimos (-5 pontos); com relação a uma nação ou um grupo grande de pessoas (-10 pontos); com relação a todas as pessoas que você conhece pessoalmente (-10 pontos); com relação a toda a humanidade (-15 pontos) ou todos os seres vivos (-20 pontos... e você será um santo muito difícil de suportar).",Módulo Básico,39
+DIS-111,SENSO DO DEVER LEVE | -5,SENSO DO DEVER LEVE,-5,Mental,"
+- Esta desvantagem é diferente de um dever de verdade.
+- Um Dever pode ser imposto a você. O Senso do Dever vem de dentro.
+- Não é, também, a mesma coisa que Honestidade (v. pág. 33). Uma pessoa desonesta pode ter um senso do dever. Robin Hood era desones- to; ele roubava! Mas tinha um forte Senso do Dever com relação a seus homens e aos pobres de sua região.
+-Se você sente um dever para com alguma pessoa, nunca a trairá ou abandonará quando ela estiver enfrentando um problema, nem deixará que ela sofra ou passe fome, se você puder ajudar.
+- Se você for conhecido por ter Senso do Dever, a reação das outras pessoas com relação a você terá um bônus de +2, por confiarem em você numa situação de perigo.
+- Se você tiver senso de dever e agir contra ele, agindo contra os interesses daqueles por quem supostamente você sente este dever, o Mestre o penalizará por má atuação.
+- O jogador define o grupo pelo qual o personagem terá seu senso de dever e o GM transformará isto em pontos.
+- Exemplos: apenas com relação aos companheiros e amigos íntimos (-5 pontos); com relação a uma nação ou um grupo grande de pessoas (-10 pontos); com relação a todas as pessoas que você conhece pessoalmente (-10 pontos); com relação a toda a humanidade (-15 pontos) ou todos os seres vivos (-20 pontos... e você será um santo muito difícil de suportar).",Módulo Básico,39
+DIS-112,SENSO DO DEVER MUITO GRAVE | -20,SENSO DO DEVER MUITO GRAVE,-20,Mental,"
+- Esta desvantagem é diferente de um dever de verdade.
+- Um Dever pode ser imposto a você. O Senso do Dever vem de dentro.
+- Não é, também, a mesma coisa que Honestidade (v. pág. 33). Uma pessoa desonesta pode ter um senso do dever. Robin Hood era desones- to; ele roubava! Mas tinha um forte Senso do Dever com relação a seus homens e aos pobres de sua região.
+-Se você sente um dever para com alguma pessoa, nunca a trairá ou abandonará quando ela estiver enfrentando um problema, nem deixará que ela sofra ou passe fome, se você puder ajudar.
+- Se você for conhecido por ter Senso do Dever, a reação das outras pessoas com relação a você terá um bônus de +2, por confiarem em você numa situação de perigo.
+- Se você tiver senso de dever e agir contra ele, agindo contra os interesses daqueles por quem supostamente você sente este dever, o Mestre o penalizará por má atuação.
+- O jogador define o grupo pelo qual o personagem terá seu senso de dever e o GM transformará isto em pontos.
+- Exemplos: apenas com relação aos companheiros e amigos íntimos (-5 pontos); com relação a uma nação ou um grupo grande de pessoas (-10 pontos); com relação a todas as pessoas que você conhece pessoalmente (-10 pontos); com relação a toda a humanidade (-15 pontos) ou todos os seres vivos (-20 pontos... e você será um santo muito difícil de suportar).",Módulo Básico,39

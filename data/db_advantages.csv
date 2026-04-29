@@ -1,0 +1,685 @@
+advantage_id,advantage_box_name,advantage_name,advantage_cost,advantage_type,advantage_description,advantage_source_book,advantage_source_page
+ADV-000,ATRAENTE | 5,ATRAENTE,5,Social,"
+- Esta pessoa não entra em concursos de beleza mas tem uma aparência definitivamente atraente.
+- Bônus de +1 em todos os Teste de Reação frente a personagens de sua própria raça.",Módulo Básico,15
+ADV-001,ELEGANTE/BONITO | 15,ELEGANTE/BONITO,15,Social,"
+- Esta é uma pessoa que pode entrar em concursos de beleza.
+- Recebe um bônus de +2 em Testes de Reação feitos com pessoas do mesmo sexo; +4 com pessoas do sexo oposto — desde que com pessoas da mesma raça ou raça semelhante.",Módulo Básico,15
+ADV-002,MUITO BONITO | 25,MUITO BONITO,25,Social,"
+- Entra em concursos de beleza e ganha com regularidade.
+- Bônus de +2 em Testes de Reação com pessoas do mesmo sexo.
+- Bônus de +6 em Testes de Reação com pessoas do sexo oposto.
+- Exceção: Pessoas do mesmo sexo que já tenham algum motivo para não gostar do personagem (mais de 4 pontos devido a modificadores de reação negativos, independentemente dos bônus de reação positivos).
+- Neste caso, eles se sentirão melindrados por sua aparência e, ao invés de um bônus de +2, o personagem estará submetido a um redutor de -2 pontos. Este problema aparecerá a critério do Mestre.
+- Dependendo do lugar onde estiver, poderá vir a ser importunado por caçadores de talentos, bêbados amigáveis, mercadores de escravos e outros inconvenientes.",Módulo Básico,15
+ADV-003,CONFORTÁVEL | 10,CONFORTÁVEL,10,Social,"
+- Trabalha para viver, mas o estilo de vida é melhor do que o da média.
+- Também trabalha 40 horas por semana.
+- A quantidade inicial de recursos é o dobro da média.",Módulo Básico,16
+ADV-004,RICO | 20,RICO,20,Social,"
+- Recebe inicialmente uma quantidade de recursos igual ao quíntuplo da média e vive muito bem.
+- Seu trabalho ocupa apenas 20 horas por semana. (Num emprego que pague mal, como o de “criado” por exemplo, você não ganhará mais do que os outros, mas ainda dispõe dos recursos com que iniciou e ainda trabalha 20 horas por semana).",Módulo Básico,16
+ADV-005,MUITO RICO | 30,MUITO RICO,30,Social,"
+- Recebe inicialmente uma quantidade de recursos igual a 20 vezes a da média.
+- Trabalha apenas 10 horas por semana, cuidando de negócios (o que dificilmente seria um emprego).",Módulo Básico,16
+ADV-006,PODRE DE RICO | 50,PODRE DE RICO,50,Social,"
+- Recebe inicialmente uma quantidade de recursos igual a 100 vezes a da média.
+- Trabalha 10 horas por semana, à procura de negócios.
+- Você pode comprar o que quiser sem precisar se preocupar com o preço.",Módulo Básico,16
+ADV-007,REPUTAÇÃO 1 | 5,REPUTAÇÃO 1,5,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+ADV-008,REPUTAÇÃO 2 | 10,REPUTAÇÃO 2,10,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+ADV-009,REPUTAÇÃO 3 | 15,REPUTAÇÃO 3,15,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+ADV-010,REPUTAÇÃO 4 | 20,REPUTAÇÃO 4,20,Social,"
+A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
+
+- Detalhe (A razão de você ser conhecido)
+- Modificador de Reação: ±5/nível; máximo de ±4
+- Pessoas Afetadas
+- Frequência de Reconhecimento
+
+É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico,17
+ADV-011,AMBIDESTRIA | 10,AMBIDESTRIA,10,Física,"
+- O personagem é capaz de usar as duas mãos com a mesma habilidade.
+- Ele não está sujeito ao redutor de -4 sobre seu atributo DX por estar usando a mão ambiesquerda e pode lutar (ou agir) com qualquer uma das mãos indistintamente, ou com ambas de uma vez (em um Ataque Total).
+- Se acontecer algum acidente com um de seus braços, assuma que foi com o esquerdo.",Módulo Básico,19
+ADV-012,CARISMA +1 | 5,CARISMA +1,5,Social,"
+- Esta é a aptidão natural para impressionar e liderar outras pessoas.
+- Qualquer um pode conseguir um carisma ilusório através da boa aparência, boas maneiras e inteligência, mas o carisma real funciona independente da presença destes fatores.
+- Ele afeta qualquer teste de reação feito por uma criatura inteligente.",Módulo Básico,19
+ADV-013,CARISMA +2 | 10,CARISMA +2,10,Social,"
+- Esta é a aptidão natural para impressionar e liderar outras pessoas.
+- Qualquer um pode conseguir um carisma ilusório através da boa aparência, boas maneiras e inteligência, mas o carisma real funciona independente da presença destes fatores.
+- Ele afeta qualquer teste de reação feito por uma criatura inteligente.",Módulo Básico,19
+ADV-014,CARISMA +3 | 15,CARISMA +3,15,Social,"
+- Esta é a aptidão natural para impressionar e liderar outras pessoas.
+- Qualquer um pode conseguir um carisma ilusório através da boa aparência, boas maneiras e inteligência, mas o carisma real funciona independente da presença destes fatores.
+- Ele afeta qualquer teste de reação feito por uma criatura inteligente.",Módulo Básico,19
+ADV-015,CARISMA +4 | 20,CARISMA +4,20,Social,"
+- Esta é a aptidão natural para impressionar e liderar outras pessoas.
+- Qualquer um pode conseguir um carisma ilusório através da boa aparência, boas maneiras e inteligência, mas o carisma real funciona independente da presença destes fatores.
+- Ele afeta qualquer teste de reação feito por uma criatura inteligente.",Módulo Básico,19
+ADV-016,CARISMA +5 | 25,CARISMA +5,25,Social,"
+- Esta é a aptidão natural para impressionar e liderar outras pessoas.
+- Qualquer um pode conseguir um carisma ilusório através da boa aparência, boas maneiras e inteligência, mas o carisma real funciona independente da presença destes fatores.
+- Ele afeta qualquer teste de reação feito por uma criatura inteligente.",Módulo Básico,19
+ADV-017,CLERICATO ESPIRITUAL | 10,CLERICATO ESPIRITUAL,10,Social,"
+- O personagem foi ordenado como ministro de alguma religião.
+- Um clérigo tem alguns poderes e privilégios que um leigo não tem, incluindo um bônus de +1 em testes de reação com correligionários ou pessoas que respeitam sua fé.
+- Os outros personagens dirigir-se-ão a ele (ou ela) usando um título: Padre, Irmã, Reverendo, Shaman, etc.
+- Um clérigo poderá realizar cerimônias como Confirmação, Casamento e Exorcismo.
+- O Mestre deve decidir se, em sua campanha, se os clérigos serão capazes de invocar ajuda ativa do Além. Se assim for e, se os clérigos forem conhecidos por serem capazes de conseguir esta ajuda, o Clericato custará 10 pontos ou mais. Se o Clericato for (até onde os jogadores sabem) apenas uma vantagem social, ele custará 5 pontos.",Módulo Básico,19
+ADV-018,CLERICATO SOCIAL | 5,CLERICATO SOCIAL,5,Social,"
+- O personagem foi ordenado como ministro de alguma religião.
+- Um clérigo tem alguns poderes e privilégios que um leigo não tem, incluindo um bônus de +1 em testes de reação com correligionários ou pessoas que respeitam sua fé.
+- Os outros personagens dirigir-se-ão a ele (ou ela) usando um título: Padre, Irmã, Reverendo, Shaman, etc.
+- Um clérigo poderá realizar cerimônias como Confirmação, Casamento e Exorcismo.
+- O Mestre deve decidir se, em sua campanha, se os clérigos serão capazes de invocar ajuda ativa do Além. Se assim for e, se os clérigos forem conhecidos por serem capazes de conseguir esta ajuda, o Clericato custará 10 pontos ou mais. Se o Clericato for (até onde os jogadores sabem) apenas uma vantagem social, ele custará 5 pontos.",Módulo Básico,19
+ADV-019,EMPATIA COM ANIMAIS | 5,EMPATIA COM ANIMAIS,5,Mental,"O personagem entende e gosta de animais, e eles gostam do personagem. Ele recebe um bônus de +2 em qualquer teste de reação com um animal selvagem, e de +4 em testes que envolvam perícias com animais (Adestramento de Animais, Cavalgar, Veterinária, etc...). No entanto, você nunca poderá matar um animal sem uma razão muito boa, e deverá tentar evitar que outros o façam. Note que matar para se alimentar é perfeitamente aceitável e, numa caçada o personagem receberia um bônus igual a +3 na sua tentativa de encontrar caça.",Módulo Básico,19
+ADV-020,NOÇÃO EXATA DO TEMPO | 5,NOÇÃO EXATA DO TEMPO,5,Mental,"
+- Você tem um relógio mental acurado.
+- A menos que tenha sido nocauteado, hipnotizado ou sofrido algum outro tipo de interferência, você sempre sabe a hora exata.
+- Você também é capaz de medir com precisão qualquer lapso de tempo.
+- O sono não interfere com esta sua capacidade (e você pode, inclusive, acordar numa hora pré-determina-da).
+- Mudanças de fuso horário também não o afetam.
+- As viagens no tempo irão confundi-lo até que descubra qual é o “novo” horário.",Módulo Básico,19
+ADV-021,OUVIDO AGUÇADO +1 | 2,OUVIDO AGUÇADO +1,2,Física,"
+- O personagem recebe um bônus toda vez que tiver que fazer um teste de Audição, para verificar se é capaz de ouvir alguma coisa, ou quando o Mestre faz uma jogada contra seu atributo IQ para ver se ele notou algum ruído.",Módulo Básico,19
+ADV-022,OUVIDO AGUÇADO +2 | 4,OUVIDO AGUÇADO +2,4,Física,"
+- O personagem recebe um bônus toda vez que tiver que fazer um teste de Audição, para verificar se é capaz de ouvir alguma coisa, ou quando o Mestre faz uma jogada contra seu atributo IQ para ver se ele notou algum ruído.",Módulo Básico,19
+ADV-023,OUVIDO AGUÇADO +3 | 6,OUVIDO AGUÇADO +3,6,Física,"
+- O personagem recebe um bônus toda vez que tiver que fazer um teste de Audição, para verificar se é capaz de ouvir alguma coisa, ou quando o Mestre faz uma jogada contra seu atributo IQ para ver se ele notou algum ruído.",Módulo Básico,19
+ADV-024,OUVIDO AGUÇADO +4 | 8,OUVIDO AGUÇADO +4,8,Física,"
+- O personagem recebe um bônus toda vez que tiver que fazer um teste de Audição, para verificar se é capaz de ouvir alguma coisa, ou quando o Mestre faz uma jogada contra seu atributo IQ para ver se ele notou algum ruído.",Módulo Básico,19
+ADV-025,OUVIDO AGUÇADO +5 | 10,OUVIDO AGUÇADO +5,10,Física,"
+- O personagem recebe um bônus toda vez que tiver que fazer um teste de Audição, para verificar se é capaz de ouvir alguma coisa, ou quando o Mestre faz uma jogada contra seu atributo IQ para ver se ele notou algum ruído.",Módulo Básico,19
+ADV-026,PALADAR/OLFATO APURADOS +1 | 2,PALADAR/OLFATO APURADOS +1,2,Física,"
+- O personagem recebe um bônus em todas as seus testes de Olfato ou Paladar.
+- O Mestre poderia jogar para ver se você percebeu o cheiro ou o sabor de um veneno em sua bebida.",Módulo Básico,19
+ADV-027,PALADAR/OLFATO APURADOS +2 | 4,PALADAR/OLFATO APURADOS +2,4,Física,"
+- O personagem recebe um bônus em todas as seus testes de Olfato ou Paladar.
+- O Mestre poderia jogar para ver se você percebeu o cheiro ou o sabor de um veneno em sua bebida.",Módulo Básico,19
+ADV-028,PALADAR/OLFATO APURADOS +3 | 6,PALADAR/OLFATO APURADOS +3,6,Física,"
+- O personagem recebe um bônus em todas as seus testes de Olfato ou Paladar.
+- O Mestre poderia jogar para ver se você percebeu o cheiro ou o sabor de um veneno em sua bebida.",Módulo Básico,19
+ADV-029,PALADAR/OLFATO APURADOS +4 | 8,PALADAR/OLFATO APURADOS +4,8,Física,"
+- O personagem recebe um bônus em todas as seus testes de Olfato ou Paladar.
+- O Mestre poderia jogar para ver se você percebeu o cheiro ou o sabor de um veneno em sua bebida.",Módulo Básico,19
+ADV-030,PALADAR/OLFATO APURADOS +5 | 10,PALADAR/OLFATO APURADOS +5,10,Física,"
+- O personagem recebe um bônus em todas as seus testes de Olfato ou Paladar.
+- O Mestre poderia jogar para ver se você percebeu o cheiro ou o sabor de um veneno em sua bebida.",Módulo Básico,19
+ADV-031,PRONTIDÃO +1 | 5,PRONTIDÃO +1,5,Física,"
+- Este é um bônus geral que o personagem recebe em testes de qualquer um dos Sentidos ou quando o Mestre faz um teste de IQ para verificar se ele percebeu alguma coisa.
+- Esta vantagem pode ser combinada com qualquer uma (ou todas) as vantagens relacionadas com agudeza dos sentidos.",Módulo Básico,19
+ADV-032,PRONTIDÃO +2 | 10,PRONTIDÃO +2,10,Física,"
+- Este é um bônus geral que o personagem recebe em testes de qualquer um dos Sentidos ou quando o Mestre faz um teste de IQ para verificar se ele percebeu alguma coisa.
+- Esta vantagem pode ser combinada com qualquer uma (ou todas) as vantagens relacionadas com agudeza dos sentidos.",Módulo Básico,19
+ADV-033,PRONTIDÃO +3 | 15,PRONTIDÃO +3,15,Física,"
+- Este é um bônus geral que o personagem recebe em testes de qualquer um dos Sentidos ou quando o Mestre faz um teste de IQ para verificar se ele percebeu alguma coisa.
+- Esta vantagem pode ser combinada com qualquer uma (ou todas) as vantagens relacionadas com agudeza dos sentidos.",Módulo Básico,19
+ADV-034,PRONTIDÃO +4 | 20,PRONTIDÃO +4,20,Física,"
+- Este é um bônus geral que o personagem recebe em testes de qualquer um dos Sentidos ou quando o Mestre faz um teste de IQ para verificar se ele percebeu alguma coisa.
+- Esta vantagem pode ser combinada com qualquer uma (ou todas) as vantagens relacionadas com agudeza dos sentidos.",Módulo Básico,19
+ADV-035,PRONTIDÃO +5 | 25,PRONTIDÃO +5,25,Física,"
+- Este é um bônus geral que o personagem recebe em testes de qualquer um dos Sentidos ou quando o Mestre faz um teste de IQ para verificar se ele percebeu alguma coisa.
+- Esta vantagem pode ser combinada com qualquer uma (ou todas) as vantagens relacionadas com agudeza dos sentidos.",Módulo Básico,19
+ADV-036,SENSO DE DIREÇÃO | 5,SENSO DE DIREÇÃO,5,Mental,"
+- O personagem sempre sabe para onde fica o Norte e é sempre capaz de refazer um trajeto realizado durante os últimos 30 dias, não importa quão confuso ou tortuoso ele tenha sido.
+- Esta aptidão não funciona em ambientes como o espaço interestelar, o limbo do plano astral, etc.
+- Mas ela funciona em ambientes subterrâneos, debaixo d’água e em outros planetas.
+- Esta vantagem dá um bônus de +3 para a perícia Navegação do personagem.",Módulo Básico,19
+ADV-037,VISÃO AGUÇADA +1 | 2,VISÃO AGUÇADA +1,2,Física,"
+- O personagem recebe um bônus em todos os testes de Visão, quando ele está procurando alguma coisa, e sempre que o Mestre fizer um teste contra seu atributo IQ para verificar se ele percebeu alguma coisa.",Módulo Básico,19
+ADV-038,VISÃO AGUÇADA +2 | 4,VISÃO AGUÇADA +2,4,Física,"
+- O personagem recebe um bônus em todos os testes de Visão, quando ele está procurando alguma coisa, e sempre que o Mestre fizer um teste contra seu atributo IQ para verificar se ele percebeu alguma coisa.",Módulo Básico,19
+ADV-039,VISÃO AGUÇADA +3 | 6,VISÃO AGUÇADA +3,6,Física,"
+- O personagem recebe um bônus em todos os testes de Visão, quando ele está procurando alguma coisa, e sempre que o Mestre fizer um teste contra seu atributo IQ para verificar se ele percebeu alguma coisa.",Módulo Básico,19
+ADV-040,VISÃO AGUÇADA +4 | 8,VISÃO AGUÇADA +4,8,Física,"
+- O personagem recebe um bônus em todos os testes de Visão, quando ele está procurando alguma coisa, e sempre que o Mestre fizer um teste contra seu atributo IQ para verificar se ele percebeu alguma coisa.",Módulo Básico,19
+ADV-041,VISÃO AGUÇADA +5 | 10,VISÃO AGUÇADA +5,10,Física,"
+- O personagem recebe um bônus em todos os testes de Visão, quando ele está procurando alguma coisa, e sempre que o Mestre fizer um teste contra seu atributo IQ para verificar se ele percebeu alguma coisa.",Módulo Básico,19
+ADV-042,BOM SENSO | 10,BOM SENSO,10,Mental,"
+- Toda vez, que o personagem começar a fazer alguma coisa que o Mestre acha ESTÚPIDA, ele fará um teste contra seu atributo IQ.
+- Um sucesso nesta jogada significa que ele deverá avisar o personagem — “Você não acha que seria bom pensar melhor no assunto?”
+- Esta Vantagem permite que um jogador impulsivo desempenhe o papel de um personagem ponderado.",Módulo Básico,20
+ADV-043,EMPATIA | 15,EMPATIA,15,Mental,"
+- O personagem tem uma “sensibilidade” para com as outras pessoas.
+- Quando encontra alguém pela primeira vez ou depois de uma longa separação, ele poderá pedir ao Mestre que faça um teste contra seu atributo IQ.
+- O Mestre dirá então o que o personagem “sente” com relação àquela pessoa. (Note que uma falha nesta jogada significa que o Mestre pode mentir para você.)
+- Este talento, quando funciona, é excelente para identificar impostores, possessões por espíritos, etc., e determinar a quem os NPCs são efetivamente leais.
+- Esta Vantagem pode também ser usada para descobrir se alguém está mentindo ou não.
+- Note que ela não serve para obter a verdade, apenas para verificar se os NPCs estão sendo sinceros ou não.",Módulo Básico,20
+ADV-044,FACILIDADE PARA LINGUAS +1 | 2,FACILIDADE PARA LINGUAS +1,2,Mental,"
+- Você aprende línguas rapidamente.
+- Esta aptidão pode ser exercida simultaneamente com outras.
+- Se você tiver Memória Eidética e Facilidade para Línguas, estará falando 20 línguas em pouco tempo.
+- Adicione o nível de Facilidade para Línguas ao seu atributo IQ toda vez que você estiver aprendendo uma língua. 
+- Exemplo: seu atributo IQ é igual a 10, sua Facilidades para Língua é 2.
+- Você aprende línguas como se sua Inteligência fosse igual a 12.
+- Você recebe o mesmo bônus com a perícia Linguística.",Módulo Básico,20
+ADV-045,FACILIDADE PARA LINGUAS +2 | 4,FACILIDADE PARA LINGUAS +2,4,Mental,"
+- Você aprende línguas rapidamente.
+- Esta aptidão pode ser exercida simultaneamente com outras.
+- Se você tiver Memória Eidética e Facilidade para Línguas, estará falando 20 línguas em pouco tempo.
+- Adicione o nível de Facilidade para Línguas ao seu atributo IQ toda vez que você estiver aprendendo uma língua. 
+- Exemplo: seu atributo IQ é igual a 10, sua Facilidades para Língua é 2.
+- Você aprende línguas como se sua Inteligência fosse igual a 12.
+- Você recebe o mesmo bônus com a perícia Linguística.",Módulo Básico,20
+ADV-046,FACILIDADE PARA LINGUAS +3 | 6,FACILIDADE PARA LINGUAS +3,6,Mental,"
+- Você aprende línguas rapidamente.
+- Esta aptidão pode ser exercida simultaneamente com outras.
+- Se você tiver Memória Eidética e Facilidade para Línguas, estará falando 20 línguas em pouco tempo.
+- Adicione o nível de Facilidade para Línguas ao seu atributo IQ toda vez que você estiver aprendendo uma língua. 
+- Exemplo: seu atributo IQ é igual a 10, sua Facilidades para Língua é 2.
+- Você aprende línguas como se sua Inteligência fosse igual a 12.
+- Você recebe o mesmo bônus com a perícia Linguística.",Módulo Básico,20
+ADV-047,FACILIDADE PARA LINGUAS +4 | 8,FACILIDADE PARA LINGUAS +4,8,Mental,"
+- Você aprende línguas rapidamente.
+- Esta aptidão pode ser exercida simultaneamente com outras.
+- Se você tiver Memória Eidética e Facilidade para Línguas, estará falando 20 línguas em pouco tempo.
+- Adicione o nível de Facilidade para Línguas ao seu atributo IQ toda vez que você estiver aprendendo uma língua. 
+- Exemplo: seu atributo IQ é igual a 10, sua Facilidades para Língua é 2.
+- Você aprende línguas como se sua Inteligência fosse igual a 12.
+- Você recebe o mesmo bônus com a perícia Linguística.",Módulo Básico,20
+ADV-048,FACILIDADE PARA LINGUAS +5 | 10,FACILIDADE PARA LINGUAS +5,10,Mental,"
+- Você aprende línguas rapidamente.
+- Esta aptidão pode ser exercida simultaneamente com outras.
+- Se você tiver Memória Eidética e Facilidade para Línguas, estará falando 20 línguas em pouco tempo.
+- Adicione o nível de Facilidade para Línguas ao seu atributo IQ toda vez que você estiver aprendendo uma língua. 
+- Exemplo: seu atributo IQ é igual a 10, sua Facilidades para Língua é 2.
+- Você aprende línguas como se sua Inteligência fosse igual a 12.
+- Você recebe o mesmo bônus com a perícia Linguística.",Módulo Básico,20
+ADV-049,HIPOALGIA | 10,HIPOALGIA,10,Física,"
+- O personagem é tão suscetível a danos, quanto qualquer outra pessoa, mas ele não sente a dor com a mesma intensidade.
+- Ele não ficará atordoado, nem seu atributo DX será submetido ao redutor normalmente aplicado no turno seguinte, caso venha a ser ferido em combate (exceção: um golpe na cabeça ou um golpe fulminante continuarão provocando o atordoamento do personagem).
+- No caso de ser submetido a tortura física, ele receberá um bônus igual a +3 no teste de sua resistência.
+- O Mestre poderá permitir que ele receba um bônus de +3 em testes de Vontade, para ver se é capaz de ignorar a dor.",Módulo Básico,20
+ADV-050,IMUNIDADE | 10,IMUNIDADE,10,Física,"
+- Seu corpo resiste naturalmente aos microrganismos que provocam doenças.
+- Você nunca pegará uma doença ou infecção “naturalmente”.
+- Se você for inoculado à força, seu corpo expulsará o microrganismo imediatamente.
+- Invasões de fungos e vírus são também consideradas “doenças”, mas infestações por parasitas maiores (como por exemplo solitária) não.
+- Você não pode adquirir esta vantagem, a menos que sua HT inicial seja maior ou igual a 12.
+- No entanto, mesmo que mais tarde a HT venha a se reduzir a um valor menor do que 12, a imunidade permanecerá.",Módulo Básico,20
+ADV-051,INTUIÇÃO | 15,INTUIÇÃO,15,Mental,"
+- O personagem normalmente acerta em suas conjecturas.
+- Quando ele estiver frente a várias alternativas e não tiver nenhuma maneira lógica de escolher entre elas, poderá usar a intuição da seguinte forma: O Mestre soma seu IQ ao número de escolhas “corretas” e subtrai o número de escolhas “incorretas” e faz uma jogada contra o resultado.
+- Um sucesso significa que ele dirigirá o personagem a uma opção favorável.
+- Um resultado igual a 3 ou 4 significa que ele deverá indicar a melhor opção.
+- Um fracasso significa que o personagem não receberá informação nenhuma. Uma falha crítica significa que o Mestre indicará uma opção ruim para o personagem ... sua intuição falhou.
+- O Mestre pode modificar este sistema sempre que achar que as regras se prestam a outras situaçães onde a intuição poderia ajudar.
+- É permitida apenas uma jogada para cada problema.
+- Observe também, que o Mestre não pode consentir que esta Vantagem seja usada para abreviar uma aventura, permitindo que o detetive intuitivo entre em uma sala, coloque as algemas nos culpados e encerre o caso.
+- A intuição, no máximo, indicaria ao detetive uma boa pista.
+- Mestres que não se acham capazes de controlar esta vantagem convenientemente não deverão permitir que ela seja assumida.",Módulo Básico,20
+ADV-052,MEMORIA EIDÉTICA PARCIAL | 30,MEMORIA EIDÉTICA PARCIAL,30,Mental,"
+- O personagem é capaz de se lembrar de tudo o que ele já viu ou ouviu.
+- Esta aptidão existe em dois níveis, no primeiro ele é capaz de se lembrar, num sentido geral, de tudo em que concentrar sua atenção.
+- Portanto, todos os pontos que forem colocados em perícias mentais contarão em dobro (não existe bônus para mágicas ou perícias psíquicas).
+- Além disso, sempre que o personagem tiver necessidade de se lembrar de um detalhe específico de alguma coisa que lhe foi contada, o Mestre fará um teste contra seu atributo IQ.
+- Um sucesso nesta jogada significa que ele deve dar a informação ao personagem.",Módulo Básico,20
+ADV-053,MEMORIA EIDÉTICA TOTAL | 60,MEMORIA EIDÉTICA TOTAL,60,Mental,"
+- O personagem é capaz de se lembrar de tudo o que ele já viu ou ouviu.
+- Esta aptidão existe em dois níveis, no segundo nível, ele tem realmente uma “memória fotográfica”.
+- O personagem será capaz de se lembrar de tudo o que já aconteceu com ele.
+- Todos os pontos colocados em perícias mentais valerão o quádruplo.
+- Além disso, toda vez que você (como jogador) esquecer qualquer detalhe que seu personagem tenha visto ou ouvido, o Mestre ou os outros jogadores deverão lembrá-lo — honestamente!",Módulo Básico,20
+ADV-054,NOÇÃO DO PERIGO | 15,NOÇÃO DO PERIGO,15,Mental,"
+- Você não pode contar com ela sempre, mas de vez em quando você tem aquela sensação esquisita na nuca que diz que alguma coisa está errada...
+- Se você tem Noção do Perigo, o Mestre fará, em segredo, um teste contra seu atributo IQ sempre que a situação envolver uma emboscada, um desastre iminente ou algum outro perigo do gênero.
+- Um sucesso nesta jogada significa que você deve receber um aviso de que alguma coisa está errada.
+- Um resultado igual a 3 ou 4 significa que o Mestre lhe dará alguns pequenos detalhes sobre a natureza do perigo.",Módulo Básico,20
+ADV-055,REFLEXOS EM COMBATE | 15,REFLEXOS EM COMBATE,15,Física,"
+- O personagem tem reações extremamente rápidas e raramente ficará surpreso por mais do que um breve instante.
+- Ele receberá um bônus de + 1 em qualquer Defesa Ativa.
+- Tem direito, também, a um bônus de +1 na perícia Sacar Rápido, um bônus igual a +2 em Verificações de Pânico e nunca ficará “paralisado” devido à surpresa.
+- Nos testes de IQ feitos para despertar, ou se recuperar de uma surpresa ou de “atordoamento” mental, o personagem receberá um bônus de +6.",Módulo Básico,20
+ADV-056,ULTRA-FLEXIBILIDADE DAS JUNTAS | 5,ULTRA-FLEXIBILIDADE DAS JUNTAS,5,Física,"
+- O corpo do personagem é extraordinariamente flexível.
+- Ele receberá um bônus igual a +3 em qualquer teste de Escalada ou tentativas de se livrar de cordas, algemas ou outros meios similares de restrição de movimento e também em testes de Mecânica (para conseguir alcançar as partes de um motor).",Módulo Básico,20
+ADV-057,ABASCANTO +1 | 2,ABASCANTO +1,2,Mágica,"
+- Você tem mais chance de não ser afetado pela maioria dos tipos de magia.
+- Note que esta vantagem não pode ser combinada com Aptidão Mágica.
+- Não é possível ter aptidão para magia e ao mesmo tempo, ser resistente a ela. Na verdade, se você tiver Resistência à Magia, você não será capaz de realizar nenhuma Mágica (apesar de ainda poder usar armas mágicas).
+- Também não é possível “desligar” esta vantagem para permitir que uma mágica benéfica seja realizada sobre você.
+- O Abascanto, e seu nível preciso, podem ser reconhecidos por qualquer mago que olhe para sua aura ou por qualquer um que realize uma mágica contra sua pessoa.
+- O seu nível de Resistência à Magia é subtraído do nível de habilidade de quem realiza a operação.
+- Se sua Resistência à Magia for igual a 3 e o nível de habilidade do operador for igual a 15, seu nível efetivo será 12.
+- Se você optar por resistir, o seu Abascanto também aumenta sua capacidade de resistir a mágicas que podem ser bloqueadas.
+- Portanto, esta vantagem o protege de uma mágica feita diretamente contra você.
+- Ela não o defende contra (a) mágicas de projétil; (b) ataques com armas mágicas; (c) mágicas realizadas com o intuito de colher informaçães, que não são realizadas diretamente sobre você (como uma profecia ou uma bola de cristal).",Módulo Básico,21
+ADV-058,ABASCANTO +2 | 4,ABASCANTO +2,4,Mágica,"
+- Você tem mais chance de não ser afetado pela maioria dos tipos de magia.
+- Note que esta vantagem não pode ser combinada com Aptidão Mágica.
+- Não é possível ter aptidão para magia e ao mesmo tempo, ser resistente a ela. Na verdade, se você tiver Resistência à Magia, você não será capaz de realizar nenhuma Mágica (apesar de ainda poder usar armas mágicas).
+- Também não é possível “desligar” esta vantagem para permitir que uma mágica benéfica seja realizada sobre você.
+- O Abascanto, e seu nível preciso, podem ser reconhecidos por qualquer mago que olhe para sua aura ou por qualquer um que realize uma mágica contra sua pessoa.
+- O seu nível de Resistência à Magia é subtraído do nível de habilidade de quem realiza a operação.
+- Se sua Resistência à Magia for igual a 3 e o nível de habilidade do operador for igual a 15, seu nível efetivo será 12.
+- Se você optar por resistir, o seu Abascanto também aumenta sua capacidade de resistir a mágicas que podem ser bloqueadas.
+- Portanto, esta vantagem o protege de uma mágica feita diretamente contra você.
+- Ela não o defende contra (a) mágicas de projétil; (b) ataques com armas mágicas; (c) mágicas realizadas com o intuito de colher informaçães, que não são realizadas diretamente sobre você (como uma profecia ou uma bola de cristal).",Módulo Básico,21
+ADV-059,ABASCANTO +3 | 6,ABASCANTO +3,6,Mágica,"
+- Você tem mais chance de não ser afetado pela maioria dos tipos de magia.
+- Note que esta vantagem não pode ser combinada com Aptidão Mágica.
+- Não é possível ter aptidão para magia e ao mesmo tempo, ser resistente a ela. Na verdade, se você tiver Resistência à Magia, você não será capaz de realizar nenhuma Mágica (apesar de ainda poder usar armas mágicas).
+- Também não é possível “desligar” esta vantagem para permitir que uma mágica benéfica seja realizada sobre você.
+- O Abascanto, e seu nível preciso, podem ser reconhecidos por qualquer mago que olhe para sua aura ou por qualquer um que realize uma mágica contra sua pessoa.
+- O seu nível de Resistência à Magia é subtraído do nível de habilidade de quem realiza a operação.
+- Se sua Resistência à Magia for igual a 3 e o nível de habilidade do operador for igual a 15, seu nível efetivo será 12.
+- Se você optar por resistir, o seu Abascanto também aumenta sua capacidade de resistir a mágicas que podem ser bloqueadas.
+- Portanto, esta vantagem o protege de uma mágica feita diretamente contra você.
+- Ela não o defende contra (a) mágicas de projétil; (b) ataques com armas mágicas; (c) mágicas realizadas com o intuito de colher informaçães, que não são realizadas diretamente sobre você (como uma profecia ou uma bola de cristal).",Módulo Básico,21
+ADV-060,ABASCANTO +4 | 8,ABASCANTO +4,8,Mágica,"
+- Você tem mais chance de não ser afetado pela maioria dos tipos de magia.
+- Note que esta vantagem não pode ser combinada com Aptidão Mágica.
+- Não é possível ter aptidão para magia e ao mesmo tempo, ser resistente a ela. Na verdade, se você tiver Resistência à Magia, você não será capaz de realizar nenhuma Mágica (apesar de ainda poder usar armas mágicas).
+- Também não é possível “desligar” esta vantagem para permitir que uma mágica benéfica seja realizada sobre você.
+- O Abascanto, e seu nível preciso, podem ser reconhecidos por qualquer mago que olhe para sua aura ou por qualquer um que realize uma mágica contra sua pessoa.
+- O seu nível de Resistência à Magia é subtraído do nível de habilidade de quem realiza a operação.
+- Se sua Resistência à Magia for igual a 3 e o nível de habilidade do operador for igual a 15, seu nível efetivo será 12.
+- Se você optar por resistir, o seu Abascanto também aumenta sua capacidade de resistir a mágicas que podem ser bloqueadas.
+- Portanto, esta vantagem o protege de uma mágica feita diretamente contra você.
+- Ela não o defende contra (a) mágicas de projétil; (b) ataques com armas mágicas; (c) mágicas realizadas com o intuito de colher informaçães, que não são realizadas diretamente sobre você (como uma profecia ou uma bola de cristal).",Módulo Básico,21
+ADV-061,ABASCANTO +5 | 10,ABASCANTO +5,10,Mágica,"
+- Você tem mais chance de não ser afetado pela maioria dos tipos de magia.
+- Note que esta vantagem não pode ser combinada com Aptidão Mágica.
+- Não é possível ter aptidão para magia e ao mesmo tempo, ser resistente a ela. Na verdade, se você tiver Resistência à Magia, você não será capaz de realizar nenhuma Mágica (apesar de ainda poder usar armas mágicas).
+- Também não é possível “desligar” esta vantagem para permitir que uma mágica benéfica seja realizada sobre você.
+- O Abascanto, e seu nível preciso, podem ser reconhecidos por qualquer mago que olhe para sua aura ou por qualquer um que realize uma mágica contra sua pessoa.
+- O seu nível de Resistência à Magia é subtraído do nível de habilidade de quem realiza a operação.
+- Se sua Resistência à Magia for igual a 3 e o nível de habilidade do operador for igual a 15, seu nível efetivo será 12.
+- Se você optar por resistir, o seu Abascanto também aumenta sua capacidade de resistir a mágicas que podem ser bloqueadas.
+- Portanto, esta vantagem o protege de uma mágica feita diretamente contra você.
+- Ela não o defende contra (a) mágicas de projétil; (b) ataques com armas mágicas; (c) mágicas realizadas com o intuito de colher informaçães, que não são realizadas diretamente sobre você (como uma profecia ou uma bola de cristal).",Módulo Básico,21
+ADV-062,ALFABETIZADO | 10,ALFABETIZADO,10,Mental,"
+- Apesar de isto ser uma perícia na vida real, no entanto, é uma habilidade incomum e seu valor varia enormemente de um cenário para outro. Por esse motivo, exige um tratamento especial!.
+- Em geral, presume-se que o personagem é alfabetizado se a maioria da população de seu mundo o for, e analfabeto se a maioria das pessoas também for (NT4 ou menor).
+- Ser alfabetizado em um mundo onde a maioria das pessoas não sabe ler é uma vantagem que vale 10 pontos.
+- Ser analfabeto num mundo onde a maioria das pessoas sabe ler é uma desvantagem que vale -10 pontos.",Módulo Básico,21
+ADV-063,APTIDÃO MÁGICA +1 | 15,APTIDÃO MÁGICA +1,15,Mágica,"
+- Você tem um bônus no aprendizado de todas as operaçães mágicas.
+- Naturalmente, se você pertencer a uma cultura sem magia, começará sem nenhum conhecimento sobre mágicas, mas poderá aprendê-las com mais facilidade se encontrar uma oportunidade.
+- Quando entrar em um mundo mágico, todos aqueles que puderem detectar sua aura o reconhecerão como um usuário de magia potencialmente poderoso, apesar de inexperiente.
+- Eles podem querer ensiná-lo ou matá-lo.
+- Quando aprender qualquer operação mágica, você o fará como se sua Inteligência fosse igual a (IQ + Aptidão). 
+- Exemplo: você tem IQ igual a 14 e uma Aptidão Mágica igual a 3, você aprende operaçães mágicas como se sua IQ fosse 17.
+- Além disso, o Mestre fará testes contra seu (IQ + Aptidão) quando você vir um objeto encantado pela primeira vez, e outro quando você o tocar pela primeira vez.
+- No caso de sucesso, você saberá intuitivamente que ele é encantado.
+- Um resultado igual a 3 ou 4 dirá também, se a magia é salutar ou perigosa e qual a sua intensidade.
+- Exemplo: se tiver IQ igual a 13 e 3 níveis de Aptidão, você reconhecerá um objeto encantado com um resultado menor ou igual a 16. Se a jogada falhar, o Mestre simplesmente não lhe dirá nada.",Módulo Básico,21
+ADV-064,APTIDÃO MÁGICA +2 | 25,APTIDÃO MÁGICA +2,25,Mágica,"
+- Você tem um bônus no aprendizado de todas as operaçães mágicas.
+- Naturalmente, se você pertencer a uma cultura sem magia, começará sem nenhum conhecimento sobre mágicas, mas poderá aprendê-las com mais facilidade se encontrar uma oportunidade.
+- Quando entrar em um mundo mágico, todos aqueles que puderem detectar sua aura o reconhecerão como um usuário de magia potencialmente poderoso, apesar de inexperiente.
+- Eles podem querer ensiná-lo ou matá-lo.
+- Quando aprender qualquer operação mágica, você o fará como se sua Inteligência fosse igual a (IQ + Aptidão). 
+- Exemplo: você tem IQ igual a 14 e uma Aptidão Mágica igual a 3, você aprende operaçães mágicas como se sua IQ fosse 17.
+- Além disso, o Mestre fará testes contra seu (IQ + Aptidão) quando você vir um objeto encantado pela primeira vez, e outro quando você o tocar pela primeira vez.
+- No caso de sucesso, você saberá intuitivamente que ele é encantado.
+- Um resultado igual a 3 ou 4 dirá também, se a magia é salutar ou perigosa e qual a sua intensidade.
+- Exemplo: se tiver IQ igual a 13 e 3 níveis de Aptidão, você reconhecerá um objeto encantado com um resultado menor ou igual a 16. Se a jogada falhar, o Mestre simplesmente não lhe dirá nada.",Módulo Básico,21
+ADV-065,APTIDÃO MÁGICA +3 | 35,APTIDÃO MÁGICA +3,35,Mágica,"
+- Você tem um bônus no aprendizado de todas as operaçães mágicas.
+- Naturalmente, se você pertencer a uma cultura sem magia, começará sem nenhum conhecimento sobre mágicas, mas poderá aprendê-las com mais facilidade se encontrar uma oportunidade.
+- Quando entrar em um mundo mágico, todos aqueles que puderem detectar sua aura o reconhecerão como um usuário de magia potencialmente poderoso, apesar de inexperiente.
+- Eles podem querer ensiná-lo ou matá-lo.
+- Quando aprender qualquer operação mágica, você o fará como se sua Inteligência fosse igual a (IQ + Aptidão). 
+- Exemplo: você tem IQ igual a 14 e uma Aptidão Mágica igual a 3, você aprende operaçães mágicas como se sua IQ fosse 17.
+- Além disso, o Mestre fará testes contra seu (IQ + Aptidão) quando você vir um objeto encantado pela primeira vez, e outro quando você o tocar pela primeira vez.
+- No caso de sucesso, você saberá intuitivamente que ele é encantado.
+- Um resultado igual a 3 ou 4 dirá também, se a magia é salutar ou perigosa e qual a sua intensidade.
+- Exemplo: se tiver IQ igual a 13 e 3 níveis de Aptidão, você reconhecerá um objeto encantado com um resultado menor ou igual a 16. Se a jogada falhar, o Mestre simplesmente não lhe dirá nada.",Módulo Básico,21
+ADV-066,CÁLCULOS INSTANTÂNEOS | 5,CÁLCULOS INSTANTÂNEOS,5,Mental,"
+- O personagem é capaz de realizar operaçães matemáticas de cabeça instantaneamente.
+- Se seu personagem tiver esta aptidão, você (jogador) poderá usar uma calculadora a qualquer momento, para calcular o que desejar — mesmo que seu personagem esteja correndo para salvar sua vida na hora.
+- Alternativamente, o Mestre pode simplesmente dizer que o personagem sabe a resposta de um problema simples de matemática.",Módulo Básico,21
+ADV-067,LONGEVIDADE | 40,LONGEVIDADE,40,Física,"
+- Seu tempo de vida é naturalmente longo.
+- Você falhará em testes de envelhecimento, somente se obtiver um resultado igual a 17 ou 18.
+- Um personagem com esta vantagem não receberá nenhum ponto ao assumir a desvantagem da Idade.",Módulo Básico,21
+ADV-068,PODERES LEGAIS | 10,PODERES LEGAIS,10,Social,"
+- Você é um oficial da lei, com todos os direitos, poderes e restrições que acompanham o cargo.
+- Em algumas épocas e lugares isto equivale a uma licença para matar, em outros, é pouco mais que o direito de carregar um distintivo e lavrar multas por estacionamento proibido.
+- O custo em pontos é determinado pelos direitos e privilégios inerentes à posição ocupada pelo personagem.
+- Geralmente, para um policial com jurisdição local, a habilidade de prender criminosos suspeitos, o direito de realizar buscas com o devido mandado e possivelmente o direito de carregar uma arma escondida, vale 5 pontos de Poderes Legais.
+- Exemplos deste caso seriam um policial da Era Vitoriana ou um atual.
+ Alguém com jurisdição nacional ou internacional, ou não obrigado a respeitar os direitos civis dos outros, ou com liberdade para envolver-se em uma investigação secreta, ou capaz de matar com relativa impunidade, deve pagar 10 pontos por seus poderes.
+- Exemplos seriam um agente do FBI ou um membro da Guarda Real na Idade Média.
+- Um oficial com 3 ou mais das habilidades descritas acima tem 15 pontos de Poderes Legais.
+- Um exemplo poderia ser um agente graduado da CIA, KGB ou MI-5.
+- Os Poderes Legais normalmente andam de mãos dadas com a desvantagem do Dever e com uma Reputação, o que pode ser uma vantagem, uma desvantagem, ou ambos.",Módulo Básico,21
+ADV-069,PODERES LEGAIS | 15,PODERES LEGAIS,15,Social,"
+- Você é um oficial da lei, com todos os direitos, poderes e restrições que acompanham o cargo.
+- Em algumas épocas e lugares isto equivale a uma licença para matar, em outros, é pouco mais que o direito de carregar um distintivo e lavrar multas por estacionamento proibido.
+- O custo em pontos é determinado pelos direitos e privilégios inerentes à posição ocupada pelo personagem.
+- Geralmente, para um policial com jurisdição local, a habilidade de prender criminosos suspeitos, o direito de realizar buscas com o devido mandado e possivelmente o direito de carregar uma arma escondida, vale 5 pontos de Poderes Legais.
+- Exemplos deste caso seriam um policial da Era Vitoriana ou um atual.
+ Alguém com jurisdição nacional ou internacional, ou não obrigado a respeitar os direitos civis dos outros, ou com liberdade para envolver-se em uma investigação secreta, ou capaz de matar com relativa impunidade, deve pagar 10 pontos por seus poderes.
+- Exemplos seriam um agente do FBI ou um membro da Guarda Real na Idade Média.
+- Um oficial com 3 ou mais das habilidades descritas acima tem 15 pontos de Poderes Legais.
+- Um exemplo poderia ser um agente graduado da CIA, KGB ou MI-5.
+- Os Poderes Legais normalmente andam de mãos dadas com a desvantagem do Dever e com uma Reputação, o que pode ser uma vantagem, uma desvantagem, ou ambos.",Módulo Básico,21
+ADV-070,PODERES LEGAIS | 5,PODERES LEGAIS,5,Social,"
+- Você é um oficial da lei, com todos os direitos, poderes e restrições que acompanham o cargo.
+- Em algumas épocas e lugares isto equivale a uma licença para matar, em outros, é pouco mais que o direito de carregar um distintivo e lavrar multas por estacionamento proibido.
+- O custo em pontos é determinado pelos direitos e privilégios inerentes à posição ocupada pelo personagem.
+- Geralmente, para um policial com jurisdição local, a habilidade de prender criminosos suspeitos, o direito de realizar buscas com o devido mandado e possivelmente o direito de carregar uma arma escondida, vale 5 pontos de Poderes Legais.
+- Exemplos deste caso seriam um policial da Era Vitoriana ou um atual.
+ Alguém com jurisdição nacional ou internacional, ou não obrigado a respeitar os direitos civis dos outros, ou com liberdade para envolver-se em uma investigação secreta, ou capaz de matar com relativa impunidade, deve pagar 10 pontos por seus poderes.
+- Exemplos seriam um agente do FBI ou um membro da Guarda Real na Idade Média.
+- Um oficial com 3 ou mais das habilidades descritas acima tem 15 pontos de Poderes Legais.
+- Um exemplo poderia ser um agente graduado da CIA, KGB ou MI-5.
+- Os Poderes Legais normalmente andam de mãos dadas com a desvantagem do Dever e com uma Reputação, o que pode ser uma vantagem, uma desvantagem, ou ambos.",Módulo Básico,21
+ADV-071,SORTE | 15,SORTE,15,Mental,"
+- Algumas pessoas simplesmente nasceram com sorte.
+- Uma vez a cada hora de jogo, você pode fazer até três testes de alguma coisa e escolher o melhor resultado.
+- Se o Mestre estiver fazendo a jogada (ex.: para ver se um certo NPC chega, ou para verificar se você nota alguma coisa), você lhe diz que está usando sua sorte e ele deverá jogar três vezes e lhe dar o melhor resultado.
+- Sua sorte se aplica somente a jogadas feitas pelo seu personagem como uma tentativa de fazer alguma coisa, OU em eventos externos que o afetam ou a todo o grupo, OU quando você está sendo atacado (neste caso você pode fazer o atacante jogar três vezes e assumir o pior resultado).
+- Note também que a Sorte não pode ser economizada. Você não pode jogar durante horas sem usar a Sorte e, depois, usá-la várias vezes em seguida!",Módulo Básico,21
+ADV-072,SORTE EXTRAORDINÁRIA | 30,SORTE EXTRAORDINÁRIA,30,Mental,"
+- Algumas pessoas simplesmente nasceram com sorte.
+- Uma vez a cada 30min de jogo, você pode fazer até três testes de alguma coisa e escolher o melhor resultado.
+- Se o Mestre estiver fazendo a jogada (ex.: para ver se um certo NPC chega, ou para verificar se você nota alguma coisa), você lhe diz que está usando sua sorte e ele deverá jogar três vezes e lhe dar o melhor resultado.
+- Sua sorte se aplica somente a jogadas feitas pelo seu personagem como uma tentativa de fazer alguma coisa, OU em eventos externos que o afetam ou a todo o grupo, OU quando você está sendo atacado (neste caso você pode fazer o atacante jogar três vezes e assumir o pior resultado).
+- Note também que a Sorte não pode ser economizada. Você não pode jogar durante horas sem usar a Sorte e, depois, usá-la várias vezes em seguida!",Módulo Básico,21
+ADV-073,HIERARQUIA MILITAR 1 | 5,HIERARQUIA MILITAR 1,5,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-074,HIERARQUIA MILITAR 2 | 10,HIERARQUIA MILITAR 2,10,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-075,HIERARQUIA MILITAR 3 | 15,HIERARQUIA MILITAR 3,15,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-076,HIERARQUIA MILITAR 4 | 20,HIERARQUIA MILITAR 4,20,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-077,HIERARQUIA MILITAR 5 | 25,HIERARQUIA MILITAR 5,25,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-078,HIERARQUIA MILITAR 6 | 30,HIERARQUIA MILITAR 6,30,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-079,HIERARQUIA MILITAR 7 | 35,HIERARQUIA MILITAR 7,35,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-080,HIERARQUIA MILITAR 8 | 40,HIERARQUIA MILITAR 8,40,Social,"
+Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
+
+- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+- Nível 5: Comando de Batalhão (Tenente-Coronel)
+- Nível 4: Comando de Companhia (Capitão ou Major)
+- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+
+Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+
+Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+
+Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+
+Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+
+Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+
+Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico,22
+ADV-081,TALENTO MUSICAL +1 | 1,TALENTO MUSICAL +1,1,Mental,"
+- Você tem um talendo natural para música e instrumentos musicais.
+- Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico,22
+ADV-082,TALENTO MUSICAL +2 | 2,TALENTO MUSICAL +2,2,Mental,"
+- Você tem um talendo natural para música e instrumentos musicais.
+- Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico,22
+ADV-083,TALENTO MUSICAL +3 | 3,TALENTO MUSICAL +3,3,Mental,"
+- Você tem um talendo natural para música e instrumentos musicais.
+- Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico,22
+ADV-084,TALENTO MUSICAL +4 | 4,TALENTO MUSICAL +4,4,Mental,"
+- Você tem um talendo natural para música e instrumentos musicais.
+- Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico,22
+ADV-085,TALENTO MUSICAL +5 | 5,TALENTO MUSICAL +5,5,Mental,"
+- Você tem um talendo natural para música e instrumentos musicais.
+- Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico,22
+ADV-086,VISÃO NOTURNA | 10,VISÃO NOTURNA,10,Física,"
+- Seus olhos se adaptam rapidamente à escuridão.
+- Você não é capaz de enxergar numa escuridão total, mas se houver alguma luz, você será capaz de enxergar muito bem. 
+- Sempre que o Mestre exigir uma penalidade devido à escuridão, exceto no caso de escuridão total, esta penalidade não se aplicará a você.",Módulo Básico,22
+ADV-087,VISÃO PERIFÉRICA | 15,VISÃO PERIFÉRICA,15,Física,"
+- O personagem tem um campo de visão extraordinariamente amplo.
+- Sempre que alguma coisa perigosa ou interessante acontecer “às suas costas”, o Mestre fará um teste de IQ.
+- Um sucesso significará que ele viu tudo o que aconteceu, ou o suficiente para alertá-lo do perigo no caso de um ataque.
+- Se o jogo estiver sendo realizado com um mapa, o personagem será capaz de atacar tanto os hexágonos à direita e à esquerda, como os que estão à sua frente. (Lembre-se de que um ataque à esquerda com uma arma empunhada com uma só mão é desajeitado e por isso considerado um “golpe molinete” - v. pág. 105).
+- Se for atacado pela direita ou pela esquerda, ele será capaz de se defender sem sofrer nenhuma penalidade. Sua defesa ativa estará submetida a um redutor igual a -2 para ataques pelas costas.
+- Ninguém é capaz de atacar um oponente que está exatamente atrás de si (sem aplicar um “golpe molinete”).
+- Além disso, ele terá um ângulo de visão maior para ataques à distância. A figura abaixo mostra o ângulo de visão para um personagem
+normal (o branco) e para alguém com visão periférica (o cinza mais o branco).",Módulo Básico,22
+ADV-088,FORÇA DE VONTADE +1 | 4,FORÇA DE VONTADE +1,4,Mental,"- O personagem tem muito mais determinação que a média das pessoas.
+- Seu nível de Vontade é adicionado a seu atributo IQ toda vez que ele fizer, por qualquer razão, um teste de Vontade, incluindo tentativas de influenciá- lo através da Diplomacia, Lábia, Sex Appeal, Interrogatório (com ou sem tortura), Hipnotismo ou tentativas de dominar sua mente através de magia ou
+psiquismo.
+- A Força de Vontade é adicionada à resistência do personagem quando ele quer resistir a uma mágica.
+- Esta vantagem, no entanto, não ajuda no caso de choque em combate, etc. Em casos questionáveis, a decisão do Mestre é lei.",Módulo Básico,23
+ADV-089,FORÇA DE VONTADE +2 | 8,FORÇA DE VONTADE +2,8,Mental,"- O personagem tem muito mais determinação que a média das pessoas.
+- Seu nível de Vontade é adicionado a seu atributo IQ toda vez que ele fizer, por qualquer razão, um teste de Vontade, incluindo tentativas de influenciá- lo através da Diplomacia, Lábia, Sex Appeal, Interrogatório (com ou sem tortura), Hipnotismo ou tentativas de dominar sua mente através de magia ou
+psiquismo.
+- A Força de Vontade é adicionada à resistência do personagem quando ele quer resistir a uma mágica.
+- Esta vantagem, no entanto, não ajuda no caso de choque em combate, etc. Em casos questionáveis, a decisão do Mestre é lei.",Módulo Básico,23
+ADV-090,FORÇA DE VONTADE +3 | 12,FORÇA DE VONTADE +3,12,Mental,"- O personagem tem muito mais determinação que a média das pessoas.
+- Seu nível de Vontade é adicionado a seu atributo IQ toda vez que ele fizer, por qualquer razão, um teste de Vontade, incluindo tentativas de influenciá- lo através da Diplomacia, Lábia, Sex Appeal, Interrogatório (com ou sem tortura), Hipnotismo ou tentativas de dominar sua mente através de magia ou
+psiquismo.
+- A Força de Vontade é adicionada à resistência do personagem quando ele quer resistir a uma mágica.
+- Esta vantagem, no entanto, não ajuda no caso de choque em combate, etc. Em casos questionáveis, a decisão do Mestre é lei.",Módulo Básico,23
+ADV-091,FORÇA DE VONTADE +4 | 16,FORÇA DE VONTADE +4,16,Mental,"- O personagem tem muito mais determinação que a média das pessoas.
+- Seu nível de Vontade é adicionado a seu atributo IQ toda vez que ele fizer, por qualquer razão, um teste de Vontade, incluindo tentativas de influenciá- lo através da Diplomacia, Lábia, Sex Appeal, Interrogatório (com ou sem tortura), Hipnotismo ou tentativas de dominar sua mente através de magia ou
+psiquismo.
+- A Força de Vontade é adicionada à resistência do personagem quando ele quer resistir a uma mágica.
+- Esta vantagem, no entanto, não ajuda no caso de choque em combate, etc. Em casos questionáveis, a decisão do Mestre é lei.",Módulo Básico,23
+ADV-092,FORÇA DE VONTADE +5 | 20,FORÇA DE VONTADE +5,20,Mental,"- O personagem tem muito mais determinação que a média das pessoas.
+- Seu nível de Vontade é adicionado a seu atributo IQ toda vez que ele fizer, por qualquer razão, um teste de Vontade, incluindo tentativas de influenciá- lo através da Diplomacia, Lábia, Sex Appeal, Interrogatório (com ou sem tortura), Hipnotismo ou tentativas de dominar sua mente através de magia ou
+psiquismo.
+- A Força de Vontade é adicionada à resistência do personagem quando ele quer resistir a uma mágica.
+- Esta vantagem, no entanto, não ajuda no caso de choque em combate, etc. Em casos questionáveis, a decisão do Mestre é lei.",Módulo Básico,23
+ADV-093,RECUPERAÇÃO ALÍGERA | 5,RECUPERAÇÃO ALÍGERA,5,Física,"
+- Esta vantagem só está disponível para personagens cujo atributo HT é maior ou igual a 10.
+- Quem a possui se recuperará rapidamente de todos os tipos de ferimentos.
+-Toda vez que fizer um teste para verificar a recuperação da HT perdida, ou quando jogar para ver se pode curar um aleijão, deverá adicionar 5 à sua HT efetiva. Esta característica não ajuda o personagem a se recuperar de um atordoamento.",Módulo Básico,23
+ADV-094,RIJEZA +1 | 10,RIJEZA +1,10,Física,"
+- Sua pele e carne são mais rijas do que a da média dos seres humanos.
+- Seu próprio corpo tem sua Resistência a Dano.
+- Esta RD é tratada da mesma forma que a de uma armadura: ela deve ser subtraída do dano causado por qualquer golpe, antes de você multiplicar o dano produzido por uma arma perfurante ou cortante.
+- A Rijeza não o torna mais difícil de ser atingido, ela só faz com que você seja capaz de sobreviver a um dano maior.
+- Ela também não permite que sua pele “desvie” as armas. 
+- Elas ainda rompem a pele ou até mesmo provocam sangramento. Mas você não está ferido.
+- No entanto, se uma arma envenenada romper sua pele, o veneno provocará seu dano normal.
+- Lembre-se também que seus olhos não são rijos, um golpe que os atinja provocará o dano normal.
+- Rijezas maiores que 2, não são possíveis para um ser humano “natural”.
+- No entanto, algumas criaturas têm uma Rijeza natural, ou até mesmo uma armadura
+natural que é capaz de interceptar armas.",Módulo Básico,23
+ADV-095,RIJEZA +2 | 25,RIJEZA +2,25,Física,"
+- Sua pele e carne são mais rijas do que a da média dos seres humanos.
+- Seu próprio corpo tem sua Resistência a Dano.
+- Esta RD é tratada da mesma forma que a de uma armadura: ela deve ser subtraída do dano causado por qualquer golpe, antes de você multiplicar o dano produzido por uma arma perfurante ou cortante.
+- A Rijeza não o torna mais difícil de ser atingido, ela só faz com que você seja capaz de sobreviver a um dano maior.
+- Ela também não permite que sua pele “desvie” as armas. 
+- Elas ainda rompem a pele ou até mesmo provocam sangramento. Mas você não está ferido.
+- No entanto, se uma arma envenenada romper sua pele, o veneno provocará seu dano normal.
+- Lembre-se também que seus olhos não são rijos, um golpe que os atinja provocará o dano normal.
+- Rijezas maiores que 2, não são possíveis para um ser humano “natural”.
+- No entanto, algumas criaturas têm uma Rijeza natural, ou até mesmo uma armadura
+natural que é capaz de interceptar armas.",Módulo Básico,23
+ADV-096,VOZ MELODIOSA | 10,VOZ MELODIOSA,10,Social,"
+- O personagem tem uma voz clara, atraente e ressonante.
+- Ele receberá um bônus permanente igual a +2 nas seguintes perícias: Trovador, Diplomacia, Atuação, Política, Trato Social, Sex Appeal e Canto.
+- Receberá também um bônus igual a +2 em qualquer teste de reação feito por alguém que possa ouvir sua voz.",Módulo Básico,23
