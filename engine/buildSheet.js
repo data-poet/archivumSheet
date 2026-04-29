@@ -9,7 +9,6 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
   console.log("Character ST:", characterResult.character.primary_attributes.ST);
   const ST = characterResult.character.primary_attributes.ST.value;
 
-  console.log("ST used in inventory:", ST);
   const inventoryResult = buildInventory({
     ST,
     weight: inventory.weight || 0,
