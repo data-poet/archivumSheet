@@ -1,29 +1,36 @@
-const { buildAdvantages } = require("./js/traitsAdvantages");
-const { buildDisadvantages } = require("./js/traitsDisadvantages");
-const { buildPrimaryAttributes } = require("./js/attributesPrimary");
+const { buildCharacterPrimary } = require("./buildCharacterPrimary");
+const { buildCharacterSecondary } = require("./buildCharacterSecondary");
 
-/**
- * Builds full character sheet from selected IDs
- */
 function buildCharacter({
   advantages = [],
   disadvantages = [],
   primaryAttributes = {},
+  secondaryAttributes = {},
+  weight = 0,
 }) {
-  const advantagesResult = buildAdvantages(advantages);
-  const disadvantagesResult = buildDisadvantages(disadvantages);
-  const primaryAttributesResult = buildPrimaryAttributes(primaryAttributes);
+  const primary = buildCharacterPrimary({
+    advantages,
+    disadvantages,
+    primaryAttributes,
+  });
+
+  const secondary = buildCharacterSecondary({
+    primary_attributes: primary.primary_attributes,
+    secondaryAttributes,
+    weight,
+  });
 
   return {
     character: {
-      primary_attributes: primaryAttributesResult.primary_attributes,
-      advantages: advantagesResult.advantages,
-      disadvantages: disadvantagesResult.disadvantages,
+      primary_attributes: primary.primary_attributes,
+      secondary_attributes: secondary.secondary_attributes,
+
+      advantages: primary.advantages,
+      disadvantages: primary.disadvantages,
 
       character_points: {
-        primary_attributes: primaryAttributesResult.character_points,
-        advantages: advantagesResult.character_points.advantages,
-        disadvantages: disadvantagesResult.character_points.disadvantages,
+        ...primary.character_points,
+        ...secondary.character_points,
       },
     },
   };
