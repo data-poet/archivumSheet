@@ -1,6 +1,6 @@
 const {
   buildPrimaryAttributes,
-} = require("engine/character/js/primaryAttributes");
+} = require("engine/character/js/attributesPrimary");
 
 describe("PRIMARY ATTRIBUTES", () => {
   test("Should build all attributes with correct structure", () => {

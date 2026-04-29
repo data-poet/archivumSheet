@@ -1,4 +1,4 @@
-const { buildAdvantages } = require("engine/character/js/advantages");
+const { buildAdvantages } = require("engine/character/js/traitsAdvantages");
 
 describe("ADVANTAGES", () => {
   test("Should correctly calculate the selected advantages.", () => {
