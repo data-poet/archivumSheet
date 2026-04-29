@@ -1,8 +1,6 @@
 const { buildAdvantages } = require("../character/js/advantages");
 const { buildDisadvantages } = require("../character/js/disadvantages");
-const {
-  buildPrimaryAttributes,
-} = require("engine/character/js/primaryAttributes");
+const { buildPrimaryAttributes } = require("../character/js/primaryAttributes");
 
 /**
  * Builds full character sheet from selected IDs

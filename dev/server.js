@@ -1,10 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
 const path = require("path");
 
-const { buildAdvantages } = require("../engine/character/js/advantages");
-const { buildDisadvantages } = require("../engine/character/js/disadvantages");
+const { loadCSV } = require("../helpers/dataUtils.js");
 const { buildCharacter } = require("../engine/character/characterBuilder");
 
 const app = express();
@@ -19,21 +17,6 @@ app.get("/favicon.ico", (req, res) => {
 
 // serve UI
 app.use(express.static(path.join(__dirname, "public")));
-
-/* -----------------------
-   CSV loader (safe version)
------------------------- */
-const { parse } = require("csv-parse/sync");
-
-function loadCSV(filePath) {
-  const raw = fs.readFileSync(filePath, "utf8");
-
-  return parse(raw, {
-    columns: true,
-    skip_empty_lines: true,
-    trim: true,
-  });
-}
 
 /* -----------------------
    ADVANTAGES
