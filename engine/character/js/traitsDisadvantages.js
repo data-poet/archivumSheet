@@ -7,7 +7,11 @@ const { loadCSV } = require("../../../helpers/dataUtils.js");
  */
 function buildDisadvantages(selectedIds) {
   // Resolve from project root
-  const filePath = path.join(process.cwd(), "data", "db_disadvantages.csv");
+  const filePath = path.join(
+    process.cwd(),
+    "data",
+    "db_traits_disadvantages.csv",
+  );
 
   const rows = loadCSV(filePath);
 

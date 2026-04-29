@@ -7,7 +7,7 @@ const { loadCSV } = require("../../../helpers/dataUtils.js");
  */
 function buildAdvantages(selectedIds) {
   // Resolve from project root
-  const filePath = path.join(process.cwd(), "data", "db_advantages.csv");
+  const filePath = path.join(process.cwd(), "data", "db_traits_advantages.csv");
 
   const rows = loadCSV(filePath);
 
