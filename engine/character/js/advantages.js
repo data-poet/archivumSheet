@@ -1,6 +1,6 @@
 const path = require("path");
 
-const { loadCSV } = require("engine/helpers/dataUtils.js");
+const { loadCSV } = require("../../../helpers/dataUtils.js");
 
 /**
  * Build advantages + total cost from selected IDs
