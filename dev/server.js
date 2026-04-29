@@ -40,12 +40,17 @@ app.get("/api/disadvantages", (req, res) => {
    CHARACTER BUILDER (MAIN ENGINE)
 ------------------------ */
 app.post("/api/character/build", (req, res) => {
-  const { advantages = [], disadvantages = [] } = req.body;
+  const {
+    advantages = [],
+    disadvantages = [],
+    primaryAttributes = {},
+  } = req.body;
 
   try {
     const result = buildCharacter({
       advantages,
       disadvantages,
+      primaryAttributes,
     });
 
     res.json(result);
