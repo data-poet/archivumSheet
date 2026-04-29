@@ -10,7 +10,11 @@ const DEFAULT_VALUE = 10;
 /**
  * Calculates a single attribute
  */
-function buildAttribute({ base_value = 10, modifier = 0 }, costPerLevel) {
+function buildAttribute(input = {}, costPerLevel) {
+  const base_value = input.base_value ?? input.value ?? DEFAULT_VALUE;
+
+  const modifier = input.modifier ?? 0;
+
   const value = base_value + modifier;
 
   const difference = base_value - DEFAULT_VALUE;
