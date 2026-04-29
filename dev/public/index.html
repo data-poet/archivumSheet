@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Character Builder Tester</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+      .box {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+      select,
+      button {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Character Builder Test</h1>
+
+    <!-- ADVANTAGES -->
+    <div class="box">
+      <h2>Advantages</h2>
+      <button onclick="loadAdvantages()">Load Advantages</button><br />
+
+      <select id="advSelect"></select>
+      <button onclick="addAdv()">Add Advantage</button>
+
+      <ul id="advList"></ul>
+    </div>
+
+    <!-- DISADVANTAGES -->
+    <div class="box">
+      <h2>Disadvantages</h2>
+      <button onclick="loadDisadvantages()">Load Disadvantages</button><br />
+
+      <select id="disSelect"></select>
+      <button onclick="addDis()">Add Disadvantage</button>
+
+      <ul id="disList"></ul>
+    </div>
+
+    <!-- RUN ENGINE -->
+    <div class="box">
+      <button onclick="runEngine()">RUN CHARACTER BUILDER</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="box">
+      <h2>Output</h2>
+      <pre id="out"></pre>
+    </div>
+
+    <script>
+      let advantages = [];
+      let disadvantages = [];
+
+      let selectedAdv = [];
+      let selectedDis = [];
+
+      // -----------------------
+      // LOAD ADVANTAGES
+      // -----------------------
+      async function loadAdvantages() {
+        const res = await fetch("/api/advantages");
+        advantages = await res.json();
+
+        const sel = document.getElementById("advSelect");
+        sel.innerHTML = "";
+
+        advantages.forEach((a) => {
+          const opt = document.createElement("option");
+          opt.value = a.advantage_id;
+          opt.textContent = `${a.advantage_box_name} (${a.advantage_cost})`;
+          sel.appendChild(opt);
+        });
+      }
+
+      function addAdv() {
+        const sel = document.getElementById("advSelect");
+        const opt = sel.selectedOptions[0];
+
+        selectedAdv.push(opt.value);
+        renderLists();
+      }
+
+      // -----------------------
+      // LOAD DISADVANTAGES
+      // -----------------------
+      async function loadDisadvantages() {
+        const res = await fetch("/api/disadvantages");
+        disadvantages = await res.json();
+
+        const sel = document.getElementById("disSelect");
+        sel.innerHTML = "";
+
+        disadvantages.forEach((d) => {
+          const opt = document.createElement("option");
+          opt.value = d.disadvantage_id;
+          opt.textContent = `${d.disadvantage_box_name} (${d.disadvantage_cost})`;
+          sel.appendChild(opt);
+        });
+      }
+
+      function addDis() {
+        const sel = document.getElementById("disSelect");
+        const opt = sel.selectedOptions[0];
+
+        selectedDis.push(opt.value);
+        renderLists();
+      }
+
+      // -----------------------
+      // RENDER LISTS
+      // -----------------------
+      function renderLists() {
+        document.getElementById("advList").innerHTML = selectedAdv
+          .map((a) => `<li>${a}</li>`)
+          .join("");
+
+        document.getElementById("disList").innerHTML = selectedDis
+          .map((d) => `<li>${d}</li>`)
+          .join("");
+      }
+
+      // -----------------------
+      // RUN ENGINE
+      // -----------------------
+      async function runEngine() {
+        const res = await fetch("/api/character/build", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            advantages: selectedAdv,
+            disadvantages: selectedDis,
+          }),
+        });
+
+        const json = await res.json();
+
+        document.getElementById("out").textContent = JSON.stringify(
+          json,
+          null,
+          2,
+        );
+      }
+    </script>
+  </body>
+</html>

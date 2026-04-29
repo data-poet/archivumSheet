@@ -1,0 +1,81 @@
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+
+const { buildAdvantages } = require("../engine/character/js/advantages");
+const { buildDisadvantages } = require("../engine/character/js/disadvantages");
+const { buildCharacter } = require("../engine/character/characterBuilder");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// prevent favicon noise
+app.get("/favicon.ico", (req, res) => {
+  res.status(204).end();
+});
+
+// serve UI
+app.use(express.static(path.join(__dirname, "public")));
+
+/* -----------------------
+   CSV loader (safe version)
+------------------------ */
+const { parse } = require("csv-parse/sync");
+
+function loadCSV(filePath) {
+  const raw = fs.readFileSync(filePath, "utf8");
+
+  return parse(raw, {
+    columns: true,
+    skip_empty_lines: true,
+    trim: true,
+  });
+}
+
+/* -----------------------
+   ADVANTAGES
+------------------------ */
+app.get("/api/advantages", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_advantages.csv"));
+
+  res.json(data);
+});
+
+/* -----------------------
+   DISADVANTAGES
+------------------------ */
+app.get("/api/disadvantages", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_disadvantages.csv"));
+
+  res.json(data);
+});
+
+/* -----------------------
+   CHARACTER BUILDER (MAIN ENGINE)
+------------------------ */
+app.post("/api/character/build", (req, res) => {
+  const { advantages = [], disadvantages = [] } = req.body;
+
+  try {
+    const result = buildCharacter({
+      advantages,
+      disadvantages,
+    });
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
+
+/* -----------------------
+   START SERVER
+------------------------ */
+app.listen(3000, () => {
+  console.log("API running on http://localhost:3000");
+});
