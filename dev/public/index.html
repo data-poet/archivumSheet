@@ -41,6 +41,7 @@
           <th>Attribute</th>
           <th>Base</th>
           <th>Modifier</th>
+          <th>Actual Value</th>
         </tr>
 
         <tr>
@@ -49,6 +50,7 @@
             <input id="ST_base" type="number" min="1" max="20" value="10" />
           </td>
           <td><input id="ST_mod" type="number" value="0" /></td>
+          <td id="ST_actual">10</td>
         </tr>
 
         <tr>
@@ -57,6 +59,7 @@
             <input id="DX_base" type="number" min="1" max="20" value="10" />
           </td>
           <td><input id="DX_mod" type="number" value="0" /></td>
+          <td id="DX_actual">10</td>
         </tr>
 
         <tr>
@@ -65,6 +68,7 @@
             <input id="IQ_base" type="number" min="1" max="20" value="10" />
           </td>
           <td><input id="IQ_mod" type="number" value="0" /></td>
+          <td id="IQ_actual">10</td>
         </tr>
 
         <tr>
@@ -73,6 +77,7 @@
             <input id="HT_base" type="number" min="1" max="20" value="10" />
           </td>
           <td><input id="HT_mod" type="number" value="0" /></td>
+          <td id="HT_actual">10</td>
         </tr>
       </table>
     </div>
@@ -123,6 +128,8 @@
       let debounceTimer;
 
       function triggerAutoRun() {
+        updateActualValues();
+
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
           runEngine();
@@ -151,6 +158,22 @@
             modifier: Number(document.getElementById("HT_mod").value),
           },
         };
+      }
+
+      function updateActualValues() {
+        const attrs = ["ST", "DX", "IQ", "HT"];
+
+        attrs.forEach((attr) => {
+          const base =
+            Number(document.getElementById(`${attr}_base`).value) || 0;
+          const modInput = document.getElementById(`${attr}_mod`).value;
+
+          const mod = modInput === "" ? 0 : Number(modInput);
+
+          const actual = base + mod;
+
+          document.getElementById(`${attr}_actual`).textContent = actual;
+        });
       }
 
       function setupAutoRun() {
