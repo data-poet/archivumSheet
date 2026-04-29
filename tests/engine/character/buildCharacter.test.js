@@ -1,4 +1,4 @@
-const { buildCharacter } = require("engine/character/characterBuilder");
+const { buildCharacter } = require("engine/character/buildCharacter");
 
 describe("CHARACTER BUILDER", () => {
   test("Should build a character: advantages, disadvantages and primary attributes", () => {

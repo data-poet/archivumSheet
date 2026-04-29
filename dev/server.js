@@ -3,7 +3,7 @@ const cors = require("cors");
 const path = require("path");
 
 const { loadCSV } = require("../helpers/dataUtils.js");
-const { buildCharacter } = require("../engine/character/characterBuilder");
+const { buildCharacter } = require("../engine/character/buildCharacter.js");
 
 const app = express();
 
