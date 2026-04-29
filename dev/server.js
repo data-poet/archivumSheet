@@ -22,7 +22,9 @@ app.use(express.static(path.join(__dirname, "public")));
    ADVANTAGES
 ------------------------ */
 app.get("/api/advantages", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_advantages.csv"));
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_traits_advantages.csv"),
+  );
 
   res.json(data);
 });
@@ -31,7 +33,9 @@ app.get("/api/advantages", (req, res) => {
    DISADVANTAGES
 ------------------------ */
 app.get("/api/disadvantages", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_disadvantages.csv"));
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_traits_disadvantages.csv"),
+  );
 
   res.json(data);
 });
