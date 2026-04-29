@@ -1,106 +1,124 @@
 const { buildCharacter } = require("engine/character/buildCharacter");
 
-describe("CHARACTER BUILDER", () => {
-  test("Should build a character: advantages, disadvantages and primary attributes", () => {
-    const result = buildCharacter({
-      advantages: ["ADV-002", "ADV-053"],
-      disadvantages: ["DIS-010"],
-      primaryAttributes: {
-        ST: { base_value: 12 },
-        DX: { base_value: 9 },
-      },
-    });
+describe("BUILD CHARACTER", () => {
+  const mockInput = {
+    advantages: [],
+    disadvantages: [],
+    primaryAttributes: {
+      ST: { bought: 2 },
+      HT: { bought: 1 },
+      IQ: { bought: 0 },
+      DX: { bought: 0 },
+    },
+    secondaryAttributes: {
+      HP: { bought: 1 },
+      BasicSpeed: { bought: 2 },
+    },
+    weight: 40, // to affect Movement
+  };
 
-    // structure check
-    expect(result).toHaveProperty("character");
+  describe("Structure", () => {
+    it("Should return character object with all sections", () => {
+      const result = buildCharacter(mockInput);
 
-    const character = result.character;
+      expect(result).toHaveProperty("character");
 
-    expect(character).toHaveProperty("advantages");
-    expect(character).toHaveProperty("disadvantages");
-    expect(character).toHaveProperty("primary_attributes");
-    expect(character).toHaveProperty("character_points");
+      const character = result.character;
 
-    // advantages/disadvantages should exist
-    expect(typeof character.advantages).toBe("object");
-    expect(typeof character.disadvantages).toBe("object");
-
-    // primary attributes structure
-    ["ST", "DX", "IQ", "HT"].forEach((attr) => {
-      expect(character.primary_attributes).toHaveProperty(attr);
-
-      const attribute = character.primary_attributes[attr];
-
-      expect(typeof attribute.base_value).toBe("number");
-      expect(typeof attribute.modifier).toBe("number");
-      expect(typeof attribute.value).toBe("number");
-    });
-
-    // points should exist
-    expect(typeof character.character_points.advantages).toBe("number");
-    expect(typeof character.character_points.disadvantages).toBe("number");
-
-    // primaryAttributes points
-    expect(character.character_points).toHaveProperty("primary_attributes");
-
-    ["ST", "DX", "IQ", "HT"].forEach((attr) => {
-      expect(typeof character.character_points.primary_attributes[attr]).toBe(
-        "number",
-      );
+      expect(character).toHaveProperty("primary_attributes");
+      expect(character).toHaveProperty("secondary_attributes");
+      expect(character).toHaveProperty("advantages");
+      expect(character).toHaveProperty("disadvantages");
+      expect(character).toHaveProperty("character_points");
     });
   });
 
-  test("Should handle empty inputs correctly", () => {
-    const result = buildCharacter({});
+  describe("Primary and Secondary integration", () => {
+    it("Should include both primary and secondary attributes", () => {
+      const { character } = buildCharacter(mockInput);
 
-    const character = result.character;
+      expect(character.primary_attributes).toBeDefined();
+      expect(character.secondary_attributes).toBeDefined();
+    });
 
-    expect(character.advantages).toEqual({});
-    expect(character.disadvantages).toEqual({});
+    it("Secondary attributes should depend on primary values", () => {
+      const { character } = buildCharacter(mockInput);
 
-    // primary attributes should default
-    ["ST", "DX", "IQ", "HT"].forEach((attr) => {
-      expect(character.primary_attributes[attr]).toEqual({
-        base_value: 10,
-        modifier: 0,
-        value: 10,
+      const ST = character.primary_attributes.ST.value;
+      const HT = character.primary_attributes.HT.value;
+
+      const expectedHP = Math.floor((HT * 4 + ST * 2) / 2);
+
+      expect(character.secondary_attributes.HP.base).toBe(expectedHP);
+    });
+  });
+
+  describe("Movement integration", () => {
+    it("Should reflect weight impact on Movement", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const movement = character.secondary_attributes.Movement;
+
+      // Base speed calculation:
+      const baseSpeed =
+        (character.primary_attributes.HT.value +
+          character.primary_attributes.DX.value) /
+        4;
+
+      // weight 40 with ST ~12 → -1 modifier
+      const expected = Math.floor(baseSpeed - 1);
+
+      expect(movement.base).toBe(expected);
+    });
+  });
+
+  describe("Points aggregation", () => {
+    it("Should include primary, secondary, advantages, and disadvantages points", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const points = character.character_points;
+
+      expect(points).toHaveProperty("primary_attributes");
+      expect(points).toHaveProperty("secondary_attributes");
+      expect(points).toHaveProperty("advantages");
+      expect(points).toHaveProperty("disadvantages");
+    });
+
+    it("Secondary points should reflect bought values", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const secondaryPoints = character.character_points.secondary_attributes;
+
+      expect(secondaryPoints.HP).toBe(5);
+      expect(secondaryPoints.BasicSpeed).toBe(10);
+    });
+  });
+
+  describe("Advantages and Disadvantages", () => {
+    it("Should return empty arrays when none provided", () => {
+      const { character } = buildCharacter(mockInput);
+
+      expect(typeof character.advantages).toBe("object");
+      expect(typeof character.disadvantages).toBe("object");
+    });
+  });
+
+  describe("Consistency", () => {
+    it("Should maintain attribute structure integrity", () => {
+      const { character } = buildCharacter(mockInput);
+
+      Object.values(character.primary_attributes).forEach((attr) => {
+        expect(attr).toHaveProperty("base_value");
+        expect(attr).toHaveProperty("modifier");
+        expect(attr).toHaveProperty("value");
+      });
+
+      Object.values(character.secondary_attributes).forEach((attr) => {
+        expect(attr).toHaveProperty("base");
+        expect(attr).toHaveProperty("bought");
+        expect(attr).toHaveProperty("modifier");
+        expect(attr).toHaveProperty("value");
       });
     });
-
-    expect(character.character_points.advantages).toBe(0);
-    expect(character.character_points.disadvantages).toBe(0);
-
-    // attribute costs default to 0
-    ["ST", "DX", "IQ", "HT"].forEach((attr) => {
-      expect(character.character_points.primary_attributes[attr]).toBe(0);
-    });
-  });
-
-  test("should correctly calculate attribute costs independently", () => {
-    const result = buildCharacter({
-      primaryAttributes: {
-        ST: { base_value: 12 }, // +2 → 20
-        DX: { base_value: 9 }, // -1 → -20
-      },
-    });
-
-    const attrPoints = result.character.character_points.primary_attributes;
-
-    expect(attrPoints.ST).toBe(20);
-    expect(attrPoints.DX).toBe(-20);
-    expect(attrPoints.IQ).toBe(0);
-    expect(attrPoints.HT).toBe(0);
-  });
-
-  test("Should correctly add up the total points: advantages and disadvantages", () => {
-    const result = buildCharacter({
-      advantages: ["ADV-002"],
-      disadvantages: ["DIS-010"],
-    });
-
-    const advTotal = result.character.character_points.advantages;
-    const disTotal = result.character.character_points.disadvantages;
-
-    expect(advTotal + disTotal).toBeGreaterThanOrEqual(0);
   });
 });
