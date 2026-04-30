@@ -6,6 +6,7 @@ function buildCharacterSecondary({
   secondaryAttributes = {},
   skills = {},
   weight = 0,
+  effects = {},
 }) {
   /**
    * 1. Secondary attributes (derived stats)
@@ -14,6 +15,7 @@ function buildCharacterSecondary({
     primary_attributes,
     secondaryAttributes,
     weight,
+    effects,
   );
 
   /**

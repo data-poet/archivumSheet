@@ -29,6 +29,18 @@ function resolveSecondary({
   };
 }
 
+function applySecondaryBaseEffects(base, effects = {}) {
+  const secondaryEffects = effects.secondary || {};
+
+  Object.entries(secondaryEffects).forEach(([key, effect]) => {
+    if (effect.base) {
+      base[key] = (base[key] ?? 0) + effect.base;
+    }
+  });
+
+  return base;
+}
+
 /**
  * Base formulas
  */
@@ -54,13 +66,19 @@ function computeBaseSecondary({ ST, HT, IQ, DX }) {
  * @param {Object} config (bought values + modifiers)
  * @param {number} weight (current carried weight)
  */
-function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
+function buildSecondaryAttributes(
+  primaryAttributes,
+  config = {},
+  weight = 0,
+  effects = {},
+) {
   const ST = primaryAttributes.ST.value;
   const HT = primaryAttributes.HT.value;
   const IQ = primaryAttributes.IQ.value;
   const DX = primaryAttributes.DX.value;
 
   const base = computeBaseSecondary({ ST, HT, IQ, DX });
+  applySecondaryBaseEffects(base, effects);
 
   const result = {
     HP: resolveSecondary({
@@ -110,18 +128,26 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
    */
   const carry = calculateCarryWeight(ST, weight);
 
-  const movementBase = Math.floor(
+  let movementBase = Math.floor(
     result.BasicSpeed.value + carry.weight_modifier,
   );
+
+  if (effects?.secondary?.Movement?.base) {
+    movementBase += effects.secondary.Movement.base;
+  }
 
   result.Movement = resolveSecondary({
     base: movementBase,
     ...config.Movement,
   });
 
-  const dodgeBase = Math.floor(
+  let dodgeBase = Math.floor(
     result.Movement.value + (carry.weight_modifier + 4),
   );
+
+  if (effects?.secondary?.Dodge?.base) {
+    dodgeBase += effects.secondary.Dodge.base;
+  }
 
   result.Dodge = resolveSecondary({
     base: dodgeBase,
@@ -149,7 +175,7 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
   const points = {};
 
   Object.entries(result).forEach(([key, attr]) => {
-    points[key] = attr.bought * 5;
+    points[key] = attr?.bought ? attr.bought * 5 : 0;
   });
 
   return {
