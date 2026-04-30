@@ -42,6 +42,7 @@ function buildCharacterSecondary({
 
   return {
     secondary_attributes: secondaryResult.attributes,
+    base_damage: secondaryResult.damage,
 
     skills: skillsResult.skills || {},
 

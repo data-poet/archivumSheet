@@ -167,7 +167,7 @@ function buildSecondaryAttributes(
     },
   });
 
-  result.Damage = damage;
+  // result.Damage = damage;
 
   /**
    * Points calculation (flat 5 per bought level)
@@ -180,6 +180,7 @@ function buildSecondaryAttributes(
 
   return {
     attributes: result,
+    damage,
     points,
   };
 }

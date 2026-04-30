@@ -1,14 +1,14 @@
 const path = require("path");
-
 const { loadCSV } = require("../../../helpers/dataUtils.js");
 
 /**
- * Build advantages + total cost from selected IDs
+ * Build advantages + total cost
+ *
+ * EXPECTS:
+ * selectedAdvantages = ["ADV-001", "ADV-002"]
  */
-function buildAdvantages(selectedIds) {
-  // Resolve from project root
+function buildAdvantages(selectedIds = []) {
   const filePath = path.join(process.cwd(), "data", "db_traits_advantages.csv");
-
   const rows = loadCSV(filePath);
 
   const advantages = {};
@@ -17,12 +17,17 @@ function buildAdvantages(selectedIds) {
   for (const row of rows) {
     const id = row.advantage_id;
 
-    if (selectedIds.includes(id)) {
-      const cost = Number(row.advantage_cost);
+    if (!selectedIds.includes(id)) continue;
 
-      advantages[id] = cost;
-      totalCost += cost;
-    }
+    const cost = Number(row.advantage_cost);
+
+    advantages[id] = {
+      name: row.advantage_name,
+      category: row.advantage_type || null,
+      points: cost,
+    };
+
+    totalCost += cost;
   }
 
   return {

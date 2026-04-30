@@ -19,8 +19,8 @@ function buildCharacter({
 
   // 1.5 ADVANTAGES & DISADVANTAGES EFFECTS
   const effects = buildTraitsEffects({
-    advantages,
-    disadvantages,
+    advantages: primary.advantages,
+    disadvantages: primary.disadvantages,
   });
 
   // 2. DERIVED LAYER (secondary stats + skills)
@@ -42,6 +42,7 @@ function buildCharacter({
       primary_attributes: primary.primary_attributes,
 
       secondary_attributes: secondary.secondary_attributes,
+      base_damage: secondary.base_damage,
       skills: secondary.skills,
 
       advantages: primary.advantages,

@@ -1,12 +1,13 @@
 const path = require("path");
-
 const { loadCSV } = require("../../../helpers/dataUtils.js");
 
 /**
  * Build disadvantages + total cost from selected IDs
+ *
+ * EXPECTS:
+ * selectedIds = ["DIS-001", "DIS-002"]
  */
-function buildDisadvantages(selectedIds) {
-  // Resolve from project root
+function buildDisadvantages(selectedIds = []) {
   const filePath = path.join(
     process.cwd(),
     "data",
@@ -21,12 +22,17 @@ function buildDisadvantages(selectedIds) {
   for (const row of rows) {
     const id = row.disadvantage_id;
 
-    if (selectedIds.includes(id)) {
-      const cost = Number(row.disadvantage_cost);
+    if (!selectedIds.includes(id)) continue;
 
-      disadvantages[id] = cost;
-      totalCost += cost;
-    }
+    const cost = Number(row.disadvantage_cost);
+
+    disadvantages[id] = {
+      name: row.disadvantage_name,
+      category: row.disadvantage_type || null,
+      points: cost,
+    };
+
+    totalCost += cost;
   }
 
   return {

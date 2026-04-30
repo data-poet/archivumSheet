@@ -88,33 +88,36 @@ function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
     damage: {},
   };
 
+  const advantageIds = Object.keys(advantages);
+  const disadvantageIds = Object.keys(disadvantages);
+
   /**
    * ADVANTAGES
    */
 
   // DODGE (ADV-055)
-  if (advantages.includes("ADV-055")) {
+  if (advantageIds.includes("ADV-055")) {
     addEffect(effects, "Dodge", 1);
   }
 
   // WILL (ADV-088 → ADV-092)
-  const willBonus = pickHighest(advantages, willAdvGroup);
+  const willBonus = pickHighest(advantageIds, willAdvGroup);
   addEffect(effects, "Will", willBonus);
 
   // HEARING (ADV-021 → ADV-025)
-  const hearingBonus = pickHighest(advantages, hearingSingleGroup);
+  const hearingBonus = pickHighest(advantageIds, hearingSingleGroup);
   addEffect(effects, "Hearing", hearingBonus);
 
   // SMELL (ADV-026 → ADV-030)
-  const smellBonus = pickHighest(advantages, smellSingleGroup);
+  const smellBonus = pickHighest(advantageIds, smellSingleGroup);
   addEffect(effects, "Smell", smellBonus);
 
   // VISION (ADV-037 → ADV-041)
-  const visionBonus = pickHighest(advantages, visionSingleGroup);
+  const visionBonus = pickHighest(advantageIds, visionSingleGroup);
   addEffect(effects, "Vision", visionBonus);
 
   // FULL SENSE GROUP (ADV-031 → ADV-035)
-  const fullSenseBonus = pickHighest(advantages, fullSenseGroup);
+  const fullSenseBonus = pickHighest(advantageIds, fullSenseGroup);
 
   if (fullSenseBonus > 0) {
     addEffect(effects, "Vision", fullSenseBonus);
@@ -127,7 +130,7 @@ function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
    */
 
   // WILL penalties (DIS-100 → DIS-104)
-  const willPenalty = pickHighest(disadvantages, willDisGroup);
+  const willPenalty = pickHighest(disadvantageIds, willDisGroup);
   addEffect(effects, "Will", -willPenalty);
 
   return effects;
