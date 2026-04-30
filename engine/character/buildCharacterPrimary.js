@@ -11,6 +11,10 @@ function buildCharacterPrimary({
   const disadvantagesResult = buildDisadvantages(disadvantages);
   const primaryAttributesResult = buildPrimaryAttributes(primaryAttributes);
 
+  const primaryPoints = primaryAttributesResult.character_points || {};
+  const advPoints = advantagesResult.character_points || {};
+  const disPoints = disadvantagesResult.character_points || {};
+
   return {
     primary_attributes: primaryAttributesResult.primary_attributes,
 
@@ -18,9 +22,9 @@ function buildCharacterPrimary({
     disadvantages: disadvantagesResult.disadvantages,
 
     character_points: {
-      primary_attributes: primaryAttributesResult.character_points,
-      advantages: advantagesResult.character_points.advantages,
-      disadvantages: disadvantagesResult.character_points.disadvantages,
+      primary_attributes: primaryPoints,
+      advantages: advPoints.advantages ?? 0,
+      disadvantages: disPoints.disadvantages ?? 0,
     },
   };
 }

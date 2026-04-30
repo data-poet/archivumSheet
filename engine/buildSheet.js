@@ -1,48 +1,35 @@
-const { buildCharacterPrimary } = require("./character/buildCharacterPrimary");
-const {
-  buildCharacterSecondary,
-} = require("./character/buildCharacterSecondary");
+const { buildCharacter } = require("./character/buildCharacter");
 const { buildInventory } = require("./inventory/buildInventory");
 
 function buildSheet({ character = {}, inventory = {} } = {}) {
   /**
-   * Step 1: Primary
+   * 1. FULL CHARACTER COMPILATION (single source of truth)
    */
-  const primary = buildCharacterPrimary(character);
-
-  const ST = primary.primary_attributes.ST.value;
+  const characterResult = buildCharacter({
+    advantages: character.advantages,
+    disadvantages: character.disadvantages,
+    primaryAttributes: character.primaryAttributes,
+    secondaryAttributes: character.secondaryAttributes,
+    skills: character.skills,
+    weight: inventory.weight || 0,
+  });
 
   /**
-   * Step 2: Inventory
+   * 2. INVENTORY LAYER (still independent system)
    */
+  const ST = characterResult.character.primary_attributes.ST.value;
+
   const inventoryResult = buildInventory({
     ST,
     weight: inventory.weight || 0,
   });
 
   /**
-   * Step 3: Secondary
+   * 3. FINAL SHEET COMPOSITION
    */
-  const secondary = buildCharacterSecondary({
-    primary_attributes: primary.primary_attributes,
-    secondaryAttributes: character.secondaryAttributes,
-    weight: inventory.weight || 0,
-  });
-
   return {
-    character: {
-      primary_attributes: primary.primary_attributes,
-      secondary_attributes: secondary.secondary_attributes,
-
-      advantages: primary.advantages,
-      disadvantages: primary.disadvantages,
-
-      character_points: {
-        ...primary.character_points,
-        ...secondary.character_points,
-      },
-    },
-    ...inventoryResult,
+    ...characterResult,
+    inventory: inventoryResult.inventory,
   };
 }
 
