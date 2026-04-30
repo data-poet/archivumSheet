@@ -17,7 +17,10 @@ describe("BUILD CHARACTER", () => {
       BasicSpeed: { bought: 2 },
     },
 
-    skills: ["SKILL-000", "SKILL-001"],
+    skills: {
+      "SKILL-000": { base: 14, modifier: 0 },
+      "SKILL-001": { base: 12, modifier: 1 },
+    },
 
     weight: 40,
   };
@@ -49,10 +52,10 @@ describe("BUILD CHARACTER", () => {
 
       const skillIds = Object.keys(skills);
 
-      expect(skillIds.length).toBe(mockInput.skills.length);
+      expect(skillIds.length).toBe(Object.keys(mockInput.skills).length);
 
       skillIds.forEach((id) => {
-        expect(mockInput.skills).toContain(id);
+        expect(Object.keys(mockInput.skills)).toContain(id);
       });
     });
 

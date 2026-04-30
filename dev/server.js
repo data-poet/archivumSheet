@@ -4,6 +4,7 @@ const path = require("path");
 
 const { loadCSV } = require("../helpers/dataUtils.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
+const { buildSheet } = require("../engine/buildSheet.js");
 
 const app = express();
 
@@ -41,7 +42,16 @@ app.get("/api/disadvantages", (req, res) => {
 });
 
 /* -----------------------
-   CHARACTER BUILDER (MAIN ENGINE)
+   SKILLS
+------------------------ */
+app.get("/api/skills", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_skills.csv"));
+
+  res.json(data);
+});
+
+/* -----------------------
+   CHARACTER BUILDER
 ------------------------ */
 app.post("/api/character/build", (req, res) => {
   const {
@@ -50,11 +60,25 @@ app.post("/api/character/build", (req, res) => {
     primaryAttributes = {},
   } = req.body;
 
+  const result = buildCharacter({
+    advantages,
+    disadvantages,
+    primaryAttributes,
+  });
+
+  res.json(result);
+});
+
+/* -----------------------
+   SHEET BUILDER (MAIN ENGINE)
+------------------------ */
+app.post("/api/sheet/build", (req, res) => {
+  const { character = {}, inventory = {} } = req.body;
+
   try {
-    const result = buildCharacter({
-      advantages,
-      disadvantages,
-      primaryAttributes,
+    const result = buildSheet({
+      character,
+      inventory,
     });
 
     res.json(result);

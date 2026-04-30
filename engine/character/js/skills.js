@@ -4,10 +4,14 @@ const { getSkillCost } = require("./skillsCost");
 
 /**
  * Build selected skills + total cost
+ *
+ * EXPECTS:
+ * selectedSkills = {
+ *   "SKILL-000": { base: 14, modifier: 2 }
+ * }
  */
-function buildSkills(selectedIds = [], character = {}) {
+function buildSkills(selectedSkills = {}, character = {}) {
   const filePath = path.join(process.cwd(), "data", "db_skills.csv");
-
   const rows = loadCSV(filePath);
 
   const skills = {};
@@ -18,39 +22,50 @@ function buildSkills(selectedIds = [], character = {}) {
   for (const row of rows) {
     const id = row.skill_id;
 
-    if (selectedIds.includes(id)) {
-      const attribute = row.skill_base_attribute || "DX";
+    const selected = selectedSkills[id];
+    if (!selected) continue;
 
-      const base =
-        primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
+    const attribute = row.skill_base_attribute || "DX";
 
-      const modifier = Number(row.skill_pre_defined_level || 0);
-      const value = base + modifier;
+    // 🔥 THIS is the missing piece you were asking about
+    const attributeBase =
+      primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
 
-      const cost = getSkillCost({
-        attribute,
-        base,
-        level: value,
-        difficulty: row.skill_difficulty,
-      });
+    const base = Number(selected.base ?? 0);
+    const modifier = Number(selected.modifier ?? 0);
 
-      skills[id] = {
-        name: row.skill_name,
-        category: row.skill_category,
-        attribute,
-        difficulty: row.skill_difficulty,
+    // Player-defined skill level
+    const level = base + modifier;
 
-        base,
-        modifier,
-        value,
+    // Relative level = skill vs attribute
+    const relative = level - attributeBase;
 
-        parry_modifier: Number(row.skill_parry_modifier || 0),
+    const cost = getSkillCost({
+      attribute,
+      base: attributeBase, // IMPORTANT: attribute base goes here
+      level,
+      difficulty: row.skill_difficulty,
+    });
 
-        points: cost,
-      };
+    skills[id] = {
+      name: row.skill_name,
+      category: row.skill_category,
+      attribute,
+      difficulty: row.skill_difficulty,
 
-      totalCost += cost;
-    }
+      attribute_base: attributeBase, // 👈 debug clarity
+      base,
+      modifier,
+      value: level,
+
+      relative_level: relative, // 👈 THIS is what you expected mentally
+
+      parry_modifier: Number(row.skill_parry_modifier || 0),
+
+      points: cost,
+    };
+
+    totalCost += cost;
   }
 
   return {

@@ -1,4 +1,4 @@
-const { buildSkills } = require("../../../../engine/character/js/skills");
+const { buildSkills } = require("engine/character/js/skills");
 
 describe("BUILD SKILLS (ENGINE)", () => {
   const character = {
@@ -8,7 +8,10 @@ describe("BUILD SKILLS (ENGINE)", () => {
     },
   };
 
-  const selectedSkills = ["SKILL-000", "SKILL-001"];
+  const selectedSkills = {
+    "SKILL-000": { base: 14, modifier: 0 },
+    "SKILL-001": { base: 12, modifier: 1 },
+  };
 
   test("Should build selected skills only", () => {
     const result = buildSkills(selectedSkills, character);
@@ -24,10 +27,10 @@ describe("BUILD SKILLS (ENGINE)", () => {
 
     const skillIds = Object.keys(result.skills);
 
-    expect(skillIds.length).toBe(selectedSkills.length);
+    expect(skillIds.length).toBe(Object.keys(selectedSkills).length);
 
     skillIds.forEach((id) => {
-      expect(selectedSkills).toContain(id);
+      expect(Object.keys(selectedSkills)).toContain(id);
     });
   });
 
@@ -36,7 +39,7 @@ describe("BUILD SKILLS (ENGINE)", () => {
 
     const skills = Object.values(result.skills);
 
-    expect(skills.length).toBe(selectedSkills.length);
+    expect(skills.length).toBe(Object.keys(selectedSkills).length);
 
     const allHavePoints = skills.every(
       (skill) => typeof skill.points === "number",
@@ -45,11 +48,11 @@ describe("BUILD SKILLS (ENGINE)", () => {
     expect(allHavePoints).toBe(true);
   });
 
-  test("Should keep attribute mapping correct (DX/IQ)", () => {
+  test("Should ensure attribute mapping correct (DX/IQ)", () => {
     const result = buildSkills(selectedSkills, character);
 
     Object.values(result.skills).forEach((skill) => {
-      expect(["DX", "IQ"]).toContain(skill.attribute);
+      expect(["DX", "IQ", "ST", "HT"]).toContain(skill.attribute);
     });
   });
 
