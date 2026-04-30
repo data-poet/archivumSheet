@@ -3,6 +3,7 @@
  */
 
 const { calculateCarryWeight } = require("../../inventory/js/carryWeight");
+const { calculateDamage } = require("./baseDamage");
 
 /**
  * Helpers
@@ -117,6 +118,21 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
     base: movementBase,
     ...config.Movement,
   });
+
+  /**
+   * Damage (depends on ST)
+   * Not a "secondary attribute" → no bought/points
+   */
+  const damage = calculateDamage(ST, {
+    GDP: {
+      modifier: config?.damage?.GDP?.modifier,
+    },
+    BAL: {
+      modifier: config?.damage?.BAL?.modifier,
+    },
+  });
+
+  result.damage = damage;
 
   /**
    * Points calculation (flat 5 per bought level)

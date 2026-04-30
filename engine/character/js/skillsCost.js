@@ -16,7 +16,7 @@ function getAllSkills() {
 }
 
 /**
- * Cost tables (unchanged)
+ * Cost tables
  */
 const COST_TABLES = {
   DX: {

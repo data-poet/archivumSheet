@@ -27,7 +27,6 @@ function buildSkills(selectedSkills = {}, character = {}) {
 
     const attribute = row.skill_base_attribute || "DX";
 
-    // 🔥 THIS is the missing piece you were asking about
     const attributeBase =
       primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
 
@@ -42,7 +41,7 @@ function buildSkills(selectedSkills = {}, character = {}) {
 
     const cost = getSkillCost({
       attribute,
-      base: attributeBase, // IMPORTANT: attribute base goes here
+      base: attributeBase,
       level,
       difficulty: row.skill_difficulty,
     });
@@ -53,12 +52,12 @@ function buildSkills(selectedSkills = {}, character = {}) {
       attribute,
       difficulty: row.skill_difficulty,
 
-      attribute_base: attributeBase, // 👈 debug clarity
+      attribute_base: attributeBase,
       base,
       modifier,
       value: level,
 
-      relative_level: relative, // 👈 THIS is what you expected mentally
+      relative_level: relative,
 
       parry_modifier: Number(row.skill_parry_modifier || 0),
 
