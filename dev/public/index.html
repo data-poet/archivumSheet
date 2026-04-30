@@ -1,36 +1,53 @@
 <!doctype html>
+
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Character Builder Tester</title>
+    <title>Character Builder Dev Tool</title>
     <style>
       body {
         font-family: Arial;
         padding: 20px;
+        background: #f9f9f9;
       }
       .box {
         margin-bottom: 20px;
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #ccc;
+        background: white;
+        border-radius: 6px;
       }
       select,
       button,
       input {
         margin: 5px 0;
+        padding: 5px;
       }
       table {
         border-collapse: collapse;
+        width: 100%;
       }
       td,
       th {
-        padding: 5px 10px;
+        padding: 6px 10px;
         border: 1px solid #ccc;
+        text-align: center;
+      }
+      h1 {
+        margin-bottom: 10px;
+      }
+      pre {
+        max-height: 400px;
+        overflow: auto;
+        background: #111;
+        color: #0f0;
+        padding: 10px;
       }
     </style>
   </head>
 
   <body>
-    <h1>Character Builder Test</h1>
+    <h1>Character Builder Dev Tool</h1>
 
     <!-- PRIMARY ATTRIBUTES -->
     <div class="box">
@@ -104,27 +121,57 @@
       <ul id="disList"></ul>
     </div>
 
-    <!-- RUN ENGINE -->
+    <!-- SKILLS (NEW) -->
     <div class="box">
-      <button onclick="runEngine()">RUN CHARACTER BUILDER</button>
+      <h2>Skills</h2>
+      <button onclick="loadSkills()">Load Skills</button><br />
+
+      <select id="skillSelect"></select>
+      <button onclick="addSkill()">Add Skill</button>
+
+      <ul id="skillList"></ul>
     </div>
 
-    <!-- OUTPUT -->
+    <!-- INVENTORY -->
     <div class="box">
-      <h2>Output</h2>
-      <pre id="out"></pre>
+      <h2>Inventory</h2>
+
+      <p>
+        <strong>Carry Limits:</strong><br />
+        <span id="carry_limits">-</span>
+      </p>
+
+      <label>Total Weight:</label>
+      <input id="weight" type="number" value="0" />
+
+      <p>
+        <strong>Encumbrance:</strong>
+        <span id="encumbrance">None (0)</span>
+      </p>
+    </div>
+
+    <!-- RUN ENGINE -->
+    <div class="box">
+      <button onclick="runEngine()">RUN SHEET BUILDER</button>
+    </div>
+
+    <!-- OUTPUT (EXPANDER) -->
+    <div class="box">
+      <details>
+        <summary>Output</summary>
+        <pre id="out"></pre>
+      </details>
     </div>
 
     <script>
       let advantages = [];
       let disadvantages = [];
+      let skills = [];
 
       let selectedAdv = [];
       let selectedDis = [];
+      let selectedSkills = {};
 
-      // -----------------------
-      // DEBOUNCE (AUTO RUN)
-      // -----------------------
       let debounceTimer;
 
       function triggerAutoRun() {
@@ -136,9 +183,6 @@
         }, 300);
       }
 
-      // -----------------------
-      // PRIMARY ATTRIBUTES
-      // -----------------------
       function getPrimaryAttributes() {
         return {
           ST: {
@@ -161,23 +205,17 @@
       }
 
       function updateActualValues() {
-        const attrs = ["ST", "DX", "IQ", "HT"];
-
-        attrs.forEach((attr) => {
+        ["ST", "DX", "IQ", "HT"].forEach((attr) => {
           const base =
             Number(document.getElementById(`${attr}_base`).value) || 0;
-          const modInput = document.getElementById(`${attr}_mod`).value;
+          const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
 
-          const mod = modInput === "" ? 0 : Number(modInput);
-
-          const actual = base + mod;
-
-          document.getElementById(`${attr}_actual`).textContent = actual;
+          document.getElementById(`${attr}_actual`).textContent = base + mod;
         });
       }
 
       function setupAutoRun() {
-        const inputs = [
+        [
           "ST_base",
           "ST_mod",
           "DX_base",
@@ -186,16 +224,42 @@
           "IQ_mod",
           "HT_base",
           "HT_mod",
-        ];
-
-        inputs.forEach((id) => {
+          "weight",
+        ].forEach((id) => {
           document.getElementById(id).addEventListener("input", triggerAutoRun);
         });
       }
 
-      // -----------------------
-      // LOAD ADVANTAGES
-      // -----------------------
+      function updateInventoryUI(sheet) {
+        const carry = sheet?.inventory?.carry_weight;
+        if (!carry) return;
+
+        const weight = Number(document.getElementById("weight").value) || 0;
+
+        let state = "None";
+
+        if (weight >= carry.limits.veryHeavy) state = "Overloaded";
+        else if (weight >= carry.limits.heavy) state = "Very Heavy";
+        else if (weight >= carry.limits.medium) state = "Heavy";
+        else if (weight >= carry.limits.light) state = "Medium";
+        else if (weight > carry.limits.none) state = "Light";
+
+        document.getElementById("encumbrance").textContent =
+          `${state} (${carry.weight_modifier})`;
+
+        const limitsText = `
+          None: ${carry.limits.none} |
+          Light: ${carry.limits.light} |
+          Medium: ${carry.limits.medium} |
+          Heavy: ${carry.limits.heavy} |
+          Very Heavy: ${carry.limits.veryHeavy}
+      `;
+
+        document.getElementById("carry_limits").textContent = limitsText
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
       async function loadAdvantages() {
         const res = await fetch("/api/advantages");
         advantages = await res.json();
@@ -220,9 +284,6 @@
         triggerAutoRun();
       }
 
-      // -----------------------
-      // LOAD DISADVANTAGES
-      // -----------------------
       async function loadDisadvantages() {
         const res = await fetch("/api/disadvantages");
         disadvantages = await res.json();
@@ -247,9 +308,39 @@
         triggerAutoRun();
       }
 
-      // -----------------------
-      // RENDER LISTS
-      // -----------------------
+      // -------- SKILLS (NEW) --------
+
+      async function loadSkills() {
+        const res = await fetch("/api/skills");
+        skills = await res.json();
+
+        const sel = document.getElementById("skillSelect");
+        sel.innerHTML = "";
+
+        skills.forEach((s) => {
+          const opt = document.createElement("option");
+          opt.value = s.skill_id;
+          opt.textContent = `${s.skill_name} (${s.skill_difficulty})`;
+          sel.appendChild(opt);
+        });
+      }
+
+      function addSkill() {
+        const sel = document.getElementById("skillSelect");
+        const id = sel.value;
+
+        // prevent duplicates
+        if (!selectedSkills[id]) {
+          selectedSkills[id] = {
+            base: 10, // default (you can change later)
+            modifier: 0,
+          };
+        }
+
+        renderLists();
+        triggerAutoRun();
+      }
+
       function renderLists() {
         document.getElementById("advList").innerHTML = selectedAdv
           .map((a) => `<li>${a}</li>`)
@@ -258,37 +349,79 @@
         document.getElementById("disList").innerHTML = selectedDis
           .map((d) => `<li>${d}</li>`)
           .join("");
+
+        document.getElementById("skillList").innerHTML = Object.entries(
+          selectedSkills,
+        )
+          .map(([id, data]) => {
+            return `
+      <li>
+        <strong>${id}</strong>
+
+        Base:
+        <input type="number"
+          value="${data.base}"
+          onchange="updateSkill('${id}', 'base', this.value)"
+        />
+
+        Mod:
+        <input type="number"
+          value="${data.modifier}"
+          onchange="updateSkill('${id}', 'modifier', this.value)"
+        />
+      </li>
+    `;
+          })
+          .join("");
       }
 
-      // -----------------------
-      // RUN ENGINE
-      // -----------------------
       async function runEngine() {
-        const res = await fetch("/api/character/build", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            advantages: selectedAdv,
-            disadvantages: selectedDis,
-            primaryAttributes: getPrimaryAttributes(),
-          }),
-        });
+        try {
+          const res = await fetch("/api/sheet/build", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              character: {
+                advantages: selectedAdv,
+                disadvantages: selectedDis,
+                primaryAttributes: getPrimaryAttributes(),
+                skills: Object.entries(selectedSkills).map(
+                  ([skill_id, data]) => ({
+                    skill_id,
+                    base: data.base,
+                    modifier: data.modifier,
+                  }),
+                ),
+              },
+              inventory: {
+                weight: Number(document.getElementById("weight").value) || 0,
+              },
+            }),
+          });
 
-        const json = await res.json();
+          const json = await res.json();
 
-        document.getElementById("out").textContent = JSON.stringify(
-          json,
-          null,
-          2,
-        );
+          document.getElementById("out").textContent = JSON.stringify(
+            json,
+            null,
+            2,
+          );
+
+          updateInventoryUI(json);
+        } catch (err) {
+          document.getElementById("out").textContent = "Error: " + err.message;
+        }
       }
 
-      // -----------------------
-      // INIT
-      // -----------------------
+      function updateSkill(id, field, value) {
+        selectedSkills[id][field] = Number(value);
+        triggerAutoRun();
+      }
+
       window.onload = () => {
         setupAutoRun();
-        runEngine(); // initial render
+        updateActualValues();
+        runEngine();
       };
     </script>
   </body>

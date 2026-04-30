@@ -1,4 +1,4 @@
-skill_id,skill_box_name,skill_name,skill_category,skill_type,skill_difficulty,skill_base_status,skill_pre_defined_level,skill_source_book,skill_source_page,skill_description,skill_prerequisite,skill_parry_modifier
+skill_id,skill_box_name,skill_name,skill_category,skill_type,skill_difficulty,skill_base_attribute,skill_pre_defined_level,skill_source_book,skill_source_page,skill_description,skill_prerequisite,skill_parry_modifier
 SKILL-000,ADESTRAMENTO DE ANIMAIS - M|D,ADESTRAMENTO DE ANIMAIS,Animais,M,D,IQ,"
 - IQ -6",Módulo Básico,46,"
 Esta é a habilidade de treinar e trabalhar com todos os tipos de animais. Para treinar um animal, o adestrador deve ser bem sucedido em um teste de habilidade em cada dia de treinamento:

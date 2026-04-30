@@ -10,7 +10,10 @@ describe("BUILD CHARACTER SECONDARY", () => {
     DX: { value: 9 },
   };
 
-  const selectedSkills = ["SKILL-000", "SKILL-001"];
+  const selectedSkills = {
+    "SKILL-000": { base: 14, modifier: 0 },
+    "SKILL-001": { base: 12, modifier: 1 },
+  };
 
   describe("Basic structure", () => {
     it("Should return secondary_attributes, skills and character_points", () => {
@@ -74,10 +77,10 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const skillIds = Object.keys(result.skills);
 
-      expect(skillIds.length).toBe(selectedSkills.length);
+      expect(skillIds.length).toBe(Object.keys(selectedSkills).length);
 
       skillIds.forEach((id) => {
-        expect(selectedSkills).toContain(id);
+        expect(Object.keys(selectedSkills)).toContain(id);
       });
     });
 
@@ -89,7 +92,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const skills = Object.values(result.skills);
 
-      expect(skills.length).toBe(selectedSkills.length);
+      expect(skills.length).toBe(Object.keys(selectedSkills).length);
 
       const allHavePoints = skills.every((s) => typeof s.points === "number");
 

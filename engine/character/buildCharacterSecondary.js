@@ -4,7 +4,7 @@ const { buildSkills } = require("./js/skills");
 function buildCharacterSecondary({
   primary_attributes,
   secondaryAttributes = {},
-  skills = [],
+  skills = {},
   weight = 0,
 }) {
   /**
@@ -17,20 +17,35 @@ function buildCharacterSecondary({
   );
 
   /**
-   * 2. Skills (selection-based like traits)
+   * 2. Skills (UI-driven + normalized)
+   *
+   * Ensure skills is always an object:
+   * { skill_id: { base, modifier } }
    */
-  const skillsResult = buildSkills(skills, {
+  const normalizedSkills = Array.isArray(skills)
+    ? Object.fromEntries(
+        skills.map((s) => [
+          s.skill_id,
+          {
+            base: Number(s.base ?? 0),
+            modifier: Number(s.modifier ?? 0),
+          },
+        ]),
+      )
+    : skills;
+
+  const skillsResult = buildSkills(normalizedSkills, {
     primary_attributes,
   });
 
   return {
     secondary_attributes: secondaryResult.attributes,
 
-    skills: skillsResult.skills,
+    skills: skillsResult.skills || {},
 
     character_points: {
       secondary_attributes: secondaryResult.points,
-      skills: skillsResult.character_points.skills,
+      skills: skillsResult.character_points?.skills || 0,
     },
   };
 }
