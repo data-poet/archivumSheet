@@ -1,5 +1,6 @@
 const { buildCharacterPrimary } = require("./buildCharacterPrimary");
 const { buildCharacterSecondary } = require("./buildCharacterSecondary");
+const { buildTraitsEffects } = require("./js/traitsEffects");
 
 function buildCharacter({
   advantages = [],
@@ -16,12 +17,19 @@ function buildCharacter({
     primaryAttributes,
   });
 
+  // 1.5 ADVANTAGES & DISADVANTAGES EFFECTS
+  const effects = buildTraitsEffects({
+    advantages,
+    disadvantages,
+  });
+
   // 2. DERIVED LAYER (secondary stats + skills)
   const secondary = buildCharacterSecondary({
     primary_attributes: primary.primary_attributes,
     secondaryAttributes,
     skills,
     weight,
+    effects,
   });
 
   // 3. SAFE EXTRACTION (prevents undefined crashes in expansion)
