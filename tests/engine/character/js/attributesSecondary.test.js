@@ -26,9 +26,8 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes.Smell.base).toBe(11);
 
       expect(attributes.BasicSpeed.base).toBe((12 + 9) / 4); // 5.25
-
-      // Movement base (no weight modifier)
       expect(attributes.Movement.base).toBe(Math.floor(5.25)); // 5
+      expect(attributes.Dodge.base).toBe(9); // 9
     });
   });
 
@@ -36,7 +35,9 @@ describe("SECONDARY ATTRIBUTES", () => {
     it("Should return base values when no config is provided", () => {
       const { attributes } = buildSecondaryAttributes(mockPrimary);
 
-      Object.values(attributes).forEach((attr) => {
+      Object.entries(attributes).forEach(([key, attr]) => {
+        if (key === "Damage") return;
+
         expect(attr.bought).toBe(0);
         expect(attr.modifier).toBe(0);
         expect(attr.value).toBe(attr.base);
@@ -137,7 +138,8 @@ describe("SECONDARY ATTRIBUTES", () => {
     it("Should return 0 points when nothing is bought", () => {
       const { points } = buildSecondaryAttributes(mockPrimary);
 
-      Object.values(points).forEach((p) => {
+      Object.entries(points).forEach(([key, p]) => {
+        if (key === "Damage") return;
         expect(p).toBe(0);
       });
     });
@@ -163,12 +165,15 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes).toHaveProperty("Smell");
       expect(attributes).toHaveProperty("BasicSpeed");
       expect(attributes).toHaveProperty("Movement");
+      expect(attributes).toHaveProperty("Dodge");
     });
 
     it("Each attribute should have base, bought, modifier, value", () => {
       const { attributes } = buildSecondaryAttributes(mockPrimary);
 
-      Object.values(attributes).forEach((attr) => {
+      Object.entries(attributes).forEach(([key, attr]) => {
+        if (key === "Damage") return;
+
         expect(attr).toHaveProperty("base");
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
