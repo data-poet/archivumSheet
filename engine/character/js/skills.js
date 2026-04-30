@@ -30,18 +30,18 @@ function buildSkills(selectedSkills = {}, character = {}) {
     const attributeBase =
       primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
 
-    const base = Number(selected.base ?? 0);
+    const base_value = Number(selected.base_value ?? 0);
     const modifier = Number(selected.modifier ?? 0);
 
     // Player-defined skill level
-    const level = base + modifier;
+    const level = base_value + modifier;
 
     // Relative level = skill vs attribute
     const relative = level - attributeBase;
 
     const cost = getSkillCost({
       attribute,
-      base: attributeBase,
+      base_value: attributeBase,
       level,
       difficulty: row.skill_difficulty,
     });
@@ -53,7 +53,7 @@ function buildSkills(selectedSkills = {}, character = {}) {
       difficulty: row.skill_difficulty,
 
       attribute_base: attributeBase,
-      base,
+      base_value,
       modifier,
       value: level,
 
