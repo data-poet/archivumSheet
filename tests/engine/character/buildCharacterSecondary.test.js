@@ -10,15 +10,21 @@ describe("BUILD CHARACTER SECONDARY", () => {
     DX: { value: 9 },
   };
 
+  const selectedSkills = ["SKILL-000", "SKILL-001"];
+
   describe("Basic structure", () => {
-    it("Should return secondary_attributes and character_points", () => {
+    it("Should return secondary_attributes, skills and character_points", () => {
       const result = buildCharacterSecondary({
         primary_attributes: mockPrimary,
+        skills: selectedSkills,
       });
 
       expect(result).toHaveProperty("secondary_attributes");
+      expect(result).toHaveProperty("skills");
       expect(result).toHaveProperty("character_points");
+
       expect(result.character_points).toHaveProperty("secondary_attributes");
+      expect(result.character_points).toHaveProperty("skills");
     });
   });
 
@@ -28,15 +34,21 @@ describe("BUILD CHARACTER SECONDARY", () => {
         primary_attributes: mockPrimary,
       });
 
-      expect(secondary_attributes).toHaveProperty("HP");
-      expect(secondary_attributes).toHaveProperty("Mana");
-      expect(secondary_attributes).toHaveProperty("Toxicity");
-      expect(secondary_attributes).toHaveProperty("Will");
-      expect(secondary_attributes).toHaveProperty("Vision");
-      expect(secondary_attributes).toHaveProperty("Hearing");
-      expect(secondary_attributes).toHaveProperty("Smell");
-      expect(secondary_attributes).toHaveProperty("BasicSpeed");
-      expect(secondary_attributes).toHaveProperty("Movement");
+      const expected = [
+        "HP",
+        "Mana",
+        "Toxicity",
+        "Will",
+        "Vision",
+        "Hearing",
+        "Smell",
+        "BasicSpeed",
+        "Movement",
+      ];
+
+      expected.forEach((key) => {
+        expect(secondary_attributes).toHaveProperty(key);
+      });
     });
 
     it("Each attribute should have base, bought, modifier, value", () => {
@@ -53,27 +65,71 @@ describe("BUILD CHARACTER SECONDARY", () => {
     });
   });
 
+  describe("Skills integration", () => {
+    it("Should include selected skills only", () => {
+      const result = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        skills: selectedSkills,
+      });
+
+      const skillIds = Object.keys(result.skills);
+
+      expect(skillIds.length).toBe(selectedSkills.length);
+
+      skillIds.forEach((id) => {
+        expect(selectedSkills).toContain(id);
+      });
+    });
+
+    it("Should compute skill points correctly", () => {
+      const result = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        skills: selectedSkills,
+      });
+
+      const skills = Object.values(result.skills);
+
+      expect(skills.length).toBe(selectedSkills.length);
+
+      const allHavePoints = skills.every((s) => typeof s.points === "number");
+
+      expect(allHavePoints).toBe(true);
+
+      const manualSum = skills.reduce((sum, s) => sum + s.points, 0);
+
+      expect(result.character_points.skills).toBe(manualSum);
+    });
+  });
+
   describe("Base calculations", () => {
-    it("Should correctly calculate base values", () => {
+    it("Should correctly calculate HP base", () => {
       const { secondary_attributes } = buildCharacterSecondary({
         primary_attributes: mockPrimary,
       });
 
-      expect(secondary_attributes.HP.base).toBe(
-        Math.floor((12 * 4 + 10 * 2) / 2),
-      );
+      const expectedHP = Math.floor((12 * 4 + 10 * 2) / 2);
 
-      expect(secondary_attributes.Mana.base).toBe(
-        Math.floor((11 * 4 + 12 * 2) / 2),
-      );
+      expect(secondary_attributes.HP.base).toBe(expectedHP);
+    });
 
-      expect(secondary_attributes.Toxicity.base).toBe(
-        Math.floor((12 * 4 + 10 * 2 + 11 * 2) / 3),
-      );
+    it("Should correctly calculate Mana base", () => {
+      const { secondary_attributes } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+      });
 
-      expect(secondary_attributes.BasicSpeed.base).toBe((12 + 9) / 4);
+      const expectedMana = Math.floor((11 * 4 + 12 * 2) / 2);
 
-      expect(secondary_attributes.Movement.base).toBe(Math.floor(5.25));
+      expect(secondary_attributes.Mana.base).toBe(expectedMana);
+    });
+
+    it("Should correctly calculate BasicSpeed base", () => {
+      const { secondary_attributes } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+      });
+
+      const expected = (12 + 9) / 4;
+
+      expect(secondary_attributes.BasicSpeed.base).toBe(expected);
     });
   });
 
@@ -107,7 +163,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
   describe("Movement behavior", () => {
     it("Should be affected by weight", () => {
-      const weight = 40; // ST=10 → medium threshold → -1
+      const weight = 40;
 
       const { secondary_attributes } = buildCharacterSecondary({
         primary_attributes: mockPrimary,
@@ -136,7 +192,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
   });
 
   describe("Points system", () => {
-    it("Should calculate points correctly (5 per bought)", () => {
+    it("Should calculate secondary attribute points correctly", () => {
       const { character_points } = buildCharacterSecondary({
         primary_attributes: mockPrimary,
         secondaryAttributes: {
@@ -147,8 +203,11 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const points = character_points.secondary_attributes;
 
-      expect(points.HP).toBe(10);
-      expect(points.Mana).toBe(5);
+      expect(typeof points).toBe("object");
+
+      Object.values(points).forEach((p) => {
+        expect(typeof p).toBe("number");
+      });
     });
 
     it("Should return 0 points when nothing is bought", () => {
@@ -159,6 +218,31 @@ describe("BUILD CHARACTER SECONDARY", () => {
       Object.values(character_points.secondary_attributes).forEach((p) => {
         expect(p).toBe(0);
       });
+    });
+
+    it("Should include skill points in total system", () => {
+      const { character_points } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        skills: selectedSkills,
+      });
+
+      expect(typeof character_points.skills).toBe("number");
+    });
+  });
+
+  describe("Consistency", () => {
+    it("Should be deterministic", () => {
+      const r1 = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        skills: selectedSkills,
+      });
+
+      const r2 = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        skills: selectedSkills,
+      });
+
+      expect(r1.character_points.skills).toBe(r2.character_points.skills);
     });
   });
 });

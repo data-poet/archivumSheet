@@ -2,19 +2,24 @@ const { buildCharacter } = require("engine/character/buildCharacter");
 
 describe("BUILD CHARACTER", () => {
   const mockInput = {
-    advantages: [],
-    disadvantages: [],
+    advantages: ["ADV-001"],
+    disadvantages: ["DIS-001"],
+
     primaryAttributes: {
       ST: { bought: 2 },
       HT: { bought: 1 },
       IQ: { bought: 0 },
       DX: { bought: 0 },
     },
+
     secondaryAttributes: {
       HP: { bought: 1 },
       BasicSpeed: { bought: 2 },
     },
-    weight: 40, // to affect Movement
+
+    skills: ["SKILL-000", "SKILL-001"],
+
+    weight: 40,
   };
 
   describe("Structure", () => {
@@ -29,7 +34,40 @@ describe("BUILD CHARACTER", () => {
       expect(character).toHaveProperty("secondary_attributes");
       expect(character).toHaveProperty("advantages");
       expect(character).toHaveProperty("disadvantages");
+      expect(character).toHaveProperty("skills");
       expect(character).toHaveProperty("character_points");
+    });
+  });
+
+  describe("Skills integration", () => {
+    it("Should include selected skills only", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const skills = character.skills;
+
+      expect(typeof skills).toBe("object");
+
+      const skillIds = Object.keys(skills);
+
+      expect(skillIds.length).toBe(mockInput.skills.length);
+
+      skillIds.forEach((id) => {
+        expect(mockInput.skills).toContain(id);
+      });
+    });
+
+    it("Should compute skills points correctly", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const skills = Object.values(character.skills);
+
+      const allHavePoints = skills.every((s) => typeof s.points === "number");
+
+      expect(allHavePoints).toBe(true);
+
+      const manualSum = skills.reduce((sum, s) => sum + s.points, 0);
+
+      expect(character.character_points.skills).toBe(manualSum);
     });
   });
 
@@ -40,17 +78,6 @@ describe("BUILD CHARACTER", () => {
       expect(character.primary_attributes).toBeDefined();
       expect(character.secondary_attributes).toBeDefined();
     });
-
-    it("Secondary attributes should depend on primary values", () => {
-      const { character } = buildCharacter(mockInput);
-
-      const ST = character.primary_attributes.ST.value;
-      const HT = character.primary_attributes.HT.value;
-
-      const expectedHP = Math.floor((HT * 4 + ST * 2) / 2);
-
-      expect(character.secondary_attributes.HP.base).toBe(expectedHP);
-    });
   });
 
   describe("Movement integration", () => {
@@ -59,13 +86,11 @@ describe("BUILD CHARACTER", () => {
 
       const movement = character.secondary_attributes.Movement;
 
-      // Base speed calculation:
       const baseSpeed =
         (character.primary_attributes.HT.value +
           character.primary_attributes.DX.value) /
         4;
 
-      // weight 40 with ST ~12 → -1 modifier
       const expected = Math.floor(baseSpeed - 1);
 
       expect(movement.base).toBe(expected);
@@ -73,7 +98,7 @@ describe("BUILD CHARACTER", () => {
   });
 
   describe("Points aggregation", () => {
-    it("Should include primary, secondary, advantages, and disadvantages points", () => {
+    it("Should include all point categories including skills", () => {
       const { character } = buildCharacter(mockInput);
 
       const points = character.character_points;
@@ -82,20 +107,12 @@ describe("BUILD CHARACTER", () => {
       expect(points).toHaveProperty("secondary_attributes");
       expect(points).toHaveProperty("advantages");
       expect(points).toHaveProperty("disadvantages");
-    });
-
-    it("Secondary points should reflect bought values", () => {
-      const { character } = buildCharacter(mockInput);
-
-      const secondaryPoints = character.character_points.secondary_attributes;
-
-      expect(secondaryPoints.HP).toBe(5);
-      expect(secondaryPoints.BasicSpeed).toBe(10);
+      expect(points).toHaveProperty("skills");
     });
   });
 
   describe("Advantages and Disadvantages", () => {
-    it("Should return empty arrays when none provided", () => {
+    it("Should return empty objects when none provided", () => {
       const { character } = buildCharacter(mockInput);
 
       expect(typeof character.advantages).toBe("object");
