@@ -1,5 +1,7 @@
 const { buildSheet } = require("engine/buildSheet");
 
+const assertShape = require("tests/helpers/assertShape");
+
 describe("BUILD SHEET", () => {
   const mockInput = {
     character: {
@@ -17,7 +19,7 @@ describe("BUILD SHEET", () => {
       },
     },
     inventory: {
-      weight: 40, // should trigger -1 modifier depending on ST
+      weight: 40,
     },
   };
 
@@ -25,18 +27,19 @@ describe("BUILD SHEET", () => {
     it("Should return character and inventory sections", () => {
       const result = buildSheet(mockInput);
 
-      expect(result).toHaveProperty("character");
-      expect(result).toHaveProperty("inventory");
+      assertShape(result, ["character", "inventory"]);
     });
 
     it("Character should contain all expected sections", () => {
       const { character } = buildSheet(mockInput);
 
-      expect(character).toHaveProperty("primary_attributes");
-      expect(character).toHaveProperty("secondary_attributes");
-      expect(character).toHaveProperty("advantages");
-      expect(character).toHaveProperty("disadvantages");
-      expect(character).toHaveProperty("character_points");
+      assertShape(character, [
+        "primary_attributes",
+        "secondary_attributes",
+        "advantages",
+        "disadvantages",
+        "character_points",
+      ]);
     });
   });
 
@@ -46,7 +49,6 @@ describe("BUILD SHEET", () => {
 
       const ST = result.character.primary_attributes.ST.value;
 
-      // inventory should reflect same ST thresholds
       expect(result.inventory).toHaveProperty("carry_weight");
       expect(result.inventory.carry_weight.limits.none).toBe(ST);
     });
@@ -61,12 +63,11 @@ describe("BUILD SHEET", () => {
       const HT = character.primary_attributes.HT.value;
       const DX = character.primary_attributes.DX.value;
 
-      const baseSpeed = (HT + DX) / 4 + 2 * 0.25; // includes bought BasicSpeed
+      const baseSpeed = (HT + DX) / 4 + 2 * 0.25;
 
-      // weight 40 → expected penalty -1 (based on ST ~12)
       const expected = Math.floor(baseSpeed - 1);
 
-      expect(movement.base).toBe(expected);
+      expect(movement.base_value).toBe(expected);
     });
   });
 
@@ -80,8 +81,7 @@ describe("BUILD SHEET", () => {
     it("Should correctly classify weight tiers", () => {
       const result = buildSheet(mockInput);
 
-      const { inventory } = result;
-      const { limits } = inventory.carry_weight;
+      const { limits } = result.inventory.carry_weight;
 
       expect(limits).toHaveProperty("none");
       expect(limits).toHaveProperty("light");
@@ -95,12 +95,12 @@ describe("BUILD SHEET", () => {
     it("Should include all point categories", () => {
       const { character } = buildSheet(mockInput);
 
-      const points = character.character_points;
-
-      expect(points).toHaveProperty("primary_attributes");
-      expect(points).toHaveProperty("secondary_attributes");
-      expect(points).toHaveProperty("advantages");
-      expect(points).toHaveProperty("disadvantages");
+      assertShape(character.character_points, [
+        "primary_attributes",
+        "secondary_attributes",
+        "advantages",
+        "disadvantages",
+      ]);
     });
 
     it("Secondary points should reflect bought values", () => {
@@ -108,8 +108,8 @@ describe("BUILD SHEET", () => {
 
       const secondaryPoints = character.character_points.secondary_attributes;
 
-      expect(secondaryPoints.BasicSpeed).toBe(10); // 2 * 5
-      expect(secondaryPoints.HP).toBe(5); // 1 * 5
+      expect(secondaryPoints.BasicSpeed).toBe(10);
+      expect(secondaryPoints.HP).toBe(5);
     });
   });
 
@@ -128,7 +128,7 @@ describe("BUILD SHEET", () => {
       const { character } = buildSheet(mockInput);
 
       Object.values(character.secondary_attributes).forEach((attr) => {
-        expect(attr).toHaveProperty("base");
+        expect(attr).toHaveProperty("base_value");
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
         expect(attr).toHaveProperty("value");

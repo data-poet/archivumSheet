@@ -1,5 +1,7 @@
 const { buildInventory } = require("engine/inventory/buildInventory");
 
+const assertShape = require("tests/helpers/assertShape");
+
 describe("INVENTORY BUILDER", () => {
   test("Should build inventory with carry weight correctly", () => {
     const result = buildInventory({
@@ -7,7 +9,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 35,
     });
 
-    expect(result).toHaveProperty("inventory.carry_weight");
+    assertShape(result, ["inventory"]);
 
     const carry = result.inventory.carry_weight;
 

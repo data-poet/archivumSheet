@@ -1,5 +1,7 @@
 const { buildSkills } = require("engine/character/js/skills");
 
+const assertShape = require("tests/helpers/assertShape");
+
 describe("BUILD SKILLS (ENGINE)", () => {
   const character = {
     primary_attributes: {
@@ -16,8 +18,7 @@ describe("BUILD SKILLS (ENGINE)", () => {
   test("Should build selected skills only", () => {
     const result = buildSkills(selectedSkills, character);
 
-    expect(result).toHaveProperty("skills");
-    expect(result).toHaveProperty("character_points");
+    assertShape(result, ["skills", "character_points"]);
 
     expect(typeof result.character_points.skills).toBe("number");
   });

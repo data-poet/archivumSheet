@@ -1,10 +1,6 @@
 const { calculateDamage } = require("engine/character/js/baseDamage");
 
 describe("Damage System (GDP / BAL)", () => {
-  // =========================
-  // BASE TESTS
-  // =========================
-
   test("ST 10 returns correct base values", () => {
     const result = calculateDamage(10);
 
@@ -45,55 +41,47 @@ describe("Damage System (GDP / BAL)", () => {
     expect(result.BAL.base_modifier).toBe(2);
   });
 
-  // =========================
-  // MODIFIERS
-  // =========================
+  describe("Modifiers", () => {
+    test("External modifiers affect only final modifier", () => {
+      const result = calculateDamage(10, {
+        GDP: { modifier: 3 },
+        BAL: { modifier: 2 },
+      });
 
-  test("External modifiers affect only final modifier", () => {
-    const result = calculateDamage(10, {
-      GDP: { modifier: 3 },
-      BAL: { modifier: 2 },
+      expect(result.GDP.base_modifier).toBe(-2);
+      expect(result.GDP.final_modifier).toBe(1);
+
+      expect(result.BAL.base_modifier).toBe(0);
+      expect(result.BAL.final_modifier).toBe(2);
     });
 
-    expect(result.GDP.base_modifier).toBe(-2);
-    expect(result.GDP.final_modifier).toBe(1); // -2 + 3
+    test("Modifiers do not affect dice", () => {
+      const result = calculateDamage(10, {
+        GDP: { modifier: 999 },
+      });
 
-    expect(result.BAL.base_modifier).toBe(0);
-    expect(result.BAL.final_modifier).toBe(2); // 0 + 2
-  });
-
-  test("Modifiers do not affect dice", () => {
-    const result = calculateDamage(10, {
-      GDP: { modifier: 999 },
+      expect(result.GDP.dice).toBe("1d6");
     });
-
-    expect(result.GDP.dice).toBe("1d6");
   });
 
-  // =========================
-  // STRUCTURE
-  // =========================
+  describe("Structure", () => {
+    test("Return structure is correct", () => {
+      const result = calculateDamage(10, {
+        GDP: { modifier: 1 },
+        BAL: { modifier: -1 },
+      });
 
-  test("Return structure is correct", () => {
-    const result = calculateDamage(10, {
-      GDP: { modifier: 1 },
-      BAL: { modifier: -1 },
+      expect(result.GDP).toHaveProperty("dice");
+      expect(result.GDP).toHaveProperty("base_modifier");
+      expect(result.GDP).toHaveProperty("modifier");
+      expect(result.GDP).toHaveProperty("final_modifier");
+
+      expect(result.BAL).toHaveProperty("dice");
+      expect(result.BAL).toHaveProperty("base_modifier");
+      expect(result.BAL).toHaveProperty("modifier");
+      expect(result.BAL).toHaveProperty("final_modifier");
     });
-
-    expect(result.GDP).toHaveProperty("dice");
-    expect(result.GDP).toHaveProperty("base_modifier");
-    expect(result.GDP).toHaveProperty("modifier");
-    expect(result.GDP).toHaveProperty("final_modifier");
-
-    expect(result.BAL).toHaveProperty("dice");
-    expect(result.BAL).toHaveProperty("base_modifier");
-    expect(result.BAL).toHaveProperty("modifier");
-    expect(result.BAL).toHaveProperty("final_modifier");
   });
-
-  // =========================
-  // FULL TABLE (1 → 30)
-  // =========================
 
   describe("Damage Table - Thresholds (ST 1 to 30)", () => {
     const table = [

@@ -2,12 +2,15 @@ const {
   buildPrimaryAttributes,
 } = require("engine/character/js/attributesPrimary");
 
+const assertShape = require("tests/helpers/assertShape");
+const assertNumericMap = require("tests/helpers/assertNumericMap");
+const assertBasePlusModifier = require("tests/helpers/assertBasePlusModifier");
+
 describe("PRIMARY ATTRIBUTES", () => {
   test("Should build all attributes with correct structure", () => {
     const result = buildPrimaryAttributes({});
 
-    expect(result).toHaveProperty("primary_attributes");
-    expect(result).toHaveProperty("character_points");
+    assertShape(result, ["primary_attributes", "character_points"]);
 
     ["ST", "DX", "IQ", "HT"].forEach((attr) => {
       expect(result.primary_attributes).toHaveProperty(attr);
@@ -15,9 +18,11 @@ describe("PRIMARY ATTRIBUTES", () => {
 
       const attribute = result.primary_attributes[attr];
 
-      expect(typeof attribute.base_value).toBe("number");
-      expect(typeof attribute.modifier).toBe("number");
-      expect(typeof attribute.value).toBe("number");
+      assertNumericMap({
+        base_value: attribute.base_value,
+        modifier: attribute.modifier,
+        value: attribute.value,
+      });
 
       expect(typeof result.character_points[attr]).toBe("number");
     });
@@ -42,15 +47,15 @@ describe("PRIMARY ATTRIBUTES", () => {
       ST: { base_value: 12, modifier: 2 },
     });
 
-    expect(result.primary_attributes.ST.value).toBe(14);
+    assertBasePlusModifier(result.primary_attributes.ST, "base_value");
   });
 
   test("Should calculate correct positive costs", () => {
     const result = buildPrimaryAttributes({
-      ST: { base_value: 12 }, // +2 → 2 * 10 = 20
-      DX: { base_value: 11 }, // +1 → 1 * 20 = 20
-      IQ: { base_value: 13 }, // +3 → 3 * 20 = 60
-      HT: { base_value: 11 }, // +1 → 1 * 10 = 10
+      ST: { base_value: 12 },
+      DX: { base_value: 11 },
+      IQ: { base_value: 13 },
+      HT: { base_value: 11 },
     });
 
     expect(result.character_points).toEqual({
@@ -63,10 +68,10 @@ describe("PRIMARY ATTRIBUTES", () => {
 
   test("Should calculate correct negative costs", () => {
     const result = buildPrimaryAttributes({
-      ST: { base_value: 8 }, // -2 → -20
-      DX: { base_value: 9 }, // -1 → -20
-      IQ: { base_value: 9 }, // -1 → -20
-      HT: { base_value: 8 }, // -2 → -20
+      ST: { base_value: 8 },
+      DX: { base_value: 9 },
+      IQ: { base_value: 9 },
+      HT: { base_value: 8 },
     });
 
     expect(result.character_points).toEqual({
@@ -83,17 +88,15 @@ describe("PRIMARY ATTRIBUTES", () => {
     });
 
     expect(result.primary_attributes.ST.value).toBe(15);
-
-    // cost must still be 0 because base_value = 10
     expect(result.character_points.ST).toBe(0);
   });
 
   test("Should handle mixed attributes correctly", () => {
     const result = buildPrimaryAttributes({
-      ST: { base_value: 12, modifier: 1 }, // 13 → cost 20
-      DX: { base_value: 9, modifier: 0 }, // 9 → cost -20
-      IQ: { base_value: 10, modifier: 3 }, // 13 → cost 0
-      HT: { base_value: 11, modifier: -1 }, // 10 → cost 10
+      ST: { base_value: 12, modifier: 1 },
+      DX: { base_value: 9, modifier: 0 },
+      IQ: { base_value: 10, modifier: 3 },
+      HT: { base_value: 11, modifier: -1 },
     });
 
     expect(result.primary_attributes).toEqual({

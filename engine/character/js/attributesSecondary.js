@@ -13,7 +13,7 @@ function clamp(value, min, max) {
 }
 
 function resolveSecondary({
-  base,
+  base_value,
   bought = 0,
   modifier = 0,
   maxBought = 5,
@@ -22,10 +22,10 @@ function resolveSecondary({
   const safeBought = clamp(bought, 0, maxBought);
 
   return {
-    base,
+    base_value,
     bought: safeBought,
     modifier,
-    value: base + safeBought * step + modifier,
+    value: base_value + safeBought * step + modifier,
   };
 }
 
@@ -82,42 +82,42 @@ function buildSecondaryAttributes(
 
   const result = {
     HP: resolveSecondary({
-      base: base.HP,
+      base_value: base.HP,
       ...config.HP,
     }),
 
     Mana: resolveSecondary({
-      base: base.Mana,
+      base_value: base.Mana,
       ...config.Mana,
     }),
 
     Toxicity: resolveSecondary({
-      base: base.Toxicity,
+      base_value: base.Toxicity,
       ...config.Toxicity,
     }),
 
     Will: resolveSecondary({
-      base: base.Will,
+      base_value: base.Will,
       ...config.Will,
     }),
 
     Vision: resolveSecondary({
-      base: base.Vision,
+      base_value: base.Vision,
       ...config.Vision,
     }),
 
     Hearing: resolveSecondary({
-      base: base.Hearing,
+      base_value: base.Hearing,
       ...config.Hearing,
     }),
 
     Smell: resolveSecondary({
-      base: base.Smell,
+      base_value: base.Smell,
       ...config.Smell,
     }),
 
     BasicSpeed: resolveSecondary({
-      base: base.BasicSpeed,
+      base_value: base.BasicSpeed,
       step: 0.25,
       ...config.BasicSpeed,
     }),
@@ -137,7 +137,7 @@ function buildSecondaryAttributes(
   }
 
   result.Movement = resolveSecondary({
-    base: movementBase,
+    base_value: movementBase,
     ...config.Movement,
   });
 
@@ -150,7 +150,7 @@ function buildSecondaryAttributes(
   }
 
   result.Dodge = resolveSecondary({
-    base: dodgeBase,
+    base_value: dodgeBase,
     ...config.Dodge,
   });
 

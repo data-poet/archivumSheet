@@ -1,5 +1,7 @@
 const { buildCharacter } = require("engine/character/buildCharacter");
 
+const assertShape = require("tests/helpers/assertShape");
+
 describe("BUILD CHARACTER", () => {
   const mockInput = {
     advantages: ["ADV-001"],
@@ -13,8 +15,8 @@ describe("BUILD CHARACTER", () => {
     },
 
     secondaryAttributes: {
-      HP: { bought: 1 },
       BasicSpeed: { bought: 2 },
+      HP: { bought: 1 },
     },
 
     skills: {
@@ -29,16 +31,17 @@ describe("BUILD CHARACTER", () => {
     it("Should return character object with all sections", () => {
       const result = buildCharacter(mockInput);
 
-      expect(result).toHaveProperty("character");
+      assertShape(result, ["character"]);
 
-      const character = result.character;
-
-      expect(character).toHaveProperty("primary_attributes");
-      expect(character).toHaveProperty("secondary_attributes");
-      expect(character).toHaveProperty("advantages");
-      expect(character).toHaveProperty("disadvantages");
-      expect(character).toHaveProperty("skills");
-      expect(character).toHaveProperty("character_points");
+      assertShape(result.character, [
+        "primary_attributes",
+        "secondary_attributes",
+        "base_damage",
+        "advantages",
+        "disadvantages",
+        "skills",
+        "character_points",
+      ]);
     });
   });
 
@@ -47,9 +50,6 @@ describe("BUILD CHARACTER", () => {
       const { character } = buildCharacter(mockInput);
 
       const skills = character.skills;
-
-      expect(typeof skills).toBe("object");
-
       const skillIds = Object.keys(skills);
 
       expect(skillIds.length).toBe(Object.keys(mockInput.skills).length);
@@ -65,11 +65,9 @@ describe("BUILD CHARACTER", () => {
       const skills = Object.values(character.skills);
 
       const allHavePoints = skills.every((s) => typeof s.points === "number");
-
       expect(allHavePoints).toBe(true);
 
       const manualSum = skills.reduce((sum, s) => sum + s.points, 0);
-
       expect(character.character_points.skills).toBe(manualSum);
     });
   });
@@ -89,14 +87,15 @@ describe("BUILD CHARACTER", () => {
 
       const movement = character.secondary_attributes.Movement;
 
+      const HT = character.primary_attributes.HT.value;
+      const DX = character.primary_attributes.DX.value;
+
       const baseSpeed =
-        (character.primary_attributes.HT.value +
-          character.primary_attributes.DX.value) /
-        4;
+        (HT + DX) / 4 + character.secondary_attributes.BasicSpeed.bought * 0.25;
 
       const expected = Math.floor(baseSpeed - 1);
 
-      expect(movement.base).toBe(expected);
+      expect(movement.base_value).toBe(expected);
     });
   });
 
@@ -106,11 +105,13 @@ describe("BUILD CHARACTER", () => {
 
       const points = character.character_points;
 
-      expect(points).toHaveProperty("primary_attributes");
-      expect(points).toHaveProperty("secondary_attributes");
-      expect(points).toHaveProperty("advantages");
-      expect(points).toHaveProperty("disadvantages");
-      expect(points).toHaveProperty("skills");
+      assertShape(points, [
+        "primary_attributes",
+        "secondary_attributes",
+        "advantages",
+        "disadvantages",
+        "skills",
+      ]);
     });
   });
 
