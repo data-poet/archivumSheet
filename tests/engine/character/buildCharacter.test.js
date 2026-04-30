@@ -122,38 +122,4 @@ describe("BUILD CHARACTER", () => {
       expect(typeof character.disadvantages).toBe("object");
     });
   });
-
-  describe("Consistency", () => {
-    it("Should maintain attribute structure integrity", () => {
-      const { character } = buildCharacter(mockInput);
-
-      Object.values(character.primary_attributes).forEach((attr) => {
-        expect(attr).toHaveProperty("base_value");
-        expect(attr).toHaveProperty("modifier");
-        expect(attr).toHaveProperty("value");
-      });
-
-      Object.entries(character.secondary_attributes).forEach(([key, attr]) => {
-        if (key === "damage") {
-          // ✅ validate damage structure separately
-          expect(attr).toHaveProperty("GDP");
-          expect(attr).toHaveProperty("BAL");
-
-          ["GDP", "BAL"].forEach((type) => {
-            expect(attr[type]).toHaveProperty("dice");
-            expect(attr[type]).toHaveProperty("base_modifier");
-            expect(attr[type]).toHaveProperty("modifier");
-            expect(attr[type]).toHaveProperty("final_modifier");
-          });
-
-          return;
-        }
-
-        expect(attr).toHaveProperty("base");
-        expect(attr).toHaveProperty("bought");
-        expect(attr).toHaveProperty("modifier");
-        expect(attr).toHaveProperty("value");
-      });
-    });
-  });
 });

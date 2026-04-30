@@ -106,7 +106,7 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
   };
 
   /**
-   * Movement (depends on BasicSpeed + carry weight)
+   * Movement & Dodge (depends on BasicSpeed + carry weight)
    */
   const carry = calculateCarryWeight(ST, weight);
 
@@ -117,6 +117,15 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
   result.Movement = resolveSecondary({
     base: movementBase,
     ...config.Movement,
+  });
+
+  const dodgeBase = Math.floor(
+    result.Movement.value + (carry.weight_modifier + 4),
+  );
+
+  result.Dodge = resolveSecondary({
+    base: dodgeBase,
+    ...config.Dodge,
   });
 
   /**
@@ -132,7 +141,7 @@ function buildSecondaryAttributes(primaryAttributes, config = {}, weight = 0) {
     },
   });
 
-  result.damage = damage;
+  result.Damage = damage;
 
   /**
    * Points calculation (flat 5 per bought level)

@@ -47,7 +47,8 @@ describe("BUILD CHARACTER SECONDARY", () => {
         "Smell",
         "BasicSpeed",
         "Movement",
-        "damage", // ✅ added
+        "Dodge",
+        "Damage",
       ];
 
       expected.forEach((key) => {
@@ -61,7 +62,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       Object.entries(secondary_attributes).forEach(([key, attr]) => {
-        if (key === "damage") return; // ✅ skip damage
+        if (key === "Damage") return;
 
         expect(attr).toHaveProperty("base");
         expect(attr).toHaveProperty("bought");
