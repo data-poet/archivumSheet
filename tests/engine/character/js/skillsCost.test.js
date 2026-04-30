@@ -18,7 +18,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "DX",
         base: 10,
-        level: 11, // +1
+        level: 11,
         difficulty: "F",
       });
 
@@ -29,7 +29,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "DX",
         base: 10,
-        level: 12, // +2
+        level: 12,
         difficulty: "M",
       });
 
@@ -40,7 +40,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "DX",
         base: 10,
-        level: 12, // +8
+        level: 12,
         difficulty: "D",
       });
 
@@ -51,7 +51,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "DX",
         base: 10,
-        level: 12, // +16
+        level: 12,
         difficulty: "MD",
       });
 
@@ -64,7 +64,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "IQ",
         base: 10,
-        level: 10, // 0
+        level: 10,
         difficulty: "F",
       });
 
@@ -75,7 +75,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "IQ",
         base: 10,
-        level: 11, // +1
+        level: 11,
         difficulty: "M",
       });
 
@@ -86,7 +86,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "IQ",
         base: 10,
-        level: 12, // +2
+        level: 12,
         difficulty: "D",
       });
 
@@ -97,7 +97,7 @@ describe("skillsCost", () => {
       const cost = getSkillCost({
         attribute: "IQ",
         base: 10,
-        level: 10, // 0
+        level: 10,
         difficulty: "MD",
       });
 

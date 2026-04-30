@@ -1,21 +1,21 @@
 const { buildAdvantages } = require("engine/character/js/traitsAdvantages");
 
+const assertShape = require("tests/helpers/assertShape");
+const assertNumericMap = require("tests/helpers/assertNumericMap");
+
 describe("ADVANTAGES", () => {
   test("Should correctly calculate the selected advantages.", () => {
     const selected = ["ADV-002", "ADV-053", "ADV-055"];
 
     const result = buildAdvantages(selected);
 
-    // check structure
-    expect(result).toHaveProperty("advantages");
-    expect(result).toHaveProperty("character_points");
+    assertShape(result, ["advantages", "character_points"]);
 
-    // check that only selected advantages exist
     expect(Object.keys(result.advantages)).toEqual(
       expect.arrayContaining(selected),
     );
 
-    // check total exists and is numeric
+    assertNumericMap(result.character_points);
     expect(typeof result.character_points.advantages).toBe("number");
   });
 
@@ -31,7 +31,10 @@ describe("ADVANTAGES", () => {
 
     const result = buildAdvantages(selected);
 
-    const cost = Object.values(result.advantages).reduce((a, b) => a + b, 0);
+    const cost = Object.values(result.advantages).reduce(
+      (total, adv) => total + adv.points,
+      0,
+    );
 
     expect(result.character_points.advantages).toBe(cost);
   });

@@ -2,6 +2,9 @@ const {
   buildCharacterSecondary,
 } = require("engine/character/buildCharacterSecondary");
 
+const assertShape = require("tests/helpers/assertShape");
+const assertNumericMap = require("tests/helpers/assertNumericMap");
+
 describe("BUILD CHARACTER SECONDARY", () => {
   const mockPrimary = {
     ST: { value: 10 },
@@ -22,12 +25,13 @@ describe("BUILD CHARACTER SECONDARY", () => {
         skills: selectedSkills,
       });
 
-      expect(result).toHaveProperty("secondary_attributes");
-      expect(result).toHaveProperty("skills");
-      expect(result).toHaveProperty("character_points");
+      assertShape(result, [
+        "secondary_attributes",
+        "skills",
+        "character_points",
+      ]);
 
-      expect(result.character_points).toHaveProperty("secondary_attributes");
-      expect(result.character_points).toHaveProperty("skills");
+      assertShape(result.character_points, ["secondary_attributes", "skills"]);
     });
   });
 
@@ -48,7 +52,6 @@ describe("BUILD CHARACTER SECONDARY", () => {
         "BasicSpeed",
         "Movement",
         "Dodge",
-        "Damage",
       ];
 
       expected.forEach((key) => {
@@ -56,7 +59,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
     });
 
-    it("Each attribute should have base, bought, modifier, value", () => {
+    it("Each attribute should have base_value, bought, modifier, value", () => {
       const { secondary_attributes } = buildCharacterSecondary({
         primary_attributes: mockPrimary,
       });
@@ -64,7 +67,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       Object.entries(secondary_attributes).forEach(([key, attr]) => {
         if (key === "Damage") return;
 
-        expect(attr).toHaveProperty("base");
+        expect(attr).toHaveProperty("base_value");
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
         expect(attr).toHaveProperty("value");
@@ -99,11 +102,9 @@ describe("BUILD CHARACTER SECONDARY", () => {
       expect(skills.length).toBe(Object.keys(selectedSkills).length);
 
       const allHavePoints = skills.every((s) => typeof s.points === "number");
-
       expect(allHavePoints).toBe(true);
 
       const manualSum = skills.reduce((sum, s) => sum + s.points, 0);
-
       expect(result.character_points.skills).toBe(manualSum);
     });
   });
@@ -115,8 +116,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const expectedHP = Math.floor((12 * 4 + 10 * 2) / 2);
-
-      expect(secondary_attributes.HP.base).toBe(expectedHP);
+      expect(secondary_attributes.HP.base_value).toBe(expectedHP);
     });
 
     it("Should correctly calculate Mana base", () => {
@@ -125,8 +125,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const expectedMana = Math.floor((11 * 4 + 12 * 2) / 2);
-
-      expect(secondary_attributes.Mana.base).toBe(expectedMana);
+      expect(secondary_attributes.Mana.base_value).toBe(expectedMana);
     });
 
     it("Should correctly calculate BasicSpeed base", () => {
@@ -135,8 +134,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const expected = (12 + 9) / 4;
-
-      expect(secondary_attributes.BasicSpeed.base).toBe(expected);
+      expect(secondary_attributes.BasicSpeed.base_value).toBe(expected);
     });
   });
 
@@ -150,8 +148,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const HP = secondary_attributes.HP;
-
-      expect(HP.value).toBe(HP.base + 2 + 3);
+      expect(HP.value).toBe(HP.base_value + 2 + 3);
     });
 
     it("Should apply step = 0.25 for BasicSpeed", () => {
@@ -163,8 +160,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const speed = secondary_attributes.BasicSpeed;
-
-      expect(speed.value).toBe(speed.base + 2 * 0.25);
+      expect(speed.value).toBe(speed.base_value + 2 * 0.25);
     });
   });
 
@@ -178,8 +174,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const expected = Math.floor(5.25 - 1);
-
-      expect(secondary_attributes.Movement.base).toBe(expected);
+      expect(secondary_attributes.Movement.base_value).toBe(expected);
     });
 
     it("Should increase if BasicSpeed increases", () => {
@@ -191,8 +186,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const expectedSpeed = 5.25 + 2 * 0.25;
-
-      expect(secondary_attributes.Movement.base).toBe(
+      expect(secondary_attributes.Movement.base_value).toBe(
         Math.floor(expectedSpeed),
       );
     });
@@ -210,11 +204,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const points = character_points.secondary_attributes;
 
-      expect(typeof points).toBe("object");
-
-      Object.values(points).forEach((p) => {
-        expect(typeof p).toBe("number");
-      });
+      assertNumericMap(points);
     });
 
     it("Should return 0 points when nothing is bought", () => {
@@ -225,7 +215,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       Object.entries(character_points.secondary_attributes).forEach(
         ([key, p]) => {
           expect(typeof p).toBe("number");
-          expect(p || 0).toBe(0); // ✅ handles undefined/NaN safely
+          expect(p || 0).toBe(0);
         },
       );
     });

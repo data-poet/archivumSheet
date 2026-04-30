@@ -2,6 +2,8 @@ const {
   buildCharacterPrimary,
 } = require("engine/character/buildCharacterPrimary");
 
+const assertShape = require("tests/helpers/assertShape");
+
 describe("BUILD CHARACTER PRIMARY", () => {
   const mockInput = {
     advantages: [],
@@ -18,10 +20,12 @@ describe("BUILD CHARACTER PRIMARY", () => {
     it("Should return expected sections", () => {
       const result = buildCharacterPrimary(mockInput);
 
-      expect(result).toHaveProperty("primary_attributes");
-      expect(result).toHaveProperty("advantages");
-      expect(result).toHaveProperty("disadvantages");
-      expect(result).toHaveProperty("character_points");
+      assertShape(result, [
+        "primary_attributes",
+        "advantages",
+        "disadvantages",
+        "character_points",
+      ]);
     });
   });
 
@@ -59,9 +63,11 @@ describe("BUILD CHARACTER PRIMARY", () => {
     it("Should include all point categories", () => {
       const result = buildCharacterPrimary(mockInput);
 
-      expect(result.character_points).toHaveProperty("primary_attributes");
-      expect(result.character_points).toHaveProperty("advantages");
-      expect(result.character_points).toHaveProperty("disadvantages");
+      assertShape(result.character_points, [
+        "primary_attributes",
+        "advantages",
+        "disadvantages",
+      ]);
     });
 
     it("Primary attributes points should be numbers", () => {
