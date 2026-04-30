@@ -133,7 +133,22 @@ describe("BUILD CHARACTER", () => {
         expect(attr).toHaveProperty("value");
       });
 
-      Object.values(character.secondary_attributes).forEach((attr) => {
+      Object.entries(character.secondary_attributes).forEach(([key, attr]) => {
+        if (key === "damage") {
+          // ✅ validate damage structure separately
+          expect(attr).toHaveProperty("GDP");
+          expect(attr).toHaveProperty("BAL");
+
+          ["GDP", "BAL"].forEach((type) => {
+            expect(attr[type]).toHaveProperty("dice");
+            expect(attr[type]).toHaveProperty("base_modifier");
+            expect(attr[type]).toHaveProperty("modifier");
+            expect(attr[type]).toHaveProperty("final_modifier");
+          });
+
+          return;
+        }
+
         expect(attr).toHaveProperty("base");
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
