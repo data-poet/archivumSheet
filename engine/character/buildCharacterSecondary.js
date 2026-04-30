@@ -29,7 +29,7 @@ function buildCharacterSecondary({
         skills.map((s) => [
           s.skill_id,
           {
-            base: Number(s.base ?? 0),
+            base_value: Number(s.base ?? 0),
             modifier: Number(s.modifier ?? 0),
           },
         ]),
