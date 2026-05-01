@@ -26,6 +26,7 @@ function resolveSecondary({
     bought: safeBought,
     modifier,
     value: base_value + safeBought * step + modifier,
+    points: safeBought * 5,
   };
 }
 

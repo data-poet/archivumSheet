@@ -25,6 +25,7 @@ function buildAttribute(input = {}, costPerLevel) {
       base_value,
       modifier,
       value,
+      points: cost,
     },
     points: cost,
   };

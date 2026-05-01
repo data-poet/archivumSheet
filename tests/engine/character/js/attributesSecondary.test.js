@@ -178,6 +178,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
         expect(attr).toHaveProperty("value");
+        expect(attr).toHaveProperty("points");
       });
     });
   });
