@@ -51,6 +51,15 @@ app.get("/api/skills", (req, res) => {
 });
 
 /* -----------------------
+   SPELLS (FIXED ENDPOINT NAME)
+------------------------ */
+app.get("/api/spells", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_magic_grimoire.csv"));
+
+  res.json(data);
+});
+
+/* -----------------------
    CHARACTER BUILDER
 ------------------------ */
 app.post("/api/character/build", (req, res) => {

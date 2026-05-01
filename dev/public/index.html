@@ -132,6 +132,17 @@
       <ul id="skillList"></ul>
     </div>
 
+    <!-- SPELLS -->
+    <div class="box">
+      <h2>Spells</h2>
+      <button onclick="loadSpells()">Load Spells</button><br />
+
+      <select id="spellSelect"></select>
+      <button onclick="addSpell()">Add Spell</button>
+
+      <ul id="spellList"></ul>
+    </div>
+
     <!-- INVENTORY -->
     <div class="box">
       <h2>Inventory</h2>
@@ -167,6 +178,8 @@
       let advantages = [];
       let disadvantages = [];
       let skills = [];
+      let spells = [];
+      let selectedSpells = {};
 
       let selectedAdv = [];
       let selectedDis = [];
@@ -341,6 +354,41 @@
         triggerAutoRun();
       }
 
+      async function loadSpells() {
+        const res = await fetch("/api/spells");
+        spells = await res.json();
+
+        const sel = document.getElementById("spellSelect");
+        sel.innerHTML = "";
+
+        // IMPORTANT: unique by name (resolver works by name)
+        const unique = [
+          ...new Map(spells.map((s) => [s.spell_name, s])).values(),
+        ];
+
+        unique.forEach((s) => {
+          const opt = document.createElement("option");
+          opt.value = s.spell_name;
+          opt.textContent = `${s.spell_name} (${s.spell_school})`;
+          sel.appendChild(opt);
+        });
+      }
+
+      function addSpell() {
+        const sel = document.getElementById("spellSelect");
+        const name = sel.value;
+
+        if (!selectedSpells[name]) {
+          selectedSpells[name] = {
+            base_value: 10,
+            modifier: 0,
+          };
+        }
+
+        renderLists();
+        triggerAutoRun();
+      }
+
       function renderLists() {
         document.getElementById("advList").innerHTML = selectedAdv
           .map((a) => `<li>${a}</li>`)
@@ -352,9 +400,8 @@
 
         document.getElementById("skillList").innerHTML = Object.entries(
           selectedSkills,
-        )
-          .map(([id, data]) => {
-            return `
+        ).map(([id, data]) => {
+          return `
       <li>
         <strong>${id}</strong>
 
@@ -368,6 +415,28 @@
         <input type="number"
           value="${data.modifier}"
           onchange="updateSkill('${id}', 'modifier', this.value)"
+        />
+      </li>
+    `;
+        });
+        document.getElementById("spellList").innerHTML = Object.entries(
+          selectedSpells,
+        )
+          .map(([name, data]) => {
+            return `
+      <li>
+        <strong>${name}</strong>
+
+        Base:
+        <input type="number"
+          value="${data.base_value}"
+          onchange="updateSpell('${name}', 'base_value', this.value)"
+        />
+
+        Mod:
+        <input type="number"
+          value="${data.modifier}"
+          onchange="updateSpell('${name}', 'modifier', this.value)"
         />
       </li>
     `;
@@ -392,6 +461,7 @@
                     modifier: data.modifier,
                   }),
                 ),
+                spells: selectedSpells,
               },
               inventory: {
                 weight: Number(document.getElementById("weight").value) || 0,
@@ -415,6 +485,11 @@
 
       function updateSkill(id, field, value) {
         selectedSkills[id][field] = Number(value);
+        triggerAutoRun();
+      }
+
+      function updateSpell(name, field, value) {
+        selectedSpells[name][field] = Number(value);
         triggerAutoRun();
       }
 

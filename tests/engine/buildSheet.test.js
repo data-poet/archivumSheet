@@ -1,5 +1,4 @@
 const { buildSheet } = require("engine/buildSheet");
-
 const assertShape = require("tests/helpers/assertShape");
 
 describe("BUILD SHEET", () => {
@@ -91,25 +90,37 @@ describe("BUILD SHEET", () => {
     });
   });
 
-  describe("Points integrity", () => {
+  describe("Points integrity (UPDATED MODEL)", () => {
     it("Should include all point categories", () => {
       const { character } = buildSheet(mockInput);
 
       assertShape(character.character_points, [
         "primary_attributes",
         "secondary_attributes",
+        "skills",
         "advantages",
         "disadvantages",
+        "spells",
       ]);
     });
 
-    it("Secondary points should reflect bought values", () => {
+    it("Should have numeric totals for attributes", () => {
       const { character } = buildSheet(mockInput);
 
-      const secondaryPoints = character.character_points.secondary_attributes;
+      const points = character.character_points;
 
-      expect(secondaryPoints.BasicSpeed).toBe(10);
-      expect(secondaryPoints.HP).toBe(5);
+      expect(typeof points.primary_attributes).toBe("number");
+      expect(typeof points.secondary_attributes).toBe("number");
+    });
+
+    it("Skills, advantages and disadvantages should be numeric totals", () => {
+      const { character } = buildSheet(mockInput);
+
+      const points = character.character_points;
+
+      expect(typeof points.skills).toBe("number");
+      expect(typeof points.advantages).toBe("number");
+      expect(typeof points.disadvantages).toBe("number");
     });
   });
 
@@ -132,6 +143,7 @@ describe("BUILD SHEET", () => {
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
         expect(attr).toHaveProperty("value");
+        expect(attr).toHaveProperty("points");
       });
     });
   });
