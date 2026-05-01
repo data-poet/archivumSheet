@@ -22,6 +22,7 @@ describe("PRIMARY ATTRIBUTES", () => {
         base_value: attribute.base_value,
         modifier: attribute.modifier,
         value: attribute.value,
+        points: attribute.points,
       });
 
       expect(typeof result.character_points[attr]).toBe("number");
@@ -36,6 +37,7 @@ describe("PRIMARY ATTRIBUTES", () => {
         base_value: 10,
         modifier: 0,
         value: 10,
+        points: 0,
       });
 
       expect(result.character_points[attr]).toBe(0);
@@ -100,10 +102,10 @@ describe("PRIMARY ATTRIBUTES", () => {
     });
 
     expect(result.primary_attributes).toEqual({
-      ST: { base_value: 12, modifier: 1, value: 13 },
-      DX: { base_value: 9, modifier: 0, value: 9 },
-      IQ: { base_value: 10, modifier: 3, value: 13 },
-      HT: { base_value: 11, modifier: -1, value: 10 },
+      ST: { base_value: 12, modifier: 1, value: 13, points: 20 },
+      DX: { base_value: 9, modifier: 0, value: 9, points: -20 },
+      IQ: { base_value: 10, modifier: 3, value: 13, points: 0 },
+      HT: { base_value: 11, modifier: -1, value: 10, points: 10 },
     });
 
     expect(result.character_points).toEqual({
