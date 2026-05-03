@@ -1,0 +1,50 @@
+/* ===== BASE ===== */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+/* ===== LAYOUT ===== */
+.box {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  border-radius: 6px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+select,
+button,
+input {
+  margin: 5px 0;
+  padding: 5px;
+  font-family: inherit;
+}
+
+/* ===== TABLE ===== */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* ===== OUTPUT ===== */
+pre {
+  max-height: 400px;
+  overflow: auto;
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+}

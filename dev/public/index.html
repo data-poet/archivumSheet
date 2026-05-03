@@ -1,49 +1,11 @@
 <!doctype html>
-
 <html>
   <head>
     <meta charset="UTF-8" />
     <title>Character Builder Dev Tool</title>
-    <style>
-      body {
-        font-family: Arial;
-        padding: 20px;
-        background: #f9f9f9;
-      }
-      .box {
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        background: white;
-        border-radius: 6px;
-      }
-      select,
-      button,
-      input {
-        margin: 5px 0;
-        padding: 5px;
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-      }
-      td,
-      th {
-        padding: 6px 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-      }
-      h1 {
-        margin-bottom: 10px;
-      }
-      pre {
-        max-height: 400px;
-        overflow: auto;
-        background: #111;
-        color: #0f0;
-        padding: 10px;
-      }
-    </style>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
 
   <body>
@@ -99,13 +61,50 @@
       </table>
     </div>
 
+    <!-- SECONDARY ATTRIBUTES -->
+    <div class="box">
+      <h2>Secondary Attributes</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Base</th>
+            <th>Bought</th>
+            <th>Modifier</th>
+            <th>Final</th>
+          </tr>
+        </thead>
+
+        <tbody id="secondaryTable"></tbody>
+      </table>
+    </div>
+    <!-- BASE DAMAGE -->
+    <div class="box">
+      <h2>Base Damage</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Dice</th>
+            <th>Base Mod</th>
+            <th>Modifier</th>
+            <th>Final</th>
+          </tr>
+        </thead>
+
+        <tbody id="damageTable"></tbody>
+      </table>
+    </div>
+
     <!-- ADVANTAGES -->
     <div class="box">
       <h2>Advantages</h2>
-      <button onclick="loadAdvantages()">Load Advantages</button><br />
+      <button id="loadAdvantagesBtn">Load Advantages</button><br />
 
       <select id="advSelect"></select>
-      <button onclick="addAdv()">Add Advantage</button>
+      <button id="addAdvBtn">Add Advantage</button>
 
       <ul id="advList"></ul>
     </div>
@@ -113,21 +112,21 @@
     <!-- DISADVANTAGES -->
     <div class="box">
       <h2>Disadvantages</h2>
-      <button onclick="loadDisadvantages()">Load Disadvantages</button><br />
+      <button id="loadDisadvantagesBtn">Load Disadvantages</button><br />
 
       <select id="disSelect"></select>
-      <button onclick="addDis()">Add Disadvantage</button>
+      <button id="addDisBtn">Add Disadvantage</button>
 
       <ul id="disList"></ul>
     </div>
 
-    <!-- SKILLS (NEW) -->
+    <!-- SKILLS -->
     <div class="box">
       <h2>Skills</h2>
-      <button onclick="loadSkills()">Load Skills</button><br />
+      <button id="loadSkillsBtn">Load Skills</button><br />
 
       <select id="skillSelect"></select>
-      <button onclick="addSkill()">Add Skill</button>
+      <button id="addSkillBtn">Add Skill</button>
 
       <ul id="skillList"></ul>
     </div>
@@ -135,10 +134,10 @@
     <!-- SPELLS -->
     <div class="box">
       <h2>Spells</h2>
-      <button onclick="loadSpells()">Load Spells</button><br />
+      <button id="loadSpellsBtn">Load Spells</button><br />
 
       <select id="spellSelect"></select>
-      <button onclick="addSpell()">Add Spell</button>
+      <button id="addSpellBtn">Add Spell</button>
 
       <ul id="spellList"></ul>
     </div>
@@ -163,10 +162,10 @@
 
     <!-- RUN ENGINE -->
     <div class="box">
-      <button onclick="runEngine()">RUN SHEET BUILDER</button>
+      <button id="runEngineBtn">RUN SHEET BUILDER</button>
     </div>
 
-    <!-- OUTPUT (EXPANDER) -->
+    <!-- OUTPUT -->
     <div class="box">
       <details>
         <summary>Output</summary>
@@ -174,330 +173,7 @@
       </details>
     </div>
 
-    <script>
-      let advantages = [];
-      let disadvantages = [];
-      let skills = [];
-      let spells = [];
-      let selectedSpells = {};
-
-      let selectedAdv = [];
-      let selectedDis = [];
-      let selectedSkills = {};
-
-      let debounceTimer;
-
-      function triggerAutoRun() {
-        updateActualValues();
-
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          runEngine();
-        }, 300);
-      }
-
-      function getPrimaryAttributes() {
-        return {
-          ST: {
-            base_value: Number(document.getElementById("ST_base").value),
-            modifier: Number(document.getElementById("ST_mod").value),
-          },
-          DX: {
-            base_value: Number(document.getElementById("DX_base").value),
-            modifier: Number(document.getElementById("DX_mod").value),
-          },
-          IQ: {
-            base_value: Number(document.getElementById("IQ_base").value),
-            modifier: Number(document.getElementById("IQ_mod").value),
-          },
-          HT: {
-            base_value: Number(document.getElementById("HT_base").value),
-            modifier: Number(document.getElementById("HT_mod").value),
-          },
-        };
-      }
-
-      function updateActualValues() {
-        ["ST", "DX", "IQ", "HT"].forEach((attr) => {
-          const base =
-            Number(document.getElementById(`${attr}_base`).value) || 0;
-          const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
-
-          document.getElementById(`${attr}_actual`).textContent = base + mod;
-        });
-      }
-
-      function setupAutoRun() {
-        [
-          "ST_base",
-          "ST_mod",
-          "DX_base",
-          "DX_mod",
-          "IQ_base",
-          "IQ_mod",
-          "HT_base",
-          "HT_mod",
-          "weight",
-        ].forEach((id) => {
-          document.getElementById(id).addEventListener("input", triggerAutoRun);
-        });
-      }
-
-      function updateInventoryUI(sheet) {
-        const carry = sheet?.inventory?.carry_weight;
-        if (!carry) return;
-
-        const weight = Number(document.getElementById("weight").value) || 0;
-
-        let state = "None";
-
-        if (weight >= carry.limits.veryHeavy) state = "Overloaded";
-        else if (weight >= carry.limits.heavy) state = "Very Heavy";
-        else if (weight >= carry.limits.medium) state = "Heavy";
-        else if (weight >= carry.limits.light) state = "Medium";
-        else if (weight > carry.limits.none) state = "Light";
-
-        document.getElementById("encumbrance").textContent =
-          `${state} (${carry.weight_modifier})`;
-
-        const limitsText = `
-          None: ${carry.limits.none} |
-          Light: ${carry.limits.light} |
-          Medium: ${carry.limits.medium} |
-          Heavy: ${carry.limits.heavy} |
-          Very Heavy: ${carry.limits.veryHeavy}
-      `;
-
-        document.getElementById("carry_limits").textContent = limitsText
-          .replace(/\s+/g, " ")
-          .trim();
-      }
-
-      async function loadAdvantages() {
-        const res = await fetch("/api/advantages");
-        advantages = await res.json();
-
-        const sel = document.getElementById("advSelect");
-        sel.innerHTML = "";
-
-        advantages.forEach((a) => {
-          const opt = document.createElement("option");
-          opt.value = a.advantage_id;
-          opt.textContent = `${a.advantage_box_name} (${a.advantage_cost})`;
-          sel.appendChild(opt);
-        });
-      }
-
-      function addAdv() {
-        const sel = document.getElementById("advSelect");
-        const opt = sel.selectedOptions[0];
-
-        selectedAdv.push(opt.value);
-        renderLists();
-        triggerAutoRun();
-      }
-
-      async function loadDisadvantages() {
-        const res = await fetch("/api/disadvantages");
-        disadvantages = await res.json();
-
-        const sel = document.getElementById("disSelect");
-        sel.innerHTML = "";
-
-        disadvantages.forEach((d) => {
-          const opt = document.createElement("option");
-          opt.value = d.disadvantage_id;
-          opt.textContent = `${d.disadvantage_box_name} (${d.disadvantage_cost})`;
-          sel.appendChild(opt);
-        });
-      }
-
-      function addDis() {
-        const sel = document.getElementById("disSelect");
-        const opt = sel.selectedOptions[0];
-
-        selectedDis.push(opt.value);
-        renderLists();
-        triggerAutoRun();
-      }
-
-      // -------- SKILLS (NEW) --------
-
-      async function loadSkills() {
-        const res = await fetch("/api/skills");
-        skills = await res.json();
-
-        const sel = document.getElementById("skillSelect");
-        sel.innerHTML = "";
-
-        skills.forEach((s) => {
-          const opt = document.createElement("option");
-          opt.value = s.skill_id;
-          opt.textContent = `${s.skill_name} (${s.skill_difficulty})`;
-          sel.appendChild(opt);
-        });
-      }
-
-      function addSkill() {
-        const sel = document.getElementById("skillSelect");
-        const id = sel.value;
-
-        // prevent duplicates
-        if (!selectedSkills[id]) {
-          selectedSkills[id] = {
-            base: 10, // default (you can change later)
-            modifier: 0,
-          };
-        }
-
-        renderLists();
-        triggerAutoRun();
-      }
-
-      async function loadSpells() {
-        const res = await fetch("/api/spells");
-        spells = await res.json();
-
-        const sel = document.getElementById("spellSelect");
-        sel.innerHTML = "";
-
-        // IMPORTANT: unique by name (resolver works by name)
-        const unique = [
-          ...new Map(spells.map((s) => [s.spell_name, s])).values(),
-        ];
-
-        unique.forEach((s) => {
-          const opt = document.createElement("option");
-          opt.value = s.spell_name;
-          opt.textContent = `${s.spell_name} (${s.spell_school})`;
-          sel.appendChild(opt);
-        });
-      }
-
-      function addSpell() {
-        const sel = document.getElementById("spellSelect");
-        const name = sel.value;
-
-        if (!selectedSpells[name]) {
-          selectedSpells[name] = {
-            base_value: 10,
-            modifier: 0,
-          };
-        }
-
-        renderLists();
-        triggerAutoRun();
-      }
-
-      function renderLists() {
-        document.getElementById("advList").innerHTML = selectedAdv
-          .map((a) => `<li>${a}</li>`)
-          .join("");
-
-        document.getElementById("disList").innerHTML = selectedDis
-          .map((d) => `<li>${d}</li>`)
-          .join("");
-
-        document.getElementById("skillList").innerHTML = Object.entries(
-          selectedSkills,
-        ).map(([id, data]) => {
-          return `
-      <li>
-        <strong>${id}</strong>
-
-        Base:
-        <input type="number"
-          value="${data.base}"
-          onchange="updateSkill('${id}', 'base', this.value)"
-        />
-
-        Mod:
-        <input type="number"
-          value="${data.modifier}"
-          onchange="updateSkill('${id}', 'modifier', this.value)"
-        />
-      </li>
-    `;
-        });
-        document.getElementById("spellList").innerHTML = Object.entries(
-          selectedSpells,
-        )
-          .map(([name, data]) => {
-            return `
-      <li>
-        <strong>${name}</strong>
-
-        Base:
-        <input type="number"
-          value="${data.base_value}"
-          onchange="updateSpell('${name}', 'base_value', this.value)"
-        />
-
-        Mod:
-        <input type="number"
-          value="${data.modifier}"
-          onchange="updateSpell('${name}', 'modifier', this.value)"
-        />
-      </li>
-    `;
-          })
-          .join("");
-      }
-
-      async function runEngine() {
-        try {
-          const res = await fetch("/api/sheet/build", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              character: {
-                advantages: selectedAdv,
-                disadvantages: selectedDis,
-                primaryAttributes: getPrimaryAttributes(),
-                skills: Object.entries(selectedSkills).map(
-                  ([skill_id, data]) => ({
-                    skill_id,
-                    base: data.base,
-                    modifier: data.modifier,
-                  }),
-                ),
-                spells: selectedSpells,
-              },
-              inventory: {
-                weight: Number(document.getElementById("weight").value) || 0,
-              },
-            }),
-          });
-
-          const json = await res.json();
-
-          document.getElementById("out").textContent = JSON.stringify(
-            json,
-            null,
-            2,
-          );
-
-          updateInventoryUI(json);
-        } catch (err) {
-          document.getElementById("out").textContent = "Error: " + err.message;
-        }
-      }
-
-      function updateSkill(id, field, value) {
-        selectedSkills[id][field] = Number(value);
-        triggerAutoRun();
-      }
-
-      function updateSpell(name, field, value) {
-        selectedSpells[name][field] = Number(value);
-        triggerAutoRun();
-      }
-
-      window.onload = () => {
-        setupAutoRun();
-        updateActualValues();
-        runEngine();
-      };
-    </script>
+    <!-- JS MODULE -->
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>
