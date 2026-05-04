@@ -119,7 +119,8 @@ function buildSecondaryAttributes(
 
     BasicSpeed: resolveSecondary({
       base_value: base.BasicSpeed,
-      step: 0.25,
+      step: 0.5,
+      maxBought: 6,
       ...config.BasicSpeed,
     }),
   };
