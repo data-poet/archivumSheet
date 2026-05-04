@@ -20,7 +20,7 @@ describe("INVENTORY BUILDER", () => {
     expect(carry.limits.heavy).toBe(60);
     expect(carry.limits.veryHeavy).toBe(100);
 
-    // modifier (35 → between 30 and 60 → -1)
-    expect(carry.weight_modifier).toBe(-1);
+    // modifier (35 → between 30 and 60 → -3)
+    expect(carry.weight_modifier).toBe(-3);
   });
 });

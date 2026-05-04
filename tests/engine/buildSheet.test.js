@@ -62,9 +62,9 @@ describe("BUILD SHEET", () => {
       const HT = character.primary_attributes.HT.value;
       const DX = character.primary_attributes.DX.value;
 
-      const baseSpeed = (HT + DX) / 4 + 2 * 0.25;
+      const baseSpeed = (HT + DX) / 4 + 2 * 0.5;
 
-      const expected = Math.floor(baseSpeed - 1);
+      const expected = Math.floor(baseSpeed - 3);
 
       expect(movement.base_value).toBe(expected);
     });

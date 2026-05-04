@@ -9,18 +9,21 @@ function calculateCarryWeight(ST, weight) {
 
   if (weight <= none) {
     weight_modifier = 0;
+  } else if (weight < light) {
+    // ST*2 < weight < ST*3
+    weight_modifier = -1;
   } else if (weight < medium) {
     // ST < weight < ST*3
-    weight_modifier = 0;
+    weight_modifier = -2;
   } else if (weight < heavy) {
     // ST*3 ≤ weight < ST*6
-    weight_modifier = -1;
+    weight_modifier = -3;
   } else if (weight < veryHeavy) {
     // ST*6 ≤ weight < ST*10
-    weight_modifier = -2;
+    weight_modifier = -4;
   } else {
     // weight ≥ ST*10
-    weight_modifier = -3;
+    weight_modifier = -5;
   }
 
   return {

@@ -151,7 +151,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       expect(HP.value).toBe(HP.base_value + 2 + 3);
     });
 
-    it("Should apply step = 0.25 for BasicSpeed", () => {
+    it("Should apply step = 0.55 for BasicSpeed", () => {
       const { secondary_attributes } = buildCharacterSecondary({
         primary_attributes: mockPrimary,
         secondaryAttributes: {
@@ -160,7 +160,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       const speed = secondary_attributes.BasicSpeed;
-      expect(speed.value).toBe(speed.base_value + 2 * 0.25);
+      expect(speed.value).toBe(speed.base_value + 2 * 0.5);
     });
   });
 
@@ -173,7 +173,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
         weight,
       });
 
-      const expected = Math.floor(5.25 - 1);
+      const expected = Math.floor(5.25 - 3);
       expect(secondary_attributes.Movement.base_value).toBe(expected);
     });
 
@@ -185,7 +185,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
         },
       });
 
-      const expectedSpeed = 5.25 + 2 * 0.25;
+      const expectedSpeed = 5.25 + 2 * 0.5;
       expect(secondary_attributes.Movement.base_value).toBe(
         Math.floor(expectedSpeed),
       );

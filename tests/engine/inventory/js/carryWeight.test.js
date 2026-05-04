@@ -11,24 +11,29 @@ describe("CARRY WEIGHT", () => {
       expect(result.weight_modifier).toBe(0);
     });
 
-    test("Light Load, when ST <= load < ST*3", () => {
+    test("Light load, when ST <= load < ST*2", () => {
       const result = run(10, 15);
-      expect(result.weight_modifier).toBe(0);
-    });
-
-    test("Average Load, when ST*3 <= load < ST*6", () => {
-      const result = run(10, 45);
       expect(result.weight_modifier).toBe(-1);
     });
 
-    test("Heavy Load, when ST*6 <= load < ST*10", () => {
-      const result = run(10, 75);
+    test("Medium load, when ST*2 <= load < ST*3", () => {
+      const result = run(10, 21);
       expect(result.weight_modifier).toBe(-2);
     });
 
-    test("Very Heavy Load, when load > ST*10", () => {
-      const result = run(10, 120);
+    test("Heavy load, when ST*3 <= load < ST*6", () => {
+      const result = run(10, 45);
       expect(result.weight_modifier).toBe(-3);
+    });
+
+    test("Very Heavy load, when ST*6 <= load < ST*10", () => {
+      const result = run(10, 75);
+      expect(result.weight_modifier).toBe(-4);
+    });
+
+    test("Overloaded, when load > ST*10", () => {
+      const result = run(10, 120);
+      expect(result.weight_modifier).toBe(-5);
     });
   });
 

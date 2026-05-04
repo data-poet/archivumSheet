@@ -97,13 +97,13 @@ describe("SECONDARY ATTRIBUTES", () => {
   });
 
   describe("BasicSpeed special rule", () => {
-    it("Should use step = 0.25 for BasicSpeed", () => {
+    it("Should use step = 0.50 for BasicSpeed", () => {
       const { attributes } = buildSecondaryAttributes(mockPrimary, {
         BasicSpeed: { bought: 2 },
       });
 
       expect(attributes.BasicSpeed.value).toBe(
-        attributes.BasicSpeed.base_value + 2 * 0.25,
+        attributes.BasicSpeed.base_value + 2 * 0.5,
       );
     });
   });
@@ -113,7 +113,7 @@ describe("SECONDARY ATTRIBUTES", () => {
       const weight = 40;
       const { attributes } = buildSecondaryAttributes(mockPrimary, {}, weight);
 
-      const expectedBase = Math.floor(5.25 - 1);
+      const expectedBase = Math.floor(5.25 - 3);
       expect(attributes.Movement.base_value).toBe(expectedBase);
     });
 
@@ -122,7 +122,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         BasicSpeed: { bought: 2 },
       });
 
-      const expectedSpeed = 5.25 + 2 * 0.25;
+      const expectedSpeed = 5.25 + 2 * 0.5;
       expect(attributes.Movement.base_value).toBe(Math.floor(expectedSpeed));
     });
   });
