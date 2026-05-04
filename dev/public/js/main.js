@@ -221,30 +221,32 @@ async function runEngine() {
         advantages: Object.keys(selected.advantages),
         disadvantages: Object.keys(selected.disadvantages),
         primaryAttributes: getPrimaryAttributes(),
+
         secondaryAttributes: {
           ...selected.secondary,
-
           damage: Object.fromEntries(
             Object.entries(selected.damage).map(([type, data]) => [
               type,
-              {
-                modifier: Number(data.modifier) || 0,
-              },
+              { modifier: Number(data.modifier) || 0 },
             ]),
           ),
         },
+
         skills: Object.entries(selected.skills).map(([skill_id, data]) => ({
           skill_id,
           base: Number(data.base) || 0,
           modifier: Number(data.modifier) || 0,
         })),
+
         spells: selected.spells,
       },
+
       inventory: {
         weight: Number(document.getElementById("weight").value) || 0,
       },
     });
 
+    // ===== SYNC SECONDARY =====
     const sec = json.character?.secondary_attributes || {};
 
     Object.entries(sec).forEach(([name, data]) => {
@@ -256,6 +258,7 @@ async function runEngine() {
       }
     });
 
+    // ===== SYNC DAMAGE =====
     const dmg = json.character?.base_damage || {};
 
     Object.entries(dmg).forEach(([type, data]) => {
@@ -314,20 +317,17 @@ function bindUI() {
 
   document.getElementById("runEngineBtn").addEventListener("click", runEngine);
 
-  // CLICK EVENTS (remove buttons)
+  // CLICK EVENTS
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-adv")) {
       removeAdv(e.target.dataset.id);
     }
-
     if (e.target.classList.contains("remove-dis")) {
       removeDis(e.target.dataset.id);
     }
-
     if (e.target.classList.contains("remove-skill")) {
       removeSkill(e.target.dataset.id);
     }
-
     if (e.target.classList.contains("remove-spell")) {
       removeSpell(e.target.dataset.name);
     }
@@ -335,12 +335,12 @@ function bindUI() {
 
   // INPUT EVENTS
   document.addEventListener("input", (e) => {
-    // ===== SKILLS =====
+    // SKILLS
     if (e.target.classList.contains("skill-input")) {
       updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
     }
 
-    // ===== SPELLS =====
+    // SPELLS
     if (e.target.classList.contains("spell-input")) {
       updateSpell(
         e.target.dataset.name,
@@ -349,31 +349,33 @@ function bindUI() {
       );
     }
 
-    // ===== SECONDARY ATTRIBUTES =====
+    // SECONDARY
     if (e.target.classList.contains("secondary-input")) {
       const name = e.target.dataset.name;
       const field = e.target.dataset.field;
       const value = Number(e.target.value) || 0;
 
       if (!selected.secondary[name]) {
-        selected.secondary[name] = {
-          bought: 0,
-          modifier: 0,
-        };
+        selected.secondary[name] = { bought: 0, modifier: 0 };
       }
 
       if (field === "bought") {
-        selected.secondary[name].bought = Math.max(0, Math.min(5, value));
+        const max = name === "BasicSpeed" ? 6 : 5;
+        selected.secondary[name].bought = Math.max(0, Math.min(max, value));
       }
 
       if (field === "modifier") {
-        selected.secondary[name].modifier = value;
+        if (name === "BasicSpeed") {
+          selected.secondary[name].modifier = Math.round(value * 2) / 2;
+        } else {
+          selected.secondary[name].modifier = value;
+        }
       }
 
       triggerAutoRun();
     }
 
-    // ===== DAMAGE =====
+    // DAMAGE
     if (e.target.classList.contains("damage-input")) {
       const type = e.target.dataset.type;
       const value = Number(e.target.value) || 0;

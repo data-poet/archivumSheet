@@ -145,15 +145,22 @@ export function renderSecondaryAttributes(sheet) {
 
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
-      const isFloatAttr = name === "BasicSpeed";
+      const isBasicSpeed = name === "BasicSpeed";
 
-      const baseDisplay = isFloatAttr
+      // DISPLAY (2 decimals only for BasicSpeed)
+      const baseDisplay = isBasicSpeed
         ? Number(data.base_value).toFixed(2)
         : data.base_value;
 
-      const valueDisplay = isFloatAttr
+      const valueDisplay = isBasicSpeed
         ? Number(data.value).toFixed(2)
         : data.value;
+
+      // INPUT RULES
+      const boughtMax = isBasicSpeed ? 6 : 5;
+      const boughtStep = 1;
+
+      const modifierStep = isBasicSpeed ? 0.5 : 1;
 
       return `
         <tr>
@@ -168,7 +175,8 @@ export function renderSecondaryAttributes(sheet) {
               data-name="${name}"
               data-field="bought"
               min="0"
-              max="5"
+              max="${boughtMax}"
+              step="${boughtStep}"
               value="${data.bought}"
             />
           </td>
@@ -179,6 +187,7 @@ export function renderSecondaryAttributes(sheet) {
               class="secondary-input"
               data-name="${name}"
               data-field="modifier"
+              step="${modifierStep}"
               value="${data.modifier}"
             />
           </td>
