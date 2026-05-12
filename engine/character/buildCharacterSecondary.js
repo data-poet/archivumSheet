@@ -1,36 +1,72 @@
 const { buildSecondaryAttributes } = require("./js/attributesSecondary");
+
 const { buildSkills } = require("./js/skills");
 
 function buildCharacterSecondary({
   primary_attributes,
+
   secondaryAttributes = {},
+
   skills = {},
-  weight = 0,
+
+  carry_weight = null,
+
   effects = {},
 }) {
   /**
-   * 1. Secondary attributes (derived stats)
+   * ───────────────────────────────────────────────────────────────────────────
+   * 1. SECONDARY ATTRIBUTES
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Derived stats:
+   *
+   * - HP
+   * - FP
+   * - Dodge
+   * - Move
+   * - Speed
+   * - Base damage
+   *
+   * These may be affected by:
+   *
+   * - trait effects
+   * - encumbrance
    */
+
   const secondaryResult = buildSecondaryAttributes(
     primary_attributes,
+
     secondaryAttributes,
-    weight,
+
+    carry_weight,
+
     effects,
   );
 
   /**
-   * 2. Skills (UI-driven + normalized)
+   * ───────────────────────────────────────────────────────────────────────────
+   * 2. SKILLS
+   * ───────────────────────────────────────────────────────────────────────────
    *
-   * Ensure skills is always an object:
-   * { skill_id: { base, modifier } }
+   * Normalize UI input into:
+   *
+   * {
+   *   skill_id: {
+   *     base_value,
+   *     modifier,
+   *   }
+   * }
    */
+
   const normalizedSkills = Array.isArray(skills)
     ? Object.fromEntries(
-        skills.map((s) => [
-          s.skill_id,
+        skills.map((skill) => [
+          skill.skill_id,
+
           {
-            base_value: Number(s.base ?? 0),
-            modifier: Number(s.modifier ?? 0),
+            base_value: Number(skill.base ?? 0),
+
+            modifier: Number(skill.modifier ?? 0),
           },
         ]),
       )
@@ -40,14 +76,22 @@ function buildCharacterSecondary({
     primary_attributes,
   });
 
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 3. FINAL COMPOSITION
+   * ───────────────────────────────────────────────────────────────────────────
+   */
+
   return {
     secondary_attributes: secondaryResult.attributes,
+
     base_damage: secondaryResult.damage,
 
     skills: skillsResult.skills || {},
 
     character_points: {
       secondary_attributes: secondaryResult.points,
+
       skills: skillsResult.character_points?.skills || 0,
     },
   };

@@ -5,26 +5,34 @@ const assertShape = require("tests/helpers/assertShape");
 describe("BUILD CHARACTER", () => {
   const mockInput = {
     advantages: ["ADV-001"],
+
     disadvantages: ["DIS-001"],
 
     primaryAttributes: {
       ST: { bought: 2 },
+
       HT: { bought: 1 },
+
       IQ: { bought: 0 },
+
       DX: { bought: 0 },
     },
 
     secondaryAttributes: {
       BasicSpeed: { bought: 2 },
+
       HP: { bought: 1 },
     },
 
     skills: {
       "SKILL-000": { base: 14, modifier: 0 },
+
       "SKILL-001": { base: 12, modifier: 1 },
     },
 
-    weight: 40,
+    carry_weight: {
+      weight_modifier: -3,
+    },
   };
 
   describe("Structure", () => {
@@ -50,6 +58,7 @@ describe("BUILD CHARACTER", () => {
       const { character } = buildCharacter(mockInput);
 
       const skills = character.skills;
+
       const skillIds = Object.keys(skills);
 
       expect(skillIds.length).toBe(Object.keys(mockInput.skills).length);
@@ -64,10 +73,14 @@ describe("BUILD CHARACTER", () => {
 
       const skills = Object.values(character.skills);
 
-      const allHavePoints = skills.every((s) => typeof s.points === "number");
+      const allHavePoints = skills.every(
+        (skill) => typeof skill.points === "number",
+      );
+
       expect(allHavePoints).toBe(true);
 
-      const manualSum = skills.reduce((sum, s) => sum + s.points, 0);
+      const manualSum = skills.reduce((sum, skill) => sum + skill.points, 0);
+
       expect(character.character_points.skills).toBe(manualSum);
     });
   });
@@ -77,25 +90,57 @@ describe("BUILD CHARACTER", () => {
       const { character } = buildCharacter(mockInput);
 
       expect(character.primary_attributes).toBeDefined();
+
       expect(character.secondary_attributes).toBeDefined();
     });
   });
 
   describe("Movement integration", () => {
-    it("Should reflect weight impact on Movement", () => {
+    it("Should reflect carry weight modifier on Movement", () => {
       const { character } = buildCharacter(mockInput);
 
       const movement = character.secondary_attributes.Movement;
 
       const HT = character.primary_attributes.HT.value;
+
       const DX = character.primary_attributes.DX.value;
 
-      const baseSpeed =
+      const basicSpeed =
         (HT + DX) / 4 + character.secondary_attributes.BasicSpeed.bought * 0.5;
 
-      const expected = Math.floor(baseSpeed - 3);
+      const expected = Math.floor(
+        basicSpeed + mockInput.carry_weight.weight_modifier,
+      );
 
       expect(movement.base_value).toBe(expected);
+    });
+  });
+
+  describe("Dodge integration", () => {
+    it("Should reflect carry weight modifier on Dodge", () => {
+      const { character } = buildCharacter(mockInput);
+
+      const dodge = character.secondary_attributes.Dodge;
+
+      const movement = character.secondary_attributes.Movement.value;
+
+      const expected = Math.floor(
+        movement + (mockInput.carry_weight.weight_modifier + 4),
+      );
+
+      expect(dodge.base_value).toBe(expected);
+    });
+  });
+
+  describe("Carry weight propagation", () => {
+    it("Should pass carry_weight into secondary builder", () => {
+      const { character } = buildCharacter(mockInput);
+
+      expect(character.secondary_attributes.Movement).toBeDefined();
+
+      expect(character.secondary_attributes.Movement.base_value).toBeLessThan(
+        character.secondary_attributes.BasicSpeed.value,
+      );
     });
   });
 
@@ -120,6 +165,7 @@ describe("BUILD CHARACTER", () => {
       const { character } = buildCharacter(mockInput);
 
       expect(typeof character.advantages).toBe("object");
+
       expect(typeof character.disadvantages).toBe("object");
     });
   });

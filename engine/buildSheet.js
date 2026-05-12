@@ -1,36 +1,108 @@
 const { buildCharacter } = require("./character/buildCharacter");
+
 const { buildInventory } = require("./inventory/buildInventory");
 
 const { resolveAll } = require("./magic/js/spellsResolver");
+
 const { buildGrimoire } = require("./magic/buildGrimoire");
 
 function sumObjectValues(obj = {}) {
-  return Object.values(obj).reduce((sum, v) => sum + (Number(v) || 0), 0);
+  return Object.values(obj).reduce(
+    (sum, value) => sum + (Number(value) || 0),
+    0,
+  );
 }
 
 function buildSheet({ character = {}, inventory = {} } = {}) {
   /**
-   * 1. FULL CHARACTER COMPILATION (single source of truth)
+   * ───────────────────────────────────────────────────────────────────────────
+   * 1. INITIAL CHARACTER BUILD
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Character is built FIRST to resolve:
+   *
+   * - final ST
+   * - final IQ
+   * - secondary attributes
+   *
+   * WITHOUT carry penalties yet.
    */
+
+  const initialCharacterResult = buildCharacter({
+    advantages: character.advantages,
+
+    disadvantages: character.disadvantages,
+
+    primaryAttributes: character.primaryAttributes,
+
+    secondaryAttributes: character.secondaryAttributes,
+
+    skills: character.skills,
+
+    carry_weight: null,
+  });
+
+  const initialCharacter = initialCharacterResult.character;
+
+  const st = initialCharacter.primary_attributes.ST.value;
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 2. INVENTORY LAYER
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Inventory depends on final ST because:
+   *
+   * - ST defines carry limits
+   * - carried weight defines encumbrance
+   */
+
+  const inventoryResult = buildInventory({
+    ST: st,
+
+    weight: inventory.weight || 0,
+
+    armorInventory: inventory.armor || [],
+  });
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 3. FINAL CHARACTER BUILD
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Rebuild character applying:
+   *
+   * - carry penalties
+   * - encumbrance effects
+   */
+
   const characterResult = buildCharacter({
     advantages: character.advantages,
+
     disadvantages: character.disadvantages,
+
     primaryAttributes: character.primaryAttributes,
+
     secondaryAttributes: character.secondaryAttributes,
+
     skills: character.skills,
-    weight: inventory.weight || 0,
+
+    carry_weight: inventoryResult.inventory.carry_weight,
   });
 
   const characterData = characterResult.character;
 
   const iq = characterData.primary_attributes.IQ.value;
-  const st = characterData.primary_attributes.ST.value;
 
   /**
-   * 2. SPELL RESOLUTION
+   * ───────────────────────────────────────────────────────────────────────────
+   * 4. SPELL RESOLUTION
+   * ───────────────────────────────────────────────────────────────────────────
    */
+
   const resolvedSpells = resolveAll({
     spells: character.spells,
+
     character: {
       ...characterData,
       iq,
@@ -38,40 +110,44 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
   });
 
   /**
-   * 3. GRIMOIRE BUILD
+   * ───────────────────────────────────────────────────────────────────────────
+   * 5. GRIMOIRE BUILD
+   * ───────────────────────────────────────────────────────────────────────────
    */
+
   const grimoireResult = buildGrimoire(resolvedSpells.spells, {
     ...characterData,
     iq,
   });
 
   /**
-   * 4. INVENTORY LAYER
+   * ───────────────────────────────────────────────────────────────────────────
+   * 6. CHARACTER POINTS SUMMARY
+   * ───────────────────────────────────────────────────────────────────────────
    */
-  const inventoryResult = buildInventory({
-    ST: st,
-    weight: inventory.weight || 0,
-  });
 
-  /**
-   * 5. CHARACTER POINTS SUMMARY (FINAL AGGREGATION)
-   */
   const basePoints = characterResult.character.character_points;
 
   const characterPoints = {
     primary_attributes: sumObjectValues(basePoints.primary_attributes),
+
     secondary_attributes: sumObjectValues(basePoints.secondary_attributes),
 
     skills: basePoints.skills || 0,
+
     advantages: basePoints.advantages || 0,
+
     disadvantages: basePoints.disadvantages || 0,
 
     spells: grimoireResult.character_points.spells || 0,
   };
 
   /**
-   * 6. FINAL SHEET COMPOSITION
+   * ───────────────────────────────────────────────────────────────────────────
+   * 7. FINAL SHEET
+   * ───────────────────────────────────────────────────────────────────────────
    */
+
   return {
     ...characterResult,
 
@@ -79,6 +155,7 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
 
     character: {
       ...characterData,
+
       character_points: characterPoints,
     },
 
@@ -86,4 +163,6 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
   };
 }
 
-module.exports = { buildSheet };
+module.exports = {
+  buildSheet,
+};
