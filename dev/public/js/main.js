@@ -14,6 +14,7 @@ import {
   fetchDisadvantages,
   fetchSkills,
   fetchSpells,
+  fetchArmors,
   buildSheet,
 } from "./api.js";
 
@@ -93,13 +94,13 @@ function addAdv() {
 
   selected.advantages[opt.value] = true;
 
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
 function removeAdv(id) {
   delete selected.advantages[id];
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
@@ -125,13 +126,13 @@ function addDis() {
 
   selected.disadvantages[opt.value] = true;
 
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
 function removeDis(id) {
   delete selected.disadvantages[id];
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
@@ -162,13 +163,13 @@ function addSkill() {
     };
   }
 
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
 function removeSkill(id) {
   delete selected.skills[id];
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
@@ -203,13 +204,218 @@ function addSpell() {
     };
   }
 
-  renderLists(selected);
+  renderLists(selected, data);
   triggerAutoRun();
 }
 
 function removeSpell(name) {
   delete selected.spells[name];
-  renderLists(selected);
+  renderLists(selected, data);
+  triggerAutoRun();
+}
+
+// ===== ARMORS =====
+async function loadArmors() {
+  data.armors = await fetchArmors();
+
+  loadArmorSelectors();
+
+  renderLists(selected, data);
+
+  triggerAutoRun();
+}
+
+/**
+ * Initial slot selector.
+ */
+function loadArmorSelectors() {
+  const slotSelect = document.getElementById("armorSlotSelect");
+
+  slotSelect.innerHTML = "";
+
+  const slots = [
+    ...new Set(data.armors.map((armor) => armor.armor_piece_location)),
+  ];
+
+  slots.forEach((slot) => {
+    const opt = document.createElement("option");
+
+    opt.value = slot;
+
+    opt.textContent = slot;
+
+    slotSelect.appendChild(opt);
+  });
+
+  updateArmorNameOptions();
+}
+
+/**
+ * Update armor names based on slot.
+ */
+function updateArmorNameOptions() {
+  const slot = document.getElementById("armorSlotSelect").value;
+
+  const nameSelect = document.getElementById("armorNameSelect");
+
+  nameSelect.innerHTML = "";
+
+  const names = [
+    ...new Set(
+      data.armors
+        .filter((armor) => armor.armor_piece_location === slot)
+        .map((armor) => armor.armor_name),
+    ),
+  ];
+
+  names.forEach((name) => {
+    const opt = document.createElement("option");
+
+    opt.value = name;
+
+    opt.textContent = name;
+
+    nameSelect.appendChild(opt);
+  });
+
+  updateArmorTierOptions();
+}
+
+/**
+ * Update tiers based on slot + name.
+ */
+function updateArmorTierOptions() {
+  const slot = document.getElementById("armorSlotSelect").value;
+
+  const name = document.getElementById("armorNameSelect").value;
+
+  const tierSelect = document.getElementById("armorTierSelect");
+
+  tierSelect.innerHTML = "";
+
+  const tiers = [
+    ...new Set(
+      data.armors
+        .filter(
+          (armor) =>
+            armor.armor_piece_location === slot && armor.armor_name === name,
+        )
+        .map((armor) => armor.armor_tier),
+    ),
+  ];
+
+  tiers.forEach((tier) => {
+    const opt = document.createElement("option");
+
+    opt.value = tier;
+
+    opt.textContent = tier;
+
+    tierSelect.appendChild(opt);
+  });
+}
+
+/**
+ * Equip armor into a slot.
+ *
+ * Rules:
+ * - only one equipped per slot
+ * - equipped armor has storedAt = null
+ */
+function equipArmor(slot, armorId) {
+  // Remove current equipped armor from slot
+  selected.armors = selected.armors.filter((selectedArmor) => {
+    if (!selectedArmor.is_equipped) {
+      return true;
+    }
+
+    const dbArmor = data.armors.find(
+      (armor) => armor.armor_id === selectedArmor.armor_id,
+    );
+
+    return dbArmor?.armor_piece_location !== slot;
+  });
+
+  // Empty slot
+  if (!armorId) {
+    renderLists(selected, data);
+
+    triggerAutoRun();
+
+    return;
+  }
+
+  // Check if armor already exists
+  const existing = selected.armors.find((armor) => armor.armor_id === armorId);
+
+  if (existing) {
+    existing.is_equipped = true;
+    existing.storedAt = null;
+
+    renderLists(selected, data);
+
+    triggerAutoRun();
+
+    return;
+  }
+
+  // Add new equipped armor
+  selected.armors.push({
+    armor_id: armorId,
+    is_equipped: true,
+    storedAt: null,
+  });
+
+  renderLists(selected, data);
+
+  triggerAutoRun();
+}
+
+/**
+ * Add armor directly to storage.
+ */
+function addStoredArmor(armorId, storedAt = "backpack") {
+  if (!armorId) {
+    return;
+  }
+
+  selected.armors.push({
+    armor_id: armorId,
+    is_equipped: false,
+    storedAt,
+  });
+
+  renderLists(selected, data);
+
+  triggerAutoRun();
+}
+
+/**
+ * Move armor between storages.
+ */
+function moveArmor(index, storedAt) {
+  const armor = selected.armors[index];
+
+  if (!armor) {
+    return;
+  }
+
+  armor.is_equipped = false;
+  armor.storedAt = storedAt;
+
+  renderLists(selected, data);
+
+  triggerAutoRun();
+}
+
+/**
+ * Remove armor instance completely.
+ */
+function removeArmor(index) {
+  selected.armors.splice(index, 1);
+
+  renderLists(selected, data);
+
   triggerAutoRun();
 }
 
@@ -243,6 +449,8 @@ async function runEngine() {
 
       inventory: {
         weight: Number(document.getElementById("weight").value) || 0,
+
+        armor: selected.armors,
       },
     });
 
@@ -295,52 +503,144 @@ function updateSpell(name, field, value) {
 
 // ===== UI BINDING =====
 function bindUI() {
+  // ───────────────────────────────────────────────────────────────────────────
+  // ADVANTAGES
+  // ───────────────────────────────────────────────────────────────────────────
+
   document
     .getElementById("loadAdvantagesBtn")
     .addEventListener("click", loadAdvantages);
+
   document.getElementById("addAdvBtn").addEventListener("click", addAdv);
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // DISADVANTAGES
+  // ───────────────────────────────────────────────────────────────────────────
 
   document
     .getElementById("loadDisadvantagesBtn")
     .addEventListener("click", loadDisadvantages);
+
   document.getElementById("addDisBtn").addEventListener("click", addDis);
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SKILLS
+  // ───────────────────────────────────────────────────────────────────────────
 
   document
     .getElementById("loadSkillsBtn")
     .addEventListener("click", loadSkills);
+
   document.getElementById("addSkillBtn").addEventListener("click", addSkill);
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SPELLS
+  // ───────────────────────────────────────────────────────────────────────────
 
   document
     .getElementById("loadSpellsBtn")
     .addEventListener("click", loadSpells);
+
   document.getElementById("addSpellBtn").addEventListener("click", addSpell);
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // ARMORS
+  // ───────────────────────────────────────────────────────────────────────────
+
+  document
+    .getElementById("loadArmorsBtn")
+    .addEventListener("click", loadArmors);
+
+  // SLOT → update names
+  document
+    .getElementById("armorSlotSelect")
+    .addEventListener("change", updateArmorNameOptions);
+
+  // NAME → update tiers
+  document
+    .getElementById("armorNameSelect")
+    .addEventListener("change", updateArmorTierOptions);
+
+  // ADD ARMOR
+  document.getElementById("addArmorBtn").addEventListener("click", () => {
+    const slot = document.getElementById("armorSlotSelect").value;
+
+    const name = document.getElementById("armorNameSelect").value;
+
+    const tier = document.getElementById("armorTierSelect").value;
+
+    const armor = data.armors.find(
+      (armor) =>
+        armor.armor_piece_location === slot &&
+        armor.armor_name === name &&
+        armor.armor_tier === tier,
+    );
+
+    if (!armor) {
+      return;
+    }
+
+    const armorId = armor.armor_id;
+
+    const storedAt = document.getElementById("armorStorage").value;
+
+    addStoredArmor(armorId, storedAt);
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // ENGINE
+  // ───────────────────────────────────────────────────────────────────────────
 
   document.getElementById("runEngineBtn").addEventListener("click", runEngine);
 
+  // ───────────────────────────────────────────────────────────────────────────
   // CLICK EVENTS
+  // ───────────────────────────────────────────────────────────────────────────
+
   document.addEventListener("click", (e) => {
+    // ADVANTAGES
     if (e.target.classList.contains("remove-adv")) {
       removeAdv(e.target.dataset.id);
     }
+
+    // DISADVANTAGES
     if (e.target.classList.contains("remove-dis")) {
       removeDis(e.target.dataset.id);
     }
+
+    // SKILLS
     if (e.target.classList.contains("remove-skill")) {
       removeSkill(e.target.dataset.id);
     }
+
+    // SPELLS
     if (e.target.classList.contains("remove-spell")) {
       removeSpell(e.target.dataset.name);
     }
+
+    // ARMORS
+    if (e.target.classList.contains("remove-armor")) {
+      removeArmor(Number(e.target.dataset.index));
+    }
   });
 
+  // ───────────────────────────────────────────────────────────────────────────
   // INPUT EVENTS
+  // ───────────────────────────────────────────────────────────────────────────
+
   document.addEventListener("input", (e) => {
+    // ─────────────────────────────────────────────────────────────────────────
     // SKILLS
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("skill-input")) {
       updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // SPELLS
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("spell-input")) {
       updateSpell(
         e.target.dataset.name,
@@ -349,18 +649,27 @@ function bindUI() {
       );
     }
 
-    // SECONDARY
+    // ─────────────────────────────────────────────────────────────────────────
+    // SECONDARY ATTRIBUTES
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("secondary-input")) {
       const name = e.target.dataset.name;
+
       const field = e.target.dataset.field;
+
       const value = Number(e.target.value) || 0;
 
       if (!selected.secondary[name]) {
-        selected.secondary[name] = { bought: 0, modifier: 0 };
+        selected.secondary[name] = {
+          bought: 0,
+          modifier: 0,
+        };
       }
 
       if (field === "bought") {
         const max = name === "BasicSpeed" ? 6 : 5;
+
         selected.secondary[name].bought = Math.max(0, Math.min(max, value));
       }
 
@@ -375,18 +684,113 @@ function bindUI() {
       triggerAutoRun();
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // DAMAGE
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("damage-input")) {
       const type = e.target.dataset.type;
+
       const value = Number(e.target.value) || 0;
 
       if (!selected.damage[type]) {
-        selected.damage[type] = { modifier: 0 };
+        selected.damage[type] = {
+          modifier: 0,
+        };
       }
 
       selected.damage[type].modifier = value;
 
       triggerAutoRun();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ARMOR SLOT EQUIP
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // EQUIPPED ARMOR NAME
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("equipped-armor-name")) {
+      const slot = e.target.dataset.slot;
+
+      const name = e.target.value;
+
+      // Empty slot
+      if (!name) {
+        equipArmor(slot, "");
+
+        return;
+      }
+
+      const tierSelect = document.querySelector(
+        `.equipped-armor-tier[data-slot="${slot}"]`,
+      );
+
+      const availableArmors = data.armors.filter(
+        (armor) =>
+          armor.armor_piece_location === slot && armor.armor_name === name,
+      );
+
+      tierSelect.innerHTML = availableArmors
+        .map(
+          (armor) => `
+          <option value="${armor.armor_tier}">
+            ${armor.armor_tier}
+          </option>
+        `,
+        )
+        .join("");
+
+      const firstArmor = availableArmors[0];
+
+      if (!firstArmor) {
+        return;
+      }
+
+      equipArmor(slot, firstArmor.armor_id);
+
+      renderLists(selected, data);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // EQUIPPED ARMOR TIER
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("equipped-armor-tier")) {
+      const slot = e.target.dataset.slot;
+
+      const tier = e.target.value;
+
+      const nameSelect = document.querySelector(
+        `.equipped-armor-name[data-slot="${slot}"]`,
+      );
+
+      const name = nameSelect.value;
+
+      const armor = data.armors.find(
+        (armor) =>
+          armor.armor_piece_location === slot &&
+          armor.armor_name === name &&
+          armor.armor_tier === tier,
+      );
+
+      if (!armor) {
+        return;
+      }
+
+      equipArmor(slot, armor.armor_id);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ARMOR STORAGE MOVE
+    // ─────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("armor-storage-select")) {
+      const index = Number(e.target.dataset.index);
+
+      moveArmor(index, e.target.value);
     }
   });
 }

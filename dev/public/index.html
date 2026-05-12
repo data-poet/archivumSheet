@@ -142,6 +142,48 @@
       <ul id="spellList"></ul>
     </div>
 
+    <!-- ARMORS -->
+    <div class="box">
+      <h2>Armors</h2>
+
+      <button id="loadArmorsBtn">Load Armors</button>
+
+      <br />
+
+      <!-- ADD ARMOR -->
+      <div class="armor-add">
+        <select id="armorSlotSelect"></select>
+
+        <select id="armorNameSelect"></select>
+
+        <select id="armorTierSelect"></select>
+
+        <select id="armorStorage">
+          <option value="backpack">Backpack</option>
+
+          <option value="stash">Stash</option>
+
+          <option value="camp">Camp</option>
+        </select>
+
+        <button id="addArmorBtn">Add Armor</button>
+      </div>
+
+      <!-- EQUIPPED -->
+      <div class="armor-equipped">
+        <h3>Equipped</h3>
+
+        <div id="armorSlots"></div>
+      </div>
+
+      <!-- STORAGE -->
+      <div class="armor-storage">
+        <h3>Stored Armors</h3>
+
+        <ul id="armorStorageList"></ul>
+      </div>
+    </div>
+
     <!-- INVENTORY -->
     <div class="box">
       <h2>Inventory</h2>
@@ -151,8 +193,21 @@
         <span id="carry_limits">-</span>
       </p>
 
-      <label>Total Weight:</label>
+      <label>Base Weight:</label>
+
       <input id="weight" type="number" value="0" />
+
+      <p>
+        <strong>Armor Weight:</strong>
+
+        <span id="armor_weight"> 0 </span>
+      </p>
+
+      <p>
+        <strong>Total Weight:</strong>
+
+        <span id="total_weight"> 0 </span>
+      </p>
 
       <p>
         <strong>Encumbrance:</strong>

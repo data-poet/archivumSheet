@@ -5,6 +5,7 @@ export const state = {
     disadvantages: [],
     skills: [],
     spells: [],
+    armors: [],
   },
 
   // ===== USER SELECTION =====
@@ -15,6 +16,7 @@ export const state = {
     spells: {},
     secondary: {},
     damage: {},
+    armors: [],
   },
 
   // ===== UI STATE =====
