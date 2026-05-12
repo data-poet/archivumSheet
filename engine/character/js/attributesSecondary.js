@@ -70,7 +70,7 @@ function computeBaseSecondary({ ST, HT, IQ, DX }) {
 function buildSecondaryAttributes(
   primaryAttributes,
   config = {},
-  weight = 0,
+  carry_weight = null,
   effects = {},
 ) {
   const ST = primaryAttributes.ST.value;
@@ -128,7 +128,7 @@ function buildSecondaryAttributes(
   /**
    * Movement & Dodge (depends on BasicSpeed + carry weight)
    */
-  const carry = calculateCarryWeight(ST, weight);
+  const carry = carry_weight || calculateCarryWeight(ST, 0);
 
   let movementBase = Math.floor(
     result.BasicSpeed.value + carry.weight_modifier,
