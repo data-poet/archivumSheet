@@ -1,5 +1,5 @@
 // ===== RENDER LISTS =====
-export function renderLists(selected) {
+export function renderLists(selected, data) {
   // ADVANTAGES
   document.getElementById("advList").innerHTML = Object.keys(
     selected.advantages,
@@ -93,6 +93,168 @@ export function renderLists(selected) {
       `;
     })
     .join("");
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // ARMOR SLOTS
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const ARMOR_SLOTS = ["Cabeça", "Tronco", "Braços", "Mãos", "Pernas", "Pés"];
+
+  const equippedHtml = ARMOR_SLOTS.map((slot) => {
+    // All armors for slot
+    const slotArmors = data.armors.filter(
+      (armor) => armor.armor_piece_location === slot,
+    );
+
+    // Equipped armor instance
+    const equippedInstance = selected.armors.find((selectedArmor) => {
+      if (!selectedArmor.is_equipped) {
+        return false;
+      }
+
+      const dbArmor = data.armors.find(
+        (armor) => armor.armor_id === selectedArmor.armor_id,
+      );
+
+      return dbArmor?.armor_piece_location === slot;
+    });
+
+    // Full DB armor
+    const equippedArmor = equippedInstance
+      ? data.armors.find(
+          (armor) => armor.armor_id === equippedInstance.armor_id,
+        )
+      : null;
+
+    // Unique names
+    const names = [...new Set(slotArmors.map((armor) => armor.armor_name))];
+
+    // Available tiers for selected name
+    const tiers = equippedArmor
+      ? slotArmors
+          .filter((armor) => armor.armor_name === equippedArmor.armor_name)
+          .map((armor) => armor.armor_tier)
+      : [];
+
+    return `
+    <div class="armor-slot">
+      <strong>${slot}</strong>
+
+      <!-- NAME -->
+      <select
+        class="equipped-armor-name"
+        data-slot="${slot}"
+      >
+        <option value="">
+          Empty
+        </option>
+
+        ${names
+          .map(
+            (name) => `
+              <option
+                value="${name}"
+                ${equippedArmor?.armor_name === name ? "selected" : ""}
+              >
+                ${name}
+              </option>
+            `,
+          )
+          .join("")}
+      </select>
+
+      <!-- TIER -->
+      <select
+        class="equipped-armor-tier"
+        data-slot="${slot}"
+      >
+        ${
+          equippedArmor
+            ? tiers
+                .map(
+                  (tier) => `
+                    <option
+                      value="${tier}"
+                      ${equippedArmor?.armor_tier === tier ? "selected" : ""}
+                    >
+                      ${tier}
+                    </option>
+                  `,
+                )
+                .join("")
+            : `
+              <option value="">
+                -
+              </option>
+            `
+        }
+      </select>
+    </div>
+  `;
+  }).join("");
+
+  document.getElementById("armorSlots").innerHTML = equippedHtml;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // STORED ARMORS
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const storedArmors = selected.armors.filter((armor) => !armor.is_equipped);
+
+  document.getElementById("armorStorageList").innerHTML = storedArmors
+    .map((selectedArmor, index) => {
+      const armorData = data.armors.find(
+        (armor) => armor.armor_id === selectedArmor.armor_id,
+      );
+
+      if (!armorData) {
+        return "";
+      }
+
+      return `
+          <li>
+            <strong>
+              ${armorData.armor_name}
+            </strong>
+
+            (${armorData.armor_piece_location})
+
+            <select
+              class="armor-storage-select"
+              data-index="${index}"
+            >
+              <option
+                value="backpack"
+                ${selectedArmor.storedAt === "backpack" ? "selected" : ""}
+              >
+                Backpack
+              </option>
+
+              <option
+                value="stash"
+                ${selectedArmor.storedAt === "stash" ? "selected" : ""}
+              >
+                Stash
+              </option>
+
+              <option
+                value="camp"
+                ${selectedArmor.storedAt === "camp" ? "selected" : ""}
+              >
+                Camp
+              </option>
+            </select>
+
+            <button
+              class="remove-armor"
+              data-index="${index}"
+            >
+              ❌
+            </button>
+          </li>
+        `;
+    })
+    .join("");
 }
 
 // ===== INVENTORY UI =====
@@ -100,7 +262,15 @@ export function updateInventoryUI(sheet) {
   const carry = sheet?.inventory?.carry_weight;
   if (!carry) return;
 
-  const weight = Number(document.getElementById("weight").value) || 0;
+  const baseWeight = Number(document.getElementById("weight").value) || 0;
+
+  const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
+
+  const weight = baseWeight + armorWeight;
+
+  document.getElementById("armor_weight").textContent = armorWeight;
+
+  document.getElementById("total_weight").textContent = weight;
 
   let stateLabel = "None";
 

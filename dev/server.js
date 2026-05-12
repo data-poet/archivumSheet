@@ -51,10 +51,19 @@ app.get("/api/skills", (req, res) => {
 });
 
 /* -----------------------
-   SPELLS (FIXED ENDPOINT NAME)
+   SPELLS
 ------------------------ */
 app.get("/api/spells", (req, res) => {
   const data = loadCSV(path.join(__dirname, "../data/db_magic_grimoire.csv"));
+
+  res.json(data);
+});
+
+/* -----------------------
+   INVENTORY
+------------------------ */
+app.get("/api/armors", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_equipment_armors.csv"));
 
   res.json(data);
 });
