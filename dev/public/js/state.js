@@ -6,6 +6,7 @@ export const state = {
     skills: [],
     spells: [],
     armors: [],
+    materials: [],
   },
 
   // ===== USER SELECTION =====
