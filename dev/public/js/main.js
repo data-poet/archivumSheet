@@ -14,6 +14,7 @@ import {
   fetchDisadvantages,
   fetchSkills,
   fetchSpells,
+  fetchMaterials,
   fetchArmors,
   buildSheet,
 } from "./api.js";
@@ -216,7 +217,10 @@ function removeSpell(name) {
 
 // ===== ARMORS =====
 async function loadArmors() {
-  data.armors = await fetchArmors();
+  [data.armors, data.materials] = await Promise.all([
+    fetchArmors(),
+    fetchMaterials(),
+  ]);
 
   loadArmorSelectors();
 
@@ -248,6 +252,8 @@ function loadArmorSelectors() {
   });
 
   updateArmorNameOptions();
+  updateArmorTierOptions();
+  updateArmorMaterialOptions();
 }
 
 /**
@@ -316,14 +322,49 @@ function updateArmorTierOptions() {
 }
 
 /**
+ * Update material options.
+ */
+function updateArmorMaterialOptions() {
+  const materialSelect = document.getElementById("armorMaterialSelect");
+
+  materialSelect.innerHTML = "";
+
+  data.materials.forEach((material) => {
+    const opt = document.createElement("option");
+
+    opt.value = material.material_name;
+
+    opt.textContent = material.material_name;
+
+    materialSelect.appendChild(opt);
+  });
+}
+
+/**
  * Equip armor into a slot.
  *
  * Rules:
  * - only one equipped per slot
  * - equipped armor has storedAt = null
  */
-function equipArmor(slot, armorId) {
-  // Remove current equipped armor from slot
+function equipArmor(slot, armorId, materialId = "MAT-000") {
+  // Find currently equipped armor in slot
+  const currentEquipped = selected.armors.find((selectedArmor) => {
+    if (!selectedArmor.is_equipped) {
+      return false;
+    }
+
+    const dbArmor = data.armors.find(
+      (armor) => armor.armor_id === selectedArmor.armor_id,
+    );
+
+    return dbArmor?.armor_piece_location === slot;
+  });
+
+  // Preserve material if possible
+  const preservedMaterialId = currentEquipped?.material_id || materialId;
+
+  // Remove equipped armor from slot
   selected.armors = selected.armors.filter((selectedArmor) => {
     if (!selectedArmor.is_equipped) {
       return true;
@@ -345,24 +386,14 @@ function equipArmor(slot, armorId) {
     return;
   }
 
-  // Check if armor already exists
-  const existing = selected.armors.find((armor) => armor.armor_id === armorId);
-
-  if (existing) {
-    existing.is_equipped = true;
-    existing.storedAt = null;
-
-    renderLists(selected, data);
-
-    triggerAutoRun();
-
-    return;
-  }
-
-  // Add new equipped armor
+  // Add equipped armor
   selected.armors.push({
     armor_id: armorId,
+
+    material_id: preservedMaterialId,
+
     is_equipped: true,
+
     storedAt: null,
   });
 
@@ -374,13 +405,15 @@ function equipArmor(slot, armorId) {
 /**
  * Add armor directly to storage.
  */
-function addStoredArmor(armorId, storedAt = "backpack") {
+function addStoredArmor(armorId, materialId = null, storedAt = "backpack") {
   if (!armorId) {
     return;
   }
 
   selected.armors.push({
     armor_id: armorId,
+    material_id: materialId,
+
     is_equipped: false,
     storedAt,
   });
@@ -582,9 +615,17 @@ function bindUI() {
 
     const armorId = armor.armor_id;
 
+    const materialName = document.getElementById("armorMaterialSelect").value;
+
+    const material = data.materials.find(
+      (material) => material.material_name === materialName,
+    );
+
+    const materialId = material?.material_id || null;
+
     const storedAt = document.getElementById("armorStorage").value;
 
-    addStoredArmor(armorId, storedAt);
+    addStoredArmor(armorId, materialId, storedAt);
   });
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -598,29 +639,106 @@ function bindUI() {
   // ───────────────────────────────────────────────────────────────────────────
 
   document.addEventListener("click", (e) => {
+    // ─────────────────────────────────────────────────────────────────────────
     // ADVANTAGES
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("remove-adv")) {
       removeAdv(e.target.dataset.id);
+
+      return;
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // DISADVANTAGES
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("remove-dis")) {
       removeDis(e.target.dataset.id);
+
+      return;
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // SKILLS
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("remove-skill")) {
       removeSkill(e.target.dataset.id);
+
+      return;
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // SPELLS
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("remove-spell")) {
       removeSpell(e.target.dataset.name);
+
+      return;
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
     // ARMORS
+    // ─────────────────────────────────────────────────────────────────────────
+
     if (e.target.classList.contains("remove-armor")) {
       removeArmor(Number(e.target.dataset.index));
+
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // EQUIP STORED ARMOR
+    // ─────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("equip-stored-armor")) {
+      const index = Number(e.target.dataset.index);
+
+      const armorToEquip = selected.armors[index];
+
+      if (!armorToEquip) {
+        return;
+      }
+
+      const dbArmor = data.armors.find(
+        (armor) => armor.armor_id === armorToEquip.armor_id,
+      );
+
+      if (!dbArmor) {
+        return;
+      }
+
+      const slot = dbArmor.armor_piece_location;
+
+      // UNEQUIP CURRENT SLOT ARMOR
+      selected.armors.forEach((armorInstance) => {
+        if (!armorInstance.is_equipped) {
+          return;
+        }
+
+        const equippedDbArmor = data.armors.find(
+          (armor) => armor.armor_id === armorInstance.armor_id,
+        );
+
+        if (equippedDbArmor?.armor_piece_location === slot) {
+          armorInstance.is_equipped = false;
+
+          armorInstance.storedAt = "backpack";
+        }
+      });
+
+      // EQUIP NEW ARMOR
+      armorToEquip.is_equipped = true;
+
+      armorToEquip.storedAt = null;
+
+      renderLists(selected, data);
+
+      triggerAutoRun();
+
+      return;
     }
   });
 
@@ -635,6 +753,8 @@ function bindUI() {
 
     if (e.target.classList.contains("skill-input")) {
       updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
+
+      return;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -647,6 +767,8 @@ function bindUI() {
         e.target.dataset.field,
         e.target.value,
       );
+
+      return;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -682,6 +804,8 @@ function bindUI() {
       }
 
       triggerAutoRun();
+
+      return;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -702,22 +826,26 @@ function bindUI() {
       selected.damage[type].modifier = value;
 
       triggerAutoRun();
+
+      return;
     }
+  });
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // ARMOR SLOT EQUIP
-    // ─────────────────────────────────────────────────────────────────────────
+  // ───────────────────────────────────────────────────────────────────────────
+  // CHANGE EVENTS
+  // ───────────────────────────────────────────────────────────────────────────
 
-    // ─────────────────────────────────────────────────────────────────────────────
+  document.addEventListener("change", (e) => {
+    // ─────────────────────────────────────────────────────────────────────────
     // EQUIPPED ARMOR NAME
-    // ─────────────────────────────────────────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────────────────
 
     if (e.target.classList.contains("equipped-armor-name")) {
       const slot = e.target.dataset.slot;
 
       const name = e.target.value;
 
-      // Empty slot
+      // EMPTY SLOT
       if (!name) {
         equipArmor(slot, "");
 
@@ -749,14 +877,16 @@ function bindUI() {
         return;
       }
 
-      equipArmor(slot, firstArmor.armor_id);
+      equipArmor(slot, firstArmor.armor_id, "MAT-000");
 
       renderLists(selected, data);
+
+      return;
     }
 
-    // ─────────────────────────────────────────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────────────────
     // EQUIPPED ARMOR TIER
-    // ─────────────────────────────────────────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────────────────
 
     if (e.target.classList.contains("equipped-armor-tier")) {
       const slot = e.target.dataset.slot;
@@ -780,17 +910,115 @@ function bindUI() {
         return;
       }
 
-      equipArmor(slot, armor.armor_id);
+      const currentEquipped = selected.armors.find((selectedArmor) => {
+        if (!selectedArmor.is_equipped) {
+          return false;
+        }
+
+        const dbArmor = data.armors.find(
+          (dbArmor) => dbArmor.armor_id === selectedArmor.armor_id,
+        );
+
+        return dbArmor?.armor_piece_location === slot;
+      });
+
+      equipArmor(
+        slot,
+        armor.armor_id,
+        currentEquipped?.material_id || "MAT-000",
+      );
+
+      return;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // ARMOR STORAGE MOVE
+    // EQUIPPED ARMOR MATERIAL
+    // ─────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("equipped-armor-material")) {
+      const slot = e.target.dataset.slot;
+
+      const materialId = e.target.value;
+
+      const equippedArmor = selected.armors.find((selectedArmor) => {
+        if (!selectedArmor.is_equipped) {
+          return false;
+        }
+
+        const dbArmor = data.armors.find(
+          (armor) => armor.armor_id === selectedArmor.armor_id,
+        );
+
+        return dbArmor?.armor_piece_location === slot;
+      });
+
+      if (!equippedArmor) {
+        return;
+      }
+
+      equippedArmor.material_id = materialId;
+
+      triggerAutoRun();
+
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // STORED ARMOR LOCATION
     // ─────────────────────────────────────────────────────────────────────────
 
     if (e.target.classList.contains("armor-storage-select")) {
       const index = Number(e.target.dataset.index);
 
       moveArmor(index, e.target.value);
+
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // MOVE EQUIPPED ARMOR TO STORAGE
+    // ─────────────────────────────────────────────────────────────────────────
+
+    if (e.target.classList.contains("equipped-armor-move")) {
+      const slot = e.target.dataset.slot;
+
+      const destination = e.target.value;
+
+      const equippedArmor = selected.armors.find((selectedArmor) => {
+        if (!selectedArmor.is_equipped) {
+          return false;
+        }
+
+        const dbArmor = data.armors.find(
+          (armor) => armor.armor_id === selectedArmor.armor_id,
+        );
+
+        return dbArmor?.armor_piece_location === slot;
+      });
+
+      if (!equippedArmor) {
+        return;
+      }
+
+      // KEEP EQUIPPED
+      if (!destination) {
+        equippedArmor.is_equipped = true;
+
+        equippedArmor.storedAt = null;
+      }
+
+      // MOVE TO STORAGE
+      else {
+        equippedArmor.is_equipped = false;
+
+        equippedArmor.storedAt = destination;
+      }
+
+      renderLists(selected, data);
+
+      triggerAutoRun();
+
+      return;
     }
   });
 }

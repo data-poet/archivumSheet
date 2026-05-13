@@ -189,6 +189,51 @@ export function renderLists(selected, data) {
             `
         }
       </select>
+
+      <!-- MATERIAL -->
+      <select
+        class="equipped-armor-material"
+        data-slot="${slot}"
+      >
+        ${data.materials
+          .map(
+            (material) => `
+              <option
+                value="${material.material_id}"
+                ${
+                  equippedInstance?.material_id === material.material_id
+                    ? "selected"
+                    : ""
+                }
+              >
+                ${material.material_name}
+              </option>
+            `,
+          )
+          .join("")}
+      </select>
+
+      <!-- MOVE -->
+      <select
+        class="equipped-armor-move"
+        data-slot="${slot}"
+      >
+        <option value="">
+          Equipped
+        </option>
+
+        <option value="backpack">
+          Backpack
+        </option>
+
+        <option value="stash">
+          Stash
+        </option>
+
+        <option value="camp">
+          Camp
+        </option>
+      </select>
     </div>
   `;
   }).join("");
@@ -211,50 +256,84 @@ export function renderLists(selected, data) {
         return "";
       }
 
+      const material = data.materials.find(
+        (material) => material.material_id === selectedArmor.material_id,
+      );
+
       return `
-          <li>
-            <strong>
-              ${armorData.armor_name}
-            </strong>
+      <li>
+        <strong>
+          ${armorData.armor_name}
+        </strong>
 
-            (${armorData.armor_piece_location})
+        (${armorData.armor_piece_location})
 
-            <select
-              class="armor-storage-select"
-              data-index="${index}"
-            >
-              <option
-                value="backpack"
-                ${selectedArmor.storedAt === "backpack" ? "selected" : ""}
-              >
-                Backpack
-              </option>
+        ${
+          material
+            ? `
+              - ${material.material_name}
+            `
+            : ""
+        }
 
-              <option
-                value="stash"
-                ${selectedArmor.storedAt === "stash" ? "selected" : ""}
-              >
-                Stash
-              </option>
+        <!-- STORAGE -->
+        <select
+          class="armor-storage-select"
+          data-index="${index}"
+        >
+          <option
+            value="backpack"
+            ${selectedArmor.storedAt === "backpack" ? "selected" : ""}
+          >
+            Backpack
+          </option>
 
-              <option
-                value="camp"
-                ${selectedArmor.storedAt === "camp" ? "selected" : ""}
-              >
-                Camp
-              </option>
-            </select>
+          <option
+            value="stash"
+            ${selectedArmor.storedAt === "stash" ? "selected" : ""}
+          >
+            Stash
+          </option>
 
-            <button
-              class="remove-armor"
-              data-index="${index}"
-            >
-              ❌
-            </button>
-          </li>
-        `;
+          <option
+            value="camp"
+            ${selectedArmor.storedAt === "camp" ? "selected" : ""}
+          >
+            Camp
+          </option>
+        </select>
+
+        <!-- EQUIP -->
+        <button
+          class="equip-stored-armor"
+          data-index="${index}"
+        >
+          Equip
+        </button>
+
+        <!-- REMOVE -->
+        <button
+          class="remove-armor"
+          data-index="${index}"
+        >
+          ❌
+        </button>
+      </li>
+    `;
     })
     .join("");
+}
+
+function getMaterialName(materialId, materials = []) {
+  if (!materialId) {
+    return "Common";
+  }
+
+  const material = materials.find(
+    (material) => material.material_id === materialId,
+  );
+
+  return material?.material_name || "Unknown";
 }
 
 // ===== INVENTORY UI =====

@@ -60,6 +60,17 @@ app.get("/api/spells", (req, res) => {
 });
 
 /* -----------------------
+   MATERIALS
+------------------------ */
+app.get("/api/materials", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_crafting_materials.csv"),
+  );
+
+  res.json(data);
+});
+
+/* -----------------------
    INVENTORY
 ------------------------ */
 app.get("/api/armors", (req, res) => {
