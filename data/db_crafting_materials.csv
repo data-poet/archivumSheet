@@ -1,0 +1,92 @@
+material_id,material_name,material_type,material_tier,material_gdp_modifier,material_bal_modifier,material_dr_modifier,material_atk_effect,material_def_effect,material_weight_modifier,material_price_modifier,material_hit_points_modifier,material_description
+MAT-000,Ferro,Metal,Comum,0,0,0,,,1.00,1.00,1,"
+- Metal cinza opaco, com superfície levemente rugosa e suscetível à oxidação.
+- Encontrado abundantemente em minas superficiais e subterrâneas.
+- Extremamente comum, sendo a base da maioria das armas e armaduras."
+MAT-001,Aço Anão,Metal,Comum,-1,1,2,,,1.10,1.10,2,"
+- Cinza escuro com brilho sutil, acabamento impecável e uniforme.
+- Forjado em fortalezas subterrâneas anãs, usando técnicas ancestrais.
+- Comum entre anões, mas levemente mais raro fora de seus reinos."
+MAT-002,Mercúrio Élfico,Metal,Comum,1,1,-2,,,0.80,1.20,1,"
+- Prateado líquido com reflexos suaves, mesmo em estado sólido parece fluido.
+- Criado por elfos através de processos alquímicos em florestas antigas.
+- Incomum fora de culturas élficas, valorizado por sua leveza."
+MAT-003,Aço,Metal,Incomum,1,1,1,,,1.05,1.10,2,"
+- Cinza metálico brilhante, resistente e versátil.
+- Produzido em larga escala em forjas urbanas e militares.
+- Incomum devido à necessidade de refinamento, mas amplamente disponível."
+MAT-004,Obsidiana,Metal,Incomum,2,1,-3,"
+- Ignora 1 ponto de DR de armaduras.",,0.80,1.10,1,"
+- Negra, vítrea e extremamente afiada, com bordas quase perfeitas.
+- Formada a partir de lava resfriada rapidamente em regiões vulcânicas.
+- Incomum, difícil de trabalhar e extremamente frágil."
+MAT-005,Pedra de Sangue,Metal,Incomum,0,0,2,"
+","
+ Bônus de +2 de resistência a dano mágico.",0.90,1.10,1,"
+- Vermelha escura com veios pulsantes, como sangue coagulado.
+- Encontrada em cavernas e túnesi sempre abaixo de batalhas antigas ou rituais sangrentos.
+- Incomum, associada a propriedades místicas defensivas."
+MAT-006,Azurita,Metal,Incomum,1,1,1,"
+- Bônus de +2 para ser encantado.","
+- Bônus de +2 para ser encantado.",1.00,1.20,2,"
+- Azul vibrante com brilho arcano, às vezes translúcida.
+- Encontrada em cavernas ricas em energia mágica.
+- Incomum, muito valorizada por encantadores."
+MAT-006,Prata,Metal,Raro,1,1,2,"
+- Bônus de +3 de dano contra criaturas dos tipo zumbi, espírito, demônio e criaturas da noite.","
+- Bônus de +3 de resistência a dano de criaturas dos tipo zumbi, espírito, demônio e criaturas da noite.",1.20,1.50,2,"
+- Branca brilhante com reflexo intenso.
+- Minerada em veios raros e refinada com cuidado.
+- Rara, especialmente valorizada contra criaturas sobrenaturais."
+MAT-007,Aço Frio,Metal,Raro,1,1,2,"
+- Bônus de +3 de dano contra feéricos.","
+- Bônus de +3 de resistência a dano de feéricos.",1.20,1.50,2,"
+- Aço azul-acizentado pálido, com superfície fria ao toque.
+- Forjado sem calor, através de processos místicos ou alquímicos.
+- Raro, altamente eficaz contra criaturas feéricas."
+MAT-008,Aço Meteórico,Metal,Épico,1,1,2,"
+- Bônus de +3 de dano contra dragões.","
+- Bônus de +3 de resistência a dano de  dragões.",1.20,1.75,2,"
+- Cinza escuro com pontos brilhantes, como estrelas presas no metal.
+- Obtido de meteoros caídos do céu.
+- Extremamente raro devido à origem extraterrestre."
+MAT-009,Pedra Tempestade,Metal,Épico,0,0,0,"
+- Adiciona 1d6 de dano de eletricidade.","
+- Reduz o dano de eletricidade pela metade.",1.10,2.00,2,"
+- Preto profundo com faíscas elétricas visíveis correndo pela superfície.
+- Criado a partir de meteoritos e minerais energizados.
+- Muito raro, instável e poderoso."
+MAT-010,Pedra Chama,Metal,Épico,0,0,0,"
+- Adiciona 1d6 de dano de fogo.","
+- Reduz o dano de fogo pela metade.",1.10,2.00,2,"
+- Tons de vermelho, laranja e amarelo em padrões de chama.
+- Encontrada em regiões vulcânicas ou planos elementais de fogo.
+- Muito rara, constantemente emana calor."
+MAT-011,Pedra Gelo,Metal,Épico,0,0,0,"
+- Adiciona 1d6 de dano de gelo.","
+- Reduz o dano de gelo pela metade.",1.10,2.00,2,"
+- Azul claro translúcido, com névoa fria emanando da superfície.
+- Encontrada em geleiras antigas ou planos de gelo.
+- Muito rara, mantém temperatura extremamente baixa."
+MAT-012,Tenebrium,Metal,Lendário,2,2,2,"
+- Bônus de +3 de dano contra criaturas vivas.","
+- Bônus de +3 de resistência a dano de criaturas vivas.",1.10,5.00,4,"
+- Negro absoluto, absorvendo luz ao invés de refleti-la.
+- Encontrado em planos infernais ou possuído por entidades demoníacas.
+- Lendário, associado à corrupção e poder sombrio."
+MAT-013,Adamantina,Metal,Lendário,4,4,6,"
+- Ignora 1 ponto de DR de armaduras.",,1.80,3.00,3,"
+- Cinza-azulado com brilho cristalino e densidade extrema.
+- Encontrada em profundezas quase inacessíveis da terra.
+- Lendária, praticamente indestrutível."
+MAT-014,Mithril,Metal,Lendário,3,3,4,"
+- Aumenta o NH do usuário em +1 na perícia correspondente.",,0.50,5.00,3,"
+- Branco prateado, leve e com brilho suave quase etéreo.
+- Extraído de minas raríssimas, geralmente em territórios élficos.
+- Lendário, valorizado por sua leveza e resistência."
+MAT-015,Orichalcum,Metal,Lendário,2,2,2,"
+- Anula o uso de mana ao contato.","
+- Anula qualquer dano mágico.",1.50,4.00,3,"
+- Verde-cobre com reflexos dourados sutis.
+- Encontrado em ruínas antigas de uma civilização perdida.
+- Lendário, conhecido por sua interação única com magia."
