@@ -69,6 +69,7 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         armor_id: "ARMOR-000",
         material_id: "MAT-003",
+        hit_points_modifier: -5,
         is_equipped: true,
         storedAt: "backpack",
       };
@@ -81,7 +82,6 @@ describe("equipmentArmorUtils", () => {
         armor_box_name: "Capuz | Comum",
         armor_name: "Capuz",
 
-        // NOW ENGLISH
         armor_piece_location: "head",
 
         armor_type: "Leve",
@@ -91,7 +91,6 @@ describe("equipmentArmorUtils", () => {
         armor_price: 100,
         armor_hit_points: 10,
 
-        // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
@@ -102,13 +101,15 @@ describe("equipmentArmorUtils", () => {
         material_price_modifier: 1.1,
         material_hit_points_modifier: 2,
 
-        // FINAL VALUES
         armor_final_damage_resistence: 3,
         armor_final_weight: 1.58,
         armor_final_price: 110,
         armor_final_hit_points: 20,
 
-        // RUNTIME
+        hit_points_modifier: -5,
+
+        final_hit_points: 15,
+
         is_equipped: true,
 
         storedAt: "backpack",
@@ -118,6 +119,7 @@ describe("equipmentArmorUtils", () => {
     test("Should resolve armor without material", () => {
       const instance = {
         armor_id: "ARMOR-000",
+        hit_points_modifier: -2,
         is_equipped: false,
         storedAt: "stash",
       };
@@ -125,14 +127,13 @@ describe("equipmentArmorUtils", () => {
       const result = resolveArmorPiece(instance, mockArmor);
 
       expect(result.material_id).toBeNull();
-
       expect(result.material_name).toBeNull();
-
       expect(result.armor_final_damage_resistence).toBe(2);
-
       expect(result.armor_final_weight).toBe(1.5);
-
       expect(result.armor_piece_location).toBe("head");
+      expect(result.hit_points_modifier).toBe(-2);
+      expect(result.final_hit_points).toBe(8);
+      expect(result.armor_final_hit_points).toBe(10);
     });
   });
 
@@ -188,7 +189,6 @@ describe("equipmentArmorUtils", () => {
         materialDb,
       );
 
-      // backpack (1.58) + equipped (1.5)
       expect(result).toBe(3.08);
     });
 

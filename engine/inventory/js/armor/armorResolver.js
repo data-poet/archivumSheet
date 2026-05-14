@@ -51,6 +51,8 @@ function applyMaterialToArmor(armor, material) {
 function resolveArmorPiece(instance, armor, material = null) {
   const finalStats = applyMaterialToArmor(armor, material);
 
+  const hitPointsModifier = Number(instance.hit_points_modifier || 0);
+
   return {
     armor_id: armor.armor_id,
 
@@ -80,6 +82,13 @@ function resolveArmorPiece(instance, armor, material = null) {
 
     // FINAL VALUES
     ...finalStats,
+
+    // RUNTIME MODIFIERS
+    hit_points_modifier: hitPointsModifier,
+
+    final_hit_points: round2(
+      finalStats.armor_final_hit_points + hitPointsModifier,
+    ),
 
     // RUNTIME
     is_equipped: instance.is_equipped,
