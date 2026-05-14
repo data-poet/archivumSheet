@@ -43,7 +43,7 @@ describe("getMaterialsDB", () => {
   beforeEach(() => {
     jest.resetModules();
 
-    ({ getMaterialsDB } = require("engine/inventory/js/materialsDB"));
+    ({ getMaterialsDB } = require("engine/inventory/js/materials/materialsDB"));
 
     ({ loadCSV } = require("helpers/dataUtils.js"));
 

@@ -2,7 +2,7 @@ const {
   getSkillCost,
   getRelativeLevel,
   COST_TABLES,
-} = require("engine/character/js/skillsCost");
+} = require("engine/character/js/skills/skillsCost");
 
 describe("skillsCost", () => {
   describe("getRelativeLevel", () => {

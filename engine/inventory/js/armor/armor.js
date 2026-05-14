@@ -1,19 +1,19 @@
 const path = require("path");
 
-const { loadCSV } = require("../../../helpers/dataUtils.js");
+const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
-const { SLOTS, VALID_STORED_AT } = require("./equipmentArmorConstants");
+const { SLOTS, VALID_STORED_AT } = require("./armorConstants.js");
 
 const {
   validateArmorInstance,
   validateSingleEquippedPerSlot,
-} = require("./equipmentArmorValidation");
+} = require("./armorValidation.js");
 
 const {
   resolveArmorPiece,
   buildEquippedSlots,
   calculateTotalArmorWeight,
-} = require("./equipmentArmorResolver");
+} = require("./armorResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARMOR DB
@@ -26,12 +26,9 @@ function getArmorDB() {
     return _armorDB;
   }
 
-  const csvPath = path.resolve(
-    __dirname,
-    "../../../data/db_equipment_armors.csv",
-  );
+  const filePath = path.join(process.cwd(), "data", "db_equipment_armors.csv");
 
-  const rows = loadCSV(csvPath);
+  const rows = loadCSV(filePath);
 
   _armorDB = {};
 
@@ -65,12 +62,13 @@ function getMaterialDB() {
     return _materialDB;
   }
 
-  const csvPath = path.resolve(
-    __dirname,
-    "../../../data/db_crafting_materials.csv",
+  const filePath = path.join(
+    process.cwd(),
+    "data",
+    "db_crafting_materials.csv",
   );
 
-  const rows = loadCSV(csvPath);
+  const rows = loadCSV(filePath);
 
   _materialDB = {};
 

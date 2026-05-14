@@ -1,4 +1,4 @@
-const { buildSkills } = require("engine/character/js/skills");
+const { buildSkills } = require("engine/character/js/skills/skills");
 
 const assertShape = require("tests/helpers/assertShape");
 

@@ -2,7 +2,7 @@
  * Secondary Attributes Builder
  */
 
-const { calculateCarryWeight } = require("../../inventory/js/carryWeight");
+const { calculateCarryWeight } = require("../../../inventory/js/carryWeight");
 const { calculateDamage } = require("./baseDamage");
 
 /**

@@ -1,6 +1,6 @@
 const { buildInventory } = require("engine/inventory/buildInventory");
 
-const { _getArmorDB } = require("engine/inventory/js/equipmentArmor");
+const { _getArmorDB } = require("engine/inventory/js/armor/armor");
 
 const assertShape = require("tests/helpers/assertShape");
 

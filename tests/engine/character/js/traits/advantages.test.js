@@ -1,4 +1,4 @@
-const { buildAdvantages } = require("engine/character/js/traitsAdvantages");
+const { buildAdvantages } = require("engine/character/js/traits/advantages");
 
 const assertShape = require("tests/helpers/assertShape");
 const assertNumericMap = require("tests/helpers/assertNumericMap");

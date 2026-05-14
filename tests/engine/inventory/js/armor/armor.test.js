@@ -3,7 +3,7 @@ const {
   SLOTS,
   VALID_STORED_AT,
   _getArmorDB,
-} = require("engine/inventory/js/equipmentArmor");
+} = require("engine/inventory/js/armor/armor.js");
 
 describe("EQUIPMENT ARMOR", () => {
   const db = _getArmorDB();

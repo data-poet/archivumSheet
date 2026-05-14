@@ -3,9 +3,9 @@ const {
   resolveArmorPiece,
   buildEquippedSlots,
   calculateTotalArmorWeight,
-} = require("engine/inventory/js/equipmentArmorResolver");
+} = require("engine/inventory/js/armor/armorResolver");
 
-const { SLOTS } = require("engine/inventory/js/equipmentArmorConstants");
+const { SLOTS } = require("engine/inventory/js/armor/armorConstants.js");
 
 describe("equipmentArmorUtils", () => {
   const mockArmor = {

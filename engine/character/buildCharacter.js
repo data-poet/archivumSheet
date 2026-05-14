@@ -1,8 +1,6 @@
 const { buildCharacterPrimary } = require("./buildCharacterPrimary");
-
 const { buildCharacterSecondary } = require("./buildCharacterSecondary");
-
-const { buildTraitsEffects } = require("./js/traitsEffects");
+const { buildTraitsEffects } = require("./js/traits/effects");
 
 function buildCharacter({
   advantages = [],
