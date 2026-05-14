@@ -84,16 +84,19 @@ function buildSecondaryAttributes(
   const result = {
     HP: resolveSecondary({
       base_value: base.HP,
+      step: 4,
       ...config.HP,
     }),
 
     Mana: resolveSecondary({
       base_value: base.Mana,
+      step: 4,
       ...config.Mana,
     }),
 
     Toxicity: resolveSecondary({
       base_value: base.Toxicity,
+      step: 4,
       ...config.Toxicity,
     }),
 

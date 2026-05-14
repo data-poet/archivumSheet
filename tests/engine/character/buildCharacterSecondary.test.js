@@ -172,7 +172,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const HP = secondary_attributes.HP;
 
-      expect(HP.value).toBe(HP.base_value + 2 + 3);
+      expect(HP.value).toBe(HP.base_value + 8 + 3);
     });
 
     it("Should apply step = 0.5 for BasicSpeed", () => {
