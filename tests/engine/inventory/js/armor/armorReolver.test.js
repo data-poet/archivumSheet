@@ -5,7 +5,10 @@ const {
   calculateTotalArmorWeight,
 } = require("engine/inventory/js/armor/armorResolver");
 
-const { SLOTS } = require("engine/inventory/js/armor/armorConstants.js");
+const {
+  SLOTS,
+  SLOT_MAP,
+} = require("engine/inventory/js/armor/armorConstants.js");
 
 describe("equipmentArmorUtils", () => {
   const mockArmor = {
@@ -77,7 +80,10 @@ describe("equipmentArmorUtils", () => {
 
         armor_box_name: "Capuz | Comum",
         armor_name: "Capuz",
-        armor_piece_location: "Cabeça",
+
+        // NOW ENGLISH
+        armor_piece_location: "head",
+
         armor_type: "Leve",
         armor_tier: "Comum",
         armor_damage_resistence: 2,
@@ -119,16 +125,24 @@ describe("equipmentArmorUtils", () => {
       const result = resolveArmorPiece(instance, mockArmor);
 
       expect(result.material_id).toBeNull();
+
       expect(result.material_name).toBeNull();
+
       expect(result.armor_final_damage_resistence).toBe(2);
+
       expect(result.armor_final_weight).toBe(1.5);
+
+      expect(result.armor_piece_location).toBe("head");
     });
   });
 
   describe("buildEquippedSlots", () => {
     test("Should create all equipment slots with null values", () => {
       const result = buildEquippedSlots();
-      const expected = Object.fromEntries(SLOTS.map((slot) => [slot, null]));
+
+      const expected = Object.fromEntries(
+        Object.values(SLOT_MAP).map((slot) => [slot, null]),
+      );
 
       expect(result).toEqual(expected);
     });
@@ -155,7 +169,8 @@ describe("equipmentArmorUtils", () => {
         {
           armor_id: "ARMOR-000",
           material_id: null,
-          storedAt: "equipped",
+          is_equipped: true,
+          storedAt: null,
         },
       ];
 
@@ -173,6 +188,7 @@ describe("equipmentArmorUtils", () => {
         materialDb,
       );
 
+      // backpack (1.58) + equipped (1.5)
       expect(result).toBe(3.08);
     });
 

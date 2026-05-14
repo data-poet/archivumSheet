@@ -7,9 +7,19 @@ const {
 
 describe("EQUIPMENT ARMOR", () => {
   const db = _getArmorDB();
+
   const armorId = Object.keys(db)[0];
 
   const materialId = "MAT-003"; // assuming exists in your CSV DB
+
+  const slotMap = {
+    Cabeça: "head",
+    Torso: "torso",
+    Braços: "arms",
+    Mãos: "hands",
+    Pernas: "legs",
+    Pés: "feet",
+  };
 
   describe("Constants", () => {
     test("Should export SLOTS", () => {
@@ -31,7 +41,9 @@ describe("EQUIPMENT ARMOR", () => {
   describe("getArmorDB", () => {
     test("Should load armor database", () => {
       expect(db).toBeDefined();
+
       expect(typeof db).toBe("object");
+
       expect(Object.keys(db).length).toBeGreaterThan(0);
     });
   });
@@ -41,16 +53,43 @@ describe("EQUIPMENT ARMOR", () => {
       const result = buildArmorSlots();
 
       expect(result.equipped).toEqual({
-        Cabeça: null,
-        Torso: null,
-        Braços: null,
-        Mãos: null,
-        Pernas: null,
-        Pés: null,
+        head: null,
+        torso: null,
+        arms: null,
+        hands: null,
+        legs: null,
+        feet: null,
       });
 
-      expect(result.carried).toEqual([]);
+      expect(result.stash).toEqual({
+        head: [],
+        torso: [],
+        arms: [],
+        hands: [],
+        legs: [],
+        feet: [],
+      });
+
+      expect(result.camp).toEqual({
+        head: [],
+        torso: [],
+        arms: [],
+        hands: [],
+        legs: [],
+        feet: [],
+      });
+
+      expect(result.backpack).toEqual({
+        head: [],
+        torso: [],
+        arms: [],
+        hands: [],
+        legs: [],
+        feet: [],
+      });
+
       expect(result.total_armor_weight).toBe(0);
+
       expect(result.carried_armor_weight).toBe(0);
     });
 
@@ -77,13 +116,18 @@ describe("EQUIPMENT ARMOR", () => {
         },
       ]);
 
-      const slot = armor.armor_piece_location;
+      const slot = slotMap[armor.armor_piece_location];
 
       expect(result.equipped[slot]).not.toBeNull();
+
       expect(result.equipped[slot].armor_id).toBe(armorId);
     });
 
     test("Should carry backpack armor correctly", () => {
+      const armor = db[armorId];
+
+      const slot = slotMap[armor.armor_piece_location];
+
       const result = buildArmorSlots([
         {
           armor_id: armorId,
@@ -92,11 +136,16 @@ describe("EQUIPMENT ARMOR", () => {
         },
       ]);
 
-      expect(result.carried.length).toBe(1);
+      expect(result.backpack[slot].length).toBe(1);
+
       expect(result.carried_armor_weight).toBeGreaterThan(0);
     });
 
     test("Should not count stash armor as carried weight", () => {
+      const armor = db[armorId];
+
+      const slot = slotMap[armor.armor_piece_location];
+
       const result = buildArmorSlots([
         {
           armor_id: armorId,
@@ -104,6 +153,8 @@ describe("EQUIPMENT ARMOR", () => {
           storedAt: "stash",
         },
       ]);
+
+      expect(result.stash[slot].length).toBe(1);
 
       expect(result.carried_armor_weight).toBe(0);
     });
@@ -146,19 +197,27 @@ describe("EQUIPMENT ARMOR", () => {
     });
 
     test("Should not throw when material_id is valid", () => {
+      const armor = db[armorId];
+
+      const slot = slotMap[armor.armor_piece_location];
+
       const result = buildArmorSlots([
         {
           armor_id: armorId,
-          material_id: null,
+          material_id: materialId,
           is_equipped: false,
           storedAt: "backpack",
         },
       ]);
 
-      expect(result.carried.length).toBe(1);
+      expect(result.backpack[slot].length).toBe(1);
     });
 
     test("Should respect VALID_STORED_AT implicitly via no crash", () => {
+      const armor = db[armorId];
+
+      const slot = slotMap[armor.armor_piece_location];
+
       const result = buildArmorSlots([
         {
           armor_id: armorId,
@@ -166,6 +225,8 @@ describe("EQUIPMENT ARMOR", () => {
           storedAt: "camp",
         },
       ]);
+
+      expect(result.camp[slot].length).toBe(1);
 
       expect(result.carried_armor_weight).toBe(0);
     });

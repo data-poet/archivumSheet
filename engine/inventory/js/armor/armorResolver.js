@@ -1,5 +1,4 @@
-const { SLOTS } = require("./armorConstants");
-
+const { SLOT_MAP } = require("./armorConstants");
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
@@ -57,7 +56,7 @@ function resolveArmorPiece(instance, armor, material = null) {
 
     armor_name: armor.armor_name,
     armor_box_name: armor.armor_box_name,
-    armor_piece_location: armor.armor_piece_location,
+    armor_piece_location: SLOT_MAP[armor.armor_piece_location],
     armor_type: armor.armor_type,
     armor_tier: armor.armor_tier,
     armor_damage_resistence: armor.armor_damage_resistence,
@@ -90,7 +89,9 @@ function resolveArmorPiece(instance, armor, material = null) {
 }
 
 function buildEquippedSlots() {
-  return Object.fromEntries(SLOTS.map((slot) => [slot, null]));
+  return Object.fromEntries(
+    Object.values(SLOT_MAP).map((slot) => [slot, null]),
+  );
 }
 
 /**
