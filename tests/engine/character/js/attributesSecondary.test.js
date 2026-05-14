@@ -75,9 +75,9 @@ describe("SECONDARY ATTRIBUTES", () => {
         mockCarryWeight,
       );
 
-      expect(attributes.HP.value).toBe(attributes.HP.base_value + 2);
+      expect(attributes.HP.value).toBe(attributes.HP.base_value + 8);
 
-      expect(attributes.Mana.value).toBe(attributes.Mana.base_value + 1);
+      expect(attributes.Mana.value).toBe(attributes.Mana.base_value + 4);
     });
 
     it("Should clamp bought values to maxBought (default 5)", () => {
@@ -91,7 +91,7 @@ describe("SECONDARY ATTRIBUTES", () => {
 
       expect(attributes.HP.bought).toBe(5);
 
-      expect(attributes.HP.value).toBe(attributes.HP.base_value + 5);
+      expect(attributes.HP.value).toBe(attributes.HP.base_value + 20);
     });
 
     it("Should not allow negative bought values", () => {
@@ -131,7 +131,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         mockCarryWeight,
       );
 
-      expect(attributes.HP.value).toBe(attributes.HP.base_value + 2 + 3);
+      expect(attributes.HP.value).toBe(attributes.HP.base_value + 8 + 3);
     });
   });
 
