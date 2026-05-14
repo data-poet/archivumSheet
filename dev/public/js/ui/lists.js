@@ -103,6 +103,7 @@ function renderSpells(selected) {
 }
 
 // ===== ARMOR SLOTS (equipped) =====
+
 function renderArmorSlots(selected, data) {
   const equippedHtml = ARMOR_SLOTS.map((slot) => {
     const slotArmors = data.armors.filter(
@@ -132,6 +133,20 @@ function renderArmorSlots(selected, data) {
           .filter((armor) => armor.armor_name === equippedArmor.armor_name)
           .map((armor) => armor.armor_tier)
       : [];
+
+    const material = equippedInstance?.material_id
+      ? data.materials.find(
+          (m) => m.material_id === equippedInstance.material_id,
+        )
+      : null;
+
+    const armorMaxHp = material
+      ? Number(equippedArmor?.armor_hit_points || 0) *
+        Number(material.material_hit_points_modifier || 1)
+      : Number(equippedArmor?.armor_hit_points || 0);
+
+    const armorActualHp =
+      armorMaxHp + Number(equippedInstance?.hit_points_modifier || 0);
 
     return `
       <div class="armor-slot">
@@ -195,6 +210,28 @@ function renderArmorSlots(selected, data) {
             .join("")}
         </select>
 
+        <!-- HIT POINTS MODIFIER -->
+        <div class="armor-hp-modifier">
+          Mod:
+
+          <input
+            type="number"
+            class="equipped-armor-hp"
+            data-slot="${slot}"
+            min="${armorMaxHp * -1}"
+            max="0"
+            value="${equippedInstance?.hit_points_modifier || 0}"
+          />
+
+          HP:
+          <strong>${armorMaxHp}</strong>
+
+          Actual:
+          <strong>
+            ${armorActualHp}
+          </strong>
+        </div>
+
         <!-- MOVE -->
         <select class="equipped-armor-move" data-slot="${slot}">
           <option value="">Equipped</option>
@@ -210,45 +247,180 @@ function renderArmorSlots(selected, data) {
 }
 
 // ===== STORED ARMORS =====
+
 function renderStoredArmors(selected, data) {
   const storedArmors = selected.armors.filter((armor) => !armor.is_equipped);
 
-  document.getElementById("armorStorageList").innerHTML = storedArmors
-    .map((selectedArmor, index) => {
+  const backpack = storedArmors.filter(
+    (armor) => armor.storedAt === "backpack",
+  );
+
+  const stash = storedArmors.filter((armor) => armor.storedAt === "stash");
+
+  const camp = storedArmors.filter((armor) => armor.storedAt === "camp");
+
+  function getSlotArmors(armors, slot) {
+    return armors.filter((selectedArmor) => {
       const armorData = data.armors.find(
         (armor) => armor.armor_id === selectedArmor.armor_id,
       );
 
-      if (!armorData) return "";
+      return armorData?.armor_piece_location === slot;
+    });
+  }
 
-      const material = data.materials.find(
-        (material) => material.material_id === selectedArmor.material_id,
-      );
+  function renderArmorListBySlot(armors, slot) {
+    const slotArmors = getSlotArmors(armors, slot);
 
-      return `
-        <li>
-          <strong>${armorData.armor_name}</strong>
+    // HIDE EMPTY SLOT
+    if (slotArmors.length === 0) {
+      return "";
+    }
 
-          (${armorData.armor_piece_location})
+    return `
+      <div class="armor-slot-group">
+        <h4>${slot}</h4>
 
-          ${material ? `- ${material.material_name}` : ""}
+        <ul>
+          ${slotArmors
+            .map((selectedArmor) => {
+              const realIndex = selected.armors.findIndex(
+                (armor) => armor === selectedArmor,
+              );
 
-          <!-- STORAGE -->
-          <select class="armor-storage-select" data-index="${index}">
-            <option value="backpack" ${selectedArmor.storedAt === "backpack" ? "selected" : ""}>Backpack</option>
-            <option value="stash"    ${selectedArmor.storedAt === "stash" ? "selected" : ""}>Stash</option>
-            <option value="camp"     ${selectedArmor.storedAt === "camp" ? "selected" : ""}>Camp</option>
-          </select>
+              const armorData = data.armors.find(
+                (armor) => armor.armor_id === selectedArmor.armor_id,
+              );
 
-          <!-- EQUIP -->
-          <button class="equip-stored-armor" data-index="${index}">Equip</button>
+              if (!armorData) return "";
 
-          <!-- REMOVE -->
-          <button class="remove-armor" data-index="${index}">❌</button>
-        </li>
-      `;
-    })
-    .join("");
+              const material = data.materials.find(
+                (m) => m.material_id === selectedArmor.material_id,
+              );
+
+              const armorMaxHp = material
+                ? Number(armorData.armor_hit_points || 0) *
+                  Number(material.material_hit_points_modifier || 1)
+                : Number(armorData.armor_hit_points || 0);
+
+              const armorActualHp =
+                armorMaxHp + Number(selectedArmor.hit_points_modifier || 0);
+
+              return `
+                <li>
+                  <strong>
+                    ${armorData.armor_name}
+                    |
+                    ${armorData.armor_tier}
+                    |
+                    ${
+                      data.materials.find(
+                        (material) =>
+                          material.material_id === selectedArmor.material_id,
+                      )?.material_name || "No Material"
+                    }
+                  </strong>
+
+                  <!-- HIT POINTS MODIFIER -->
+                  <div class="armor-hp-modifier">
+                    Mod:
+
+                    <input
+                      type="number"
+                      class="stored-armor-hp"
+                      data-index="${realIndex}"
+                      min="${armorMaxHp * -1}"
+                      max="0"
+                      value="${selectedArmor.hit_points_modifier || 0}"
+                    />
+
+                    HP:
+                    <strong>${armorMaxHp}</strong>
+
+                    Actual:
+                    <strong>
+                      ${armorActualHp}
+                    </strong>
+                  </div>
+
+                  <!-- STORAGE -->
+                  <select
+                    class="armor-storage-select"
+                    data-index="${realIndex}"
+                  >
+                    <option
+                      value="backpack"
+                      ${selectedArmor.storedAt === "backpack" ? "selected" : ""}
+                    >
+                      Backpack
+                    </option>
+
+                    <option
+                      value="stash"
+                      ${selectedArmor.storedAt === "stash" ? "selected" : ""}
+                    >
+                      Stash
+                    </option>
+
+                    <option
+                      value="camp"
+                      ${selectedArmor.storedAt === "camp" ? "selected" : ""}
+                    >
+                      Camp
+                    </option>
+                  </select>
+
+                  <!-- EQUIP -->
+                  <button
+                    class="equip-stored-armor"
+                    data-index="${realIndex}"
+                  >
+                    Equip
+                  </button>
+
+                  <!-- REMOVE -->
+                  <button
+                    class="remove-armor"
+                    data-index="${realIndex}"
+                  >
+                    ❌
+                  </button>
+                </li>
+              `;
+            })
+            .join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  function renderStorageSection(title, armors) {
+    const visibleSlots = ARMOR_SLOTS.filter((slot) => {
+      return getSlotArmors(armors, slot).length > 0;
+    });
+
+    return `
+      <div class="armor-storage-section">
+        <h3>${title}</h3>
+
+        ${
+          visibleSlots.length === 0
+            ? `<p class="empty-storage">Empty</p>`
+            : visibleSlots
+                .map((slot) => renderArmorListBySlot(armors, slot))
+                .join("")
+        }
+      </div>
+    `;
+  }
+
+  document.getElementById("armorStorageList").innerHTML = `
+    ${renderStorageSection("🎒 Backpack", backpack)}
+
+    ${renderStorageSection("🏦 Stash", stash)}
+
+    ${renderStorageSection("🏕️ Camp", camp)}
+  `;
 }
 
 // ===== ORCHESTRATOR =====

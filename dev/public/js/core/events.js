@@ -174,6 +174,60 @@ export function bindUI() {
       return;
     }
 
+    if (e.target.classList.contains("equipped-armor-hp")) {
+      const slot = e.target.dataset.slot;
+
+      const equippedArmor = selected.armors.find((sa) => {
+        if (!sa.is_equipped) return false;
+
+        const db = data.armors.find((a) => a.armor_id === sa.armor_id);
+
+        return db?.armor_piece_location === slot;
+      });
+
+      if (!equippedArmor) return;
+
+      const armorData = data.armors.find(
+        (a) => a.armor_id === equippedArmor.armor_id,
+      );
+
+      const min = Number(armorData?.armor_hit_points || 0) * -1;
+      const max = 0;
+
+      equippedArmor.hit_points_modifier = Math.max(
+        min,
+        Math.min(max, Number(e.target.value) || 0),
+      );
+
+      renderLists(selected, data);
+      triggerAutoRun();
+      return;
+    }
+
+    if (e.target.classList.contains("stored-armor-hp")) {
+      const index = Number(e.target.dataset.index);
+
+      const armorInstance = selected.armors[index];
+
+      if (!armorInstance) return;
+
+      const armorData = data.armors.find(
+        (a) => a.armor_id === armorInstance.armor_id,
+      );
+
+      const min = Number(armorData?.armor_hit_points || 0) * -1;
+      const max = 0;
+
+      armorInstance.hit_points_modifier = Math.max(
+        min,
+        Math.min(max, Number(e.target.value) || 0),
+      );
+
+      renderLists(selected, data);
+      triggerAutoRun();
+      return;
+    }
+
     if (e.target.classList.contains("secondary-input")) {
       const { name, field } = e.target.dataset;
       const value = Number(e.target.value) || 0;
