@@ -1,4 +1,4 @@
-const { VALID_STORED_AT } = require("./equipmentArmorConstants");
+const { VALID_STORED_AT } = require("./armorConstants");
 
 // Validation
 

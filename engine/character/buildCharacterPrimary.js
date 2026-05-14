@@ -1,6 +1,6 @@
-const { buildAdvantages } = require("./js/traitsAdvantages");
-const { buildDisadvantages } = require("./js/traitsDisadvantages");
-const { buildPrimaryAttributes } = require("./js/attributesPrimary");
+const { buildAdvantages } = require("./js/traits/advantages");
+const { buildDisadvantages } = require("./js/traits/disadvantages");
+const { buildPrimaryAttributes } = require("./js/attributes/primary");
 
 function buildCharacterPrimary({
   advantages = [],

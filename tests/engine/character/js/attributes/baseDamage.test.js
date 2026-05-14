@@ -1,4 +1,6 @@
-const { calculateDamage } = require("engine/character/js/baseDamage");
+const {
+  calculateDamage,
+} = require("engine/character/js/attributes/baseDamage");
 
 describe("Damage System (GDP / BAL)", () => {
   test("ST 10 returns correct base values", () => {

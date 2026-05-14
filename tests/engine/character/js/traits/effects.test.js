@@ -1,4 +1,4 @@
-const { buildTraitsEffects } = require("engine/character/js/traitsEffects");
+const { buildTraitsEffects } = require("engine/character/js/traits/effects");
 
 const assertShape = require("tests/helpers/assertShape");
 

@@ -1,6 +1,6 @@
 const path = require("path");
-const { loadCSV } = require("../../../helpers/dataUtils.js");
-const { getSkillCost } = require("./skillsCost");
+const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { getSkillCost } = require("./skillsCost.js");
 
 /**
  * Build selected skills + total cost

@@ -1,7 +1,7 @@
 const {
   validateArmorInstance,
   validateSingleEquippedPerSlot,
-} = require("engine/inventory/js/equipmentArmorValidation");
+} = require("engine/inventory/js/armor/armorValidation");
 
 describe("ARMOR VALIDATION", () => {
   describe("validateArmorInstance", () => {

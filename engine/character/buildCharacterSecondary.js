@@ -1,16 +1,11 @@
-const { buildSecondaryAttributes } = require("./js/attributesSecondary");
-
-const { buildSkills } = require("./js/skills");
+const { buildSecondaryAttributes } = require("./js/attributes/secondary");
+const { buildSkills } = require("./js/skills/skills");
 
 function buildCharacterSecondary({
   primary_attributes,
-
   secondaryAttributes = {},
-
   skills = {},
-
   carry_weight = null,
-
   effects = {},
 }) {
   /**
@@ -35,11 +30,8 @@ function buildCharacterSecondary({
 
   const secondaryResult = buildSecondaryAttributes(
     primary_attributes,
-
     secondaryAttributes,
-
     carry_weight,
-
     effects,
   );
 

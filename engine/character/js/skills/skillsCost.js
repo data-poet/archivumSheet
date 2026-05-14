@@ -1,5 +1,5 @@
 const path = require("path");
-const { loadCSV } = require("../../../helpers/dataUtils.js");
+const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
 let _skillsCache = null;
 

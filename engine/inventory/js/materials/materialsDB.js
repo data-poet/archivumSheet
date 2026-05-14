@@ -1,6 +1,6 @@
 const path = require("path");
 
-const { loadCSV } = require("../../../helpers/dataUtils.js");
+const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
 let _materialsDB = null;
 
@@ -9,12 +9,13 @@ function getMaterialsDB() {
     return _materialsDB;
   }
 
-  const csvPath = path.resolve(
-    __dirname,
-    "../../../data/db_crafting_materials.csv",
+  const filePath = path.join(
+    process.cwd(),
+    "data",
+    "db_crafting_materials.csv",
   );
 
-  const rows = loadCSV(csvPath);
+  const rows = loadCSV(filePath);
 
   _materialsDB = {};
 

@@ -1,6 +1,6 @@
 const {
   buildSecondaryAttributes,
-} = require("engine/character/js/attributesSecondary");
+} = require("engine/character/js/attributes/secondary");
 
 const assertShape = require("tests/helpers/assertShape");
 const assertNumericMap = require("tests/helpers/assertNumericMap");
