@@ -2,7 +2,7 @@ const path = require("path");
 
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
-const { SLOTS, VALID_STORED_AT } = require("./armorConstants.js");
+const { SLOTS, SLOT_MAP, VALID_STORED_AT } = require("./armorConstants.js");
 
 const {
   validateArmorInstance,
@@ -93,6 +93,14 @@ function getMaterialDB() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function buildStorageSlots() {
+  return Object.fromEntries(Object.values(SLOT_MAP).map((slot) => [slot, []]));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -151,9 +159,15 @@ function buildArmorSlots(armorInventory = []) {
 
   // BUILD INVENTORY
 
+  // ONLY ONE PER SLOT
   const equipped = buildEquippedSlots();
 
-  const carried = [];
+  // MULTIPLE PER SLOT
+  const stash = buildStorageSlots();
+
+  const camp = buildStorageSlots();
+
+  const backpack = buildStorageSlots();
 
   let carried_armor_weight = 0;
 
@@ -166,21 +180,39 @@ function buildArmorSlots(armorInventory = []) {
 
     const resolvedArmor = resolveArmorPiece(instance, armor, material);
 
+    const slot = SLOT_MAP[armor.armor_piece_location];
+
     // EQUIPPED
 
     if (instance.is_equipped) {
-      equipped[armor.armor_piece_location] = resolvedArmor;
+      equipped[slot] = resolvedArmor;
 
       carried_armor_weight += resolvedArmor.armor_final_weight;
 
       continue;
     }
 
-    carried.push(resolvedArmor);
+    // STASH
 
-    // BACKPACK COUNTS AS CARRIED
+    if (instance.storedAt === "stash") {
+      stash[slot].push(resolvedArmor);
+
+      continue;
+    }
+
+    // CAMP
+
+    if (instance.storedAt === "camp") {
+      camp[slot].push(resolvedArmor);
+
+      continue;
+    }
+
+    // BACKPACK
 
     if (instance.storedAt === "backpack") {
+      backpack[slot].push(resolvedArmor);
+
       carried_armor_weight += resolvedArmor.armor_final_weight;
     }
   }
@@ -195,7 +227,9 @@ function buildArmorSlots(armorInventory = []) {
 
   return {
     equipped,
-    carried,
+    stash,
+    camp,
+    backpack,
     total_armor_weight,
     carried_armor_weight,
   };
