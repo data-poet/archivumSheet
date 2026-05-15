@@ -1,9 +1,6 @@
 const { buildCharacter } = require("./character/buildCharacter");
-
 const { buildInventory } = require("./inventory/buildInventory");
-
 const { resolveAll } = require("./magic/js/spellsResolver");
-
 const { buildGrimoire } = require("./magic/buildGrimoire");
 
 function sumObjectValues(obj = {}) {
