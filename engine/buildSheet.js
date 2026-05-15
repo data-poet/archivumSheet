@@ -60,6 +60,7 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
     weight: inventory.weight || 0,
 
     armorInventory: inventory.armor || [],
+    shieldInventory: inventory.shield || [],
   });
 
   /**

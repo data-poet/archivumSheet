@@ -1,8 +1,6 @@
 const { calculateCarryWeight } = require("./js/carryWeight");
 const { buildArmorSlots } = require("./js/armor/armor");
 const { buildShieldSlots } = require("./js/shield/shield.js");
-const shield = require("./js/shield/shield.js");
-
 /**
  * Builds inventory data
  */
