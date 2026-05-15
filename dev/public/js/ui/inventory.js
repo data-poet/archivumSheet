@@ -1,11 +1,9 @@
 // ===== HELPERS =====
 export function getMaterialName(materialId, materials = []) {
   if (!materialId) return "Common";
-
   const material = materials.find(
     (material) => material.material_id === materialId,
   );
-
   return material?.material_name || "Unknown";
 }
 
@@ -16,13 +14,14 @@ export function updateInventoryUI(sheet) {
 
   const baseWeight = Number(document.getElementById("weight").value) || 0;
   const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
-  const weight = baseWeight + armorWeight;
+  const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
+  const weight = baseWeight + armorWeight + shieldWeight;
 
   document.getElementById("armor_weight").textContent = armorWeight;
+  document.getElementById("shield_weight").textContent = shieldWeight;
   document.getElementById("total_weight").textContent = weight;
 
   let stateLabel = "None";
-
   if (weight >= carry.limits.veryHeavy) stateLabel = "Overloaded";
   else if (weight >= carry.limits.heavy) stateLabel = "Very Heavy";
   else if (weight >= carry.limits.medium) stateLabel = "Heavy";

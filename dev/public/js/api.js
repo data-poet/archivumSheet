@@ -48,6 +48,10 @@ export async function fetchArmors() {
   return getJSON("/api/armors");
 }
 
+export async function fetchShields() {
+  return getJSON("/api/shields");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

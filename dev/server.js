@@ -79,6 +79,14 @@ app.get("/api/armors", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/shields", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_equipment_shields.csv"),
+  );
+
+  res.json(data);
+});
+
 /* -----------------------
    CHARACTER BUILDER
 ------------------------ */
