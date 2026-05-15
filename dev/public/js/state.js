@@ -6,6 +6,7 @@ export const state = {
     skills: [],
     spells: [],
     armors: [],
+    shields: [],
     materials: [],
   },
 
@@ -18,6 +19,7 @@ export const state = {
     secondary: {},
     damage: {},
     armors: [],
+    shields: [],
   },
 
   // ===== UI STATE =====

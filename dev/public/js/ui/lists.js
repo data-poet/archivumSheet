@@ -423,6 +423,256 @@ function renderStoredArmors(selected, data) {
   `;
 }
 
+// ===== EQUIPPED SHIELD =====
+
+function renderEquippedShield(selected, data) {
+  const equippedInstance = selected.shields.find(
+    (selectedShield) => selectedShield.is_equipped,
+  );
+
+  const equippedShield = equippedInstance
+    ? data.shields.find(
+        (shield) => shield.shield_id === equippedInstance.shield_id,
+      )
+    : null;
+
+  const names = [...new Set(data.shields.map((shield) => shield.shield_name))];
+
+  const tiers = equippedShield
+    ? data.shields
+        .filter((shield) => shield.shield_name === equippedShield.shield_name)
+        .map((shield) => shield.shield_tier)
+    : [];
+
+  const material = equippedInstance?.material_id
+    ? data.materials.find((m) => m.material_id === equippedInstance.material_id)
+    : null;
+
+  const shieldMaxHp = material
+    ? Number(equippedShield?.shield_hit_points || 0) *
+      Number(material.material_hit_points_modifier || 1)
+    : Number(equippedShield?.shield_hit_points || 0);
+
+  const shieldActualHp =
+    shieldMaxHp + Number(equippedInstance?.hit_points_modifier || 0);
+
+  document.getElementById("shieldSlot").innerHTML = `
+    <div class="shield-slot">
+      <!-- NAME -->
+      <select class="equipped-shield-name">
+        <option value="">Empty</option>
+
+        ${names
+          .map(
+            (name) => `
+              <option
+                value="${name}"
+                ${equippedShield?.shield_name === name ? "selected" : ""}
+              >
+                ${name}
+              </option>
+            `,
+          )
+          .join("")}
+      </select>
+
+      <!-- TIER -->
+      <select class="equipped-shield-tier">
+        ${
+          equippedShield
+            ? tiers
+                .map(
+                  (tier) => `
+                    <option
+                      value="${tier}"
+                      ${equippedShield?.shield_tier === tier ? "selected" : ""}
+                    >
+                      ${tier}
+                    </option>
+                  `,
+                )
+                .join("")
+            : `<option value="">-</option>`
+        }
+      </select>
+
+      <!-- MATERIAL -->
+      <select class="equipped-shield-material">
+        ${data.materials
+          .map(
+            (material) => `
+              <option
+                value="${material.material_id}"
+                ${
+                  equippedInstance?.material_id === material.material_id
+                    ? "selected"
+                    : ""
+                }
+              >
+                ${material.material_name}
+              </option>
+            `,
+          )
+          .join("")}
+      </select>
+
+      <!-- HIT POINTS MODIFIER -->
+      <div class="shield-hp-modifier">
+        Mod:
+
+        <input
+          type="number"
+          class="equipped-shield-hp"
+          min="${shieldMaxHp * -1}"
+          max="0"
+          value="${equippedInstance?.hit_points_modifier || 0}"
+        />
+
+        HP:
+        <strong>${shieldMaxHp}</strong>
+
+        Actual:
+        <strong>${shieldActualHp}</strong>
+      </div>
+
+      <!-- MOVE -->
+      <select class="equipped-shield-move">
+        <option value="">Equipped</option>
+        <option value="backpack">Backpack</option>
+        <option value="stash">Stash</option>
+        <option value="camp">Camp</option>
+      </select>
+    </div>
+  `;
+}
+
+// ===== STORED SHIELDS =====
+
+function renderStoredShields(selected, data) {
+  const storedShields = selected.shields.filter(
+    (shield) => !shield.is_equipped,
+  );
+
+  const backpack = storedShields.filter(
+    (shield) => shield.storedAt === "backpack",
+  );
+
+  const stash = storedShields.filter((shield) => shield.storedAt === "stash");
+
+  const camp = storedShields.filter((shield) => shield.storedAt === "camp");
+
+  function renderShieldList(shields) {
+    if (shields.length === 0) {
+      return `<p class="empty-storage">Empty</p>`;
+    }
+
+    return `
+      <ul>
+        ${shields
+          .map((selectedShield) => {
+            const realIndex = selected.shields.findIndex(
+              (shield) => shield === selectedShield,
+            );
+
+            const shieldData = data.shields.find(
+              (shield) => shield.shield_id === selectedShield.shield_id,
+            );
+
+            if (!shieldData) return "";
+
+            const material = data.materials.find(
+              (m) => m.material_id === selectedShield.material_id,
+            );
+
+            const shieldMaxHp = material
+              ? Number(shieldData.shield_hit_points || 0) *
+                Number(material.material_hit_points_modifier || 1)
+              : Number(shieldData.shield_hit_points || 0);
+
+            const shieldActualHp =
+              shieldMaxHp + Number(selectedShield.hit_points_modifier || 0);
+
+            return `
+              <li>
+                <strong>
+                  ${shieldData.shield_name}
+                  |
+                  ${shieldData.shield_tier}
+                  |
+                  ${material?.material_name || "No Material"}
+                </strong>
+
+                <!-- HIT POINTS MODIFIER -->
+                <div class="shield-hp-modifier">
+                  Mod:
+
+                  <input
+                    type="number"
+                    class="stored-shield-hp"
+                    data-index="${realIndex}"
+                    min="${shieldMaxHp * -1}"
+                    max="0"
+                    value="${selectedShield.hit_points_modifier || 0}"
+                  />
+
+                  HP:
+                  <strong>${shieldMaxHp}</strong>
+
+                  Actual:
+                  <strong>${shieldActualHp}</strong>
+                </div>
+
+                <!-- STORAGE -->
+                <select class="shield-storage-select" data-index="${realIndex}">
+                  <option value="backpack" ${selectedShield.storedAt === "backpack" ? "selected" : ""}>
+                    Backpack
+                  </option>
+
+                  <option value="stash" ${selectedShield.storedAt === "stash" ? "selected" : ""}>
+                    Stash
+                  </option>
+
+                  <option value="camp" ${selectedShield.storedAt === "camp" ? "selected" : ""}>
+                    Camp
+                  </option>
+                </select>
+
+                <!-- EQUIP -->
+                <button class="equip-stored-shield" data-index="${realIndex}">
+                  Equip
+                </button>
+
+                <!-- REMOVE -->
+                <button class="remove-shield" data-index="${realIndex}">
+                  ❌
+                </button>
+              </li>
+            `;
+          })
+          .join("")}
+      </ul>
+    `;
+  }
+
+  function renderStorageSection(title, shields) {
+    return `
+      <div class="shield-storage-section">
+        <h3>${title}</h3>
+
+        ${renderShieldList(shields)}
+      </div>
+    `;
+  }
+
+  document.getElementById("shieldStorageList").innerHTML = `
+    ${renderStorageSection("🎒 Backpack", backpack)}
+
+    ${renderStorageSection("🏦 Stash", stash)}
+
+    ${renderStorageSection("🏕️ Camp", camp)}
+  `;
+}
+
 // ===== ORCHESTRATOR =====
 export function renderLists(selected, data) {
   renderAdvantages(selected);
@@ -431,4 +681,6 @@ export function renderLists(selected, data) {
   renderSpells(selected);
   renderArmorSlots(selected, data);
   renderStoredArmors(selected, data);
+  renderEquippedShield(selected, data);
+  renderStoredShields(selected, data);
 }

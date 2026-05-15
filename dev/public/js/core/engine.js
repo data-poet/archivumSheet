@@ -40,6 +40,7 @@ export async function runEngine() {
       inventory: {
         weight: Number(document.getElementById("weight").value) || 0,
         armor: selected.armors,
+        shield: selected.shields,
       },
     });
 

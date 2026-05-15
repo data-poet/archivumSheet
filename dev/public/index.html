@@ -236,6 +236,48 @@
       </details>
     </div>
 
+    <!-- SHIELDS -->
+    <div class="box">
+      <details>
+        <summary>Shields</summary>
+        <button id="loadShieldsBtn">Load Shields</button>
+        <br /><br />
+
+        <!-- ADD SHIELD -->
+        <div class="shield-add">
+          <!-- NAME -->
+          <select id="shieldNameSelect"></select>
+
+          <!-- TIER -->
+          <select id="shieldTierSelect"></select>
+
+          <!-- MATERIAL -->
+          <select id="shieldMaterialSelect"></select>
+
+          <!-- STORAGE -->
+          <select id="shieldStorage">
+            <option value="backpack">Backpack</option>
+            <option value="stash">Stash</option>
+            <option value="camp">Camp</option>
+          </select>
+
+          <button id="addShieldBtn">Add Shield</button>
+        </div>
+
+        <!-- EQUIPPED -->
+        <div class="shield-equipped">
+          <h3>Equipped</h3>
+          <div id="shieldSlot"></div>
+        </div>
+
+        <!-- STORAGE -->
+        <div class="shield-storage">
+          <h3>Stored Shields</h3>
+          <div id="shieldStorageList"></div>
+        </div>
+      </details>
+    </div>
+
     <!-- INVENTORY -->
     <div class="box">
       <details>
@@ -249,6 +291,11 @@
         <label>Base Weight:</label>
 
         <input id="weight" type="number" value="0" />
+
+        <p>
+          <strong>Shield Weight:</strong>
+          <span id="shield_weight">0</span>
+        </p>
 
         <p>
           <strong>Armor Weight:</strong>
