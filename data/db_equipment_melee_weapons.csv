@@ -1,0 +1,1038 @@
+weapon_id,weapon_name,weapon_type,weapon_skill,weapon_bal_modifier,weapon_gdp_modifier,weapon_weight,weapon_price,weapon_length,weapon_min_strength,weapon_damage_type,weapon_tier,weapon_tier_bonus,weapon_hit_points,weapon_description
+MELEE-000,Foice Curta,Armas Exóticas,ARMAS EXÓTICAS | FOICE,1,0,0.6,50,0.3,6,"Corte, Perfuração",Comum,,10,"Trata-se, apenas e tão somente de um gancho.  É uma arma curta e pouco versátil, mas pode machucar muito um inimigo com um golpe no abdômem."
+MELEE-001,Foice Curta,Armas Exóticas,ARMAS EXÓTICAS | FOICE,2,0,0.5,100,0.3,6,"Corte, Perfuração",Boa,,20,"Trata-se, apenas e tão somente de um gancho.  É uma arma curta e pouco versátil, mas pode machucar muito um inimigo com um golpe no abdômem."
+MELEE-002,Foice Curta,Armas Exóticas,ARMAS EXÓTICAS | FOICE,2,1,0.5,200,0.3,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Trata-se, apenas e tão somente de um gancho.  É uma arma curta e pouco versátil, mas pode machucar muito um inimigo com um golpe no abdômem."
+MELEE-003,Foice Curta,Armas Exóticas,ARMAS EXÓTICAS | FOICE,3,1,0.5,400,0.3,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Trata-se, apenas e tão somente de um gancho.  É uma arma curta e pouco versátil, mas pode machucar muito um inimigo com um golpe no abdômem."
+MELEE-004,Foice Curta,Armas Exóticas,ARMAS EXÓTICAS | FOICE,3,2,0.5,800,0.3,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Trata-se, apenas e tão somente de um gancho.  É uma arma curta e pouco versátil, mas pode machucar muito um inimigo com um golpe no abdômem."
+MELEE-005,Foice,Armas Exóticas,ARMAS EXÓTICAS | FOICE,2,0,3,100,1.2,6,"Corte, Perfuração",Comum,,10,Um utensílio agrícola que teve sua função original deturpada. Muito utilizada por camponeses e escravos em revoltas contra seus senhores.
+MELEE-006,Foice,Armas Exóticas,ARMAS EXÓTICAS | FOICE,3,0,2.9,200,1.2,6,"Corte, Perfuração",Boa,,20,Um utensílio agrícola que teve sua função original deturpada. Muito utilizada por camponeses e escravos em revoltas contra seus senhores.
+MELEE-007,Foice,Armas Exóticas,ARMAS EXÓTICAS | FOICE,3,1,2.8,400,1.2,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Um utensílio agrícola que teve sua função original deturpada. Muito utilizada por camponeses e escravos em revoltas contra seus senhores.
+MELEE-008,Foice,Armas Exóticas,ARMAS EXÓTICAS | FOICE,4,1,2.7,800,1.2,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Um utensílio agrícola que teve sua função original deturpada. Muito utilizada por camponeses e escravos em revoltas contra seus senhores.
+MELEE-009,Foice,Armas Exóticas,ARMAS EXÓTICAS | FOICE,4,2,2.6,1600,1.2,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Um utensílio agrícola que teve sua função original deturpada. Muito utilizada por camponeses e escravos em revoltas contra seus senhores.
+MELEE-010,Bastão,Armas Exóticas,BASTÃO,2,0,3,20,2,6,"Contusão, Perfuração",Comum,,10,"É uma vara de madeira, grossa e rígida. Pode ser utilizado em travessias de rios, buracos, ou para manter inimigos afastados. Bem utilizado, pode realizar golpes eficientes."
+MELEE-011,Bastão,Armas Exóticas,BASTÃO,2,1,2.9,40,2,6,"Contusão, Perfuração",Boa,,20,"É uma vara de madeira, grossa e rígida. Pode ser utilizado em travessias de rios, buracos, ou para manter inimigos afastados. Bem utilizado, pode realizar golpes eficientes."
+MELEE-012,Bastão,Armas Exóticas,BASTÃO,3,1,2.8,80,2,6,"Contusão, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É uma vara de madeira, grossa e rígida. Pode ser utilizado em travessias de rios, buracos, ou para manter inimigos afastados. Bem utilizado, pode realizar golpes eficientes."
+MELEE-013,Bastão,Armas Exóticas,BASTÃO,3,2,2.7,160,2,6,"Contusão, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"É uma vara de madeira, grossa e rígida. Pode ser utilizado em travessias de rios, buracos, ou para manter inimigos afastados. Bem utilizado, pode realizar golpes eficientes."
+MELEE-014,Bastão,Armas Exóticas,BASTÃO,4,2,2.6,320,2,6,"Contusão, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"É uma vara de madeira, grossa e rígida. Pode ser utilizado em travessias de rios, buracos, ou para manter inimigos afastados. Bem utilizado, pode realizar golpes eficientes."
+MELEE-015,Soco Inglês,Armas Exóticas,BRIGA,1,0,0.2,10,0.15,6,Contusão,Comum,,10,"São quatro anéis metálicos soldados entre si que o lutador usa em sua mão mais forte ou em ambas. Pode ter uma ponta em cada anel, para aumentar o dano. Trate como um adicional ao dano de luta (briga)."
+MELEE-016,Soco Inglês,Armas Exóticas,BRIGA,2,0,0.2,20,0.15,6,Contusão,Boa,,20,"São quatro anéis metálicos soldados entre si que o lutador usa em sua mão mais forte ou em ambas. Pode ter uma ponta em cada anel, para aumentar o dano. Trate como um adicional ao dano de luta (briga)."
+MELEE-017,Soco Inglês,Armas Exóticas,BRIGA,2,0,0.2,40,0.15,6,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"São quatro anéis metálicos soldados entre si que o lutador usa em sua mão mais forte ou em ambas. Pode ter uma ponta em cada anel, para aumentar o dano. Trate como um adicional ao dano de luta (briga)."
+MELEE-018,Soco Inglês,Armas Exóticas,BRIGA,3,0,0.2,80,0.15,6,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"São quatro anéis metálicos soldados entre si que o lutador usa em sua mão mais forte ou em ambas. Pode ter uma ponta em cada anel, para aumentar o dano. Trate como um adicional ao dano de luta (briga)."
+MELEE-019,Soco Inglês,Armas Exóticas,BRIGA,4,0,0.2,160,0.15,6,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"São quatro anéis metálicos soldados entre si que o lutador usa em sua mão mais forte ou em ambas. Pode ter uma ponta em cada anel, para aumentar o dano. Trate como um adicional ao dano de luta (briga)."
+MELEE-020,Luva de Combate,Armas Exóticas,BRIGA,2,0,1,200,0.25,6,Contusão,Comum,,10,"É uma luva metálica, uasada em ambas as maõs, tanto para endurecer o golpe como para proteger os dedos do lutador. tem efeito análogo ao soco inglês, em termos de sistema de jogo."
+MELEE-021,Luva de Combate,Armas Exóticas,BRIGA,3,0,0.9,400,0.25,6,Contusão,Boa,,20,"É uma luva metálica, uasada em ambas as maõs, tanto para endurecer o golpe como para proteger os dedos do lutador. tem efeito análogo ao soco inglês, em termos de sistema de jogo."
+MELEE-022,Luva de Combate,Armas Exóticas,BRIGA,3,0,0.8,800,0.25,6,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É uma luva metálica, uasada em ambas as maõs, tanto para endurecer o golpe como para proteger os dedos do lutador. tem efeito análogo ao soco inglês, em termos de sistema de jogo."
+MELEE-023,Luva de Combate,Armas Exóticas,BRIGA,4,0,0.7,1600,0.25,6,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"É uma luva metálica, uasada em ambas as maõs, tanto para endurecer o golpe como para proteger os dedos do lutador. tem efeito análogo ao soco inglês, em termos de sistema de jogo."
+MELEE-024,Luva de Combate,Armas Exóticas,BRIGA,5,0,0.6,3200,0.25,6,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"É uma luva metálica, uasada em ambas as maõs, tanto para endurecer o golpe como para proteger os dedos do lutador. tem efeito análogo ao soco inglês, em termos de sistema de jogo."
+MELEE-025,Katar,Armas Exóticas,ARMAS EXÓTICAS | KATAR,0,1,0.15,120,0.6,6,"Corte, Perfuração",Comum,,10,Arma utilizada para caçar tirgres no Nepal. Ela é presa no braço do atacante que deve desferir golpes fortes e precisos contra sua presa.
+MELEE-026,Katar,Armas Exóticas,ARMAS EXÓTICAS | KATAR,1,1,0.15,240,0.6,6,"Corte, Perfuração",Boa,,20,Arma utilizada para caçar tirgres no Nepal. Ela é presa no braço do atacante que deve desferir golpes fortes e precisos contra sua presa.
+MELEE-027,Katar,Armas Exóticas,ARMAS EXÓTICAS | KATAR,1,2,0.15,480,0.6,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Arma utilizada para caçar tirgres no Nepal. Ela é presa no braço do atacante que deve desferir golpes fortes e precisos contra sua presa.
+MELEE-028,Katar,Armas Exóticas,ARMAS EXÓTICAS | KATAR,2,2,0.15,960,0.6,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Arma utilizada para caçar tirgres no Nepal. Ela é presa no braço do atacante que deve desferir golpes fortes e precisos contra sua presa.
+MELEE-029,Katar,Armas Exóticas,ARMAS EXÓTICAS | KATAR,2,3,0.15,1920,0.6,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Arma utilizada para caçar tirgres no Nepal. Ela é presa no braço do atacante que deve desferir golpes fortes e precisos contra sua presa.
+MELEE-030,Leque,Armas Exóticas,ARMAS EXÓTICAS | LEQUE,1,0,0.2,150,0.4,6,Corte,Comum,,10,"Arma geralmente usada por mulheres, o leque possui uma lâmina escondida em suas hastes. Aparenta ser um utensílio comum, até que seja muito tarde. Pode ser usado com a lâmina envenenada."
+MELEE-031,Leque,Armas Exóticas,ARMAS EXÓTICAS | LEQUE,2,0,0.2,300,0.4,6,Corte,Boa,,20,"Arma geralmente usada por mulheres, o leque possui uma lâmina escondida em suas hastes. Aparenta ser um utensílio comum, até que seja muito tarde. Pode ser usado com a lâmina envenenada."
+MELEE-032,Leque,Armas Exóticas,ARMAS EXÓTICAS | LEQUE,2,0,0.2,600,0.4,6,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Arma geralmente usada por mulheres, o leque possui uma lâmina escondida em suas hastes. Aparenta ser um utensílio comum, até que seja muito tarde. Pode ser usado com a lâmina envenenada."
+MELEE-033,Leque,Armas Exóticas,ARMAS EXÓTICAS | LEQUE,3,0,0.2,1200,0.4,6,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Arma geralmente usada por mulheres, o leque possui uma lâmina escondida em suas hastes. Aparenta ser um utensílio comum, até que seja muito tarde. Pode ser usado com a lâmina envenenada."
+MELEE-034,Leque,Armas Exóticas,ARMAS EXÓTICAS | LEQUE,4,0,0.2,2400,0.4,6,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Arma geralmente usada por mulheres, o leque possui uma lâmina escondida em suas hastes. Aparenta ser um utensílio comum, até que seja muito tarde. Pode ser usado com a lâmina envenenada."
+MELEE-035,Tonfa,Armas Exóticas,ARMAS EXÓTICAS | TONFA,2,0,1,100,0.5,6,Contusão,Comum,,10,"A tonfa é conhecida no ocidente como cassetete. É uma arma de apoio ao combate com as mãos, permitindo uma proteção aos braços, rosto e torso enquanto o contra-ataque é feito."
+MELEE-036,Tonfa,Armas Exóticas,ARMAS EXÓTICAS | TONFA,3,0,0.9,200,0.5,6,Contusão,Boa,,20,"A tonfa é conhecida no ocidente como cassetete. É uma arma de apoio ao combate com as mãos, permitindo uma proteção aos braços, rosto e torso enquanto o contra-ataque é feito."
+MELEE-037,Tonfa,Armas Exóticas,ARMAS EXÓTICAS | TONFA,3,0,0.8,400,0.5,6,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A tonfa é conhecida no ocidente como cassetete. É uma arma de apoio ao combate com as mãos, permitindo uma proteção aos braços, rosto e torso enquanto o contra-ataque é feito."
+MELEE-038,Tonfa,Armas Exóticas,ARMAS EXÓTICAS | TONFA,4,0,0.7,800,0.5,6,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A tonfa é conhecida no ocidente como cassetete. É uma arma de apoio ao combate com as mãos, permitindo uma proteção aos braços, rosto e torso enquanto o contra-ataque é feito."
+MELEE-039,Tonfa,Armas Exóticas,ARMAS EXÓTICAS | TONFA,5,0,0.6,1600,0.5,6,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A tonfa é conhecida no ocidente como cassetete. É uma arma de apoio ao combate com as mãos, permitindo uma proteção aos braços, rosto e torso enquanto o contra-ataque é feito."
+MELEE-040,Nunchaku,Armas Exóticas,ARMAS EXÓTICAS | NUNCHAKU,2,0,1,250,0.7,6,Contusão,Comum,,10,"Originalmente um utensílio agrícola usado na colheita de arroz, é uma arma muito utilizada por ninjas. São dois cabos de madeira, unidos por uma curta corrente. Pode ser usado para ataque, defesa ou desarme."
+MELEE-041,Nunchaku,Armas Exóticas,ARMAS EXÓTICAS | NUNCHAKU,3,0,0.9,500,0.7,6,Contusão,Boa,,20,"Originalmente um utensílio agrícola usado na colheita de arroz, é uma arma muito utilizada por ninjas. São dois cabos de madeira, unidos por uma curta corrente. Pode ser usado para ataque, defesa ou desarme."
+MELEE-042,Nunchaku,Armas Exóticas,ARMAS EXÓTICAS | NUNCHAKU,3,0,0.8,1000,0.7,6,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Originalmente um utensílio agrícola usado na colheita de arroz, é uma arma muito utilizada por ninjas. São dois cabos de madeira, unidos por uma curta corrente. Pode ser usado para ataque, defesa ou desarme."
+MELEE-043,Nunchaku,Armas Exóticas,ARMAS EXÓTICAS | NUNCHAKU,4,0,0.7,2000,0.7,6,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Originalmente um utensílio agrícola usado na colheita de arroz, é uma arma muito utilizada por ninjas. São dois cabos de madeira, unidos por uma curta corrente. Pode ser usado para ataque, defesa ou desarme."
+MELEE-044,Nunchaku,Armas Exóticas,ARMAS EXÓTICAS | NUNCHAKU,5,0,0.6,4000,0.7,6,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Originalmente um utensílio agrícola usado na colheita de arroz, é uma arma muito utilizada por ninjas. São dois cabos de madeira, unidos por uma curta corrente. Pode ser usado para ataque, defesa ou desarme."
+MELEE-045,Kusarigama,Armas Exóticas,ARMAS EXÓTICAS | KUSARIGAMA,1,1,2,300,3,6,"Corte, Perfuração",Comum,,10,É uma arma articulada. A corrente de até 3 metros prende uma arma de corte em sua ponta.
+MELEE-046,Kusarigama,Armas Exóticas,ARMAS EXÓTICAS | KUSARIGAMA,2,1,1.9,600,3,6,"Corte, Perfuração",Boa,,20,É uma arma articulada. A corrente de até 3 metros prende uma arma de corte em sua ponta.
+MELEE-047,Kusarigama,Armas Exóticas,ARMAS EXÓTICAS | KUSARIGAMA,2,2,1.8,1200,3,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,É uma arma articulada. A corrente de até 3 metros prende uma arma de corte em sua ponta.
+MELEE-048,Kusarigama,Armas Exóticas,ARMAS EXÓTICAS | KUSARIGAMA,3,2,1.7,2400,3,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,É uma arma articulada. A corrente de até 3 metros prende uma arma de corte em sua ponta.
+MELEE-049,Kusarigama,Armas Exóticas,ARMAS EXÓTICAS | KUSARIGAMA,3,3,1.6,4800,3,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,É uma arma articulada. A corrente de até 3 metros prende uma arma de corte em sua ponta.
+MELEE-050,Corrente,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,1,0,1.2,150,2,6,Contusão,Comum,,10,"A corrente é uma arma de argolas de metais interligadas. É uma arma extremamente veloz, mas que pode machucar o próprio usuário."
+MELEE-051,Corrente,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,2,0,1.1,300,2,6,Contusão,Boa,,20,"A corrente é uma arma de argolas de metais interligadas. É uma arma extremamente veloz, mas que pode machucar o próprio usuário."
+MELEE-052,Corrente,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,2,0,1,600,2,6,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A corrente é uma arma de argolas de metais interligadas. É uma arma extremamente veloz, mas que pode machucar o próprio usuário."
+MELEE-053,Corrente,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,3,0,0.9,1200,2,6,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A corrente é uma arma de argolas de metais interligadas. É uma arma extremamente veloz, mas que pode machucar o próprio usuário."
+MELEE-054,Corrente,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,4,0,0.8,2400,2,6,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A corrente é uma arma de argolas de metais interligadas. É uma arma extremamente veloz, mas que pode machucar o próprio usuário."
+MELEE-055,Meteoro,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,0,1,0.5,100,3,6,Perfuração,Comum,,10,"Esta arma tem uma técnica semelhante a da corrente. Como a única parte massiça é a ponta, ela é mais leve, e mais rápida, mas faz menos dano."
+MELEE-056,Meteoro,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,0,2,0.5,200,3,6,Perfuração,Boa,,20,"Esta arma tem uma técnica semelhante a da corrente. Como a única parte massiça é a ponta, ela é mais leve, e mais rápida, mas faz menos dano."
+MELEE-057,Meteoro,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,0,2,0.5,400,3,6,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta arma tem uma técnica semelhante a da corrente. Como a única parte massiça é a ponta, ela é mais leve, e mais rápida, mas faz menos dano."
+MELEE-058,Meteoro,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,0,3,0.5,800,3,6,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Esta arma tem uma técnica semelhante a da corrente. Como a única parte massiça é a ponta, ela é mais leve, e mais rápida, mas faz menos dano."
+MELEE-059,Meteoro,Armas Exóticas,ARMAS EXÓTICAS | CORRENTE,0,4,0.5,1600,3,6,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta arma tem uma técnica semelhante a da corrente. Como a única parte massiça é a ponta, ela é mais leve, e mais rápida, mas faz menos dano."
+MELEE-060,Alabarda,Armas de Haste,ARMAS DE HASTE,5,3,6,500,2,14,"Contusão, Corte, Perfuração",Comum,,10,Possui um cabo que a classifica como arma de haste. Esta lâmina é mais cortante que a da lança de guerra.
+MELEE-061,Alabarda,Armas de Haste,ARMAS DE HASTE,6,3,5.9,1000,2,14,"Contusão, Corte, Perfuração",Boa,,20,Possui um cabo que a classifica como arma de haste. Esta lâmina é mais cortante que a da lança de guerra.
+MELEE-062,Alabarda,Armas de Haste,ARMAS DE HASTE,6,4,5.8,2000,2,14,"Contusão, Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Possui um cabo que a classifica como arma de haste. Esta lâmina é mais cortante que a da lança de guerra.
+MELEE-063,Alabarda,Armas de Haste,ARMAS DE HASTE,7,4,5.7,4000,2,14,"Contusão, Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Possui um cabo que a classifica como arma de haste. Esta lâmina é mais cortante que a da lança de guerra.
+MELEE-064,Alabarda,Armas de Haste,ARMAS DE HASTE,7,5,5.6,8000,2,14,"Contusão, Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Possui um cabo que a classifica como arma de haste. Esta lâmina é mais cortante que a da lança de guerra.
+MELEE-065,Glefe,Armas de Haste,ARMAS DE HASTE,5,3,3,1000,2,12,"Corte, Perfuração",Comum,,10,"A lâmina de corte lateral pode confundi-la com algum tipo bizarro de machado. Porém, o golpe principal frontal. Pode-se girar o glefe de modo a cortar mais com sua ponta."
+MELEE-066,Glefe,Armas de Haste,ARMAS DE HASTE,6,3,2.9,2000,2,12,"Corte, Perfuração",Boa,,20,"A lâmina de corte lateral pode confundi-la com algum tipo bizarro de machado. Porém, o golpe principal frontal. Pode-se girar o glefe de modo a cortar mais com sua ponta."
+MELEE-067,Glefe,Armas de Haste,ARMAS DE HASTE,6,4,2.8,4000,2,12,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A lâmina de corte lateral pode confundi-la com algum tipo bizarro de machado. Porém, o golpe principal frontal. Pode-se girar o glefe de modo a cortar mais com sua ponta."
+MELEE-068,Glefe,Armas de Haste,ARMAS DE HASTE,7,4,2.7,8000,2,12,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A lâmina de corte lateral pode confundi-la com algum tipo bizarro de machado. Porém, o golpe principal frontal. Pode-se girar o glefe de modo a cortar mais com sua ponta."
+MELEE-069,Glefe,Armas de Haste,ARMAS DE HASTE,7,5,2.6,16000,2,12,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A lâmina de corte lateral pode confundi-la com algum tipo bizarro de machado. Porém, o golpe principal frontal. Pode-se girar o glefe de modo a cortar mais com sua ponta."
+MELEE-070,Lança-Machado,Armas de Haste,ARMAS DE HASTE,5,3,4.5,300,2,13,"Corte, Perfuração",Comum,,10,"Esta lança executa as funções de machado e lança com uma única cabeça. É uma arma das mais belas, equilibradas e firmes."
+MELEE-071,Lança-Machado,Armas de Haste,ARMAS DE HASTE,6,3,4.4,600,2,13,"Corte, Perfuração",Boa,,20,"Esta lança executa as funções de machado e lança com uma única cabeça. É uma arma das mais belas, equilibradas e firmes."
+MELEE-072,Lança-Machado,Armas de Haste,ARMAS DE HASTE,6,4,4.3,1200,2,13,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta lança executa as funções de machado e lança com uma única cabeça. É uma arma das mais belas, equilibradas e firmes."
+MELEE-073,Lança-Machado,Armas de Haste,ARMAS DE HASTE,7,4,4.2,2400,2,13,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Esta lança executa as funções de machado e lança com uma única cabeça. É uma arma das mais belas, equilibradas e firmes."
+MELEE-074,Lança-Machado,Armas de Haste,ARMAS DE HASTE,7,5,4.1,4800,2,13,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta lança executa as funções de machado e lança com uma única cabeça. É uma arma das mais belas, equilibradas e firmes."
+MELEE-075,Chicote,Chicotes,CHICOTE,2,0,0.8,5,3,10,Corte,Comum,,10,"Tradicional instrumento de punição corporal de escravos, o chicote foi imortalizado como arma nas telas de cinema. Este é o modelo básico, feito em couro cutido."
+MELEE-076,Chicote,Chicotes,CHICOTE,3,0,0.7,10,3,10,Corte,Boa,,20,"Tradicional instrumento de punição corporal de escravos, o chicote foi imortalizado como arma nas telas de cinema. Este é o modelo básico, feito em couro cutido."
+MELEE-077,Chicote,Chicotes,CHICOTE,3,0,0.6,20,3,10,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Tradicional instrumento de punição corporal de escravos, o chicote foi imortalizado como arma nas telas de cinema. Este é o modelo básico, feito em couro cutido."
+MELEE-078,Chicote,Chicotes,CHICOTE,4,0,0.5,40,3,10,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Tradicional instrumento de punição corporal de escravos, o chicote foi imortalizado como arma nas telas de cinema. Este é o modelo básico, feito em couro cutido."
+MELEE-079,Chicote,Chicotes,CHICOTE,5,0,0.5,80,3,10,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Tradicional instrumento de punição corporal de escravos, o chicote foi imortalizado como arma nas telas de cinema. Este é o modelo básico, feito em couro cutido."
+MELEE-080,Gato de Nove Caudas,Chicotes,CHICOTE,2,0,1.2,8,1.4,9,Corte,Comum,,10,"Como o nome já diz, tem nove tiras de couro individuais. Todas são presas conjuntamente aocabo.Exige algum cuidado nouso para que seu dono não se machuque."
+MELEE-081,Gato de Nove Caudas,Chicotes,CHICOTE,3,0,1.1,16,1.4,9,Corte,Boa,,20,"Como o nome já diz, tem nove tiras de couro individuais. Todas são presas conjuntamente aocabo.Exige algum cuidado nouso para que seu dono não se machuque."
+MELEE-082,Gato de Nove Caudas,Chicotes,CHICOTE,3,0,1,32,1.4,9,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Como o nome já diz, tem nove tiras de couro individuais. Todas são presas conjuntamente aocabo.Exige algum cuidado nouso para que seu dono não se machuque."
+MELEE-083,Gato de Nove Caudas,Chicotes,CHICOTE,4,0,0.9,64,1.4,9,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Como o nome já diz, tem nove tiras de couro individuais. Todas são presas conjuntamente aocabo.Exige algum cuidado nouso para que seu dono não se machuque."
+MELEE-084,Gato de Nove Caudas,Chicotes,CHICOTE,5,0,0.8,128,1.4,9,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Como o nome já diz, tem nove tiras de couro individuais. Todas são presas conjuntamente aocabo.Exige algum cuidado nouso para que seu dono não se machuque."
+MELEE-085,Rapier,Espadas,ESGRIMA,0,3,1.2,350,1,6,Perfuração,Comum,,10,"Mais leve que o Sabre, o Rapier é uma arma quase sem lâmina, ferindo apenas com a ponta. Estocadas rápidas são seguidas de leves movimentos laterais que visam confundir o inimigo."
+MELEE-086,Rapier,Espadas,ESGRIMA,0,4,1.1,700,1,6,Perfuração,Boa,,20,"Mais leve que o Sabre, o Rapier é uma arma quase sem lâmina, ferindo apenas com a ponta. Estocadas rápidas são seguidas de leves movimentos laterais que visam confundir o inimigo."
+MELEE-087,Rapier,Espadas,ESGRIMA,0,4,1,1400,1,6,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Mais leve que o Sabre, o Rapier é uma arma quase sem lâmina, ferindo apenas com a ponta. Estocadas rápidas são seguidas de leves movimentos laterais que visam confundir o inimigo."
+MELEE-088,Rapier,Espadas,ESGRIMA,0,5,0.9,2800,1,6,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Mais leve que o Sabre, o Rapier é uma arma quase sem lâmina, ferindo apenas com a ponta. Estocadas rápidas são seguidas de leves movimentos laterais que visam confundir o inimigo."
+MELEE-089,Rapier,Espadas,ESGRIMA,0,6,0.8,5600,1,6,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Mais leve que o Sabre, o Rapier é uma arma quase sem lâmina, ferindo apenas com a ponta. Estocadas rápidas são seguidas de leves movimentos laterais que visam confundir o inimigo."
+MELEE-090,Florete,Espadas,ESGRIMA,0,3,1,550,1,6,Perfuração,Comum,,10,"Ainda mais leve que o Rapier, o Florete é uma arma extremamente elegante. Muito utilizada em duelos, sempre se mostrou útil no momento de golpear o inimigo."
+MELEE-091,Florete,Espadas,ESGRIMA,0,4,0.9,1100,1,6,Perfuração,Boa,,20,"Ainda mais leve que o Rapier, o Florete é uma arma extremamente elegante. Muito utilizada em duelos, sempre se mostrou útil no momento de golpear o inimigo."
+MELEE-092,Florete,Espadas,ESGRIMA,0,4,0.8,2200,1,6,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Ainda mais leve que o Rapier, o Florete é uma arma extremamente elegante. Muito utilizada em duelos, sempre se mostrou útil no momento de golpear o inimigo."
+MELEE-093,Florete,Espadas,ESGRIMA,0,5,0.7,4400,1,6,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Ainda mais leve que o Rapier, o Florete é uma arma extremamente elegante. Muito utilizada em duelos, sempre se mostrou útil no momento de golpear o inimigo."
+MELEE-094,Florete,Espadas,ESGRIMA,0,6,0.6,8800,1,6,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Ainda mais leve que o Rapier, o Florete é uma arma extremamente elegante. Muito utilizada em duelos, sempre se mostrou útil no momento de golpear o inimigo."
+MELEE-095,Sabre,Espadas,ESGRIMA,1,2,1.6,180,1.15,7,"Corte, Perfuração",Comum,,10,"Arma extremamente leve e ágil. Seu principal golpe é a estocada, mas a lâmina não está descartada. Não é uma arma muito utilizada, mas seus fas não a trocam por nada."
+MELEE-096,Sabre,Espadas,ESGRIMA,2,2,1.5,360,1.15,7,"Corte, Perfuração",Boa,,20,"Arma extremamente leve e ágil. Seu principal golpe é a estocada, mas a lâmina não está descartada. Não é uma arma muito utilizada, mas seus fas não a trocam por nada."
+MELEE-097,Sabre,Espadas,ESGRIMA,2,3,1.4,720,1.15,7,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Arma extremamente leve e ágil. Seu principal golpe é a estocada, mas a lâmina não está descartada. Não é uma arma muito utilizada, mas seus fas não a trocam por nada."
+MELEE-098,Sabre,Espadas,ESGRIMA,3,3,1.3,1440,1.15,7,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Arma extremamente leve e ágil. Seu principal golpe é a estocada, mas a lâmina não está descartada. Não é uma arma muito utilizada, mas seus fas não a trocam por nada."
+MELEE-099,Sabre,Espadas,ESGRIMA,3,4,1.2,2880,1.15,7,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Arma extremamente leve e ágil. Seu principal golpe é a estocada, mas a lâmina não está descartada. Não é uma arma muito utilizada, mas seus fas não a trocam por nada."
+MELEE-100,Espada de Treinamento,Espadas,ESPADAS CURTAS,-1,-1,0.7,50,0.8,7,"Corte, Perfuração",Comum,,10,"Versão em madeira para treinamento de tropas. Não é tão eficiente quanto os modelos em metal, mas permite a alguém surpreendido só com ela pelo menos se defender."
+MELEE-101,Espada de Treinamento,Espadas,ESPADAS CURTAS,0,-1,0.6,100,0.8,7,"Corte, Perfuração",Boa,,20,"Versão em madeira para treinamento de tropas. Não é tão eficiente quanto os modelos em metal, mas permite a alguém surpreendido só com ela pelo menos se defender."
+MELEE-102,Espada de Treinamento,Espadas,ESPADAS CURTAS,0,0,0.5,200,0.8,7,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Versão em madeira para treinamento de tropas. Não é tão eficiente quanto os modelos em metal, mas permite a alguém surpreendido só com ela pelo menos se defender."
+MELEE-103,Espada de Treinamento,Espadas,ESPADAS CURTAS,1,0,0.5,400,0.8,7,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Versão em madeira para treinamento de tropas. Não é tão eficiente quanto os modelos em metal, mas permite a alguém surpreendido só com ela pelo menos se defender."
+MELEE-104,Espada de Treinamento,Espadas,ESPADAS CURTAS,1,1,0.5,800,0.8,7,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Versão em madeira para treinamento de tropas. Não é tão eficiente quanto os modelos em metal, mas permite a alguém surpreendido só com ela pelo menos se defender."
+MELEE-105,Espada Curta,Espadas,ESPADAS CURTAS,0,0,0.8,120,0.8,7,"Corte, Perfuração",Comum,,10,Este é o mais básico dos modelos. Praticamente qualquer um com um mínimo de conhecimento sobre armas sabe lidar com uma destas. É a primeira espada que se aprende a usar.
+MELEE-106,Espada Curta,Espadas,ESPADAS CURTAS,1,0,0.7,240,0.8,7,"Corte, Perfuração",Boa,,20,Este é o mais básico dos modelos. Praticamente qualquer um com um mínimo de conhecimento sobre armas sabe lidar com uma destas. É a primeira espada que se aprende a usar.
+MELEE-107,Espada Curta,Espadas,ESPADAS CURTAS,1,1,0.6,480,0.8,7,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Este é o mais básico dos modelos. Praticamente qualquer um com um mínimo de conhecimento sobre armas sabe lidar com uma destas. É a primeira espada que se aprende a usar.
+MELEE-108,Espada Curta,Espadas,ESPADAS CURTAS,2,1,0.5,960,0.8,7,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Este é o mais básico dos modelos. Praticamente qualquer um com um mínimo de conhecimento sobre armas sabe lidar com uma destas. É a primeira espada que se aprende a usar.
+MELEE-109,Espada Curta,Espadas,ESPADAS CURTAS,2,2,0.5,1920,0.8,7,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Este é o mais básico dos modelos. Praticamente qualquer um com um mínimo de conhecimento sobre armas sabe lidar com uma destas. É a primeira espada que se aprende a usar.
+MELEE-110,Gládio,Espadas,ESPADAS CURTAS,0,0,0.8,150,0.8,5,"Corte, Perfuração",Comum,,10,"Trata-se de uma espada curta com lâmina um tanto mais larga. Freqüentemente empunhada por gladiadores, esta arma ainda tem muitos adeptos durante a Idade Média."
+MELEE-111,Gládio,Espadas,ESPADAS CURTAS,1,0,0.7,300,0.8,5,"Corte, Perfuração",Boa,,20,"Trata-se de uma espada curta com lâmina um tanto mais larga. Freqüentemente empunhada por gladiadores, esta arma ainda tem muitos adeptos durante a Idade Média."
+MELEE-112,Gládio,Espadas,ESPADAS CURTAS,1,1,0.6,600,0.8,5,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Trata-se de uma espada curta com lâmina um tanto mais larga. Freqüentemente empunhada por gladiadores, esta arma ainda tem muitos adeptos durante a Idade Média."
+MELEE-113,Gládio,Espadas,ESPADAS CURTAS,2,1,0.5,1200,0.8,5,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Trata-se de uma espada curta com lâmina um tanto mais larga. Freqüentemente empunhada por gladiadores, esta arma ainda tem muitos adeptos durante a Idade Média."
+MELEE-114,Gládio,Espadas,ESPADAS CURTAS,2,2,0.5,2400,0.8,5,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Trata-se de uma espada curta com lâmina um tanto mais larga. Freqüentemente empunhada por gladiadores, esta arma ainda tem muitos adeptos durante a Idade Média."
+MELEE-115,Wakizashi,Espadas,ESPADAS CURTAS,0,0,0.8,500,0.7,6,"Corte, Perfuração",Comum,,10,"Arma secundária dos samurais especializados em uso de katana com apenas uma mão. Possui um desenho parecido, mas as dimensões são reduzidas."
+MELEE-116,Wakizashi,Espadas,ESPADAS CURTAS,1,0,0.7,1000,0.7,6,"Corte, Perfuração",Boa,,20,"Arma secundária dos samurais especializados em uso de katana com apenas uma mão. Possui um desenho parecido, mas as dimensões são reduzidas."
+MELEE-117,Wakizashi,Espadas,ESPADAS CURTAS,1,1,0.6,2000,0.7,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Arma secundária dos samurais especializados em uso de katana com apenas uma mão. Possui um desenho parecido, mas as dimensões são reduzidas."
+MELEE-118,Wakizashi,Espadas,ESPADAS CURTAS,2,1,0.5,4000,0.7,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Arma secundária dos samurais especializados em uso de katana com apenas uma mão. Possui um desenho parecido, mas as dimensões são reduzidas."
+MELEE-119,Wakizashi,Espadas,ESPADAS CURTAS,2,2,0.5,8000,0.7,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Arma secundária dos samurais especializados em uso de katana com apenas uma mão. Possui um desenho parecido, mas as dimensões são reduzidas."
+MELEE-120,Cimitarra Curta,Espadas,ESPADAS CURTAS,0,0,0.8,220,0.95,9,"Corte, Perfuração",Comum,,10,Versão mais curta e mais rápida da típica espada das mil e uma noites (mais ágil e veloz). O golpe com apenas uma mão é regra nesta arma.
+MELEE-121,Cimitarra Curta,Espadas,ESPADAS CURTAS,1,0,0.7,440,0.95,9,"Corte, Perfuração",Boa,,20,Versão mais curta e mais rápida da típica espada das mil e uma noites (mais ágil e veloz). O golpe com apenas uma mão é regra nesta arma.
+MELEE-122,Cimitarra Curta,Espadas,ESPADAS CURTAS,1,1,0.6,880,0.95,9,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Versão mais curta e mais rápida da típica espada das mil e uma noites (mais ágil e veloz). O golpe com apenas uma mão é regra nesta arma.
+MELEE-123,Cimitarra Curta,Espadas,ESPADAS CURTAS,2,1,0.5,1760,0.95,9,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Versão mais curta e mais rápida da típica espada das mil e uma noites (mais ágil e veloz). O golpe com apenas uma mão é regra nesta arma.
+MELEE-124,Cimitarra Curta,Espadas,ESPADAS CURTAS,2,2,0.5,3520,0.95,9,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Versão mais curta e mais rápida da típica espada das mil e uma noites (mais ágil e veloz). O golpe com apenas uma mão é regra nesta arma.
+MELEE-125,Espada Bastarda de Duas Mãos,Espadas,ESPADAS DE DUAS MÃOS,3,0,7,1000,1.6,12,"Corte, Perfuração",Comum,,10,Espada dos cavaleiros das cruzadas. É a menina dos olhos de qualquer guerreiro. Seu enorme peso impede que pessoas com força mediana a usem.
+MELEE-126,Espada Bastarda de Duas Mãos,Espadas,ESPADAS DE DUAS MÃOS,4,0,6.9,2000,1.6,12,"Corte, Perfuração",Boa,,20,Espada dos cavaleiros das cruzadas. É a menina dos olhos de qualquer guerreiro. Seu enorme peso impede que pessoas com força mediana a usem.
+MELEE-127,Espada Bastarda de Duas Mãos,Espadas,ESPADAS DE DUAS MÃOS,4,1,6.8,4000,1.6,12,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Espada dos cavaleiros das cruzadas. É a menina dos olhos de qualquer guerreiro. Seu enorme peso impede que pessoas com força mediana a usem.
+MELEE-128,Espada Bastarda de Duas Mãos,Espadas,ESPADAS DE DUAS MÃOS,5,1,6.7,8000,1.6,12,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Espada dos cavaleiros das cruzadas. É a menina dos olhos de qualquer guerreiro. Seu enorme peso impede que pessoas com força mediana a usem.
+MELEE-129,Espada Bastarda de Duas Mãos,Espadas,ESPADAS DE DUAS MÃOS,5,2,6.6,16000,1.6,12,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Espada dos cavaleiros das cruzadas. É a menina dos olhos de qualquer guerreiro. Seu enorme peso impede que pessoas com força mediana a usem.
+MELEE-130,Claymore,Espadas,ESPADAS DE DUAS MÃOS,3,0,6,1000,1.6,12,"Corte, Perfuração",Comum,,10,É uma arma escocesa. Suas dimensões são intermediárias entre uma espada longa e uma espada bastarda. Foi muito utilizada por escoceses contra os ingleses nos séculos XIII e XIV.
+MELEE-131,Claymore,Espadas,ESPADAS DE DUAS MÃOS,4,0,5.9,2000,1.6,12,"Corte, Perfuração",Boa,,20,É uma arma escocesa. Suas dimensões são intermediárias entre uma espada longa e uma espada bastarda. Foi muito utilizada por escoceses contra os ingleses nos séculos XIII e XIV.
+MELEE-132,Claymore,Espadas,ESPADAS DE DUAS MÃOS,4,1,5.8,4000,1.6,12,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,É uma arma escocesa. Suas dimensões são intermediárias entre uma espada longa e uma espada bastarda. Foi muito utilizada por escoceses contra os ingleses nos séculos XIII e XIV.
+MELEE-133,Claymore,Espadas,ESPADAS DE DUAS MÃOS,5,1,5.7,8000,1.6,12,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,É uma arma escocesa. Suas dimensões são intermediárias entre uma espada longa e uma espada bastarda. Foi muito utilizada por escoceses contra os ingleses nos séculos XIII e XIV.
+MELEE-134,Claymore,Espadas,ESPADAS DE DUAS MÃOS,5,2,5.6,16000,1.6,12,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,É uma arma escocesa. Suas dimensões são intermediárias entre uma espada longa e uma espada bastarda. Foi muito utilizada por escoceses contra os ingleses nos séculos XIII e XIV.
+MELEE-135,Flamberge,Espadas,ESPADAS DE DUAS MÃOS,4,0,6,1500,1.6,12,"Corte, Perfuração",Comum,,10,"Espada de grandes dimensões, com uma haste semelhante a de uma montante, mas com lâmina ondulada e dimensões menores."
+MELEE-136,Flamberge,Espadas,ESPADAS DE DUAS MÃOS,5,0,5.9,3000,1.6,12,"Corte, Perfuração",Boa,,20,"Espada de grandes dimensões, com uma haste semelhante a de uma montante, mas com lâmina ondulada e dimensões menores."
+MELEE-137,Flamberge,Espadas,ESPADAS DE DUAS MÃOS,5,1,5.8,6000,1.6,12,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Espada de grandes dimensões, com uma haste semelhante a de uma montante, mas com lâmina ondulada e dimensões menores."
+MELEE-138,Flamberge,Espadas,ESPADAS DE DUAS MÃOS,6,1,5.7,12000,1.6,12,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Espada de grandes dimensões, com uma haste semelhante a de uma montante, mas com lâmina ondulada e dimensões menores."
+MELEE-139,Flamberge,Espadas,ESPADAS DE DUAS MÃOS,6,2,5.6,24000,1.6,12,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Espada de grandes dimensões, com uma haste semelhante a de uma montante, mas com lâmina ondulada e dimensões menores."
+MELEE-140,Montante,Espadas,ESPADAS DE DUAS MÃOS,5,0,10,1500,2,14,"Corte, Perfuração",Comum,,10,"Possui em haste entre a lâmina e o cabo para dar melhor equilíbrio. O combatente gira praticamente todo seu corpo para ganhar velocidade e só então golpeia, usando o peso."
+MELEE-141,Montante,Espadas,ESPADAS DE DUAS MÃOS,6,0,9.9,3000,2,14,"Corte, Perfuração",Boa,,20,"Possui em haste entre a lâmina e o cabo para dar melhor equilíbrio. O combatente gira praticamente todo seu corpo para ganhar velocidade e só então golpeia, usando o peso."
+MELEE-142,Montante,Espadas,ESPADAS DE DUAS MÃOS,6,1,9.8,6000,2,14,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui em haste entre a lâmina e o cabo para dar melhor equilíbrio. O combatente gira praticamente todo seu corpo para ganhar velocidade e só então golpeia, usando o peso."
+MELEE-143,Montante,Espadas,ESPADAS DE DUAS MÃOS,7,1,9.7,12000,2,14,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui em haste entre a lâmina e o cabo para dar melhor equilíbrio. O combatente gira praticamente todo seu corpo para ganhar velocidade e só então golpeia, usando o peso."
+MELEE-144,Montante,Espadas,ESPADAS DE DUAS MÃOS,7,2,9.6,24000,2,14,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui em haste entre a lâmina e o cabo para dar melhor equilíbrio. O combatente gira praticamente todo seu corpo para ganhar velocidade e só então golpeia, usando o peso."
+MELEE-145,No Dachi,Espadas,ESPADAS DE DUAS MÃOS,3,0,7,1000,1.6,12,"Corte, Perfuração",Comum,,10,"No dachi não é o nome específico da arma, mas de qualquer espada longa apenas embainhada de forma a aterrorizar o inimigo. Ela não tem função de combate, salvo em raros casos."
+MELEE-146,No Dachi,Espadas,ESPADAS DE DUAS MÃOS,4,0,6.9,2000,1.6,12,"Corte, Perfuração",Boa,,20,"No dachi não é o nome específico da arma, mas de qualquer espada longa apenas embainhada de forma a aterrorizar o inimigo. Ela não tem função de combate, salvo em raros casos."
+MELEE-147,No Dachi,Espadas,ESPADAS DE DUAS MÃOS,4,1,6.8,4000,1.6,12,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"No dachi não é o nome específico da arma, mas de qualquer espada longa apenas embainhada de forma a aterrorizar o inimigo. Ela não tem função de combate, salvo em raros casos."
+MELEE-148,No Dachi,Espadas,ESPADAS DE DUAS MÃOS,5,1,6.7,8000,1.6,12,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"No dachi não é o nome específico da arma, mas de qualquer espada longa apenas embainhada de forma a aterrorizar o inimigo. Ela não tem função de combate, salvo em raros casos."
+MELEE-149,No Dachi,Espadas,ESPADAS DE DUAS MÃOS,5,2,6.6,16000,1.6,12,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"No dachi não é o nome específico da arma, mas de qualquer espada longa apenas embainhada de forma a aterrorizar o inimigo. Ela não tem função de combate, salvo em raros casos."
+MELEE-150,Cimitarra Longa,Espadas,ESPADAS DE DUAS MÃOS,1,1,4,300,1.3,11,"Corte, Perfuração",Comum,,10,"Tradicional arma de origem árabe. Tem uma ponta larga, porém afiada. A técnica básica é de duas mãos, mas aceita alguns golpes comm apenas uma."
+MELEE-151,Cimitarra Longa,Espadas,ESPADAS DE DUAS MÃOS,2,1,3.9,600,1.3,11,"Corte, Perfuração",Boa,,20,"Tradicional arma de origem árabe. Tem uma ponta larga, porém afiada. A técnica básica é de duas mãos, mas aceita alguns golpes comm apenas uma."
+MELEE-152,Cimitarra Longa,Espadas,ESPADAS DE DUAS MÃOS,2,2,3.8,1200,1.3,11,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Tradicional arma de origem árabe. Tem uma ponta larga, porém afiada. A técnica básica é de duas mãos, mas aceita alguns golpes comm apenas uma."
+MELEE-153,Cimitarra Longa,Espadas,ESPADAS DE DUAS MÃOS,3,2,3.7,2400,1.3,11,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Tradicional arma de origem árabe. Tem uma ponta larga, porém afiada. A técnica básica é de duas mãos, mas aceita alguns golpes comm apenas uma."
+MELEE-154,Cimitarra Longa,Espadas,ESPADAS DE DUAS MÃOS,3,3,3.6,4800,1.3,11,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Tradicional arma de origem árabe. Tem uma ponta larga, porém afiada. A técnica básica é de duas mãos, mas aceita alguns golpes comm apenas uma."
+MELEE-155,Espada Longa,Espadas,ESPADAS LONGAS,1,1,3,600,1.1,8,"Corte, Perfuração",Comum,,10,"Versão mais alongada, só é utilizada por combatentes mais experientes. Ela pode ser usada com uma ou duas mãos."
+MELEE-156,Espada Longa,Espadas,ESPADAS LONGAS,2,1,2.9,1200,1.1,8,"Corte, Perfuração",Boa,,20,"Versão mais alongada, só é utilizada por combatentes mais experientes. Ela pode ser usada com uma ou duas mãos."
+MELEE-157,Espada Longa,Espadas,ESPADAS LONGAS,2,2,2.8,2400,1.1,8,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Versão mais alongada, só é utilizada por combatentes mais experientes. Ela pode ser usada com uma ou duas mãos."
+MELEE-158,Espada Longa,Espadas,ESPADAS LONGAS,3,2,2.7,4800,1.1,8,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Versão mais alongada, só é utilizada por combatentes mais experientes. Ela pode ser usada com uma ou duas mãos."
+MELEE-159,Espada Longa,Espadas,ESPADAS LONGAS,3,3,2.6,9600,1.1,8,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Versão mais alongada, só é utilizada por combatentes mais experientes. Ela pode ser usada com uma ou duas mãos."
+MELEE-160,Broadsword,Espadas,ESPADAS LONGAS,2,0,3.5,600,1.1,10,"Corte, Perfuração",Comum,,10,"Possui uma lâmina larga e pesada. A ausência de uma guarda entre o cabo e a lâmina mostra que o principal golpe é de corte, não de perfuração."
+MELEE-161,Broadsword,Espadas,ESPADAS LONGAS,3,0,3.4,1200,1.1,10,"Corte, Perfuração",Boa,,20,"Possui uma lâmina larga e pesada. A ausência de uma guarda entre o cabo e a lâmina mostra que o principal golpe é de corte, não de perfuração."
+MELEE-162,Broadsword,Espadas,ESPADAS LONGAS,3,1,3.3,2400,1.1,10,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui uma lâmina larga e pesada. A ausência de uma guarda entre o cabo e a lâmina mostra que o principal golpe é de corte, não de perfuração."
+MELEE-163,Broadsword,Espadas,ESPADAS LONGAS,4,1,3.2,4800,1.1,10,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui uma lâmina larga e pesada. A ausência de uma guarda entre o cabo e a lâmina mostra que o principal golpe é de corte, não de perfuração."
+MELEE-164,Broadsword,Espadas,ESPADAS LONGAS,4,2,3.1,9600,1.1,10,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui uma lâmina larga e pesada. A ausência de uma guarda entre o cabo e a lâmina mostra que o principal golpe é de corte, não de perfuração."
+MELEE-165,Espada Bastarda,Espadas,ESPADAS LONGAS,2,0,5,450,1.35,10,"Corte, Perfuração",Comum,,10,"Permite uma técnica mais apurada, podendo ser usada com uma ou duas mãos. Era uma das preferidas pelos guerreiros medievais."
+MELEE-166,Espada Bastarda,Espadas,ESPADAS LONGAS,3,0,4.9,900,1.35,10,"Corte, Perfuração",Boa,,20,"Permite uma técnica mais apurada, podendo ser usada com uma ou duas mãos. Era uma das preferidas pelos guerreiros medievais."
+MELEE-167,Espada Bastarda,Espadas,ESPADAS LONGAS,3,1,4.8,1800,1.35,10,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Permite uma técnica mais apurada, podendo ser usada com uma ou duas mãos. Era uma das preferidas pelos guerreiros medievais."
+MELEE-168,Espada Bastarda,Espadas,ESPADAS LONGAS,4,1,4.7,3600,1.35,10,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Permite uma técnica mais apurada, podendo ser usada com uma ou duas mãos. Era uma das preferidas pelos guerreiros medievais."
+MELEE-169,Espada Bastarda,Espadas,ESPADAS LONGAS,4,2,4.6,7200,1.35,10,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Permite uma técnica mais apurada, podendo ser usada com uma ou duas mãos. Era uma das preferidas pelos guerreiros medievais."
+MELEE-170,Katana,Espadas,ESPADAS LONGAS,2,2,2.5,1000,1.1,9,"Corte, Perfuração",Comum,,10,A katana é a espada dos samurais. Ela era confeccionada exclusivamente para uso do dono. Suas medidas eram projetadas para o corpo do samurai. Isto fazia dela uma arma única. Era construída com aço da mais alta qualidade existente e forjada centenas de vezes de modo a garantir altíssima resitência. Sua utilização envolve diversos procedimentos e rituais. O simples toque em uma lâmina significa a morte para quem o fez. Pode ser empunhada com uma ou duas mãos.
+MELEE-171,Katana,Espadas,ESPADAS LONGAS,3,2,2.4,2000,1.1,9,"Corte, Perfuração",Boa,,20,A katana é a espada dos samurais. Ela era confeccionada exclusivamente para uso do dono. Suas medidas eram projetadas para o corpo do samurai. Isto fazia dela uma arma única. Era construída com aço da mais alta qualidade existente e forjada centenas de vezes de modo a garantir altíssima resitência. Sua utilização envolve diversos procedimentos e rituais. O simples toque em uma lâmina significa a morte para quem o fez. Pode ser empunhada com uma ou duas mãos.
+MELEE-172,Katana,Espadas,ESPADAS LONGAS,3,3,2.3,4000,1.1,9,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,A katana é a espada dos samurais. Ela era confeccionada exclusivamente para uso do dono. Suas medidas eram projetadas para o corpo do samurai. Isto fazia dela uma arma única. Era construída com aço da mais alta qualidade existente e forjada centenas de vezes de modo a garantir altíssima resitência. Sua utilização envolve diversos procedimentos e rituais. O simples toque em uma lâmina significa a morte para quem o fez. Pode ser empunhada com uma ou duas mãos.
+MELEE-173,Katana,Espadas,ESPADAS LONGAS,4,3,2.2,8000,1.1,9,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,A katana é a espada dos samurais. Ela era confeccionada exclusivamente para uso do dono. Suas medidas eram projetadas para o corpo do samurai. Isto fazia dela uma arma única. Era construída com aço da mais alta qualidade existente e forjada centenas de vezes de modo a garantir altíssima resitência. Sua utilização envolve diversos procedimentos e rituais. O simples toque em uma lâmina significa a morte para quem o fez. Pode ser empunhada com uma ou duas mãos.
+MELEE-174,Katana,Espadas,ESPADAS LONGAS,4,4,2.1,16000,1.1,9,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,A katana é a espada dos samurais. Ela era confeccionada exclusivamente para uso do dono. Suas medidas eram projetadas para o corpo do samurai. Isto fazia dela uma arma única. Era construída com aço da mais alta qualidade existente e forjada centenas de vezes de modo a garantir altíssima resitência. Sua utilização envolve diversos procedimentos e rituais. O simples toque em uma lâmina significa a morte para quem o fez. Pode ser empunhada com uma ou duas mãos.
+MELEE-175,Kopesh,Espadas,ESPADAS LONGAS,1,1,3,150,1.1,8,"Corte, Perfuração",Comum,,10,"Esta é mais uma obra da escola turca de espadas. Tem a típica lâmina larga, ponta afiada e balanceamento raramente igualado. Este modelo é dos mais populares."
+MELEE-176,Kopesh,Espadas,ESPADAS LONGAS,2,1,2.9,300,1.1,8,"Corte, Perfuração",Boa,,20,"Esta é mais uma obra da escola turca de espadas. Tem a típica lâmina larga, ponta afiada e balanceamento raramente igualado. Este modelo é dos mais populares."
+MELEE-177,Kopesh,Espadas,ESPADAS LONGAS,2,2,2.8,600,1.1,8,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta é mais uma obra da escola turca de espadas. Tem a típica lâmina larga, ponta afiada e balanceamento raramente igualado. Este modelo é dos mais populares."
+MELEE-178,Kopesh,Espadas,ESPADAS LONGAS,3,2,2.7,1200,1.1,8,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Esta é mais uma obra da escola turca de espadas. Tem a típica lâmina larga, ponta afiada e balanceamento raramente igualado. Este modelo é dos mais populares."
+MELEE-179,Kopesh,Espadas,ESPADAS LONGAS,3,3,2.6,2400,1.1,8,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta é mais uma obra da escola turca de espadas. Tem a típica lâmina larga, ponta afiada e balanceamento raramente igualado. Este modelo é dos mais populares."
+MELEE-180,Faca,Facas,FACA,-3,-1,0.25,10,0.35,6,"Corte, Perfuração",Comum,,10,"Tradicional utensílio de cozinha. Qualquer faca comum se encaixa nesta definição. Possui apenas lâmina, geralmente com ponta. Pode ser encontrada em qualquer civilização que domine a fundição."
+MELEE-181,Faca,Facas,FACA,-2,-1,0.25,20,0.35,6,"Corte, Perfuração",Boa,,20,"Tradicional utensílio de cozinha. Qualquer faca comum se encaixa nesta definição. Possui apenas lâmina, geralmente com ponta. Pode ser encontrada em qualquer civilização que domine a fundição."
+MELEE-182,Faca,Facas,FACA,-2,0,0.25,40,0.35,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Tradicional utensílio de cozinha. Qualquer faca comum se encaixa nesta definição. Possui apenas lâmina, geralmente com ponta. Pode ser encontrada em qualquer civilização que domine a fundição."
+MELEE-183,Faca,Facas,FACA,-1,0,0.25,80,0.35,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Tradicional utensílio de cozinha. Qualquer faca comum se encaixa nesta definição. Possui apenas lâmina, geralmente com ponta. Pode ser encontrada em qualquer civilização que domine a fundição."
+MELEE-184,Faca,Facas,FACA,-1,1,0.25,160,0.35,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Tradicional utensílio de cozinha. Qualquer faca comum se encaixa nesta definição. Possui apenas lâmina, geralmente com ponta. Pode ser encontrada em qualquer civilização que domine a fundição."
+MELEE-185,Faca de Caça,Facas,FACA,0,0,0.25,20,0.35,6,"Corte, Perfuração",Comum,,10,"Diferentemente da faca comum, esta possui uma lâmina curva que provoca maior estrago ao penetrar o inimigo. Costuma possuir uma guarda separando a lâmina do cabo."
+MELEE-186,Faca de Caça,Facas,FACA,1,0,0.25,40,0.35,6,"Corte, Perfuração",Boa,,20,"Diferentemente da faca comum, esta possui uma lâmina curva que provoca maior estrago ao penetrar o inimigo. Costuma possuir uma guarda separando a lâmina do cabo."
+MELEE-187,Faca de Caça,Facas,FACA,1,1,0.25,80,0.35,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Diferentemente da faca comum, esta possui uma lâmina curva que provoca maior estrago ao penetrar o inimigo. Costuma possuir uma guarda separando a lâmina do cabo."
+MELEE-188,Faca de Caça,Facas,FACA,2,1,0.25,160,0.35,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Diferentemente da faca comum, esta possui uma lâmina curva que provoca maior estrago ao penetrar o inimigo. Costuma possuir uma guarda separando a lâmina do cabo."
+MELEE-189,Faca de Caça,Facas,FACA,2,2,0.25,320,0.35,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Diferentemente da faca comum, esta possui uma lâmina curva que provoca maior estrago ao penetrar o inimigo. Costuma possuir uma guarda separando a lâmina do cabo."
+MELEE-190,Punhal,Facas,FACA,-1,3,0.15,60,0.25,6,"Corte, Perfuração",Comum,,10,Possui lâmina dupla e ponta para permitir uma melhor perfuração. Perfeita para assassinos e ladrões devido à facilidade de ser ocultada.
+MELEE-191,Punhal,Facas,FACA,0,3,0.15,120,0.25,6,"Corte, Perfuração",Boa,,20,Possui lâmina dupla e ponta para permitir uma melhor perfuração. Perfeita para assassinos e ladrões devido à facilidade de ser ocultada.
+MELEE-192,Punhal,Facas,FACA,0,4,0.15,240,0.25,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Possui lâmina dupla e ponta para permitir uma melhor perfuração. Perfeita para assassinos e ladrões devido à facilidade de ser ocultada.
+MELEE-193,Punhal,Facas,FACA,1,4,0.15,480,0.25,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Possui lâmina dupla e ponta para permitir uma melhor perfuração. Perfeita para assassinos e ladrões devido à facilidade de ser ocultada.
+MELEE-194,Punhal,Facas,FACA,1,5,0.15,960,0.25,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Possui lâmina dupla e ponta para permitir uma melhor perfuração. Perfeita para assassinos e ladrões devido à facilidade de ser ocultada.
+MELEE-195,Main-gaunche,Facas,FACA,-1,1,0.15,100,0.3,6,"Corte, Perfuração",Comum,,10,"Arma de apoio usada por espadachins europeus na Alta Idade Média. Sua aplicação é barrar os golpes do oponente. Seu desenho permite enganchar a espada inimiga, originando seu nome."
+MELEE-196,Main-gaunche,Facas,FACA,0,1,0.15,200,0.3,6,"Corte, Perfuração",Boa,,20,"Arma de apoio usada por espadachins europeus na Alta Idade Média. Sua aplicação é barrar os golpes do oponente. Seu desenho permite enganchar a espada inimiga, originando seu nome."
+MELEE-197,Main-gaunche,Facas,FACA,0,2,0.15,400,0.3,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Arma de apoio usada por espadachins europeus na Alta Idade Média. Sua aplicação é barrar os golpes do oponente. Seu desenho permite enganchar a espada inimiga, originando seu nome."
+MELEE-198,Main-gaunche,Facas,FACA,1,2,0.15,800,0.3,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Arma de apoio usada por espadachins europeus na Alta Idade Média. Sua aplicação é barrar os golpes do oponente. Seu desenho permite enganchar a espada inimiga, originando seu nome."
+MELEE-199,Main-gaunche,Facas,FACA,1,3,0.15,1600,0.3,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Arma de apoio usada por espadachins europeus na Alta Idade Média. Sua aplicação é barrar os golpes do oponente. Seu desenho permite enganchar a espada inimiga, originando seu nome."
+MELEE-200,Machete,Facas,FACA,2,1,1.4,80,0.4,6,"Corte, Perfuração",Comum,,10,"É uma espada muito curta, de lâmina larga e resistente. É sempre utilizada comm apenas uma das mãos. Alguns a utilizam para abrir picadas no mato."
+MELEE-201,Machete,Facas,FACA,3,1,1.3,160,0.4,6,"Corte, Perfuração",Boa,,20,"É uma espada muito curta, de lâmina larga e resistente. É sempre utilizada comm apenas uma das mãos. Alguns a utilizam para abrir picadas no mato."
+MELEE-202,Machete,Facas,FACA,3,2,1.2,320,0.4,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É uma espada muito curta, de lâmina larga e resistente. É sempre utilizada comm apenas uma das mãos. Alguns a utilizam para abrir picadas no mato."
+MELEE-203,Machete,Facas,FACA,4,2,1.1,640,0.4,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"É uma espada muito curta, de lâmina larga e resistente. É sempre utilizada comm apenas uma das mãos. Alguns a utilizam para abrir picadas no mato."
+MELEE-204,Machete,Facas,FACA,4,3,1,1280,0.4,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"É uma espada muito curta, de lâmina larga e resistente. É sempre utilizada comm apenas uma das mãos. Alguns a utilizam para abrir picadas no mato."
+MELEE-205,Cutelo,Facas,FACA,2,0,0.5,70,0.45,6,Corte,Comum,,10,"Cutelo é uma faca de lâmina muito larga utilizada por açougueiros. Sempre se mostrou uma arma extremamente leve e ágil, e, em alguns casos, mortal."
+MELEE-206,Cutelo,Facas,FACA,3,0,0.5,140,0.45,6,Corte,Boa,,20,"Cutelo é uma faca de lâmina muito larga utilizada por açougueiros. Sempre se mostrou uma arma extremamente leve e ágil, e, em alguns casos, mortal."
+MELEE-207,Cutelo,Facas,FACA,3,0,0.5,280,0.45,6,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Cutelo é uma faca de lâmina muito larga utilizada por açougueiros. Sempre se mostrou uma arma extremamente leve e ágil, e, em alguns casos, mortal."
+MELEE-208,Cutelo,Facas,FACA,4,0,0.5,560,0.45,6,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Cutelo é uma faca de lâmina muito larga utilizada por açougueiros. Sempre se mostrou uma arma extremamente leve e ágil, e, em alguns casos, mortal."
+MELEE-209,Cutelo,Facas,FACA,5,0,0.5,1120,0.45,6,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Cutelo é uma faca de lâmina muito larga utilizada por açougueiros. Sempre se mostrou uma arma extremamente leve e ágil, e, em alguns casos, mortal."
+MELEE-210,Khurki,Facas,FACA,2,2,0.35,200,0.28,6,"Corte, Perfuração",Comum,,10,"A lâmina de alta qualidade permite o uso para qualquer tipo de ataque. O cabo de madeira ou marfim é leve, e a curvatura da lâmina de um só corte a torna rápida e precisa."
+MELEE-211,Khurki,Facas,FACA,3,2,0.35,400,0.28,6,"Corte, Perfuração",Boa,,20,"A lâmina de alta qualidade permite o uso para qualquer tipo de ataque. O cabo de madeira ou marfim é leve, e a curvatura da lâmina de um só corte a torna rápida e precisa."
+MELEE-212,Khurki,Facas,FACA,3,3,0.35,800,0.28,6,"Corte, Perfuração",Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A lâmina de alta qualidade permite o uso para qualquer tipo de ataque. O cabo de madeira ou marfim é leve, e a curvatura da lâmina de um só corte a torna rápida e precisa."
+MELEE-213,Khurki,Facas,FACA,4,3,0.35,1600,0.28,6,"Corte, Perfuração",Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A lâmina de alta qualidade permite o uso para qualquer tipo de ataque. O cabo de madeira ou marfim é leve, e a curvatura da lâmina de um só corte a torna rápida e precisa."
+MELEE-214,Khurki,Facas,FACA,4,4,0.35,3200,0.28,6,"Corte, Perfuração",Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A lâmina de alta qualidade permite o uso para qualquer tipo de ataque. O cabo de madeira ou marfim é leve, e a curvatura da lâmina de um só corte a torna rápida e precisa."
+MELEE-215,Lança de Mão,Lanças,LANÇA,0,1,2,50,1.5,8,Perfuração,Comum,,10,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+MELEE-216,Lança de Mão,Lanças,LANÇA,0,2,1.9,100,1.5,8,Perfuração,Boa,,20,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+MELEE-217,Lança de Mão,Lanças,LANÇA,0,2,1.8,200,1.5,8,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+MELEE-218,Lança de Mão,Lanças,LANÇA,0,3,1.7,400,1.5,8,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+MELEE-219,Lança de Mão,Lanças,LANÇA,0,4,1.6,800,1.5,8,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+MELEE-220,Pike,Lanças,LANÇA,0,2,2.5,60,2,9,Perfuração,Comum,,10,Este é um modelo bastante simples. Possui uma ponta metálica presa à sua haste. A parte traseira é pontiaguda para permitir apoiar a lança no chão.
+MELEE-221,Pike,Lanças,LANÇA,0,3,2.4,120,2,9,Perfuração,Boa,,20,Este é um modelo bastante simples. Possui uma ponta metálica presa à sua haste. A parte traseira é pontiaguda para permitir apoiar a lança no chão.
+MELEE-222,Pike,Lanças,LANÇA,0,3,2.3,240,2,9,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Este é um modelo bastante simples. Possui uma ponta metálica presa à sua haste. A parte traseira é pontiaguda para permitir apoiar a lança no chão.
+MELEE-223,Pike,Lanças,LANÇA,0,4,2.2,480,2,9,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Este é um modelo bastante simples. Possui uma ponta metálica presa à sua haste. A parte traseira é pontiaguda para permitir apoiar a lança no chão.
+MELEE-224,Pike,Lanças,LANÇA,0,5,2.1,960,2,9,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Este é um modelo bastante simples. Possui uma ponta metálica presa à sua haste. A parte traseira é pontiaguda para permitir apoiar a lança no chão.
+MELEE-225,Partisan,Lanças,LANÇA,0,2,2.5,70,2.5,9,Perfuração,Comum,,10,"Esta versão de lança tem uma ponta mais longa, pois são utilizadas contra a cavalaria. Há diferenças também no pescoço, mas são paenas visuais e não funcionais."
+MELEE-226,Partisan,Lanças,LANÇA,0,3,2.4,140,2.5,9,Perfuração,Boa,,20,"Esta versão de lança tem uma ponta mais longa, pois são utilizadas contra a cavalaria. Há diferenças também no pescoço, mas são paenas visuais e não funcionais."
+MELEE-227,Partisan,Lanças,LANÇA,0,3,2.3,280,2.5,9,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta versão de lança tem uma ponta mais longa, pois são utilizadas contra a cavalaria. Há diferenças também no pescoço, mas são paenas visuais e não funcionais."
+MELEE-228,Partisan,Lanças,LANÇA,0,4,2.2,560,2.5,9,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Esta versão de lança tem uma ponta mais longa, pois são utilizadas contra a cavalaria. Há diferenças também no pescoço, mas são paenas visuais e não funcionais."
+MELEE-229,Partisan,Lanças,LANÇA,0,5,2.1,1120,2.5,9,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta versão de lança tem uma ponta mais longa, pois são utilizadas contra a cavalaria. Há diferenças também no pescoço, mas são paenas visuais e não funcionais."
+MELEE-230,Tridente,Lanças,LANÇA,0,1,2.5,80,1.5,10,Perfuração,Comum,,10,"Possui três pontas, ou dentes, se assim preferir. O dente central é um pouco mais longo. Não é uma arma muito equilibrada, pois a cabeça pesada atrapalha os golpes de ponta."
+MELEE-231,Tridente,Lanças,LANÇA,0,2,2.4,160,1.5,10,Perfuração,Boa,,20,"Possui três pontas, ou dentes, se assim preferir. O dente central é um pouco mais longo. Não é uma arma muito equilibrada, pois a cabeça pesada atrapalha os golpes de ponta."
+MELEE-232,Tridente,Lanças,LANÇA,0,2,2.3,320,1.5,10,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui três pontas, ou dentes, se assim preferir. O dente central é um pouco mais longo. Não é uma arma muito equilibrada, pois a cabeça pesada atrapalha os golpes de ponta."
+MELEE-233,Tridente,Lanças,LANÇA,0,3,2.2,640,1.5,10,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui três pontas, ou dentes, se assim preferir. O dente central é um pouco mais longo. Não é uma arma muito equilibrada, pois a cabeça pesada atrapalha os golpes de ponta."
+MELEE-234,Tridente,Lanças,LANÇA,0,4,2.1,1280,1.5,10,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui três pontas, ou dentes, se assim preferir. O dente central é um pouco mais longo. Não é uma arma muito equilibrada, pois a cabeça pesada atrapalha os golpes de ponta."
+MELEE-235,Lança de Duas Pontas,Lanças,LANÇA,0,1,2,100,1.5,8,Perfuração,Comum,,10,Outra lança de infantaria. A idéia de usar duas pontas era para evitar que o combatente tivesse que girar a arma para atingir um inimigo em suas costas.
+MELEE-236,Lança de Duas Pontas,Lanças,LANÇA,0,2,1.9,200,1.5,8,Perfuração,Boa,,20,Outra lança de infantaria. A idéia de usar duas pontas era para evitar que o combatente tivesse que girar a arma para atingir um inimigo em suas costas.
+MELEE-237,Lança de Duas Pontas,Lanças,LANÇA,0,2,1.8,400,1.5,8,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Outra lança de infantaria. A idéia de usar duas pontas era para evitar que o combatente tivesse que girar a arma para atingir um inimigo em suas costas.
+MELEE-238,Lança de Duas Pontas,Lanças,LANÇA,0,3,1.7,800,1.5,8,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Outra lança de infantaria. A idéia de usar duas pontas era para evitar que o combatente tivesse que girar a arma para atingir um inimigo em suas costas.
+MELEE-239,Lança de Duas Pontas,Lanças,LANÇA,0,4,1.6,1600,1.5,8,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Outra lança de infantaria. A idéia de usar duas pontas era para evitar que o combatente tivesse que girar a arma para atingir um inimigo em suas costas.
+MELEE-240,Lança de Caça,Lanças,LANÇA,0,0,2,50,1.5,8,Perfuração,Comum,,10,"Durante uma caçada, pode ser preciso golpear com apenas uma mão. Pensando nisso criou-se a lança de caça, mais leve e mais curta; excelente para a caça de animais de médio porte."
+MELEE-241,Lança de Caça,Lanças,LANÇA,0,1,1.9,100,1.5,8,Perfuração,Boa,,20,"Durante uma caçada, pode ser preciso golpear com apenas uma mão. Pensando nisso criou-se a lança de caça, mais leve e mais curta; excelente para a caça de animais de médio porte."
+MELEE-242,Lança de Caça,Lanças,LANÇA,0,1,1.8,200,1.5,8,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Durante uma caçada, pode ser preciso golpear com apenas uma mão. Pensando nisso criou-se a lança de caça, mais leve e mais curta; excelente para a caça de animais de médio porte."
+MELEE-243,Lança de Caça,Lanças,LANÇA,0,2,1.7,400,1.5,8,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Durante uma caçada, pode ser preciso golpear com apenas uma mão. Pensando nisso criou-se a lança de caça, mais leve e mais curta; excelente para a caça de animais de médio porte."
+MELEE-244,Lança de Caça,Lanças,LANÇA,0,3,1.6,800,1.5,8,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Durante uma caçada, pode ser preciso golpear com apenas uma mão. Pensando nisso criou-se a lança de caça, mais leve e mais curta; excelente para a caça de animais de médio porte."
+MELEE-245,Lança de Guerra,Lanças,LANÇA,0,3,3,100,2,10,Perfuração,Comum,,10,Esta lança tem função dupla. A lâminalateral possui curvatura reversa para perfurar mais que cortar. O lado oposto à lâmina tem um contra-peso.
+MELEE-246,Lança de Guerra,Lanças,LANÇA,0,4,2.9,200,2,10,Perfuração,Boa,,20,Esta lança tem função dupla. A lâminalateral possui curvatura reversa para perfurar mais que cortar. O lado oposto à lâmina tem um contra-peso.
+MELEE-247,Lança de Guerra,Lanças,LANÇA,0,4,2.8,400,2,10,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Esta lança tem função dupla. A lâminalateral possui curvatura reversa para perfurar mais que cortar. O lado oposto à lâmina tem um contra-peso.
+MELEE-248,Lança de Guerra,Lanças,LANÇA,0,5,2.7,800,2,10,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Esta lança tem função dupla. A lâminalateral possui curvatura reversa para perfurar mais que cortar. O lado oposto à lâmina tem um contra-peso.
+MELEE-249,Lança de Guerra,Lanças,LANÇA,0,6,2.6,1600,2,10,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Esta lança tem função dupla. A lâminalateral possui curvatura reversa para perfurar mais que cortar. O lado oposto à lâmina tem um contra-peso.
+MELEE-250,Mata-Dragão,Lanças,LANÇA,0,4,4,150,2.5,13,Perfuração,Comum,,10,"A mata-dragão possui um cabo extremamente resistente, pois em geral é utilizada em choques de cavalaria. A pequena guarda, muito recuada, serve para desviar golpes de lança inimigo."
+MELEE-251,Mata-Dragão,Lanças,LANÇA,0,5,3.9,300,2.5,13,Perfuração,Boa,,20,"A mata-dragão possui um cabo extremamente resistente, pois em geral é utilizada em choques de cavalaria. A pequena guarda, muito recuada, serve para desviar golpes de lança inimigo."
+MELEE-252,Mata-Dragão,Lanças,LANÇA,0,5,3.8,600,2.5,13,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A mata-dragão possui um cabo extremamente resistente, pois em geral é utilizada em choques de cavalaria. A pequena guarda, muito recuada, serve para desviar golpes de lança inimigo."
+MELEE-253,Mata-Dragão,Lanças,LANÇA,0,6,3.7,1200,2.5,13,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A mata-dragão possui um cabo extremamente resistente, pois em geral é utilizada em choques de cavalaria. A pequena guarda, muito recuada, serve para desviar golpes de lança inimigo."
+MELEE-254,Mata-Dragão,Lanças,LANÇA,0,7,3.6,2400,2.5,13,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A mata-dragão possui um cabo extremamente resistente, pois em geral é utilizada em choques de cavalaria. A pequena guarda, muito recuada, serve para desviar golpes de lança inimigo."
+MELEE-255,Dragonlance,Lanças,LANÇA,0,5,7.5,200,4,14,Perfuração,Comum,,10,"É uma lança de grande porte, longa e pesada. A ponta permite atravessar um cavalo lateralmente. Claramente, é uma arma extremamente mortal."
+MELEE-256,Dragonlance,Lanças,LANÇA,0,6,7.4,400,4,14,Perfuração,Boa,,20,"É uma lança de grande porte, longa e pesada. A ponta permite atravessar um cavalo lateralmente. Claramente, é uma arma extremamente mortal."
+MELEE-257,Dragonlance,Lanças,LANÇA,0,6,7.3,800,4,14,Perfuração,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É uma lança de grande porte, longa e pesada. A ponta permite atravessar um cavalo lateralmente. Claramente, é uma arma extremamente mortal."
+MELEE-258,Dragonlance,Lanças,LANÇA,0,7,7.2,1600,4,14,Perfuração,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"É uma lança de grande porte, longa e pesada. A ponta permite atravessar um cavalo lateralmente. Claramente, é uma arma extremamente mortal."
+MELEE-259,Dragonlance,Lanças,LANÇA,0,8,7.1,3200,4,14,Perfuração,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"É uma lança de grande porte, longa e pesada. A ponta permite atravessar um cavalo lateralmente. Claramente, é uma arma extremamente mortal."
+MELEE-260,Machado de Mão,Machados,MACHADO/MAÇA,2,0,3,80,0.6,10,Corte,Comum,,10,"Machado construído para uso com uma só mão. Afiado, um golpe certeiro pode até matar uma pessoa. Seu cabo é feito em madeira resistente.
+"
+MELEE-261,Machado de Mão,Machados,MACHADO/MAÇA,3,0,2.9,160,0.6,10,Corte,Boa,,20,"Machado construído para uso com uma só mão. Afiado, um golpe certeiro pode até matar uma pessoa. Seu cabo é feito em madeira resistente.
+"
+MELEE-262,Machado de Mão,Machados,MACHADO/MAÇA,3,0,2.8,320,0.6,10,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Machado construído para uso com uma só mão. Afiado, um golpe certeiro pode até matar uma pessoa. Seu cabo é feito em madeira resistente.
+"
+MELEE-263,Machado de Mão,Machados,MACHADO/MAÇA,4,0,2.7,640,0.6,10,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Machado construído para uso com uma só mão. Afiado, um golpe certeiro pode até matar uma pessoa. Seu cabo é feito em madeira resistente.
+"
+MELEE-264,Machado de Mão,Machados,MACHADO/MAÇA,5,0,2.6,1280,0.6,10,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Machado construído para uso com uma só mão. Afiado, um golpe certeiro pode até matar uma pessoa. Seu cabo é feito em madeira resistente.
+"
+MELEE-265,Machado Sinuoso,Machados,MACHADO/MAÇA,3,0,4,230,0.6,10,Corte,Comum,,10,"A lâmina deste machado é curva. Muitos modelos também são assim, mas a curvatura deste é calculada de forma a permitir uma boa recuperação do golpe. Seu desenho permite que a caça seja presa na parte de baixo da lâmina e arrastada.
+"
+MELEE-266,Machado Sinuoso,Machados,MACHADO/MAÇA,4,0,3.9,460,0.6,10,Corte,Boa,,20,"A lâmina deste machado é curva. Muitos modelos também são assim, mas a curvatura deste é calculada de forma a permitir uma boa recuperação do golpe. Seu desenho permite que a caça seja presa na parte de baixo da lâmina e arrastada.
+"
+MELEE-267,Machado Sinuoso,Machados,MACHADO/MAÇA,4,0,3.8,920,0.6,10,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A lâmina deste machado é curva. Muitos modelos também são assim, mas a curvatura deste é calculada de forma a permitir uma boa recuperação do golpe. Seu desenho permite que a caça seja presa na parte de baixo da lâmina e arrastada.
+"
+MELEE-268,Machado Sinuoso,Machados,MACHADO/MAÇA,5,0,3.7,1840,0.6,10,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"A lâmina deste machado é curva. Muitos modelos também são assim, mas a curvatura deste é calculada de forma a permitir uma boa recuperação do golpe. Seu desenho permite que a caça seja presa na parte de baixo da lâmina e arrastada.
+"
+MELEE-269,Machado Sinuoso,Machados,MACHADO/MAÇA,6,0,3.6,3680,0.6,10,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"A lâmina deste machado é curva. Muitos modelos também são assim, mas a curvatura deste é calculada de forma a permitir uma boa recuperação do golpe. Seu desenho permite que a caça seja presa na parte de baixo da lâmina e arrastada.
+"
+MELEE-270,Machado Militar,Machados,MACHADO/MAÇA,4,0,4,150,0.6,11,Corte,Comum,,10,Possui lâmina levemente recurvada. O peso concentrado na ponta garante um bom estrago se usado em movimentos largos.
+MELEE-271,Machado Militar,Machados,MACHADO/MAÇA,5,0,3.9,300,0.6,11,Corte,Boa,,20,Possui lâmina levemente recurvada. O peso concentrado na ponta garante um bom estrago se usado em movimentos largos.
+MELEE-272,Machado Militar,Machados,MACHADO/MAÇA,5,0,3.8,600,0.6,11,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Possui lâmina levemente recurvada. O peso concentrado na ponta garante um bom estrago se usado em movimentos largos.
+MELEE-273,Machado Militar,Machados,MACHADO/MAÇA,6,0,3.7,1200,0.6,11,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Possui lâmina levemente recurvada. O peso concentrado na ponta garante um bom estrago se usado em movimentos largos.
+MELEE-274,Machado Militar,Machados,MACHADO/MAÇA,7,0,3.6,2400,0.6,11,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Possui lâmina levemente recurvada. O peso concentrado na ponta garante um bom estrago se usado em movimentos largos.
+MELEE-275,Machadinha,Machados,MACHADO/MAÇA,0,0,1.2,70,0.45,7,Corte,Comum,,10,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+MELEE-276,Machadinha,Machados,MACHADO/MAÇA,1,0,1.1,140,0.45,7,Corte,Boa,,20,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+MELEE-277,Machadinha,Machados,MACHADO/MAÇA,1,0,1,280,0.45,7,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+MELEE-278,Machadinha,Machados,MACHADO/MAÇA,2,0,0.9,560,0.45,7,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+MELEE-279,Machadinha,Machados,MACHADO/MAÇA,3,0,0.8,1120,0.45,7,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+MELEE-280,Machado de Arremeso,Machados,MACHADO/MAÇA,2,0,2,200,0.55,10,Corte,Comum,,10,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+MELEE-281,Machado de Arremeso,Machados,MACHADO/MAÇA,3,0,1.9,400,0.55,10,Corte,Boa,,20,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+MELEE-282,Machado de Arremeso,Machados,MACHADO/MAÇA,3,0,1.8,800,0.55,10,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+MELEE-283,Machado de Arremeso,Machados,MACHADO/MAÇA,4,0,1.7,1600,0.55,10,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+MELEE-284,Machado de Arremeso,Machados,MACHADO/MAÇA,5,0,1.6,3200,0.55,10,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+MELEE-285,Machado de Lenhador,Machados,MACHADO/MAÇA DE DUAS MÃOS,2,0,5,60,1,14,Corte,Comum,,10,"Originalmente, foi concebido para corte de árvores. Seu desenho confere uma melhor utilização se golpeado lateralmente, mas outras possibilidades são válidas. Costuma ser muito pesado.
+"
+MELEE-286,Machado de Lenhador,Machados,MACHADO/MAÇA DE DUAS MÃOS,3,0,4.9,120,1,14,Corte,Boa,,20,"Originalmente, foi concebido para corte de árvores. Seu desenho confere uma melhor utilização se golpeado lateralmente, mas outras possibilidades são válidas. Costuma ser muito pesado.
+"
+MELEE-287,Machado de Lenhador,Machados,MACHADO/MAÇA DE DUAS MÃOS,3,0,4.8,240,1,14,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Originalmente, foi concebido para corte de árvores. Seu desenho confere uma melhor utilização se golpeado lateralmente, mas outras possibilidades são válidas. Costuma ser muito pesado.
+"
+MELEE-288,Machado de Lenhador,Machados,MACHADO/MAÇA DE DUAS MÃOS,4,0,4.7,480,1,14,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Originalmente, foi concebido para corte de árvores. Seu desenho confere uma melhor utilização se golpeado lateralmente, mas outras possibilidades são válidas. Costuma ser muito pesado.
+"
+MELEE-289,Machado de Lenhador,Machados,MACHADO/MAÇA DE DUAS MÃOS,5,0,4.6,960,1,14,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Originalmente, foi concebido para corte de árvores. Seu desenho confere uma melhor utilização se golpeado lateralmente, mas outras possibilidades são válidas. Costuma ser muito pesado.
+"
+MELEE-290,Machado de Batalha Curvo,Machados,MACHADO/MAÇA DE DUAS MÃOS,3,0,5,320,1.3,12,Corte,Comum,,10,"Possui lâmina recurvada, o que permite um melhor golpe em oponentes pequenos. Tem cabo mais comprido que a versão de mão e a cabeça também é mais pesada."
+MELEE-291,Machado de Batalha Curvo,Machados,MACHADO/MAÇA DE DUAS MÃOS,4,0,4.9,640,1.3,12,Corte,Boa,,20,"Possui lâmina recurvada, o que permite um melhor golpe em oponentes pequenos. Tem cabo mais comprido que a versão de mão e a cabeça também é mais pesada."
+MELEE-292,Machado de Batalha Curvo,Machados,MACHADO/MAÇA DE DUAS MÃOS,4,0,4.8,1280,1.3,12,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui lâmina recurvada, o que permite um melhor golpe em oponentes pequenos. Tem cabo mais comprido que a versão de mão e a cabeça também é mais pesada."
+MELEE-293,Machado de Batalha Curvo,Machados,MACHADO/MAÇA DE DUAS MÃOS,5,0,4.7,2560,1.3,12,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui lâmina recurvada, o que permite um melhor golpe em oponentes pequenos. Tem cabo mais comprido que a versão de mão e a cabeça também é mais pesada."
+MELEE-294,Machado de Batalha Curvo,Machados,MACHADO/MAÇA DE DUAS MÃOS,6,0,4.6,5120,1.3,12,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui lâmina recurvada, o que permite um melhor golpe em oponentes pequenos. Tem cabo mais comprido que a versão de mão e a cabeça também é mais pesada."
+MELEE-295,Machado de Batalha Reto,Machados,MACHADO/MAÇA DE DUAS MÃOS,4,0,6,320,1.3,13,Corte,Comum,,10,"Possui lâmina reta, o que permite um melhor golpe em oponentes grandes. Tem cabo tão comprido quanto a versão curva, mas a cabeça é ainda mais pesada."
+MELEE-296,Machado de Batalha Reto,Machados,MACHADO/MAÇA DE DUAS MÃOS,5,0,5.9,640,1.3,13,Corte,Boa,,20,"Possui lâmina reta, o que permite um melhor golpe em oponentes grandes. Tem cabo tão comprido quanto a versão curva, mas a cabeça é ainda mais pesada."
+MELEE-297,Machado de Batalha Reto,Machados,MACHADO/MAÇA DE DUAS MÃOS,5,0,5.8,1280,1.3,13,Corte,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui lâmina reta, o que permite um melhor golpe em oponentes grandes. Tem cabo tão comprido quanto a versão curva, mas a cabeça é ainda mais pesada."
+MELEE-298,Machado de Batalha Reto,Machados,MACHADO/MAÇA DE DUAS MÃOS,6,0,5.7,2560,1.3,13,Corte,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Possui lâmina reta, o que permite um melhor golpe em oponentes grandes. Tem cabo tão comprido quanto a versão curva, mas a cabeça é ainda mais pesada."
+MELEE-299,Machado de Batalha Reto,Machados,MACHADO/MAÇA DE DUAS MÃOS,7,0,5.6,5120,1.3,13,Corte,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui lâmina reta, o que permite um melhor golpe em oponentes grandes. Tem cabo tão comprido quanto a versão curva, mas a cabeça é ainda mais pesada."
+MELEE-300,Clava,Maças,MACHADO/MAÇA,1,0,1.5,25,0.7,7,Contusão,Comum,,10,"Arma feita geralmente em pedra e presa ao cabo por cordas. Extremamente fácil de se fazer, pode ser encontrada em praticamente qualquer civilização."
+MELEE-301,Clava,Maças,MACHADO/MAÇA,2,0,1.4,50,0.7,7,Contusão,Boa,,20,"Arma feita geralmente em pedra e presa ao cabo por cordas. Extremamente fácil de se fazer, pode ser encontrada em praticamente qualquer civilização."
+MELEE-302,Clava,Maças,MACHADO/MAÇA,2,0,1.3,100,0.7,7,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Arma feita geralmente em pedra e presa ao cabo por cordas. Extremamente fácil de se fazer, pode ser encontrada em praticamente qualquer civilização."
+MELEE-303,Clava,Maças,MACHADO/MAÇA,3,0,1.2,200,0.7,7,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Arma feita geralmente em pedra e presa ao cabo por cordas. Extremamente fácil de se fazer, pode ser encontrada em praticamente qualquer civilização."
+MELEE-304,Clava,Maças,MACHADO/MAÇA,4,0,1.1,400,0.7,7,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Arma feita geralmente em pedra e presa ao cabo por cordas. Extremamente fácil de se fazer, pode ser encontrada em praticamente qualquer civilização."
+MELEE-305,Maça de Exército,Maças,MACHADO/MAÇA,2,0,1.5,50,0.8,7,Contusão,Comum,,10,Este é o modelo mais simples. confere com a descrição básica: ser feita a baixo custo e grandes quantidades.
+MELEE-306,Maça de Exército,Maças,MACHADO/MAÇA,3,0,1.4,100,0.8,7,Contusão,Boa,,20,Este é o modelo mais simples. confere com a descrição básica: ser feita a baixo custo e grandes quantidades.
+MELEE-307,Maça de Exército,Maças,MACHADO/MAÇA,3,0,1.3,200,0.8,7,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Este é o modelo mais simples. confere com a descrição básica: ser feita a baixo custo e grandes quantidades.
+MELEE-308,Maça de Exército,Maças,MACHADO/MAÇA,4,0,1.2,400,0.8,7,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Este é o modelo mais simples. confere com a descrição básica: ser feita a baixo custo e grandes quantidades.
+MELEE-309,Maça de Exército,Maças,MACHADO/MAÇA,5,0,1.1,800,0.8,7,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Este é o modelo mais simples. confere com a descrição básica: ser feita a baixo custo e grandes quantidades.
+MELEE-310,Maça de Guerra,Maças,MACHADO/MAÇA,3,0,3,75,0.9,8,Contusão,Comum,,10,"Versão mais alongada, só é utilizada por combatentes mais experientes. Produz um dano maior, mas é mais pesada e mais cara."
+MELEE-311,Maça de Guerra,Maças,MACHADO/MAÇA,4,0,2.9,150,0.9,8,Contusão,Boa,,20,"Versão mais alongada, só é utilizada por combatentes mais experientes. Produz um dano maior, mas é mais pesada e mais cara."
+MELEE-312,Maça de Guerra,Maças,MACHADO/MAÇA,4,0,2.8,300,0.9,8,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Versão mais alongada, só é utilizada por combatentes mais experientes. Produz um dano maior, mas é mais pesada e mais cara."
+MELEE-313,Maça de Guerra,Maças,MACHADO/MAÇA,5,0,2.7,600,0.9,8,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Versão mais alongada, só é utilizada por combatentes mais experientes. Produz um dano maior, mas é mais pesada e mais cara."
+MELEE-314,Maça de Guerra,Maças,MACHADO/MAÇA,6,0,2.6,1200,0.9,8,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Versão mais alongada, só é utilizada por combatentes mais experientes. Produz um dano maior, mas é mais pesada e mais cara."
+MELEE-315,Morningstar,Maças,MACHADO/MAÇA,4,0,5,100,1,12,Contusão,Comum,,10,"É uma das mais temidas versões de maças. Sua cabeça contém ""espinhos"" que agravam os ferimentos e perfuram diversos tipos de armaduras."
+MELEE-316,Morningstar,Maças,MACHADO/MAÇA,5,0,4.9,200,1,12,Contusão,Boa,,20,"É uma das mais temidas versões de maças. Sua cabeça contém ""espinhos"" que agravam os ferimentos e perfuram diversos tipos de armaduras."
+MELEE-317,Morningstar,Maças,MACHADO/MAÇA,5,0,4.8,400,1,12,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É uma das mais temidas versões de maças. Sua cabeça contém ""espinhos"" que agravam os ferimentos e perfuram diversos tipos de armaduras."
+MELEE-318,Morningstar,Maças,MACHADO/MAÇA,6,0,4.7,800,1,12,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"É uma das mais temidas versões de maças. Sua cabeça contém ""espinhos"" que agravam os ferimentos e perfuram diversos tipos de armaduras."
+MELEE-319,Morningstar,Maças,MACHADO/MAÇA,7,0,4.6,1600,1,12,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"É uma das mais temidas versões de maças. Sua cabeça contém ""espinhos"" que agravam os ferimentos e perfuram diversos tipos de armaduras."
+MELEE-320,Porrete,Maças,MACHADO/MAÇA,0,0,1,20,0.5,7,Contusão,Comum,,10,"Qualquer pequeno pedaço de madeira pode ser um porrete. Um bastão quebrado, uma perna de cadeira, um cbo de vassoura. É a arma mais útil em uma briga de taverna."
+MELEE-321,Porrete,Maças,MACHADO/MAÇA,1,0,0.9,40,0.5,7,Contusão,Boa,,20,"Qualquer pequeno pedaço de madeira pode ser um porrete. Um bastão quebrado, uma perna de cadeira, um cbo de vassoura. É a arma mais útil em uma briga de taverna."
+MELEE-322,Porrete,Maças,MACHADO/MAÇA,1,0,0.8,80,0.5,7,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Qualquer pequeno pedaço de madeira pode ser um porrete. Um bastão quebrado, uma perna de cadeira, um cbo de vassoura. É a arma mais útil em uma briga de taverna."
+MELEE-323,Porrete,Maças,MACHADO/MAÇA,2,0,0.7,160,0.5,7,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Qualquer pequeno pedaço de madeira pode ser um porrete. Um bastão quebrado, uma perna de cadeira, um cbo de vassoura. É a arma mais útil em uma briga de taverna."
+MELEE-324,Porrete,Maças,MACHADO/MAÇA,3,0,0.6,320,0.5,7,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Qualquer pequeno pedaço de madeira pode ser um porrete. Um bastão quebrado, uma perna de cadeira, um cbo de vassoura. É a arma mais útil em uma briga de taverna."
+MELEE-325,Mangual,Manguais,MANGUAL,2,0,3,100,0.5,8,Contusão,Comum,,10,"Este é o mais básico dos modelos. Relativamente leve, ele é preferencialmente usado pela cavalaria em ataques à infantaria."
+MELEE-326,Mangual,Manguais,MANGUAL,3,0,2.9,200,0.5,8,Contusão,Boa,,20,"Este é o mais básico dos modelos. Relativamente leve, ele é preferencialmente usado pela cavalaria em ataques à infantaria."
+MELEE-327,Mangual,Manguais,MANGUAL,3,0,2.8,400,0.5,8,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Este é o mais básico dos modelos. Relativamente leve, ele é preferencialmente usado pela cavalaria em ataques à infantaria."
+MELEE-328,Mangual,Manguais,MANGUAL,4,0,2.7,800,0.5,8,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Este é o mais básico dos modelos. Relativamente leve, ele é preferencialmente usado pela cavalaria em ataques à infantaria."
+MELEE-329,Mangual,Manguais,MANGUAL,5,0,2.6,1600,0.5,8,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Este é o mais básico dos modelos. Relativamente leve, ele é preferencialmente usado pela cavalaria em ataques à infantaria."
+MELEE-330,Mangual de Guerra,Manguais,MANGUAL,4,0,5,300,1,13,Contusão,Comum,,10,"Este é um modelo mais pesado. É utilizado praticamente apenas no chão, pois seu peso pode derrubar um cavaleiro que o empunhar."
+MELEE-331,Mangual de Guerra,Manguais,MANGUAL,5,0,4.9,600,1,13,Contusão,Boa,,20,"Este é um modelo mais pesado. É utilizado praticamente apenas no chão, pois seu peso pode derrubar um cavaleiro que o empunhar."
+MELEE-332,Mangual de Guerra,Manguais,MANGUAL,5,0,4.8,1200,1,13,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Este é um modelo mais pesado. É utilizado praticamente apenas no chão, pois seu peso pode derrubar um cavaleiro que o empunhar."
+MELEE-333,Mangual de Guerra,Manguais,MANGUAL,6,0,4.7,2400,1,13,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Este é um modelo mais pesado. É utilizado praticamente apenas no chão, pois seu peso pode derrubar um cavaleiro que o empunhar."
+MELEE-334,Mangual de Guerra,Manguais,MANGUAL,7,0,4.6,4800,1,13,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Este é um modelo mais pesado. É utilizado praticamente apenas no chão, pois seu peso pode derrubar um cavaleiro que o empunhar."
+MELEE-335,Mangual Militar,Manguais,MANGUAL,5,0,5,500,1,14,Contusão,Comum,,10,"Mangual de várias partes, utiliza como cabeças peças com arestas em lugar de bolas. A fixação das correntes ao cabo é das melhores."
+MELEE-336,Mangual Militar,Manguais,MANGUAL,6,0,4.9,1000,1,14,Contusão,Boa,,20,"Mangual de várias partes, utiliza como cabeças peças com arestas em lugar de bolas. A fixação das correntes ao cabo é das melhores."
+MELEE-337,Mangual Militar,Manguais,MANGUAL,6,0,4.8,2000,1,14,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Mangual de várias partes, utiliza como cabeças peças com arestas em lugar de bolas. A fixação das correntes ao cabo é das melhores."
+MELEE-338,Mangual Militar,Manguais,MANGUAL,7,0,4.7,4000,1,14,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Mangual de várias partes, utiliza como cabeças peças com arestas em lugar de bolas. A fixação das correntes ao cabo é das melhores."
+MELEE-339,Mangual Militar,Manguais,MANGUAL,8,0,4.6,8000,1,14,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Mangual de várias partes, utiliza como cabeças peças com arestas em lugar de bolas. A fixação das correntes ao cabo é das melhores."
+MELEE-340,Corrente com Bola,Manguais,MANGUAL,2,0,3,200,2,11,Contusão,Comum,,10,É exatamente o que o nome diz: uma corrente com uma bola pesada de ferro na ponta. Basta girar a corrente e atingir o inimigo.
+MELEE-341,Corrente com Bola,Manguais,MANGUAL,3,0,2.9,400,2,11,Contusão,Boa,,20,É exatamente o que o nome diz: uma corrente com uma bola pesada de ferro na ponta. Basta girar a corrente e atingir o inimigo.
+MELEE-342,Corrente com Bola,Manguais,MANGUAL,3,0,2.8,800,2,11,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,É exatamente o que o nome diz: uma corrente com uma bola pesada de ferro na ponta. Basta girar a corrente e atingir o inimigo.
+MELEE-343,Corrente com Bola,Manguais,MANGUAL,4,0,2.7,1600,2,11,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,É exatamente o que o nome diz: uma corrente com uma bola pesada de ferro na ponta. Basta girar a corrente e atingir o inimigo.
+MELEE-344,Corrente com Bola,Manguais,MANGUAL,5,0,2.6,3200,2,11,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,É exatamente o que o nome diz: uma corrente com uma bola pesada de ferro na ponta. Basta girar a corrente e atingir o inimigo.
+MELEE-345,Martelo de Guerra,Martelos,MACHADO/MAÇA,1,0,4,25,0.8,8,Contusão,Comum,,10,Este é o mais básico dos modelos; tem  uma cabeça simples e bem fixa no cabo. Não exige grande técnica para utilizar um destes.
+MELEE-346,Martelo de Guerra,Martelos,MACHADO/MAÇA,2,0,3.9,50,0.8,8,Contusão,Boa,,20,Este é o mais básico dos modelos; tem  uma cabeça simples e bem fixa no cabo. Não exige grande técnica para utilizar um destes.
+MELEE-347,Martelo de Guerra,Martelos,MACHADO/MAÇA,2,0,3.8,100,0.8,8,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Este é o mais básico dos modelos; tem  uma cabeça simples e bem fixa no cabo. Não exige grande técnica para utilizar um destes.
+MELEE-348,Martelo de Guerra,Martelos,MACHADO/MAÇA,3,0,3.7,200,0.8,8,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Este é o mais básico dos modelos; tem  uma cabeça simples e bem fixa no cabo. Não exige grande técnica para utilizar um destes.
+MELEE-349,Martelo de Guerra,Martelos,MACHADO/MAÇA,4,0,3.6,400,0.8,8,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Este é o mais básico dos modelos; tem  uma cabeça simples e bem fixa no cabo. Não exige grande técnica para utilizar um destes.
+MELEE-350,Martelo de Duas Cabeças,Martelos,MACHADO/MAÇA,3,0,5,50,0.8,12,Contusão,Comum,,10,"Versão mais alongada, só é utilziada por combatentes maix experientes. Tem uma pequena ponta perfurante em cada cabeça, para penetrar armaduras."
+MELEE-351,Martelo de Duas Cabeças,Martelos,MACHADO/MAÇA,4,0,4.9,100,0.8,12,Contusão,Boa,,20,"Versão mais alongada, só é utilziada por combatentes maix experientes. Tem uma pequena ponta perfurante em cada cabeça, para penetrar armaduras."
+MELEE-352,Martelo de Duas Cabeças,Martelos,MACHADO/MAÇA,4,0,4.8,200,0.8,12,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Versão mais alongada, só é utilziada por combatentes maix experientes. Tem uma pequena ponta perfurante em cada cabeça, para penetrar armaduras."
+MELEE-353,Martelo de Duas Cabeças,Martelos,MACHADO/MAÇA,5,0,4.7,400,0.8,12,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Versão mais alongada, só é utilziada por combatentes maix experientes. Tem uma pequena ponta perfurante em cada cabeça, para penetrar armaduras."
+MELEE-354,Martelo de Duas Cabeças,Martelos,MACHADO/MAÇA,6,0,4.6,800,0.8,12,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Versão mais alongada, só é utilziada por combatentes maix experientes. Tem uma pequena ponta perfurante em cada cabeça, para penetrar armaduras."
+MELEE-355,Pike,Martelos,MACHADO/MAÇA DE DUAS MÃOS,2,0,6,75,1.5,13,Contusão,Comum,,10,"Permite uma técnica apurada, sendo usado com uma ou duas mãos, mas preferencialemente duas. É um dos preferidos por guerreiros medievais. Tem um cabo relativamente longo, mas apenas a cabeça faz dano."
+MELEE-356,Pike,Martelos,MACHADO/MAÇA DE DUAS MÃOS,3,0,5.9,150,1.5,13,Contusão,Boa,,20,"Permite uma técnica apurada, sendo usado com uma ou duas mãos, mas preferencialemente duas. É um dos preferidos por guerreiros medievais. Tem um cabo relativamente longo, mas apenas a cabeça faz dano."
+MELEE-357,Pike,Martelos,MACHADO/MAÇA DE DUAS MÃOS,3,0,5.8,300,1.5,13,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Permite uma técnica apurada, sendo usado com uma ou duas mãos, mas preferencialemente duas. É um dos preferidos por guerreiros medievais. Tem um cabo relativamente longo, mas apenas a cabeça faz dano."
+MELEE-358,Pike,Martelos,MACHADO/MAÇA DE DUAS MÃOS,4,0,5.7,600,1.5,13,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,"Permite uma técnica apurada, sendo usado com uma ou duas mãos, mas preferencialemente duas. É um dos preferidos por guerreiros medievais. Tem um cabo relativamente longo, mas apenas a cabeça faz dano."
+MELEE-359,Pike,Martelos,MACHADO/MAÇA DE DUAS MÃOS,5,0,5.6,1200,1.5,13,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,"Permite uma técnica apurada, sendo usado com uma ou duas mãos, mas preferencialemente duas. É um dos preferidos por guerreiros medievais. Tem um cabo relativamente longo, mas apenas a cabeça faz dano."
+MELEE-360,Martelo de Guerra de Duas Mãos,Martelos,MACHADO/MAÇA DE DUAS MÃOS,5,0,8,100,2,14,Contusão,Comum,,10,Versão de duas mãos do martelo de guerra.
+MELEE-361,Martelo de Guerra de Duas Mãos,Martelos,MACHADO/MAÇA DE DUAS MÃOS,6,0,7.9,200,2,14,Contusão,Boa,,20,Versão de duas mãos do martelo de guerra.
+MELEE-362,Martelo de Guerra de Duas Mãos,Martelos,MACHADO/MAÇA DE DUAS MÃOS,6,0,7.8,400,2,14,Contusão,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,Versão de duas mãos do martelo de guerra.
+MELEE-363,Martelo de Guerra de Duas Mãos,Martelos,MACHADO/MAÇA DE DUAS MÃOS,7,0,7.7,800,2,14,Contusão,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.",40,Versão de duas mãos do martelo de guerra.
+MELEE-364,Martelo de Guerra de Duas Mãos,Martelos,MACHADO/MAÇA DE DUAS MÃOS,8,0,7.6,1600,2,14,Contusão,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Aparar com esta arma.
+- +1 na perícia relacionada à arma.",50,Versão de duas mãos do martelo de guerra.
