@@ -1,6 +1,7 @@
 const { calculateCarryWeight } = require("./js/carryWeight");
 const { buildArmorSlots } = require("./js/armor/armor");
 const { buildShieldSlots } = require("./js/shield/shield.js");
+const { buildMeleeSlots } = require("./js/melee/melee.js");
 /**
  * Builds inventory data
  */
@@ -9,12 +10,17 @@ function buildInventory({
   weight = 0,
   armorInventory = [],
   shieldInventory = [],
+  meleeInventory = [],
 } = {}) {
   const armor = buildArmorSlots(armorInventory);
   const shield = buildShieldSlots(shieldInventory);
+  const melee = buildMeleeSlots(meleeInventory);
 
   const effectiveWeight =
-    weight + armor.carried_armor_weight + shield.carried_shield_weight;
+    weight +
+    armor.carried_armor_weight +
+    shield.carried_shield_weight +
+    melee.carried_melee_weapons_weight;
 
   const carryWeight = calculateCarryWeight(ST, effectiveWeight);
 
@@ -24,6 +30,7 @@ function buildInventory({
 
       armor,
       shield,
+      melee,
     },
   };
 }
