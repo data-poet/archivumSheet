@@ -1,6 +1,6 @@
 const SLOT_MAP = {
   Cabeça: "head",
-  Torso: "torso",
+  Tronco: "torso",
   Braços: "arms",
   Mãos: "hands",
   Pernas: "legs",
