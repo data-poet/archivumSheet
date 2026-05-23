@@ -1,4 +1,4 @@
-import { triggerAutoRun } from "../autorun.js";
+import { triggerAutoRun } from "./autorun.js";
 
 // ===== PRIMARY ATTRIBUTES =====
 export function getPrimaryAttributes() {

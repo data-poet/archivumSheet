@@ -1,9 +1,9 @@
+import { el } from "../shared/dom.js";
+
 // ===== HELPERS =====
 export function getMaterialName(materialId, materials = []) {
   if (!materialId) return "Common";
-  const material = materials.find(
-    (material) => material.material_id === materialId,
-  );
+  const material = materials.find((m) => m.material_id === materialId);
   return material?.material_name || "Unknown";
 }
 
@@ -12,24 +12,36 @@ export function updateInventoryUI(sheet) {
   const carry = sheet?.inventory?.carry_weight;
   if (!carry) return;
 
-  const baseWeight = Number(document.getElementById("weight").value) || 0;
+  const weightEl = el("weight");
+  const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
+
   const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
-  const weight = baseWeight + armorWeight + shieldWeight;
+  const meleeWeight = sheet?.inventory?.melee?.carried_melee_weight || 0;
+  const weight = baseWeight + armorWeight + shieldWeight + meleeWeight;
 
-  document.getElementById("armor_weight").textContent = armorWeight;
-  document.getElementById("shield_weight").textContent = shieldWeight;
-  document.getElementById("total_weight").textContent = weight;
+  const armorWeightEl = el("armor_weight");
+  const shieldWeightEl = el("shield_weight");
+  const meleeWeightEl = el("melee_weight");
+  const totalWeightEl = el("total_weight");
+  const encumbranceEl = el("encumbrance");
+  const carryLimitsEl = el("carry_limits");
+
+  if (armorWeightEl)  armorWeightEl.textContent  = armorWeight;
+  if (shieldWeightEl) shieldWeightEl.textContent = shieldWeight;
+  if (meleeWeightEl)  meleeWeightEl.textContent  = meleeWeight;
+  if (totalWeightEl)  totalWeightEl.textContent  = weight;
 
   let stateLabel = "None";
-  if (weight >= carry.limits.veryHeavy) stateLabel = "Overloaded";
-  else if (weight >= carry.limits.heavy) stateLabel = "Very Heavy";
-  else if (weight >= carry.limits.medium) stateLabel = "Heavy";
-  else if (weight >= carry.limits.light) stateLabel = "Medium";
-  else if (weight > carry.limits.none) stateLabel = "Light";
+  if (weight >= carry.limits.veryHeavy)    stateLabel = "Overloaded";
+  else if (weight >= carry.limits.heavy)   stateLabel = "Very Heavy";
+  else if (weight >= carry.limits.medium)  stateLabel = "Heavy";
+  else if (weight >= carry.limits.light)   stateLabel = "Medium";
+  else if (weight > carry.limits.none)     stateLabel = "Light";
 
-  document.getElementById("encumbrance").textContent =
-    `${stateLabel} (${carry.weight_modifier})`;
+  if (encumbranceEl) {
+    encumbranceEl.textContent = `${stateLabel} (${carry.weight_modifier})`;
+  }
 
   const limitsText = `
     None: ${carry.limits.none} |
@@ -39,7 +51,7 @@ export function updateInventoryUI(sheet) {
     Very Heavy: ${carry.limits.veryHeavy}
   `;
 
-  document.getElementById("carry_limits").textContent = limitsText
-    .replace(/\s+/g, " ")
-    .trim();
+  if (carryLimitsEl) {
+    carryLimitsEl.textContent = limitsText.replace(/\s+/g, " ").trim();
+  }
 }

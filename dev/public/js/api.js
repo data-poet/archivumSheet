@@ -52,6 +52,10 @@ export async function fetchShields() {
   return getJSON("/api/shields");
 }
 
+export async function fetchMeleeWeapons() {
+  return getJSON("/api/melee_weapons");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

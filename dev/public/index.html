@@ -29,6 +29,13 @@
   <body>
     <h1>Character Builder Dev Tool</h1>
 
+    <!-- PERSISTENCE TOOLBAR -->
+    <div class="persistence-toolbar">
+      <button id="exportSheetBtn">💾 Export Sheet</button>
+      <button id="importSheetBtn">📂 Import Sheet</button>
+      <input id="importFileInput" type="file" accept=".json" style="display:none" />
+    </div>
+
     <!-- PRIMARY ATTRIBUTES -->
     <div class="box">
       <details open>
@@ -278,6 +285,53 @@
       </details>
     </div>
 
+    <!-- MELEE WEAPONS -->
+    <div class="box">
+      <details>
+        <summary>Melee Weapons</summary>
+
+        <button id="loadMeleeWeaponsBtn">Load Melee Weapons</button>
+
+        <br /><br />
+
+        <!-- ADD MELEE -->
+        <div class="melee-add">
+          <!-- NAME -->
+          <select id="meleeNameSelect"></select>
+
+          <!-- TIER -->
+          <select id="meleeTierSelect"></select>
+
+          <!-- MATERIAL -->
+          <select id="meleeMaterialSelect"></select>
+
+          <!-- STORAGE -->
+          <select id="meleeStorage">
+            <option value="equipped">Equipped</option>
+            <option value="backpack">Backpack</option>
+            <option value="stash">Stash</option>
+            <option value="camp">Camp</option>
+          </select>
+
+          <button id="addMeleeBtn">Add Melee Weapon</button>
+        </div>
+
+        <!-- EQUIPPED -->
+        <div class="melee-equipped">
+          <h3>Equipped</h3>
+
+          <div id="meleeSlots"></div>
+        </div>
+
+        <!-- STORAGE -->
+        <div class="melee-storage">
+          <h3>Stored Melee Weapons</h3>
+
+          <div id="meleeStorageList"></div>
+        </div>
+      </details>
+    </div>
+
     <!-- INVENTORY -->
     <div class="box">
       <details>
@@ -300,6 +354,11 @@
         <p>
           <strong>Armor Weight:</strong>
           <span id="armor_weight">0</span>
+        </p>
+
+        <p>
+          <strong>Melee Weight:</strong>
+          <span id="melee_weight">0</span>
         </p>
 
         <p>

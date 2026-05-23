@@ -1,4 +1,4 @@
-export { renderLists } from "./ui/lists.js";
+export { renderLists } from "./ui/lists/index.js";
 export { getMaterialName, updateInventoryUI } from "./ui/inventory.js";
 export {
   updateActualValues,

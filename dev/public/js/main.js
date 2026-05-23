@@ -1,8 +1,8 @@
-import { bindUI } from "./core/events.js";
-import { setupAutoRun } from "./core/attributes/attributesPrimary.js";
+import { bindUI } from "./events/index.js";
+import { setupAutoRun } from "./engine/attributes.js";
 import { updateActualValues } from "./ui.js";
-import { runEngine } from "./core/engine.js";
-import { initAutoRun } from "./core/autorun.js";
+import { runEngine } from "./engine/index.js";
+import { initAutoRun } from "./engine/autorun.js";
 
 // ===== INIT =====
 window.onload = () => {

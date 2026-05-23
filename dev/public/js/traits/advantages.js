@@ -1,7 +1,7 @@
-import { state } from "../../state.js";
-import { fetchAdvantages } from "../../api.js";
-import { renderLists } from "../../ui.js";
-import { triggerAutoRun } from "../autorun.js";
+import { state } from "../state.js";
+import { fetchAdvantages } from "../api.js";
+import { renderLists } from "../ui.js";
+import { triggerAutoRun } from "../engine/autorun.js";
 
 const data = state.data;
 const selected = state.selected;
