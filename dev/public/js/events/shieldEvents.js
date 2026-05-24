@@ -61,7 +61,9 @@ export function handleShieldInput(e) {
     );
 
     equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    triggerAutoRun(); // state updated — output recalculates; DOM left untouched
+
+    renderLists(selected, data);
+    triggerAutoRun();
     return true;
   }
 
@@ -80,7 +82,9 @@ export function handleShieldInput(e) {
     );
 
     shieldInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    triggerAutoRun(); // state updated — output recalculates; DOM left untouched
+
+    renderLists(selected, data);
+    triggerAutoRun();
     return true;
   }
 

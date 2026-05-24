@@ -57,7 +57,9 @@ export function handleMeleeInput(e) {
     );
 
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    triggerAutoRun(); // state updated — output recalculates; DOM left untouched
+
+    renderLists(selected, data);
+    triggerAutoRun();
     return true;
   }
 
@@ -76,7 +78,9 @@ export function handleMeleeInput(e) {
     );
 
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    triggerAutoRun(); // state updated — output recalculates; DOM left untouched
+
+    renderLists(selected, data);
+    triggerAutoRun();
     return true;
   }
 

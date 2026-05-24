@@ -28,7 +28,9 @@ export function handleArmorClick(e) {
     const armorToEquip = findArmorByInstanceId(instanceId);
     if (!armorToEquip) return true;
 
-    const dbArmor = data.armors.find((a) => a.armor_id === armorToEquip.armor_id);
+    const dbArmor = data.armors.find(
+      (a) => a.armor_id === armorToEquip.armor_id,
+    );
     if (!dbArmor) return true;
 
     const slot = dbArmor.armor_piece_location;
@@ -63,8 +65,14 @@ export function handleArmorInput(e) {
     const equippedArmor = findEquippedArmorInSlot(slot);
     if (!equippedArmor) return true;
 
-    const armorData = data.armors.find((a) => a.armor_id === equippedArmor.armor_id);
-    const { maxHp } = resolveHp(equippedArmor, armorData?.armor_hit_points ?? 0, data.materials);
+    const armorData = data.armors.find(
+      (a) => a.armor_id === equippedArmor.armor_id,
+    );
+    const { maxHp } = resolveHp(
+      equippedArmor,
+      armorData?.armor_hit_points ?? 0,
+      data.materials,
+    );
 
     equippedArmor.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
 
@@ -79,8 +87,14 @@ export function handleArmorInput(e) {
     const armorInstance = findArmorByInstanceId(instanceId);
     if (!armorInstance) return true;
 
-    const armorData = data.armors.find((a) => a.armor_id === armorInstance.armor_id);
-    const { maxHp } = resolveHp(armorInstance, armorData?.armor_hit_points ?? 0, data.materials);
+    const armorData = data.armors.find(
+      (a) => a.armor_id === armorInstance.armor_id,
+    );
+    const { maxHp } = resolveHp(
+      armorInstance,
+      armorData?.armor_hit_points ?? 0,
+      data.materials,
+    );
 
     armorInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
 
@@ -105,7 +119,9 @@ export function handleArmorChange(e) {
       return true;
     }
 
-    const tierSelect = document.querySelector(`.equipped-armor-tier[data-slot="${slot}"]`);
+    const tierSelect = document.querySelector(
+      `.equipped-armor-tier[data-slot="${slot}"]`,
+    );
     const availableArmors = data.armors.filter(
       (a) => a.armor_piece_location === slot && a.armor_name === name,
     );
@@ -128,11 +144,16 @@ export function handleArmorChange(e) {
   if (e.target.classList.contains("equipped-armor-tier")) {
     const slot = e.target.dataset.slot;
     const tier = e.target.value;
-    const nameEl = document.querySelector(`.equipped-armor-name[data-slot="${slot}"]`);
+    const nameEl = document.querySelector(
+      `.equipped-armor-name[data-slot="${slot}"]`,
+    );
     if (!nameEl) return true;
 
     const armor = data.armors.find(
-      (a) => a.armor_piece_location === slot && a.armor_name === nameEl.value && a.armor_tier === tier,
+      (a) =>
+        a.armor_piece_location === slot &&
+        a.armor_name === nameEl.value &&
+        a.armor_tier === tier,
     );
     if (!armor) return true;
 
@@ -203,6 +224,12 @@ export function handleAddArmor() {
   );
   if (!armor) return;
 
-  const material = data.materials.find((m) => m.material_name === materialEl.value);
-  addStoredArmor(armor.armor_id, material?.material_id ?? null, storageEl.value);
+  const material = data.materials.find(
+    (m) => m.material_name === materialEl.value,
+  );
+  addStoredArmor(
+    armor.armor_id,
+    material?.material_id ?? null,
+    storageEl.value,
+  );
 }

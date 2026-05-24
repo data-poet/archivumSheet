@@ -11,7 +11,13 @@ import { calcMaxHp, calcActualHp, resolveMaterial } from "./durabilityUtils.js";
  * @param {string}      params.dataAttrs    - Extra data-* string, e.g. data-slot="Tronco"
  * @returns {string} HTML string
  */
-export function hpModifierBlock({ baseHp, material, hpModifier, cssClass, dataAttrs = "" }) {
+export function hpModifierBlock({
+  baseHp,
+  material,
+  hpModifier,
+  cssClass,
+  dataAttrs = "",
+}) {
   const maxHp = calcMaxHp(baseHp, material);
   const actualHp = calcActualHp(maxHp, hpModifier);
 
