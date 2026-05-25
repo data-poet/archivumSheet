@@ -1,0 +1,267 @@
+weapon_id,weapon_name,weapon_type,weapon_skill,weapon_gdp_modifier,weapon_weight,weapon_price,weapon_ammo_price,weapon_length,weapon_min_strength,weapon_damage_type,weapon_tr,weapon_prec,weapon_half_distance,weapon_max_distance,weapon_reload_speed,weapon_tier,weapon_tier_bonus,weapon_hit_points,weapon_description
+RANGED-000,Adaga de Arremesso,Faca,ARREMESSO DE FACA,1,0.2,10,10,0.3,6,Perfuração,12,1,ST - 5,ST,2 Turnos,Comum,,10,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-001,Adaga de Arremesso,Faca,ARREMESSO DE FACA,2,0.2,20,20,0.3,6,Perfuração,11,2,ST - 5,ST,2 Turnos,Boa,,20,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-002,Adaga de Arremesso,Faca,ARREMESSO DE FACA,2,0.2,40,40,0.3,6,Perfuração,10,3,ST - 5,ST,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-003,Adaga de Arremesso,Faca,ARREMESSO DE FACA,3,0.2,80,80,0.3,6,Perfuração,9,4,ST - 5,ST,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-004,Adaga de Arremesso,Faca,ARREMESSO DE FACA,4,0.2,160,160,0.3,6,Perfuração,8,5,ST - 5,ST,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-005,Machadinha,Machado,ARREMESSO DE MACHADO,1,1.2,70,70,0.45,7,Perfuração,11,1,ST x 1.5,ST x 2.5,2 Turnos,Comum,,10,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+RANGED-006,Machadinha,Machado,ARREMESSO DE MACHADO,2,1.1,140,140,0.45,7,Perfuração,10,2,ST x 1.5,ST x 2.5,2 Turnos,Boa,,20,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+RANGED-007,Machadinha,Machado,ARREMESSO DE MACHADO,2,1,280,280,0.45,7,Perfuração,9,3,ST x 1.5,ST x 2.5,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+RANGED-008,Machadinha,Machado,ARREMESSO DE MACHADO,3,0.9,560,560,0.45,7,Perfuração,8,4,ST x 1.5,ST x 2.5,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+RANGED-009,Machadinha,Machado,ARREMESSO DE MACHADO,4,0.8,1120,1120,0.45,7,Perfuração,7,5,ST x 1.5,ST x 2.5,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Possui lâmina curva e dimensões reduzidas, o que permite ser utilizada como arma secundária de ataque. O arremesso tem bol alcance. Também pode ser utilizado como untensílio ou ferramenta."
+RANGED-010,Machado de Arremeso,Machado,ARREMESSO DE MACHADO,1,2,200,200,0.55,10,Perfuração,10,2,ST,ST x 1.5,2 Turnos,Comum,,10,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-011,Machado de Arremeso,Machado,ARREMESSO DE MACHADO,2,1.9,400,400,0.55,10,Perfuração,9,3,ST,ST x 1.5,2 Turnos,Boa,,20,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-012,Machado de Arremeso,Machado,ARREMESSO DE MACHADO,2,1.8,800,800,0.55,10,Perfuração,8,4,ST,ST x 1.5,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-013,Machado de Arremeso,Machado,ARREMESSO DE MACHADO,3,1.7,1600,1600,0.55,10,Perfuração,7,5,ST,ST x 1.5,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-014,Machado de Arremeso,Machado,ARREMESSO DE MACHADO,4,1.6,3200,3200,0.55,10,Perfuração,6,6,ST,ST x 1.5,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+RANGED-015,Arco Curto,Arco,ARCO,0,1,400,8,0.7,7,Perfuração,12,1,ST x 10,ST x 15,2 Turnos,Comum,,10,"Esta versão de arco pode ser usada por praticamente qualquer pessoa. Exige pouca força e o alcançe da flecha garante uma mínima chance de fuga em caso de erro. Fazer um arco destes, porém não é tarefa simples, exigindo técnica apurada."
+RANGED-016,Arco Curto,Arco,ARCO,1,0.9,800,8,0.7,7,Perfuração,11,2,ST x 10,ST x 15,2 Turnos,Boa,,20,"Esta versão de arco pode ser usada por praticamente qualquer pessoa. Exige pouca força e o alcançe da flecha garante uma mínima chance de fuga em caso de erro. Fazer um arco destes, porém não é tarefa simples, exigindo técnica apurada."
+RANGED-017,Arco Curto,Arco,ARCO,1,0.8,1600,8,0.7,7,Perfuração,10,3,ST x 10,ST x 15,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta versão de arco pode ser usada por praticamente qualquer pessoa. Exige pouca força e o alcançe da flecha garante uma mínima chance de fuga em caso de erro. Fazer um arco destes, porém não é tarefa simples, exigindo técnica apurada."
+RANGED-018,Arco Curto,Arco,ARCO,2,0.7,3200,8,0.7,7,Perfuração,9,4,ST x 10,ST x 15,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Esta versão de arco pode ser usada por praticamente qualquer pessoa. Exige pouca força e o alcançe da flecha garante uma mínima chance de fuga em caso de erro. Fazer um arco destes, porém não é tarefa simples, exigindo técnica apurada."
+RANGED-019,Arco Curto,Arco,ARCO,3,0.6,6400,8,0.7,7,Perfuração,8,5,ST x 10,ST x 15,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta versão de arco pode ser usada por praticamente qualquer pessoa. Exige pouca força e o alcançe da flecha garante uma mínima chance de fuga em caso de erro. Fazer um arco destes, porém não é tarefa simples, exigindo técnica apurada."
+RANGED-020,Arco Longo,Arco,ARCO,2,1.5,600,12,1,11,Perfuração,15,3,ST x 15,ST x 20,2 Turnos,Comum,,10,"O arco longo foi criado para aproveitar a força de algun soldados. Com uma base mais longa, ele necessita mais força para ser puxado e apenas os que tiverem treinamento consiguirão manter o braço firme para um bom disparo. Os arcos longos utilizam flechas apropriadas, com ponta metálica."
+RANGED-021,Arco Longo,Arco,ARCO,3,1.4,1200,12,1,11,Perfuração,14,4,ST x 15,ST x 20,2 Turnos,Boa,,20,"O arco longo foi criado para aproveitar a força de algun soldados. Com uma base mais longa, ele necessita mais força para ser puxado e apenas os que tiverem treinamento consiguirão manter o braço firme para um bom disparo. Os arcos longos utilizam flechas apropriadas, com ponta metálica."
+RANGED-022,Arco Longo,Arco,ARCO,3,1.3,2400,12,1,11,Perfuração,13,5,ST x 15,ST x 20,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"O arco longo foi criado para aproveitar a força de algun soldados. Com uma base mais longa, ele necessita mais força para ser puxado e apenas os que tiverem treinamento consiguirão manter o braço firme para um bom disparo. Os arcos longos utilizam flechas apropriadas, com ponta metálica."
+RANGED-023,Arco Longo,Arco,ARCO,4,1.2,4800,12,1,11,Perfuração,12,6,ST x 15,ST x 20,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"O arco longo foi criado para aproveitar a força de algun soldados. Com uma base mais longa, ele necessita mais força para ser puxado e apenas os que tiverem treinamento consiguirão manter o braço firme para um bom disparo. Os arcos longos utilizam flechas apropriadas, com ponta metálica."
+RANGED-024,Arco Longo,Arco,ARCO,5,1.1,9600,12,1,11,Perfuração,11,7,ST x 15,ST x 20,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"O arco longo foi criado para aproveitar a força de algun soldados. Com uma base mais longa, ele necessita mais força para ser puxado e apenas os que tiverem treinamento consiguirão manter o braço firme para um bom disparo. Os arcos longos utilizam flechas apropriadas, com ponta metálica."
+RANGED-025,Arco Composto,Arco,ARCO,3,2,800,16,0.8,10,Perfuração,14,3,ST x 15,ST x 20,2 Turnos,Comum,,10,"A curvatura acentuada da vara é seu segredo. O esforço para puxar a corda é menor, sendo também mais fácil manter o arco em posição de tiro. A flecha é atirada com grande potência devido ao reforço em metal na vara. Um outro modelo possui roldanas para aumentar a tração da corda. O impacto torna-se maior, bem como o alcance. É uma arma cara e de difícil confeccção."
+RANGED-026,Arco Composto,Arco,ARCO,4,1.9,1600,16,0.8,10,Perfuração,13,4,ST x 15,ST x 20,2 Turnos,Boa,,20,"A curvatura acentuada da vara é seu segredo. O esforço para puxar a corda é menor, sendo também mais fácil manter o arco em posição de tiro. A flecha é atirada com grande potência devido ao reforço em metal na vara. Um outro modelo possui roldanas para aumentar a tração da corda. O impacto torna-se maior, bem como o alcance. É uma arma cara e de difícil confeccção."
+RANGED-027,Arco Composto,Arco,ARCO,4,1.8,3200,16,0.8,10,Perfuração,12,5,ST x 15,ST x 20,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A curvatura acentuada da vara é seu segredo. O esforço para puxar a corda é menor, sendo também mais fácil manter o arco em posição de tiro. A flecha é atirada com grande potência devido ao reforço em metal na vara. Um outro modelo possui roldanas para aumentar a tração da corda. O impacto torna-se maior, bem como o alcance. É uma arma cara e de difícil confeccção."
+RANGED-028,Arco Composto,Arco,ARCO,5,1.7,6400,16,0.8,10,Perfuração,11,6,ST x 15,ST x 20,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"A curvatura acentuada da vara é seu segredo. O esforço para puxar a corda é menor, sendo também mais fácil manter o arco em posição de tiro. A flecha é atirada com grande potência devido ao reforço em metal na vara. Um outro modelo possui roldanas para aumentar a tração da corda. O impacto torna-se maior, bem como o alcance. É uma arma cara e de difícil confeccção."
+RANGED-029,Arco Composto,Arco,ARCO,6,1.6,12800,16,0.8,10,Perfuração,10,7,ST x 15,ST x 20,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"A curvatura acentuada da vara é seu segredo. O esforço para puxar a corda é menor, sendo também mais fácil manter o arco em posição de tiro. A flecha é atirada com grande potência devido ao reforço em metal na vara. Um outro modelo possui roldanas para aumentar a tração da corda. O impacto torna-se maior, bem como o alcance. É uma arma cara e de difícil confeccção."
+RANGED-030,Arco de Guerra,Arco,ARCO,4,2.5,1000,20,1.2,12,Perfuração,15,4,ST x 20,ST x 25,2 Turnos,Comum,,10,"O mais belo e complexo dos arcos. Tem curvatura dupla, o que lhe confere um alcance fantástico. Pode atirar flechas de qualquer tipo, inclusive as mais leves. A puxada reforçada garante um excelente dano."
+RANGED-031,Arco de Guerra,Arco,ARCO,5,2.4,2000,20,1.2,12,Perfuração,14,5,ST x 20,ST x 25,2 Turnos,Boa,,20,"O mais belo e complexo dos arcos. Tem curvatura dupla, o que lhe confere um alcance fantástico. Pode atirar flechas de qualquer tipo, inclusive as mais leves. A puxada reforçada garante um excelente dano."
+RANGED-032,Arco de Guerra,Arco,ARCO,5,2.3,4000,20,1.2,12,Perfuração,13,6,ST x 20,ST x 25,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"O mais belo e complexo dos arcos. Tem curvatura dupla, o que lhe confere um alcance fantástico. Pode atirar flechas de qualquer tipo, inclusive as mais leves. A puxada reforçada garante um excelente dano."
+RANGED-033,Arco de Guerra,Arco,ARCO,6,2.2,8000,20,1.2,12,Perfuração,12,7,ST x 20,ST x 25,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"O mais belo e complexo dos arcos. Tem curvatura dupla, o que lhe confere um alcance fantástico. Pode atirar flechas de qualquer tipo, inclusive as mais leves. A puxada reforçada garante um excelente dano."
+RANGED-034,Arco de Guerra,Arco,ARCO,7,2.1,16000,20,1.2,12,Perfuração,11,8,ST x 20,ST x 25,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"O mais belo e complexo dos arcos. Tem curvatura dupla, o que lhe confere um alcance fantástico. Pode atirar flechas de qualquer tipo, inclusive as mais leves. A puxada reforçada garante um excelente dano."
+RANGED-035,Besta Leve,Besta,BESTA,2,2,1000,8,0.4,7,Perfuração,12,4,ST x 20,ST x 25,3 Turnos,Comum,,10,"Só pode atirar as virotes mais leves. Tem vantagem de ter uma corda mais leve de ser puxada, o que permite que o combatente seja mais fraco."
+RANGED-036,Besta Leve,Besta,BESTA,3,1.9,2000,8,0.4,7,Perfuração,11,5,ST x 20,ST x 25,3 Turnos,Boa,,20,"Só pode atirar as virotes mais leves. Tem vantagem de ter uma corda mais leve de ser puxada, o que permite que o combatente seja mais fraco."
+RANGED-037,Besta Leve,Besta,BESTA,3,1.8,4000,8,0.4,7,Perfuração,10,6,ST x 20,ST x 25,3 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Só pode atirar as virotes mais leves. Tem vantagem de ter uma corda mais leve de ser puxada, o que permite que o combatente seja mais fraco."
+RANGED-038,Besta Leve,Besta,BESTA,4,1.7,8000,8,0.4,7,Perfuração,9,7,ST x 20,ST x 25,3 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Só pode atirar as virotes mais leves. Tem vantagem de ter uma corda mais leve de ser puxada, o que permite que o combatente seja mais fraco."
+RANGED-039,Besta Leve,Besta,BESTA,5,1.6,16000,8,0.4,7,Perfuração,8,8,ST x 20,ST x 25,3 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Só pode atirar as virotes mais leves. Tem vantagem de ter uma corda mais leve de ser puxada, o que permite que o combatente seja mais fraco."
+RANGED-040,Besta Pesada,Besta,BESTA,3,2.5,1500,12,0.7,12,Perfuração,12,4,ST x 25,ST x 30,3 Turnos,Comum,,10,"Esta é a versão mais realmente séria da besta. Tem um alcance inigulável e faz um dano respeitável, mesmo se comparada com armas de outras categorias.."
+RANGED-041,Besta Pesada,Besta,BESTA,4,2.4,3000,12,0.7,12,Perfuração,11,5,ST x 25,ST x 30,3 Turnos,Boa,,20,"Esta é a versão mais realmente séria da besta. Tem um alcance inigulável e faz um dano respeitável, mesmo se comparada com armas de outras categorias.."
+RANGED-042,Besta Pesada,Besta,BESTA,4,2.3,6000,12,0.7,12,Perfuração,10,6,ST x 25,ST x 30,3 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Esta é a versão mais realmente séria da besta. Tem um alcance inigulável e faz um dano respeitável, mesmo se comparada com armas de outras categorias.."
+RANGED-043,Besta Pesada,Besta,BESTA,5,2.2,12000,12,0.7,12,Perfuração,9,7,ST x 25,ST x 30,3 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Esta é a versão mais realmente séria da besta. Tem um alcance inigulável e faz um dano respeitável, mesmo se comparada com armas de outras categorias.."
+RANGED-044,Besta Pesada,Besta,BESTA,6,2.1,24000,12,0.7,12,Perfuração,8,8,ST x 25,ST x 30,3 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Esta é a versão mais realmente séria da besta. Tem um alcance inigulável e faz um dano respeitável, mesmo se comparada com armas de outras categorias.."
+RANGED-045,Besta de Repetição,Besta,BESTA,1,2.5,2000,16,0.6,10,Perfuração,8,2,ST x 15,ST x 20,4 Turnos,Comum,,10,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+RANGED-046,Besta de Repetição,Besta,BESTA,2,2.4,4000,16,0.6,10,Perfuração,7,3,ST x 15,ST x 20,4 Turnos,Boa,,20,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+RANGED-047,Besta de Repetição,Besta,BESTA,2,2.3,8000,16,0.6,10,Perfuração,6,4,ST x 15,ST x 20,4 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+RANGED-048,Besta de Repetição,Besta,BESTA,3,2.2,16000,16,0.6,10,Perfuração,5,5,ST x 15,ST x 20,4 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+RANGED-049,Besta de Repetição,Besta,BESTA,4,2.1,32000,16,0.6,10,Perfuração,4,6,ST x 15,ST x 20,4 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+RANGED-050,Balestra,Besta,BESTA,4,2,800,8,0.5,7,Contusão,12,2,ST x 20,ST x 25,3 Turnos,Comum,,10,"A balestra dispara pequenas bolas metálicas no lugar de virotes. Possui um alcance soberbo, mas a clara desvantagem de não poder ser carregada com veneno."
+RANGED-051,Balestra,Besta,BESTA,5,1.9,1600,8,0.5,7,Contusão,11,3,ST x 20,ST x 25,3 Turnos,Boa,,20,"A balestra dispara pequenas bolas metálicas no lugar de virotes. Possui um alcance soberbo, mas a clara desvantagem de não poder ser carregada com veneno."
+RANGED-052,Balestra,Besta,BESTA,5,1.8,3200,8,0.5,7,Contusão,10,4,ST x 20,ST x 25,3 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"A balestra dispara pequenas bolas metálicas no lugar de virotes. Possui um alcance soberbo, mas a clara desvantagem de não poder ser carregada com veneno."
+RANGED-053,Balestra,Besta,BESTA,6,1.7,6400,8,0.5,7,Contusão,9,5,ST x 20,ST x 25,3 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"A balestra dispara pequenas bolas metálicas no lugar de virotes. Possui um alcance soberbo, mas a clara desvantagem de não poder ser carregada com veneno."
+RANGED-054,Balestra,Besta,BESTA,7,1.6,12800,8,0.5,7,Contusão,8,6,ST x 20,ST x 25,3 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"A balestra dispara pequenas bolas metálicas no lugar de virotes. Possui um alcance soberbo, mas a clara desvantagem de não poder ser carregada com veneno."
+RANGED-055,Lança de Mão,Lança,ARREMESSO DE LANÇA,1,2,50,50,1.5,8,Perfuração,12,1,ST,ST x 2,2 Turnos,Comum,,10,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+RANGED-056,Lança de Mão,Lança,ARREMESSO DE LANÇA,2,1.9,100,100,1.5,8,Perfuração,11,2,ST,ST x 2,2 Turnos,Boa,,20,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+RANGED-057,Lança de Mão,Lança,ARREMESSO DE LANÇA,2,1.8,200,200,1.5,8,Perfuração,10,3,ST,ST x 2,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+RANGED-058,Lança de Mão,Lança,ARREMESSO DE LANÇA,3,1.7,400,400,1.5,8,Perfuração,9,4,ST,ST x 2,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+RANGED-059,Lança de Mão,Lança,ARREMESSO DE LANÇA,4,1.6,800,800,1.5,8,Perfuração,8,5,ST,ST x 2,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Acrescentando-se uma ponta metálica à lança de mão sem ponta, chegamos a esta. É uma ponta simples, não muito firme, que pode facilmete ser encontrada nas civilizações que atingiram a Idade do Bronze."
+RANGED-060,Lança de Arremesso,Lança,ARREMESSO DE LANÇA,2,1.2,40,40,1.2,7,Perfuação,12,2,ST x 2,ST x 4,2 Turnos,Comum,,10,"Tem uma ponta esbelta e aerodinâmica para permitir um bom arremesso. Sua ponta não comporta combate fechado, mas o alcance permite ao atacante garantir a distância."
+RANGED-061,Lança de Arremesso,Lança,ARREMESSO DE LANÇA,3,1.1,80,80,1.2,7,Perfuação,11,3,ST x 2,ST x 4,2 Turnos,Boa,,20,"Tem uma ponta esbelta e aerodinâmica para permitir um bom arremesso. Sua ponta não comporta combate fechado, mas o alcance permite ao atacante garantir a distância."
+RANGED-062,Lança de Arremesso,Lança,ARREMESSO DE LANÇA,3,1,160,160,1.2,7,Perfuação,10,4,ST x 2,ST x 4,2 Turnos,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Tem uma ponta esbelta e aerodinâmica para permitir um bom arremesso. Sua ponta não comporta combate fechado, mas o alcance permite ao atacante garantir a distância."
+RANGED-063,Lança de Arremesso,Lança,ARREMESSO DE LANÇA,4,0.9,320,320,1.2,7,Perfuação,9,5,ST x 2,ST x 4,2 Turnos,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Tem uma ponta esbelta e aerodinâmica para permitir um bom arremesso. Sua ponta não comporta combate fechado, mas o alcance permite ao atacante garantir a distância."
+RANGED-064,Lança de Arremesso,Lança,ARREMESSO DE LANÇA,5,0.8,640,640,1.2,7,Perfuação,8,6,ST x 2,ST x 4,2 Turnos,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Tem uma ponta esbelta e aerodinâmica para permitir um bom arremesso. Sua ponta não comporta combate fechado, mas o alcance permite ao atacante garantir a distância."
+RANGED-065,Funda,Armas Exóticas,FUNDA,1,0.2,25,1,0.4,6,Contusão,12,1,ST x 10,ST x 15,1 Turno,Comum,,10,"Tira de couro flexível, com  a parte central mais larga. No centro, coloca-se uma pedra ou pequeno dardo apropriado. Segura-se a tira pelas duas pontas e gira-se o braço. Para disparar, solta-se uma das pontas e a pedra parte em direção ao alvo. Simples não?"
+RANGED-066,Funda,Armas Exóticas,FUNDA,2,0.2,50,1,0.4,6,Contusão,11,2,ST x 10,ST x 15,1 Turno,Boa,,20,"Tira de couro flexível, com  a parte central mais larga. No centro, coloca-se uma pedra ou pequeno dardo apropriado. Segura-se a tira pelas duas pontas e gira-se o braço. Para disparar, solta-se uma das pontas e a pedra parte em direção ao alvo. Simples não?"
+RANGED-067,Funda,Armas Exóticas,FUNDA,2,0.2,100,1,0.4,6,Contusão,10,3,ST x 10,ST x 15,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Tira de couro flexível, com  a parte central mais larga. No centro, coloca-se uma pedra ou pequeno dardo apropriado. Segura-se a tira pelas duas pontas e gira-se o braço. Para disparar, solta-se uma das pontas e a pedra parte em direção ao alvo. Simples não?"
+RANGED-068,Funda,Armas Exóticas,FUNDA,3,0.2,200,1,0.4,6,Contusão,9,4,ST x 10,ST x 15,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Tira de couro flexível, com  a parte central mais larga. No centro, coloca-se uma pedra ou pequeno dardo apropriado. Segura-se a tira pelas duas pontas e gira-se o braço. Para disparar, solta-se uma das pontas e a pedra parte em direção ao alvo. Simples não?"
+RANGED-069,Funda,Armas Exóticas,FUNDA,4,0.2,400,1,0.4,6,Contusão,8,5,ST x 10,ST x 15,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Tira de couro flexível, com  a parte central mais larga. No centro, coloca-se uma pedra ou pequeno dardo apropriado. Segura-se a tira pelas duas pontas e gira-se o braço. Para disparar, solta-se uma das pontas e a pedra parte em direção ao alvo. Simples não?"
+RANGED-070,Cajado-Funda,Armas Exóticas,FUNDA,1,3,75,2,2,6,Contusão,12,1,ST x 10,ST x 15,1 Turno,Comum,,10," Variante da funda na qual as duas pontas da corda de apoio são presas a um bastão ou cajado. Naturalmente, pode ser utilizado como bastão, o que a torna uma arma versátil. "
+RANGED-071,Cajado-Funda,Armas Exóticas,FUNDA,2,2.9,150,2,2,6,Contusão,11,2,ST x 10,ST x 15,1 Turno,Boa,,20," Variante da funda na qual as duas pontas da corda de apoio são presas a um bastão ou cajado. Naturalmente, pode ser utilizado como bastão, o que a torna uma arma versátil. "
+RANGED-072,Cajado-Funda,Armas Exóticas,FUNDA,2,2.8,300,2,2,6,Contusão,10,3,ST x 10,ST x 15,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30," Variante da funda na qual as duas pontas da corda de apoio são presas a um bastão ou cajado. Naturalmente, pode ser utilizado como bastão, o que a torna uma arma versátil. "
+RANGED-073,Cajado-Funda,Armas Exóticas,FUNDA,3,2.7,600,2,2,6,Contusão,9,4,ST x 10,ST x 15,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40," Variante da funda na qual as duas pontas da corda de apoio são presas a um bastão ou cajado. Naturalmente, pode ser utilizado como bastão, o que a torna uma arma versátil. "
+RANGED-074,Cajado-Funda,Armas Exóticas,FUNDA,4,2.6,1200,2,2,6,Contusão,8,5,ST x 10,ST x 15,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50," Variante da funda na qual as duas pontas da corda de apoio são presas a um bastão ou cajado. Naturalmente, pode ser utilizado como bastão, o que a torna uma arma versátil. "
+RANGED-075,Zarabatana,Armas Exóticas,ZARABATANA,0,0.15,30,3,0.3,6,Perfuração,12,1,ST x 10,ST x 15,1 Turno,Comum,,10,"É um canudo com uma flecha pequena em seu interior. Arma silenciosa e discreta, muito usada por assassinos. A flecha em si não faz quase nenhum dano; mas embebida em venenos..."
+RANGED-076,Zarabatana,Armas Exóticas,ZARABATANA,1,0.15,60,3,0.3,6,Perfuração,11,2,ST x 10,ST x 15,1 Turno,Boa,,20,"É um canudo com uma flecha pequena em seu interior. Arma silenciosa e discreta, muito usada por assassinos. A flecha em si não faz quase nenhum dano; mas embebida em venenos..."
+RANGED-077,Zarabatana,Armas Exóticas,ZARABATANA,1,0.15,120,3,0.3,6,Perfuração,10,3,ST x 10,ST x 15,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"É um canudo com uma flecha pequena em seu interior. Arma silenciosa e discreta, muito usada por assassinos. A flecha em si não faz quase nenhum dano; mas embebida em venenos..."
+RANGED-078,Zarabatana,Armas Exóticas,ZARABATANA,2,0.15,240,3,0.3,6,Perfuração,9,4,ST x 10,ST x 15,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"É um canudo com uma flecha pequena em seu interior. Arma silenciosa e discreta, muito usada por assassinos. A flecha em si não faz quase nenhum dano; mas embebida em venenos..."
+RANGED-079,Zarabatana,Armas Exóticas,ZARABATANA,3,0.15,480,3,0.3,6,Perfuração,8,5,ST x 10,ST x 15,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"É um canudo com uma flecha pequena em seu interior. Arma silenciosa e discreta, muito usada por assassinos. A flecha em si não faz quase nenhum dano; mas embebida em venenos..."
+RANGED-080,Boladeira,Armas Exóticas,BOLADEIRAS,1,0.5,80,80,0.45,6,Contusão,14,1,ST x 7,ST x 10,1 Turno,Comum,,10,"São três cordas combolas nas pontas. O atacante segura uma das bolas e gira as outras duas sobre a cabeça, soltando em velocidade. Em geral, uma das bolas engancha o inimigo fazendo com que as demais girem e também acertem."
+RANGED-081,Boladeira,Armas Exóticas,BOLADEIRAS,2,0.5,160,160,0.45,6,Contusão,13,2,ST x 7,ST x 10,1 Turno,Boa,,20,"São três cordas combolas nas pontas. O atacante segura uma das bolas e gira as outras duas sobre a cabeça, soltando em velocidade. Em geral, uma das bolas engancha o inimigo fazendo com que as demais girem e também acertem."
+RANGED-082,Boladeira,Armas Exóticas,BOLADEIRAS,2,0.5,320,320,0.45,6,Contusão,12,3,ST x 7,ST x 10,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"São três cordas combolas nas pontas. O atacante segura uma das bolas e gira as outras duas sobre a cabeça, soltando em velocidade. Em geral, uma das bolas engancha o inimigo fazendo com que as demais girem e também acertem."
+RANGED-083,Boladeira,Armas Exóticas,BOLADEIRAS,3,0.5,640,640,0.45,6,Contusão,11,4,ST x 7,ST x 10,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"São três cordas combolas nas pontas. O atacante segura uma das bolas e gira as outras duas sobre a cabeça, soltando em velocidade. Em geral, uma das bolas engancha o inimigo fazendo com que as demais girem e também acertem."
+RANGED-084,Boladeira,Armas Exóticas,BOLADEIRAS,4,0.5,1280,1280,0.45,6,Contusão,10,5,ST x 7,ST x 10,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"São três cordas combolas nas pontas. O atacante segura uma das bolas e gira as outras duas sobre a cabeça, soltando em velocidade. Em geral, uma das bolas engancha o inimigo fazendo com que as demais girem e também acertem."
+RANGED-085,Rede,Armas Exóticas,REDE,0,2,100,100,2,6,Contusão,12,1,ST x 2,ST x 4,1 Turno,Comum,,10,"Era uma rede pesada, frequentemente equipada com pesos nas bordas (chumbo ou metal) para facilitar o arremesso. O objetivo era lançar a rede sobre o oponente para emaranhá-lo, prendendo seus braços, pernas ou arma."
+RANGED-086,Rede,Armas Exóticas,REDE,1,1.9,200,200,2,6,Contusão,11,2,ST x 2,ST x 4,1 Turno,Boa,,20,"Era uma rede pesada, frequentemente equipada com pesos nas bordas (chumbo ou metal) para facilitar o arremesso. O objetivo era lançar a rede sobre o oponente para emaranhá-lo, prendendo seus braços, pernas ou arma."
+RANGED-087,Rede,Armas Exóticas,REDE,1,1.8,400,400,2,6,Contusão,10,3,ST x 2,ST x 4,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"Era uma rede pesada, frequentemente equipada com pesos nas bordas (chumbo ou metal) para facilitar o arremesso. O objetivo era lançar a rede sobre o oponente para emaranhá-lo, prendendo seus braços, pernas ou arma."
+RANGED-088,Rede,Armas Exóticas,REDE,2,1.7,800,800,2,6,Contusão,9,4,ST x 2,ST x 4,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"Era uma rede pesada, frequentemente equipada com pesos nas bordas (chumbo ou metal) para facilitar o arremesso. O objetivo era lançar a rede sobre o oponente para emaranhá-lo, prendendo seus braços, pernas ou arma."
+RANGED-089,Rede,Armas Exóticas,REDE,3,1.6,1600,1600,2,6,Contusão,8,5,ST x 2,ST x 4,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"Era uma rede pesada, frequentemente equipada com pesos nas bordas (chumbo ou metal) para facilitar o arremesso. O objetivo era lançar a rede sobre o oponente para emaranhá-lo, prendendo seus braços, pernas ou arma."
+RANGED-090,Shuriken,Armas Exóticas,ARMAS EXÓTICAS | SHURIKEN,1,0.05,10,10,0.1,6,Perfuração,6,0,ST,ST x 2,1 Turno,Comum,,10,"São as tão temidas ""estrelinhas dos ninjas"". Trata-se de pequenos mísseis metálicos com quatro a oito pontas utilizadas como arma à distância. Não costumam matar, salvo golpes em locais precisos ou quando impregnadas em veneno."
+RANGED-091,Shuriken,Armas Exóticas,ARMAS EXÓTICAS | SHURIKEN,2,0.05,20,20,0.1,6,Perfuração,5,1,ST,ST x 2,1 Turno,Boa,,20,"São as tão temidas ""estrelinhas dos ninjas"". Trata-se de pequenos mísseis metálicos com quatro a oito pontas utilizadas como arma à distância. Não costumam matar, salvo golpes em locais precisos ou quando impregnadas em veneno."
+RANGED-092,Shuriken,Armas Exóticas,ARMAS EXÓTICAS | SHURIKEN,2,0.05,40,40,0.1,6,Perfuração,4,2,ST,ST x 2,1 Turno,Superior,"
+
+- +1 em testes de Saque Rápido com esta arma.",30,"São as tão temidas ""estrelinhas dos ninjas"". Trata-se de pequenos mísseis metálicos com quatro a oito pontas utilizadas como arma à distância. Não costumam matar, salvo golpes em locais precisos ou quando impregnadas em veneno."
+RANGED-093,Shuriken,Armas Exóticas,ARMAS EXÓTICAS | SHURIKEN,3,0.05,80,80,0.1,6,Perfuração,3,3,ST,ST x 2,1 Turno,Excelente,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.",40,"São as tão temidas ""estrelinhas dos ninjas"". Trata-se de pequenos mísseis metálicos com quatro a oito pontas utilizadas como arma à distância. Não costumam matar, salvo golpes em locais precisos ou quando impregnadas em veneno."
+RANGED-094,Shuriken,Armas Exóticas,ARMAS EXÓTICAS | SHURIKEN,4,0.05,160,160,0.1,6,Perfuração,2,4,ST,ST x 2,1 Turno,Obra-Prima,"
+
+- +1 em testes de Saque Rápido com esta arma.
+- +1 em Recarga Rápida com esta arma.
+- +1 na perícia relacionada à arma.",50,"São as tão temidas ""estrelinhas dos ninjas"". Trata-se de pequenos mísseis metálicos com quatro a oito pontas utilizadas como arma à distância. Não costumam matar, salvo golpes em locais precisos ou quando impregnadas em veneno."
