@@ -147,4 +147,5 @@ module.exports = {
   applyMaterialToMelee,
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
+  calculateHex,
 };
