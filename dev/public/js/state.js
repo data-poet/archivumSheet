@@ -7,7 +7,8 @@ export const state = {
     spells: [],
     armors: [],
     shields: [],
-    melee_weapons: [],   // normalized: was "melee" in original state but "melee_weapons" everywhere else
+    melee_weapons: [],
+    ranged_weapons: [],
     materials: [],
   },
 
@@ -22,6 +23,7 @@ export const state = {
     armors: [],
     shields: [],
     melee_weapons: [],
+    ranged_weapons: [],
   },
 
   // ===== UI STATE =====

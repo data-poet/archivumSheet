@@ -39,6 +39,7 @@ export function exportSheet() {
       armors: selected.armors,
       shields: selected.shields,
       melee_weapons: selected.melee_weapons,
+      ranged_weapons: selected.ranged_weapons,
     },
   };
 
@@ -116,15 +117,16 @@ function _applyImport(payload) {
   resetInstanceCounters();
 
   // ── Hydrate selected state ────────────────────────────────────────────────
-  selected.secondary    = character.secondary    ?? {};
-  selected.damage       = character.damage       ?? {};
-  selected.advantages   = character.advantages   ?? {};
+  selected.secondary = character.secondary ?? {};
+  selected.damage = character.damage ?? {};
+  selected.advantages = character.advantages ?? {};
   selected.disadvantages = character.disadvantages ?? {};
-  selected.skills       = character.skills       ?? {};
-  selected.spells       = character.spells       ?? {};
-  selected.armors       = inventory.armors       ?? [];
-  selected.shields      = inventory.shields      ?? [];
+  selected.skills = character.skills ?? {};
+  selected.spells = character.spells ?? {};
+  selected.armors = inventory.armors ?? [];
+  selected.shields = inventory.shields ?? [];
   selected.melee_weapons = inventory.melee_weapons ?? [];
+  selected.ranged_weapons = inventory.ranged_weapons ?? [];
 
   // ── Re-render lists and recalculate ───────────────────────────────────────
   renderLists(selected, data);

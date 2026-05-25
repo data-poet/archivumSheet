@@ -9,16 +9,15 @@ import {
   updateArmorNameOptions,
   updateArmorTierOptions,
 } from "../inventory/armor.js";
-import {
-  loadShields,
-  updateShieldNameOptions,
-  updateShieldTierOptions,
-} from "../inventory/shield.js";
+import { loadShields, updateShieldTierOptions } from "../inventory/shield.js";
 import {
   loadMeleeWeapons,
-  updateMeleeNameOptions,
   updateMeleeTierOptions,
 } from "../inventory/melee.js";
+import {
+  loadRangedWeapons,
+  updateRangedTierOptions,
+} from "../inventory/ranged.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 
 import { handleTraitClick, handleTraitInput } from "./traitEvents.js";
@@ -40,6 +39,12 @@ import {
   handleMeleeChange,
   handleAddMelee,
 } from "./meleeEvents.js";
+import {
+  handleRangedClick,
+  handleRangedInput,
+  handleRangedChange,
+  handleAddRanged,
+} from "./rangedEvents.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BIND ALL UI LISTENERS
@@ -75,6 +80,11 @@ export function bindUI() {
   on("meleeNameSelect", "change", updateMeleeTierOptions);
   on("addMeleeBtn", "click", handleAddMelee);
 
+  // ── Ranged ─────────────────────────────────────────────────────────────────
+  on("loadRangedWeaponsBtn", "click", loadRangedWeapons);
+  on("rangedNameSelect", "change", updateRangedTierOptions);
+  on("addRangedBtn", "click", handleAddRanged);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -108,6 +118,7 @@ export function bindUI() {
     if (handleArmorClick(e)) return;
     if (handleShieldClick(e)) return;
     if (handleMeleeClick(e)) return;
+    if (handleRangedClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -116,6 +127,7 @@ export function bindUI() {
     if (handleArmorInput(e)) return;
     if (handleShieldInput(e)) return;
     if (handleMeleeInput(e)) return;
+    if (handleRangedInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -123,5 +135,6 @@ export function bindUI() {
     if (handleArmorChange(e)) return;
     if (handleShieldChange(e)) return;
     if (handleMeleeChange(e)) return;
+    if (handleRangedChange(e)) return;
   });
 }

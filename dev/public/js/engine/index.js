@@ -54,6 +54,7 @@ export async function runEngine() {
         armor: selected.armors,
         shield: selected.shields,
         melee: selected.melee_weapons,
+        ranged: selected.ranged_weapons,
       },
     });
 

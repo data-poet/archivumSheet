@@ -95,6 +95,14 @@ app.get("/api/melee_weapons", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/ranged_weapons", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_equipment_ranged_weapons.csv"),
+  );
+
+  res.json(data);
+});
+
 /* -----------------------
    CHARACTER BUILDER
 ------------------------ */

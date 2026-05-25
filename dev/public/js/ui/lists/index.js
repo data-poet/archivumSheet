@@ -1,7 +1,13 @@
-import { renderAdvantages, renderDisadvantages, renderSkills, renderSpells } from "./renderTraits.js";
+import {
+  renderAdvantages,
+  renderDisadvantages,
+  renderSkills,
+  renderSpells,
+} from "./renderTraits.js";
 import { renderArmorSlots, renderStoredArmors } from "./renderArmor.js";
 import { renderEquippedShield, renderStoredShields } from "./renderShield.js";
 import { renderEquippedMelee, renderStoredMelee } from "./renderMelee.js";
+import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
 
 /**
  * Re-render all list UI sections.
@@ -21,4 +27,6 @@ export function renderLists(selected, data) {
   renderStoredShields(selected, data);
   renderEquippedMelee(selected, data);
   renderStoredMelee(selected, data);
+  renderEquippedRanged(selected, data);
+  renderStoredRanged(selected, data);
 }

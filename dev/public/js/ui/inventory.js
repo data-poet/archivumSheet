@@ -18,26 +18,30 @@ export function updateInventoryUI(sheet) {
   const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
   const meleeWeight = sheet?.inventory?.melee?.carried_melee_weight || 0;
-  const weight = baseWeight + armorWeight + shieldWeight + meleeWeight;
+  const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
+  const weight =
+    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight;
 
   const armorWeightEl = el("armor_weight");
   const shieldWeightEl = el("shield_weight");
   const meleeWeightEl = el("melee_weight");
+  const rangedWeightEl = el("ranged_weight");
   const totalWeightEl = el("total_weight");
   const encumbranceEl = el("encumbrance");
   const carryLimitsEl = el("carry_limits");
 
-  if (armorWeightEl)  armorWeightEl.textContent  = armorWeight;
+  if (armorWeightEl) armorWeightEl.textContent = armorWeight;
   if (shieldWeightEl) shieldWeightEl.textContent = shieldWeight;
-  if (meleeWeightEl)  meleeWeightEl.textContent  = meleeWeight;
-  if (totalWeightEl)  totalWeightEl.textContent  = weight;
+  if (meleeWeightEl) meleeWeightEl.textContent = meleeWeight;
+  if (rangedWeightEl) rangedWeightEl.textContent = rangedWeight;
+  if (totalWeightEl) totalWeightEl.textContent = weight;
 
   let stateLabel = "None";
-  if (weight >= carry.limits.veryHeavy)    stateLabel = "Overloaded";
-  else if (weight >= carry.limits.heavy)   stateLabel = "Very Heavy";
-  else if (weight >= carry.limits.medium)  stateLabel = "Heavy";
-  else if (weight >= carry.limits.light)   stateLabel = "Medium";
-  else if (weight > carry.limits.none)     stateLabel = "Light";
+  if (weight >= carry.limits.veryHeavy) stateLabel = "Overloaded";
+  else if (weight >= carry.limits.heavy) stateLabel = "Very Heavy";
+  else if (weight >= carry.limits.medium) stateLabel = "Heavy";
+  else if (weight >= carry.limits.light) stateLabel = "Medium";
+  else if (weight > carry.limits.none) stateLabel = "Light";
 
   if (encumbranceEl) {
     encumbranceEl.textContent = `${stateLabel} (${carry.weight_modifier})`;

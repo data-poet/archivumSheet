@@ -33,7 +33,12 @@
     <div class="persistence-toolbar">
       <button id="exportSheetBtn">💾 Export Sheet</button>
       <button id="importSheetBtn">📂 Import Sheet</button>
-      <input id="importFileInput" type="file" accept=".json" style="display:none" />
+      <input
+        id="importFileInput"
+        type="file"
+        accept=".json"
+        style="display: none"
+      />
     </div>
 
     <!-- PRIMARY ATTRIBUTES -->
@@ -332,6 +337,53 @@
       </details>
     </div>
 
+    <!-- RANGED WEAPONS -->
+    <div class="box">
+      <details>
+        <summary>Ranged Weapons</summary>
+
+        <button id="loadRangedWeaponsBtn">Load Ranged Weapons</button>
+
+        <br /><br />
+
+        <!-- ADD RANGED -->
+        <div class="ranged-add">
+          <!-- NAME -->
+          <select id="rangedNameSelect"></select>
+
+          <!-- TIER -->
+          <select id="rangedTierSelect"></select>
+
+          <!-- MATERIAL -->
+          <select id="rangedMaterialSelect"></select>
+
+          <!-- STORAGE -->
+          <select id="rangedStorage">
+            <option value="equipped">Equipped</option>
+            <option value="backpack">Backpack</option>
+            <option value="stash">Stash</option>
+            <option value="camp">Camp</option>
+          </select>
+
+          <button id="addRangedBtn">Add Ranged Weapon</button>
+        </div>
+
+        <!-- EQUIPPED -->
+        <div class="ranged-equipped">
+          <h3>Equipped</h3>
+
+          <div id="rangedSlots"></div>
+        </div>
+
+        <!-- STORAGE -->
+        <div class="ranged-storage">
+          <h3>Stored Ranged Weapons</h3>
+
+          <div id="rangedStorageList"></div>
+        </div>
+      </details>
+    </div>
+
     <!-- INVENTORY -->
     <div class="box">
       <details>
@@ -359,6 +411,11 @@
         <p>
           <strong>Melee Weight:</strong>
           <span id="melee_weight">0</span>
+        </p>
+
+        <p>
+          <strong>Ranged Weight:</strong>
+          <span id="ranged_weight">0</span>
         </p>
 
         <p>

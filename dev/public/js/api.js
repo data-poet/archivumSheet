@@ -56,6 +56,10 @@ export async function fetchMeleeWeapons() {
   return getJSON("/api/melee_weapons");
 }
 
+export async function fetchRangedWeapons() {
+  return getJSON("/api/ranged_weapons");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);
