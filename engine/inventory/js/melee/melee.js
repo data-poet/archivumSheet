@@ -12,7 +12,7 @@ const {
 } = require("./meleeResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SHIELD DB
+// MELEE DB
 // ─────────────────────────────────────────────────────────────────────────────
 
 let _meleeDB = null;
@@ -42,6 +42,8 @@ function getMeleeDB() {
       weapon_type: row.weapon_type,
       weapon_tier: row.weapon_tier,
       weapon_length: row.weapon_length,
+      weapon_damage_type: row.weapon_damage_type,
+      weapon_min_strength: Number(row.weapon_min_strength),
       weapon_bal_modifier: Number(row.weapon_bal_modifier),
       weapon_gdp_modifier: Number(row.weapon_gdp_modifier),
       weapon_weight: Number(row.weapon_weight),
