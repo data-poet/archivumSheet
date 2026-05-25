@@ -62,6 +62,7 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
     armorInventory: inventory.armor || [],
     shieldInventory: inventory.shield || [],
     meleeInventory: inventory.melee || [],
+    rangedInventory: inventory.ranged || [],
   });
 
   /**
