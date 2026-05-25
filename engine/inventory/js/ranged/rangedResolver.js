@@ -184,4 +184,5 @@ module.exports = {
   applyMaterialToRanged,
   resolveRangedWeapons,
   calculateTotalRangedWeight,
+  resolveDistanceFormula,
 };
