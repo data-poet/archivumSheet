@@ -89,7 +89,7 @@ function resolveMeleeWeapons(instance, weapon, material = null) {
     material_type: material?.material_type || null,
     material_tier: material?.material_tier || null,
     material_dr_modifier: Number(material?.material_dr_modifier || 0),
-    material_def_effect: material?.material_def_effect || null,
+    material_atk_effect: material?.material_atk_effect || null,
     material_weight_modifier: Number(material?.material_weight_modifier || 1),
     material_price_modifier: Number(material?.material_price_modifier || 1),
     material_hit_points_modifier: Number(
