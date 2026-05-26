@@ -164,8 +164,6 @@ function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
   if (!table) return 0;
 
   const clamped = Math.max(-4, Math.min(10, relative));
-  console.log(`relative: ${relative}.`);
-  console.log(`table: ${table.attribute}.`);
 
   return table[clamped] ?? 0;
 }
