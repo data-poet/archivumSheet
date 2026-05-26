@@ -41,7 +41,7 @@ function buildSkills(selectedSkills = {}, character = {}) {
 
     const cost = getSkillCost({
       attribute,
-      base_value: attributeBase,
+      base: attributeBase,
       level,
       difficulty: row.skill_difficulty,
     });

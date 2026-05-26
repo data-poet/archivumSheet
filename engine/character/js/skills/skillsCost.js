@@ -157,13 +157,15 @@ function getRelativeLevel(base, level) {
 /**
  * Unified cost function
  */
-function getSkillCost({ attribute = "DX", base = 0, level = 0, difficulty }) {
+function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
   const relative = getRelativeLevel(base, level);
 
   const table = COST_TABLES[attribute]?.[difficulty];
   if (!table) return 0;
 
   const clamped = Math.max(-4, Math.min(10, relative));
+  console.log(`relative: ${relative}.`);
+  console.log(`table: ${table.attribute}.`);
 
   return table[clamped] ?? 0;
 }
