@@ -1,43 +1,291 @@
-/* ===== BASE ===== */
+/* ===== CSS VARIABLES ===== */
+:root {
+  --color-bg: #f4f4f6;
+  --color-surface: #ffffff;
+  --color-border: #d0d0d8;
+  --color-border-strong: #a0a0b0;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b6b80;
+  --color-accent-attr: #2563eb;
+  --color-accent-trait: #16a34a;
+  --color-accent-equip: #b45309;
+  --color-accent-magic: #7c3aed;
+  --color-accent-inv: #475569;
+  --color-row-hover: #f0f4ff;
+  --color-row-alt: #f9f9fb;
+  --color-btn-bg: #e8e8f0;
+  --color-btn-hover: #d4d4e8;
+  --color-remove: #dc2626;
+  --color-remove-hover: #b91c1c;
+  --radius: 6px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 16px;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 h1 {
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin: 0 0 12px;
 }
 
-/* ===== LAYOUT ===== */
+h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin: 12px 0 4px;
+}
+
+h4 {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 8px 0 2px;
+}
+
+/* ===== PERSISTENCE TOOLBAR ===== */
+.persistence-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* ===== BOX / SECTION ===== */
 .box {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  background: #ffffff;
-  border-radius: 6px;
+  margin-bottom: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* ===== COLLAPSIBLE SUMMARY ===== */
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px 14px;
+  user-select: none;
+  background: var(--color-surface);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+
+details summary::-webkit-details-marker { display: none; }
+
+details summary::before {
+  content: "▶";
+  font-size: 10px;
+  color: var(--color-text-muted);
+  transition: transform 0.15s;
+  display: inline-block;
+  width: 12px;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details[open] summary {
+  border-bottom-color: var(--color-border);
+}
+
+/* Section accent colors on summary left border */
+.box--attr   details summary { border-left: 3px solid var(--color-accent-attr); }
+.box--trait  details summary { border-left: 3px solid var(--color-accent-trait); }
+.box--equip  details summary { border-left: 3px solid var(--color-accent-equip); }
+.box--magic  details summary { border-left: 3px solid var(--color-accent-magic); }
+.box--inv    details summary { border-left: 3px solid var(--color-accent-inv); }
+.box--engine details summary { border-left: 3px solid #94a3b8; }
+.box--output details summary { border-left: 3px solid #94a3b8; }
+
+details > *:not(summary) {
+  padding: 12px 14px;
+}
+
+/* ===== CONTROLS ROW (select + button combos) ===== */
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 /* ===== FORM ELEMENTS ===== */
 select,
 button,
-input {
-  margin: 5px 0;
-  padding: 5px;
+input[type="number"],
+input[type="text"] {
   font-family: inherit;
+  font-size: 13px;
+  padding: 4px 7px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--color-text);
 }
 
-/* ===== TABLE ===== */
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--color-accent-attr);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+}
+
+button {
+  background: var(--color-btn-bg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+button:hover { background: var(--color-btn-hover); }
+
+button.btn-remove {
+  background: none;
+  border: none;
+  color: var(--color-remove);
+  padding: 2px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+button.btn-remove:hover {
+  background: #fee2e2;
+  color: var(--color-remove-hover);
+}
+
+/* ===== TABLES ===== */
 table {
   border-collapse: collapse;
   width: 100%;
+  font-size: 13px;
 }
 
-td,
+thead tr {
+  background: #f0f0f5;
+}
+
 th {
   padding: 6px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+td {
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+tbody tr:nth-child(even) { background: var(--color-row-alt); }
+tbody tr:hover { background: var(--color-row-hover); }
+
+/* Numeric / input cells */
+td.col-num { text-align: center; }
+td.col-center { text-align: center; }
+td.col-action { text-align: center; width: 60px; }
+
+/* ===== NUMBER INPUTS INSIDE TABLES ===== */
+table input[type="number"] {
+  width: 60px;
   text-align: center;
+  padding: 3px 4px;
+}
+
+/* Wider selects inside tables */
+table select {
+  max-width: 160px;
+  padding: 3px 5px;
+}
+
+/* ===== EMPTY TABLE STATE ===== */
+.empty-row td {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: 10px;
+}
+
+.empty-storage {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+/* ===== STORAGE SECTION HEADERS ===== */
+.storage-section-header {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 8px 0 4px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+
+/* ===== EQUIPPED SLOT GRID ===== */
+.equipped-slot-grid {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.equipped-slot-label {
+  background: #f0f0f5;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--color-border);
+}
+
+.equipped-slot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+}
+
+/* ===== HP BLOCK (inline) ===== */
+.hp-modifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.hp-modifier input[type="number"] {
+  width: 52px;
 }
 
 /* ===== OUTPUT ===== */
@@ -47,4 +295,7 @@ pre {
   background: #111;
   color: #0f0;
   padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin: 0;
 }

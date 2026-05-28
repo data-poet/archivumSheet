@@ -12,12 +12,12 @@ export function renderEquippedMelee(selected, data) {
   const equippedWeapons = selected.melee_weapons.filter((w) => w.is_equipped);
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
 
-  setHTML(
-    "meleeSlots",
-    equippedWeapons.length === 0
-      ? `<p class="empty-storage">No Equipped Weapons</p>`
-      : equippedWeapons.map((inst) => renderEquippedMeleeSlot(inst, names, data)).join(""),
-  );
+  if (equippedWeapons.length === 0) {
+    setHTML("meleeSlots", `<p class="empty-storage">No equipped weapons</p>`);
+    return;
+  }
+
+  setHTML("meleeSlots", equippedWeapons.map((inst) => renderEquippedMeleeSlot(inst, names, data)).join(""));
 }
 
 function renderEquippedMeleeSlot(inst, names, data) {
@@ -32,38 +32,35 @@ function renderEquippedMeleeSlot(inst, names, data) {
   const instanceId = inst._instanceId;
 
   return `
-    <div class="melee-slot">
-      <select class="equipped-melee-name" data-instance-id="${instanceId}">
-        ${names
-          .map(
-            (name) =>
-              `<option value="${name}" ${equippedWeapon.weapon_name === name ? "selected" : ""}>${name}</option>`,
-          )
-          .join("")}
-      </select>
+    <div class="equipped-slot-grid">
+      <div class="equipped-slot-label">Melee</div>
+      <div class="equipped-slot-controls">
+        <select class="equipped-melee-name" data-instance-id="${instanceId}">
+          ${names.map((name) =>
+            `<option value="${name}" ${equippedWeapon.weapon_name === name ? "selected" : ""}>${name}</option>`
+          ).join("")}
+        </select>
 
-      <select class="equipped-melee-tier" data-instance-id="${instanceId}">
-        ${tiers
-          .map(
-            (tier) =>
-              `<option value="${tier}" ${equippedWeapon.weapon_tier === tier ? "selected" : ""}>${tier}</option>`,
-          )
-          .join("")}
-      </select>
+        <select class="equipped-melee-tier" data-instance-id="${instanceId}">
+          ${tiers.map((tier) =>
+            `<option value="${tier}" ${equippedWeapon.weapon_tier === tier ? "selected" : ""}>${tier}</option>`
+          ).join("")}
+        </select>
 
-      <select class="equipped-melee-material" data-instance-id="${instanceId}">
-        ${materialOptions(data.materials, inst.material_id)}
-      </select>
+        <select class="equipped-melee-material" data-instance-id="${instanceId}">
+          ${materialOptions(data.materials, inst.material_id)}
+        </select>
 
-      ${hpModifierBlock({
-        baseHp: equippedWeapon.weapon_hit_points ?? 0,
-        material,
-        hpModifier: inst.hit_points_modifier,
-        cssClass: "equipped-melee-hp",
-        dataAttrs: `data-instance-id="${instanceId}"`,
-      })}
+        ${hpModifierBlock({
+          baseHp: equippedWeapon.weapon_hit_points ?? 0,
+          material,
+          hpModifier: inst.hit_points_modifier,
+          cssClass: "equipped-melee-hp",
+          dataAttrs: `data-instance-id="${instanceId}"`,
+        })}
 
-      ${equippedMoveSelect("equipped-melee-move", `data-instance-id="${instanceId}"`)}
+        ${equippedMoveSelect("equipped-melee-move", `data-instance-id="${instanceId}"`)}
+      </div>
     </div>
   `;
 }
@@ -77,56 +74,58 @@ export function renderStoredMelee(selected, data) {
   const sections = ["backpack", "stash", "camp"]
     .map((loc) => renderStorageSection(loc, stored, data))
     .join("");
-
   setHTML("meleeStorageList", sections);
 }
 
 function renderStorageSection(location, stored, data) {
   const weapons = stored.filter((w) => w.storedAt === location);
 
+  let bodyRows = "";
+  if (weapons.length === 0) {
+    bodyRows = `<tr class="empty-row"><td colspan="6">Empty</td></tr>`;
+  } else {
+    bodyRows = weapons.map((inst) => {
+      const weaponData = data.melee_weapons.find((w) => w.weapon_id === inst.weapon_id);
+      if (!weaponData) return "";
+      const material = resolveMaterial(inst, data.materials);
+      const instanceId = inst._instanceId;
+      return `
+        <tr>
+          <td>${weaponData.weapon_name}</td>
+          <td>${weaponData.weapon_tier}</td>
+          <td>${material?.material_name ?? "—"}</td>
+          <td class="col-num">
+            ${hpModifierBlock({
+              baseHp: weaponData.weapon_hit_points ?? 0,
+              material,
+              hpModifier: inst.hit_points_modifier,
+              cssClass: "stored-melee-hp",
+              dataAttrs: `data-instance-id="${instanceId}"`,
+            })}
+          </td>
+          <td>
+            <select class="melee-storage-select" data-instance-id="${instanceId}">
+              ${storageOptions(inst.storedAt)}
+            </select>
+          </td>
+          <td class="col-action">
+            <button class="equip-stored-melee" data-instance-id="${instanceId}">Equip</button>
+            <button class="btn-remove remove-melee" data-instance-id="${instanceId}">✕</button>
+          </td>
+        </tr>`;
+    }).join("");
+  }
+
   return `
-    <div class="melee-storage-section">
-      <h3>${STORAGE_LABELS[location]}</h3>
-      ${weapons.length === 0 ? `<p class="empty-storage">Empty</p>` : renderWeaponList(weapons, data)}
-    </div>
-  `;
-}
-
-function renderWeaponList(weapons, data) {
-  return `
-    <ul>
-      ${weapons.map((inst) => renderStoredMeleeItem(inst, data)).join("")}
-    </ul>
-  `;
-}
-
-function renderStoredMeleeItem(inst, data) {
-  const weaponData = data.melee_weapons.find((w) => w.weapon_id === inst.weapon_id);
-  if (!weaponData) return "";
-
-  const material = resolveMaterial(inst, data.materials);
-  const instanceId = inst._instanceId;
-
-  return `
-    <li>
-      <strong>
-        ${weaponData.weapon_name} | ${weaponData.weapon_tier} | ${material?.material_name ?? "No Material"}
-      </strong>
-
-      ${hpModifierBlock({
-        baseHp: weaponData.weapon_hit_points ?? 0,
-        material,
-        hpModifier: inst.hit_points_modifier,
-        cssClass: "stored-melee-hp",
-        dataAttrs: `data-instance-id="${instanceId}"`,
-      })}
-
-      <select class="melee-storage-select" data-instance-id="${instanceId}">
-        ${storageOptions(inst.storedAt)}
-      </select>
-
-      <button class="equip-stored-melee" data-instance-id="${instanceId}">Equip</button>
-      <button class="remove-melee" data-instance-id="${instanceId}">❌</button>
-    </li>
+    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>Tier</th><th>Material</th>
+          <th>HP</th><th>Storage</th><th class="col-action"></th>
+        </tr>
+      </thead>
+      <tbody>${bodyRows}</tbody>
+    </table>
   `;
 }

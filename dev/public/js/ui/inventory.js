@@ -15,47 +15,50 @@ export function updateInventoryUI(sheet) {
   const weightEl = el("weight");
   const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
 
-  const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
+  const armorWeight  = sheet?.inventory?.armor?.carried_armor_weight   || 0;
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
-  const meleeWeight = sheet?.inventory?.melee?.carried_melee_weight || 0;
+  const meleeWeight  = sheet?.inventory?.melee?.carried_melee_weight   || 0;
   const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
-  const weight =
-    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight;
+  const weight = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight;
 
-  const armorWeightEl = el("armor_weight");
-  const shieldWeightEl = el("shield_weight");
-  const meleeWeightEl = el("melee_weight");
-  const rangedWeightEl = el("ranged_weight");
-  const totalWeightEl = el("total_weight");
-  const encumbranceEl = el("encumbrance");
-  const carryLimitsEl = el("carry_limits");
+  // Update weight detail spans
+  const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
+  set("armor_weight",  armorWeight);
+  set("shield_weight", shieldWeight);
+  set("melee_weight",  meleeWeight);
+  set("ranged_weight", rangedWeight);
+  set("total_weight",  weight);
 
-  if (armorWeightEl) armorWeightEl.textContent = armorWeight;
-  if (shieldWeightEl) shieldWeightEl.textContent = shieldWeight;
-  if (meleeWeightEl) meleeWeightEl.textContent = meleeWeight;
-  if (rangedWeightEl) rangedWeightEl.textContent = rangedWeight;
-  if (totalWeightEl) totalWeightEl.textContent = weight;
-
+  // Encumbrance state
   let stateLabel = "None";
-  if (weight >= carry.limits.veryHeavy) stateLabel = "Overloaded";
-  else if (weight >= carry.limits.heavy) stateLabel = "Very Heavy";
-  else if (weight >= carry.limits.medium) stateLabel = "Heavy";
-  else if (weight >= carry.limits.light) stateLabel = "Medium";
-  else if (weight > carry.limits.none) stateLabel = "Light";
+  if      (weight >= carry.limits.veryHeavy) stateLabel = "Overloaded";
+  else if (weight >= carry.limits.heavy)     stateLabel = "Very Heavy";
+  else if (weight >= carry.limits.medium)    stateLabel = "Heavy";
+  else if (weight >= carry.limits.light)     stateLabel = "Medium";
+  else if (weight > carry.limits.none)       stateLabel = "Light";
 
-  if (encumbranceEl) {
-    encumbranceEl.textContent = `${stateLabel} (${carry.weight_modifier})`;
-  }
+  set("encumbrance", `${stateLabel} (×${carry.weight_modifier})`);
 
-  const limitsText = `
-    None: ${carry.limits.none} |
-    Light: ${carry.limits.light} |
-    Medium: ${carry.limits.medium} |
-    Heavy: ${carry.limits.heavy} |
-    Very Heavy: ${carry.limits.veryHeavy}
-  `;
-
-  if (carryLimitsEl) {
-    carryLimitsEl.textContent = limitsText.replace(/\s+/g, " ").trim();
+  // Carry limits table
+  const limitsEl = el("carry_limits");
+  if (limitsEl) {
+    limitsEl.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>None</th><th>Light</th><th>Medium</th><th>Heavy</th><th>Very Heavy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-num">${carry.limits.none}</td>
+            <td class="col-num">${carry.limits.light}</td>
+            <td class="col-num">${carry.limits.medium}</td>
+            <td class="col-num">${carry.limits.heavy}</td>
+            <td class="col-num">${carry.limits.veryHeavy}</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
   }
 }

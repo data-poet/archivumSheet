@@ -1,9 +1,25 @@
 import { on } from "../shared/dom.js";
 import { runEngine } from "../engine/index.js";
-import { loadAdvantages, addAdv } from "../traits/advantages.js";
-import { loadDisadvantages, addDis } from "../traits/disadvantages.js";
-import { loadSkills, addSkill } from "../traits/skills.js";
-import { loadSpells, addSpell } from "../traits/spells.js";
+import {
+  loadAdvantages,
+  addAdv,
+  filterAdvByType,
+} from "../traits/advantages.js";
+import {
+  loadDisadvantages,
+  addDis,
+  filterDisByType,
+} from "../traits/disadvantages.js";
+import {
+  loadSkills,
+  addSkill,
+  filterSkillsByCategory,
+} from "../traits/skills.js";
+import {
+  loadSpells,
+  addSpell,
+  filterSpellsBySchool,
+} from "../traits/spells.js";
 import {
   loadArmors,
   updateArmorNameOptions,
@@ -53,15 +69,21 @@ import {
 export function bindUI() {
   // ── Traits ────────────────────────────────────────────────────────────────
   on("loadAdvantagesBtn", "click", loadAdvantages);
+  on("advTypeSelect", "change", filterAdvByType);
+  on("advSelect", "change", () => {}); // keeps select reactive
   on("addAdvBtn", "click", addAdv);
 
   on("loadDisadvantagesBtn", "click", loadDisadvantages);
+  on("disTypeSelect", "change", filterDisByType);
+  on("disSelect", "change", () => {}); // keeps select reactive
   on("addDisBtn", "click", addDis);
 
   on("loadSkillsBtn", "click", loadSkills);
+  on("skillCategorySelect", "change", filterSkillsByCategory);
   on("addSkillBtn", "click", addSkill);
 
   on("loadSpellsBtn", "click", loadSpells);
+  on("spellSchoolSelect", "change", filterSpellsBySchool);
   on("addSpellBtn", "click", addSpell);
 
   // ── Armor ─────────────────────────────────────────────────────────────────

@@ -34,11 +34,18 @@ export function handleTraitClick(e) {
 export function handleTraitInput(e) {
   if (e.target.classList.contains("skill-input")) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
+    updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
     return true;
   }
 
   if (e.target.classList.contains("spell-input")) {
     updateSpell(e.target.dataset.name, e.target.dataset.field, e.target.value);
+    updateFinalCell(
+      e.target,
+      "spell-input",
+      e.target.dataset.name,
+      "data-name",
+    );
     return true;
   }
 
@@ -78,4 +85,38 @@ export function handleTraitInput(e) {
   }
 
   return false;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * After a base/modifier input changes, find the other input in the same row
+ * and write base + modifier into the Final <td> (last non-action cell).
+ *
+ * @param {HTMLElement} changedInput  - the input that fired
+ * @param {string}      cssClass      - "skill-input" | "spell-input"
+ * @param {string}      key           - the data-id or data-name value
+ * @param {string}      attr          - "data-id" | "data-name"
+ */
+function updateFinalCell(changedInput, cssClass, key, attr) {
+  const row = changedInput.closest("tr");
+  if (!row) return;
+
+  // Collect both inputs in this row by class + matching key attribute
+  const inputs = row.querySelectorAll(`input.${cssClass}[${attr}="${key}"]`);
+  let base = 0;
+  let mod = 0;
+
+  inputs.forEach((inp) => {
+    const val = Number(inp.value) || 0;
+    if (inp.dataset.field === "base" || inp.dataset.field === "base_value") {
+      base = val;
+    } else if (inp.dataset.field === "modifier") {
+      mod = val;
+    }
+  });
+
+  // The Final cell is the <td> holding <strong> that comes after the modifier td
+  const finalTd = row.querySelector("td strong");
+  if (finalTd) finalTd.textContent = base + mod;
 }

@@ -6,19 +6,47 @@ import { triggerAutoRun } from "../engine/autorun.js";
 const data = state.data;
 const selected = state.selected;
 
+// ─── Load ─────────────────────────────────────────────────────────────────────
+
 export async function loadSkills() {
   data.skills = await fetchSkills();
 
-  const sel = document.getElementById("skillSelect");
-  sel.innerHTML = "";
+  const types = [...new Set(data.skills.map((s) => s.skill_category))].sort();
+  const typeEl = document.getElementById("skillCategorySelect");
+  typeEl.innerHTML = `<option value="">— Category —</option>`;
+  types.forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    typeEl.appendChild(opt);
+  });
 
-  data.skills.forEach((s) => {
+  populateSkillSelect("");
+}
+
+// ─── Filter helpers ───────────────────────────────────────────────────────────
+
+function populateSkillSelect(category) {
+  const sel = document.getElementById("skillSelect");
+  const filtered = category
+    ? data.skills.filter((s) => s.skill_category === category)
+    : data.skills;
+
+  sel.innerHTML = "";
+  filtered.forEach((s) => {
     const opt = document.createElement("option");
     opt.value = s.skill_id;
-    opt.textContent = `${s.skill_name} (${s.skill_difficulty})`;
+    opt.textContent = `${s.skill_box_name}`;
     sel.appendChild(opt);
   });
 }
+
+export function filterSkillsByCategory() {
+  const category = document.getElementById("skillCategorySelect").value;
+  populateSkillSelect(category);
+}
+
+// ─── Add / Remove / Update ────────────────────────────────────────────────────
 
 export function addSkill() {
   const sel = document.getElementById("skillSelect");
@@ -41,7 +69,6 @@ export function removeSkill(id) {
 
 export function updateSkill(id, field, value) {
   if (!selected.skills[id]) return;
-
   selected.skills[id][field] = Number(value);
   triggerAutoRun();
 }

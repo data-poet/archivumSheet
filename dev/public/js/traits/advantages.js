@@ -6,19 +6,51 @@ import { triggerAutoRun } from "../engine/autorun.js";
 const data = state.data;
 const selected = state.selected;
 
+// ─── Load ─────────────────────────────────────────────────────────────────────
+
 export async function loadAdvantages() {
   data.advantages = await fetchAdvantages();
 
-  const sel = document.getElementById("advSelect");
-  sel.innerHTML = "";
+  // Populate type filter with sorted unique types
+  const types = [
+    ...new Set(data.advantages.map((a) => a.advantage_type)),
+  ].sort();
+  const typeEl = document.getElementById("advTypeSelect");
+  typeEl.innerHTML = `<option value="">— Type —</option>`;
+  types.forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    typeEl.appendChild(opt);
+  });
 
-  data.advantages.forEach((a) => {
+  // Populate name select with all entries initially
+  populateAdvSelect("");
+}
+
+// ─── Filter helpers ───────────────────────────────────────────────────────────
+
+function populateAdvSelect(type) {
+  const sel = document.getElementById("advSelect");
+  const filtered = type
+    ? data.advantages.filter((a) => a.advantage_type === type)
+    : data.advantages;
+
+  sel.innerHTML = "";
+  filtered.forEach((a) => {
     const opt = document.createElement("option");
     opt.value = a.advantage_id;
-    opt.textContent = `${a.advantage_box_name} (${a.advantage_cost})`;
+    opt.textContent = a.advantage_box_name;
     sel.appendChild(opt);
   });
 }
+
+export function filterAdvByType() {
+  const type = document.getElementById("advTypeSelect").value;
+  populateAdvSelect(type);
+}
+
+// ─── Add / Remove ─────────────────────────────────────────────────────────────
 
 export function addAdv() {
   const sel = document.getElementById("advSelect");

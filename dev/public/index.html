@@ -3,27 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Character Builder Dev Tool</title>
-
-    <!-- CSS -->
     <link rel="stylesheet" href="/css/style.css" />
-
-    <style>
-      details summary {
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 20px;
-        padding: 8px 0;
-        user-select: none;
-      }
-
-      details {
-        margin-bottom: 10px;
-      }
-
-      details[open] summary {
-        margin-bottom: 12px;
-      }
-    </style>
   </head>
 
   <body>
@@ -42,413 +22,338 @@
     </div>
 
     <!-- PRIMARY ATTRIBUTES -->
-    <div class="box">
+    <div class="box box--attr">
       <details open>
         <summary>Primary Attributes</summary>
-
         <table>
-          <tr>
-            <th>Attribute</th>
-            <th>Base</th>
-            <th>Modifier</th>
-            <th>Actual Value</th>
-          </tr>
-
-          <tr>
-            <td>ST</td>
-            <td>
-              <input id="ST_base" type="number" min="1" max="20" value="10" />
-            </td>
-            <td><input id="ST_mod" type="number" value="0" /></td>
-            <td id="ST_actual">10</td>
-          </tr>
-
-          <tr>
-            <td>DX</td>
-            <td>
-              <input id="DX_base" type="number" min="1" max="20" value="10" />
-            </td>
-            <td><input id="DX_mod" type="number" value="0" /></td>
-            <td id="DX_actual">10</td>
-          </tr>
-
-          <tr>
-            <td>IQ</td>
-            <td>
-              <input id="IQ_base" type="number" min="1" max="20" value="10" />
-            </td>
-            <td><input id="IQ_mod" type="number" value="0" /></td>
-            <td id="IQ_actual">10</td>
-          </tr>
-
-          <tr>
-            <td>HT</td>
-            <td>
-              <input id="HT_base" type="number" min="1" max="20" value="10" />
-            </td>
-            <td><input id="HT_mod" type="number" value="0" /></td>
-            <td id="HT_actual">10</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th class="col-num">Base</th>
+              <th class="col-num">Modifier</th>
+              <th class="col-num">Actual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ST</strong></td>
+              <td class="col-num">
+                <input id="ST_base" type="number" min="1" max="20" value="10" />
+              </td>
+              <td class="col-num">
+                <input id="ST_mod" type="number" value="0" />
+              </td>
+              <td class="col-num" id="ST_actual">10</td>
+            </tr>
+            <tr>
+              <td><strong>DX</strong></td>
+              <td class="col-num">
+                <input id="DX_base" type="number" min="1" max="20" value="10" />
+              </td>
+              <td class="col-num">
+                <input id="DX_mod" type="number" value="0" />
+              </td>
+              <td class="col-num" id="DX_actual">10</td>
+            </tr>
+            <tr>
+              <td><strong>IQ</strong></td>
+              <td class="col-num">
+                <input id="IQ_base" type="number" min="1" max="20" value="10" />
+              </td>
+              <td class="col-num">
+                <input id="IQ_mod" type="number" value="0" />
+              </td>
+              <td class="col-num" id="IQ_actual">10</td>
+            </tr>
+            <tr>
+              <td><strong>HT</strong></td>
+              <td class="col-num">
+                <input id="HT_base" type="number" min="1" max="20" value="10" />
+              </td>
+              <td class="col-num">
+                <input id="HT_mod" type="number" value="0" />
+              </td>
+              <td class="col-num" id="HT_actual">10</td>
+            </tr>
+          </tbody>
         </table>
       </details>
     </div>
 
     <!-- SECONDARY ATTRIBUTES -->
-    <div class="box">
+    <div class="box box--attr">
       <details>
         <summary>Secondary Attributes</summary>
-
         <table>
           <thead>
             <tr>
               <th>Attribute</th>
-              <th>Base</th>
-              <th>Bought</th>
-              <th>Modifier</th>
-              <th>Final</th>
+              <th class="col-num">Base</th>
+              <th class="col-num">Bought</th>
+              <th class="col-num">Modifier</th>
+              <th class="col-num">Final</th>
             </tr>
           </thead>
-
           <tbody id="secondaryTable"></tbody>
         </table>
       </details>
     </div>
 
     <!-- BASE DAMAGE -->
-    <div class="box">
+    <div class="box box--attr">
       <details>
         <summary>Base Damage</summary>
-
         <table>
           <thead>
             <tr>
               <th>Type</th>
-              <th>Dice</th>
-              <th>Base Mod</th>
-              <th>Modifier</th>
-              <th>Final</th>
+              <th class="col-num">Dice</th>
+              <th class="col-num">Base Mod</th>
+              <th class="col-num">Modifier</th>
+              <th class="col-num">Final</th>
             </tr>
           </thead>
-
           <tbody id="damageTable"></tbody>
         </table>
       </details>
     </div>
 
     <!-- ADVANTAGES -->
-    <div class="box">
+    <div class="box box--trait">
       <details>
         <summary>Advantages</summary>
-
-        <button id="loadAdvantagesBtn">Load Advantages</button>
-
-        <br /><br />
-
-        <select id="advSelect"></select>
-        <button id="addAdvBtn">Add Advantage</button>
-
-        <ul id="advList"></ul>
+        <div class="controls-row">
+          <button id="loadAdvantagesBtn">Load Advantages</button>
+          <select id="advTypeSelect">
+            <option value="">— Type —</option>
+          </select>
+          <select id="advSelect"></select>
+          <button id="addAdvBtn">Add</button>
+        </div>
+        <div id="advList"></div>
       </details>
     </div>
 
     <!-- DISADVANTAGES -->
-    <div class="box">
+    <div class="box box--trait">
       <details>
         <summary>Disadvantages</summary>
-
-        <button id="loadDisadvantagesBtn">Load Disadvantages</button>
-
-        <br /><br />
-
-        <select id="disSelect"></select>
-        <button id="addDisBtn">Add Disadvantage</button>
-
-        <ul id="disList"></ul>
+        <div class="controls-row">
+          <button id="loadDisadvantagesBtn">Load Disadvantages</button>
+          <select id="disTypeSelect">
+            <option value="">— Type —</option>
+          </select>
+          <select id="disSelect"></select>
+          <button id="addDisBtn">Add</button>
+        </div>
+        <div id="disList"></div>
       </details>
     </div>
 
     <!-- SKILLS -->
-    <div class="box">
+    <div class="box box--trait">
       <details>
         <summary>Skills</summary>
-
-        <button id="loadSkillsBtn">Load Skills</button>
-
-        <br /><br />
-
-        <select id="skillSelect"></select>
-        <button id="addSkillBtn">Add Skill</button>
-
-        <ul id="skillList"></ul>
+        <div class="controls-row">
+          <button id="loadSkillsBtn">Load Skills</button>
+          <select id="skillCategorySelect">
+            <option value="">— Category —</option>
+          </select>
+          <select id="skillSelect"></select>
+          <button id="addSkillBtn">Add</button>
+        </div>
+        <div id="skillList"></div>
       </details>
     </div>
 
     <!-- SPELLS -->
-    <div class="box">
+    <div class="box box--magic">
       <details>
         <summary>Spells</summary>
-
-        <button id="loadSpellsBtn">Load Spells</button>
-
-        <br /><br />
-
-        <select id="spellSelect"></select>
-        <button id="addSpellBtn">Add Spell</button>
-
-        <ul id="spellList"></ul>
+        <div class="controls-row">
+          <button id="loadSpellsBtn">Load Spells</button>
+          <select id="spellSchoolSelect">
+            <option value="">— School —</option>
+          </select>
+          <select id="spellSelect"></select>
+          <button id="addSpellBtn">Add</button>
+        </div>
+        <div id="spellList"></div>
       </details>
     </div>
 
     <!-- ARMORS -->
-    <div class="box">
+    <div class="box box--equip">
       <details>
         <summary>Armors</summary>
 
-        <button id="loadArmorsBtn">Load Armors</button>
-
-        <br /><br />
-
-        <!-- ADD ARMOR -->
-        <div class="armor-add">
-          <!-- SLOT -->
+        <div class="controls-row">
+          <button id="loadArmorsBtn">Load Armors</button>
           <select id="armorSlotSelect"></select>
-
-          <!-- NAME -->
           <select id="armorNameSelect"></select>
-
-          <!-- TIER -->
           <select id="armorTierSelect"></select>
-
-          <!-- MATERIAL -->
           <select id="armorMaterialSelect"></select>
-
-          <!-- STORAGE -->
           <select id="armorStorage">
             <option value="backpack">Backpack</option>
             <option value="stash">Stash</option>
             <option value="camp">Camp</option>
           </select>
-
           <button id="addArmorBtn">Add Armor</button>
         </div>
 
-        <!-- EQUIPPED -->
-        <div class="armor-equipped">
-          <h3>Equipped</h3>
+        <h3>Equipped</h3>
+        <div id="armorSlots"></div>
 
-          <div id="armorSlots"></div>
-        </div>
-
-        <!-- STORAGE -->
-        <div class="armor-storage">
-          <h3>Stored Armors</h3>
-
-          <ul id="armorStorageList"></ul>
-        </div>
+        <h3>Stored</h3>
+        <div id="armorStorageList"></div>
       </details>
     </div>
 
     <!-- SHIELDS -->
-    <div class="box">
+    <div class="box box--equip">
       <details>
         <summary>Shields</summary>
-        <button id="loadShieldsBtn">Load Shields</button>
-        <br /><br />
 
-        <!-- ADD SHIELD -->
-        <div class="shield-add">
-          <!-- NAME -->
+        <div class="controls-row">
+          <button id="loadShieldsBtn">Load Shields</button>
           <select id="shieldNameSelect"></select>
-
-          <!-- TIER -->
           <select id="shieldTierSelect"></select>
-
-          <!-- MATERIAL -->
           <select id="shieldMaterialSelect"></select>
-
-          <!-- STORAGE -->
           <select id="shieldStorage">
             <option value="backpack">Backpack</option>
             <option value="stash">Stash</option>
             <option value="camp">Camp</option>
           </select>
-
           <button id="addShieldBtn">Add Shield</button>
         </div>
 
-        <!-- EQUIPPED -->
-        <div class="shield-equipped">
-          <h3>Equipped</h3>
-          <div id="shieldSlot"></div>
-        </div>
+        <h3>Equipped</h3>
+        <div id="shieldSlot"></div>
 
-        <!-- STORAGE -->
-        <div class="shield-storage">
-          <h3>Stored Shields</h3>
-          <div id="shieldStorageList"></div>
-        </div>
+        <h3>Stored</h3>
+        <div id="shieldStorageList"></div>
       </details>
     </div>
 
     <!-- MELEE WEAPONS -->
-    <div class="box">
+    <div class="box box--equip">
       <details>
         <summary>Melee Weapons</summary>
 
-        <button id="loadMeleeWeaponsBtn">Load Melee Weapons</button>
-
-        <br /><br />
-
-        <!-- ADD MELEE -->
-        <div class="melee-add">
-          <!-- NAME -->
+        <div class="controls-row">
+          <button id="loadMeleeWeaponsBtn">Load Melee Weapons</button>
           <select id="meleeNameSelect"></select>
-
-          <!-- TIER -->
           <select id="meleeTierSelect"></select>
-
-          <!-- MATERIAL -->
           <select id="meleeMaterialSelect"></select>
-
-          <!-- STORAGE -->
           <select id="meleeStorage">
             <option value="equipped">Equipped</option>
             <option value="backpack">Backpack</option>
             <option value="stash">Stash</option>
             <option value="camp">Camp</option>
           </select>
-
           <button id="addMeleeBtn">Add Melee Weapon</button>
         </div>
 
-        <!-- EQUIPPED -->
-        <div class="melee-equipped">
-          <h3>Equipped</h3>
+        <h3>Equipped</h3>
+        <div id="meleeSlots"></div>
 
-          <div id="meleeSlots"></div>
-        </div>
-
-        <!-- STORAGE -->
-        <div class="melee-storage">
-          <h3>Stored Melee Weapons</h3>
-
-          <div id="meleeStorageList"></div>
-        </div>
+        <h3>Stored</h3>
+        <div id="meleeStorageList"></div>
       </details>
     </div>
 
     <!-- RANGED WEAPONS -->
-    <div class="box">
+    <div class="box box--equip">
       <details>
         <summary>Ranged Weapons</summary>
 
-        <button id="loadRangedWeaponsBtn">Load Ranged Weapons</button>
-
-        <br /><br />
-
-        <!-- ADD RANGED -->
-        <div class="ranged-add">
-          <!-- NAME -->
+        <div class="controls-row">
+          <button id="loadRangedWeaponsBtn">Load Ranged Weapons</button>
           <select id="rangedNameSelect"></select>
-
-          <!-- TIER -->
           <select id="rangedTierSelect"></select>
-
-          <!-- MATERIAL -->
           <select id="rangedMaterialSelect"></select>
-
-          <!-- STORAGE -->
           <select id="rangedStorage">
             <option value="equipped">Equipped</option>
             <option value="backpack">Backpack</option>
             <option value="stash">Stash</option>
             <option value="camp">Camp</option>
           </select>
-
           <button id="addRangedBtn">Add Ranged Weapon</button>
         </div>
 
-        <!-- EQUIPPED -->
-        <div class="ranged-equipped">
-          <h3>Equipped</h3>
+        <h3>Equipped</h3>
+        <div id="rangedSlots"></div>
 
-          <div id="rangedSlots"></div>
-        </div>
-
-        <!-- STORAGE -->
-        <div class="ranged-storage">
-          <h3>Stored Ranged Weapons</h3>
-
-          <div id="rangedStorageList"></div>
-        </div>
+        <h3>Stored</h3>
+        <div id="rangedStorageList"></div>
       </details>
     </div>
 
     <!-- INVENTORY -->
-    <div class="box">
+    <div class="box box--inv">
       <details>
         <summary>Inventory</summary>
 
+        <div class="controls-row">
+          <label><strong>Base Weight:</strong></label>
+          <input id="weight" type="number" value="0" style="width: 80px" />
+        </div>
+
+        <table style="width: auto; margin-bottom: 10px">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th class="col-num">Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Armor</td>
+              <td class="col-num" id="armor_weight">0</td>
+            </tr>
+            <tr>
+              <td>Shield</td>
+              <td class="col-num" id="shield_weight">0</td>
+            </tr>
+            <tr>
+              <td>Melee</td>
+              <td class="col-num" id="melee_weight">0</td>
+            </tr>
+            <tr>
+              <td>Ranged</td>
+              <td class="col-num" id="ranged_weight">0</td>
+            </tr>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td class="col-num"><strong id="total_weight">0</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
         <p>
-          <strong>Carry Limits:</strong><br />
-          <span id="carry_limits">-</span>
+          <strong>Encumbrance:</strong> <span id="encumbrance">None (×0)</span>
         </p>
 
-        <label>Base Weight:</label>
-
-        <input id="weight" type="number" value="0" />
-
-        <p>
-          <strong>Shield Weight:</strong>
-          <span id="shield_weight">0</span>
-        </p>
-
-        <p>
-          <strong>Armor Weight:</strong>
-          <span id="armor_weight">0</span>
-        </p>
-
-        <p>
-          <strong>Melee Weight:</strong>
-          <span id="melee_weight">0</span>
-        </p>
-
-        <p>
-          <strong>Ranged Weight:</strong>
-          <span id="ranged_weight">0</span>
-        </p>
-
-        <p>
-          <strong>Total Weight:</strong>
-          <span id="total_weight">0</span>
-        </p>
-
-        <p>
-          <strong>Encumbrance:</strong>
-          <span id="encumbrance">None (0)</span>
-        </p>
+        <div id="carry_limits"></div>
       </details>
     </div>
 
     <!-- RUN ENGINE -->
-    <div class="box">
+    <div class="box box--engine">
       <details open>
         <summary>Engine</summary>
-
-        <button id="runEngineBtn">RUN SHEET BUILDER</button>
+        <button id="runEngineBtn">▶ Run Sheet Builder</button>
       </details>
     </div>
 
     <!-- OUTPUT -->
-    <div class="box">
+    <div class="box box--output">
       <details open>
         <summary>Output</summary>
-
         <pre id="out"></pre>
       </details>
     </div>
 
-    <!-- JS MODULE -->
     <script type="module" src="/js/main.js"></script>
   </body>
 </html>
