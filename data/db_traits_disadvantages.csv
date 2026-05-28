@@ -458,7 +458,7 @@ sua arma estiver descarregada, ele atacará com as próprias mãos ou com outra 
 - O “furioso” faz um teste de Vontade para cada adversário derrotado, e uma jogada extra ao vencer o último oponente. Se falhar, significa que passará a atacar os amigos...
 - Ao sair do estado de Fúria, todos os ferimentos sofridos irão afetá-lo imediatamente.
 - Faça um teste de HT, para saber se ele continuará vivo e consciente.",Módulo Básico,31
-DIS-054,MAU HUMOR | -10,MAU HUMOR,-10,,"
+DIS-054,MAU HUMOR | -10,MAU HUMOR,-10,Mental,"
 - O personagem não tem um controle total de suas emoções.
 - Ele deverá fazer um teste de Vontade em qualquer situação de tensão.
 - Uma falha significa que ele perdeu a paciência e deve insultar, atacar ou agir de alguma maneira contra a causa de sua explosão.",Módulo Básico,31
