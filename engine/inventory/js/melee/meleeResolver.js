@@ -108,6 +108,7 @@ function resolveMeleeWeapons(instance, weapon, material = null) {
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,
+    _instanceId: instance._instanceId ?? null,
   };
 }
 

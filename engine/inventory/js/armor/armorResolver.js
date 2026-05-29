@@ -94,6 +94,7 @@ function resolveArmorPiece(instance, armor, material = null) {
     is_equipped: instance.is_equipped,
 
     storedAt: instance.storedAt,
+    _instanceId: instance._instanceId ?? null,
   };
 }
 

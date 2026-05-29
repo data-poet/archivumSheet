@@ -140,6 +140,7 @@ function resolveRangedWeapons(instance, weapon, material = null, ST = 0) {
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,
+    _instanceId: instance._instanceId ?? null,
   };
 }
 
