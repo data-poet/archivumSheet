@@ -1,51 +1,10 @@
 import { setHTML } from "../../shared/dom.js";
+import { formatRichText, detailRow } from "./renderUtils.js";
 
 // ===== HELPERS =====
 
 function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
-}
-
-function formatRichText(raw) {
-  if (!raw || raw.trim() === "") return "—";
-
-  const lines = raw.split("\n").map((l) => l.trim());
-  const bulletLines = lines.filter((l) => l.startsWith("-"));
-
-  if (bulletLines.length === 0)
-    return `<p class="scaling-note">${raw.trim()}</p>`;
-
-  const items = bulletLines
-    .map((l) => `<li>${l.slice(1).trim()}</li>`)
-    .join("");
-  const note = lines
-    .filter((l) => l.length > 0 && !l.startsWith("-"))
-    .join(" ");
-
-  return `<ul class="scaling-list">${items}</ul>${note ? `<p class="scaling-note">${note}</p>` : ""}`;
-}
-
-function detailRow(colspan, fields) {
-  const content = fields
-    .filter(({ value }) => value && value !== "—")
-    .map(({ label, value, rich }) =>
-      rich
-        ? `<div class="spell-detail-block"><em>${label}:</em>${value}</div>`
-        : `<span class="spell-detail"><em>${label}:</em> ${value}</span>`,
-    )
-    .join("");
-
-  if (!content) return "";
-
-  return `
-    <tr class="detail-row">
-      <td colspan="${colspan}">
-        <details>
-          <summary>Details</summary>
-          <div class="spell-detail-grid">${content}</div>
-        </details>
-      </td>
-    </tr>`;
 }
 
 // ===== ADVANTAGES =====

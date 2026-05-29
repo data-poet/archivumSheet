@@ -427,3 +427,71 @@ tr.spell-detail-row + tr td {
   display: block;
   margin-bottom: 2px;
 }
+
+/* ===== EQUIPPED ITEM DETAIL (div-based, below slot grid) ===== */
+.equipped-detail {
+  margin: -6px 0 10px;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #f5f5fb;
+  overflow: hidden;
+}
+
+.equipped-detail details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.equipped-detail details summary {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 4px 10px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.equipped-detail details[open] summary {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 4px;
+}
+
+.equipped-detail .spell-detail-grid {
+  padding: 6px 10px 8px;
+}
+
+/* ===== EQUIPMENT SUB-EXPANDERS (match spell detail style) ===== */
+.equip-sub details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.equip-sub details summary {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 4px 2px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.equip-sub details[open] summary {
+  border-bottom: none;
+  padding-bottom: 2px;
+}
+
+.equip-sub details > *:not(summary) {
+  padding: 4px 4px 8px;
+}

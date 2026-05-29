@@ -16,17 +16,17 @@ import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
  * @param {Object} selected - state.selected
  * @param {Object} data     - state.data
  */
-export function renderLists(selected, data) {
+export function renderLists(selected, data, sheet) {
   renderAdvantages(selected, data);
   renderDisadvantages(selected, data);
   renderSkills(selected, data);
   renderSpells(selected, data);
-  renderArmorSlots(selected, data);
-  renderStoredArmors(selected, data);
-  renderEquippedShield(selected, data);
-  renderStoredShields(selected, data);
-  renderEquippedMelee(selected, data);
-  renderStoredMelee(selected, data);
-  renderEquippedRanged(selected, data);
-  renderStoredRanged(selected, data);
+  renderArmorSlots(selected, data, sheet);
+  renderStoredArmors(selected, data, sheet);
+  renderEquippedShield(selected, data, sheet);
+  renderStoredShields(selected, data, sheet);
+  renderEquippedMelee(selected, data, sheet);
+  renderStoredMelee(selected, data, sheet);
+  renderEquippedRanged(selected, data, sheet);
+  renderStoredRanged(selected, data, sheet);
 }

@@ -3,6 +3,7 @@ import { buildSheet } from "../api.js";
 import { getPrimaryAttributes } from "./attributes.js";
 import {
   renderOutput,
+  renderLists,
   updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
@@ -83,6 +84,10 @@ export async function runEngine() {
     updateInventoryUI(json);
     renderSecondaryAttributes(json);
     renderDamage(json);
+
+    // Store resolved sheet so render files can use final computed values
+    state.sheet = json;
+    renderLists(selected, state.data, state.sheet);
   } catch (err) {
     renderOutput({ error: err.message });
   }

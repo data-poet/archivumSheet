@@ -2,18 +2,87 @@ import { setHTML } from "../../shared/dom.js";
 import { ARMOR_SLOTS, STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../../shared/inventoryRenderUtils.js";
-import { materialOptions, tierOptions, equippedMoveSelect, storageOptions } from "../../shared/equipmentSelectors.js";
+import {
+  materialOptions,
+  tierOptions,
+  equippedMoveSelect,
+  storageOptions,
+} from "../../shared/equipmentSelectors.js";
+import {
+  formatRichText,
+  detailRow,
+  equippedDetailBlock,
+} from "./renderUtils.js";
+
+// Look up a resolved armor piece from the engine output by instanceId
+function resolvedArmor(sheet, instanceId) {
+  if (!sheet?.inventory?.armor) return null;
+  const inv = sheet.inventory.armor;
+  for (const bucket of [
+    inv.equipped,
+    ...Object.values(inv.backpack || {}),
+    ...Object.values(inv.stash || {}),
+    ...Object.values(inv.camp || {}),
+  ]) {
+    const items = Array.isArray(bucket) ? bucket : bucket ? [bucket] : [];
+    const found = items.find((p) => p && p._instanceId === instanceId);
+    if (found) return found;
+  }
+  // Also check equipped slots (object keyed by slot name, value = resolved piece or null)
+  if (inv.equipped) {
+    const piece = Object.values(inv.equipped).find(
+      (p) => p && p._instanceId === instanceId,
+    );
+    if (piece) return piece;
+  }
+  return null;
+}
+
+function armorDetailFields(resolved, armorData) {
+  const src = resolved ?? armorData;
+  if (!src) return [];
+  return [
+    { label: "Type", value: src.armor_type ?? "—" },
+    {
+      label: "DR",
+      value:
+        resolved?.armor_final_damage_resistence ??
+        src.armor_damage_resistence ??
+        src.armor_damage_resistance ??
+        "—",
+    },
+    {
+      label: "Weight",
+      value: resolved?.armor_final_weight ?? src.armor_weight ?? "—",
+    },
+    {
+      label: "Price",
+      value: resolved?.armor_final_price ?? src.armor_price ?? "—",
+    },
+    {
+      label: "HP",
+      value: resolved?.final_hit_points ?? src.armor_hit_points ?? "—",
+    },
+    {
+      label: "Description",
+      value: formatRichText(armorData?.armor_description),
+      rich: true,
+    },
+  ];
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EQUIPPED ARMOR SLOTS
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderArmorSlots(selected, data) {
-  const html = ARMOR_SLOTS.map((slot) => renderArmorSlot(slot, selected, data)).join("");
+export function renderArmorSlots(selected, data, sheet) {
+  const html = ARMOR_SLOTS.map((slot) =>
+    renderArmorSlot(slot, selected, data, sheet),
+  ).join("");
   setHTML("armorSlots", html);
 }
 
-function renderArmorSlot(slot, selected, data) {
+function renderArmorSlot(slot, selected, data, sheet) {
   const slotArmors = data.armors.filter((a) => a.armor_piece_location === slot);
 
   const equippedInstance = selected.armors.find((inst) => {
@@ -22,16 +91,24 @@ function renderArmorSlot(slot, selected, data) {
     return db?.armor_piece_location === slot;
   });
 
-  const equippedArmor = equippedInstance
+  const equippedArmorData = equippedInstance
     ? data.armors.find((a) => a.armor_id === equippedInstance.armor_id)
     : null;
 
   const names = [...new Set(slotArmors.map((a) => a.armor_name))];
-  const tiers = equippedArmor
-    ? slotArmors.filter((a) => a.armor_name === equippedArmor.armor_name).map((a) => a.armor_tier)
+  const tiers = equippedArmorData
+    ? slotArmors
+        .filter((a) => a.armor_name === equippedArmorData.armor_name)
+        .map((a) => a.armor_tier)
     : [];
 
   const material = resolveMaterial(equippedInstance, data.materials);
+  const resolved = equippedInstance
+    ? resolvedArmor(sheet, equippedInstance._instanceId)
+    : null;
+  const fields = equippedInstance
+    ? armorDetailFields(resolved, equippedArmorData)
+    : [];
 
   return `
     <div class="equipped-slot-grid">
@@ -39,32 +116,34 @@ function renderArmorSlot(slot, selected, data) {
       <div class="equipped-slot-controls">
         <select class="equipped-armor-name" data-slot="${slot}">
           <option value="">Empty</option>
-          ${names.map((name) =>
-            `<option value="${name}" ${equippedArmor?.armor_name === name ? "selected" : ""}>${name}</option>`
-          ).join("")}
+          ${names
+            .map(
+              (name) =>
+                `<option value="${name}" ${equippedArmorData?.armor_name === name ? "selected" : ""}>${name}</option>`,
+            )
+            .join("")}
         </select>
-
         <select class="equipped-armor-tier" data-slot="${slot}">
-          ${tierOptions(tiers, equippedArmor?.armor_tier)}
+          ${tierOptions(tiers, equippedArmorData?.armor_tier)}
         </select>
-
         <select class="equipped-armor-material" data-slot="${slot}">
           ${materialOptions(data.materials, equippedInstance?.material_id)}
         </select>
-
-        ${equippedInstance
-          ? hpModifierBlock({
-              baseHp: equippedArmor?.armor_hit_points ?? 0,
-              material,
-              hpModifier: equippedInstance.hit_points_modifier,
-              cssClass: "equipped-armor-hp",
-              dataAttrs: `data-slot="${slot}"`,
-            })
-          : ""}
-
+        ${
+          equippedInstance
+            ? hpModifierBlock({
+                baseHp: equippedArmorData?.armor_hit_points ?? 0,
+                material,
+                hpModifier: equippedInstance.hit_points_modifier,
+                cssClass: "equipped-armor-hp",
+                dataAttrs: `data-slot="${slot}"`,
+              })
+            : ""
+        }
         ${equippedMoveSelect("equipped-armor-move", `data-slot="${slot}"`)}
       </div>
     </div>
+    ${equippedDetailBlock(fields)}
   `;
 }
 
@@ -72,28 +151,30 @@ function renderArmorSlot(slot, selected, data) {
 // STORED ARMORS
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderStoredArmors(selected, data) {
+export function renderStoredArmors(selected, data, sheet) {
   const stored = selected.armors.filter((a) => !a.is_equipped);
   const sections = ["backpack", "stash", "camp"]
-    .map((loc) => renderStorageSection(loc, stored, selected, data))
+    .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("armorStorageList", sections);
 }
 
-function renderStorageSection(location, storedArmors, selected, data) {
+function renderStorageSection(location, storedArmors, data, sheet) {
   const armorsInLocation = storedArmors.filter((a) => a.storedAt === location);
 
   let bodyRows = "";
   if (armorsInLocation.length === 0) {
     bodyRows = `<tr class="empty-row"><td colspan="7">Empty</td></tr>`;
   } else {
-    bodyRows = armorsInLocation.map((inst) => {
-      const armorData = data.armors.find((a) => a.armor_id === inst.armor_id);
-      if (!armorData) return "";
-      const material = resolveMaterial(inst, data.materials);
-      const maxHp = armorData.armor_hit_points ?? 0;
-      const instanceId = inst._instanceId;
-      return `
+    bodyRows = armorsInLocation
+      .map((inst) => {
+        const armorData = data.armors.find((a) => a.armor_id === inst.armor_id);
+        if (!armorData) return "";
+        const material = resolveMaterial(inst, data.materials);
+        const resolved = resolvedArmor(sheet, inst._instanceId);
+        const instanceId = inst._instanceId;
+
+        return `
         <tr>
           <td>${armorData.armor_piece_location}</td>
           <td>${armorData.armor_name}</td>
@@ -101,7 +182,7 @@ function renderStorageSection(location, storedArmors, selected, data) {
           <td>${material?.material_name ?? "—"}</td>
           <td class="col-num">
             ${hpModifierBlock({
-              baseHp: maxHp,
+              baseHp: armorData.armor_hit_points ?? 0,
               material,
               hpModifier: inst.hit_points_modifier,
               cssClass: "stored-armor-hp",
@@ -117,8 +198,10 @@ function renderStorageSection(location, storedArmors, selected, data) {
             <button class="equip-stored-armor" data-instance-id="${instanceId}">Equip</button>
             <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
           </td>
-        </tr>`;
-    }).join("");
+        </tr>
+        ${detailRow(7, armorDetailFields(resolved, armorData))}`;
+      })
+      .join("");
   }
 
   return `

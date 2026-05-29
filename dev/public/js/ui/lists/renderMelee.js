@@ -2,13 +2,73 @@ import { setHTML } from "../../shared/dom.js";
 import { STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../../shared/inventoryRenderUtils.js";
-import { materialOptions, equippedMoveSelect, storageOptions } from "../../shared/equipmentSelectors.js";
+import {
+  materialOptions,
+  equippedMoveSelect,
+  storageOptions,
+} from "../../shared/equipmentSelectors.js";
+import {
+  formatRichText,
+  detailRow,
+  equippedDetailBlock,
+} from "./renderUtils.js";
+
+function resolvedMelee(sheet, instanceId) {
+  if (!sheet?.inventory?.melee) return null;
+  const inv = sheet.inventory.melee;
+  for (const bucket of [
+    ...(inv.equipped || []),
+    ...(inv.backpack || []),
+    ...(inv.stash || []),
+    ...(inv.camp || []),
+  ]) {
+    if (bucket && bucket._instanceId === instanceId) return bucket;
+  }
+  return null;
+}
+
+function meleeDetailFields(resolved, weaponData) {
+  const src = resolved ?? weaponData;
+  if (!src) return [];
+  const length = Number(weaponData?.weapon_length) || 0;
+  const reach = length < 1 ? 1 : Math.floor((length + 1) / 2) + 1;
+  return [
+    { label: "Type", value: src.weapon_type ?? "—" },
+    { label: "Skill", value: src.weapon_skill ?? "—" },
+    {
+      label: "BAL Mod",
+      value:
+        resolved?.weapon_final_bal_modifier ?? src.weapon_bal_modifier ?? "—",
+    },
+    {
+      label: "GDP Mod",
+      value:
+        resolved?.weapon_final_gdp_modifier ?? src.weapon_gdp_modifier ?? "—",
+    },
+    {
+      label: "Weight",
+      value: resolved?.weapon_final_weight ?? src.weapon_weight ?? "—",
+    },
+    {
+      label: "Price",
+      value: resolved?.weapon_final_price ?? src.weapon_price ?? "—",
+    },
+    { label: "Reach", value: resolved?.weapon_reach ?? reach },
+    { label: "Min ST", value: src.weapon_min_strength ?? "—" },
+    { label: "Dmg Type", value: src.weapon_damage_type ?? "—" },
+    {
+      label: "Description",
+      value: formatRichText(weaponData?.weapon_description),
+      rich: true,
+    },
+  ];
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EQUIPPED MELEE
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderEquippedMelee(selected, data) {
+export function renderEquippedMelee(selected, data, sheet) {
   const equippedWeapons = selected.melee_weapons.filter((w) => w.is_equipped);
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
 
@@ -17,18 +77,26 @@ export function renderEquippedMelee(selected, data) {
     return;
   }
 
-  setHTML("meleeSlots", equippedWeapons.map((inst) => renderEquippedMeleeSlot(inst, names, data)).join(""));
+  setHTML(
+    "meleeSlots",
+    equippedWeapons
+      .map((inst) => renderEquippedMeleeSlot(inst, names, data, sheet))
+      .join(""),
+  );
 }
 
-function renderEquippedMeleeSlot(inst, names, data) {
-  const equippedWeapon = data.melee_weapons.find((w) => w.weapon_id === inst.weapon_id);
-  if (!equippedWeapon) return "";
+function renderEquippedMeleeSlot(inst, names, data, sheet) {
+  const weaponData = data.melee_weapons.find(
+    (w) => w.weapon_id === inst.weapon_id,
+  );
+  if (!weaponData) return "";
 
   const tiers = data.melee_weapons
-    .filter((w) => w.weapon_name === equippedWeapon.weapon_name)
+    .filter((w) => w.weapon_name === weaponData.weapon_name)
     .map((w) => w.weapon_tier);
 
   const material = resolveMaterial(inst, data.materials);
+  const resolved = resolvedMelee(sheet, inst._instanceId);
   const instanceId = inst._instanceId;
 
   return `
@@ -36,32 +104,35 @@ function renderEquippedMeleeSlot(inst, names, data) {
       <div class="equipped-slot-label">Melee</div>
       <div class="equipped-slot-controls">
         <select class="equipped-melee-name" data-instance-id="${instanceId}">
-          ${names.map((name) =>
-            `<option value="${name}" ${equippedWeapon.weapon_name === name ? "selected" : ""}>${name}</option>`
-          ).join("")}
+          ${names
+            .map(
+              (name) =>
+                `<option value="${name}" ${weaponData.weapon_name === name ? "selected" : ""}>${name}</option>`,
+            )
+            .join("")}
         </select>
-
         <select class="equipped-melee-tier" data-instance-id="${instanceId}">
-          ${tiers.map((tier) =>
-            `<option value="${tier}" ${equippedWeapon.weapon_tier === tier ? "selected" : ""}>${tier}</option>`
-          ).join("")}
+          ${tiers
+            .map(
+              (tier) =>
+                `<option value="${tier}" ${weaponData.weapon_tier === tier ? "selected" : ""}>${tier}</option>`,
+            )
+            .join("")}
         </select>
-
         <select class="equipped-melee-material" data-instance-id="${instanceId}">
           ${materialOptions(data.materials, inst.material_id)}
         </select>
-
         ${hpModifierBlock({
-          baseHp: equippedWeapon.weapon_hit_points ?? 0,
+          baseHp: weaponData.weapon_hit_points ?? 0,
           material,
           hpModifier: inst.hit_points_modifier,
           cssClass: "equipped-melee-hp",
           dataAttrs: `data-instance-id="${instanceId}"`,
         })}
-
         ${equippedMoveSelect("equipped-melee-move", `data-instance-id="${instanceId}"`)}
       </div>
     </div>
+    ${equippedDetailBlock(meleeDetailFields(resolved, weaponData))}
   `;
 }
 
@@ -69,27 +140,32 @@ function renderEquippedMeleeSlot(inst, names, data) {
 // STORED MELEE
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderStoredMelee(selected, data) {
+export function renderStoredMelee(selected, data, sheet) {
   const stored = selected.melee_weapons.filter((w) => !w.is_equipped);
   const sections = ["backpack", "stash", "camp"]
-    .map((loc) => renderStorageSection(loc, stored, data))
+    .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("meleeStorageList", sections);
 }
 
-function renderStorageSection(location, stored, data) {
+function renderStorageSection(location, stored, data, sheet) {
   const weapons = stored.filter((w) => w.storedAt === location);
 
   let bodyRows = "";
   if (weapons.length === 0) {
     bodyRows = `<tr class="empty-row"><td colspan="6">Empty</td></tr>`;
   } else {
-    bodyRows = weapons.map((inst) => {
-      const weaponData = data.melee_weapons.find((w) => w.weapon_id === inst.weapon_id);
-      if (!weaponData) return "";
-      const material = resolveMaterial(inst, data.materials);
-      const instanceId = inst._instanceId;
-      return `
+    bodyRows = weapons
+      .map((inst) => {
+        const weaponData = data.melee_weapons.find(
+          (w) => w.weapon_id === inst.weapon_id,
+        );
+        if (!weaponData) return "";
+        const material = resolveMaterial(inst, data.materials);
+        const resolved = resolvedMelee(sheet, inst._instanceId);
+        const instanceId = inst._instanceId;
+
+        return `
         <tr>
           <td>${weaponData.weapon_name}</td>
           <td>${weaponData.weapon_tier}</td>
@@ -112,8 +188,10 @@ function renderStorageSection(location, stored, data) {
             <button class="equip-stored-melee" data-instance-id="${instanceId}">Equip</button>
             <button class="btn-remove remove-melee" data-instance-id="${instanceId}">✕</button>
           </td>
-        </tr>`;
-    }).join("");
+        </tr>
+        ${detailRow(6, meleeDetailFields(resolved, weaponData))}`;
+      })
+      .join("");
   }
 
   return `
