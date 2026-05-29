@@ -1,4 +1,4 @@
-armor_id,armor_box_name,armor_name,armor_piece_location,armor_type,armor_tier,armor_damage_resistence,armor_weight,armor_price,armor_hit_points,armor_description
+armor_id,armor_box_name,armor_name,armor_piece_location,armor_type,armor_tier,armor_damage_resistance,armor_weight,armor_price,armor_hit_points,armor_description
 ARMOR-000,Capuz | Comum,Capuz,Cabeça,Leve,Comum,2,1.50,100,10,"
 - Capuz de tecido grosso ou couro leve, às vezes acolchoado. Oferece proteção básica contra impactos leves e cortes superficiais sem restringir a visão ou a audição."
 ARMOR-001,Capuz | Boa,Capuz,Cabeça,Leve,Boa,3,1.40,200,15,"
