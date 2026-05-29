@@ -18,11 +18,15 @@
   --color-remove: #dc2626;
   --color-remove-hover: #b91c1c;
   --radius: 6px;
-  --shadow: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* ===== RESET & BASE ===== */
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -84,7 +88,9 @@ details summary {
   list-style: none;
 }
 
-details summary::-webkit-details-marker { display: none; }
+details summary::-webkit-details-marker {
+  display: none;
+}
 
 details summary::before {
   content: "▶";
@@ -104,13 +110,27 @@ details[open] summary {
 }
 
 /* Section accent colors on summary left border */
-.box--attr   details summary { border-left: 3px solid var(--color-accent-attr); }
-.box--trait  details summary { border-left: 3px solid var(--color-accent-trait); }
-.box--equip  details summary { border-left: 3px solid var(--color-accent-equip); }
-.box--magic  details summary { border-left: 3px solid var(--color-accent-magic); }
-.box--inv    details summary { border-left: 3px solid var(--color-accent-inv); }
-.box--engine details summary { border-left: 3px solid #94a3b8; }
-.box--output details summary { border-left: 3px solid #94a3b8; }
+.box--attr details summary {
+  border-left: 3px solid var(--color-accent-attr);
+}
+.box--trait details summary {
+  border-left: 3px solid var(--color-accent-trait);
+}
+.box--equip details summary {
+  border-left: 3px solid var(--color-accent-equip);
+}
+.box--magic details summary {
+  border-left: 3px solid var(--color-accent-magic);
+}
+.box--inv details summary {
+  border-left: 3px solid var(--color-accent-inv);
+}
+.box--engine details summary {
+  border-left: 3px solid #94a3b8;
+}
+.box--output details summary {
+  border-left: 3px solid #94a3b8;
+}
 
 details > *:not(summary) {
   padding: 12px 14px;
@@ -143,7 +163,7 @@ select:focus,
 input:focus {
   outline: none;
   border-color: var(--color-accent-attr);
-  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 button {
@@ -152,7 +172,9 @@ button {
   white-space: nowrap;
 }
 
-button:hover { background: var(--color-btn-hover); }
+button:hover {
+  background: var(--color-btn-hover);
+}
 
 button.btn-remove {
   background: none;
@@ -198,13 +220,24 @@ td {
   vertical-align: middle;
 }
 
-tbody tr:nth-child(even) { background: var(--color-row-alt); }
-tbody tr:hover { background: var(--color-row-hover); }
+tbody tr:nth-child(even) {
+  background: var(--color-row-alt);
+}
+tbody tr:hover {
+  background: var(--color-row-hover);
+}
 
 /* Numeric / input cells */
-td.col-num { text-align: center; }
-td.col-center { text-align: center; }
-td.col-action { text-align: center; width: 60px; }
+td.col-num {
+  text-align: center;
+}
+td.col-center {
+  text-align: center;
+}
+td.col-action {
+  text-align: center;
+  width: 60px;
+}
 
 /* ===== NUMBER INPUTS INSIDE TABLES ===== */
 table input[type="number"] {
@@ -298,4 +331,99 @@ pre {
   border-radius: 4px;
   font-size: 12px;
   margin: 0;
+}
+
+/* ===== SPELL DETAIL ROW ===== */
+tr.detail-row td,
+tr.spell-detail-row td {
+  padding: 0 10px;
+  border-top: none;
+  background: #f5f5fb;
+}
+
+tr.detail-row details,
+tr.spell-detail-row details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+tr.detail-row details summary,
+tr.spell-detail-row details summary {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 4px 2px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+tr.detail-row details[open] summary,
+tr.spell-detail-row details[open] summary {
+  border-bottom: none;
+  padding-bottom: 2px;
+}
+
+tr.detail-row + tr td,
+tr.spell-detail-row + tr td {
+  border-top: 1px solid var(--color-border);
+}
+
+.spell-detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px 4px 8px;
+}
+
+.spell-detail {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.spell-detail em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-text);
+  display: inline-block;
+  width: 70px;
+}
+
+/* ===== SCALING LIST (inside spell detail) ===== */
+.scaling-list {
+  margin: 2px 0 2px 16px;
+  padding: 0;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.scaling-list li {
+  margin-bottom: 1px;
+}
+
+.scaling-note {
+  margin: 3px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* ===== SPELL DETAIL BLOCK (description, observation, scaling with bullets) ===== */
+.spell-detail-block {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.spell-detail-block em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 2px;
 }

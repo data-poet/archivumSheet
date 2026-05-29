@@ -1,5 +1,6 @@
 import { state } from "../state.js";
 import { triggerAutoRun } from "../engine/autorun.js";
+import { renderLists } from "../ui.js";
 import { removeAdv } from "../traits/advantages.js";
 import { removeDis } from "../traits/disadvantages.js";
 import { removeSkill, updateSkill } from "../traits/skills.js";
@@ -35,17 +36,19 @@ export function handleTraitInput(e) {
   if (e.target.classList.contains("skill-input")) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
     updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
+
+    withOpenState("#skillList", "[data-id]", "data-id", () => {
+      renderLists(state.selected, state.data);
+    });
     return true;
   }
 
   if (e.target.classList.contains("spell-input")) {
     updateSpell(e.target.dataset.name, e.target.dataset.field, e.target.value);
-    updateFinalCell(
-      e.target,
-      "spell-input",
-      e.target.dataset.name,
-      "data-name",
-    );
+
+    withOpenState("#spellList", "[data-name]", "data-name", () => {
+      renderLists(state.selected, state.data);
+    });
     return true;
   }
 
@@ -90,13 +93,45 @@ export function handleTraitInput(e) {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
+ * Snapshot which detail expanders are open inside a list container,
+ * run a re-render callback, then restore the open state.
+ *
+ * @param {string}   listSelector  - e.g. "#skillList"
+ * @param {string}   keySelector   - attribute selector for the key element, e.g. "[data-id]"
+ * @param {string}   keyAttr       - dataset attribute name, e.g. "data-id"
+ * @param {Function} renderFn      - callback that triggers the re-render
+ */
+function withOpenState(listSelector, keySelector, keyAttr, renderFn) {
+  const open = new Set(
+    [
+      ...document.querySelectorAll(
+        `${listSelector} tr.detail-row details[open]`,
+      ),
+    ]
+      .map(
+        (d) =>
+          d.closest("tr").previousElementSibling?.querySelector(keySelector)?.[
+            keyAttr
+          ],
+      )
+      .filter(Boolean),
+  );
+
+  renderFn();
+
+  document
+    .querySelectorAll(`${listSelector} tr.detail-row details`)
+    .forEach((d) => {
+      const key = d
+        .closest("tr")
+        .previousElementSibling?.querySelector(keySelector)?.[keyAttr];
+      if (key && open.has(key)) d.setAttribute("open", "");
+    });
+}
+
+/**
  * After a base/modifier input changes, find the other input in the same row
  * and write base + modifier into the Final <td> (last non-action cell).
- *
- * @param {HTMLElement} changedInput  - the input that fired
- * @param {string}      cssClass      - "skill-input" | "spell-input"
- * @param {string}      key           - the data-id or data-name value
- * @param {string}      attr          - "data-id" | "data-name"
  */
 function updateFinalCell(changedInput, cssClass, key, attr) {
   const row = changedInput.closest("tr");
