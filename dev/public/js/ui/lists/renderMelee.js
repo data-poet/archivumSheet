@@ -1,3 +1,4 @@
+import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
 import { STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
@@ -33,31 +34,31 @@ function meleeDetailFields(resolved, weaponData) {
   const length = Number(weaponData?.weapon_length) || 0;
   const reach = length < 1 ? 1 : Math.floor((length + 1) / 2) + 1;
   return [
-    { label: "Type", value: src.weapon_type ?? "—" },
-    { label: "Skill", value: src.weapon_skill ?? "—" },
+    { label: t("common.type"), value: src.weapon_type ?? "—" },
+    { label: t("common.skill"), value: src.weapon_skill ?? "—" },
     {
-      label: "BAL Mod",
+      label: t("melee.balMod"),
       value:
         resolved?.weapon_final_bal_modifier ?? src.weapon_bal_modifier ?? "—",
     },
     {
-      label: "GDP Mod",
+      label: t("melee.gdpMod"),
       value:
         resolved?.weapon_final_gdp_modifier ?? src.weapon_gdp_modifier ?? "—",
     },
     {
-      label: "Weight",
+      label: t("common.weight"),
       value: resolved?.weapon_final_weight ?? src.weapon_weight ?? "—",
     },
     {
-      label: "Price",
+      label: t("common.price"),
       value: resolved?.weapon_final_price ?? src.weapon_price ?? "—",
     },
-    { label: "Reach", value: resolved?.weapon_reach ?? reach },
-    { label: "Min ST", value: src.weapon_min_strength ?? "—" },
-    { label: "Dmg Type", value: src.weapon_damage_type ?? "—" },
+    { label: t("melee.reach"), value: resolved?.weapon_reach ?? reach },
+    { label: t("melee.minST"), value: src.weapon_min_strength ?? "—" },
+    { label: t("melee.damageType"), value: src.weapon_damage_type ?? "—" },
     {
-      label: "Description",
+      label: t("common.description"),
       value: formatRichText(weaponData?.weapon_description),
       rich: true,
     },
@@ -73,7 +74,7 @@ export function renderEquippedMelee(selected, data, sheet) {
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML("meleeSlots", `<p class="empty-storage">No equipped weapons</p>`);
+    setHTML("meleeSlots", `<p class="empty-storage">${t("common.noEquipped")}</p>`);
     return;
   }
 
@@ -101,7 +102,7 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
 
   return `
     <div class="equipped-slot-grid">
-      <div class="equipped-slot-label">Melee</div>
+      <div class="equipped-slot-label">${t("melee.melee")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-melee-name" data-instance-id="${instanceId}">
           ${names
@@ -153,7 +154,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   let bodyRows = "";
   if (weapons.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="6">Empty</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = weapons
       .map((inst) => {
@@ -185,7 +186,7 @@ function renderStorageSection(location, stored, data, sheet) {
             </select>
           </td>
           <td class="col-action">
-            <button class="equip-stored-melee" data-instance-id="${instanceId}">Equip</button>
+            <button class="equip-stored-melee" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-melee" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
@@ -199,8 +200,8 @@ function renderStorageSection(location, stored, data, sheet) {
     <table>
       <thead>
         <tr>
-          <th>Name</th><th>Tier</th><th>Material</th>
-          <th>HP</th><th>Storage</th><th class="col-action"></th>
+          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th>${t("melee.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

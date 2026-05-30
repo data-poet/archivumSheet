@@ -1,4 +1,5 @@
 import { setHTML } from "../../shared/dom.js";
+import { t } from "../../localization/pt-BR.js";
 import { formatRichText, detailRow } from "./renderUtils.js";
 
 // ===== HELPERS =====
@@ -35,10 +36,10 @@ export function renderAdvantages(selected, data) {
           </tr>
           ${detailRow(4, [
             {
-              label: "Source",
+              label: t("traits.source"),
               value: book !== "—" ? `${book} p.${page}` : "—",
             },
-            { label: "Description", value: desc, rich: true },
+            { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
@@ -49,9 +50,9 @@ export function renderAdvantages(selected, data) {
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th class="col-num">Cost</th>
-          <th>Type</th>
+          <th>${t("traits.name")}</th>
+          <th class="col-num">${t("traits.cost")}</th>
+          <th>${t("traits.type")}</th>
           <th class="col-action"></th>
         </tr>
       </thead>
@@ -91,10 +92,10 @@ export function renderDisadvantages(selected, data) {
           </tr>
           ${detailRow(4, [
             {
-              label: "Source",
+              label: t("traits.source"),
               value: book !== "—" ? `${book} p.${page}` : "—",
             },
-            { label: "Description", value: desc, rich: true },
+            { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
@@ -105,9 +106,9 @@ export function renderDisadvantages(selected, data) {
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th class="col-num">Cost</th>
-          <th>Type</th>
+          <th>${t("traits.name")}</th>
+          <th class="col-num">${t("traits.cost")}</th>
+          <th>${t("traits.type")}</th>
           <th class="col-action"></th>
         </tr>
       </thead>
@@ -155,10 +156,10 @@ export function renderSkills(selected, data) {
           </tr>
           ${detailRow(7, [
             {
-              label: "Source",
+              label: t("traits.source"),
               value: book !== "—" ? `${book} p.${page}` : "—",
             },
-            { label: "Description", value: desc, rich: true },
+            { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
@@ -169,12 +170,12 @@ export function renderSkills(selected, data) {
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th class="col-center">Attr</th>
-          <th class="col-center">Diff</th>
-          <th class="col-num">Base</th>
-          <th class="col-num">Mod</th>
-          <th class="col-num">Final</th>
+          <th>${t("traits.name")}</th>
+          <th class="col-center">${t("traits.attr")}</th>
+          <th class="col-center">${t("traits.diff")}</th>
+          <th class="col-num">${t("traits.base")}</th>
+          <th class="col-num">${t("traits.mod")}</th>
+          <th class="col-num">${t("traits.final")}</th>
           <th class="col-action"></th>
         </tr>
       </thead>
@@ -259,18 +260,18 @@ export function renderSpells(selected, data) {
           <tr class="detail-row spell-detail-row">
             <td colspan="${COLS + 1}">
               <details>
-                <summary>Details</summary>
+                <summary>${t("common.details")}</summary>
                 <div class="spell-detail-grid">
-                  <span class="spell-detail"><em>Type:</em> ${type}</span>
-                  <span class="spell-detail"><em>Cost:</em> ${cost}</span>
-                  <span class="spell-detail"><em>Cast:</em> ${castTime}</span>
-                  <span class="spell-detail"><em>Target:</em> ${target}</span>
-                  <span class="spell-detail"><em>Range:</em> ${range}</span>
-                  <span class="spell-detail"><em>Area:</em> ${area}</span>
-                  <span class="spell-detail"><em>Duration:</em> ${duration}</span>
-                  ${scaling !== "—" ? `<div class="spell-detail-block"><em>Scaling:</em>${scaling}</div>` : `<span class="spell-detail"><em>Scaling:</em> —</span>`}
-                  ${desc !== "—" ? `<div class="spell-detail-block"><em>Description:</em>${desc}</div>` : ""}
-                  ${obs !== "—" ? `<div class="spell-detail-block"><em>Observation:</em>${obs}</div>` : ""}
+                  <span class="spell-detail"><em>${t("traits.spellType")}:</em> ${type}</span>
+                  <span class="spell-detail"><em>${t("traits.spellCost")}:</em> ${cost}</span>
+                  <span class="spell-detail"><em>${t("traits.cast")}:</em> ${castTime}</span>
+                  <span class="spell-detail"><em>${t("traits.target")}:</em> ${target}</span>
+                  <span class="spell-detail"><em>${t("traits.range")}:</em> ${range}</span>
+                  <span class="spell-detail"><em>${t("traits.area")}:</em> ${area}</span>
+                  <span class="spell-detail"><em>${t("traits.duration")}:</em> ${duration}</span>
+                  ${scaling !== "—" ? `<div class="spell-detail-block"><em>${t("traits.scaling")}:</em>${scaling}</div>` : `<span class="spell-detail"><em>${t("traits.scaling")}:</em> —</span>`}
+                  ${desc !== "—" ? `<div class="spell-detail-block"><em>${t("traits.description")}:</em>${desc}</div>` : ""}
+                  ${obs !== "—" ? `<div class="spell-detail-block"><em>${t("traits.observation")}:</em>${obs}</div>` : ""}
                 </div>
               </details>
             </td>
@@ -284,13 +285,13 @@ export function renderSpells(selected, data) {
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>School</th>
-          <th class="col-center">Diff</th>
-          <th class="col-center">Tier</th>
-          <th class="col-num">Base</th>
-          <th class="col-num">Mod</th>
-          <th class="col-num">Final</th>
+          <th>${t("traits.name")}</th>
+          <th>${t("traits.school")}</th>
+          <th class="col-center">${t("traits.diff")}</th>
+          <th class="col-center">${t("traits.tier")}</th>
+          <th class="col-num">${t("traits.base")}</th>
+          <th class="col-num">${t("traits.mod")}</th>
+          <th class="col-num">${t("traits.final")}</th>
           <th class="col-action"></th>
         </tr>
       </thead>

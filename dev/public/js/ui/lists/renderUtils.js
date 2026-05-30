@@ -2,6 +2,8 @@
  * Shared rendering utilities for detail rows across all list renders.
  */
 
+import { t } from "../../localization/pt-BR.js";
+
 export function formatRichText(raw) {
   if (!raw || raw.trim() === "") return "—";
 
@@ -37,7 +39,7 @@ export function detailRow(colspan, fields) {
     <tr class="detail-row">
       <td colspan="${colspan}">
         <details>
-          <summary>Details</summary>
+          <summary>${t("common.details")}</summary>
           <div class="spell-detail-grid">${content}</div>
         </details>
       </td>
@@ -63,7 +65,7 @@ export function equippedDetailBlock(fields) {
   return `
     <div class="equipped-detail">
       <details>
-        <summary>Details</summary>
+        <summary>${t("common.details")}</summary>
         <div class="spell-detail-grid">${content}</div>
       </details>
     </div>`;

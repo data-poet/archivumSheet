@@ -1,3 +1,5 @@
+import { getSecondaryAttributeLabel } from "../localization/pt-BR.js";
+
 // ===== PRIMARY ATTRIBUTES UI =====
 export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
@@ -31,7 +33,7 @@ export function renderSecondaryAttributes(sheet) {
 
       return `
         <tr>
-          <td><strong>${name}</strong></td>
+          <td><strong>${getSecondaryAttributeLabel(name)}</strong></td>
 
           <td>${baseDisplay}</td>
 

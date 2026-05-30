@@ -1,3 +1,4 @@
+import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
 import { ARMOR_SLOTS, STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
@@ -42,9 +43,9 @@ function armorDetailFields(resolved, armorData) {
   const src = resolved ?? armorData;
   if (!src) return [];
   return [
-    { label: "Type", value: src.armor_type ?? "—" },
+    { label: t("common.type"), value: src.armor_type ?? "—" },
     {
-      label: "DR",
+      label: t("armor.dr"),
       value:
         resolved?.armor_final_damage_resistence ??
         src.armor_damage_resistence ??
@@ -52,19 +53,19 @@ function armorDetailFields(resolved, armorData) {
         "—",
     },
     {
-      label: "Weight",
+      label: t("common.weight"),
       value: resolved?.armor_final_weight ?? src.armor_weight ?? "—",
     },
     {
-      label: "Price",
+      label: t("common.price"),
       value: resolved?.armor_final_price ?? src.armor_price ?? "—",
     },
     {
-      label: "HP",
+      label: t("armor.hp"),
       value: resolved?.final_hit_points ?? src.armor_hit_points ?? "—",
     },
     {
-      label: "Description",
+      label: t("common.description"),
       value: formatRichText(armorData?.armor_description),
       rich: true,
     },
@@ -115,7 +116,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
       <div class="equipped-slot-label">${slot}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-armor-name" data-slot="${slot}">
-          <option value="">Empty</option>
+          <option value="">${t("common.empty")}</option>
           ${names
             .map(
               (name) =>
@@ -164,7 +165,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
 
   let bodyRows = "";
   if (armorsInLocation.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="7">Empty</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="7">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = armorsInLocation
       .map((inst) => {
@@ -195,7 +196,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
             </select>
           </td>
           <td class="col-action">
-            <button class="equip-stored-armor" data-instance-id="${instanceId}">Equip</button>
+            <button class="equip-stored-armor" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
@@ -209,8 +210,8 @@ function renderStorageSection(location, storedArmors, data, sheet) {
     <table>
       <thead>
         <tr>
-          <th>Slot</th><th>Name</th><th>Tier</th><th>Material</th>
-          <th>HP</th><th>Storage</th><th class="col-action"></th>
+          <th>${t("armor.slot")}</th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th>${t("common.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

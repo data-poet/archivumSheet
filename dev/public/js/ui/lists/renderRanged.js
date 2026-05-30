@@ -1,3 +1,4 @@
+import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
 import { STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
@@ -31,40 +32,40 @@ function rangedDetailFields(resolved, weaponData) {
   const src = resolved ?? weaponData;
   if (!src) return [];
   return [
-    { label: "Type", value: src.weapon_type ?? "—" },
-    { label: "Skill", value: src.weapon_skill ?? "—" },
+    { label: t("common.type"), value: src.weapon_type ?? "—" },
+    { label: t("common.skill"), value: src.weapon_skill ?? "—" },
     {
-      label: "GDP Mod",
+      label: t("ranged.gdpMod"),
       value:
         resolved?.weapon_final_gdp_modifier ?? src.weapon_gdp_modifier ?? "—",
     },
     {
-      label: "Weight",
+      label: t("common.weight"),
       value: resolved?.weapon_final_weight ?? src.weapon_weight ?? "—",
     },
     {
-      label: "Price",
+      label: t("common.price"),
       value: resolved?.weapon_final_price ?? src.weapon_price ?? "—",
     },
-    { label: "Min ST", value: src.weapon_min_strength ?? "—" },
-    { label: "Dmg Type", value: src.weapon_damage_type ?? "—" },
-    { label: "TR", value: src.weapon_tr ?? "—" },
-    { label: "PREC", value: src.weapon_prec ?? "—" },
+    { label: t("ranged.minST"), value: src.weapon_min_strength ?? "—" },
+    { label: t("ranged.damageType"), value: src.weapon_damage_type ?? "—" },
+    { label: t("ranged.tr"), value: src.weapon_tr ?? "—" },
+    { label: t("ranged.prec"), value: src.weapon_prec ?? "—" },
     {
-      label: "½ Dist",
+      label: t("ranged.halfDist"),
       value:
         resolved?.weapon_half_distance ??
         weaponData?.weapon_half_distance ??
         "—",
     },
     {
-      label: "Max Dist",
+      label: t("ranged.maxDist"),
       value:
         resolved?.weapon_max_distance ?? weaponData?.weapon_max_distance ?? "—",
     },
-    { label: "Reload", value: src.weapon_reload_speed ?? "—" },
+    { label: t("ranged.reload"), value: src.weapon_reload_speed ?? "—" },
     {
-      label: "Description",
+      label: t("common.description"),
       value: formatRichText(weaponData?.weapon_description),
       rich: true,
     },
@@ -80,7 +81,7 @@ export function renderEquippedRanged(selected, data, sheet) {
   const names = [...new Set(data.ranged_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML("rangedSlots", `<p class="empty-storage">No equipped weapons</p>`);
+    setHTML("rangedSlots", `<p class="empty-storage">${t("common.noEquipped")}</p>`);
     return;
   }
 
@@ -108,7 +109,7 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
 
   return `
     <div class="equipped-slot-grid">
-      <div class="equipped-slot-label">Ranged</div>
+      <div class="equipped-slot-label">${t("ranged.ranged")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-ranged-name" data-instance-id="${instanceId}">
           ${names
@@ -160,7 +161,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   let bodyRows = "";
   if (weapons.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="6">Empty</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = weapons
       .map((inst) => {
@@ -192,7 +193,7 @@ function renderStorageSection(location, stored, data, sheet) {
             </select>
           </td>
           <td class="col-action">
-            <button class="equip-stored-ranged" data-instance-id="${instanceId}">Equip</button>
+            <button class="equip-stored-ranged" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-ranged" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
@@ -206,8 +207,8 @@ function renderStorageSection(location, stored, data, sheet) {
     <table>
       <thead>
         <tr>
-          <th>Name</th><th>Tier</th><th>Material</th>
-          <th>HP</th><th>Storage</th><th class="col-action"></th>
+          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th>${t("ranged.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

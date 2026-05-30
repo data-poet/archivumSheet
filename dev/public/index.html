@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Character Builder Dev Tool</title>
+    <title>Archivum Sheet</title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
 
   <body>
-    <h1>Character Builder Dev Tool</h1>
+    <h1>Archivum Sheet</h1>
 
     <!-- PERSISTENCE TOOLBAR -->
     <div class="persistence-toolbar">
-      <button id="exportSheetBtn">💾 Export Sheet</button>
-      <button id="importSheetBtn">📂 Import Sheet</button>
+      <button id="exportSheetBtn">💾 Exportar Ficha</button>
+      <button id="importSheetBtn">📂 Importar Ficha</button>
       <input
         id="importFileInput"
         type="file"
@@ -24,14 +24,14 @@
     <!-- PRIMARY ATTRIBUTES -->
     <div class="box box--attr">
       <details open>
-        <summary>Primary Attributes</summary>
+        <summary>Atributos Primários</summary>
         <table>
           <thead>
             <tr>
-              <th>Attribute</th>
+              <th>Atributo</th>
               <th class="col-num">Base</th>
-              <th class="col-num">Modifier</th>
-              <th class="col-num">Actual</th>
+              <th class="col-num">Modificador</th>
+              <th class="col-num">Atual</th>
             </tr>
           </thead>
           <tbody>
@@ -83,14 +83,14 @@
     <!-- SECONDARY ATTRIBUTES -->
     <div class="box box--attr">
       <details>
-        <summary>Secondary Attributes</summary>
+        <summary>Atributos Secundários</summary>
         <table>
           <thead>
             <tr>
-              <th>Attribute</th>
+              <th>Atributo</th>
               <th class="col-num">Base</th>
-              <th class="col-num">Bought</th>
-              <th class="col-num">Modifier</th>
+              <th class="col-num">Comprado</th>
+              <th class="col-num">Modificador</th>
               <th class="col-num">Final</th>
             </tr>
           </thead>
@@ -102,14 +102,14 @@
     <!-- BASE DAMAGE -->
     <div class="box box--attr">
       <details>
-        <summary>Base Damage</summary>
+        <summary>Dano Base</summary>
         <table>
           <thead>
             <tr>
-              <th>Type</th>
-              <th class="col-num">Dice</th>
-              <th class="col-num">Base Mod</th>
-              <th class="col-num">Modifier</th>
+              <th>Tipo</th>
+              <th class="col-num">Dados</th>
+              <th class="col-num">Mod. Base</th>
+              <th class="col-num">Modificador</th>
               <th class="col-num">Final</th>
             </tr>
           </thead>
@@ -121,14 +121,14 @@
     <!-- ADVANTAGES -->
     <div class="box box--trait">
       <details>
-        <summary>Advantages</summary>
+        <summary>Vantagens</summary>
         <div class="controls-row">
-          <button id="loadAdvantagesBtn">Load Advantages</button>
+          <button id="loadAdvantagesBtn">Carregar Vantagens</button>
           <select id="advTypeSelect">
-            <option value="">— Type —</option>
+            <option value="">— Tipo —</option>
           </select>
           <select id="advSelect"></select>
-          <button id="addAdvBtn">Add</button>
+          <button id="addAdvBtn">Adicionar</button>
         </div>
         <div id="advList"></div>
       </details>
@@ -137,14 +137,14 @@
     <!-- DISADVANTAGES -->
     <div class="box box--trait">
       <details>
-        <summary>Disadvantages</summary>
+        <summary>Desvantagens</summary>
         <div class="controls-row">
-          <button id="loadDisadvantagesBtn">Load Disadvantages</button>
+          <button id="loadDisadvantagesBtn">Carregar Desvantagens</button>
           <select id="disTypeSelect">
-            <option value="">— Type —</option>
+            <option value="">— Tipo —</option>
           </select>
           <select id="disSelect"></select>
-          <button id="addDisBtn">Add</button>
+          <button id="addDisBtn">Adicionar</button>
         </div>
         <div id="disList"></div>
       </details>
@@ -153,14 +153,14 @@
     <!-- SKILLS -->
     <div class="box box--trait">
       <details>
-        <summary>Skills</summary>
+        <summary>Perícias</summary>
         <div class="controls-row">
-          <button id="loadSkillsBtn">Load Skills</button>
+          <button id="loadSkillsBtn">Carregar Perícias</button>
           <select id="skillCategorySelect">
-            <option value="">— Category —</option>
+            <option value="">— Categoria —</option>
           </select>
           <select id="skillSelect"></select>
-          <button id="addSkillBtn">Add</button>
+          <button id="addSkillBtn">Adicionar</button>
         </div>
         <div id="skillList"></div>
       </details>
@@ -169,14 +169,14 @@
     <!-- SPELLS -->
     <div class="box box--magic">
       <details>
-        <summary>Spells</summary>
+        <summary>Magias</summary>
         <div class="controls-row">
-          <button id="loadSpellsBtn">Load Spells</button>
+          <button id="loadSpellsBtn">Carregar Magias</button>
           <select id="spellSchoolSelect">
-            <option value="">— School —</option>
+            <option value="">— Escola —</option>
           </select>
           <select id="spellSelect"></select>
-          <button id="addSpellBtn">Add</button>
+          <button id="addSpellBtn">Adicionar</button>
         </div>
         <div id="spellList"></div>
       </details>
@@ -185,29 +185,29 @@
     <!-- ARMORS -->
     <div class="box box--equip">
       <details>
-        <summary>Armors</summary>
+        <summary>Armaduras</summary>
 
         <div class="controls-row">
-          <button id="loadArmorsBtn">Load Armors</button>
+          <button id="loadArmorsBtn">Carregar Armaduras</button>
           <select id="armorSlotSelect"></select>
           <select id="armorNameSelect"></select>
           <select id="armorTierSelect"></select>
           <select id="armorMaterialSelect"></select>
           <select id="armorStorage">
-            <option value="backpack">Backpack</option>
-            <option value="stash">Stash</option>
-            <option value="camp">Camp</option>
+            <option value="backpack">Mochila</option>
+            <option value="stash">Baú</option>
+            <option value="camp">Acampamento</option>
           </select>
-          <button id="addArmorBtn">Add Armor</button>
+          <button id="addArmorBtn">Adicionar Armadura</button>
         </div>
 
         <div class="equip-sub">
           <details open>
-            <summary>Equipped</summary>
+            <summary>Equipado</summary>
             <div id="armorSlots"></div>
           </details>
           <details>
-            <summary>Stored</summary>
+            <summary>Armazenado</summary>
             <div id="armorStorageList"></div>
           </details>
         </div>
@@ -217,28 +217,28 @@
     <!-- SHIELDS -->
     <div class="box box--equip">
       <details>
-        <summary>Shields</summary>
+        <summary>Escudos</summary>
 
         <div class="controls-row">
-          <button id="loadShieldsBtn">Load Shields</button>
+          <button id="loadShieldsBtn">Carregar Escudos</button>
           <select id="shieldNameSelect"></select>
           <select id="shieldTierSelect"></select>
           <select id="shieldMaterialSelect"></select>
           <select id="shieldStorage">
-            <option value="backpack">Backpack</option>
-            <option value="stash">Stash</option>
-            <option value="camp">Camp</option>
+            <option value="backpack">Mochila</option>
+            <option value="stash">Baú</option>
+            <option value="camp">Acampamento</option>
           </select>
-          <button id="addShieldBtn">Add Shield</button>
+          <button id="addShieldBtn">Adicionar Escudo</button>
         </div>
 
         <div class="equip-sub">
           <details open>
-            <summary>Equipped</summary>
+            <summary>Equipado</summary>
             <div id="shieldSlot"></div>
           </details>
           <details>
-            <summary>Stored</summary>
+            <summary>Armazenado</summary>
             <div id="shieldStorageList"></div>
           </details>
         </div>
@@ -248,29 +248,29 @@
     <!-- MELEE WEAPONS -->
     <div class="box box--equip">
       <details>
-        <summary>Melee Weapons</summary>
+        <summary>Armas Corpo a Corpo</summary>
 
         <div class="controls-row">
-          <button id="loadMeleeWeaponsBtn">Load Melee Weapons</button>
+          <button id="loadMeleeWeaponsBtn">Carregar Armas Corpo a Corpo</button>
           <select id="meleeNameSelect"></select>
           <select id="meleeTierSelect"></select>
           <select id="meleeMaterialSelect"></select>
           <select id="meleeStorage">
-            <option value="equipped">Equipped</option>
-            <option value="backpack">Backpack</option>
-            <option value="stash">Stash</option>
-            <option value="camp">Camp</option>
+            <option value="equipped">Equipado</option>
+            <option value="backpack">Mochila</option>
+            <option value="stash">Baú</option>
+            <option value="camp">Acampamento</option>
           </select>
-          <button id="addMeleeBtn">Add Melee Weapon</button>
+          <button id="addMeleeBtn">Adicionar Arma Corpo a Corpo</button>
         </div>
 
         <div class="equip-sub">
           <details open>
-            <summary>Equipped</summary>
+            <summary>Equipado</summary>
             <div id="meleeSlots"></div>
           </details>
           <details>
-            <summary>Stored</summary>
+            <summary>Armazenado</summary>
             <div id="meleeStorageList"></div>
           </details>
         </div>
@@ -280,29 +280,31 @@
     <!-- RANGED WEAPONS -->
     <div class="box box--equip">
       <details>
-        <summary>Ranged Weapons</summary>
+        <summary>Armas de Longo Alcance</summary>
 
         <div class="controls-row">
-          <button id="loadRangedWeaponsBtn">Load Ranged Weapons</button>
+          <button id="loadRangedWeaponsBtn">
+            Carregar Armas de Longo Alcance
+          </button>
           <select id="rangedNameSelect"></select>
           <select id="rangedTierSelect"></select>
           <select id="rangedMaterialSelect"></select>
           <select id="rangedStorage">
-            <option value="equipped">Equipped</option>
-            <option value="backpack">Backpack</option>
-            <option value="stash">Stash</option>
-            <option value="camp">Camp</option>
+            <option value="equipped">Equipado</option>
+            <option value="backpack">Mochila</option>
+            <option value="stash">Baú</option>
+            <option value="camp">Acampamento</option>
           </select>
-          <button id="addRangedBtn">Add Ranged Weapon</button>
+          <button id="addRangedBtn">Adicionar Arma de Longo Alcance</button>
         </div>
 
         <div class="equip-sub">
           <details open>
-            <summary>Equipped</summary>
+            <summary>Equipado</summary>
             <div id="rangedSlots"></div>
           </details>
           <details>
-            <summary>Stored</summary>
+            <summary>Armazenado</summary>
             <div id="rangedStorageList"></div>
           </details>
         </div>
@@ -312,35 +314,35 @@
     <!-- INVENTORY -->
     <div class="box box--inv">
       <details>
-        <summary>Inventory</summary>
+        <summary>Inventário</summary>
 
         <div class="controls-row">
-          <label><strong>Base Weight:</strong></label>
+          <label><strong>Peso Base:</strong></label>
           <input id="weight" type="number" value="0" style="width: 80px" />
         </div>
 
         <table style="width: auto; margin-bottom: 10px">
           <thead>
             <tr>
-              <th>Category</th>
-              <th class="col-num">Weight</th>
+              <th>Categoria</th>
+              <th class="col-num">Peso</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Armor</td>
+              <td>Armadura</td>
               <td class="col-num" id="armor_weight">0</td>
             </tr>
             <tr>
-              <td>Shield</td>
+              <td>Escudo</td>
               <td class="col-num" id="shield_weight">0</td>
             </tr>
             <tr>
-              <td>Melee</td>
+              <td>Corpo a Corpo</td>
               <td class="col-num" id="melee_weight">0</td>
             </tr>
             <tr>
-              <td>Ranged</td>
+              <td>Longo Alcance</td>
               <td class="col-num" id="ranged_weight">0</td>
             </tr>
             <tr>
@@ -351,25 +353,18 @@
         </table>
 
         <p>
-          <strong>Encumbrance:</strong> <span id="encumbrance">None (×0)</span>
+          <strong>Sobrecarga:</strong>
+          <span id="encumbrance">Nenhuma (×0)</span>
         </p>
 
         <div id="carry_limits"></div>
       </details>
     </div>
 
-    <!-- RUN ENGINE -->
-    <div class="box box--engine">
-      <details open>
-        <summary>Engine</summary>
-        <button id="runEngineBtn">▶ Run Sheet Builder</button>
-      </details>
-    </div>
-
     <!-- OUTPUT -->
     <div class="box box--output">
       <details open>
-        <summary>Output</summary>
+        <summary>Saída</summary>
         <pre id="out"></pre>
       </details>
     </div>

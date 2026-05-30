@@ -1,3 +1,4 @@
+import { t } from "../localization/pt-BR.js";
 import { calcMaxHp, calcActualHp, resolveMaterial } from "./durabilityUtils.js";
 
 /**
@@ -23,7 +24,7 @@ export function hpModifierBlock({
 
   return `
     <div class="hp-modifier">
-      Mod:
+      ${t("common.mod")}:
       <input
         type="number"
         class="${cssClass}"
@@ -32,8 +33,8 @@ export function hpModifierBlock({
         max="0"
         value="${hpModifier || 0}"
       />
-      HP: <strong>${maxHp}</strong>
-      Actual: <strong>${actualHp}</strong>
+      ${t("common.hp")}: <strong>${maxHp}</strong>
+      ${t("common.actual")}: <strong>${actualHp}</strong>
     </div>
   `;
 }

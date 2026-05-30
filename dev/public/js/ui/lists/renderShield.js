@@ -1,3 +1,4 @@
+import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
 import { STORAGE_LABELS } from "../../shared/constants.js";
 import { resolveMaterial } from "../../shared/durabilityUtils.js";
@@ -33,10 +34,10 @@ function shieldDetailFields(resolved, shieldData) {
   const src = resolved ?? shieldData;
   if (!src) return [];
   return [
-    { label: "Type", value: src.shield_type ?? "—" },
-    { label: "GDP Mod", value: shieldData?.shield_gdp_modifier ?? "—" },
+    { label: t("common.type"), value: src.shield_type ?? "—" },
+    { label: t("shield.gdpMod"), value: shieldData?.shield_gdp_modifier ?? "—" },
     {
-      label: "DR",
+      label: t("shield.dr"),
       value:
         resolved?.shield_final_damage_resistence ??
         src.shield_damage_resistence ??
@@ -44,15 +45,15 @@ function shieldDetailFields(resolved, shieldData) {
         "—",
     },
     {
-      label: "Weight",
+      label: t("common.weight"),
       value: resolved?.shield_final_weight ?? src.shield_weight ?? "—",
     },
     {
-      label: "Price",
+      label: t("common.price"),
       value: resolved?.shield_final_price ?? src.shield_price ?? "—",
     },
     {
-      label: "Description",
+      label: t("common.description"),
       value: formatRichText(shieldData?.shield_description),
       rich: true,
     },
@@ -88,10 +89,10 @@ export function renderEquippedShield(selected, data, sheet) {
     "shieldSlot",
     `
     <div class="equipped-slot-grid">
-      <div class="equipped-slot-label">Shield</div>
+      <div class="equipped-slot-label">${t("shield.shield")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-shield-name">
-          <option value="">Empty</option>
+          <option value="">${t("common.empty")}</option>
           ${names
             .map(
               (name) =>
@@ -140,7 +141,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   let bodyRows = "";
   if (shields.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="6">Empty</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = shields
       .map((inst) => {
@@ -172,7 +173,7 @@ function renderStorageSection(location, stored, data, sheet) {
             </select>
           </td>
           <td class="col-action">
-            <button class="equip-stored-shield" data-instance-id="${instanceId}">Equip</button>
+            <button class="equip-stored-shield" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-shield" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
@@ -186,8 +187,8 @@ function renderStorageSection(location, stored, data, sheet) {
     <table>
       <thead>
         <tr>
-          <th>Name</th><th>Tier</th><th>Material</th>
-          <th>HP</th><th>Storage</th><th class="col-action"></th>
+          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th>${t("shield.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
