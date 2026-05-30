@@ -1,15 +1,13 @@
 skill_id,skill_box_name,skill_name,skill_category,skill_type,skill_difficulty,skill_base_attribute,skill_pre_defined_level,skill_source_book,skill_source_page,skill_description,skill_prerequisite,skill_parry_modifier
 SKILL-000,ADESTRAMENTO DE ANIMAIS - M|D,ADESTRAMENTO DE ANIMAIS,Animais,M,D,IQ,"
 - IQ -6",Módulo Básico,46,"
-Esta é a habilidade de treinar e trabalhar com todos os tipos de animais. Para treinar um animal, o adestrador deve ser bem sucedido em um teste de habilidade em cada dia de treinamento:
-- Uma falha significa que o animal não aprendeu nada.
-- Uma falha crítica significa que o animal atacou o adestrador.
-- O tempo que se leva para adestrar um animal depende da sua inteligência e afabilidade. Veja o cap. Animais, na pág. 140.
-
-Quando estiver trabalhando com um animal treinado, o adestrador deverá fazer um teste de habilidade para cada tarefa que ele determina para o animal.
+- Esta é a habilidade de treinar e trabalhar com todos os tipos de animais. Para treinar um animal, o adestrador deve ser bem sucedido em um teste de habilidade em cada dia de treinamento:
+    - Uma falha significa que o animal não aprendeu nada.
+    - Uma falha crítica significa que o animal atacou o adestrador.
+    - O tempo que se leva para adestrar um animal depende da sua inteligência e afabilidade. Veja o cap. Animais, na pág. 140.
+- Quando estiver trabalhando com um animal treinado, o adestrador deverá fazer um teste de habilidade para cada tarefa que ele determina para o animal.
 - Modificadores: -5 se o animal não estiver familiarizado com o adestrador, -5 se as circunstâncias forem estressantes para o animal e -3 ou mais se a tarefa for complexa.
-
-Esta perícia pode também (em alguns momentos) ser usada para acalmar um animal selvagem, perigoso ou não adestrado. -5 se a criatura for selvagem ou estiver muito assustada, -10 se ele for um animal que ataca seres humanos.
+- Esta perícia pode também (em alguns momentos) ser usada para acalmar um animal selvagem, perigoso ou não adestrado. -5 se a criatura for selvagem ou estiver muito assustada, -10 se ele for um animal que ataca seres humanos.
 Por fim, esta perícia proporciona uma certa vantagem numa luta contra animais. Se seu nível nesta perícia for maior ou igual a 15, qualquer ataque feito contra você por um animal estará submetido a um redutor de -1, porque você é capaz de prever seu comportamento. Se você for um especialista (nível maior ou igual a 20), os ataques do animal estarão submetidos a um redutor de -2.",,
 SKILL-001,FALCOARIA - M|M,FALCOARIA,Animais,M,M,IQ,"
 - IQ -5",Módulo Básico,46,"
@@ -1746,3 +1744,19 @@ SKILL-254,MOTONÁUTICA - F|M,MOTONÁUTICA,Veículos,F,M,DX,"
 - Esta é a habilidade para dirigir todos os tipos de pequenas embarcações motorizadas (v. Remo/Vela e Marinhagem para embarcações não motorizadas).
 - Quando se está usando o nível pré-definido desta perícia é necessário fazer um teste de DX ou Remo/Vela quando se entra no barco (para evitar cair na água). Todas as situações de perigo exigem uma outra jogada.
 - Modificadores: -4 se o barco for de um tipo não familiar; mau tempo imporá um redutor de -3 ou pior.",,
+SKILL-255,ARREMESSAR FEITIÇO - F|F,ARREMESSAR FEITIÇO,Mágicas,F,F,DX,"
+- DX -3
+- ARREMESSO",Magic,105,"
+- Esta é a habilidade usada para atingir um alvo com uma magia de projétil depois que ela foi criada. 
+- Todas as regras e modificadores normais de armas de ataque à distância se aplicam.
+- As magias de projétil voam por conta própria quando lançadas, independentemente da Força do conjurador; a habilidade Lançamento de Magia ajuda o conjurador a direcionar o projétil.",,
+SKILL-256,SOPRO MÁGICO - F|F,SOPRO MÁGICO,Mágicas,F,F,DX,"
+- DX -2",Magic,105,"
+- Esta é a habilidade de atingir um alvo com a magias de Sopro.
+- O conjurador deve estar de frente para o seu alvo.
+- Isso é tratado como um ataque corpo a corpo normal (ou finta), em vez de um ataque à distância; pode ser bloqueado ou esquivado, mas não aparado.
+- Uma rolagem separada é necessária a cada turno.",,
+SKILL-257,JATO MÁGICO - F|F,JATO MÁGICO,Mágicas,F,F,DX,"
+- DX -4",Magic,105,"
+- Esta é a habilidade de atingir um alvo com qualquer magia de Jato.
+- Ataques pelas costas são possíveis como com armas de combate corpo a corpo; caso contrário, é como o Sopro Mágico.",,
