@@ -9,6 +9,9 @@ function buildCharacter({
   secondaryAttributes = {},
   skills = [],
   carry_weight = null,
+  raceModifiers = {},
+  innateAdvantageIds = [],
+  innateDisadvantageIds = [],
 }) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -24,10 +27,11 @@ function buildCharacter({
 
   const primary = buildCharacterPrimary({
     advantages,
-
     disadvantages,
-
     primaryAttributes,
+    raceModifiers,
+    innateAdvantageIds,
+    innateDisadvantageIds,
   });
 
   /**

@@ -12,10 +12,10 @@ const DEFAULT_VALUE = 10;
  */
 function buildAttribute(input = {}, costPerLevel) {
   const base_value = input.base_value ?? input.value ?? DEFAULT_VALUE;
-
+  const race_modifier = input.race_modifier ?? 0;
   const modifier = input.modifier ?? 0;
 
-  const value = base_value + modifier;
+  const value = base_value + race_modifier + modifier;
 
   const difference = base_value - DEFAULT_VALUE;
   const cost = difference * costPerLevel;
@@ -23,6 +23,7 @@ function buildAttribute(input = {}, costPerLevel) {
   return {
     attribute: {
       base_value,
+      race_modifier,
       modifier,
       value,
       points: cost,

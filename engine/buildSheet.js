@@ -10,33 +10,23 @@ function sumObjectValues(obj = {}) {
   );
 }
 
-function buildSheet({ character = {}, inventory = {} } = {}) {
+function buildSheet({ pc = {}, race = {}, character = {}, inventory = {} } = {}) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
    * 1. INITIAL CHARACTER BUILD
    * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Character is built FIRST to resolve:
-   *
-   * - final ST
-   * - final IQ
-   * - secondary attributes
-   *
-   * WITHOUT carry penalties yet.
    */
 
   const initialCharacterResult = buildCharacter({
     advantages: character.advantages,
-
     disadvantages: character.disadvantages,
-
     primaryAttributes: character.primaryAttributes,
-
     secondaryAttributes: character.secondaryAttributes,
-
     skills: character.skills,
-
     carry_weight: null,
+    raceModifiers: race.modifiers || {},
+    innateAdvantageIds: race.innate_advantage_ids || [],
+    innateDisadvantageIds: race.innate_disadvantage_ids || [],
   });
 
   const initialCharacter = initialCharacterResult.character;
@@ -47,18 +37,11 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
    * ───────────────────────────────────────────────────────────────────────────
    * 2. INVENTORY LAYER
    * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Inventory depends on final ST because:
-   *
-   * - ST defines carry limits
-   * - carried weight defines encumbrance
    */
 
   const inventoryResult = buildInventory({
     ST: st,
-
     weight: inventory.weight || 0,
-
     armorInventory: inventory.armor || [],
     shieldInventory: inventory.shield || [],
     meleeInventory: inventory.melee || [],
@@ -69,29 +52,21 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
    * ───────────────────────────────────────────────────────────────────────────
    * 3. FINAL CHARACTER BUILD
    * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Rebuild character applying:
-   *
-   * - carry penalties
-   * - encumbrance effects
    */
 
   const characterResult = buildCharacter({
     advantages: character.advantages,
-
     disadvantages: character.disadvantages,
-
     primaryAttributes: character.primaryAttributes,
-
     secondaryAttributes: character.secondaryAttributes,
-
     skills: character.skills,
-
     carry_weight: inventoryResult.inventory.carry_weight,
+    raceModifiers: race.modifiers || {},
+    innateAdvantageIds: race.innate_advantage_ids || [],
+    innateDisadvantageIds: race.innate_disadvantage_ids || [],
   });
 
   const characterData = characterResult.character;
-
   const iq = characterData.primary_attributes.IQ.value;
 
   /**
@@ -102,11 +77,7 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
 
   const resolvedSpells = resolveAll({
     spells: character.spells,
-
-    character: {
-      ...characterData,
-      iq,
-    },
+    character: { ...characterData, iq },
   });
 
   /**
@@ -130,35 +101,28 @@ function buildSheet({ character = {}, inventory = {} } = {}) {
 
   const characterPoints = {
     primary_attributes: sumObjectValues(basePoints.primary_attributes),
-
     secondary_attributes: sumObjectValues(basePoints.secondary_attributes),
-
     skills: basePoints.skills || 0,
-
     advantages: basePoints.advantages || 0,
-
     disadvantages: basePoints.disadvantages || 0,
-
     spells: grimoireResult.character_points.spells || 0,
   };
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
-   * 7. FINAL SHEET
+   * 7. FINAL SHEET — pc and race come first
    * ───────────────────────────────────────────────────────────────────────────
    */
 
   return {
+    pc,
+    race,
     ...characterResult,
-
     grimoire: grimoireResult.spells,
-
     character: {
       ...characterData,
-
       character_points: characterPoints,
     },
-
     inventory: inventoryResult.inventory,
   };
 }
