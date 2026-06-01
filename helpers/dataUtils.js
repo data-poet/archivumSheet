@@ -8,6 +8,7 @@ function loadCSV(filePath) {
     columns: true,
     skip_empty_lines: true,
     trim: true,
+    bom: true,
   });
 }
 
