@@ -3,6 +3,7 @@ import { getPrimaryAttributes } from "../engine/attributes.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
+import { restoreRaceSelection } from "../character/races.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SCHEMA VERSION
@@ -19,14 +20,18 @@ const SCHEMA_VERSION = 1;
  * The filename includes the current date for easy identification.
  */
 export function exportSheet() {
-  const primary = getPrimaryAttributes();
-  const { selected } = state;
+  const { selected, sheet } = state;
 
+  // The engine output (state.sheet) is the source of truth for pc and race.
+  // For selected state (primary inputs, skills, equipment) we read from selected
+  // so that unsaved mid-edit values are always captured.
   const payload = {
     version: SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
+    pc: sheet?.pc ?? selected.character,
+    race: sheet?.race ?? {},
     character: {
-      primary,
+      primary: getPrimaryAttributes(),
       secondary: selected.secondary,
       damage: selected.damage,
       advantages: selected.advantages,
@@ -96,9 +101,32 @@ function _applyImport(payload) {
   }
 
   const { selected, data } = state;
-  const { character, inventory } = payload;
+  const { pc, race, character, inventory } = payload;
 
-  // ── Primary attributes → DOM inputs ───────────────────────────────────────
+  // ── PC info ───────────────────────────────────────────────────────────────
+  selected.character = {
+    player_name: pc?.player_name ?? "",
+    character_name: pc?.character_name ?? "",
+    character_sex: pc?.character_sex ?? "",
+    character_age: pc?.character_age ?? null,
+    character_weight: pc?.character_weight ?? null,
+    race_id: race?.race_id ?? null,
+  };
+
+  // ── PC info → DOM inputs ──────────────────────────────────────────────────
+  const setVal = (id, v) => {
+    const el = document.getElementById(id);
+    if (el) el.value = v ?? "";
+  };
+  setVal("playerNameInput", selected.character.player_name);
+  setVal("characterNameInput", selected.character.character_name);
+  setVal("characterSexSelect", selected.character.character_sex);
+  setVal("characterAgeInput", selected.character.character_age);
+  setVal("characterWeightInput", selected.character.character_weight);
+
+  if (selected.character.race_id && state.data.races.length) {
+    restoreRaceSelection(selected.character.race_id);
+  }
   const attrs = ["ST", "DX", "IQ", "HT"];
   attrs.forEach((attr) => {
     const src = character.primary?.[attr];

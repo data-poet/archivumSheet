@@ -18,6 +18,6 @@ export function triggerAutoRun() {
 
   clearTimeout(ui.debounceTimer);
   ui.debounceTimer = setTimeout(() => {
-    _runEngine?.();
+    _runEngine?.().then(() => updateActualValues());
   }, 300);
 }

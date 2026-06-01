@@ -40,6 +40,10 @@ export async function fetchSpells() {
   return getJSON("/api/spells");
 }
 
+export async function fetchRaces() {
+  return getJSON("/api/races");
+}
+
 export async function fetchMaterials() {
   return getJSON("/api/materials");
 }

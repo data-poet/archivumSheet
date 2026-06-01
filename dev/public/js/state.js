@@ -10,10 +10,19 @@ export const state = {
     melee_weapons: [],
     ranged_weapons: [],
     materials: [],
+    races: [],
   },
 
   // ===== USER SELECTION =====
   selected: {
+    character: {
+      player_name: "",
+      character_name: "",
+      character_sex: "",
+      character_age: null,
+      character_weight: null,
+      race_id: null,
+    },
     advantages: {},
     disadvantages: {},
     skills: {},

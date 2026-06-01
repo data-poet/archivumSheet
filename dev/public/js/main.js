@@ -7,10 +7,8 @@ import { initAutoRun } from "./engine/autorun.js";
 // ===== INIT =====
 window.onload = () => {
   initAutoRun(runEngine);
-
   bindUI();
   setupAutoRun();
   updateActualValues();
-
   runEngine();
 };

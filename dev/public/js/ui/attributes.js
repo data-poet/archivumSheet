@@ -1,12 +1,22 @@
 import { getSecondaryAttributeLabel } from "../localization/pt-BR.js";
+import { state } from "../state.js";
 
 // ===== PRIMARY ATTRIBUTES UI =====
 export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
     const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
+    const raceMod =
+      state.sheet?.character?.primary_attributes?.[attr]?.race_modifier ?? 0;
 
-    document.getElementById(`${attr}_actual`).textContent = base + mod;
+    const raceCell = document.getElementById(`${attr}_race`);
+    if (raceCell) {
+      raceCell.textContent = raceMod > 0 ? `+${raceMod}` : raceMod;
+      raceCell.className = `col-num race-mod-cell${raceMod !== 0 ? " race-mod-active" : ""}`;
+    }
+
+    document.getElementById(`${attr}_actual`).textContent =
+      base + raceMod + mod;
   });
 }
 

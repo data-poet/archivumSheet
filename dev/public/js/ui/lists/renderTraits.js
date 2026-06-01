@@ -9,8 +9,10 @@ function emptyRow(colspan) {
 }
 
 // ===== ADVANTAGES =====
-export function renderAdvantages(selected, data) {
-  const ids = Object.keys(selected.advantages);
+export function renderAdvantages(selected, data, sheet) {
+  // Read from sheet if available (engine is source of truth), fall back to selected
+  const advMap = sheet?.character?.advantages ?? selected.advantages;
+  const ids = Object.keys(advMap);
 
   const rows =
     ids.length === 0
@@ -18,21 +20,28 @@ export function renderAdvantages(selected, data) {
       : ids
           .map((id) => {
             const adv = data.advantages?.find((a) => a.advantage_id === id);
-            const name = adv?.advantage_box_name ?? id;
-            const cost = adv?.advantage_cost ?? "—";
+            const sheetEntry = advMap[id];
+            const name = adv?.advantage_box_name ?? sheetEntry?.name ?? id;
+            const isInnate = sheetEntry?.is_race_innate ?? false;
+            const cost = isInnate ? 0 : (adv?.advantage_cost ?? "—");
             const type = adv?.advantage_type ?? "—";
             const book = adv?.advantage_source_book ?? "—";
             const page = adv?.advantage_source_page ?? "—";
             const desc = formatRichText(adv?.advantage_description);
 
+            const innateTag = isInnate
+              ? `<span class="trait-innate-tag">${t("character.innate")}</span>`
+              : "";
+            const actionCell = isInnate
+              ? `<td class="col-action"></td>`
+              : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">✕</button></td>`;
+
             return `
-          <tr>
-            <td>${name}</td>
+          <tr ${isInnate ? 'class="trait-innate"' : ""}>
+            <td>${name}${innateTag}</td>
             <td class="col-num">${cost}</td>
             <td>${type}</td>
-            <td class="col-action">
-              <button class="btn-remove remove-adv" data-id="${id}">✕</button>
-            </td>
+            ${actionCell}
           </tr>
           ${detailRow(4, [
             {
@@ -63,8 +72,9 @@ export function renderAdvantages(selected, data) {
 }
 
 // ===== DISADVANTAGES =====
-export function renderDisadvantages(selected, data) {
-  const ids = Object.keys(selected.disadvantages);
+export function renderDisadvantages(selected, data, sheet) {
+  const disMap = sheet?.character?.disadvantages ?? selected.disadvantages;
+  const ids = Object.keys(disMap);
 
   const rows =
     ids.length === 0
@@ -74,21 +84,28 @@ export function renderDisadvantages(selected, data) {
             const dis = data.disadvantages?.find(
               (d) => d.disadvantage_id === id,
             );
-            const name = dis?.disadvantage_box_name ?? id;
-            const cost = dis?.disadvantage_cost ?? "—";
+            const sheetEntry = disMap[id];
+            const name = dis?.disadvantage_box_name ?? sheetEntry?.name ?? id;
+            const isInnate = sheetEntry?.is_race_innate ?? false;
+            const cost = isInnate ? 0 : (dis?.disadvantage_cost ?? "—");
             const type = dis?.disadvantage_type ?? "—";
             const book = dis?.disadvantage_source_book ?? "—";
             const page = dis?.disadvantage_source_page ?? "—";
             const desc = formatRichText(dis?.disadvantage_description);
 
+            const innateTag = isInnate
+              ? `<span class="trait-innate-tag">${t("character.innate")}</span>`
+              : "";
+            const actionCell = isInnate
+              ? `<td class="col-action"></td>`
+              : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">✕</button></td>`;
+
             return `
-          <tr>
-            <td>${name}</td>
+          <tr ${isInnate ? 'class="trait-innate"' : ""}>
+            <td>${name}${innateTag}</td>
             <td class="col-num">${cost}</td>
             <td>${type}</td>
-            <td class="col-action">
-              <button class="btn-remove remove-dis" data-id="${id}">✕</button>
-            </td>
+            ${actionCell}
           </tr>
           ${detailRow(4, [
             {

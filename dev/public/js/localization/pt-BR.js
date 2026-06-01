@@ -98,6 +98,23 @@ export const LABELS = {
     prec: "PREC",
   },
 
+  character: {
+    playerName: "Nome do Jogador",
+    characterName: "Nome do Personagem",
+    sex: "Sexo",
+    sexMale: "Masculino",
+    sexFemale: "Feminino",
+    age: "Idade",
+    weight: "Peso (kg)",
+    race: "Raça",
+    subRace: "Sub-Raça",
+    selectRace: "Selecione uma raça",
+    selectSubRace: "Selecione uma sub-raça",
+    noRace: "Nenhuma",
+    raceModifiers: "Modificadores Raciais",
+    innate: "Inato",
+  },
+
   traits: {
     advantages: "Vantagens",
     disadvantages: "Desvantagens",

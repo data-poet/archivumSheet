@@ -17,8 +17,8 @@ import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
  * @param {Object} data     - state.data
  */
 export function renderLists(selected, data, sheet) {
-  renderAdvantages(selected, data);
-  renderDisadvantages(selected, data);
+  renderAdvantages(selected, data, sheet);
+  renderDisadvantages(selected, data, sheet);
   renderSkills(selected, data);
   renderSpells(selected, data);
   renderArmorSlots(selected, data, sheet);

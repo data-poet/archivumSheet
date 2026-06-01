@@ -35,6 +35,15 @@ import {
   updateRangedTierOptions,
 } from "../inventory/ranged.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
+import {
+  loadRaces,
+  filterSubRacesByName,
+  selectSubRace,
+} from "../character/races.js";
+import {
+  handleCharacterInput,
+  handleCharacterChange,
+} from "./characterEvents.js";
 
 import { handleTraitClick, handleTraitInput } from "./traitEvents.js";
 import {
@@ -67,6 +76,11 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function bindUI() {
+  // ── Character Info & Race ────────────────────────────────────────────────
+  on("loadRacesBtn", "click", loadRaces);
+  on("raceNameSelect", "change", filterSubRacesByName);
+  on("raceSubSelect", "change", selectSubRace);
+
   // ── Traits ────────────────────────────────────────────────────────────────
   on("loadAdvantagesBtn", "click", loadAdvantages);
   on("advTypeSelect", "change", filterAdvByType);
@@ -145,6 +159,7 @@ export function bindUI() {
 
   // ── Global delegated input ────────────────────────────────────────────────
   document.addEventListener("input", (e) => {
+    if (handleCharacterInput(e)) return;
     if (handleTraitInput(e)) return;
     if (handleArmorInput(e)) return;
     if (handleShieldInput(e)) return;
@@ -154,6 +169,7 @@ export function bindUI() {
 
   // ── Global delegated change ───────────────────────────────────────────────
   document.addEventListener("change", (e) => {
+    if (handleCharacterChange(e)) return;
     if (handleArmorChange(e)) return;
     if (handleShieldChange(e)) return;
     if (handleMeleeChange(e)) return;

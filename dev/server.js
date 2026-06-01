@@ -60,6 +60,14 @@ app.get("/api/spells", (req, res) => {
 });
 
 /* -----------------------
+   RACES
+------------------------ */
+app.get("/api/races", (req, res) => {
+  const data = loadCSV(path.join(__dirname, "../data/db_yrth_races.csv"));
+  res.json(data);
+});
+
+/* -----------------------
    MATERIALS
 ------------------------ */
 app.get("/api/materials", (req, res) => {
@@ -126,10 +134,12 @@ app.post("/api/character/build", (req, res) => {
    SHEET BUILDER (MAIN ENGINE)
 ------------------------ */
 app.post("/api/sheet/build", (req, res) => {
-  const { character = {}, inventory = {} } = req.body;
+  const { pc = {}, race = {}, character = {}, inventory = {} } = req.body;
 
   try {
     const result = buildSheet({
+      pc,
+      race,
       character,
       inventory,
     });

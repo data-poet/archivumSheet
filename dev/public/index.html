@@ -21,6 +21,66 @@
       />
     </div>
 
+    <!-- CHARACTER INFO & RACE -->
+    <div class="box box--character">
+      <details open>
+        <summary>Personagem</summary>
+        <div class="character-panel-grid">
+
+          <!-- LEFT: Character Info -->
+          <div class="character-info">
+            <h3>Informações</h3>
+            <table class="character-info-table">
+              <tbody>
+                <tr>
+                  <td><label for="playerNameInput">Nome do Jogador</label></td>
+                  <td><input id="playerNameInput" type="text" class="character-input" data-field="player_name" /></td>
+                </tr>
+                <tr>
+                  <td><label for="characterNameInput">Nome do Personagem</label></td>
+                  <td><input id="characterNameInput" type="text" class="character-input" data-field="character_name" /></td>
+                </tr>
+                <tr>
+                  <td><label for="characterSexSelect">Sexo</label></td>
+                  <td>
+                    <select id="characterSexSelect" class="character-input" data-field="character_sex">
+                      <option value="">—</option>
+                      <option value="M">Masculino</option>
+                      <option value="F">Feminino</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="characterAgeInput">Idade</label></td>
+                  <td><input id="characterAgeInput" type="number" min="0" step="1" class="character-input" data-field="character_age" /></td>
+                </tr>
+                <tr>
+                  <td><label for="characterWeightInput">Peso (kg)</label></td>
+                  <td><input id="characterWeightInput" type="number" min="0" step="0.1" class="character-input" data-field="character_weight" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- RIGHT: Race -->
+          <div class="character-race">
+            <h3>Raça</h3>
+            <div class="race-selects">
+              <button id="loadRacesBtn">Carregar Raças</button>
+              <select id="raceNameSelect" style="display:none">
+                <option value="">Selecione uma raça</option>
+              </select>
+              <select id="raceSubSelect" style="display:none">
+                <option value="">Selecione uma sub-raça</option>
+              </select>
+            </div>
+            <div id="raceModifiers" class="race-modifiers" style="display:none"></div>
+          </div>
+
+        </div>
+      </details>
+    </div>
+
     <!-- PRIMARY ATTRIBUTES -->
     <div class="box box--attr">
       <details open>
@@ -30,6 +90,7 @@
             <tr>
               <th>Atributo</th>
               <th class="col-num">Base</th>
+              <th class="col-num">Raça</th>
               <th class="col-num">Modificador</th>
               <th class="col-num">Atual</th>
             </tr>
@@ -40,6 +101,7 @@
               <td class="col-num">
                 <input id="ST_base" type="number" min="1" max="20" value="10" />
               </td>
+              <td class="col-num" id="ST_race">0</td>
               <td class="col-num">
                 <input id="ST_mod" type="number" value="0" />
               </td>
@@ -50,6 +112,7 @@
               <td class="col-num">
                 <input id="DX_base" type="number" min="1" max="20" value="10" />
               </td>
+              <td class="col-num" id="DX_race">0</td>
               <td class="col-num">
                 <input id="DX_mod" type="number" value="0" />
               </td>
@@ -60,6 +123,7 @@
               <td class="col-num">
                 <input id="IQ_base" type="number" min="1" max="20" value="10" />
               </td>
+              <td class="col-num" id="IQ_race">0</td>
               <td class="col-num">
                 <input id="IQ_mod" type="number" value="0" />
               </td>
@@ -70,6 +134,7 @@
               <td class="col-num">
                 <input id="HT_base" type="number" min="1" max="20" value="10" />
               </td>
+              <td class="col-num" id="HT_race">0</td>
               <td class="col-num">
                 <input id="HT_mod" type="number" value="0" />
               </td>

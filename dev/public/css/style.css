@@ -495,3 +495,110 @@ tr.spell-detail-row + tr td {
 .equip-sub details > *:not(summary) {
   padding: 4px 4px 8px;
 }
+
+/* ===== CHARACTER PANEL ===== */
+.character-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.character-info h3,
+.character-race h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 0.5rem 0;
+}
+
+.character-info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.character-info-table td {
+  padding: 4px 6px;
+  vertical-align: middle;
+}
+
+.character-info-table td:first-child {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  width: 40%;
+}
+
+.character-info-table input,
+.character-info-table select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Race selects */
+.race-selects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.race-selects select {
+  width: 100%;
+}
+
+/* Race modifier tags */
+.race-modifiers {
+  margin-top: 0.5rem;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.race-mod-tag {
+  display: inline-block;
+  background: var(--color-bg-alt, #f0f0f0);
+  border: 1px solid var(--color-border, #ccc);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-accent, #555);
+}
+
+/* ===== INNATE TRAITS ===== */
+tr.trait-innate td {
+  background: var(--color-bg-alt, #f9f6ee);
+  color: var(--color-text-muted);
+}
+
+.trait-innate-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-accent, #888);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0px 4px;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+/* ===== PRIMARY ATTRIBUTE RACE MODIFIER COLUMN ===== */
+.race-mod-cell {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.race-mod-cell.race-mod-active {
+  color: var(--color-accent, #5a7a4a);
+  font-weight: 700;
+}
