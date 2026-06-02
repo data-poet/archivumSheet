@@ -1,69 +1,415 @@
-/* ===== CSS VARIABLES ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARCHIVUM SHEET — style.css
+   Mobile-first, responsive. Primary users: phones during tabletop sessions.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ───────────────────────────────────────────────────────── */
 :root {
-  --color-bg: #f4f4f6;
+  /* Colors */
+  --color-bg: #f2f3f6;
   --color-surface: #ffffff;
-  --color-border: #d0d0d8;
-  --color-border-strong: #a0a0b0;
+  --color-border: #d4d4de;
+  --color-border-strong: #9494aa;
   --color-text: #1a1a2e;
-  --color-text-muted: #6b6b80;
-  --color-accent-attr: #2563eb;
-  --color-accent-trait: #16a34a;
-  --color-accent-equip: #b45309;
-  --color-accent-magic: #7c3aed;
-  --color-accent-inv: #475569;
-  --color-row-hover: #f0f4ff;
-  --color-row-alt: #f9f9fb;
-  --color-btn-bg: #e8e8f0;
-  --color-btn-hover: #d4d4e8;
+  --color-text-muted: #6a6a82;
+  --color-row-hover: #eef2ff;
+  --color-row-alt: #f8f8fb;
+  --color-btn-bg: #e6e6f0;
+  --color-btn-hover: #d0d0e6;
   --color-remove: #dc2626;
   --color-remove-hover: #b91c1c;
+
+  /* Section accent colors */
+  --accent-attr: #2563eb;
+  --accent-trait: #16a34a;
+  --accent-equip: #b45309;
+  --accent-magic: #7c3aed;
+  --accent-inv: #475569;
+  --accent-resume: #475569;
+
+  /* Spacing & shape */
   --radius: 6px;
+  --radius-sm: 4px;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
+
+  /* Topbar / bottom-nav sizes (mobile) */
+  --topbar-h: 52px;
+  --bottomnav-h: 56px;
+
+  /* Sidebar width (desktop) */
+  --sidebar-w: 56px;
+  --sidebar-w-exp: 200px;
+
+  /* Typography */
+  --font-body: "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Courier New", monospace;
+  --fs-base: 12px;
+  --fs-sm: 11px;
+  --fs-xs: 10px;
+  --fs-xxs: 9px;
+
+  /* Detail row (unified) */
+  --detail-bg: #f4f4fb;
+  --detail-label-w: 80px;
 }
 
-/* ===== RESET & BASE ===== */
+/* ── Reset ───────────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
   line-height: 1.5;
-  padding: 16px;
   background: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  /* mobile: space for topbar + bottom nav */
+  padding-top: var(--topbar-h);
+  padding-bottom: var(--bottomnav-h);
+  min-height: 100dvh;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE NAVIGATION (default — phones)
+   Top bar + fixed bottom tab bar
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Top bar ──────────────────────────────────────────────────────────────── */
+.l-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-h);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  z-index: 200;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  text-decoration: none;
   color: var(--color-text);
 }
 
-h1 {
-  font-size: 20px;
-  margin: 0 0 12px;
+.topbar-logo img {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
-h3 {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.topbar-logo-name {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--color-text-muted);
-  margin: 12px 0 4px;
 }
 
-h4 {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  margin: 8px 0 2px;
-}
-
-/* ===== PERSISTENCE TOOLBAR ===== */
-.persistence-toolbar {
+.topbar-actions {
   display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
+  align-items: center;
+  gap: 6px;
 }
 
-/* ===== BOX / SECTION ===== */
+.topbar-btn {
+  background: none;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.topbar-btn:hover {
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+}
+
+.topbar-btn-icon {
+  font-size: 14px;
+}
+
+/* ── Bottom tab navigation (mobile) ─────────────────────────────────────── */
+.l-bottomnav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottomnav-h);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  z-index: 200;
+  box-shadow: var(--shadow-top);
+}
+
+.bottomnav-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 6px 2px;
+  border-top: 3px solid transparent;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottomnav-link.is-active {
+  color: var(--accent-attr);
+  border-top-color: var(--accent-attr);
+}
+
+.bottomnav-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ── Main content (mobile) ───────────────────────────────────────────────── */
+.l-main {
+  padding: 12px;
+  max-width: 100%;
+}
+
+.l-section {
+  margin-bottom: 8px;
+  scroll-margin-top: calc(var(--topbar-h) + 8px);
+}
+
+/* Hide desktop sidebar on mobile */
+.l-sidebar {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESKTOP LAYOUT (≥ 768 px)
+   Restores the expandable sidebar; removes top/bottom mobile nav
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Hide mobile nav elements */
+  .l-topbar {
+    display: none;
+  }
+  .l-bottomnav {
+    display: none;
+  }
+
+  /* ── Desktop sidebar ───────────────────────────────────────────────────── */
+  .l-sidebar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+    overflow: hidden;
+    transition: width 0.2s ease;
+    box-shadow: 1px 0 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .l-sidebar:hover {
+    width: var(--sidebar-w-exp);
+  }
+
+  .sidebar-logo {
+    padding: 14px 0 10px;
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo-img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+    width: 100%;
+    flex: 1;
+  }
+
+  .sidebar-nav li {
+    width: 100%;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    padding: 10px 0;
+    width: 100%;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    transition:
+      color 0.15s,
+      background 0.15s;
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .sidebar-link.is-active {
+    color: var(--accent-attr);
+    border-left-color: var(--accent-attr);
+    background: color-mix(in srgb, var(--accent-attr) 8%, transparent);
+  }
+
+  .sidebar-icon {
+    font-size: 18px;
+    min-width: var(--sidebar-w);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .sidebar-label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.15s 0.05s;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .l-sidebar:hover .sidebar-label {
+    opacity: 1;
+  }
+
+  .sidebar-bottom {
+    width: 100%;
+    padding: 8px 0;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sidebar-action {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 0;
+    border-left: 3px solid transparent;
+    transition:
+      color 0.15s,
+      background 0.15s;
+    text-align: left;
+  }
+
+  .sidebar-action:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .sidebar-action-icon {
+    font-size: 18px;
+    min-width: var(--sidebar-w);
+    text-align: center;
+    flex-shrink: 0;
+    /* No box — plain icon, same as .sidebar-icon */
+    background: none;
+    border: none;
+    border-radius: 0;
+    height: auto;
+    margin: 0;
+  }
+
+  .sidebar-action-label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.15s 0.05s;
+    pointer-events: none;
+  }
+
+  .l-sidebar:hover .sidebar-action-label {
+    opacity: 1;
+  }
+
+  /* ── Desktop main content ─────────────────────────────────────────────── */
+  .l-main {
+    margin-left: var(--sidebar-w);
+    padding: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .l-section {
+    scroll-margin-top: 16px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOX / CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
 .box {
   margin-bottom: 10px;
   background: var(--color-surface);
@@ -73,12 +419,12 @@ h4 {
   overflow: hidden;
 }
 
-/* ===== COLLAPSIBLE SUMMARY ===== */
+/* ── Collapsible details/summary ────────────────────────────────────────── */
 details summary {
   cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 10px 14px;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  padding: 11px 14px;
   user-select: none;
   background: var(--color-surface);
   border-bottom: 1px solid transparent;
@@ -86,6 +432,8 @@ details summary {
   align-items: center;
   gap: 8px;
   list-style: none;
+  /* Larger tap target on mobile */
+  min-height: 44px;
 }
 
 details summary::-webkit-details-marker {
@@ -94,49 +442,122 @@ details summary::-webkit-details-marker {
 
 details summary::before {
   content: "▶";
-  font-size: 10px;
+  font-size: 9px;
   color: var(--color-text-muted);
   transition: transform 0.15s;
   display: inline-block;
   width: 12px;
+  flex-shrink: 0;
 }
 
 details[open] summary::before {
   transform: rotate(90deg);
 }
-
 details[open] summary {
   border-bottom-color: var(--color-border);
-}
-
-/* Section accent colors on summary left border */
-.box--attr details summary {
-  border-left: 3px solid var(--color-accent-attr);
-}
-.box--trait details summary {
-  border-left: 3px solid var(--color-accent-trait);
-}
-.box--equip details summary {
-  border-left: 3px solid var(--color-accent-equip);
-}
-.box--magic details summary {
-  border-left: 3px solid var(--color-accent-magic);
-}
-.box--inv details summary {
-  border-left: 3px solid var(--color-accent-inv);
-}
-.box--engine details summary {
-  border-left: 3px solid #94a3b8;
-}
-.box--output details summary {
-  border-left: 3px solid #94a3b8;
 }
 
 details > *:not(summary) {
   padding: 12px 14px;
 }
 
-/* ===== CONTROLS ROW (select + button combos) ===== */
+/* ── Section accent colors ──────────────────────────────────────────────── */
+.box--attr details summary {
+  border-left: 3px solid var(--accent-attr);
+}
+.box--trait details summary {
+  border-left: 3px solid var(--accent-trait);
+}
+.box--equip details summary {
+  border-left: 3px solid var(--accent-equip);
+}
+.box--magic details summary {
+  border-left: 3px solid var(--accent-magic);
+}
+.box--inv details summary {
+  border-left: 3px solid var(--accent-inv);
+}
+.box--resume details summary {
+  border-left: 3px solid var(--accent-resume);
+}
+.box--character details summary {
+  border-left: 3px solid var(--accent-attr);
+}
+.box--engine details summary,
+.box--output details summary {
+  border-left: 3px solid #94a3b8;
+}
+
+/* Thicker border on top-level (parent) expanders */
+.box--attr > details > summary,
+.box--trait > details > summary,
+.box--equip > details > summary,
+.box--magic > details > summary,
+.box--inv > details > summary {
+  border-left-width: 4px;
+}
+
+/* ── Nested boxes ───────────────────────────────────────────────────────── */
+/* Nested boxes: remove the heavy card look, keep a subtle left accent */
+.box--nested {
+  margin: 0 0 0 14px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.box > details > .box--nested:first-of-type {
+  margin-top: 2px;
+}
+
+/* Sub-section summaries: plain text row, minimal height, left colored bar */
+.box--attr .box--nested details summary,
+.box--trait .box--nested details summary,
+.box--equip .box--nested details summary,
+.box--magic .box--nested details summary,
+.box--inv .box--nested details summary {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  min-height: 36px;
+  padding: 6px 10px;
+  background: none;
+  border-bottom: none;
+}
+
+.box--attr .box--nested details summary {
+  border-left: 3px solid color-mix(in srgb, var(--accent-attr) 60%, transparent);
+}
+.box--trait .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-trait) 60%, transparent);
+}
+.box--equip .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-equip) 60%, transparent);
+}
+.box--magic .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-magic) 60%, transparent);
+}
+.box--inv .box--nested details summary {
+  border-left: 3px solid color-mix(in srgb, var(--accent-inv) 60%, transparent);
+}
+
+/* When open, add a thin separator below the sub-summary */
+.box--nested details[open] > summary {
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+
+/* Sub-section body: tight top padding since we removed the card */
+.box--nested details > *:not(summary) {
+  padding-top: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTROLS ROW
+   ═══════════════════════════════════════════════════════════════════════════ */
 .controls-row {
   display: flex;
   flex-wrap: wrap;
@@ -145,24 +566,27 @@ details > *:not(summary) {
   margin-bottom: 10px;
 }
 
-/* ===== FORM ELEMENTS ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ═══════════════════════════════════════════════════════════════════════════ */
 select,
 button,
 input[type="number"],
 input[type="text"] {
   font-family: inherit;
-  font-size: 13px;
-  padding: 4px 7px;
+  font-size: var(--fs-sm);
+  padding: 6px 8px; /* bigger for touch */
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: #fff;
   color: var(--color-text);
+  min-height: 36px; /* minimum tap target */
 }
 
 select:focus,
 input:focus {
   outline: none;
-  border-color: var(--color-accent-attr);
+  border-color: var(--accent-attr);
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
@@ -170,20 +594,26 @@ button {
   background: var(--color-btn-bg);
   cursor: pointer;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 button:hover {
   background: var(--color-btn-hover);
+}
+button:active {
+  transform: scale(0.98);
 }
 
 button.btn-remove {
   background: none;
   border: none;
   color: var(--color-remove);
-  padding: 2px 5px;
-  font-size: 13px;
+  padding: 4px 6px;
+  font-size: var(--fs-sm);
+  min-height: 36px;
+  min-width: 36px;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
 }
 
 button.btn-remove:hover {
@@ -191,31 +621,41 @@ button.btn-remove:hover {
   color: var(--color-remove-hover);
 }
 
-/* ===== TABLES ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLES — responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 13px;
+  font-size: var(--fs-sm);
+  /* allow horizontal scroll on small screens */
+  min-width: 0;
 }
 
 thead tr {
-  background: #f0f0f5;
+  background: #ededf5;
 }
 
 th {
-  padding: 6px 10px;
+  padding: 7px 10px;
   border: 1px solid var(--color-border);
   text-align: left;
   font-weight: 600;
-  font-size: 12px;
+  font-size: var(--fs-xxs);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--color-text-muted);
   white-space: nowrap;
 }
 
 td {
-  padding: 5px 10px;
+  padding: 7px 10px;
   border: 1px solid var(--color-border);
   vertical-align: middle;
 }
@@ -227,7 +667,6 @@ tbody tr:hover {
   background: var(--color-row-hover);
 }
 
-/* Numeric / input cells */
 td.col-num {
   text-align: center;
 }
@@ -239,50 +678,222 @@ td.col-action {
   width: 60px;
 }
 
-/* ===== NUMBER INPUTS INSIDE TABLES ===== */
+/* Number inputs inside tables */
 table input[type="number"] {
   width: 60px;
   text-align: center;
-  padding: 3px 4px;
+  padding: 4px 4px;
+  min-height: 32px;
 }
 
-/* Wider selects inside tables */
 table select {
   max-width: 160px;
-  padding: 3px 5px;
+  padding: 4px 6px;
+  min-height: 32px;
 }
 
-/* ===== EMPTY TABLE STATE ===== */
+/* Empty states */
 .empty-row td {
   text-align: center;
   color: var(--color-text-muted);
   font-style: italic;
-  padding: 10px;
+  padding: 12px;
 }
 
 .empty-storage {
   color: var(--color-text-muted);
   font-style: italic;
-  font-size: 13px;
+  font-size: var(--fs-sm);
   margin: 4px 0;
 }
 
-/* ===== STORAGE SECTION HEADERS ===== */
-.storage-section-header {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
-  padding: 8px 0 4px;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 4px;
+/* ═══════════════════════════════════════════════════════════════════════════
+   DETAIL ROW — unified across ALL sections
+   (previously had spell-specific names; now generic .item-detail-*)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Table-row detail (traits, skills, spells, stored equipment) */
+tr.detail-row td,
+tr.spell-detail-row td {
+  padding: 0 10px;
+  border-top: none;
+  background: var(--detail-bg);
 }
 
-/* ===== EQUIPPED SLOT GRID ===== */
+tr.detail-row details,
+tr.spell-detail-row details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+tr.detail-row details summary,
+tr.spell-detail-row details summary {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px 4px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 36px;
+}
+
+tr.detail-row details[open] summary,
+tr.spell-detail-row details[open] summary {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+/* Div-based detail block (equipped items below slot-grid) */
+.equipped-detail {
+  margin: -6px 0 10px;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--detail-bg);
+  overflow: hidden;
+}
+
+.equipped-detail details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.equipped-detail details summary {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px 12px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 36px;
+}
+
+.equipped-detail details[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Detail content grid (shared by table-row AND div-based) ─────────────── */
+/* Old name .spell-detail-grid kept as alias for JS compatibility */
+.item-detail-grid,
+.spell-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  padding: 6px 8px 10px;
+}
+
+@media (max-width: 480px) {
+  .item-detail-grid,
+  .spell-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Individual detail entry ─────────────────────────────────────────────── */
+/* Old names kept as aliases */
+.item-detail,
+.spell-detail {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+.item-detail em,
+.spell-detail em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--color-text);
+  flex-shrink: 0;
+  min-width: var(--detail-label-w);
+}
+
+/* Block entries (description, scaling — can be multi-line) */
+.item-detail-block,
+.spell-detail-block {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  grid-column: 1 / -1; /* always full width */
+  line-height: 1.5;
+}
+
+.item-detail-block em,
+.spell-detail-block em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* Scaling list */
+.scaling-list {
+  margin: 2px 0 2px 14px;
+  padding: 0;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+.scaling-list li {
+  margin-bottom: 1px;
+}
+
+.scaling-note {
+  margin: 2px 0 0;
+  font-size: var(--fs-xxs);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EQUIP-SUB (Equipped / Stored sub-expanders inside Equipment section)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.equip-sub details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.equip-sub details summary {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px 4px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 36px;
+}
+
+.equip-sub details[open] summary {
+  border-bottom: none;
+}
+
+.equip-sub details > *:not(summary) {
+  padding: 4px 4px 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EQUIPPED SLOT GRID
+   ═══════════════════════════════════════════════════════════════════════════ */
 .equipped-slot-grid {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 90px 1fr;
   gap: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -291,10 +902,10 @@ table select {
 }
 
 .equipped-slot-label {
-  background: #f0f0f5;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 6px 10px;
+  background: #ededf5;
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   border-right: 1px solid var(--color-border);
@@ -308,210 +919,43 @@ table select {
   padding: 6px 10px;
 }
 
-/* ===== HP BLOCK (inline) ===== */
-.hp-modifier {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.hp-modifier input[type="number"] {
-  width: 52px;
-}
-
-/* ===== OUTPUT ===== */
-pre {
-  max-height: 400px;
-  overflow: auto;
-  background: #111;
-  color: #0f0;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  margin: 0;
-}
-
-/* ===== SPELL DETAIL ROW ===== */
-tr.detail-row td,
-tr.spell-detail-row td {
-  padding: 0 10px;
-  border-top: none;
-  background: #f5f5fb;
-}
-
-tr.detail-row details,
-tr.spell-detail-row details {
-  padding: 0;
-  border: none;
-  background: none;
-  box-shadow: none;
-}
-
-tr.detail-row details summary,
-tr.spell-detail-row details summary {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  padding: 4px 2px;
-  border: none;
-  border-left: none !important;
-  background: none;
-  letter-spacing: 0.04em;
+/* ═══════════════════════════════════════════════════════════════════════════
+   STORAGE SECTION HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.storage-section-header {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
   text-transform: uppercase;
-}
-
-tr.detail-row details[open] summary,
-tr.spell-detail-row details[open] summary {
-  border-bottom: none;
-  padding-bottom: 2px;
-}
-
-tr.detail-row + tr td,
-tr.spell-detail-row + tr td {
-  border-top: 1px solid var(--color-border);
-}
-
-.spell-detail-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 4px 4px 8px;
-}
-
-.spell-detail {
-  font-size: 12px;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.spell-detail em {
-  font-style: normal;
-  font-weight: 600;
-  color: var(--color-text);
-  display: inline-block;
-  width: 70px;
-}
-
-/* ===== SCALING LIST (inside spell detail) ===== */
-.scaling-list {
-  margin: 2px 0 2px 16px;
-  padding: 0;
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.scaling-list li {
-  margin-bottom: 1px;
-}
-
-.scaling-note {
-  margin: 3px 0 0;
-  font-size: 11px;
-  font-style: italic;
-  color: var(--color-text-muted);
-}
-
-/* ===== SPELL DETAIL BLOCK (description, observation, scaling with bullets) ===== */
-.spell-detail-block {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  margin-top: 4px;
-}
-
-.spell-detail-block em {
-  font-style: normal;
-  font-weight: 600;
-  color: var(--color-text);
-  display: block;
-  margin-bottom: 2px;
-}
-
-/* ===== EQUIPPED ITEM DETAIL (div-based, below slot grid) ===== */
-.equipped-detail {
-  margin: -6px 0 10px;
-  border: 1px solid var(--color-border);
-  border-top: none;
-  border-radius: 0 0 var(--radius) var(--radius);
-  background: #f5f5fb;
-  overflow: hidden;
-}
-
-.equipped-detail details {
-  padding: 0;
-  border: none;
-  background: none;
-  box-shadow: none;
-}
-
-.equipped-detail details summary {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  padding: 4px 10px;
-  border: none;
-  border-left: none !important;
-  background: none;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.equipped-detail details[open] summary {
+  padding: 8px 0 4px;
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: 4px;
+  margin-bottom: 4px;
 }
 
-.equipped-detail .spell-detail-grid {
-  padding: 6px 10px 8px;
-}
-
-/* ===== EQUIPMENT SUB-EXPANDERS (match spell detail style) ===== */
-.equip-sub details {
-  padding: 0;
-  border: none;
-  background: none;
-  box-shadow: none;
-  margin-bottom: 0;
-}
-
-.equip-sub details summary {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  padding: 4px 2px;
-  border: none;
-  border-left: none !important;
-  background: none;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.equip-sub details[open] summary {
-  border-bottom: none;
-  padding-bottom: 2px;
-}
-
-.equip-sub details > *:not(summary) {
-  padding: 4px 4px 8px;
-}
-
-/* ===== CHARACTER PANEL ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHARACTER PANEL
+   ═══════════════════════════════════════════════════════════════════════════ */
 .character-panel-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  padding: 0.5rem 0;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 520px) {
+  .character-panel-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .character-info h3,
 .character-race h3 {
-  font-size: 13px;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem;
 }
 
 .character-info-table {
@@ -520,15 +964,16 @@ tr.spell-detail-row + tr td {
 }
 
 .character-info-table td {
-  padding: 4px 6px;
+  padding: 5px 6px;
   vertical-align: middle;
+  border: none;
 }
 
 .character-info-table td:first-child {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
   white-space: nowrap;
-  width: 40%;
+  width: 42%;
 }
 
 .character-info-table input,
@@ -544,7 +989,6 @@ tr.spell-detail-row + tr td {
   gap: 0.4rem;
   margin-bottom: 0.5rem;
 }
-
 .race-selects select {
   width: 100%;
 }
@@ -552,53 +996,182 @@ tr.spell-detail-row + tr td {
 /* Race modifier tags */
 .race-modifiers {
   margin-top: 0.5rem;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
-  align-items: center;
 }
 
 .race-mod-tag {
   display: inline-block;
-  background: var(--color-bg-alt, #f0f0f0);
-  border: 1px solid var(--color-border, #ccc);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 3px;
   padding: 1px 6px;
-  font-size: 11px;
+  font-size: var(--fs-xxs);
   font-weight: 700;
-  color: var(--color-accent, #555);
+  color: var(--color-text-muted);
 }
 
-/* ===== INNATE TRAITS ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESUME PANEL
+   ═══════════════════════════════════════════════════════════════════════════ */
+.resume-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 520px) {
+  .resume-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.resume-col-title {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: 0 0 8px;
+}
+
+.resume-base-weight-row {
+  margin-bottom: 6px;
+}
+
+.resume-table {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.resume-table td,
+.resume-table th {
+  padding: 5px 8px;
+  font-size: var(--fs-xs);
+}
+
+.resume-total-row td {
+  background: color-mix(in srgb, var(--accent-inv) 8%, transparent);
+  border-top: 2px solid var(--color-border-strong);
+}
+
+.resume-points-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.resume-encumbrance {
+  font-size: var(--fs-xs);
+  margin: 4px 0 8px;
+  color: var(--color-text-muted);
+}
+.resume-encumbrance strong {
+  color: var(--color-text);
+}
+
+.resume-limits-table {
+  font-size: var(--fs-xxs);
+  width: 100%;
+}
+.resume-limits-table th,
+.resume-limits-table td {
+  padding: 3px 6px;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INNATE TRAITS
+   ═══════════════════════════════════════════════════════════════════════════ */
 tr.trait-innate td {
-  background: var(--color-bg-alt, #f9f6ee);
+  background: #faf9f0;
   color: var(--color-text-muted);
 }
 
 .trait-innate-tag {
   display: inline-block;
   margin-left: 6px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--color-accent, #888);
+  color: #78716c;
   border: 1px solid currentColor;
   border-radius: 3px;
-  padding: 0px 4px;
+  padding: 0 3px;
   vertical-align: middle;
   opacity: 0.7;
 }
 
-/* ===== PRIMARY ATTRIBUTE RACE MODIFIER COLUMN ===== */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ATTRIBUTE CELLS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .race-mod-cell {
   color: var(--color-text-muted);
-  font-size: 12px;
+  font-size: var(--fs-xs);
+}
+.race-mod-cell.race-mod-active {
+  color: #4a7a3a;
+  font-weight: 700;
 }
 
-.race-mod-cell.race-mod-active {
-  color: var(--color-accent, #5a7a4a);
-  font-weight: 700;
+/* ═══════════════════════════════════════════════════════════════════════════
+   HP MODIFIER BLOCK
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hp-modifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+.hp-modifier input[type="number"] {
+  width: 52px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   OUTPUT (debug)
+   ═══════════════════════════════════════════════════════════════════════════ */
+pre {
+  max-height: 400px;
+  overflow: auto;
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY HELPERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+h1 {
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+h3 {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin: 12px 0 4px;
+}
+
+h4 {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin: 8px 0 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERSISTENCE TOOLBAR (legacy, kept for compatibility)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.persistence-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
 }

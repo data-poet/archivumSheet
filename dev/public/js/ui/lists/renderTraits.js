@@ -278,17 +278,17 @@ export function renderSpells(selected, data) {
             <td colspan="${COLS + 1}">
               <details>
                 <summary>${t("common.details")}</summary>
-                <div class="spell-detail-grid">
-                  <span class="spell-detail"><em>${t("traits.spellType")}:</em> ${type}</span>
-                  <span class="spell-detail"><em>${t("traits.spellCost")}:</em> ${cost}</span>
-                  <span class="spell-detail"><em>${t("traits.cast")}:</em> ${castTime}</span>
-                  <span class="spell-detail"><em>${t("traits.target")}:</em> ${target}</span>
-                  <span class="spell-detail"><em>${t("traits.range")}:</em> ${range}</span>
-                  <span class="spell-detail"><em>${t("traits.area")}:</em> ${area}</span>
-                  <span class="spell-detail"><em>${t("traits.duration")}:</em> ${duration}</span>
-                  ${scaling !== "—" ? `<div class="spell-detail-block"><em>${t("traits.scaling")}:</em>${scaling}</div>` : `<span class="spell-detail"><em>${t("traits.scaling")}:</em> —</span>`}
-                  ${desc !== "—" ? `<div class="spell-detail-block"><em>${t("traits.description")}:</em>${desc}</div>` : ""}
-                  ${obs !== "—" ? `<div class="spell-detail-block"><em>${t("traits.observation")}:</em>${obs}</div>` : ""}
+                <div class="item-detail-grid">
+                  <span class="item-detail"><em>${t("traits.spellType")}:</em> ${type}</span>
+                  <span class="item-detail"><em>${t("traits.spellCost")}:</em> ${cost}</span>
+                  <span class="item-detail"><em>${t("traits.cast")}:</em> ${castTime}</span>
+                  <span class="item-detail"><em>${t("traits.target")}:</em> ${target}</span>
+                  <span class="item-detail"><em>${t("traits.range")}:</em> ${range}</span>
+                  <span class="item-detail"><em>${t("traits.area")}:</em> ${area}</span>
+                  <span class="item-detail"><em>${t("traits.duration")}:</em> ${duration}</span>
+                  ${scaling !== "—" ? `<div class="item-detail-block"><em>${t("traits.scaling")}:</em>${scaling}</div>` : `<span class="item-detail"><em>${t("traits.scaling")}:</em> —</span>`}
+                  ${desc !== "—" ? `<div class="item-detail-block"><em>${t("traits.description")}:</em>${desc}</div>` : ""}
+                  ${obs !== "—" ? `<div class="item-detail-block"><em>${t("traits.observation")}:</em>${obs}</div>` : ""}
                 </div>
               </details>
             </td>

@@ -7,6 +7,7 @@ import {
   updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
+  renderResume,
 } from "../ui.js";
 
 const selected = state.selected;
@@ -142,6 +143,7 @@ export async function runEngine() {
     updateInventoryUI(json);
     renderSecondaryAttributes(json);
     renderDamage(json);
+    renderResume(json);
 
     // Store resolved sheet so render files can use final computed values
     state.sheet = json;

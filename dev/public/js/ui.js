@@ -6,3 +6,4 @@ export {
 } from "./ui/attributes.js";
 export { renderDamage } from "./ui/damage.js";
 export { renderOutput } from "./ui/output.js";
+export { renderResume } from "./ui/resume.js";

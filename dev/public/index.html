@@ -1,439 +1,793 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archivum Sheet</title>
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" type="image/png" href="/images/chrome-touch-icon-192x192.png" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <meta name="msapplication-TileImage" content="/images/ms-touch-icon-144x144-precomposed.png" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
   </head>
 
   <body>
-    <h1>Archivum Sheet</h1>
 
-    <!-- PERSISTENCE TOOLBAR -->
-    <div class="persistence-toolbar">
-      <button id="exportSheetBtn">💾 Exportar Ficha</button>
-      <button id="importSheetBtn">📂 Importar Ficha</button>
-      <input
-        id="importFileInput"
-        type="file"
-        accept=".json"
-        style="display: none"
-      />
-    </div>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MOBILE: Top bar
+         All visible text here is set by initAppShell() from the localization file
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <header class="l-topbar" id="topbar">
+      <div class="topbar-logo">
+        <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
+        <span class="topbar-logo-name" id="topbar-title">Archivum Sheet</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="exportSheetBtn-mobile" class="topbar-btn">
+          <span class="topbar-btn-icon">⬇️</span>
+          <span id="lbl-export-mobile"></span>
+        </button>
+        <button id="importSheetBtn-mobile" class="topbar-btn">
+          <span class="topbar-btn-icon">⬆️</span>
+          <span id="lbl-import-mobile"></span>
+        </button>
+      </div>
+    </header>
 
-    <!-- CHARACTER INFO & RACE -->
-    <div class="box box--character">
-      <details open>
-        <summary>Personagem</summary>
-        <div class="character-panel-grid">
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         DESKTOP: Sidebar nav
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <nav class="l-sidebar" id="sidebar" aria-label="Navegação">
+      <div class="sidebar-logo">
+        <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" class="sidebar-logo-img" />
+      </div>
+      <ul class="sidebar-nav" role="list">
+        <li>
+          <a href="#section-character" class="sidebar-link is-active" data-section="section-character">
+            <span class="sidebar-icon" aria-hidden="true">1️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-character"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-traits" class="sidebar-link" data-section="section-traits">
+            <span class="sidebar-icon" aria-hidden="true">2️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-traits"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-skills" class="sidebar-link" data-section="section-skills">
+            <span class="sidebar-icon" aria-hidden="true">3️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-skills"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-magic" class="sidebar-link" data-section="section-magic">
+            <span class="sidebar-icon" aria-hidden="true">4️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-magic"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-equipment" class="sidebar-link" data-section="section-equipment">
+            <span class="sidebar-icon" aria-hidden="true">5️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-equipment"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-inventory" class="sidebar-link" data-section="section-inventory">
+            <span class="sidebar-icon" aria-hidden="true">6️⃣</span>
+            <span class="sidebar-label" id="nav-lbl-inventory"></span>
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-bottom">
+        <button id="exportSheetBtn" class="sidebar-action" title="">
+          <span class="sidebar-action-icon">⬇️</span>
+          <span class="sidebar-action-label" id="lbl-export"></span>
+        </button>
+        <button id="importSheetBtn" class="sidebar-action" title="">
+          <span class="sidebar-action-icon">⬆️</span>
+          <span class="sidebar-action-label" id="lbl-import"></span>
+        </button>
+        <input id="importFileInput" type="file" accept=".json" style="display:none" />
+      </div>
+    </nav>
 
-          <!-- LEFT: Character Info -->
-          <div class="character-info">
-            <h3>Informações</h3>
-            <table class="character-info-table">
-              <tbody>
-                <tr>
-                  <td><label for="playerNameInput">Nome do Jogador</label></td>
-                  <td><input id="playerNameInput" type="text" class="character-input" data-field="player_name" /></td>
-                </tr>
-                <tr>
-                  <td><label for="characterNameInput">Nome do Personagem</label></td>
-                  <td><input id="characterNameInput" type="text" class="character-input" data-field="character_name" /></td>
-                </tr>
-                <tr>
-                  <td><label for="characterSexSelect">Sexo</label></td>
-                  <td>
-                    <select id="characterSexSelect" class="character-input" data-field="character_sex">
-                      <option value="">—</option>
-                      <option value="M">Masculino</option>
-                      <option value="F">Feminino</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label for="characterAgeInput">Idade</label></td>
-                  <td><input id="characterAgeInput" type="number" min="0" step="1" class="character-input" data-field="character_age" /></td>
-                </tr>
-                <tr>
-                  <td><label for="characterWeightInput">Peso (kg)</label></td>
-                  <td><input id="characterWeightInput" type="number" min="0" step="0.1" class="character-input" data-field="character_weight" /></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MAIN CONTENT
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <main class="l-main" id="main-content">
 
-          <!-- RIGHT: Race -->
-          <div class="character-race">
-            <h3>Raça</h3>
-            <div class="race-selects">
-              <button id="loadRacesBtn">Carregar Raças</button>
-              <select id="raceNameSelect" style="display:none">
-                <option value="">Selecione uma raça</option>
-              </select>
-              <select id="raceSubSelect" style="display:none">
-                <option value="">Selecione uma sub-raça</option>
-              </select>
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: PERSONAGEM
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-character" class="l-section">
+
+        <!-- Character Info & Race -->
+        <div class="box box--character">
+          <details open>
+            <summary id="sec-character"></summary>
+            <div class="character-panel-grid">
+
+              <!-- Left: Info -->
+              <div class="character-info">
+                <h3 id="sec-character-info"></h3>
+                <table class="character-info-table">
+                  <tbody>
+                    <tr>
+                      <td><label for="playerNameInput" id="lbl-playerName"></label></td>
+                      <td><input id="playerNameInput" type="text" class="character-input" data-field="player_name" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="characterNameInput" id="lbl-characterName"></label></td>
+                      <td><input id="characterNameInput" type="text" class="character-input" data-field="character_name" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="characterSexSelect" id="lbl-sex"></label></td>
+                      <td>
+                        <select id="characterSexSelect" class="character-input" data-field="character_sex">
+                          <option value="" id="opt-sex-none"></option>
+                          <option value="M" id="opt-sex-m"></option>
+                          <option value="F" id="opt-sex-f"></option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label for="characterAgeInput" id="lbl-age"></label></td>
+                      <td><input id="characterAgeInput" type="number" min="0" step="1" class="character-input" data-field="character_age" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="characterWeightInput" id="lbl-weight"></label></td>
+                      <td><input id="characterWeightInput" type="number" min="0" step="0.1" class="character-input" data-field="character_weight" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Right: Race -->
+              <div class="character-race">
+                <h3 id="sec-race"></h3>
+                <div class="race-selects">
+                  <button id="loadRacesBtn"></button>
+                  <select id="raceNameSelect" style="display:none">
+                    <option value="" id="opt-race-none"></option>
+                  </select>
+                  <select id="raceSubSelect" style="display:none">
+                    <option value="" id="opt-subrace-none"></option>
+                  </select>
+                </div>
+                <div id="raceModifiers" class="race-modifiers" style="display:none"></div>
+              </div>
             </div>
-            <div id="raceModifiers" class="race-modifiers" style="display:none"></div>
-          </div>
-
-        </div>
-      </details>
-    </div>
-
-    <!-- PRIMARY ATTRIBUTES -->
-    <div class="box box--attr">
-      <details open>
-        <summary>Atributos Primários</summary>
-        <table>
-          <thead>
-            <tr>
-              <th>Atributo</th>
-              <th class="col-num">Base</th>
-              <th class="col-num">Raça</th>
-              <th class="col-num">Modificador</th>
-              <th class="col-num">Atual</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>ST</strong></td>
-              <td class="col-num">
-                <input id="ST_base" type="number" min="1" max="20" value="10" />
-              </td>
-              <td class="col-num" id="ST_race">0</td>
-              <td class="col-num">
-                <input id="ST_mod" type="number" value="0" />
-              </td>
-              <td class="col-num" id="ST_actual">10</td>
-            </tr>
-            <tr>
-              <td><strong>DX</strong></td>
-              <td class="col-num">
-                <input id="DX_base" type="number" min="1" max="20" value="10" />
-              </td>
-              <td class="col-num" id="DX_race">0</td>
-              <td class="col-num">
-                <input id="DX_mod" type="number" value="0" />
-              </td>
-              <td class="col-num" id="DX_actual">10</td>
-            </tr>
-            <tr>
-              <td><strong>IQ</strong></td>
-              <td class="col-num">
-                <input id="IQ_base" type="number" min="1" max="20" value="10" />
-              </td>
-              <td class="col-num" id="IQ_race">0</td>
-              <td class="col-num">
-                <input id="IQ_mod" type="number" value="0" />
-              </td>
-              <td class="col-num" id="IQ_actual">10</td>
-            </tr>
-            <tr>
-              <td><strong>HT</strong></td>
-              <td class="col-num">
-                <input id="HT_base" type="number" min="1" max="20" value="10" />
-              </td>
-              <td class="col-num" id="HT_race">0</td>
-              <td class="col-num">
-                <input id="HT_mod" type="number" value="0" />
-              </td>
-              <td class="col-num" id="HT_actual">10</td>
-            </tr>
-          </tbody>
-        </table>
-      </details>
-    </div>
-
-    <!-- SECONDARY ATTRIBUTES -->
-    <div class="box box--attr">
-      <details>
-        <summary>Atributos Secundários</summary>
-        <table>
-          <thead>
-            <tr>
-              <th>Atributo</th>
-              <th class="col-num">Base</th>
-              <th class="col-num">Comprado</th>
-              <th class="col-num">Modificador</th>
-              <th class="col-num">Final</th>
-            </tr>
-          </thead>
-          <tbody id="secondaryTable"></tbody>
-        </table>
-      </details>
-    </div>
-
-    <!-- BASE DAMAGE -->
-    <div class="box box--attr">
-      <details>
-        <summary>Dano Base</summary>
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th class="col-num">Dados</th>
-              <th class="col-num">Mod. Base</th>
-              <th class="col-num">Modificador</th>
-              <th class="col-num">Final</th>
-            </tr>
-          </thead>
-          <tbody id="damageTable"></tbody>
-        </table>
-      </details>
-    </div>
-
-    <!-- ADVANTAGES -->
-    <div class="box box--trait">
-      <details>
-        <summary>Vantagens</summary>
-        <div class="controls-row">
-          <button id="loadAdvantagesBtn">Carregar Vantagens</button>
-          <select id="advTypeSelect">
-            <option value="">— Tipo —</option>
-          </select>
-          <select id="advSelect"></select>
-          <button id="addAdvBtn">Adicionar</button>
-        </div>
-        <div id="advList"></div>
-      </details>
-    </div>
-
-    <!-- DISADVANTAGES -->
-    <div class="box box--trait">
-      <details>
-        <summary>Desvantagens</summary>
-        <div class="controls-row">
-          <button id="loadDisadvantagesBtn">Carregar Desvantagens</button>
-          <select id="disTypeSelect">
-            <option value="">— Tipo —</option>
-          </select>
-          <select id="disSelect"></select>
-          <button id="addDisBtn">Adicionar</button>
-        </div>
-        <div id="disList"></div>
-      </details>
-    </div>
-
-    <!-- SKILLS -->
-    <div class="box box--trait">
-      <details>
-        <summary>Perícias</summary>
-        <div class="controls-row">
-          <button id="loadSkillsBtn">Carregar Perícias</button>
-          <select id="skillCategorySelect">
-            <option value="">— Categoria —</option>
-          </select>
-          <select id="skillSelect"></select>
-          <button id="addSkillBtn">Adicionar</button>
-        </div>
-        <div id="skillList"></div>
-      </details>
-    </div>
-
-    <!-- SPELLS -->
-    <div class="box box--magic">
-      <details>
-        <summary>Magias</summary>
-        <div class="controls-row">
-          <button id="loadSpellsBtn">Carregar Magias</button>
-          <select id="spellSchoolSelect">
-            <option value="">— Escola —</option>
-          </select>
-          <select id="spellSelect"></select>
-          <button id="addSpellBtn">Adicionar</button>
-        </div>
-        <div id="spellList"></div>
-      </details>
-    </div>
-
-    <!-- ARMORS -->
-    <div class="box box--equip">
-      <details>
-        <summary>Armaduras</summary>
-
-        <div class="controls-row">
-          <button id="loadArmorsBtn">Carregar Armaduras</button>
-          <select id="armorSlotSelect"></select>
-          <select id="armorNameSelect"></select>
-          <select id="armorTierSelect"></select>
-          <select id="armorMaterialSelect"></select>
-          <select id="armorStorage">
-            <option value="backpack">Mochila</option>
-            <option value="stash">Baú</option>
-            <option value="camp">Acampamento</option>
-          </select>
-          <button id="addArmorBtn">Adicionar Armadura</button>
+          </details>
         </div>
 
-        <div class="equip-sub">
+        <!-- Resume: weight + points -->
+        <div class="box box--resume">
           <details open>
-            <summary>Equipado</summary>
-            <div id="armorSlots"></div>
-          </details>
-          <details>
-            <summary>Armazenado</summary>
-            <div id="armorStorageList"></div>
+            <summary id="sec-resume"></summary>
+            <div class="resume-grid">
+
+              <!-- Weight col -->
+              <div class="resume-col">
+                <h3 class="resume-col-title" id="sec-resume-weight"></h3>
+                <div class="controls-row resume-base-weight-row">
+                  <label for="weight"><strong id="lbl-baseWeight"></strong></label>
+                  <input id="weight" type="number" value="0" style="width:70px" />
+                </div>
+                <table class="resume-table">
+                  <tbody id="resume_weight_tbody"></tbody>
+                </table>
+                <p class="resume-encumbrance">
+                  <strong id="lbl-encumbrance"></strong>
+                  <span id="encumbrance">—</span>
+                </p>
+                <div id="carry_limits"></div>
+
+                <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
+                <span id="armor_weight"  style="display:none">0</span>
+                <span id="shield_weight" style="display:none">0</span>
+                <span id="melee_weight"  style="display:none">0</span>
+                <span id="ranged_weight" style="display:none">0</span>
+                <span id="total_weight"  style="display:none">0</span>
+              </div>
+
+              <!-- Points col -->
+              <div class="resume-col">
+                <h3 class="resume-col-title" id="sec-resume-points"></h3>
+                <table class="resume-table">
+                  <thead>
+                    <tr>
+                      <th id="th-resume-category"></th>
+                      <th class="col-num" id="th-resume-points"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="resume_points_tbody"></tbody>
+                </table>
+              </div>
+            </div>
           </details>
         </div>
-      </details>
-    </div>
 
-    <!-- SHIELDS -->
-    <div class="box box--equip">
-      <details>
-        <summary>Escudos</summary>
-
-        <div class="controls-row">
-          <button id="loadShieldsBtn">Carregar Escudos</button>
-          <select id="shieldNameSelect"></select>
-          <select id="shieldTierSelect"></select>
-          <select id="shieldMaterialSelect"></select>
-          <select id="shieldStorage">
-            <option value="backpack">Mochila</option>
-            <option value="stash">Baú</option>
-            <option value="camp">Acampamento</option>
-          </select>
-          <button id="addShieldBtn">Adicionar Escudo</button>
-        </div>
-
-        <div class="equip-sub">
+        <!-- Attributes (parent expander) -->
+        <div class="box box--attr">
           <details open>
-            <summary>Equipado</summary>
-            <div id="shieldSlot"></div>
+            <summary id="sec-attributes"></summary>
+
+            <!-- Primary Attributes -->
+            <div class="box box--attr box--nested">
+              <details open>
+                <summary id="sec-primary-attr"></summary>
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th id="th-attr-attribute"></th>
+                        <th class="col-num" id="th-attr-base"></th>
+                        <th class="col-num" id="th-attr-race"></th>
+                        <th class="col-num" id="th-attr-modifier"></th>
+                        <th class="col-num" id="th-attr-actual"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>ST</strong></td>
+                        <td class="col-num"><input id="ST_base" type="number" min="1" max="20" value="10" /></td>
+                        <td class="col-num" id="ST_race">0</td>
+                        <td class="col-num"><input id="ST_mod" type="number" value="0" /></td>
+                        <td class="col-num" id="ST_actual">10</td>
+                      </tr>
+                      <tr>
+                        <td><strong>DX</strong></td>
+                        <td class="col-num"><input id="DX_base" type="number" min="1" max="20" value="10" /></td>
+                        <td class="col-num" id="DX_race">0</td>
+                        <td class="col-num"><input id="DX_mod" type="number" value="0" /></td>
+                        <td class="col-num" id="DX_actual">10</td>
+                      </tr>
+                      <tr>
+                        <td><strong>IQ</strong></td>
+                        <td class="col-num"><input id="IQ_base" type="number" min="1" max="20" value="10" /></td>
+                        <td class="col-num" id="IQ_race">0</td>
+                        <td class="col-num"><input id="IQ_mod" type="number" value="0" /></td>
+                        <td class="col-num" id="IQ_actual">10</td>
+                      </tr>
+                      <tr>
+                        <td><strong>HT</strong></td>
+                        <td class="col-num"><input id="HT_base" type="number" min="1" max="20" value="10" /></td>
+                        <td class="col-num" id="HT_race">0</td>
+                        <td class="col-num"><input id="HT_mod" type="number" value="0" /></td>
+                        <td class="col-num" id="HT_actual">10</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
+
+            <!-- Secondary Attributes -->
+            <div class="box box--attr box--nested">
+              <details>
+                <summary id="sec-secondary-attr"></summary>
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th id="th-sec-attribute"></th>
+                        <th class="col-num" id="th-sec-base"></th>
+                        <th class="col-num" id="th-sec-bought"></th>
+                        <th class="col-num" id="th-sec-modifier"></th>
+                        <th class="col-num" id="th-sec-final"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="secondaryTable"></tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
+
+            <!-- Base Damage -->
+            <div class="box box--attr box--nested">
+              <details>
+                <summary id="sec-base-damage"></summary>
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th id="th-dmg-type"></th>
+                        <th class="col-num" id="th-dmg-dice"></th>
+                        <th class="col-num" id="th-dmg-baseMod"></th>
+                        <th class="col-num" id="th-dmg-modifier"></th>
+                        <th class="col-num" id="th-dmg-final"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="damageTable"></tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
           </details>
+        </div>
+      </section>
+
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: TRAÇOS (Vantagens & Desvantagens only)
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-traits" class="l-section">
+        <div class="box box--trait">
           <details>
-            <summary>Armazenado</summary>
-            <div id="shieldStorageList"></div>
+            <summary id="sec-traits"></summary>
+
+            <!-- Advantages -->
+            <div class="box box--trait box--nested">
+              <details>
+                <summary id="sec-advantages"></summary>
+                <div class="controls-row">
+                  <button id="loadAdvantagesBtn"></button>
+                  <select id="advTypeSelect"><option value="" id="opt-adv-type"></option></select>
+                  <select id="advSelect"></select>
+                  <button id="addAdvBtn"></button>
+                </div>
+                <div id="advList"></div>
+              </details>
+            </div>
+
+            <!-- Disadvantages -->
+            <div class="box box--trait box--nested">
+              <details>
+                <summary id="sec-disadvantages"></summary>
+                <div class="controls-row">
+                  <button id="loadDisadvantagesBtn"></button>
+                  <select id="disTypeSelect"><option value="" id="opt-dis-type"></option></select>
+                  <select id="disSelect"></select>
+                  <button id="addDisBtn"></button>
+                </div>
+                <div id="disList"></div>
+              </details>
+            </div>
           </details>
         </div>
-      </details>
-    </div>
+      </section>
 
-    <!-- MELEE WEAPONS -->
-    <div class="box box--equip">
-      <details>
-        <summary>Armas Corpo a Corpo</summary>
-
-        <div class="controls-row">
-          <button id="loadMeleeWeaponsBtn">Carregar Armas Corpo a Corpo</button>
-          <select id="meleeNameSelect"></select>
-          <select id="meleeTierSelect"></select>
-          <select id="meleeMaterialSelect"></select>
-          <select id="meleeStorage">
-            <option value="equipped">Equipado</option>
-            <option value="backpack">Mochila</option>
-            <option value="stash">Baú</option>
-            <option value="camp">Acampamento</option>
-          </select>
-          <button id="addMeleeBtn">Adicionar Arma Corpo a Corpo</button>
-        </div>
-
-        <div class="equip-sub">
-          <details open>
-            <summary>Equipado</summary>
-            <div id="meleeSlots"></div>
-          </details>
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: PERÍCIAS
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-skills" class="l-section">
+        <div class="box box--trait">
           <details>
-            <summary>Armazenado</summary>
-            <div id="meleeStorageList"></div>
+            <summary id="sec-skills"></summary>
+            <div class="controls-row">
+              <button id="loadSkillsBtn"></button>
+              <select id="skillCategorySelect"><option value="" id="opt-skill-cat"></option></select>
+              <select id="skillSelect"></select>
+              <button id="addSkillBtn"></button>
+            </div>
+            <div id="skillList"></div>
           </details>
         </div>
-      </details>
-    </div>
+      </section>
 
-    <!-- RANGED WEAPONS -->
-    <div class="box box--equip">
-      <details>
-        <summary>Armas de Longo Alcance</summary>
-
-        <div class="controls-row">
-          <button id="loadRangedWeaponsBtn">
-            Carregar Armas de Longo Alcance
-          </button>
-          <select id="rangedNameSelect"></select>
-          <select id="rangedTierSelect"></select>
-          <select id="rangedMaterialSelect"></select>
-          <select id="rangedStorage">
-            <option value="equipped">Equipado</option>
-            <option value="backpack">Mochila</option>
-            <option value="stash">Baú</option>
-            <option value="camp">Acampamento</option>
-          </select>
-          <button id="addRangedBtn">Adicionar Arma de Longo Alcance</button>
-        </div>
-
-        <div class="equip-sub">
-          <details open>
-            <summary>Equipado</summary>
-            <div id="rangedSlots"></div>
-          </details>
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: MAGIA
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-magic" class="l-section">
+        <div class="box box--magic">
           <details>
-            <summary>Armazenado</summary>
-            <div id="rangedStorageList"></div>
+            <summary id="sec-magic"></summary>
+            <div class="controls-row">
+              <button id="loadSpellsBtn"></button>
+              <select id="spellSchoolSelect"><option value="" id="opt-school"></option></select>
+              <select id="spellSelect"></select>
+              <button id="addSpellBtn"></button>
+            </div>
+            <div id="spellList"></div>
           </details>
         </div>
-      </details>
-    </div>
+      </section>
 
-    <!-- INVENTORY -->
-    <div class="box box--inv">
-      <details>
-        <summary>Inventário</summary>
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: EQUIPAMENTO
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-equipment" class="l-section">
+        <div class="box box--equip">
+          <details>
+            <summary id="sec-equipment"></summary>
 
-        <div class="controls-row">
-          <label><strong>Peso Base:</strong></label>
-          <input id="weight" type="number" value="0" style="width: 80px" />
+            <!-- Armors -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-armor"></summary>
+                <div class="controls-row">
+                  <button id="loadArmorsBtn"></button>
+                  <select id="armorSlotSelect"></select>
+                  <select id="armorNameSelect"></select>
+                  <select id="armorTierSelect"></select>
+                  <select id="armorMaterialSelect"></select>
+                  <select id="armorStorage">
+                    <option value="backpack" id="opt-armor-backpack"></option>
+                    <option value="stash"    id="opt-armor-stash"></option>
+                    <option value="camp"     id="opt-armor-camp"></option>
+                  </select>
+                  <button id="addArmorBtn"></button>
+                </div>
+                <div class="equip-sub">
+                  <details open>
+                    <summary id="sec-armor-equipped"></summary>
+                    <div id="armorSlots"></div>
+                  </details>
+                  <details>
+                    <summary id="sec-armor-stored"></summary>
+                    <div id="armorStorageList"></div>
+                  </details>
+                </div>
+              </details>
+            </div>
+
+            <!-- Shields -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-shields"></summary>
+                <div class="controls-row">
+                  <button id="loadShieldsBtn"></button>
+                  <select id="shieldNameSelect"></select>
+                  <select id="shieldTierSelect"></select>
+                  <select id="shieldMaterialSelect"></select>
+                  <select id="shieldStorage">
+                    <option value="backpack" id="opt-shield-backpack"></option>
+                    <option value="stash"    id="opt-shield-stash"></option>
+                    <option value="camp"     id="opt-shield-camp"></option>
+                  </select>
+                  <button id="addShieldBtn"></button>
+                </div>
+                <div class="equip-sub">
+                  <details open>
+                    <summary id="sec-shield-equipped"></summary>
+                    <div id="shieldSlot"></div>
+                  </details>
+                  <details>
+                    <summary id="sec-shield-stored"></summary>
+                    <div id="shieldStorageList"></div>
+                  </details>
+                </div>
+              </details>
+            </div>
+
+            <!-- Melee -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-melee"></summary>
+                <div class="controls-row">
+                  <button id="loadMeleeWeaponsBtn"></button>
+                  <select id="meleeNameSelect"></select>
+                  <select id="meleeTierSelect"></select>
+                  <select id="meleeMaterialSelect"></select>
+                  <select id="meleeStorage">
+                    <option value="equipped"  id="opt-melee-equipped"></option>
+                    <option value="backpack"  id="opt-melee-backpack"></option>
+                    <option value="stash"     id="opt-melee-stash"></option>
+                    <option value="camp"      id="opt-melee-camp"></option>
+                  </select>
+                  <button id="addMeleeBtn"></button>
+                </div>
+                <div class="equip-sub">
+                  <details open>
+                    <summary id="sec-melee-equipped"></summary>
+                    <div id="meleeSlots"></div>
+                  </details>
+                  <details>
+                    <summary id="sec-melee-stored"></summary>
+                    <div id="meleeStorageList"></div>
+                  </details>
+                </div>
+              </details>
+            </div>
+
+            <!-- Ranged -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-ranged"></summary>
+                <div class="controls-row">
+                  <button id="loadRangedWeaponsBtn"></button>
+                  <select id="rangedNameSelect"></select>
+                  <select id="rangedTierSelect"></select>
+                  <select id="rangedMaterialSelect"></select>
+                  <select id="rangedStorage">
+                    <option value="equipped" id="opt-ranged-equipped"></option>
+                    <option value="backpack" id="opt-ranged-backpack"></option>
+                    <option value="stash"    id="opt-ranged-stash"></option>
+                    <option value="camp"     id="opt-ranged-camp"></option>
+                  </select>
+                  <button id="addRangedBtn"></button>
+                </div>
+                <div class="equip-sub">
+                  <details open>
+                    <summary id="sec-ranged-equipped"></summary>
+                    <div id="rangedSlots"></div>
+                  </details>
+                  <details>
+                    <summary id="sec-ranged-stored"></summary>
+                    <div id="rangedStorageList"></div>
+                  </details>
+                </div>
+              </details>
+            </div>
+          </details>
         </div>
+      </section>
 
-        <table style="width: auto; margin-bottom: 10px">
-          <thead>
-            <tr>
-              <th>Categoria</th>
-              <th class="col-num">Peso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Armadura</td>
-              <td class="col-num" id="armor_weight">0</td>
-            </tr>
-            <tr>
-              <td>Escudo</td>
-              <td class="col-num" id="shield_weight">0</td>
-            </tr>
-            <tr>
-              <td>Corpo a Corpo</td>
-              <td class="col-num" id="melee_weight">0</td>
-            </tr>
-            <tr>
-              <td>Longo Alcance</td>
-              <td class="col-num" id="ranged_weight">0</td>
-            </tr>
-            <tr>
-              <td><strong>Total</strong></td>
-              <td class="col-num"><strong id="total_weight">0</strong></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: INVENTÁRIO
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-inventory" class="l-section">
+        <div class="box box--inv">
+          <details>
+            <summary id="sec-inventory"></summary>
+            <p class="empty-storage" style="padding:12px 14px" id="lbl-inv-coming-soon"></p>
+          </details>
+        </div>
+      </section>
 
-        <p>
-          <strong>Sobrecarga:</strong>
-          <span id="encumbrance">Nenhuma (×0)</span>
-        </p>
+      <!-- ───────────────────────────────────────────────────────────────────
+           OUTPUT (debug)
+           ─────────────────────────────────────────────────────────────────── -->
+      <section id="section-output" class="l-section">
+        <div class="box box--output">
+          <details>
+            <summary id="sec-output"></summary>
+            <pre id="out"></pre>
+          </details>
+        </div>
+      </section>
+    </main>
 
-        <div id="carry_limits"></div>
-      </details>
-    </div>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MOBILE: Bottom tab navigation
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções">
+      <a href="#section-character"  class="bottomnav-link is-active" data-section="section-character">
+        <span class="bottomnav-icon" aria-hidden="true">1️⃣</span>
+        <span id="bnav-lbl-character"></span>
+      </a>
+      <a href="#section-traits"    class="bottomnav-link" data-section="section-traits">
+        <span class="bottomnav-icon" aria-hidden="true">2️⃣</span>
+        <span id="bnav-lbl-traits"></span>
+      </a>
+      <a href="#section-skills"    class="bottomnav-link" data-section="section-skills">
+        <span class="bottomnav-icon" aria-hidden="true">3️⃣</span>
+        <span id="bnav-lbl-skills"></span>
+      </a>
+      <a href="#section-magic"     class="bottomnav-link" data-section="section-magic">
+        <span class="bottomnav-icon" aria-hidden="true">4️⃣</span>
+        <span id="bnav-lbl-magic"></span>
+      </a>
+      <a href="#section-equipment" class="bottomnav-link" data-section="section-equipment">
+        <span class="bottomnav-icon" aria-hidden="true">5️⃣</span>
+        <span id="bnav-lbl-equipment"></span>
+      </a>
+      <a href="#section-inventory" class="bottomnav-link" data-section="section-inventory">
+        <span class="bottomnav-icon" aria-hidden="true">6️⃣</span>
+        <span id="bnav-lbl-inventory"></span>
+      </a>
+    </nav>
 
-    <!-- OUTPUT -->
-    <div class="box box--output">
-      <details open>
-        <summary>Saída</summary>
-        <pre id="out"></pre>
-      </details>
-    </div>
+    <!-- Hidden control required by events/index.js -->
+    <button id="runEngineBtn" style="display:none"></button>
 
     <script type="module" src="/js/main.js"></script>
+
+    <script type="module">
+      // ── Hydrate all static text from the localization file ──────────────────
+      // This is the only place static UI strings are set; everything reads from
+      // LABELS so swapping the import in pt-BR.js (or creating en-US.js) is enough.
+      import { LABELS, t } from "/js/localization/pt-BR.js";
+
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      function initAppShell() {
+        const L = LABELS;
+
+        // Top bar (mobile)
+        setText("topbar-title",     L.app.title);
+        setText("lbl-export-mobile",L.app.export);
+        setText("lbl-import-mobile",L.app.import);
+
+        // Sidebar (desktop)
+        setText("lbl-export",  L.app.export);
+        setText("lbl-import",  L.app.import);
+        setText("nav-lbl-character",  L.nav.character);
+        setText("nav-lbl-traits",     L.nav.traits);
+        setText("nav-lbl-skills",     L.nav.skills);
+        setText("nav-lbl-magic",      L.nav.magic);
+        setText("nav-lbl-equipment",  L.nav.equipment);
+        setText("nav-lbl-inventory",  L.nav.inventory);
+
+        // Bottom nav (mobile)
+        setText("bnav-lbl-character", L.nav.character);
+        setText("bnav-lbl-traits",    L.nav.traits);
+        setText("bnav-lbl-skills",    L.nav.skills);
+        setText("bnav-lbl-magic",     L.nav.magic);
+        setText("bnav-lbl-equipment", L.nav.equipment);
+        setText("bnav-lbl-inventory", L.nav.inventory);
+
+        // Section summaries
+        setText("sec-character",      L.sections.character);
+        setText("sec-character-info", L.sections.characterInfo);
+        setText("sec-race",           L.sections.race);
+        setText("sec-resume",         L.sections.resume?.title ?? L.resume.title);
+        setText("sec-attributes",     L.sections.attributes);
+        setText("sec-primary-attr",   L.sections.primaryAttributes);
+        setText("sec-secondary-attr", L.sections.secondaryAttributes);
+        setText("sec-base-damage",    L.sections.baseDamage);
+        setText("sec-traits",         L.sections.traits);
+        setText("sec-advantages",     L.sections.advantages);
+        setText("sec-disadvantages",  L.sections.disadvantages);
+        setText("sec-skills",         L.sections.skills);
+        setText("sec-magic",          L.sections.spells);
+        setText("sec-equipment",      L.sections.equipment);
+        setText("sec-armor",          L.sections.armor);
+        setText("sec-shields",        L.sections.shields);
+        setText("sec-melee",          L.sections.melee);
+        setText("sec-ranged",         L.sections.ranged);
+        setText("sec-inventory",      L.sections.inventory);
+        setText("sec-output",         L.output.title);
+
+        // Equip sub-summaries
+        setText("sec-armor-equipped",  L.sections.equipped);
+        setText("sec-armor-stored",    L.sections.stored);
+        setText("sec-shield-equipped", L.sections.equipped);
+        setText("sec-shield-stored",   L.sections.stored);
+        setText("sec-melee-equipped",  L.sections.equipped);
+        setText("sec-melee-stored",    L.sections.stored);
+        setText("sec-ranged-equipped", L.sections.equipped);
+        setText("sec-ranged-stored",   L.sections.stored);
+
+        // Character info labels
+        setText("lbl-playerName",    L.character.playerName);
+        setText("lbl-characterName", L.character.characterName);
+        setText("lbl-sex",           L.character.sex);
+        setText("lbl-age",           L.character.age);
+        setText("lbl-weight",        L.character.weight);
+
+        // Sex options
+        setText("opt-sex-none", L.character.sexOption);
+        setText("opt-sex-m",    L.character.sexMale);
+        setText("opt-sex-f",    L.character.sexFemale);
+
+        // Race
+        const loadRacesBtn = document.getElementById("loadRacesBtn");
+        if (loadRacesBtn) loadRacesBtn.textContent = L.character.loadRaces;
+        setText("opt-race-none",    L.character.selectRace);
+        setText("opt-subrace-none", L.character.selectSubRace);
+
+        // Resume labels
+        setText("sec-resume-weight", L.resume.weightTitle);
+        setText("sec-resume-points", L.resume.pointsTitle);
+        setText("lbl-baseWeight",    L.resume.baseWeightLabel);
+        setText("lbl-encumbrance",   L.resume.encumbrance + ":");
+        setText("th-resume-category",L.resume.category);
+        setText("th-resume-points",  L.resume.points);
+
+        // Primary attribute table headers
+        setText("th-attr-attribute", L.attributes.attribute);
+        setText("th-attr-base",      L.attributes.base);
+        setText("th-attr-race",      L.attributes.race);
+        setText("th-attr-modifier",  L.attributes.modifier);
+        setText("th-attr-actual",    L.attributes.actual);
+
+        // Secondary attribute table headers
+        setText("th-sec-attribute",  L.attributes.attribute);
+        setText("th-sec-base",       L.attributes.base);
+        setText("th-sec-bought",     L.attributes.bought);
+        setText("th-sec-modifier",   L.attributes.modifier);
+        setText("th-sec-final",      L.attributes.final);
+
+        // Damage table headers
+        setText("th-dmg-type",     L.attributes.type);
+        setText("th-dmg-dice",     L.attributes.dice);
+        setText("th-dmg-baseMod",  L.attributes.baseMod);
+        setText("th-dmg-modifier", L.attributes.modifier);
+        setText("th-dmg-final",    L.attributes.final);
+
+        // Trait section buttons & filters
+        const btn = (id, text) => { const b = document.getElementById(id); if (b) b.textContent = text; };
+        btn("loadAdvantagesBtn",    L.traits.loadAdvantages);
+        btn("addAdvBtn",            L.traits.addAdvantage);
+        btn("loadDisadvantagesBtn", L.traits.loadDisadvantages);
+        btn("addDisBtn",            L.traits.addDisadvantage);
+        btn("loadSkillsBtn",        L.traits.loadSkills);
+        btn("addSkillBtn",          L.traits.addSkill);
+        setText("opt-adv-type",  L.traits.typeFilter);
+        setText("opt-dis-type",  L.traits.typeFilter);
+        setText("opt-skill-cat", L.traits.categoryFilter);
+
+        // Magic
+        btn("loadSpellsBtn", L.magic.loadSpells);
+        btn("addSpellBtn",   L.magic.addSpell);
+        setText("opt-school", L.magic.schoolFilter);
+
+        // Equipment buttons
+        btn("loadArmorsBtn",       L.armor.loadArmors);
+        btn("addArmorBtn",         L.armor.addArmor);
+        btn("loadShieldsBtn",      L.shield.loadShields);
+        btn("addShieldBtn",        L.shield.addShield);
+        btn("loadMeleeWeaponsBtn", L.melee.loadMelee);
+        btn("addMeleeBtn",         L.melee.addMelee);
+        btn("loadRangedWeaponsBtn",L.ranged.loadRanged);
+        btn("addRangedBtn",        L.ranged.addRanged);
+
+        // Storage select options
+        const storageMap = [
+          ["opt-armor-backpack",  L.storage.backpack],
+          ["opt-armor-stash",     L.storage.stash],
+          ["opt-armor-camp",      L.storage.camp],
+          ["opt-shield-backpack", L.storage.backpack],
+          ["opt-shield-stash",    L.storage.stash],
+          ["opt-shield-camp",     L.storage.camp],
+          ["opt-melee-equipped",  L.storage.equipped],
+          ["opt-melee-backpack",  L.storage.backpack],
+          ["opt-melee-stash",     L.storage.stash],
+          ["opt-melee-camp",      L.storage.camp],
+          ["opt-ranged-equipped", L.storage.equipped],
+          ["opt-ranged-backpack", L.storage.backpack],
+          ["opt-ranged-stash",    L.storage.stash],
+          ["opt-ranged-camp",     L.storage.camp],
+        ];
+        storageMap.forEach(([id, text]) => setText(id, text));
+
+        // Inventory coming soon
+        setText("lbl-inv-coming-soon", L.inventory.comingSoon);
+
+        // sidebar action titles
+        const expBtn = document.getElementById("exportSheetBtn");
+        const impBtn = document.getElementById("importSheetBtn");
+        if (expBtn) expBtn.title = L.app.exportTitle;
+        if (impBtn) impBtn.title = L.app.importTitle;
+      }
+
+      initAppShell();
+
+      // ── Wire mobile export/import buttons to the same handlers ─────────────
+      // The actual logic lives in the events module bound to the desktop IDs.
+      // We simply forward click events so only one handler needs to exist.
+      function forwardClick(fromId, toId) {
+        const from = document.getElementById(fromId);
+        const to   = document.getElementById(toId);
+        if (from && to) from.addEventListener("click", () => to.click());
+      }
+      forwardClick("exportSheetBtn-mobile", "exportSheetBtn");
+      forwardClick("importSheetBtn-mobile", "importSheetBtn");
+
+      // ── Active nav highlighting (shared between sidebar & bottom nav) ────────
+      const allNavLinks = document.querySelectorAll(".sidebar-link, .bottomnav-link");
+
+      function setActiveNav(sectionId) {
+        allNavLinks.forEach(l =>
+          l.classList.toggle("is-active", l.dataset.section === sectionId)
+        );
+      }
+
+      // Click: smooth scroll + instant highlight
+      allNavLinks.forEach(link => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.getElementById(this.dataset.section);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+          setActiveNav(this.dataset.section);
+        });
+      });
+
+      // Scroll: highlight nav as sections come into view
+      const sections = document.querySelectorAll(".l-section");
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) setActiveNav(entry.target.id);
+          });
+        },
+        { threshold: 0.25 }
+      );
+      sections.forEach(s => observer.observe(s));
+    </script>
   </body>
 </html>
