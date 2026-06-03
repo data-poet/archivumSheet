@@ -174,7 +174,7 @@ function renderContainerSlot(inst, ammoData, containerData, sheet) {
         <span>${t("common.weight")}: ${totalWeight} kg</span>
         ${!isCarriable ? `<span class="ammo-not-carriable">${t("ammo.notCarriable")}</span>` : ""}
       </div>
-      <table class="ammo-contents-table">
+      <div class="table-wrapper"><table class="ammo-contents-table">
         <thead>
           <tr>
             <th>${t("common.name")}</th>
@@ -183,7 +183,7 @@ function renderContainerSlot(inst, ammoData, containerData, sheet) {
           </tr>
         </thead>
         <tbody>${contentsRows}</tbody>
-      </table>
+      </table></div>
       ${
         remainingCapacity > 0
           ? `<div class="ammo-add-to-container controls-row">
@@ -271,7 +271,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <table>
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>
@@ -282,7 +282,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table>
+    </table></div>
   `;
 }
 

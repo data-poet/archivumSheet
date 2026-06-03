@@ -5,28 +5,17 @@ import { removeAdv } from "../traits/advantages.js";
 import { removeDis } from "../traits/disadvantages.js";
 import { removeSkill, updateSkill } from "../traits/skills.js";
 import { removeSpell, updateSpell } from "../traits/spells.js";
+import { withOpenState, tableRowKeyFn } from "../shared/openState.js";
 
 const selected = state.selected;
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleTraitClick(e) {
-  if (e.target.classList.contains("remove-adv")) {
-    removeAdv(e.target.dataset.id);
-    return true;
-  }
-  if (e.target.classList.contains("remove-dis")) {
-    removeDis(e.target.dataset.id);
-    return true;
-  }
-  if (e.target.classList.contains("remove-skill")) {
-    removeSkill(e.target.dataset.id);
-    return true;
-  }
-  if (e.target.classList.contains("remove-spell")) {
-    removeSpell(e.target.dataset.name);
-    return true;
-  }
+  if (e.target.classList.contains("remove-adv"))   { removeAdv(e.target.dataset.id);     return true; }
+  if (e.target.classList.contains("remove-dis"))   { removeDis(e.target.dataset.id);     return true; }
+  if (e.target.classList.contains("remove-skill")) { removeSkill(e.target.dataset.id);   return true; }
+  if (e.target.classList.contains("remove-spell")) { removeSpell(e.target.dataset.name); return true; }
   return false;
 }
 
@@ -35,9 +24,8 @@ export function handleTraitClick(e) {
 export function handleTraitInput(e) {
   if (e.target.classList.contains("skill-input")) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
-    updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
-
-    withOpenState("#skillList", "[data-id]", "data-id", () => {
+    _updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
+    withOpenState("#skillList", tableRowKeyFn("data-id"), () => {
       renderLists(state.selected, state.data);
     });
     return true;
@@ -45,8 +33,7 @@ export function handleTraitInput(e) {
 
   if (e.target.classList.contains("spell-input")) {
     updateSpell(e.target.dataset.name, e.target.dataset.field, e.target.value);
-
-    withOpenState("#spellList", "[data-name]", "data-name", () => {
+    withOpenState("#spellList", tableRowKeyFn("data-name"), () => {
       renderLists(state.selected, state.data);
     });
     return true;
@@ -54,34 +41,38 @@ export function handleTraitInput(e) {
 
   if (e.target.classList.contains("secondary-input")) {
     const { name, field } = e.target.dataset;
-    const value = Number(e.target.value) || 0;
+    const raw = e.target.value;
 
-    if (!selected.secondary[name]) {
-      selected.secondary[name] = { bought: 0, modifier: 0 };
-    }
+    // Allow the user to finish typing a negative number or decimal:
+    // don't commit if the value is just "-", "-0", or ends with "."
+    if (/^-$|^-?0?\.$/.test(raw)) return true;
 
+    const value = parseFloat(raw);
+    if (isNaN(value)) return true;
+
+    if (!selected.secondary[name]) selected.secondary[name] = { bought: 0, modifier: 0 };
     if (field === "bought") {
       const max = name === "BasicSpeed" ? 6 : 5;
       selected.secondary[name].bought = Math.max(0, Math.min(max, value));
     }
-
     if (field === "modifier") {
       selected.secondary[name].modifier =
         name === "BasicSpeed" ? Math.round(value * 2) / 2 : value;
     }
-
     triggerAutoRun();
     return true;
   }
 
   if (e.target.classList.contains("damage-input")) {
     const { type } = e.target.dataset;
-    const value = Number(e.target.value) || 0;
+    const raw = e.target.value;
 
-    if (!selected.damage[type]) {
-      selected.damage[type] = { modifier: 0 };
-    }
+    if (/^-$/.test(raw)) return true; // allow "-" while typing
 
+    const value = parseInt(raw, 10);
+    if (isNaN(value)) return true;
+
+    if (!selected.damage[type]) selected.damage[type] = { modifier: 0 };
     selected.damage[type].modifier = value;
     triggerAutoRun();
     return true;
@@ -92,66 +83,16 @@ export function handleTraitInput(e) {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Snapshot which detail expanders are open inside a list container,
- * run a re-render callback, then restore the open state.
- *
- * @param {string}   listSelector  - e.g. "#skillList"
- * @param {string}   keySelector   - attribute selector for the key element, e.g. "[data-id]"
- * @param {string}   keyAttr       - dataset attribute name, e.g. "data-id"
- * @param {Function} renderFn      - callback that triggers the re-render
- */
-function withOpenState(listSelector, keySelector, keyAttr, renderFn) {
-  const open = new Set(
-    [
-      ...document.querySelectorAll(
-        `${listSelector} tr.detail-row details[open]`,
-      ),
-    ]
-      .map(
-        (d) =>
-          d.closest("tr").previousElementSibling?.querySelector(keySelector)?.[
-            keyAttr
-          ],
-      )
-      .filter(Boolean),
-  );
-
-  renderFn();
-
-  document
-    .querySelectorAll(`${listSelector} tr.detail-row details`)
-    .forEach((d) => {
-      const key = d
-        .closest("tr")
-        .previousElementSibling?.querySelector(keySelector)?.[keyAttr];
-      if (key && open.has(key)) d.setAttribute("open", "");
-    });
-}
-
-/**
- * After a base/modifier input changes, find the other input in the same row
- * and write base + modifier into the Final <td> (last non-action cell).
- */
-function updateFinalCell(changedInput, cssClass, key, attr) {
+function _updateFinalCell(changedInput, cssClass, key, attr) {
   const row = changedInput.closest("tr");
   if (!row) return;
-
-  // Collect both inputs in this row by class + matching key attribute
   const inputs = row.querySelectorAll(`input.${cssClass}[${attr}="${key}"]`);
-  let base = 0;
-  let mod = 0;
-
+  let base = 0, mod = 0;
   inputs.forEach((inp) => {
     const val = Number(inp.value) || 0;
-    if (inp.dataset.field === "base" || inp.dataset.field === "base_value") {
-      base = val;
-    } else if (inp.dataset.field === "modifier") {
-      mod = val;
-    }
+    if (inp.dataset.field === "base" || inp.dataset.field === "base_value") base = val;
+    else if (inp.dataset.field === "modifier") mod = val;
   });
-
-  // The Final cell is the <td> holding <strong> that comes after the modifier td
   const finalTd = row.querySelector("td strong");
   if (finalTd) finalTd.textContent = base + mod;
 }

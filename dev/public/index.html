@@ -104,7 +104,7 @@
 
         <!-- Character Info & Race -->
         <div class="box box--character">
-          <details open>
+          <details>
             <summary id="sec-character"></summary>
             <div class="character-panel-grid">
 
@@ -163,7 +163,7 @@
 
         <!-- Resume: weight + points -->
         <div class="box box--resume">
-          <details open>
+          <details>
             <summary id="sec-resume"></summary>
             <div class="resume-grid">
 
@@ -211,12 +211,12 @@
 
         <!-- Attributes (parent expander) -->
         <div class="box box--attr">
-          <details open>
+          <details>
             <summary id="sec-attributes"></summary>
 
             <!-- Primary Attributes -->
             <div class="box box--attr box--nested">
-              <details open>
+              <details>
                 <summary id="sec-primary-attr"></summary>
                 <div class="table-wrapper">
                   <table>
@@ -234,28 +234,28 @@
                         <td><strong>ST</strong></td>
                         <td class="col-num"><input id="ST_base" type="number" min="1" max="20" value="10" /></td>
                         <td class="col-num" id="ST_race">0</td>
-                        <td class="col-num"><input id="ST_mod" type="number" value="0" /></td>
+                        <td class="col-num"><input id="ST_mod" type="text" inputmode="numeric" value="0" /></td>
                         <td class="col-num" id="ST_actual">10</td>
                       </tr>
                       <tr>
                         <td><strong>DX</strong></td>
                         <td class="col-num"><input id="DX_base" type="number" min="1" max="20" value="10" /></td>
                         <td class="col-num" id="DX_race">0</td>
-                        <td class="col-num"><input id="DX_mod" type="number" value="0" /></td>
+                        <td class="col-num"><input id="DX_mod" type="text" inputmode="numeric" value="0" /></td>
                         <td class="col-num" id="DX_actual">10</td>
                       </tr>
                       <tr>
                         <td><strong>IQ</strong></td>
                         <td class="col-num"><input id="IQ_base" type="number" min="1" max="20" value="10" /></td>
                         <td class="col-num" id="IQ_race">0</td>
-                        <td class="col-num"><input id="IQ_mod" type="number" value="0" /></td>
+                        <td class="col-num"><input id="IQ_mod" type="text" inputmode="numeric" value="0" /></td>
                         <td class="col-num" id="IQ_actual">10</td>
                       </tr>
                       <tr>
                         <td><strong>HT</strong></td>
                         <td class="col-num"><input id="HT_base" type="number" min="1" max="20" value="10" /></td>
                         <td class="col-num" id="HT_race">0</td>
-                        <td class="col-num"><input id="HT_mod" type="number" value="0" /></td>
+                        <td class="col-num"><input id="HT_mod" type="text" inputmode="numeric" value="0" /></td>
                         <td class="col-num" id="HT_actual">10</td>
                       </tr>
                     </tbody>
@@ -410,7 +410,7 @@
                   <button id="addArmorBtn"></button>
                 </div>
                 <div class="equip-sub">
-                  <details open>
+                  <details>
                     <summary id="sec-armor-equipped"></summary>
                     <div id="armorSlots"></div>
                   </details>
@@ -439,7 +439,7 @@
                   <button id="addShieldBtn"></button>
                 </div>
                 <div class="equip-sub">
-                  <details open>
+                  <details>
                     <summary id="sec-shield-equipped"></summary>
                     <div id="shieldSlot"></div>
                   </details>
@@ -469,7 +469,7 @@
                   <button id="addMeleeBtn"></button>
                 </div>
                 <div class="equip-sub">
-                  <details open>
+                  <details>
                     <summary id="sec-melee-equipped"></summary>
                     <div id="meleeSlots"></div>
                   </details>
@@ -499,7 +499,7 @@
                   <button id="addRangedBtn"></button>
                 </div>
                 <div class="equip-sub">
-                  <details open>
+                  <details>
                     <summary id="sec-ranged-equipped"></summary>
                     <div id="rangedSlots"></div>
                   </details>
@@ -519,7 +519,7 @@
                 <div class="equip-sub">
 
                   <!-- Sub-section: Containers (Aljavas) -->
-                  <details open>
+                  <details>
                     <summary id="sec-ammo-containers"></summary>
                     <div class="controls-row">
                       <button id="loadAmmoBtn"></button>

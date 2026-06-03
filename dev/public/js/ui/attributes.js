@@ -5,7 +5,7 @@ import { state } from "../state.js";
 export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
-    const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
+    const mod  = Number(document.getElementById(`${attr}_mod`).value)  || 0;
     const raceMod =
       state.sheet?.character?.primary_attributes?.[attr]?.race_modifier ?? 0;
 
@@ -15,8 +15,7 @@ export function updateActualValues() {
       raceCell.className = `col-num race-mod-cell${raceMod !== 0 ? " race-mod-active" : ""}`;
     }
 
-    document.getElementById(`${attr}_actual`).textContent =
-      base + raceMod + mod;
+    document.getElementById(`${attr}_actual`).textContent = base + raceMod + mod;
   });
 }
 
@@ -31,14 +30,10 @@ export function renderSecondaryAttributes(sheet) {
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
 
-      const baseDisplay = isBasicSpeed
-        ? Number(data.base_value).toFixed(2)
-        : data.base_value;
-      const valueDisplay = isBasicSpeed
-        ? Number(data.value).toFixed(2)
-        : data.value;
+      const baseDisplay  = isBasicSpeed ? Number(data.base_value).toFixed(2) : data.base_value;
+      const valueDisplay = isBasicSpeed ? Number(data.value).toFixed(2)      : data.value;
 
-      const boughtMax = isBasicSpeed ? 6 : 5;
+      const boughtMax    = isBasicSpeed ? 6 : 5;
       const modifierStep = isBasicSpeed ? 0.5 : 1;
 
       return `
@@ -48,27 +43,38 @@ export function renderSecondaryAttributes(sheet) {
           <td>${baseDisplay}</td>
 
           <td>
-            <input
-              type="number"
-              class="secondary-input"
-              data-name="${name}"
-              data-field="bought"
-              min="0"
-              max="${boughtMax}"
-              step="1"
-              value="${data.bought}"
-            />
+            <div class="num-stepper">
+              <input
+                type="text"
+                inputmode="numeric"
+                class="secondary-input"
+                data-name="${name}"
+                data-field="bought"
+                value="${data.bought}"
+              />
+              <div class="stepper-btns">
+                <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+              </div>
+            </div>
           </td>
 
           <td>
-            <input
-              type="number"
-              class="secondary-input"
-              data-name="${name}"
-              data-field="modifier"
-              step="${modifierStep}"
-              value="${data.modifier}"
-            />
+            <div class="num-stepper">
+              <input
+                type="text"
+                inputmode="numeric"
+                class="secondary-input"
+                data-name="${name}"
+                data-field="modifier"
+                data-step="${modifierStep}"
+                value="${data.modifier}"
+              />
+              <div class="stepper-btns">
+                <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+              </div>
+            </div>
           </td>
 
           <td>${valueDisplay}</td>

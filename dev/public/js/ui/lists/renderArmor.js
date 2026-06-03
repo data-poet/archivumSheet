@@ -207,7 +207,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <table>
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("armor.slot")}</th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
@@ -215,6 +215,6 @@ function renderStorageSection(location, storedArmors, data, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table>
+    </table></div>
   `;
 }

@@ -18,8 +18,13 @@ export function calcMaxHp(baseHp, material) {
  * @param {number} maxHp
  * @returns {number}
  */
-export function clampHpModifier(value, maxHp) {
-  return Math.max(maxHp * -1, Math.min(0, Number(value) || 0));
+export function clampHpModifier(rawValue, maxHp) {
+  const str = String(rawValue ?? "");
+  // Allow the user to still be typing ("-" alone, or empty) — don't clamp yet
+  if (str === "" || str === "-") return 0;
+  const n = parseFloat(str);
+  if (isNaN(n)) return 0;
+  return Math.max(maxHp * -1, Math.min(0, n));
 }
 
 /**

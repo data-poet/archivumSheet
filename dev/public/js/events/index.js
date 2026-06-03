@@ -192,4 +192,19 @@ export function bindUI() {
     if (handleRangedChange(e)) return;
     if (handleAmmoChange(e)) return;
   });
+
+  // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".stepper-btn");
+    if (!btn) return;
+    const input = btn.closest(".num-stepper")?.querySelector("input");
+    if (!input) return;
+    const step = parseFloat(input.dataset.step ?? input.step) || 1;
+    const current = parseFloat(input.value) || 0;
+    const next = btn.classList.contains("stepper-inc")
+      ? current + step
+      : current - step;
+    input.value = next;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
 }

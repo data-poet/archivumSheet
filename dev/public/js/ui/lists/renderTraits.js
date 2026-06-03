@@ -2,15 +2,33 @@ import { setHTML } from "../../shared/dom.js";
 import { t } from "../../localization/pt-BR.js";
 import { formatRichText, detailRow } from "./renderUtils.js";
 
-// ===== HELPERS =====
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
 }
 
+/** Wraps a text/numeric input in a num-stepper with ± buttons on the right. */
+function numStepper(cls, dataAttrs, value, stepAttr = "") {
+  return `
+    <div class="num-stepper">
+      <input
+        type="text"
+        inputmode="numeric"
+        class="${cls}"
+        ${dataAttrs}
+        ${stepAttr}
+        value="${value}"
+      />
+      <div class="stepper-btns">
+        <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+        <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+      </div>
+    </div>`;
+}
+
 // ===== ADVANTAGES =====
 export function renderAdvantages(selected, data, sheet) {
-  // Read from sheet if available (engine is source of truth), fall back to selected
   const advMap = sheet?.character?.advantages ?? selected.advantages;
   const ids = Object.keys(advMap);
 
@@ -44,19 +62,14 @@ export function renderAdvantages(selected, data, sheet) {
             ${actionCell}
           </tr>
           ${detailRow(4, [
-            {
-              label: t("traits.source"),
-              value: book !== "—" ? `${book} p.${page}` : "—",
-            },
+            { label: t("traits.source"), value: book !== "—" ? `${book} p.${page}` : "—" },
             { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
 
-  setHTML(
-    "advList",
-    `
-    <table>
+  setHTML("advList", `
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
@@ -66,9 +79,8 @@ export function renderAdvantages(selected, data, sheet) {
         </tr>
       </thead>
       <tbody>${rows}</tbody>
-    </table>
-  `,
-  );
+    </table></div>
+  `);
 }
 
 // ===== DISADVANTAGES =====
@@ -81,9 +93,7 @@ export function renderDisadvantages(selected, data, sheet) {
       ? emptyRow(4)
       : ids
           .map((id) => {
-            const dis = data.disadvantages?.find(
-              (d) => d.disadvantage_id === id,
-            );
+            const dis = data.disadvantages?.find((d) => d.disadvantage_id === id);
             const sheetEntry = disMap[id];
             const name = dis?.disadvantage_box_name ?? sheetEntry?.name ?? id;
             const isInnate = sheetEntry?.is_race_innate ?? false;
@@ -108,19 +118,14 @@ export function renderDisadvantages(selected, data, sheet) {
             ${actionCell}
           </tr>
           ${detailRow(4, [
-            {
-              label: t("traits.source"),
-              value: book !== "—" ? `${book} p.${page}` : "—",
-            },
+            { label: t("traits.source"), value: book !== "—" ? `${book} p.${page}` : "—" },
             { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
 
-  setHTML(
-    "disList",
-    `
-    <table>
+  setHTML("disList", `
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
@@ -130,9 +135,8 @@ export function renderDisadvantages(selected, data, sheet) {
         </tr>
       </thead>
       <tbody>${rows}</tbody>
-    </table>
-  `,
-  );
+    </table></div>
+  `);
 }
 
 // ===== SKILLS =====
@@ -151,8 +155,8 @@ export function renderSkills(selected, data) {
             const book = skill?.skill_source_book ?? "—";
             const page = skill?.skill_source_page ?? "—";
             const desc = formatRichText(skill?.skill_description);
-            const base = skillState.base ?? 0;
-            const mod = skillState.modifier ?? 0;
+            const base  = skillState.base ?? 0;
+            const mod   = skillState.modifier ?? 0;
             const final = base + mod;
 
             return `
@@ -161,10 +165,10 @@ export function renderSkills(selected, data) {
             <td class="col-center">${attr}</td>
             <td class="col-center">${diff}</td>
             <td class="col-num">
-              <input type="number" class="skill-input" data-id="${id}" data-field="base" value="${base}" />
+              ${numStepper("skill-input", `data-id="${id}" data-field="base"`, base)}
             </td>
             <td class="col-num">
-              <input type="number" class="skill-input" data-id="${id}" data-field="modifier" value="${mod}" />
+              ${numStepper("skill-input", `data-id="${id}" data-field="modifier"`, mod)}
             </td>
             <td class="col-num"><strong>${final}</strong></td>
             <td class="col-action">
@@ -172,19 +176,14 @@ export function renderSkills(selected, data) {
             </td>
           </tr>
           ${detailRow(7, [
-            {
-              label: t("traits.source"),
-              value: book !== "—" ? `${book} p.${page}` : "—",
-            },
+            { label: t("traits.source"), value: book !== "—" ? `${book} p.${page}` : "—" },
             { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
 
-  setHTML(
-    "skillList",
-    `
-    <table>
+  setHTML("skillList", `
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
@@ -197,9 +196,8 @@ export function renderSkills(selected, data) {
         </tr>
       </thead>
       <tbody>${rows}</tbody>
-    </table>
-  `,
-  );
+    </table></div>
+  `);
 }
 
 // ===== SPELLS =====
@@ -229,10 +227,10 @@ export function renderSpells(selected, data) {
       ? emptyRow(COLS + 1)
       : entries
           .map(([name, spellState]) => {
-            const base = spellState.base_value ?? 0;
-            const mod = spellState.modifier ?? 0;
+            const base  = spellState.base_value ?? 0;
+            const mod   = spellState.modifier ?? 0;
             const final = base + mod;
-            const tier = getSpellTier(final);
+            const tier  = getSpellTier(final);
 
             const spell =
               data.spells?.find(
@@ -240,22 +238,20 @@ export function renderSpells(selected, data) {
                   normalize(s.spell_name) === normalize(name) &&
                   normalize(s.spell_tier) === normalize(tier),
               ) ??
-              data.spells?.find(
-                (s) => normalize(s.spell_name) === normalize(name),
-              );
+              data.spells?.find((s) => normalize(s.spell_name) === normalize(name));
 
-            const school = spell?.spell_school ?? "—";
-            const diff = spell?.spell_difficulty ?? "—";
-            const type = spell?.spell_type ?? "—";
-            const cost = spell?.spell_cost ?? "—";
+            const school   = spell?.spell_school ?? "—";
+            const diff     = spell?.spell_difficulty ?? "—";
+            const type     = spell?.spell_type ?? "—";
+            const cost     = spell?.spell_cost ?? "—";
             const castTime = spell?.spell_cast_time ?? "—";
-            const target = spell?.spell_target_type ?? "—";
-            const range = spell?.spell_range ?? "—";
-            const area = spell?.spell_effect_area ?? "—";
-            const scaling = formatRichText(spell?.spell_scaling);
+            const target   = spell?.spell_target_type ?? "—";
+            const range    = spell?.spell_range ?? "—";
+            const area     = spell?.spell_effect_area ?? "—";
+            const scaling  = formatRichText(spell?.spell_scaling);
             const duration = spell?.spell_duration ?? "—";
-            const desc = formatRichText(spell?.spell_description);
-            const obs = formatRichText(spell?.spell_observation);
+            const desc     = formatRichText(spell?.spell_description);
+            const obs      = formatRichText(spell?.spell_observation);
 
             return `
           <tr>
@@ -264,10 +260,10 @@ export function renderSpells(selected, data) {
             <td class="col-center">${diff}</td>
             <td class="col-center">${tier}</td>
             <td class="col-num">
-              <input type="number" class="spell-input" data-name="${name}" data-field="base_value" value="${base}" />
+              ${numStepper("spell-input", `data-name="${name}" data-field="base_value"`, base)}
             </td>
             <td class="col-num">
-              <input type="number" class="spell-input" data-name="${name}" data-field="modifier" value="${mod}" />
+              ${numStepper("spell-input", `data-name="${name}" data-field="modifier"`, mod)}
             </td>
             <td class="col-num"><strong>${final}</strong></td>
             <td class="col-action">
@@ -296,10 +292,8 @@ export function renderSpells(selected, data) {
           })
           .join("");
 
-  setHTML(
-    "spellList",
-    `
-    <table>
+  setHTML("spellList", `
+    <div class="table-wrapper"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
@@ -313,7 +307,6 @@ export function renderSpells(selected, data) {
         </tr>
       </thead>
       <tbody>${rows}</tbody>
-    </table>
-  `,
-  );
+    </table></div>
+  `);
 }
