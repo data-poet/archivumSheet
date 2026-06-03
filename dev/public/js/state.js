@@ -11,6 +11,8 @@ export const state = {
     ranged_weapons: [],
     materials: [],
     races: [],
+    ammo: [],
+    ammo_containers: [],
   },
 
   // ===== USER SELECTION =====
@@ -33,6 +35,8 @@ export const state = {
     shields: [],
     melee_weapons: [],
     ranged_weapons: [],
+    ammo_containers: [],
+    loose_ammo: [],
   },
 
   // ===== UI STATE =====

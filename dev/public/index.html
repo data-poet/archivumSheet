@@ -188,6 +188,7 @@
                 <span id="shield_weight" style="display:none">0</span>
                 <span id="melee_weight"  style="display:none">0</span>
                 <span id="ranged_weight" style="display:none">0</span>
+                <span id="ammo_weight"   style="display:none">0</span>
                 <span id="total_weight"  style="display:none">0</span>
               </div>
 
@@ -509,6 +510,51 @@
                 </div>
               </details>
             </div>
+
+            <!-- Ammo -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-ammo"></summary>
+
+                <div class="equip-sub">
+
+                  <!-- Sub-section: Containers (Aljavas) -->
+                  <details open>
+                    <summary id="sec-ammo-containers"></summary>
+                    <div class="controls-row">
+                      <button id="loadAmmoBtn"></button>
+                      <select id="ammoContainerSelect"></select>
+                      <select id="ammoContainerStorage">
+                        <option value="equipped"  id="opt-ammo-cont-equipped"></option>
+                        <option value="backpack"  id="opt-ammo-cont-backpack"></option>
+                        <option value="stash"     id="opt-ammo-cont-stash"></option>
+                        <option value="camp"      id="opt-ammo-cont-camp"></option>
+                      </select>
+                      <button id="addAmmoContainerBtn"></button>
+                    </div>
+                    <div id="ammoContainerList"></div>
+                  </details>
+
+                  <!-- Sub-section: Loose Ammo -->
+                  <details>
+                    <summary id="sec-ammo-loose"></summary>
+                    <div class="controls-row">
+                      <select id="looseAmmoTypeFilter"></select>
+                      <select id="looseAmmoSelect"></select>
+                      <input id="looseAmmoQty" type="number" min="1" value="1" style="width:64px" />
+                      <select id="looseAmmoStorage">
+                        <option value="backpack" id="opt-loose-backpack"></option>
+                        <option value="stash"    id="opt-loose-stash"></option>
+                        <option value="camp"     id="opt-loose-camp"></option>
+                      </select>
+                      <button id="addLooseAmmoBtn"></button>
+                    </div>
+                    <div id="looseAmmoList"></div>
+                  </details>
+
+                </div>
+              </details>
+            </div>
           </details>
         </div>
       </section>
@@ -629,6 +675,7 @@
         setText("sec-shields",        L.sections.shields);
         setText("sec-melee",          L.sections.melee);
         setText("sec-ranged",         L.sections.ranged);
+        setText("sec-ammo",           L.sections.munition);
         setText("sec-inventory",      L.sections.inventory);
         setText("sec-output",         L.output.title);
 
@@ -641,6 +688,8 @@
         setText("sec-melee-stored",    L.sections.stored);
         setText("sec-ranged-equipped", L.sections.equipped);
         setText("sec-ranged-stored",   L.sections.stored);
+        setText("sec-ammo-containers", L.ammo.containers);
+        setText("sec-ammo-loose",      L.ammo.looseAmmo);
 
         // Character info labels
         setText("lbl-playerName",    L.character.playerName);
@@ -715,6 +764,9 @@
         btn("addMeleeBtn",         L.melee.addMelee);
         btn("loadRangedWeaponsBtn",L.ranged.loadRanged);
         btn("addRangedBtn",        L.ranged.addRanged);
+        btn("loadAmmoBtn",         L.ammo.loadAmmo);
+        btn("addAmmoContainerBtn", L.ammo.addContainer);
+        btn("addLooseAmmoBtn",     L.ammo.addLooseAmmo);
 
         // Storage select options
         const storageMap = [
@@ -732,6 +784,13 @@
           ["opt-ranged-backpack", L.storage.backpack],
           ["opt-ranged-stash",    L.storage.stash],
           ["opt-ranged-camp",     L.storage.camp],
+          ["opt-ammo-cont-equipped", L.storage.equipped],
+          ["opt-ammo-cont-backpack", L.storage.backpack],
+          ["opt-ammo-cont-stash",    L.storage.stash],
+          ["opt-ammo-cont-camp",     L.storage.camp],
+          ["opt-loose-backpack", L.storage.backpack],
+          ["opt-loose-stash",    L.storage.stash],
+          ["opt-loose-camp",     L.storage.camp],
         ];
         storageMap.forEach(([id, text]) => setText(id, text));
 

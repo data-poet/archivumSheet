@@ -8,6 +8,7 @@ import { renderArmorSlots, renderStoredArmors } from "./renderArmor.js";
 import { renderEquippedShield, renderStoredShields } from "./renderShield.js";
 import { renderEquippedMelee, renderStoredMelee } from "./renderMelee.js";
 import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
+import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 
 /**
  * Re-render all list UI sections.
@@ -29,4 +30,6 @@ export function renderLists(selected, data, sheet) {
   renderStoredMelee(selected, data, sheet);
   renderEquippedRanged(selected, data, sheet);
   renderStoredRanged(selected, data, sheet);
+  renderAmmoContainers(selected, data, sheet);
+  renderLooseAmmo(selected, data, sheet);
 }

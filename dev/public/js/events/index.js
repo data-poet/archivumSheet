@@ -34,6 +34,7 @@ import {
   loadRangedWeapons,
   updateRangedTierOptions,
 } from "../inventory/ranged.js";
+import { loadAmmo, updateLooseAmmoOptions } from "../inventory/ammo.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 import {
   loadRaces,
@@ -70,6 +71,13 @@ import {
   handleRangedChange,
   handleAddRanged,
 } from "./rangedEvents.js";
+import {
+  handleAmmoClick,
+  handleAmmoInput,
+  handleAmmoChange,
+  handleAddContainer,
+  handleAddLooseAmmo,
+} from "./ammoEvents.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BIND ALL UI LISTENERS
@@ -121,6 +129,12 @@ export function bindUI() {
   on("rangedNameSelect", "change", updateRangedTierOptions);
   on("addRangedBtn", "click", handleAddRanged);
 
+  // ── Ammo ──────────────────────────────────────────────────────────────────
+  on("loadAmmoBtn", "click", loadAmmo);
+  on("looseAmmoTypeFilter", "change", updateLooseAmmoOptions);
+  on("addAmmoContainerBtn", "click", handleAddContainer);
+  on("addLooseAmmoBtn", "click", handleAddLooseAmmo);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -155,6 +169,7 @@ export function bindUI() {
     if (handleShieldClick(e)) return;
     if (handleMeleeClick(e)) return;
     if (handleRangedClick(e)) return;
+    if (handleAmmoClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -165,6 +180,7 @@ export function bindUI() {
     if (handleShieldInput(e)) return;
     if (handleMeleeInput(e)) return;
     if (handleRangedInput(e)) return;
+    if (handleAmmoInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -174,5 +190,6 @@ export function bindUI() {
     if (handleShieldChange(e)) return;
     if (handleMeleeChange(e)) return;
     if (handleRangedChange(e)) return;
+    if (handleAmmoChange(e)) return;
   });
 }

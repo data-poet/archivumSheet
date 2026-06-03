@@ -1175,3 +1175,59 @@ h4 {
   gap: 8px;
   margin-bottom: 14px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AMMO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ammo-container-slot {
+  margin-bottom: 0;
+}
+
+.ammo-type-badge {
+  display: inline-block;
+  background: var(--color-accent, #4a6fa5);
+  color: #fff;
+  font-size: var(--fs-xxs);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ammo-container-body {
+  padding: 6px 10px 10px 10px;
+  border-left: 2px solid var(--color-border, #333);
+  margin: 0 0 12px 4px;
+}
+
+.ammo-container-meta {
+  display: flex;
+  gap: 14px;
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ammo-not-carriable {
+  color: var(--color-danger, #e55);
+  font-weight: 600;
+}
+
+.ammo-contents-table {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.ammo-add-to-container {
+  margin-top: 6px;
+}
+
+.ammo-full {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin: 4px 0 0;
+  font-style: italic;
+}

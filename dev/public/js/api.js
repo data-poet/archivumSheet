@@ -64,6 +64,14 @@ export async function fetchRangedWeapons() {
   return getJSON("/api/ranged_weapons");
 }
 
+export async function fetchAmmo() {
+  return getJSON("/api/ammo");
+}
+
+export async function fetchAmmoContainers() {
+  return getJSON("/api/ammo_containers");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

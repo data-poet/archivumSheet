@@ -28,7 +28,8 @@ function renderResumeWeight(sheet) {
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
   const meleeWeight  = sheet?.inventory?.melee?.carried_melee_weight   || 0;
   const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
-  const totalWeight  = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight;
+  const ammoWeight   = sheet?.inventory?.ammo?.carried_ammo_weight     || 0;
+  const totalWeight  = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight;
 
   // Encumbrance key
   let stateKey = "none";
@@ -64,6 +65,10 @@ function renderResumeWeight(sheet) {
         <td>${t("resume.rangedWeight")}</td>
         <td class="col-num">${rangedWeight}</td>
       </tr>
+      <tr>
+        <td>${t("ammo.ammoWeight")}</td>
+        <td class="col-num">${ammoWeight}</td>
+      </tr>
       <tr class="resume-total-row">
         <td><strong>${t("resume.totalWeight")}</strong></td>
         <td class="col-num"><strong>${totalWeight}</strong></td>
@@ -78,6 +83,7 @@ function renderResumeWeight(sheet) {
   set("shield_weight", shieldWeight);
   set("melee_weight",  meleeWeight);
   set("ranged_weight", rangedWeight);
+  set("ammo_weight",   ammoWeight);
   set("total_weight",  totalWeight);
   set("encumbrance", encumbranceLabel);
 

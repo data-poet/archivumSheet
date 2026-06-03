@@ -243,6 +243,31 @@ export const LABELS = {
     prec: "PREC",
   },
 
+  // ── Equipment: Ammo ───────────────────────────────────────────────────────
+  ammo: {
+    loadAmmo: "Carregar Munição",
+    addContainer: "Adicionar Aljava",
+    addLooseAmmo: "Adicionar Solta",
+    addAmmo: "Adicionar",
+    containers: "Aljavas",
+    looseAmmo: "Munição Solta",
+    noContainers: "Nenhuma aljava adicionada",
+    containerFull: "Aljava cheia",
+    notCarriable: "Não carregável",
+    capacity: "Capacidade",
+    qty: "Qtd.",
+    ammoType: "— Tipo —",
+    selectContainer: "— Aljava —",
+    selectAmmo: "— Munição —",
+    equippedAmmo: "Munição Equipada",
+    ammoWeight: "Munição",
+    category: "Categoria",
+    price: "Preço",
+    weight: "Peso",
+    effect: "Efeito",
+    description: "Descrição",
+  },
+
   // ── Storage locations ─────────────────────────────────────────────────────
   storage: {
     backpack: "Mochila",

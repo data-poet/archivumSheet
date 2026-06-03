@@ -1,0 +1,135 @@
+import { state } from "../state.js";
+import {
+  addContainer,
+  moveContainer,
+  removeContainer,
+  addAmmoToContainer,
+  updateContainerAmmoQuantity,
+  removeAmmoFromContainer,
+  addLooseAmmo,
+  updateLooseAmmoQuantity,
+  removeLooseAmmo,
+  updateAmmoOptions,
+  updateLooseAmmoOptions,
+  updateLooseAmmoTypeFilter,
+} from "../inventory/ammo.js";
+
+// ─── Click ────────────────────────────────────────────────────────────────────
+
+export function handleAmmoClick(e) {
+  if (e.target.classList.contains("remove-ammo-container")) {
+    removeContainer(e.target.dataset.instanceId);
+    return true;
+  }
+
+  if (e.target.classList.contains("remove-ammo-from-container")) {
+    removeAmmoFromContainer(
+      e.target.dataset.instanceId,
+      e.target.dataset.ammoId,
+    );
+    return true;
+  }
+
+  if (e.target.classList.contains("add-ammo-to-container-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    const ammoSelect = document.querySelector(
+      `.ammo-select-for-container[data-instance-id="${instanceId}"]`,
+    );
+    const qtyInput = document.querySelector(
+      `.ammo-qty-add-input[data-instance-id="${instanceId}"]`,
+    );
+    if (!ammoSelect || !qtyInput) return true;
+
+    const ammoId = ammoSelect.value;
+    const quantity = parseInt(qtyInput.value, 10);
+    if (!ammoId || isNaN(quantity) || quantity <= 0) return true;
+
+    addAmmoToContainer(instanceId, ammoId, quantity);
+    return true;
+  }
+
+  if (e.target.classList.contains("remove-loose-ammo")) {
+    removeLooseAmmo(e.target.dataset.ammoId, e.target.dataset.storedAt);
+    return true;
+  }
+
+  return false;
+}
+
+// ─── Input ────────────────────────────────────────────────────────────────────
+
+export function handleAmmoInput(e) {
+  if (e.target.classList.contains("ammo-qty-in-container")) {
+    const instanceId = e.target.dataset.instanceId;
+    const ammoId = e.target.dataset.ammoId;
+    const quantity = parseInt(e.target.value, 10);
+    if (!instanceId || !ammoId) return true;
+    updateContainerAmmoQuantity(instanceId, ammoId, isNaN(quantity) ? 0 : quantity);
+    return true;
+  }
+
+  if (e.target.classList.contains("loose-ammo-qty")) {
+    const ammoId = e.target.dataset.ammoId;
+    const storedAt = e.target.dataset.storedAt;
+    const quantity = parseInt(e.target.value, 10);
+    if (!ammoId || !storedAt) return true;
+    updateLooseAmmoQuantity(ammoId, storedAt, isNaN(quantity) ? 0 : quantity);
+    return true;
+  }
+
+  return false;
+}
+
+// ─── Change ───────────────────────────────────────────────────────────────────
+
+export function handleAmmoChange(e) {
+  if (e.target.classList.contains("ammo-container-storage-select")) {
+    moveContainer(e.target.dataset.instanceId, e.target.value);
+    return true;
+  }
+
+  if (e.target.id === "ammoTypeFilter") {
+    updateAmmoOptions();
+    return true;
+  }
+
+  if (e.target.id === "looseAmmoTypeFilter") {
+    updateLooseAmmoTypeFilter();
+    updateLooseAmmoOptions();
+    return true;
+  }
+
+  return false;
+}
+
+// ─── Add-form: container ──────────────────────────────────────────────────────
+
+export function handleAddContainer() {
+  const containerSelect = document.getElementById("ammoContainerSelect");
+  const storageSelect = document.getElementById("ammoContainerStorage");
+  if (!containerSelect || !storageSelect) return;
+
+  const containerId = containerSelect.value;
+  const storedAt = storageSelect.value;
+  if (!containerId) return;
+
+  addContainer(containerId, storedAt);
+}
+
+// ─── Add-form: loose ammo ─────────────────────────────────────────────────────
+
+export function handleAddLooseAmmo() {
+  const ammoSelect = document.getElementById("looseAmmoSelect");
+  const qtyInput = document.getElementById("looseAmmoQty");
+  const storageSelect = document.getElementById("looseAmmoStorage");
+  if (!ammoSelect || !qtyInput || !storageSelect) return;
+
+  const ammoId = ammoSelect.value;
+  const quantity = parseInt(qtyInput.value, 10);
+  const storedAt = storageSelect.value;
+
+  if (!ammoId || isNaN(quantity) || quantity <= 0) return;
+
+  addLooseAmmo(ammoId, quantity, storedAt);
+  qtyInput.value = "1";
+}

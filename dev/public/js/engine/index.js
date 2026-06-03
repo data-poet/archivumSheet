@@ -115,6 +115,8 @@ export async function runEngine() {
         shield: selected.shields,
         melee: selected.melee_weapons,
         ranged: selected.ranged_weapons,
+        ammo_containers: selected.ammo_containers,
+        loose_ammo: selected.loose_ammo,
       },
     });
 
