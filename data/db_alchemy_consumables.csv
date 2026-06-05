@@ -1,0 +1,1231 @@
+consumable_id,consumable_name,consumable_box_name,consumable_tier,consumable_type,consumable_category,consumable_ingredients,consumable_duration,consumable_effect,consumable_toxicity,consumable_price,consumable_weight,consumable_description,consumable_observation,consumable_method,consumable_effect_area
+POTION-000,Purificador,Purificador | Comum,Comum,Poção,Utilidade,,Instantânea,Remove 1d6 de toxicidade.,0.0,15,0.5,"
+- Um líquido de coloração branca leitosa, homogênea e suave, com brilho discreto que lembra porcelana polida sob a luz.
+- Diferente de outras poções, não apresenta redemoinhos intensos; seu conteúdo permanece estável, formando ondulações lentas e perfeitamente uniformes quando o frasco é movimentado, como se impurezas simplesmente não pudessem existir em sua presença.
+- Sua consistência é levemente sedosa, mais encorpada que água, mas sem viscosidade pesada.
+- O aroma é limpo e sereno — notas minerais suaves, vapor quente e um traço quase imperceptível de ervas purificadoras.
+- Ao ser ingerido, a sensação é imediata e silenciosa: um frescor que percorre o corpo seguido por uma neutralidade profunda, como se excessos, resíduos e influências estranhas fossem dissolvidos. Qualquer desconforto associado a toxinas parece recuar abruptamente, deixando apenas clareza física e estabilidade.","
+- Qualquer efeito alquímico ativo será cessado.",,
+POTION-001,Purificador,Purificador | Boa,Boa,Poção,Utilidade,,Instantânea,Remove 1d6 + 6 de toxicidade.,0.0,30,0.4,"
+- Um líquido de coloração branca leitosa, homogênea e suave, com brilho discreto que lembra porcelana polida sob a luz.
+- Diferente de outras poções, não apresenta redemoinhos intensos; seu conteúdo permanece estável, formando ondulações lentas e perfeitamente uniformes quando o frasco é movimentado, como se impurezas simplesmente não pudessem existir em sua presença.
+- Sua consistência é levemente sedosa, mais encorpada que água, mas sem viscosidade pesada.
+- O aroma é limpo e sereno — notas minerais suaves, vapor quente e um traço quase imperceptível de ervas purificadoras.
+- Ao ser ingerido, a sensação é imediata e silenciosa: um frescor que percorre o corpo seguido por uma neutralidade profunda, como se excessos, resíduos e influências estranhas fossem dissolvidos. Qualquer desconforto associado a toxinas parece recuar abruptamente, deixando apenas clareza física e estabilidade.","
+- Qualquer efeito alquímico ativo será cessado.",,
+POTION-002,Purificador,Purificador | Superior,Superior,Poção,Utilidade,,Instantânea,Remove 1d6 + 12 de toxicidade.,0.0,60,0.3,"
+- Um líquido de coloração branca leitosa, homogênea e suave, com brilho discreto que lembra porcelana polida sob a luz.
+- Diferente de outras poções, não apresenta redemoinhos intensos; seu conteúdo permanece estável, formando ondulações lentas e perfeitamente uniformes quando o frasco é movimentado, como se impurezas simplesmente não pudessem existir em sua presença.
+- Sua consistência é levemente sedosa, mais encorpada que água, mas sem viscosidade pesada.
+- O aroma é limpo e sereno — notas minerais suaves, vapor quente e um traço quase imperceptível de ervas purificadoras.
+- Ao ser ingerido, a sensação é imediata e silenciosa: um frescor que percorre o corpo seguido por uma neutralidade profunda, como se excessos, resíduos e influências estranhas fossem dissolvidos. Qualquer desconforto associado a toxinas parece recuar abruptamente, deixando apenas clareza física e estabilidade.","
+- Qualquer efeito alquímico ativo será cessado.",,
+POTION-003,Purificador,Purificador | Excelente,Excelente,Poção,Utilidade,,Instantânea,Remove 1d6 + 18 de toxicidade.,0.0,120,0.2,"
+- Um líquido de coloração branca leitosa, homogênea e suave, com brilho discreto que lembra porcelana polida sob a luz.
+- Diferente de outras poções, não apresenta redemoinhos intensos; seu conteúdo permanece estável, formando ondulações lentas e perfeitamente uniformes quando o frasco é movimentado, como se impurezas simplesmente não pudessem existir em sua presença.
+- Sua consistência é levemente sedosa, mais encorpada que água, mas sem viscosidade pesada.
+- O aroma é limpo e sereno — notas minerais suaves, vapor quente e um traço quase imperceptível de ervas purificadoras.
+- Ao ser ingerido, a sensação é imediata e silenciosa: um frescor que percorre o corpo seguido por uma neutralidade profunda, como se excessos, resíduos e influências estranhas fossem dissolvidos. Qualquer desconforto associado a toxinas parece recuar abruptamente, deixando apenas clareza física e estabilidade.","
+- Qualquer efeito alquímico ativo será cessado.",,
+POTION-004,Purificador,Purificador | Obra-Prima,Obra-Prima,Poção,Utilidade,,Instantânea,Remove 1d6 + 24 de toxicidade.,0.0,240,0.1,"
+- Um líquido de coloração branca leitosa, homogênea e suave, com brilho discreto que lembra porcelana polida sob a luz.
+- Diferente de outras poções, não apresenta redemoinhos intensos; seu conteúdo permanece estável, formando ondulações lentas e perfeitamente uniformes quando o frasco é movimentado, como se impurezas simplesmente não pudessem existir em sua presença.
+- Sua consistência é levemente sedosa, mais encorpada que água, mas sem viscosidade pesada.
+- O aroma é limpo e sereno — notas minerais suaves, vapor quente e um traço quase imperceptível de ervas purificadoras.
+- Ao ser ingerido, a sensação é imediata e silenciosa: um frescor que percorre o corpo seguido por uma neutralidade profunda, como se excessos, resíduos e influências estranhas fossem dissolvidos. Qualquer desconforto associado a toxinas parece recuar abruptamente, deixando apenas clareza física e estabilidade.","
+- Qualquer efeito alquímico ativo será cessado.",,
+POTION-005,Poção de Vida,Poção de Vida | Comum,Comum,Poção,Restauração,,Instantânea,Restaura 1d6 PV.,5.0,30,0.5,"
+- Um líquido límpido de coloração rubi translúcida, cuja tonalidade varia suavemente conforme a luz, lembrando sangue visto através de cristal.
+- Quando agitada, forma redemoinhos mais claros que desaparecem lentamente, como se a própria energia do conteúdo estivesse se reorganizando. A viscosidade é levemente superior à da água, permitindo que escorra pelo vidro com elegância sedosa.
+- Seu aroma é suave e reconfortante — notas de ervas frescas, mel discreto e um fundo mineral limpo. Ao ser ingerida, espalha uma sensação imediata de calor controlado pelo corpo, não como fogo, mas como vitalidade retornando aos tecidos.
+- Pequenas dores diminuem, a respiração se aprofunda e a pele parece recuperar cor e firmeza, como se o corpo fosse gentilmente lembrado de como se reconstruir.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes.
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-006,Poção de Vida,Poção de Vida | Boa,Boa,Poção,Restauração,,Instantânea,Restaura 1d6 + 6 PV.,4.0,60,0.4,"
+- Um líquido límpido de coloração rubi translúcida, cuja tonalidade varia suavemente conforme a luz, lembrando sangue visto através de cristal.
+- Quando agitada, forma redemoinhos mais claros que desaparecem lentamente, como se a própria energia do conteúdo estivesse se reorganizando. A viscosidade é levemente superior à da água, permitindo que escorra pelo vidro com elegância sedosa.
+- Seu aroma é suave e reconfortante — notas de ervas frescas, mel discreto e um fundo mineral limpo. Ao ser ingerida, espalha uma sensação imediata de calor controlado pelo corpo, não como fogo, mas como vitalidade retornando aos tecidos.
+- Pequenas dores diminuem, a respiração se aprofunda e a pele parece recuperar cor e firmeza, como se o corpo fosse gentilmente lembrado de como se reconstruir.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes.
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-007,Poção de Vida,Poção de Vida | Superior,Superior,Poção,Restauração,,Instantânea,Restaura 1d6 + 12 PV.,3.0,120,0.3,"
+- Um líquido límpido de coloração rubi translúcida, cuja tonalidade varia suavemente conforme a luz, lembrando sangue visto através de cristal.
+- Quando agitada, forma redemoinhos mais claros que desaparecem lentamente, como se a própria energia do conteúdo estivesse se reorganizando. A viscosidade é levemente superior à da água, permitindo que escorra pelo vidro com elegância sedosa.
+- Seu aroma é suave e reconfortante — notas de ervas frescas, mel discreto e um fundo mineral limpo. Ao ser ingerida, espalha uma sensação imediata de calor controlado pelo corpo, não como fogo, mas como vitalidade retornando aos tecidos.
+- Pequenas dores diminuem, a respiração se aprofunda e a pele parece recuperar cor e firmeza, como se o corpo fosse gentilmente lembrado de como se reconstruir.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes.
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-008,Poção de Vida,Poção de Vida | Excelente,Excelente,Poção,Restauração,,Instantânea,Restaura 1d6 + 18 PV.,2.0,240,0.2,"
+- Um líquido límpido de coloração rubi translúcida, cuja tonalidade varia suavemente conforme a luz, lembrando sangue visto através de cristal.
+- Quando agitada, forma redemoinhos mais claros que desaparecem lentamente, como se a própria energia do conteúdo estivesse se reorganizando. A viscosidade é levemente superior à da água, permitindo que escorra pelo vidro com elegância sedosa.
+- Seu aroma é suave e reconfortante — notas de ervas frescas, mel discreto e um fundo mineral limpo. Ao ser ingerida, espalha uma sensação imediata de calor controlado pelo corpo, não como fogo, mas como vitalidade retornando aos tecidos.
+- Pequenas dores diminuem, a respiração se aprofunda e a pele parece recuperar cor e firmeza, como se o corpo fosse gentilmente lembrado de como se reconstruir.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes.
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-009,Poção de Vida,Poção de Vida | Obra-Prima,Obra-Prima,Poção,Restauração,,Instantânea,Restaura 1d6 + 24 PV.,1.0,480,0.1,"
+- Um líquido límpido de coloração rubi translúcida, cuja tonalidade varia suavemente conforme a luz, lembrando sangue visto através de cristal.
+- Quando agitada, forma redemoinhos mais claros que desaparecem lentamente, como se a própria energia do conteúdo estivesse se reorganizando. A viscosidade é levemente superior à da água, permitindo que escorra pelo vidro com elegância sedosa.
+- Seu aroma é suave e reconfortante — notas de ervas frescas, mel discreto e um fundo mineral limpo. Ao ser ingerida, espalha uma sensação imediata de calor controlado pelo corpo, não como fogo, mas como vitalidade retornando aos tecidos.
+- Pequenas dores diminuem, a respiração se aprofunda e a pele parece recuperar cor e firmeza, como se o corpo fosse gentilmente lembrado de como se reconstruir.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes.
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-010,Poção de Vida Contínua,Poção de Vida Contínua | Comum,Comum,Poção,Restauração,,2 Turnos,Restaura 1d6 PV.,10.0,60,0.5,"
+- Um líquido de tonalidade carmesim suave com reflexos dourados que se movem lentamente no interior do frasco, como fios de luz suspensos.
+- Diferente da Poção de Vida comum, sua consistência é um pouco mais densa e estável, formando camadas sutis que se misturam gradualmente quando o recipiente é agitado.
+- Observada contra a luz, parece pulsar em intervalos lentos, sugerindo energia constante em vez de um único impulso.
+- O aroma é delicado e persistente — ervas restauradoras, mel aquecido e um leve traço resinoso. Ao ser ingerida, a sensação não vem em um único fluxo intenso, mas em ondas sucessivas: pequenos pulsos de calor percorrem o corpo, fechando ferimentos, reduzindo a dor e sustentando a recuperação ao longo do tempo, como uma vitalidade que insiste em permanecer.","
+- A cura ocorre no início de cada turno do alvo.
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-011,Poção de Vida Contínua,Poção de Vida Contínua | Boa,Boa,Poção,Restauração,,3 Turnos,Restaura 1d6 + 3 PV.,8.0,120,0.4,"
+- Um líquido de tonalidade carmesim suave com reflexos dourados que se movem lentamente no interior do frasco, como fios de luz suspensos.
+- Diferente da Poção de Vida comum, sua consistência é um pouco mais densa e estável, formando camadas sutis que se misturam gradualmente quando o recipiente é agitado.
+- Observada contra a luz, parece pulsar em intervalos lentos, sugerindo energia constante em vez de um único impulso.
+- O aroma é delicado e persistente — ervas restauradoras, mel aquecido e um leve traço resinoso. Ao ser ingerida, a sensação não vem em um único fluxo intenso, mas em ondas sucessivas: pequenos pulsos de calor percorrem o corpo, fechando ferimentos, reduzindo a dor e sustentando a recuperação ao longo do tempo, como uma vitalidade que insiste em permanecer.","
+- A cura ocorre no início de cada turno do alvo.
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-012,Poção de Vida Contínua,Poção de Vida Contínua | Superior,Superior,Poção,Restauração,,4 Turnos,Restaura 1d6 + 6 PV.,6.0,240,0.3,"
+- Um líquido de tonalidade carmesim suave com reflexos dourados que se movem lentamente no interior do frasco, como fios de luz suspensos.
+- Diferente da Poção de Vida comum, sua consistência é um pouco mais densa e estável, formando camadas sutis que se misturam gradualmente quando o recipiente é agitado.
+- Observada contra a luz, parece pulsar em intervalos lentos, sugerindo energia constante em vez de um único impulso.
+- O aroma é delicado e persistente — ervas restauradoras, mel aquecido e um leve traço resinoso. Ao ser ingerida, a sensação não vem em um único fluxo intenso, mas em ondas sucessivas: pequenos pulsos de calor percorrem o corpo, fechando ferimentos, reduzindo a dor e sustentando a recuperação ao longo do tempo, como uma vitalidade que insiste em permanecer.","
+- A cura ocorre no início de cada turno do alvo.
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-013,Poção de Vida Contínua,Poção de Vida Contínua | Excelente,Excelente,Poção,Restauração,,5 Turnos,Restaura 1d6 + 9 PV.,4.0,480,0.2,"
+- Um líquido de tonalidade carmesim suave com reflexos dourados que se movem lentamente no interior do frasco, como fios de luz suspensos.
+- Diferente da Poção de Vida comum, sua consistência é um pouco mais densa e estável, formando camadas sutis que se misturam gradualmente quando o recipiente é agitado.
+- Observada contra a luz, parece pulsar em intervalos lentos, sugerindo energia constante em vez de um único impulso.
+- O aroma é delicado e persistente — ervas restauradoras, mel aquecido e um leve traço resinoso. Ao ser ingerida, a sensação não vem em um único fluxo intenso, mas em ondas sucessivas: pequenos pulsos de calor percorrem o corpo, fechando ferimentos, reduzindo a dor e sustentando a recuperação ao longo do tempo, como uma vitalidade que insiste em permanecer.","
+- A cura ocorre no início de cada turno do alvo.
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-014,Poção de Vida Contínua,Poção de Vida Contínua | Obra-Prima,Obra-Prima,Poção,Restauração,,6 Turnos,Restaura 1d6 + 12 PV.,2.0,960,0.1,"
+- Um líquido de tonalidade carmesim suave com reflexos dourados que se movem lentamente no interior do frasco, como fios de luz suspensos.
+- Diferente da Poção de Vida comum, sua consistência é um pouco mais densa e estável, formando camadas sutis que se misturam gradualmente quando o recipiente é agitado.
+- Observada contra a luz, parece pulsar em intervalos lentos, sugerindo energia constante em vez de um único impulso.
+- O aroma é delicado e persistente — ervas restauradoras, mel aquecido e um leve traço resinoso. Ao ser ingerida, a sensação não vem em um único fluxo intenso, mas em ondas sucessivas: pequenos pulsos de calor percorrem o corpo, fechando ferimentos, reduzindo a dor e sustentando a recuperação ao longo do tempo, como uma vitalidade que insiste em permanecer.","
+- A cura ocorre no início de cada turno do alvo.
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-015,Poção de Mana,Poção de Mana | Comum,Comum,Poção,Restauração,,Instantânea,Restaura 1d6 de Mana.,5.0,30,0.5,"
+- Um líquido translúcido de coloração azul profunda com reflexos violetas que se intensificam quando o frasco é movimentado.
+- Filetes luminosos percorrem o interior como correntes lentas, desaparecendo e reaparecendo em padrões difíceis de prever, sugerindo energia em estado puro.
+- Sua fluidez é leve, quase etérea, deixando um rastro luminoso momentâneo no vidro antes de desaparecer.
+- O aroma é fresco e sutilmente metálico, com notas que lembram ar após uma tempestade e pergaminhos antigos recém-abertos.
+- Ao ser ingerida, a sensação não é física como calor ou frio, mas mental: uma clareza súbita, como pensamentos voltando ao lugar, seguida por uma pressão suave que se dissolve em foco, presença e energia arcana renovada.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-016,Poção de Mana,Poção de Mana | Boa,Boa,Poção,Restauração,,Instantânea,Restaura 1d6 + 6 de Mana.,4.0,60,0.4,"
+- Um líquido translúcido de coloração azul profunda com reflexos violetas que se intensificam quando o frasco é movimentado.
+- Filetes luminosos percorrem o interior como correntes lentas, desaparecendo e reaparecendo em padrões difíceis de prever, sugerindo energia em estado puro.
+- Sua fluidez é leve, quase etérea, deixando um rastro luminoso momentâneo no vidro antes de desaparecer.
+- O aroma é fresco e sutilmente metálico, com notas que lembram ar após uma tempestade e pergaminhos antigos recém-abertos.
+- Ao ser ingerida, a sensação não é física como calor ou frio, mas mental: uma clareza súbita, como pensamentos voltando ao lugar, seguida por uma pressão suave que se dissolve em foco, presença e energia arcana renovada.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-017,Poção de Mana,Poção de Mana | Superior,Superior,Poção,Restauração,,Instantânea,Restaura 1d6 + 12 de Mana.,3.0,120,0.3,"
+- Um líquido translúcido de coloração azul profunda com reflexos violetas que se intensificam quando o frasco é movimentado.
+- Filetes luminosos percorrem o interior como correntes lentas, desaparecendo e reaparecendo em padrões difíceis de prever, sugerindo energia em estado puro.
+- Sua fluidez é leve, quase etérea, deixando um rastro luminoso momentâneo no vidro antes de desaparecer.
+- O aroma é fresco e sutilmente metálico, com notas que lembram ar após uma tempestade e pergaminhos antigos recém-abertos.
+- Ao ser ingerida, a sensação não é física como calor ou frio, mas mental: uma clareza súbita, como pensamentos voltando ao lugar, seguida por uma pressão suave que se dissolve em foco, presença e energia arcana renovada.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-018,Poção de Mana,Poção de Mana | Excelente,Excelente,Poção,Restauração,,Instantânea,Restaura 1d6 + 18de Mana.,2.0,240,0.2,"
+- Um líquido translúcido de coloração azul profunda com reflexos violetas que se intensificam quando o frasco é movimentado.
+- Filetes luminosos percorrem o interior como correntes lentas, desaparecendo e reaparecendo em padrões difíceis de prever, sugerindo energia em estado puro.
+- Sua fluidez é leve, quase etérea, deixando um rastro luminoso momentâneo no vidro antes de desaparecer.
+- O aroma é fresco e sutilmente metálico, com notas que lembram ar após uma tempestade e pergaminhos antigos recém-abertos.
+- Ao ser ingerida, a sensação não é física como calor ou frio, mas mental: uma clareza súbita, como pensamentos voltando ao lugar, seguida por uma pressão suave que se dissolve em foco, presença e energia arcana renovada.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-019,Poção de Mana,Poção de Mana | Obra-Prima,Obra-Prima,Poção,Restauração,,Instantânea,Restaura 1d6 + 24 de Mana.,1.0,480,0.1,"
+- Um líquido translúcido de coloração azul profunda com reflexos violetas que se intensificam quando o frasco é movimentado.
+- Filetes luminosos percorrem o interior como correntes lentas, desaparecendo e reaparecendo em padrões difíceis de prever, sugerindo energia em estado puro.
+- Sua fluidez é leve, quase etérea, deixando um rastro luminoso momentâneo no vidro antes de desaparecer.
+- O aroma é fresco e sutilmente metálico, com notas que lembram ar após uma tempestade e pergaminhos antigos recém-abertos.
+- Ao ser ingerida, a sensação não é física como calor ou frio, mas mental: uma clareza súbita, como pensamentos voltando ao lugar, seguida por uma pressão suave que se dissolve em foco, presença e energia arcana renovada.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-020,Poção de Mana Contínua,Poção de Mana Contínua | Comum,Comum,Poção,Restauração,,2 Turnos,Restaura 1d6 de Mana.,10.0,60,0.5,"
+- Um líquido de tonalidade azul-violeta suave, atravessado por filamentos luminosos que se movem lentamente como correntes em água profunda.
+- Diferente da Poção de Mana comum, sua luz não pulsa de forma intensa, mas permanece constante — um brilho estável que sugere fluxo contínuo de energia.
+- Quando agitada, os filamentos se alongam e voltam a se recompor gradualmente, como se nunca se dissipassem por completo.
+- O aroma é leve e etéreo, com notas frescas que lembram ar frio, cristal e tinta arcana recém-preparada. Ao ser ingerida, a sensação não vem como um pico de energia, mas como um abastecimento progressivo: pensamentos se organizam, a concentração se sustenta e a energia mágica retorna em ondas suaves e regulares, como uma fonte que não se esgota de imediato.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-021,Poção de Mana Contínua,Poção de Mana Contínua | Boa,Boa,Poção,Restauração,,3 Turnos,Restaura 1d6 + 3 de Mana.,8.0,120,0.4,"
+- Um líquido de tonalidade azul-violeta suave, atravessado por filamentos luminosos que se movem lentamente como correntes em água profunda.
+- Diferente da Poção de Mana comum, sua luz não pulsa de forma intensa, mas permanece constante — um brilho estável que sugere fluxo contínuo de energia.
+- Quando agitada, os filamentos se alongam e voltam a se recompor gradualmente, como se nunca se dissipassem por completo.
+- O aroma é leve e etéreo, com notas frescas que lembram ar frio, cristal e tinta arcana recém-preparada. Ao ser ingerida, a sensação não vem como um pico de energia, mas como um abastecimento progressivo: pensamentos se organizam, a concentração se sustenta e a energia mágica retorna em ondas suaves e regulares, como uma fonte que não se esgota de imediato.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-022,Poção de Mana Contínua,Poção de Mana Contínua | Superior,Superior,Poção,Restauração,,4 Turnos,Restaura 1d6 + 6 de Mana.,6.0,240,0.3,"
+- Um líquido de tonalidade azul-violeta suave, atravessado por filamentos luminosos que se movem lentamente como correntes em água profunda.
+- Diferente da Poção de Mana comum, sua luz não pulsa de forma intensa, mas permanece constante — um brilho estável que sugere fluxo contínuo de energia.
+- Quando agitada, os filamentos se alongam e voltam a se recompor gradualmente, como se nunca se dissipassem por completo.
+- O aroma é leve e etéreo, com notas frescas que lembram ar frio, cristal e tinta arcana recém-preparada. Ao ser ingerida, a sensação não vem como um pico de energia, mas como um abastecimento progressivo: pensamentos se organizam, a concentração se sustenta e a energia mágica retorna em ondas suaves e regulares, como uma fonte que não se esgota de imediato.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-023,Poção de Mana Contínua,Poção de Mana Contínua | Excelente,Excelente,Poção,Restauração,,5 Turnos,Restaura 1d6 + 9 de Mana.,4.0,480,0.2,"
+- Um líquido de tonalidade azul-violeta suave, atravessado por filamentos luminosos que se movem lentamente como correntes em água profunda.
+- Diferente da Poção de Mana comum, sua luz não pulsa de forma intensa, mas permanece constante — um brilho estável que sugere fluxo contínuo de energia.
+- Quando agitada, os filamentos se alongam e voltam a se recompor gradualmente, como se nunca se dissipassem por completo.
+- O aroma é leve e etéreo, com notas frescas que lembram ar frio, cristal e tinta arcana recém-preparada. Ao ser ingerida, a sensação não vem como um pico de energia, mas como um abastecimento progressivo: pensamentos se organizam, a concentração se sustenta e a energia mágica retorna em ondas suaves e regulares, como uma fonte que não se esgota de imediato.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-024,Poção de Mana Contínua,Poção de Mana Contínua | Obra-Prima,Obra-Prima,Poção,Restauração,,6 Turnos,Restaura 1d6 + 12 de Mana.,2.0,960,0.1,"
+- Um líquido de tonalidade azul-violeta suave, atravessado por filamentos luminosos que se movem lentamente como correntes em água profunda.
+- Diferente da Poção de Mana comum, sua luz não pulsa de forma intensa, mas permanece constante — um brilho estável que sugere fluxo contínuo de energia.
+- Quando agitada, os filamentos se alongam e voltam a se recompor gradualmente, como se nunca se dissipassem por completo.
+- O aroma é leve e etéreo, com notas frescas que lembram ar frio, cristal e tinta arcana recém-preparada. Ao ser ingerida, a sensação não vem como um pico de energia, mas como um abastecimento progressivo: pensamentos se organizam, a concentração se sustenta e a energia mágica retorna em ondas suaves e regulares, como uma fonte que não se esgota de imediato.","
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente  essa poção no mesmo dia.",,
+POTION-025,Poção de Restauração,Poção de Restauração | Comum,Comum,Poção,Restauração,,Instantânea,Restaura 1d6 PV e Mana.,16.0,120,0.5,"
+- Um líquido translúcido em tonalidade violeta profunda, com nuances que variam entre púrpura e lavanda conforme a luz atravessa o frasco.
+- o interior, delicados reflexos prateados se entrelaçam lentamente, como dois fluxos distintos coexistindo — um mais quente, outro mais etéreo — sugerindo a união entre vitalidade física e energia arcana.
+- Sua viscosidade é suave e equilibrada, nem tão leve quanto água, nem densa como xarope, escorrendo pelo vidro em trilhas elegantes que desaparecem rapidamente.
+- O aroma é harmonioso e complexo: ervas restauradoras, flores noturnas e um leve toque mineral luminoso.
+- Ao ser ingerida, duas sensações emergem quase ao mesmo tempo — um calor que percorre o corpo, restaurando tecidos e reduzindo a dor, e uma clareza mental que reorganiza pensamentos e estabiliza a energia interna.
+- A recuperação acontece como um alinhamento súbito, como se corpo e mente fossem reajustados ao mesmo ritmo.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente essa poção no mesmo dia.",,
+POTION-026,Poção de Restauração,Poção de Restauração | Boa,Boa,Poção,Restauração,,Instantânea,Restaura 1d6 + 6 PV e Mana.,14.0,240,0.4,"
+- Um líquido translúcido em tonalidade violeta profunda, com nuances que variam entre púrpura e lavanda conforme a luz atravessa o frasco.
+- o interior, delicados reflexos prateados se entrelaçam lentamente, como dois fluxos distintos coexistindo — um mais quente, outro mais etéreo — sugerindo a união entre vitalidade física e energia arcana.
+- Sua viscosidade é suave e equilibrada, nem tão leve quanto água, nem densa como xarope, escorrendo pelo vidro em trilhas elegantes que desaparecem rapidamente.
+- O aroma é harmonioso e complexo: ervas restauradoras, flores noturnas e um leve toque mineral luminoso.
+- Ao ser ingerida, duas sensações emergem quase ao mesmo tempo — um calor que percorre o corpo, restaurando tecidos e reduzindo a dor, e uma clareza mental que reorganiza pensamentos e estabiliza a energia interna.
+- A recuperação acontece como um alinhamento súbito, como se corpo e mente fossem reajustados ao mesmo ritmo.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente essa poção no mesmo dia.",,
+POTION-027,Poção de Restauração,Poção de Restauração | Superior,Superior,Poção,Restauração,,Instantânea,Restaura 1d6 +12 PV e Mana.,12.0,480,0.3,"
+- Um líquido translúcido em tonalidade violeta profunda, com nuances que variam entre púrpura e lavanda conforme a luz atravessa o frasco.
+- o interior, delicados reflexos prateados se entrelaçam lentamente, como dois fluxos distintos coexistindo — um mais quente, outro mais etéreo — sugerindo a união entre vitalidade física e energia arcana.
+- Sua viscosidade é suave e equilibrada, nem tão leve quanto água, nem densa como xarope, escorrendo pelo vidro em trilhas elegantes que desaparecem rapidamente.
+- O aroma é harmonioso e complexo: ervas restauradoras, flores noturnas e um leve toque mineral luminoso.
+- Ao ser ingerida, duas sensações emergem quase ao mesmo tempo — um calor que percorre o corpo, restaurando tecidos e reduzindo a dor, e uma clareza mental que reorganiza pensamentos e estabiliza a energia interna.
+- A recuperação acontece como um alinhamento súbito, como se corpo e mente fossem reajustados ao mesmo ritmo.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente essa poção no mesmo dia.",,
+POTION-028,Poção de Restauração,Poção de Restauração | Excelente,Excelente,Poção,Restauração,,Instantânea,Restaura 1d6 +18 PV e Mana.,10.0,960,0.2,"
+- Um líquido translúcido em tonalidade violeta profunda, com nuances que variam entre púrpura e lavanda conforme a luz atravessa o frasco.
+- o interior, delicados reflexos prateados se entrelaçam lentamente, como dois fluxos distintos coexistindo — um mais quente, outro mais etéreo — sugerindo a união entre vitalidade física e energia arcana.
+- Sua viscosidade é suave e equilibrada, nem tão leve quanto água, nem densa como xarope, escorrendo pelo vidro em trilhas elegantes que desaparecem rapidamente.
+- O aroma é harmonioso e complexo: ervas restauradoras, flores noturnas e um leve toque mineral luminoso.
+- Ao ser ingerida, duas sensações emergem quase ao mesmo tempo — um calor que percorre o corpo, restaurando tecidos e reduzindo a dor, e uma clareza mental que reorganiza pensamentos e estabiliza a energia interna.
+- A recuperação acontece como um alinhamento súbito, como se corpo e mente fossem reajustados ao mesmo ritmo.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente essa poção no mesmo dia.",,
+POTION-029,Poção de Restauração,Poção de Restauração | Obra-Prima,Obra-Prima,Poção,Restauração,,Instantânea,Restaura 1d6 + 24 PV e Mana.,8.0,1920,0.1,"
+- Um líquido translúcido em tonalidade violeta profunda, com nuances que variam entre púrpura e lavanda conforme a luz atravessa o frasco.
+- o interior, delicados reflexos prateados se entrelaçam lentamente, como dois fluxos distintos coexistindo — um mais quente, outro mais etéreo — sugerindo a união entre vitalidade física e energia arcana.
+- Sua viscosidade é suave e equilibrada, nem tão leve quanto água, nem densa como xarope, escorrendo pelo vidro em trilhas elegantes que desaparecem rapidamente.
+- O aroma é harmonioso e complexo: ervas restauradoras, flores noturnas e um leve toque mineral luminoso.
+- Ao ser ingerida, duas sensações emergem quase ao mesmo tempo — um calor que percorre o corpo, restaurando tecidos e reduzindo a dor, e uma clareza mental que reorganiza pensamentos e estabiliza a energia interna.
+- A recuperação acontece como um alinhamento súbito, como se corpo e mente fossem reajustados ao mesmo ritmo.","
+- Não cura doenças nem neutraliza venenos, mas pode curar danos causados ​​por estes. 
+-Possui uma penalidade cumulativa de -1 ao ser utilizada em alguém que já consumiu anteriormente essa poção no mesmo dia.",,
+POTION-030,Poção de Velocidade,Poção de Velocidade | Comum,Comum,Poção,Utilidade,,2 Turnos,"
+Aumenta em +1 Esquiva, Velocidade e Deslocamento.",10.0,100,0.5,"
+- Um líquido translúcido de tonalidade verde vibrante, com reflexos mais claros que percorrem o frasco em movimentos rápidos, como correntes aceleradas presas em vidro.
+- Quando agitada, forma espirais ágeis que desaparecem quase instantaneamente, sugerindo energia em constante movimento.
+- Sua fluidez é leve e dinâmica, escorrendo rapidamente pelas paredes do recipiente sem deixar marcas duradouras.
+- O aroma é fresco e estimulante — notas de ervas cortantes, folhas esmagadas e um leve toque cítrico que desperta os sentidos.
+- Ao ser ingerida, a sensação é imediata: o corpo parece mais leve, a respiração acelera sem esforço e o tempo parece desacelerar ao redor. Reflexos se aguçam, músculos respondem antes mesmo do pensamento terminar e cada movimento carrega uma precisão veloz, como se o mundo tivesse se tornado ligeiramente mais lento.",,,
+POTION-031,Poção de Velocidade,Poção de Velocidade | Boa,Boa,Poção,Utilidade,,3 Turnos,"
+Aumenta em +1 Esquiva, Velocidade e Deslocamento.",8.0,200,0.4,"
+- Um líquido translúcido de tonalidade verde vibrante, com reflexos mais claros que percorrem o frasco em movimentos rápidos, como correntes aceleradas presas em vidro.
+- Quando agitada, forma espirais ágeis que desaparecem quase instantaneamente, sugerindo energia em constante movimento.
+- Sua fluidez é leve e dinâmica, escorrendo rapidamente pelas paredes do recipiente sem deixar marcas duradouras.
+- O aroma é fresco e estimulante — notas de ervas cortantes, folhas esmagadas e um leve toque cítrico que desperta os sentidos.
+- Ao ser ingerida, a sensação é imediata: o corpo parece mais leve, a respiração acelera sem esforço e o tempo parece desacelerar ao redor. Reflexos se aguçam, músculos respondem antes mesmo do pensamento terminar e cada movimento carrega uma precisão veloz, como se o mundo tivesse se tornado ligeiramente mais lento.",,,
+POTION-032,Poção de Velocidade,Poção de Velocidade | Superior,Superior,Poção,Utilidade,,4 Turnos,"
+Aumenta em +1 Esquiva, Velocidade e Deslocamento.",6.0,400,0.3,"
+- Um líquido translúcido de tonalidade verde vibrante, com reflexos mais claros que percorrem o frasco em movimentos rápidos, como correntes aceleradas presas em vidro.
+- Quando agitada, forma espirais ágeis que desaparecem quase instantaneamente, sugerindo energia em constante movimento.
+- Sua fluidez é leve e dinâmica, escorrendo rapidamente pelas paredes do recipiente sem deixar marcas duradouras.
+- O aroma é fresco e estimulante — notas de ervas cortantes, folhas esmagadas e um leve toque cítrico que desperta os sentidos.
+- Ao ser ingerida, a sensação é imediata: o corpo parece mais leve, a respiração acelera sem esforço e o tempo parece desacelerar ao redor. Reflexos se aguçam, músculos respondem antes mesmo do pensamento terminar e cada movimento carrega uma precisão veloz, como se o mundo tivesse se tornado ligeiramente mais lento.",,,
+POTION-033,Poção de Velocidade,Poção de Velocidade | Excelente,Excelente,Poção,Utilidade,,5 Turnos,"
+Aumenta em +1 Esquiva, Velocidade e Deslocamento.",4.0,800,0.2,"
+- Um líquido translúcido de tonalidade verde vibrante, com reflexos mais claros que percorrem o frasco em movimentos rápidos, como correntes aceleradas presas em vidro.
+- Quando agitada, forma espirais ágeis que desaparecem quase instantaneamente, sugerindo energia em constante movimento.
+- Sua fluidez é leve e dinâmica, escorrendo rapidamente pelas paredes do recipiente sem deixar marcas duradouras.
+- O aroma é fresco e estimulante — notas de ervas cortantes, folhas esmagadas e um leve toque cítrico que desperta os sentidos.
+- Ao ser ingerida, a sensação é imediata: o corpo parece mais leve, a respiração acelera sem esforço e o tempo parece desacelerar ao redor. Reflexos se aguçam, músculos respondem antes mesmo do pensamento terminar e cada movimento carrega uma precisão veloz, como se o mundo tivesse se tornado ligeiramente mais lento.",,,
+POTION-034,Poção de Velocidade,Poção de Velocidade | Obra-Prima,Obra-Prima,Poção,Utilidade,,6 Turnos,"
+Aumenta em +2 Esquiva, Velocidade e Deslocamento.",2.0,1600,0.1,"
+- Um líquido translúcido de tonalidade verde vibrante, com reflexos mais claros que percorrem o frasco em movimentos rápidos, como correntes aceleradas presas em vidro.
+- Quando agitada, forma espirais ágeis que desaparecem quase instantaneamente, sugerindo energia em constante movimento.
+- Sua fluidez é leve e dinâmica, escorrendo rapidamente pelas paredes do recipiente sem deixar marcas duradouras.
+- O aroma é fresco e estimulante — notas de ervas cortantes, folhas esmagadas e um leve toque cítrico que desperta os sentidos.
+- Ao ser ingerida, a sensação é imediata: o corpo parece mais leve, a respiração acelera sem esforço e o tempo parece desacelerar ao redor. Reflexos se aguçam, músculos respondem antes mesmo do pensamento terminar e cada movimento carrega uma precisão veloz, como se o mundo tivesse se tornado ligeiramente mais lento.",,,
+POTION-035,Poção de Celeridade,Poção de Celeridade | Comum,Comum,Poção,Utilidade,,2 Turnos,"
+Permite ao usuário realizar 1 Ação Adicional.",10.0,150,0.5,"
+- Um líquido de tonalidade verde-clara com reflexos dourados extremamente rápidos, que surgem e desaparecem como faíscas presas dentro do frasco.
+- Diferente da Poção de Velocidade, seus movimentos internos não são fluidos, mas abruptos — pequenos saltos, duplicações visuais e distorções breves, como se o conteúdo existisse em mais de um instante ao mesmo tempo.
+- Sua consistência é leve, porém instável, criando a impressão de que o líquido reage antes mesmo de ser agitado.
+- O aroma é fresco e elétrico, com notas herbais intensas e um toque seco que lembra ozônio após um relâmpago.
+- Ao ser ingerida, a percepção do tempo sofre um breve deslocamento: pensamentos se antecipam, movimentos parecem acontecer antes da decisão consciente e o corpo encontra espaço para agir entre os instantes. Não é apenas velocidade — é a sensação de ter um momento extra.","
+- A ação adicional pode ser usada para qualquer ação válida (ataque, movimento, manobra simples, etc.), a critério do Mestre.
+- Alternativamente, pode ser usada para realizar uma defesa adicional no turno — nesse caso, a defesa consome a ação extra.
+- A ação extra não permite conjurar magias que normalmente exigem múltiplos turnos em um único turno (salvo decisão do Mestre).",,
+POTION-036,Poção de Celeridade,Poção de Celeridade | Boa,Boa,Poção,Utilidade,,3 Turnos,"
+Permite ao usuário realizar 1 Ação Adicional.",8.0,300,0.4,"
+- Um líquido de tonalidade verde-clara com reflexos dourados extremamente rápidos, que surgem e desaparecem como faíscas presas dentro do frasco.
+- Diferente da Poção de Velocidade, seus movimentos internos não são fluidos, mas abruptos — pequenos saltos, duplicações visuais e distorções breves, como se o conteúdo existisse em mais de um instante ao mesmo tempo.
+- Sua consistência é leve, porém instável, criando a impressão de que o líquido reage antes mesmo de ser agitado.
+- O aroma é fresco e elétrico, com notas herbais intensas e um toque seco que lembra ozônio após um relâmpago.
+- Ao ser ingerida, a percepção do tempo sofre um breve deslocamento: pensamentos se antecipam, movimentos parecem acontecer antes da decisão consciente e o corpo encontra espaço para agir entre os instantes. Não é apenas velocidade — é a sensação de ter um momento extra.","
+- A ação adicional pode ser usada para qualquer ação válida (ataque, movimento, manobra simples, etc.), a critério do Mestre.
+- Alternativamente, pode ser usada para realizar uma defesa adicional no turno — nesse caso, a defesa consome a ação extra.
+- A ação extra não permite conjurar magias que normalmente exigem múltiplos turnos em um único turno (salvo decisão do Mestre).",,
+POTION-037,Poção de Celeridade,Poção de Celeridade | Superior,Superior,Poção,Utilidade,,4 Turnos,"
+Permite ao usuário realizar 1 Ação Adicional.",6.0,600,0.3,"
+- Um líquido de tonalidade verde-clara com reflexos dourados extremamente rápidos, que surgem e desaparecem como faíscas presas dentro do frasco.
+- Diferente da Poção de Velocidade, seus movimentos internos não são fluidos, mas abruptos — pequenos saltos, duplicações visuais e distorções breves, como se o conteúdo existisse em mais de um instante ao mesmo tempo.
+- Sua consistência é leve, porém instável, criando a impressão de que o líquido reage antes mesmo de ser agitado.
+- O aroma é fresco e elétrico, com notas herbais intensas e um toque seco que lembra ozônio após um relâmpago.
+- Ao ser ingerida, a percepção do tempo sofre um breve deslocamento: pensamentos se antecipam, movimentos parecem acontecer antes da decisão consciente e o corpo encontra espaço para agir entre os instantes. Não é apenas velocidade — é a sensação de ter um momento extra.","
+- A ação adicional pode ser usada para qualquer ação válida (ataque, movimento, manobra simples, etc.), a critério do Mestre.
+- Alternativamente, pode ser usada para realizar uma defesa adicional no turno — nesse caso, a defesa consome a ação extra.
+- A ação extra não permite conjurar magias que normalmente exigem múltiplos turnos em um único turno (salvo decisão do Mestre).",,
+POTION-038,Poção de Celeridade,Poção de Celeridade | Excelente,Excelente,Poção,Utilidade,,5 Turnos,"
+Permite ao usuário realizar 1 Ação Adicional.",4.0,1200,0.2,"
+- Um líquido de tonalidade verde-clara com reflexos dourados extremamente rápidos, que surgem e desaparecem como faíscas presas dentro do frasco.
+- Diferente da Poção de Velocidade, seus movimentos internos não são fluidos, mas abruptos — pequenos saltos, duplicações visuais e distorções breves, como se o conteúdo existisse em mais de um instante ao mesmo tempo.
+- Sua consistência é leve, porém instável, criando a impressão de que o líquido reage antes mesmo de ser agitado.
+- O aroma é fresco e elétrico, com notas herbais intensas e um toque seco que lembra ozônio após um relâmpago.
+- Ao ser ingerida, a percepção do tempo sofre um breve deslocamento: pensamentos se antecipam, movimentos parecem acontecer antes da decisão consciente e o corpo encontra espaço para agir entre os instantes. Não é apenas velocidade — é a sensação de ter um momento extra.","
+- A ação adicional pode ser usada para qualquer ação válida (ataque, movimento, manobra simples, etc.), a critério do Mestre.
+- Alternativamente, pode ser usada para realizar uma defesa adicional no turno — nesse caso, a defesa consome a ação extra.
+- A ação extra não permite conjurar magias que normalmente exigem múltiplos turnos em um único turno (salvo decisão do Mestre).",,
+POTION-039,Poção de Celeridade,Poção de Celeridade | Obra-Prima,Obra-Prima,Poção,Utilidade,,6 Turnos,"
+Permite ao usuário realizar 2 Ações Adicionais.",2.0,2400,0.1,"
+- Um líquido de tonalidade verde-clara com reflexos dourados extremamente rápidos, que surgem e desaparecem como faíscas presas dentro do frasco.
+- Diferente da Poção de Velocidade, seus movimentos internos não são fluidos, mas abruptos — pequenos saltos, duplicações visuais e distorções breves, como se o conteúdo existisse em mais de um instante ao mesmo tempo.
+- Sua consistência é leve, porém instável, criando a impressão de que o líquido reage antes mesmo de ser agitado.
+- O aroma é fresco e elétrico, com notas herbais intensas e um toque seco que lembra ozônio após um relâmpago.
+- Ao ser ingerida, a percepção do tempo sofre um breve deslocamento: pensamentos se antecipam, movimentos parecem acontecer antes da decisão consciente e o corpo encontra espaço para agir entre os instantes. Não é apenas velocidade — é a sensação de ter um momento extra.","
+- A ação adicional pode ser usada para qualquer ação válida (ataque, movimento, manobra simples, etc.), a critério do Mestre.
+- Alternativamente, pode ser usada para realizar uma defesa adicional no turno — nesse caso, a defesa consome a ação extra.
+- A ação extra não permite conjurar magias que normalmente exigem múltiplos turnos em um único turno (salvo decisão do Mestre).",,
+POTION-040,Poção da Mira Perfeita,Poção da Mira Perfeita | Comum,Comum,Poção,Utilidade,,2 Turnos,O usuário ganha +2 de bônus ao realizar a manobra Mirar.,10.0,100,0.5,"
+- Um líquido translúcido de tonalidade âmbar-clara com reflexos dourados extremamente finos que se alinham em linhas retas quando o frasco é mantido imóvel, como se buscassem um ponto exato no espaço.
+- Ao ser movimentada, essas linhas se reorganizam rapidamente, formando padrões precisos que lembram trajetórias calculadas. Sua fluidez é leve e controlada, escorrendo pelo vidro em trilhas uniformes e simétricas.
+- O aroma é seco e focado — madeira polida, couro tratado e um leve toque metálico que remete a mecanismos bem ajustados.
+- Ao ser ingerida, a percepção visual parece estabilizar: respiração desacelera, mãos se tornam firmes e a distância entre o usuário e o alvo parece mais clara, quase mensurável. Pequenos ajustes acontecem naturalmente, como se o corpo antecipasse o movimento ideal antes da execução.",,,
+POTION-041,Poção da Mira Perfeita,Poção da Mira Perfeita | Boa,Boa,Poção,Utilidade,,3 Turnos,O usuário ganha +2 de bônus ao realizar a manobra Mirar.,8.0,200,0.4,"
+- Um líquido translúcido de tonalidade âmbar-clara com reflexos dourados extremamente finos que se alinham em linhas retas quando o frasco é mantido imóvel, como se buscassem um ponto exato no espaço.
+- Ao ser movimentada, essas linhas se reorganizam rapidamente, formando padrões precisos que lembram trajetórias calculadas. Sua fluidez é leve e controlada, escorrendo pelo vidro em trilhas uniformes e simétricas.
+- O aroma é seco e focado — madeira polida, couro tratado e um leve toque metálico que remete a mecanismos bem ajustados.
+- Ao ser ingerida, a percepção visual parece estabilizar: respiração desacelera, mãos se tornam firmes e a distância entre o usuário e o alvo parece mais clara, quase mensurável. Pequenos ajustes acontecem naturalmente, como se o corpo antecipasse o movimento ideal antes da execução.",,,
+POTION-042,Poção da Mira Perfeita,Poção da Mira Perfeita | Superior,Superior,Poção,Utilidade,,4 Turnos,O usuário ganha +2 de bônus ao realizar a manobra Mirar.,6.0,400,0.3,"
+- Um líquido translúcido de tonalidade âmbar-clara com reflexos dourados extremamente finos que se alinham em linhas retas quando o frasco é mantido imóvel, como se buscassem um ponto exato no espaço.
+- Ao ser movimentada, essas linhas se reorganizam rapidamente, formando padrões precisos que lembram trajetórias calculadas. Sua fluidez é leve e controlada, escorrendo pelo vidro em trilhas uniformes e simétricas.
+- O aroma é seco e focado — madeira polida, couro tratado e um leve toque metálico que remete a mecanismos bem ajustados.
+- Ao ser ingerida, a percepção visual parece estabilizar: respiração desacelera, mãos se tornam firmes e a distância entre o usuário e o alvo parece mais clara, quase mensurável. Pequenos ajustes acontecem naturalmente, como se o corpo antecipasse o movimento ideal antes da execução.",,,
+POTION-043,Poção da Mira Perfeita,Poção da Mira Perfeita | Excelente,Excelente,Poção,Utilidade,,5 Turnos,O usuário ganha +2 de bônus ao realizar a manobra Mirar.,4.0,800,0.2,"
+- Um líquido translúcido de tonalidade âmbar-clara com reflexos dourados extremamente finos que se alinham em linhas retas quando o frasco é mantido imóvel, como se buscassem um ponto exato no espaço.
+- Ao ser movimentada, essas linhas se reorganizam rapidamente, formando padrões precisos que lembram trajetórias calculadas. Sua fluidez é leve e controlada, escorrendo pelo vidro em trilhas uniformes e simétricas.
+- O aroma é seco e focado — madeira polida, couro tratado e um leve toque metálico que remete a mecanismos bem ajustados.
+- Ao ser ingerida, a percepção visual parece estabilizar: respiração desacelera, mãos se tornam firmes e a distância entre o usuário e o alvo parece mais clara, quase mensurável. Pequenos ajustes acontecem naturalmente, como se o corpo antecipasse o movimento ideal antes da execução.",,,
+POTION-044,Poção da Mira Perfeita,Poção da Mira Perfeita | Obra-Prima,Obra-Prima,Poção,Utilidade,,6 Turnos,O usuário ganha +4 de bônus ao realizar a manobra Mirar.,2.0,1600,0.1,"
+- Um líquido translúcido de tonalidade âmbar-clara com reflexos dourados extremamente finos que se alinham em linhas retas quando o frasco é mantido imóvel, como se buscassem um ponto exato no espaço.
+- Ao ser movimentada, essas linhas se reorganizam rapidamente, formando padrões precisos que lembram trajetórias calculadas. Sua fluidez é leve e controlada, escorrendo pelo vidro em trilhas uniformes e simétricas.
+- O aroma é seco e focado — madeira polida, couro tratado e um leve toque metálico que remete a mecanismos bem ajustados.
+- Ao ser ingerida, a percepção visual parece estabilizar: respiração desacelera, mãos se tornam firmes e a distância entre o usuário e o alvo parece mais clara, quase mensurável. Pequenos ajustes acontecem naturalmente, como se o corpo antecipasse o movimento ideal antes da execução.",,,
+POISON-000,Antídoto,Antídoto | Comum,Comum,Veneno,Antídoto,,1d6 Turnos,Anula o efeito de venenos  de qualidade Comum.,,30,0.5,"
+- Um pó refinado de coloração dourado-clara, com brilho suave que se intensifica quando misturado a líquidos.
+- Em estado seco, seus grãos são leves e uniformes, lembrando poeira mineral pura; quando diluído, dissolve-se com facilidade, tingindo a mistura com um tom quente e translúcido, como mel muito claro em água.
+- A preparação líquida permanece estável, sem formar resíduos, e parece levemente luminosa quando observada contra a luz.
+- O aroma é limpo e equilibrado — ervas amargas suavizadas por notas florais e um fundo mineral fresco.
+- Seja inalado em pó ou ingerido diluído, transmite a sensação de algo que harmoniza o corpo: primeiro um frescor discreto, depois um calor suave que se espalha lentamente, como se o organismo estivesse sendo alinhado e purificado de influências estranhas.","
+- Ao usar em um veneno de nível diretamente superior, o alvo pode realizar novo teste de HT -2 para resistir a qualquer veneno ativo no organismo.
+- Em caso de sucesso, neutraliza completamente o veneno.
+- Em caso de falha, reduz a duração restante pela metade.
+- Em caso de falha crítica, em efeito (o veneno é forte demais naquele momento).","Aspirado, Ingestão",
+POISON-001,Antídoto,Antídoto | Boa,Boa,Veneno,Antídoto,,1d6 + 6 Turnos,Anula o efeito de venenos  de qualidade Boa ou inferior.,,60,0.4,"
+- Um pó refinado de coloração dourado-clara, com brilho suave que se intensifica quando misturado a líquidos.
+- Em estado seco, seus grãos são leves e uniformes, lembrando poeira mineral pura; quando diluído, dissolve-se com facilidade, tingindo a mistura com um tom quente e translúcido, como mel muito claro em água.
+- A preparação líquida permanece estável, sem formar resíduos, e parece levemente luminosa quando observada contra a luz.
+- O aroma é limpo e equilibrado — ervas amargas suavizadas por notas florais e um fundo mineral fresco.
+- Seja inalado em pó ou ingerido diluído, transmite a sensação de algo que harmoniza o corpo: primeiro um frescor discreto, depois um calor suave que se espalha lentamente, como se o organismo estivesse sendo alinhado e purificado de influências estranhas.","
+- Ao usar em um veneno de nível diretamente superior, o alvo pode realizar novo teste de HT -2 para resistir a qualquer veneno ativo no organismo.
+- Em caso de sucesso, neutraliza completamente o veneno.
+- Em caso de falha, reduz a duração restante pela metade.
+- Em caso de falha crítica, em efeito (o veneno é forte demais naquele momento).","Aspirado, Ingestão",
+POISON-002,Antídoto,Antídoto | Superior,Superior,Veneno,Antídoto,,1d6 + 12 Turnos,Anula o efeito de venenos  de qualidade Superior ou inferior.,,120,0.3,"
+- Um pó refinado de coloração dourado-clara, com brilho suave que se intensifica quando misturado a líquidos.
+- Em estado seco, seus grãos são leves e uniformes, lembrando poeira mineral pura; quando diluído, dissolve-se com facilidade, tingindo a mistura com um tom quente e translúcido, como mel muito claro em água.
+- A preparação líquida permanece estável, sem formar resíduos, e parece levemente luminosa quando observada contra a luz.
+- O aroma é limpo e equilibrado — ervas amargas suavizadas por notas florais e um fundo mineral fresco.
+- Seja inalado em pó ou ingerido diluído, transmite a sensação de algo que harmoniza o corpo: primeiro um frescor discreto, depois um calor suave que se espalha lentamente, como se o organismo estivesse sendo alinhado e purificado de influências estranhas.","
+- Ao usar em um veneno de nível diretamente superior, o alvo pode realizar novo teste de HT -2 para resistir a qualquer veneno ativo no organismo.
+- Em caso de sucesso, neutraliza completamente o veneno.
+- Em caso de falha, reduz a duração restante pela metade.
+- Em caso de falha crítica, em efeito (o veneno é forte demais naquele momento).","Aspirado, Ingestão",
+POISON-003,Antídoto,Antídoto | Excelente,Excelente,Veneno,Antídoto,,1d6 + 18 Turnos,Anula o efeito de venenos  de qualidade Excelente ou inferior.,,240,0.2,"
+- Um pó refinado de coloração dourado-clara, com brilho suave que se intensifica quando misturado a líquidos.
+- Em estado seco, seus grãos são leves e uniformes, lembrando poeira mineral pura; quando diluído, dissolve-se com facilidade, tingindo a mistura com um tom quente e translúcido, como mel muito claro em água.
+- A preparação líquida permanece estável, sem formar resíduos, e parece levemente luminosa quando observada contra a luz.
+- O aroma é limpo e equilibrado — ervas amargas suavizadas por notas florais e um fundo mineral fresco.
+- Seja inalado em pó ou ingerido diluído, transmite a sensação de algo que harmoniza o corpo: primeiro um frescor discreto, depois um calor suave que se espalha lentamente, como se o organismo estivesse sendo alinhado e purificado de influências estranhas.","
+- Ao usar em um veneno de nível diretamente superior, o alvo pode realizar novo teste de HT -2 para resistir a qualquer veneno ativo no organismo.
+- Em caso de sucesso, neutraliza completamente o veneno.
+- Em caso de falha, reduz a duração restante pela metade.
+- Em caso de falha crítica, em efeito (o veneno é forte demais naquele momento).","Aspirado, Ingestão",
+POISON-004,Antídoto,Antídoto | Obra-Prima,Obra-Prima,Veneno,Antídoto,,1d6 + 24 Turnos,Anula o efeito de venenos  de qualidade Obra-Prima ou inferior.,,480,0.1,"
+- Um pó refinado de coloração dourado-clara, com brilho suave que se intensifica quando misturado a líquidos.
+- Em estado seco, seus grãos são leves e uniformes, lembrando poeira mineral pura; quando diluído, dissolve-se com facilidade, tingindo a mistura com um tom quente e translúcido, como mel muito claro em água.
+- A preparação líquida permanece estável, sem formar resíduos, e parece levemente luminosa quando observada contra a luz.
+- O aroma é limpo e equilibrado — ervas amargas suavizadas por notas florais e um fundo mineral fresco.
+- Seja inalado em pó ou ingerido diluído, transmite a sensação de algo que harmoniza o corpo: primeiro um frescor discreto, depois um calor suave que se espalha lentamente, como se o organismo estivesse sendo alinhado e purificado de influências estranhas.",,"Aspirado, Ingestão",
+POISON-005,Curare,Curare | Comum,Comum,Veneno,Debilitante,,1d6 Turnos,Paralisa o alvo.,,300,0.5,"
+- Um veneno de coloração vermelho-escura intensa, quase negra nas áreas mais densas, com brilho úmido que denuncia sua potência. Em sua forma destilada apresenta aspecto resinoso e espesso, aderindo às superfícies como se fosse uma seiva antiga concentrada.
+- Quando diluído, torna-se plenamente solúvel, espalhando-se com facilidade em líquidos, ferimentos ou preparações alquímicas.
+- Seu odor é amargo e terroso, com notas profundas de casca macerada e raízes trituradas.
+- Ao entrar na corrente do corpo, não provoca dor imediata — apenas uma sensação sutil de peso nos membros, como fadiga súbita. Em poucos instantes, esse peso se transforma em rigidez progressiva: dedos hesitam, músculos respondem com atraso e, por fim, o corpo torna-se prisioneiro de uma quietude imposta, enquanto a mente permanece desperta.","
+- O alvo deve realizar um teste de HT - 2.
+- Em caso de falha, sofre paralisia parcial: -4 de DX, não pode realizar ações que exijam coordenação fina e sua movimentação é reduzida pela metade.
+- Em caso de falha 3+, sofre a condição de paralisia total, incapaz de agir voluntariamente, mantendo consciência.
+- Em caso de falha crítica, além da paralisa total, deve ser realizado um novo teste de HT, sem redutor, que em caso de falha leva a dificuldade respiratória causando 1 de dano por turno.
+- Em caso de sucesso, sente apenas dormência: -1 de DX.","Ingestão, Injetável",
+POISON-006,Curare,Curare | Boa,Boa,Veneno,Debilitante,,1d6 + 6 Turnos,Paralisa o alvo.,,600,0.4,"
+- Um veneno de coloração vermelho-escura intensa, quase negra nas áreas mais densas, com brilho úmido que denuncia sua potência. Em sua forma destilada apresenta aspecto resinoso e espesso, aderindo às superfícies como se fosse uma seiva antiga concentrada.
+- Quando diluído, torna-se plenamente solúvel, espalhando-se com facilidade em líquidos, ferimentos ou preparações alquímicas.
+- Seu odor é amargo e terroso, com notas profundas de casca macerada e raízes trituradas.
+- Ao entrar na corrente do corpo, não provoca dor imediata — apenas uma sensação sutil de peso nos membros, como fadiga súbita. Em poucos instantes, esse peso se transforma em rigidez progressiva: dedos hesitam, músculos respondem com atraso e, por fim, o corpo torna-se prisioneiro de uma quietude imposta, enquanto a mente permanece desperta.","
+- O alvo deve realizar um teste de HT - 3.
+- Em caso de falha, sofre paralisia parcial: -4 de DX, não pode realizar ações que exijam coordenação fina e sua movimentação é reduzida pela metade.
+- Em caso de falha 2+, sofre a condição de paralisia total, incapaz de agir voluntariamente, mantendo consciência.
+- Em caso de falha crítica, além da paralisa total, deve ser realizado um novo teste de HT, sem redutor, que em caso de falha leva a dificuldade respiratória causando 1 de dano por turno.
+- Em caso de sucesso, sente apenas dormência: -1 de DX.","Ingestão, Injetável",
+POISON-007,Curare,Curare | Superior,Superior,Veneno,Debilitante,,1d6 + 12 Turnos,Paralisa o alvo.,,900,0.3,"
+- Um veneno de coloração vermelho-escura intensa, quase negra nas áreas mais densas, com brilho úmido que denuncia sua potência. Em sua forma destilada apresenta aspecto resinoso e espesso, aderindo às superfícies como se fosse uma seiva antiga concentrada.
+- Quando diluído, torna-se plenamente solúvel, espalhando-se com facilidade em líquidos, ferimentos ou preparações alquímicas.
+- Seu odor é amargo e terroso, com notas profundas de casca macerada e raízes trituradas.
+- Ao entrar na corrente do corpo, não provoca dor imediata — apenas uma sensação sutil de peso nos membros, como fadiga súbita. Em poucos instantes, esse peso se transforma em rigidez progressiva: dedos hesitam, músculos respondem com atraso e, por fim, o corpo torna-se prisioneiro de uma quietude imposta, enquanto a mente permanece desperta.","
+- O alvo deve realizar um teste de HT - 4.
+- Em caso de falha, sofre paralisia parcial: -4 de DX, não pode realizar ações que exijam coordenação fina e sua movimentação é reduzida pela metade.
+- Em caso de falha 1+, sofre a condição de paralisia total, incapaz de agir voluntariamente, mantendo consciência.
+- Em caso de falha crítica, além da paralisa total, deve ser realizado um novo teste de HT, sem redutor, que em caso de falha leva a dificuldade respiratória causando 1 de dano por turno.
+- Em caso de sucesso, sente apenas dormência: -1 de DX.","Ingestão, Injetável",
+POISON-008,Curare,Curare | Excelente,Excelente,Veneno,Debilitante,,1d6 + 18 Turnos,Paralisa o alvo.,,1200,0.2,"
+- Um veneno de coloração vermelho-escura intensa, quase negra nas áreas mais densas, com brilho úmido que denuncia sua potência. Em sua forma destilada apresenta aspecto resinoso e espesso, aderindo às superfícies como se fosse uma seiva antiga concentrada.
+- Quando diluído, torna-se plenamente solúvel, espalhando-se com facilidade em líquidos, ferimentos ou preparações alquímicas.
+- Seu odor é amargo e terroso, com notas profundas de casca macerada e raízes trituradas.
+- Ao entrar na corrente do corpo, não provoca dor imediata — apenas uma sensação sutil de peso nos membros, como fadiga súbita. Em poucos instantes, esse peso se transforma em rigidez progressiva: dedos hesitam, músculos respondem com atraso e, por fim, o corpo torna-se prisioneiro de uma quietude imposta, enquanto a mente permanece desperta.","
+- O alvo deve realizar um teste de HT - 5.
+- Em caso de falha, sofre a condição de paralisia total, incapaz de agir voluntariamente, mantendo consciência.
+- Em caso de falha crítica, além da paralisa total, deve ser realizado um novo teste de HT, sem redutor, que em caso de falha leva a dificuldade respiratória causando 1 de dano por turno.
+- Em caso de sucesso, sente apenas dormência: -1 de DX.","Ingestão, Injetável",
+POISON-009,Curare,Curare | Obra-Prima,Obra-Prima,Veneno,Debilitante,,1d6 + 24 Turnos,Paralisa o alvo.,,1500,0.1,"
+- Um veneno de coloração vermelho-escura intensa, quase negra nas áreas mais densas, com brilho úmido que denuncia sua potência. Em sua forma destilada apresenta aspecto resinoso e espesso, aderindo às superfícies como se fosse uma seiva antiga concentrada.
+- Quando diluído, torna-se plenamente solúvel, espalhando-se com facilidade em líquidos, ferimentos ou preparações alquímicas.
+- Seu odor é amargo e terroso, com notas profundas de casca macerada e raízes trituradas.
+- Ao entrar na corrente do corpo, não provoca dor imediata — apenas uma sensação sutil de peso nos membros, como fadiga súbita. Em poucos instantes, esse peso se transforma em rigidez progressiva: dedos hesitam, músculos respondem com atraso e, por fim, o corpo torna-se prisioneiro de uma quietude imposta, enquanto a mente permanece desperta.","
+- O alvo deve realizar um teste de HT - 6
+- Em caso de falha, sofre a condição de paralisia total, incapaz de agir voluntariamente, mantendo consciência.
+- Em caso de falha crítica, além da paralisa total, deve ser realizado um novo teste de HT, sem redutor, que em caso de falha leva a dificuldade respiratória causando 1 de dano por turno.
+- Em caso de sucesso, sente apenas dormência: -1 de DX.","Ingestão, Injetável",
+POISON-010,Areia de Morpheus,Areia de Morpheus | Comum,Comum,Veneno,Debilitante,,2 Horas,Adormece o alvo.,,300,0.5,"
+- Um pó finíssimo de coloração marfim pálido, quase perolado, que cintíla suavemente quando exposto à luz - como grãos de areia sob o luar.
+- Ao ser manuseado, escorre pelos dedos com leveza sedosa, formando pequenos redemoinhos no ar antes de se dispersar.
+- Exala um aroma sutil e adocicado, lembrando flores noturnas e pergaminhos antingos.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos do veneno.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.","Aspirado, Injetável",
+POISON-011,Areia de Morpheus,Areia de Morpheus | Boa,Boa,Veneno,Debilitante,,4 Horas,Adormece o alvo.,,600,0.4,"
+- Um pó finíssimo de coloração marfim pálido, quase perolado, que cintíla suavemente quando exposto à luz - como grãos de areia sob o luar.
+- Ao ser manuseado, escorre pelos dedos com leveza sedosa, formando pequenos redemoinhos no ar antes de se dispersar.
+- Exala um aroma sutil e adocicado, lembrando flores noturnas e pergaminhos antingos.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos do veneno.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.","Aspirado, Injetável",
+POISON-012,Areia de Morpheus,Areia de Morpheus | Superior,Superior,Veneno,Debilitante,,6 Horas,Adormece o alvo.,,900,0.3,"
+- Um pó finíssimo de coloração marfim pálido, quase perolado, que cintíla suavemente quando exposto à luz - como grãos de areia sob o luar.
+- Ao ser manuseado, escorre pelos dedos com leveza sedosa, formando pequenos redemoinhos no ar antes de se dispersar.
+- Exala um aroma sutil e adocicado, lembrando flores noturnas e pergaminhos antingos.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos do veneno.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.","Aspirado, Injetável",
+POISON-013,Areia de Morpheus,Areia de Morpheus | Excelente,Excelente,Veneno,Debilitante,,8 Horas,Adormece o alvo.,,1200,0.2,"
+- Um pó finíssimo de coloração marfim pálido, quase perolado, que cintíla suavemente quando exposto à luz - como grãos de areia sob o luar.
+- Ao ser manuseado, escorre pelos dedos com leveza sedosa, formando pequenos redemoinhos no ar antes de se dispersar.
+- Exala um aroma sutil e adocicado, lembrando flores noturnas e pergaminhos antingos.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos do veneno.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.","Aspirado, Injetável",
+POISON-014,Areia de Morpheus,Areia de Morpheus | Obra-Prima,Obra-Prima,Veneno,Debilitante,,1 Dia,Adormece o alvo.,,1500,0.1,"
+- Um pó finíssimo de coloração marfim pálido, quase perolado, que cintíla suavemente quando exposto à luz - como grãos de areia sob o luar.
+- Ao ser manuseado, escorre pelos dedos com leveza sedosa, formando pequenos redemoinhos no ar antes de se dispersar.
+- Exala um aroma sutil e adocicado, lembrando flores noturnas e pergaminhos antingos.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos do veneno.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.","Aspirado, Injetável",
+POISON-015,Visgo Urticante,Visgo Urticante | Comum,Comum,Veneno,Debilitante,,1d6 minutos,"Causa irritação, coceira e reflexos involuntários.",,150,0.5,"
+- Uma substância viscosa e translúcida, de tonalidade esverdeada leitosa, que estica em fios finos quando manipulada, como se relutasse em se soltar do recipiente.
+- Sua superfície possui brilho úmido e irregular, lembrando seiva fresca extraída de uma planta viva.
+- O odor é vegetal e acre, com notas que recordam folhas esmagadas e casca amarga.
+- Ao toque, o visgo parece inofensivo por um breve instante, frio e pegajoso, mas rapidamente desperta uma sensação de formigamento que evolui para ardor intenso e coceira persistente.
+- Quando aplicado em armas, espalha-se facilemente pelo ferimento ou pela pele exposta, provocando irritação difusa e difícil de ignorar.","
+- O antídoto para esse veneno é lavagem da área afetada.
+- Alvo afetados devem realizar um teste de HT - 2. Em caso de falha, sofre -2 em DX e em perícias que exijam concentração ou precisão manual devido a irritação. Em caso de falha crítica impõe também um redutor de -1 em IQ para tarefas que exijam foco, pela distração constante.",Contato,
+POISON-016,Visgo Urticante,Visgo Urticante | Boa,Boa,Veneno,Debilitante,,1d6 + 6 minutos,"Causa irritação, coceira e reflexos involuntários.",,300,0.4,"
+- Uma substância viscosa e translúcida, de tonalidade esverdeada leitosa, que estica em fios finos quando manipulada, como se relutasse em se soltar do recipiente.
+- Sua superfície possui brilho úmido e irregular, lembrando seiva fresca extraída de uma planta viva.
+- O odor é vegetal e acre, com notas que recordam folhas esmagadas e casca amarga.
+- Ao toque, o visgo parece inofensivo por um breve instante, frio e pegajoso, mas rapidamente desperta uma sensação de formigamento que evolui para ardor intenso e coceira persistente.
+- Quando aplicado em armas, espalha-se facilemente pelo ferimento ou pela pele exposta, provocando irritação difusa e difícil de ignorar.","
+- O antídoto para esse veneno é lavagem da área afetada.
+- Alvo afetados devem realizar um teste de HT - 3. Em caso de falha, sofre -2 em DX e em perícias que exijam concentração ou precisão manual devido a irritação. Em caso de falha crítica impõe também um redutor de -1 em IQ para tarefas que exijam foco, pela distração constante.",Contato,
+POISON-017,Visgo Urticante,Visgo Urticante | Superior,Superior,Veneno,Debilitante,,1d6 + 12 minutos,"Causa irritação, coceira e reflexos involuntários.",,450,0.3,"
+- Uma substância viscosa e translúcida, de tonalidade esverdeada leitosa, que estica em fios finos quando manipulada, como se relutasse em se soltar do recipiente.
+- Sua superfície possui brilho úmido e irregular, lembrando seiva fresca extraída de uma planta viva.
+- O odor é vegetal e acre, com notas que recordam folhas esmagadas e casca amarga.
+- Ao toque, o visgo parece inofensivo por um breve instante, frio e pegajoso, mas rapidamente desperta uma sensação de formigamento que evolui para ardor intenso e coceira persistente.
+- Quando aplicado em armas, espalha-se facilemente pelo ferimento ou pela pele exposta, provocando irritação difusa e difícil de ignorar.","
+- O antídoto para esse veneno é lavagem da área afetada.
+- Alvo afetados devem realizar um teste de HT - 4. Em caso de falha, sofre -2 em DX e em perícias que exijam concentração ou precisão manual devido a irritação. Em caso de falha crítica impõe também um redutor de -1 em IQ para tarefas que exijam foco, pela distração constante.",Contato,
+POISON-018,Visgo Urticante,Visgo Urticante | Excelente,Excelente,Veneno,Debilitante,,1d6 + 18 minutos,"Causa irritação, coceira e reflexos involuntários.",,600,0.2,"
+- Uma substância viscosa e translúcida, de tonalidade esverdeada leitosa, que estica em fios finos quando manipulada, como se relutasse em se soltar do recipiente.
+- Sua superfície possui brilho úmido e irregular, lembrando seiva fresca extraída de uma planta viva.
+- O odor é vegetal e acre, com notas que recordam folhas esmagadas e casca amarga.
+- Ao toque, o visgo parece inofensivo por um breve instante, frio e pegajoso, mas rapidamente desperta uma sensação de formigamento que evolui para ardor intenso e coceira persistente.
+- Quando aplicado em armas, espalha-se facilemente pelo ferimento ou pela pele exposta, provocando irritação difusa e difícil de ignorar.","
+- O antídoto para esse veneno é lavagem da área afetada.
+- Alvo afetados devem realizar um teste de HT - 5. Em caso de falha, sofre -2 em DX e em perícias que exijam concentração ou precisão manual devido a irritação. Em caso de falha crítica impõe também um redutor de -1 em IQ para tarefas que exijam foco, pela distração constante.",Contato,
+POISON-019,Visgo Urticante,Visgo Urticante | Obra-Prima,Obra-Prima,Veneno,Debilitante,,1d6 + 24 minutos,"Causa irritação, coceira e reflexos involuntários.",,750,0.1,"
+- Uma substância viscosa e translúcida, de tonalidade esverdeada leitosa, que estica em fios finos quando manipulada, como se relutasse em se soltar do recipiente.
+- Sua superfície possui brilho úmido e irregular, lembrando seiva fresca extraída de uma planta viva.
+- O odor é vegetal e acre, com notas que recordam folhas esmagadas e casca amarga.
+- Ao toque, o visgo parece inofensivo por um breve instante, frio e pegajoso, mas rapidamente desperta uma sensação de formigamento que evolui para ardor intenso e coceira persistente.
+- Quando aplicado em armas, espalha-se facilemente pelo ferimento ou pela pele exposta, provocando irritação difusa e difícil de ignorar.","
+- O antídoto para esse veneno é lavagem da área afetada.
+- Alvo afetados devem realizar um teste de HT - 6. Em caso de falha, sofre -2 em DX e em perícias que exijam concentração ou precisão manual devido a irritação. Em caso de falha crítica impõe também um redutor de -1 em IQ para tarefas que exijam foco, pela distração constante.",Contato,
+POISON-020,Véu da Noite,Véu da Noite | Comum,Comum,Veneno,Debilitante,,1d6 minutos,"Cega, temporariamente, o alvo.",,300,0.5,"
+- Um pó finíssimo de coloração cinza-pálida com reflexos opalescentes, quase imperceptíveis, que lembram poeria de vidro moído.
+- Quando agitado, forma uma névoa leve e difusa que parece apagar os contornos ao redor, como se a própria luz hesitasse em atravessá-la.
+- Possui um aroma seco e mineral, com um leve traço amargo que permanece no fundo das narinas.
+- Ao ser ingerido ou inalado, não provoca dor imediata, apenas uma sensação estranha de pressão atrás dos olhos, seguida por lacrimejamento e uma turvação crescente da visão. Em poucos instantes, cores desbotam, formas se dissolvem e o mundo é engolido por uma escuridão leitosa e temporária.","
+- O alvo deve realizar um teste de HT -2.
+- Em caso de falha, sofre a condição de Cegueira.
+- Em caso de sucesso sofre -6 em testes de visão.
+- Em caso de falha crítica, estende a duração em 1d6 minutos.","Aspirado, Ingestão, Injetável",
+POISON-021,Véu da Noite,Véu da Noite | Boa,Boa,Veneno,Debilitante,,1d6 + 6 minutos,"Cega, temporariamente, o alvo.",,600,0.4,"
+- Um pó finíssimo de coloração cinza-pálida com reflexos opalescentes, quase imperceptíveis, que lembram poeria de vidro moído.
+- Quando agitado, forma uma névoa leve e difusa que parece apagar os contornos ao redor, como se a própria luz hesitasse em atravessá-la.
+- Possui um aroma seco e mineral, com um leve traço amargo que permanece no fundo das narinas.
+- Ao ser ingerido ou inalado, não provoca dor imediata, apenas uma sensação estranha de pressão atrás dos olhos, seguida por lacrimejamento e uma turvação crescente da visão. Em poucos instantes, cores desbotam, formas se dissolvem e o mundo é engolido por uma escuridão leitosa e temporária.","
+- O alvo deve realizar um teste de HT -3.
+- Em caso de falha, sofre a condição de Cegueira.
+- Em caso de sucesso sofre -7 em testes de visão.
+- Em caso de falha crítica, estende a duração em 1d6 + 6 minutos.","Aspirado, Ingestão, Injetável",
+POISON-022,Véu da Noite,Véu da Noite | Superior,Superior,Veneno,Debilitante,,1d6 + 12 minutos,"Cega, temporariamente, o alvo.",,900,0.3,"
+- Um pó finíssimo de coloração cinza-pálida com reflexos opalescentes, quase imperceptíveis, que lembram poeria de vidro moído.
+- Quando agitado, forma uma névoa leve e difusa que parece apagar os contornos ao redor, como se a própria luz hesitasse em atravessá-la.
+- Possui um aroma seco e mineral, com um leve traço amargo que permanece no fundo das narinas.
+- Ao ser ingerido ou inalado, não provoca dor imediata, apenas uma sensação estranha de pressão atrás dos olhos, seguida por lacrimejamento e uma turvação crescente da visão. Em poucos instantes, cores desbotam, formas se dissolvem e o mundo é engolido por uma escuridão leitosa e temporária.","
+- O alvo deve realizar um teste de HT -4.
+- Em caso de falha, sofre a condição de Cegueira.
+- Em caso de sucesso sofre -8 em testes de visão.
+- Em caso de falha crítica, estende a duração em 1d6 + 12 minutos.","Aspirado, Ingestão, Injetável",
+POISON-023,Véu da Noite,Véu da Noite | Excelente,Excelente,Veneno,Debilitante,,1d6 + 18 minutos,"Cega, temporariamente, o alvo.",,1200,0.2,"
+- Um pó finíssimo de coloração cinza-pálida com reflexos opalescentes, quase imperceptíveis, que lembram poeria de vidro moído.
+- Quando agitado, forma uma névoa leve e difusa que parece apagar os contornos ao redor, como se a própria luz hesitasse em atravessá-la.
+- Possui um aroma seco e mineral, com um leve traço amargo que permanece no fundo das narinas.
+- Ao ser ingerido ou inalado, não provoca dor imediata, apenas uma sensação estranha de pressão atrás dos olhos, seguida por lacrimejamento e uma turvação crescente da visão. Em poucos instantes, cores desbotam, formas se dissolvem e o mundo é engolido por uma escuridão leitosa e temporária.","
+- O alvo deve realizar um teste de HT -5.
+- Em caso de falha, sofre a condição de Cegueira.
+- Em caso de sucesso sofre -9 em testes de visão.
+- Em caso de falha crítica, estende a duração em 1d6 + 18 minutos.","Aspirado, Ingestão, Injetável",
+POISON-024,Véu da Noite,Véu da Noite | Obra-Prima,Obra-Prima,Veneno,Debilitante,,1d6 + 24 minutos,"Cega, temporariamente, o alvo.",,1500,0.1,"
+- Um pó finíssimo de coloração cinza-pálida com reflexos opalescentes, quase imperceptíveis, que lembram poeria de vidro moído.
+- Quando agitado, forma uma névoa leve e difusa que parece apagar os contornos ao redor, como se a própria luz hesitasse em atravessá-la.
+- Possui um aroma seco e mineral, com um leve traço amargo que permanece no fundo das narinas.
+- Ao ser ingerido ou inalado, não provoca dor imediata, apenas uma sensação estranha de pressão atrás dos olhos, seguida por lacrimejamento e uma turvação crescente da visão. Em poucos instantes, cores desbotam, formas se dissolvem e o mundo é engolido por uma escuridão leitosa e temporária.","
+- O alvo deve realizar um teste de HT -6.
+- Em caso de falha, sofre a condição de Cegueira.
+- Em caso de sucesso sofre -10 em testes de visão.
+- Em caso de falha crítica, estende a duração em 1d6 + 24 minutos.","Aspirado, Ingestão, Injetável",
+POISON-025,Hera Venenosa,Hera Venenosa | Comum,Comum,Veneno,Ofensivo,,Variável,"Adiciona +1 de dano, pós RD.",,150,0.5,"
+- Uma pasta espessa de coloração verde-escura quase negra, com veios mais claros que lembram as nervuras de uma folha sob a luz do Sol.
+- Seu brilho é oleoso, viscoso, aderindo facilemte a lâminas, pontas de felchas e virotes, onde permane como um verniz traiçoeiro.
+- Quando recém-aplicada, exala um aroma vegetal intenso - fresco à primeira impressão, mas com um fundo amargo e irritante que arde levemente as narinas.
+- Uma vez nos feriemntos, infiltra-se nos tecidos como se criasse raízes invisíveis, inflamando a carne ao redor da lesão e ampliando a dor de cada golpe que a carrega.","
+- Em golpes de balanço (Contusão e Corte) a duração é de 3 Golpes.
+- Em golpes de perfuração e armas de longa distância, é de uso único, entretanto o dano do veneno é x2.","Ingestão, Injetável",
+POISON-026,Hera Venenosa,Hera Venenosa | Boa,Boa,Veneno,Ofensivo,,Variável,"Adiciona +2 de dano, pós RD.",,300,0.4,"
+- Uma pasta espessa de coloração verde-escura quase negra, com veios mais claros que lembram as nervuras de uma folha sob a luz do Sol.
+- Seu brilho é oleoso, viscoso, aderindo facilemte a lâminas, pontas de felchas e virotes, onde permane como um verniz traiçoeiro.","
+- Em armas corpo-a-corpo a duração é de 4 Golpes.
+- Em armas de longa distância, é de uso único, entretanto o dano do veneno é x2.","Ingestão, Injetável",
+POISON-027,Hera Venenosa,Hera Venenosa | Superior,Superior,Veneno,Ofensivo,,Variável,"Adiciona +3 de dano, pós RD.",,450,0.3,"
+- Uma pasta espessa de coloração verde-escura quase negra, com veios mais claros que lembram as nervuras de uma folha sob a luz do Sol.
+- Seu brilho é oleoso, viscoso, aderindo facilemte a lâminas, pontas de felchas e virotes, onde permane como um verniz traiçoeiro.","
+- Em armas corpo-a-corpo a duração é de 5 Golpes.
+- Em armas de longa distância, é de uso único, entretanto o dano do veneno é x2.","Ingestão, Injetável",
+POISON-028,Hera Venenosa,Hera Venenosa | Excelente,Excelente,Veneno,Ofensivo,,Variável,"Adiciona +4 de dano, pós RD.",,600,0.2,"
+- Uma pasta espessa de coloração verde-escura quase negra, com veios mais claros que lembram as nervuras de uma folha sob a luz do Sol.
+- Seu brilho é oleoso, viscoso, aderindo facilemte a lâminas, pontas de felchas e virotes, onde permane como um verniz traiçoeiro.","
+- Em armas corpo-a-corpo a duração é de 6 Golpes.
+- Em armas de longa distância, é de uso único, entretanto o dano do veneno é x2.","Ingestão, Injetável",
+POISON-029,Hera Venenosa,Hera Venenosa | Obra-Prima,Obra-Prima,Veneno,Ofensivo,,Variável,"Adiciona +5 de dano, pós RD.",,750,0.1,"
+- Uma pasta espessa de coloração verde-escura quase negra, com veios mais claros que lembram as nervuras de uma folha sob a luz do Sol.
+- Seu brilho é oleoso, viscoso, aderindo facilemte a lâminas, pontas de felchas e virotes, onde permane como um verniz traiçoeiro.","
+- Em armas corpo-a-corpo a duração é de 7 Golpes.
+- Em armas de longa distância, é de uso único, entretanto o dano do veneno é x3.","Ingestão, Injetável",
+ELEXIR-000,Elixir do Touro,Elixir do Touro | Comum,Comum,Elixir,Manipulação de Atributos,,6 Horas,"Aumenta a ST do usuário, temporariamente, em +1.",20.0,200,0.8,"
+- Um líquido denso de tonalidade âmbar profunda com reflexos acobreados que lembram couro aquecido e madeira antiga.
+- Quando o frasco é movimentado, o conteúdo se desloca com peso evidente, formando ondas lentas e espessas que demoram a se dissipar. Pequenas partículas mais escuras permanecem suspensas, como sedimentos ricos em potência física
+- O aroma é forte e terroso — couro, raízes esmagadas e um leve traço metálico que sugere vigor bruto. Ao ser ingerido, a sensação é imediata e intensa: o corpo parece ganhar massa e presença, músculos se tensionam com facilidade e a respiração se torna profunda e pesada.
+- Cada movimento carrega potência adicional, como se a força do usuário fosse ampliada além de seus limites naturais.
+- Quando o efeito se dissipa, essa potência recua abruptamente, deixando uma sensação clara de esforço acumulado e peso residual nos membros.","
+- O bônus afeta testes de ST, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de ST igual a 1 por 18 Horas.",,
+ELEXIR-001,Elixir do Touro,Elixir do Touro | Boa,Boa,Elixir,Manipulação de Atributos,,9 Horas,"Aumenta a ST do usuário, temporariamente, em +1.",16.0,400,0.7,"
+- Um líquido denso de tonalidade âmbar profunda com reflexos acobreados que lembram couro aquecido e madeira antiga.
+- Quando o frasco é movimentado, o conteúdo se desloca com peso evidente, formando ondas lentas e espessas que demoram a se dissipar. Pequenas partículas mais escuras permanecem suspensas, como sedimentos ricos em potência física
+- O aroma é forte e terroso — couro, raízes esmagadas e um leve traço metálico que sugere vigor bruto. Ao ser ingerido, a sensação é imediata e intensa: o corpo parece ganhar massa e presença, músculos se tensionam com facilidade e a respiração se torna profunda e pesada.
+- Cada movimento carrega potência adicional, como se a força do usuário fosse ampliada além de seus limites naturais.
+- Quando o efeito se dissipa, essa potência recua abruptamente, deixando uma sensação clara de esforço acumulado e peso residual nos membros.","
+- O bônus afeta testes de ST, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de ST igual a 1 por 12 Horas.",,
+ELEXIR-002,Elixir do Touro,Elixir do Touro | Superior,Superior,Elixir,Manipulação de Atributos,,12 Horas,"Aumenta a ST do usuário, temporariamente, em +1.",12.0,800,0.6,"
+- Um líquido denso de tonalidade âmbar profunda com reflexos acobreados que lembram couro aquecido e madeira antiga.
+- Quando o frasco é movimentado, o conteúdo se desloca com peso evidente, formando ondas lentas e espessas que demoram a se dissipar. Pequenas partículas mais escuras permanecem suspensas, como sedimentos ricos em potência física
+- O aroma é forte e terroso — couro, raízes esmagadas e um leve traço metálico que sugere vigor bruto. Ao ser ingerido, a sensação é imediata e intensa: o corpo parece ganhar massa e presença, músculos se tensionam com facilidade e a respiração se torna profunda e pesada.
+- Cada movimento carrega potência adicional, como se a força do usuário fosse ampliada além de seus limites naturais.
+- Quando o efeito se dissipa, essa potência recua abruptamente, deixando uma sensação clara de esforço acumulado e peso residual nos membros.","
+- O bônus afeta testes de ST, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de ST igual a 1 por 8 Horas.",,
+ELEXIR-003,Elixir do Touro,Elixir do Touro | Excelente,Excelente,Elixir,Manipulação de Atributos,,18 Horas,"Aumenta a ST do usuário, temporariamente, em +1.",8.0,1600,0.5,"
+- Um líquido denso de tonalidade âmbar profunda com reflexos acobreados que lembram couro aquecido e madeira antiga.
+- Quando o frasco é movimentado, o conteúdo se desloca com peso evidente, formando ondas lentas e espessas que demoram a se dissipar. Pequenas partículas mais escuras permanecem suspensas, como sedimentos ricos em potência física
+- O aroma é forte e terroso — couro, raízes esmagadas e um leve traço metálico que sugere vigor bruto. Ao ser ingerido, a sensação é imediata e intensa: o corpo parece ganhar massa e presença, músculos se tensionam com facilidade e a respiração se torna profunda e pesada.
+- Cada movimento carrega potência adicional, como se a força do usuário fosse ampliada além de seus limites naturais.
+- Quando o efeito se dissipa, essa potência recua abruptamente, deixando uma sensação clara de esforço acumulado e peso residual nos membros.","
+- O bônus afeta testes de ST, e todos os atributos basedos nesta.- Ao término do efeito, o usuário sofre redução temporária de ST igual a 1 por 4 Horas.",,
+ELEXIR-004,Elixir do Touro,Elixir do Touro | Obra-Prima,Obra-Prima,Elixir,Manipulação de Atributos,,24 Horas,"Aumenta a ST do usuário, temporariamente, em +2.",4.0,3200,0.4,"
+- Um líquido denso de tonalidade âmbar profunda com reflexos acobreados que lembram couro aquecido e madeira antiga.
+- Quando o frasco é movimentado, o conteúdo se desloca com peso evidente, formando ondas lentas e espessas que demoram a se dissipar. Pequenas partículas mais escuras permanecem suspensas, como sedimentos ricos em potência física
+- O aroma é forte e terroso — couro, raízes esmagadas e um leve traço metálico que sugere vigor bruto. Ao ser ingerido, a sensação é imediata e intensa: o corpo parece ganhar massa e presença, músculos se tensionam com facilidade e a respiração se torna profunda e pesada.
+- Cada movimento carrega potência adicional, como se a força do usuário fosse ampliada além de seus limites naturais.
+- Quando o efeito se dissipa, essa potência recua abruptamente, deixando uma sensação clara de esforço acumulado e peso residual nos membros.","
+- O bônus afeta testes de ST, e todos os atributos basedos nesta.",,
+ELEXIR-005,Elixir da Coruja,Elixir da Coruja | Comum,Comum,Elixir,Manipulação de Atributos,,6 Horas,"Aumenta a IQ do usuário, temporariamente, em +1.",20.0,200,0.8,"
+- Um líquido translúcido de tonalidade azul-violeta suave, com reflexos prateados que se reorganizam lentamente como padrões de tinta em água.
+- Quando o frasco é agitado, o conteúdo forma espirais elegantes e simétricas que demoram a desaparecer, sugerindo ordem, paciência e percepção silenciosa. Sua consistência é leve, porém estável, escorrendo pelo vidro em trilhas finas e precisas.
+- O aroma é discreto e contemplativo — pergaminho antigo, ervas secas e um leve traço mineral frio que lembra ar noturno.
+- Ao ser ingerido, a sensação não é física, mas cognitiva: pensamentos desaceleram para se tornarem mais claros, detalhes antes ignorados emergem e conexões surgem com naturalidade. A mente parece observar antes de reagir, como se ganhasse distância e profundidade ao mesmo tempo.
+- Quando o efeito termina, essa clareza se dissipa gradualmente, deixando uma leve fadiga mental.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de IQ igual a 1 por 18 Horas.",,
+ELEXIR-006,Elixir da Coruja,Elixir da Coruja | Boa,Boa,Elixir,Manipulação de Atributos,,9 Horas,"Aumenta a IQ do usuário, temporariamente, em +1.",16.0,400,0.7,"
+- Um líquido translúcido de tonalidade azul-violeta suave, com reflexos prateados que se reorganizam lentamente como padrões de tinta em água.
+- Quando o frasco é agitado, o conteúdo forma espirais elegantes e simétricas que demoram a desaparecer, sugerindo ordem, paciência e percepção silenciosa. Sua consistência é leve, porém estável, escorrendo pelo vidro em trilhas finas e precisas.
+- O aroma é discreto e contemplativo — pergaminho antigo, ervas secas e um leve traço mineral frio que lembra ar noturno.
+- Ao ser ingerido, a sensação não é física, mas cognitiva: pensamentos desaceleram para se tornarem mais claros, detalhes antes ignorados emergem e conexões surgem com naturalidade. A mente parece observar antes de reagir, como se ganhasse distância e profundidade ao mesmo tempo.
+- Quando o efeito termina, essa clareza se dissipa gradualmente, deixando uma leve fadiga mental.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de IQ igual a 1 por 12 Horas.",,
+ELEXIR-007,Elixir da Coruja,Elixir da Coruja | Superior,Superior,Elixir,Manipulação de Atributos,,12 Horas,"Aumenta a IQ do usuário, temporariamente, em +1.",12.0,800,0.6,"
+- Um líquido translúcido de tonalidade azul-violeta suave, com reflexos prateados que se reorganizam lentamente como padrões de tinta em água.
+- Quando o frasco é agitado, o conteúdo forma espirais elegantes e simétricas que demoram a desaparecer, sugerindo ordem, paciência e percepção silenciosa. Sua consistência é leve, porém estável, escorrendo pelo vidro em trilhas finas e precisas.
+- O aroma é discreto e contemplativo — pergaminho antigo, ervas secas e um leve traço mineral frio que lembra ar noturno.
+- Ao ser ingerido, a sensação não é física, mas cognitiva: pensamentos desaceleram para se tornarem mais claros, detalhes antes ignorados emergem e conexões surgem com naturalidade. A mente parece observar antes de reagir, como se ganhasse distância e profundidade ao mesmo tempo.
+- Quando o efeito termina, essa clareza se dissipa gradualmente, deixando uma leve fadiga mental.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de IQ igual a 1 por 8 Horas.",,
+ELEXIR-008,Elixir da Coruja,Elixir da Coruja | Excelente,Excelente,Elixir,Manipulação de Atributos,,18 Horas,"Aumenta a IQ do usuário, temporariamente, em +1.",8.0,1600,0.5,"
+- Um líquido translúcido de tonalidade azul-violeta suave, com reflexos prateados que se reorganizam lentamente como padrões de tinta em água.
+- Quando o frasco é agitado, o conteúdo forma espirais elegantes e simétricas que demoram a desaparecer, sugerindo ordem, paciência e percepção silenciosa. Sua consistência é leve, porém estável, escorrendo pelo vidro em trilhas finas e precisas.
+- O aroma é discreto e contemplativo — pergaminho antigo, ervas secas e um leve traço mineral frio que lembra ar noturno.
+- Ao ser ingerido, a sensação não é física, mas cognitiva: pensamentos desaceleram para se tornarem mais claros, detalhes antes ignorados emergem e conexões surgem com naturalidade. A mente parece observar antes de reagir, como se ganhasse distância e profundidade ao mesmo tempo.
+- Quando o efeito termina, essa clareza se dissipa gradualmente, deixando uma leve fadiga mental.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de IQ igual a 1 por 4 Horas.",,
+ELEXIR-009,Elixir da Coruja,Elixir da Coruja | Obra-Prima,Obra-Prima,Elixir,Manipulação de Atributos,,24 Horas,"Aumenta a IQ do usuário, temporariamente, em +2.",4.0,3200,0.4,"
+- Um líquido translúcido de tonalidade azul-violeta suave, com reflexos prateados que se reorganizam lentamente como padrões de tinta em água.
+- Quando o frasco é agitado, o conteúdo forma espirais elegantes e simétricas que demoram a desaparecer, sugerindo ordem, paciência e percepção silenciosa. Sua consistência é leve, porém estável, escorrendo pelo vidro em trilhas finas e precisas.
+- O aroma é discreto e contemplativo — pergaminho antigo, ervas secas e um leve traço mineral frio que lembra ar noturno.
+- Ao ser ingerido, a sensação não é física, mas cognitiva: pensamentos desaceleram para se tornarem mais claros, detalhes antes ignorados emergem e conexões surgem com naturalidade. A mente parece observar antes de reagir, como se ganhasse distância e profundidade ao mesmo tempo.
+- Quando o efeito termina, essa clareza se dissipa gradualmente, deixando uma leve fadiga mental.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.",,
+ELEXIR-010,Elixir da Raposa,Elixir da Raposa | Comum,Comum,Elixir,Manipulação de Atributos,,6 Horas,"Aumenta a DX do usuário, temporariamente, em +1.",20.0,200,0.8,"
+- Um líquido translúcido de tonalidade âmbar-alaranjada com reflexos dourados rápidos que parecem escapar ao olhar direto.
+- Quando o frasco é movimentado, o conteúdo forma redemoinhos ágeis e elegantes, criando padrões que surgem e desaparecem com precisão quase calculada. Sua fluidez é leve e extremamente responsiva, escorrendo pelo vidro em trilhas finas que se dividem e se recombinam como movimentos bem executados.
+- O aroma é vivo e sutil — ervas leves, casca cítrica e um toque seco que remete a folhas em movimento.
+- Ao ser ingerido, a sensação é imediata: o corpo parece ajustar tensões invisíveis, articulações respondem com suavidade e movimentos se tornam naturais, precisos e silenciosos.
+- Gestos pequenos ganham refinamento, reflexos se antecipam e o usuário percebe uma confiança física elegante.
+- Quando o efeito se dissipa, essa precisão cede lugar a uma leve sensação de descompasso motor.","
+- O bônus afeta testes de DX, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de DX igual a 1 por 18 Horas.",,
+ELEXIR-011,Elixir da Raposa,Elixir da Raposa | Boa,Boa,Elixir,Manipulação de Atributos,,9 Horas,"Aumenta a DX do usuário, temporariamente, em +1.",16.0,400,0.7,"
+- Um líquido translúcido de tonalidade âmbar-alaranjada com reflexos dourados rápidos que parecem escapar ao olhar direto.
+- Quando o frasco é movimentado, o conteúdo forma redemoinhos ágeis e elegantes, criando padrões que surgem e desaparecem com precisão quase calculada. Sua fluidez é leve e extremamente responsiva, escorrendo pelo vidro em trilhas finas que se dividem e se recombinam como movimentos bem executados.
+- O aroma é vivo e sutil — ervas leves, casca cítrica e um toque seco que remete a folhas em movimento.
+- Ao ser ingerido, a sensação é imediata: o corpo parece ajustar tensões invisíveis, articulações respondem com suavidade e movimentos se tornam naturais, precisos e silenciosos.
+- Gestos pequenos ganham refinamento, reflexos se antecipam e o usuário percebe uma confiança física elegante.
+- Quando o efeito se dissipa, essa precisão cede lugar a uma leve sensação de descompasso motor.","
+- O bônus afeta testes de DX, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de DX igual a 1 por 12 Horas.",,
+ELEXIR-012,Elixir da Raposa,Elixir da Raposa | Superior,Superior,Elixir,Manipulação de Atributos,,12 Horas,"Aumenta a DX do usuário, temporariamente, em +1.",12.0,800,0.6,"
+- Um líquido translúcido de tonalidade âmbar-alaranjada com reflexos dourados rápidos que parecem escapar ao olhar direto.
+- Quando o frasco é movimentado, o conteúdo forma redemoinhos ágeis e elegantes, criando padrões que surgem e desaparecem com precisão quase calculada. Sua fluidez é leve e extremamente responsiva, escorrendo pelo vidro em trilhas finas que se dividem e se recombinam como movimentos bem executados.
+- O aroma é vivo e sutil — ervas leves, casca cítrica e um toque seco que remete a folhas em movimento.
+- Ao ser ingerido, a sensação é imediata: o corpo parece ajustar tensões invisíveis, articulações respondem com suavidade e movimentos se tornam naturais, precisos e silenciosos.
+- Gestos pequenos ganham refinamento, reflexos se antecipam e o usuário percebe uma confiança física elegante.
+- Quando o efeito se dissipa, essa precisão cede lugar a uma leve sensação de descompasso motor.","
+- O bônus afeta testes de IQ, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de DX igual a 1 por 8 Horas.",,
+ELEXIR-013,Elixir da Raposa,Elixir da Raposa | Excelente,Excelente,Elixir,Manipulação de Atributos,,18 Horas,"Aumenta a DX do usuário, temporariamente, em +1.",8.0,1600,0.5,"
+- Um líquido translúcido de tonalidade âmbar-alaranjada com reflexos dourados rápidos que parecem escapar ao olhar direto.
+- Quando o frasco é movimentado, o conteúdo forma redemoinhos ágeis e elegantes, criando padrões que surgem e desaparecem com precisão quase calculada. Sua fluidez é leve e extremamente responsiva, escorrendo pelo vidro em trilhas finas que se dividem e se recombinam como movimentos bem executados.
+- O aroma é vivo e sutil — ervas leves, casca cítrica e um toque seco que remete a folhas em movimento.
+- Ao ser ingerido, a sensação é imediata: o corpo parece ajustar tensões invisíveis, articulações respondem com suavidade e movimentos se tornam naturais, precisos e silenciosos.
+- Gestos pequenos ganham refinamento, reflexos se antecipam e o usuário percebe uma confiança física elegante.
+- Quando o efeito se dissipa, essa precisão cede lugar a uma leve sensação de descompasso motor.","
+- O bônus afeta testes de DX, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de DX igual a 1 por 4 Horas.",,
+ELEXIR-014,Elixir da Raposa,Elixir da Raposa | Obra-Prima,Obra-Prima,Elixir,Manipulação de Atributos,,24 Horas,"Aumenta a DX do usuário, temporariamente, em +2.",4.0,3200,0.4,"
+- Um líquido translúcido de tonalidade âmbar-alaranjada com reflexos dourados rápidos que parecem escapar ao olhar direto.
+- Quando o frasco é movimentado, o conteúdo forma redemoinhos ágeis e elegantes, criando padrões que surgem e desaparecem com precisão quase calculada. Sua fluidez é leve e extremamente responsiva, escorrendo pelo vidro em trilhas finas que se dividem e se recombinam como movimentos bem executados.
+- O aroma é vivo e sutil — ervas leves, casca cítrica e um toque seco que remete a folhas em movimento.
+- Ao ser ingerido, a sensação é imediata: o corpo parece ajustar tensões invisíveis, articulações respondem com suavidade e movimentos se tornam naturais, precisos e silenciosos.
+- Gestos pequenos ganham refinamento, reflexos se antecipam e o usuário percebe uma confiança física elegante.
+- Quando o efeito se dissipa, essa precisão cede lugar a uma leve sensação de descompasso motor.","
+- O bônus afeta testes de DX, e todos os atributos basedos nesta.",,
+ELEXIR-015,Elixir do Urso,Elixir do Urso | Comum,Comum,Elixir,Manipulação de Atributos,,6 Horas,"Aumenta a HT do usuário, temporariamente, em +1.",20.0,200,0.8,"
+- Um líquido encorpado de tonalidade castanho-escura com reflexos dourados profundos, lembrando mel antigo misturado a madeira úmida.
+- Quando o frasco é movimentado, o conteúdo forma ondas pesadas e estáveis, transmitindo a impressão de densidade e resistência. Pequenas partículas opacas permanecem suspensas, como sedimentos que reforçam a sensação de robustez e solidez.
+- O aroma é quente e reconfortante — raízes, resina e um leve traço adocicado que remete a mel silvestre.
+- Ao ser ingerido, a sensação surge como um peso agradável no corpo: a respiração se torna profunda, o pulso desacelera e a presença física parece mais firme. Fadiga e desconforto tornam-se mais fáceis de suportar, como se o corpo ganhasse reserva extra para resistir.
+- Quando o efeito termina, essa estabilidade recua, deixando uma sensação clara de cansaço latente.","
+- O bônus afeta testes de HT, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de HT igual a 1 por 18 Horas.",,
+ELEXIR-016,Elixir do Urso,Elixir do Urso | Boa,Boa,Elixir,Manipulação de Atributos,,9 Horas,"Aumenta a HT do usuário, temporariamente, em +1.",16.0,400,0.7,"
+- Um líquido encorpado de tonalidade castanho-escura com reflexos dourados profundos, lembrando mel antigo misturado a madeira úmida.
+- Quando o frasco é movimentado, o conteúdo forma ondas pesadas e estáveis, transmitindo a impressão de densidade e resistência. Pequenas partículas opacas permanecem suspensas, como sedimentos que reforçam a sensação de robustez e solidez.
+- O aroma é quente e reconfortante — raízes, resina e um leve traço adocicado que remete a mel silvestre.
+- Ao ser ingerido, a sensação surge como um peso agradável no corpo: a respiração se torna profunda, o pulso desacelera e a presença física parece mais firme. Fadiga e desconforto tornam-se mais fáceis de suportar, como se o corpo ganhasse reserva extra para resistir.
+- Quando o efeito termina, essa estabilidade recua, deixando uma sensação clara de cansaço latente.","
+- O bônus afeta testes de HT, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de HT igual a 1 por 12 Horas.",,
+ELEXIR-017,Elixir do Urso,Elixir do Urso | Superior,Superior,Elixir,Manipulação de Atributos,,12 Horas,"Aumenta a HT do usuário, temporariamente, em +1.",12.0,800,0.6,"
+- Um líquido encorpado de tonalidade castanho-escura com reflexos dourados profundos, lembrando mel antigo misturado a madeira úmida.
+- Quando o frasco é movimentado, o conteúdo forma ondas pesadas e estáveis, transmitindo a impressão de densidade e resistência. Pequenas partículas opacas permanecem suspensas, como sedimentos que reforçam a sensação de robustez e solidez.
+- O aroma é quente e reconfortante — raízes, resina e um leve traço adocicado que remete a mel silvestre.
+- Ao ser ingerido, a sensação surge como um peso agradável no corpo: a respiração se torna profunda, o pulso desacelera e a presença física parece mais firme. Fadiga e desconforto tornam-se mais fáceis de suportar, como se o corpo ganhasse reserva extra para resistir.
+- Quando o efeito termina, essa estabilidade recua, deixando uma sensação clara de cansaço latente.","
+- O bônus afeta testes de HT, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de HT igual a 1 por 8 Horas.",,
+ELEXIR-018,Elixir do Urso,Elixir do Urso | Excelente,Excelente,Elixir,Manipulação de Atributos,,18 Horas,"Aumenta a HT do usuário, temporariamente, em +1.",8.0,1600,0.5,"
+- Um líquido encorpado de tonalidade castanho-escura com reflexos dourados profundos, lembrando mel antigo misturado a madeira úmida.
+- Quando o frasco é movimentado, o conteúdo forma ondas pesadas e estáveis, transmitindo a impressão de densidade e resistência. Pequenas partículas opacas permanecem suspensas, como sedimentos que reforçam a sensação de robustez e solidez.
+- O aroma é quente e reconfortante — raízes, resina e um leve traço adocicado que remete a mel silvestre.
+- Ao ser ingerido, a sensação surge como um peso agradável no corpo: a respiração se torna profunda, o pulso desacelera e a presença física parece mais firme. Fadiga e desconforto tornam-se mais fáceis de suportar, como se o corpo ganhasse reserva extra para resistir.
+- Quando o efeito termina, essa estabilidade recua, deixando uma sensação clara de cansaço latente.","
+- O bônus afeta testes de HT, e todos os atributos basedos nesta.
+- Ao término do efeito, o usuário sofre redução temporária de HT igual a 1 por 4 Horas.",,
+ELEXIR-019,Elixir do Urso,Elixir do Urso | Obra-Prima,Obra-Prima,Elixir,Manipulação de Atributos,,24 Horas,"Aumenta a HT do usuário, temporariamente, em +2.",4.0,3200,0.4,"
+- Um líquido encorpado de tonalidade castanho-escura com reflexos dourados profundos, lembrando mel antigo misturado a madeira úmida.
+- Quando o frasco é movimentado, o conteúdo forma ondas pesadas e estáveis, transmitindo a impressão de densidade e resistência. Pequenas partículas opacas permanecem suspensas, como sedimentos que reforçam a sensação de robustez e solidez.
+- O aroma é quente e reconfortante — raízes, resina e um leve traço adocicado que remete a mel silvestre.
+- Ao ser ingerido, a sensação surge como um peso agradável no corpo: a respiração se torna profunda, o pulso desacelera e a presença física parece mais firme. Fadiga e desconforto tornam-se mais fáceis de suportar, como se o corpo ganhasse reserva extra para resistir.
+- Quando o efeito termina, essa estabilidade recua, deixando uma sensação clara de cansaço latente.","
+- O bônus afeta testes de HT, e todos os atributos basedos nesta.",,
+ELEXIR-020,Elixir do Dragão,Elixir do Dragão | Comum,Comum,Elixir,Manipulação de Atributos,,6 Horas,"Aumenta todos os atributos primários do usuário, temporariamente, em +1.",32.0,400,0.8,"
+- Um líquido de tonalidade rubi-violeta profunda atravessado por reflexos dourados e escarlates que se movem como chamas lentas dentro do frasco.
+- Diferente de outros elixires, sua aparência parece instável — cores se sobrepõem, brilhos surgem em camadas e breves pulsações percorrem o conteúdo como batidas de um coração antigo. Quando agitado, forma espirais densas que lembram fumaça líquida, sugerindo poder concentrado além de qualquer preparo comum.
+- O aroma é intenso e complexo — resina aquecida, especiarias raras, metal quente e um fundo mineral antigo.
+- Ao ser ingerido, a sensação é imediata e avassaladora: o corpo se fortalece, a mente se expande, movimentos se tornam precisos e a resistência parece inabalável. Há uma clara percepção de estar além dos próprios limites, como se múltiplas capacidades fossem elevadas simultaneamente.
+- Quando o efeito termina, essa ascensão recua de forma perceptível, deixando um vazio momentâneo e fadiga generalizada.","
+- O bônus afeta todo e qualquer teste.
+- Ao término do efeito, o usuário sofre redução temporária de todos os atributos primários, igual a 1 por 18 Horas.",,
+ELEXIR-021,Elixir do Dragão,Elixir do Dragão | Boa,Boa,Elixir,Manipulação de Atributos,,9 Horas,"Aumenta todos os atributos primários do usuário, temporariamente, em +1.",28.0,800,0.7,"
+- Um líquido de tonalidade rubi-violeta profunda atravessado por reflexos dourados e escarlates que se movem como chamas lentas dentro do frasco.
+- Diferente de outros elixires, sua aparência parece instável — cores se sobrepõem, brilhos surgem em camadas e breves pulsações percorrem o conteúdo como batidas de um coração antigo. Quando agitado, forma espirais densas que lembram fumaça líquida, sugerindo poder concentrado além de qualquer preparo comum.
+- O aroma é intenso e complexo — resina aquecida, especiarias raras, metal quente e um fundo mineral antigo.
+- Ao ser ingerido, a sensação é imediata e avassaladora: o corpo se fortalece, a mente se expande, movimentos se tornam precisos e a resistência parece inabalável. Há uma clara percepção de estar além dos próprios limites, como se múltiplas capacidades fossem elevadas simultaneamente.
+- Quando o efeito termina, essa ascensão recua de forma perceptível, deixando um vazio momentâneo e fadiga generalizada.","
+- O bônus afeta todo e qualquer teste.
+- Ao término do efeito, o usuário sofre redução temporária de todos os atributos primários, igual a 1 por 12 Horas.",,
+ELEXIR-022,Elixir do Dragão,Elixir do Dragão | Superior,Superior,Elixir,Manipulação de Atributos,,12 Horas,"Aumenta todos os atributos primários do usuário, temporariamente, em +1.",24.0,1600,0.6,"
+- Um líquido de tonalidade rubi-violeta profunda atravessado por reflexos dourados e escarlates que se movem como chamas lentas dentro do frasco.
+- Diferente de outros elixires, sua aparência parece instável — cores se sobrepõem, brilhos surgem em camadas e breves pulsações percorrem o conteúdo como batidas de um coração antigo. Quando agitado, forma espirais densas que lembram fumaça líquida, sugerindo poder concentrado além de qualquer preparo comum.
+- O aroma é intenso e complexo — resina aquecida, especiarias raras, metal quente e um fundo mineral antigo.
+- Ao ser ingerido, a sensação é imediata e avassaladora: o corpo se fortalece, a mente se expande, movimentos se tornam precisos e a resistência parece inabalável. Há uma clara percepção de estar além dos próprios limites, como se múltiplas capacidades fossem elevadas simultaneamente.
+- Quando o efeito termina, essa ascensão recua de forma perceptível, deixando um vazio momentâneo e fadiga generalizada.","
+- O bônus afeta todo e qualquer teste.
+- Ao término do efeito, o usuário sofre redução temporária de todos os atributos primários, igual a 1 por 8 Horas.",,
+ELEXIR-023,Elixir do Dragão,Elixir do Dragão | Excelente,Excelente,Elixir,Manipulação de Atributos,,18 Horas,"Aumenta todos os atributos primários do usuário, temporariamente, em +1.",20.0,3200,0.5,"
+- Um líquido de tonalidade rubi-violeta profunda atravessado por reflexos dourados e escarlates que se movem como chamas lentas dentro do frasco.
+- Diferente de outros elixires, sua aparência parece instável — cores se sobrepõem, brilhos surgem em camadas e breves pulsações percorrem o conteúdo como batidas de um coração antigo. Quando agitado, forma espirais densas que lembram fumaça líquida, sugerindo poder concentrado além de qualquer preparo comum.
+- O aroma é intenso e complexo — resina aquecida, especiarias raras, metal quente e um fundo mineral antigo.
+- Ao ser ingerido, a sensação é imediata e avassaladora: o corpo se fortalece, a mente se expande, movimentos se tornam precisos e a resistência parece inabalável. Há uma clara percepção de estar além dos próprios limites, como se múltiplas capacidades fossem elevadas simultaneamente.
+- Quando o efeito termina, essa ascensão recua de forma perceptível, deixando um vazio momentâneo e fadiga generalizada.","
+- O bônus afeta todo e qualquer teste.
+- Ao término do efeito, o usuário sofre redução temporária de todos os atributos primários, igual a 1 por 4 Horas.",,
+ELEXIR-024,Elixir do Dragão,Elixir do Dragão | Obra-Prima,Obra-Prima,Elixir,Manipulação de Atributos,,24 Horas,"Aumenta todos os atributos primários do usuário, temporariamente, em +2.",16.0,6400,0.4,"
+- Um líquido de tonalidade rubi-violeta profunda atravessado por reflexos dourados e escarlates que se movem como chamas lentas dentro do frasco.
+- Diferente de outros elixires, sua aparência parece instável — cores se sobrepõem, brilhos surgem em camadas e breves pulsações percorrem o conteúdo como batidas de um coração antigo. Quando agitado, forma espirais densas que lembram fumaça líquida, sugerindo poder concentrado além de qualquer preparo comum.
+- O aroma é intenso e complexo — resina aquecida, especiarias raras, metal quente e um fundo mineral antigo.
+- Ao ser ingerido, a sensação é imediata e avassaladora: o corpo se fortalece, a mente se expande, movimentos se tornam precisos e a resistência parece inabalável. Há uma clara percepção de estar além dos próprios limites, como se múltiplas capacidades fossem elevadas simultaneamente.
+- Quando o efeito termina, essa ascensão recua de forma perceptível, deixando um vazio momentâneo e fadiga generalizada.","
+- O bônus afeta todo e qualquer teste.",,
+ELEXIR-025,Elixir do Gato,Elixir do Gato | Comum,Comum,Elixir,Utilidade,,2 Horas,Garente ao usuário visão noturna temporariamente.,16.0,150,0.8,"
+- Um líquido translúcido de tonalidade verde-amarelada suave, com reflexos felinos que surgem como filetes luminosos verticais quando o frasco é inclinado.
+- À luz fraca, esses reflexos se intensificam, criando a impressão de olhos observando através do vidro. Sua consistência é leve e silenciosa, formando ondulações finas que desaparecem rapidamente, como movimentos quase imperceptíveis.
+- O aroma é discreto e fresco — ervas noturnas, folhas úmidas e um leve traço mineral frio.
+- Ao ser ingerido, a mudança é gradual: sombras ganham profundidade, contornos antes perdidos tornam-se distinguíveis e a escuridão deixa de ser um obstáculo para se tornar apenas mais um ambiente. A percepção visual se ajusta com naturalidade, como se os olhos aprendessem novamente a enxergar.
+- Quando o efeito termina, a escuridão parece momentaneamente mais densa por contraste.",,,
+ELEXIR-026,Elixir do Gato,Elixir do Gato | Boa,Boa,Elixir,Utilidade,,3 Horas,Garente ao usuário visão noturna temporariamente.,12.0,300,0.7,"
+- Um líquido translúcido de tonalidade verde-amarelada suave, com reflexos felinos que surgem como filetes luminosos verticais quando o frasco é inclinado.
+- À luz fraca, esses reflexos se intensificam, criando a impressão de olhos observando através do vidro. Sua consistência é leve e silenciosa, formando ondulações finas que desaparecem rapidamente, como movimentos quase imperceptíveis.
+- O aroma é discreto e fresco — ervas noturnas, folhas úmidas e um leve traço mineral frio.
+- Ao ser ingerido, a mudança é gradual: sombras ganham profundidade, contornos antes perdidos tornam-se distinguíveis e a escuridão deixa de ser um obstáculo para se tornar apenas mais um ambiente. A percepção visual se ajusta com naturalidade, como se os olhos aprendessem novamente a enxergar.
+- Quando o efeito termina, a escuridão parece momentaneamente mais densa por contraste.",,,
+ELEXIR-027,Elixir do Gato,Elixir do Gato | Superior,Superior,Elixir,Utilidade,,4 Horas,Garente ao usuário visão noturna temporariamente.,10.0,450,0.6,"
+- Um líquido translúcido de tonalidade verde-amarelada suave, com reflexos felinos que surgem como filetes luminosos verticais quando o frasco é inclinado.
+- À luz fraca, esses reflexos se intensificam, criando a impressão de olhos observando através do vidro. Sua consistência é leve e silenciosa, formando ondulações finas que desaparecem rapidamente, como movimentos quase imperceptíveis.
+- O aroma é discreto e fresco — ervas noturnas, folhas úmidas e um leve traço mineral frio.
+- Ao ser ingerido, a mudança é gradual: sombras ganham profundidade, contornos antes perdidos tornam-se distinguíveis e a escuridão deixa de ser um obstáculo para se tornar apenas mais um ambiente. A percepção visual se ajusta com naturalidade, como se os olhos aprendessem novamente a enxergar.
+- Quando o efeito termina, a escuridão parece momentaneamente mais densa por contraste.",,,
+ELEXIR-028,Elixir do Gato,Elixir do Gato | Excelente,Excelente,Elixir,Utilidade,,5 Horas,Garente ao usuário visão noturna temporariamente.,8.0,600,0.5,"
+- Um líquido translúcido de tonalidade verde-amarelada suave, com reflexos felinos que surgem como filetes luminosos verticais quando o frasco é inclinado.
+- À luz fraca, esses reflexos se intensificam, criando a impressão de olhos observando através do vidro. Sua consistência é leve e silenciosa, formando ondulações finas que desaparecem rapidamente, como movimentos quase imperceptíveis.
+- O aroma é discreto e fresco — ervas noturnas, folhas úmidas e um leve traço mineral frio.
+- Ao ser ingerido, a mudança é gradual: sombras ganham profundidade, contornos antes perdidos tornam-se distinguíveis e a escuridão deixa de ser um obstáculo para se tornar apenas mais um ambiente. A percepção visual se ajusta com naturalidade, como se os olhos aprendessem novamente a enxergar.
+- Quando o efeito termina, a escuridão parece momentaneamente mais densa por contraste.",,,
+ELEXIR-029,Elixir do Gato,Elixir do Gato | Obra-Prima,Obra-Prima,Elixir,Utilidade,,6 Horas,Garente ao usuário visão de sombras temporariamente.,4.0,750,0.4,"
+- Um líquido translúcido de tonalidade verde-amarelada suave, com reflexos felinos que surgem como filetes luminosos verticais quando o frasco é inclinado.
+- À luz fraca, esses reflexos se intensificam, criando a impressão de olhos observando através do vidro. Sua consistência é leve e silenciosa, formando ondulações finas que desaparecem rapidamente, como movimentos quase imperceptíveis.
+- O aroma é discreto e fresco — ervas noturnas, folhas úmidas e um leve traço mineral frio.
+- Ao ser ingerido, a mudança é gradual: sombras ganham profundidade, contornos antes perdidos tornam-se distinguíveis e a escuridão deixa de ser um obstáculo para se tornar apenas mais um ambiente. A percepção visual se ajusta com naturalidade, como se os olhos aprendessem novamente a enxergar.
+- Quando o efeito termina, a escuridão parece momentaneamente mais densa por contraste.",,,
+ELEXIR-030,Elixir do Sapo,Elixir do Sapo | Comum,Comum,Elixir,Utilidade,,2 Horas,Garante ao usuário a habilidade de respirar debaixo d'água.,16.0,150,0.8,"
+- Um líquido translúcido de tonalidade verde-pálida com leves reflexos azulados que se movem lentamente, como bolhas presas em água parada.
+- Quando o frasco é agitado, pequenas esferas de ar se formam e permanecem suspensas por alguns instantes antes de desaparecer, sugerindo a adaptação entre ar e água. Sua consistência é leve e refrescante, deixando no vidro trilhas fluidas que lembram condensação.
+- O aroma é úmido e vegetal — água doce, folhas aquáticas e um leve toque mineral fresco.
+- Ao ser ingerido, a sensação começa na garganta com um frescor suave, seguida por uma respiração que parece mais profunda e eficiente. O corpo se ajusta gradualmente: o impulso de prender o ar desaparece, a água deixa de provocar pânico e respirar torna-se possível mesmo submerso, como se o corpo lembrasse um instinto antigo.
+- Quando o efeito termina, a necessidade de ar retorna de forma abrupta e evidente.",,,
+ELEXIR-031,Elixir do Sapo,Elixir do Sapo | Boa,Boa,Elixir,Utilidade,,3 Horas,Garante ao usuário a habilidade de respirar debaixo d'água.,12.0,300,0.7,"
+- Um líquido translúcido de tonalidade verde-pálida com leves reflexos azulados que se movem lentamente, como bolhas presas em água parada.
+- Quando o frasco é agitado, pequenas esferas de ar se formam e permanecem suspensas por alguns instantes antes de desaparecer, sugerindo a adaptação entre ar e água. Sua consistência é leve e refrescante, deixando no vidro trilhas fluidas que lembram condensação.
+- O aroma é úmido e vegetal — água doce, folhas aquáticas e um leve toque mineral fresco.
+- Ao ser ingerido, a sensação começa na garganta com um frescor suave, seguida por uma respiração que parece mais profunda e eficiente. O corpo se ajusta gradualmente: o impulso de prender o ar desaparece, a água deixa de provocar pânico e respirar torna-se possível mesmo submerso, como se o corpo lembrasse um instinto antigo.
+- Quando o efeito termina, a necessidade de ar retorna de forma abrupta e evidente.",,,
+ELEXIR-032,Elixir do Sapo,Elixir do Sapo | Superior,Superior,Elixir,Utilidade,,4 Horas,Garante ao usuário a habilidade de respirar debaixo d'água.,10.0,450,0.6,"
+- Um líquido translúcido de tonalidade verde-pálida com leves reflexos azulados que se movem lentamente, como bolhas presas em água parada.
+- Quando o frasco é agitado, pequenas esferas de ar se formam e permanecem suspensas por alguns instantes antes de desaparecer, sugerindo a adaptação entre ar e água. Sua consistência é leve e refrescante, deixando no vidro trilhas fluidas que lembram condensação.
+- O aroma é úmido e vegetal — água doce, folhas aquáticas e um leve toque mineral fresco.
+- Ao ser ingerido, a sensação começa na garganta com um frescor suave, seguida por uma respiração que parece mais profunda e eficiente. O corpo se ajusta gradualmente: o impulso de prender o ar desaparece, a água deixa de provocar pânico e respirar torna-se possível mesmo submerso, como se o corpo lembrasse um instinto antigo.
+- Quando o efeito termina, a necessidade de ar retorna de forma abrupta e evidente.",,,
+ELEXIR-033,Elixir do Sapo,Elixir do Sapo | Excelente,Excelente,Elixir,Utilidade,,5 Horas,Garante ao usuário a habilidade de respirar debaixo d'água.,8.0,600,0.5,"
+- Um líquido translúcido de tonalidade verde-pálida com leves reflexos azulados que se movem lentamente, como bolhas presas em água parada.
+- Quando o frasco é agitado, pequenas esferas de ar se formam e permanecem suspensas por alguns instantes antes de desaparecer, sugerindo a adaptação entre ar e água. Sua consistência é leve e refrescante, deixando no vidro trilhas fluidas que lembram condensação.
+- O aroma é úmido e vegetal — água doce, folhas aquáticas e um leve toque mineral fresco.
+- Ao ser ingerido, a sensação começa na garganta com um frescor suave, seguida por uma respiração que parece mais profunda e eficiente. O corpo se ajusta gradualmente: o impulso de prender o ar desaparece, a água deixa de provocar pânico e respirar torna-se possível mesmo submerso, como se o corpo lembrasse um instinto antigo.
+- Quando o efeito termina, a necessidade de ar retorna de forma abrupta e evidente.",,,
+ELEXIR-034,Elixir do Sapo,Elixir do Sapo | Obra-Prima,Obra-Prima,Elixir,Utilidade,,6 Horas,Garante ao usuário a habilidade de respirar debaixo d'água e um bônus de +10 em testes de natação.,4.0,750,0.4,"
+- Um líquido translúcido de tonalidade verde-pálida com leves reflexos azulados que se movem lentamente, como bolhas presas em água parada.
+- Quando o frasco é agitado, pequenas esferas de ar se formam e permanecem suspensas por alguns instantes antes de desaparecer, sugerindo a adaptação entre ar e água. Sua consistência é leve e refrescante, deixando no vidro trilhas fluidas que lembram condensação.
+- O aroma é úmido e vegetal — água doce, folhas aquáticas e um leve toque mineral fresco.
+- Ao ser ingerido, a sensação começa na garganta com um frescor suave, seguida por uma respiração que parece mais profunda e eficiente. O corpo se ajusta gradualmente: o impulso de prender o ar desaparece, a água deixa de provocar pânico e respirar torna-se possível mesmo submerso, como se o corpo lembrasse um instinto antigo.
+- Quando o efeito termina, a necessidade de ar retorna de forma abrupta e evidente.",,,
+ELEXIR-035,Elixir do Stalker,Elixir do Stalker | Comum,Comum,Elixir,Utilidade,,2 Horas,Garente ao usuário se tornar invisível ao seu bel prazer.,16.0,200,0.8,"
+- Um líquido quase incolor, com leve tonalidade prateada que só se revela quando a luz o atravessa em determinado ângulo.
+- Dentro do frasco, o conteúdo parece distorcer o que está atrás dele, criando pequenas refrações e deslocamentos visuais, como vidro imperfeito ou calor no ar. Quando agitado, não forma redemoinhos visíveis — apenas ondulações sutis que fazem o líquido parecer desaparecer por instantes antes de reaparecer.
+- O aroma é extremamente discreto — ar frio, cristal e um leve toque mineral seco.
+- Ao ser ingerido, a sensação é estranha e silenciosa: primeiro uma leve ausência de peso perceptivo, depois a impressão de que o próprio corpo deixa de ocupar o mesmo espaço visual. Sons e presença permanecem, mas a imagem desaparece, como se o usuário tivesse sido apagado do olhar do mundo.
+- Quando o efeito termina, a visibilidade retorna gradualmente, começando por reflexos e contornos.","
+- O usuário não pode ser visto visualmente, mas ainda pode ser ouvido, rastreado ou percebido por outros sentidos.
+- Não oculta automaticamente equipamentos barulhentos, pegadas ou interação com o ambiente.",,
+ELEXIR-036,Elixir do Stalker,Elixir do Stalker | Boa,Boa,Elixir,Utilidade,,3 Horas,Garente ao usuário se tornar invisível ao seu bel prazer.,12.0,400,0.7,"
+- Um líquido quase incolor, com leve tonalidade prateada que só se revela quando a luz o atravessa em determinado ângulo.
+- Dentro do frasco, o conteúdo parece distorcer o que está atrás dele, criando pequenas refrações e deslocamentos visuais, como vidro imperfeito ou calor no ar. Quando agitado, não forma redemoinhos visíveis — apenas ondulações sutis que fazem o líquido parecer desaparecer por instantes antes de reaparecer.
+- O aroma é extremamente discreto — ar frio, cristal e um leve toque mineral seco.
+- Ao ser ingerido, a sensação é estranha e silenciosa: primeiro uma leve ausência de peso perceptivo, depois a impressão de que o próprio corpo deixa de ocupar o mesmo espaço visual. Sons e presença permanecem, mas a imagem desaparece, como se o usuário tivesse sido apagado do olhar do mundo.
+- Quando o efeito termina, a visibilidade retorna gradualmente, começando por reflexos e contornos.","
+- O usuário não pode ser visto visualmente, mas ainda pode ser ouvido, rastreado ou percebido por outros sentidos.
+- Não oculta automaticamente equipamentos barulhentos, pegadas ou interação com o ambiente.",,
+ELEXIR-037,Elixir do Stalker,Elixir do Stalker | Superior,Superior,Elixir,Utilidade,,4 Horas,Garente ao usuário se tornar invisível ao seu bel prazer.,10.0,600,0.6,"
+- Um líquido quase incolor, com leve tonalidade prateada que só se revela quando a luz o atravessa em determinado ângulo.
+- Dentro do frasco, o conteúdo parece distorcer o que está atrás dele, criando pequenas refrações e deslocamentos visuais, como vidro imperfeito ou calor no ar. Quando agitado, não forma redemoinhos visíveis — apenas ondulações sutis que fazem o líquido parecer desaparecer por instantes antes de reaparecer.
+- O aroma é extremamente discreto — ar frio, cristal e um leve toque mineral seco.
+- Ao ser ingerido, a sensação é estranha e silenciosa: primeiro uma leve ausência de peso perceptivo, depois a impressão de que o próprio corpo deixa de ocupar o mesmo espaço visual. Sons e presença permanecem, mas a imagem desaparece, como se o usuário tivesse sido apagado do olhar do mundo.
+- Quando o efeito termina, a visibilidade retorna gradualmente, começando por reflexos e contornos.","
+- O usuário não pode ser visto visualmente, mas ainda pode ser ouvido, rastreado ou percebido por outros sentidos.
+- Não oculta automaticamente equipamentos barulhentos, pegadas ou interação com o ambiente.",,
+ELEXIR-038,Elixir do Stalker,Elixir do Stalker | Excelente,Excelente,Elixir,Utilidade,,5 Horas,Garente ao usuário se tornar invisível ao seu bel prazer.,8.0,800,0.5,"
+- Um líquido quase incolor, com leve tonalidade prateada que só se revela quando a luz o atravessa em determinado ângulo.
+- Dentro do frasco, o conteúdo parece distorcer o que está atrás dele, criando pequenas refrações e deslocamentos visuais, como vidro imperfeito ou calor no ar. Quando agitado, não forma redemoinhos visíveis — apenas ondulações sutis que fazem o líquido parecer desaparecer por instantes antes de reaparecer.
+- O aroma é extremamente discreto — ar frio, cristal e um leve toque mineral seco.
+- Ao ser ingerido, a sensação é estranha e silenciosa: primeiro uma leve ausência de peso perceptivo, depois a impressão de que o próprio corpo deixa de ocupar o mesmo espaço visual. Sons e presença permanecem, mas a imagem desaparece, como se o usuário tivesse sido apagado do olhar do mundo.
+- Quando o efeito termina, a visibilidade retorna gradualmente, começando por reflexos e contornos.","
+- O usuário não pode ser visto visualmente, mas ainda pode ser ouvido, rastreado ou percebido por outros sentidos.
+- Não oculta automaticamente equipamentos barulhentos, pegadas ou interação com o ambiente.",,
+ELEXIR-039,Elixir do Stalker,Elixir do Stalker | Obra-Prima,Obra-Prima,Elixir,Utilidade,,6 Horas,"Garente ao usuário se tornar invisível ao seu bel prazer, enquanto invisível não emite sons podendo ser percebido somente pelo feitiço Ver Invisível.",4.0,1000,0.4,"
+- Um líquido quase incolor, com leve tonalidade prateada que só se revela quando a luz o atravessa em determinado ângulo.
+- Dentro do frasco, o conteúdo parece distorcer o que está atrás dele, criando pequenas refrações e deslocamentos visuais, como vidro imperfeito ou calor no ar. Quando agitado, não forma redemoinhos visíveis — apenas ondulações sutis que fazem o líquido parecer desaparecer por instantes antes de reaparecer.
+- O aroma é extremamente discreto — ar frio, cristal e um leve toque mineral seco.
+- Ao ser ingerido, a sensação é estranha e silenciosa: primeiro uma leve ausência de peso perceptivo, depois a impressão de que o próprio corpo deixa de ocupar o mesmo espaço visual. Sons e presença permanecem, mas a imagem desaparece, como se o usuário tivesse sido apagado do olhar do mundo.
+- Quando o efeito termina, a visibilidade retorna gradualmente, começando por reflexos e contornos.","
+
+- Não oculta automaticamente equipamentos barulhentos, pegadas ou interação com o ambiente.",,
+BOMB-000,Granada de Estilhaços,Granada de Estilhaços | Comum,Comum,Bomba,Dano,,Instantânea,Causa 1d6 + 3 de dano em área.,,200,0.5,"
+- Um pequeno recipiente esférico de vidro espesso envolto por uma malha metálica segmentada, visivelmente projetada para se fragmentar.
+- No interior, um composto turvo de tonalidade cinza-âmbar permanece instável, formando bolhas lentas e breves vibrações quando a granada é movimentada. Finas linhas metálicas percorrem a estrutura externa, sugerindo pontos de ruptura deliberados.
+- Ao ser ativada, um breve silvo precede a detonação — um estalo seco seguido por uma explosão violenta que dispersa fragmentos metálicos e de vidro em alta velocidade.
+- O impacto não é apenas sonoro, mas físico: o ar se comprime, o chão responde e a área ao redor é varrida por estilhaços que ricocheteiam e se cravam em superfícies próximas.",,,Área de 2 Hex
+BOMB-001,Granada de Estilhaços,Granada de Estilhaços | Boa,Boa,Bomba,Dano,,Instantânea,Causa 1d6 + 6 de dano em área.,,400,0.75,"
+- Um pequeno recipiente esférico de vidro espesso envolto por uma malha metálica segmentada, visivelmente projetada para se fragmentar.
+- No interior, um composto turvo de tonalidade cinza-âmbar permanece instável, formando bolhas lentas e breves vibrações quando a granada é movimentada. Finas linhas metálicas percorrem a estrutura externa, sugerindo pontos de ruptura deliberados.
+- Ao ser ativada, um breve silvo precede a detonação — um estalo seco seguido por uma explosão violenta que dispersa fragmentos metálicos e de vidro em alta velocidade.
+- O impacto não é apenas sonoro, mas físico: o ar se comprime, o chão responde e a área ao redor é varrida por estilhaços que ricocheteiam e se cravam em superfícies próximas.",,,Área de 2 Hex
+BOMB-002,Granada de Estilhaços,Granada de Estilhaços | Superior,Superior,Bomba,Dano,,Instantânea,Causa 2d6 + 3 de dano em área.,,600,1.0,"
+- Um pequeno recipiente esférico de vidro espesso envolto por uma malha metálica segmentada, visivelmente projetada para se fragmentar.
+- No interior, um composto turvo de tonalidade cinza-âmbar permanece instável, formando bolhas lentas e breves vibrações quando a granada é movimentada. Finas linhas metálicas percorrem a estrutura externa, sugerindo pontos de ruptura deliberados.
+- Ao ser ativada, um breve silvo precede a detonação — um estalo seco seguido por uma explosão violenta que dispersa fragmentos metálicos e de vidro em alta velocidade.
+- O impacto não é apenas sonoro, mas físico: o ar se comprime, o chão responde e a área ao redor é varrida por estilhaços que ricocheteiam e se cravam em superfícies próximas.",,,Área de 3 Hex
+BOMB-003,Granada de Estilhaços,Granada de Estilhaços | Excelente,Excelente,Bomba,Dano,,Instantânea,Causa 2d6 + 6 de dano em área.,,800,1.25,"
+- Um pequeno recipiente esférico de vidro espesso envolto por uma malha metálica segmentada, visivelmente projetada para se fragmentar.
+- No interior, um composto turvo de tonalidade cinza-âmbar permanece instável, formando bolhas lentas e breves vibrações quando a granada é movimentada. Finas linhas metálicas percorrem a estrutura externa, sugerindo pontos de ruptura deliberados.
+- Ao ser ativada, um breve silvo precede a detonação — um estalo seco seguido por uma explosão violenta que dispersa fragmentos metálicos e de vidro em alta velocidade.
+- O impacto não é apenas sonoro, mas físico: o ar se comprime, o chão responde e a área ao redor é varrida por estilhaços que ricocheteiam e se cravam em superfícies próximas.",,,Área de 3 Hex
+BOMB-004,Granada de Estilhaços,Granada de Estilhaços | Obra-Prima,Obra-Prima,Bomba,Dano,,Instantânea,Causa 3d6 + 6 de dano em área.,,1000,1.5,"
+- Um pequeno recipiente esférico de vidro espesso envolto por uma malha metálica segmentada, visivelmente projetada para se fragmentar.
+- No interior, um composto turvo de tonalidade cinza-âmbar permanece instável, formando bolhas lentas e breves vibrações quando a granada é movimentada. Finas linhas metálicas percorrem a estrutura externa, sugerindo pontos de ruptura deliberados.
+- Ao ser ativada, um breve silvo precede a detonação — um estalo seco seguido por uma explosão violenta que dispersa fragmentos metálicos e de vidro em alta velocidade.
+- O impacto não é apenas sonoro, mas físico: o ar se comprime, o chão responde e a área ao redor é varrida por estilhaços que ricocheteiam e se cravam em superfícies próximas.",,,Área de 4 Hex
+BOMB-005,Granada de Chamas,Granada de Chamas | Comum,Comum,Bomba,Dano,,2 Turnos,"
+- No impacto cria uma área de chamas.
+- Causa 1d6 de dano de fogo nos alvos na área impactada.
+- Alvos que entrarem na área irão sofrer 1d6 de dano de fogo pelo restante da duração.",,200,0.5,"
+- Um recipiente de vidro reforçado preenchido por um líquido espesso de tonalidade laranja-avermelhada, atravessado por veios mais escuros que se movem lentamente como brasas submersas.
+- Quando agitada, pequenas faíscas luminosas surgem e desaparecem no interior, e o conteúdo parece aquecer levemente o próprio frasco. Um pavio alquímico curto permanece selado no topo, liberando um discreto cheiro de resina queimada.
+- Ao se romper, o líquido se espalha rapidamente e reage ao contato com o ar, incendiando-se quase instantaneamente.
+- As chamas aderem às superfícies atingidas, espalhando calor intenso e crepitante que transforma o local em uma área perigosa, com labaredas que persistem por alguns instantes antes de se dissiparem.","
+- Os alvos atigindos que não estiverem na área de efeito podemo gastar um turno para extinguir as chamas e encerrar o efeito da bomba.",,Área de 2 Hex
+BOMB-006,Granada de Chamas,Granada de Chamas | Boa,Boa,Bomba,Dano,,3 Turnos,"
+- No impacto cria uma área de chamas.
+- Causa 1d6 de dano de fogo nos alvos na área impactada.
+- Alvos que entrarem na área irão sofrer 1d6 de dano de fogo pelo restante da duração.",,400,0.75,"
+- Um recipiente de vidro reforçado preenchido por um líquido espesso de tonalidade laranja-avermelhada, atravessado por veios mais escuros que se movem lentamente como brasas submersas.
+- Quando agitada, pequenas faíscas luminosas surgem e desaparecem no interior, e o conteúdo parece aquecer levemente o próprio frasco. Um pavio alquímico curto permanece selado no topo, liberando um discreto cheiro de resina queimada.
+- Ao se romper, o líquido se espalha rapidamente e reage ao contato com o ar, incendiando-se quase instantaneamente.
+- As chamas aderem às superfícies atingidas, espalhando calor intenso e crepitante que transforma o local em uma área perigosa, com labaredas que persistem por alguns instantes antes de se dissiparem.","
+- Os alvos atigindos que não estiverem na área de efeito podemo gastar um turno para extinguir as chamas e encerrar o efeito da bomba.",,Área de 2 Hex
+BOMB-007,Granada de Chamas,Granada de Chamas | Superior,Superior,Bomba,Dano,,4 Turnos,"
+- No impacto cria uma área de chamas.
+- Causa 1d6 + 3 de dano de fogo nos alvos na área impactada.
+- Alvos que entrarem na área irão sofrer 1d6 de dano de fogo pelo restante da duração.",,600,1.0,"
+- Um recipiente de vidro reforçado preenchido por um líquido espesso de tonalidade laranja-avermelhada, atravessado por veios mais escuros que se movem lentamente como brasas submersas.
+- Quando agitada, pequenas faíscas luminosas surgem e desaparecem no interior, e o conteúdo parece aquecer levemente o próprio frasco. Um pavio alquímico curto permanece selado no topo, liberando um discreto cheiro de resina queimada.
+- Ao se romper, o líquido se espalha rapidamente e reage ao contato com o ar, incendiando-se quase instantaneamente.
+- As chamas aderem às superfícies atingidas, espalhando calor intenso e crepitante que transforma o local em uma área perigosa, com labaredas que persistem por alguns instantes antes de se dissiparem.","
+- Os alvos atigindos que não estiverem na área de efeito podemo gastar um turno para extinguir as chamas e encerrar o efeito da bomba.",,Área de 3 Hex
+BOMB-008,Granada de Chamas,Granada de Chamas | Excelente,Excelente,Bomba,Dano,,5 Turnos,"
+- No impacto cria uma área de chamas.
+- Causa 1d6 + 3 de dano de fogo nos alvos na área impactada.
+- Alvos que entrarem na área irão sofrer 1d6 de dano de fogo pelo restante da duração.",,800,1.25,"
+- Um recipiente de vidro reforçado preenchido por um líquido espesso de tonalidade laranja-avermelhada, atravessado por veios mais escuros que se movem lentamente como brasas submersas.
+- Quando agitada, pequenas faíscas luminosas surgem e desaparecem no interior, e o conteúdo parece aquecer levemente o próprio frasco. Um pavio alquímico curto permanece selado no topo, liberando um discreto cheiro de resina queimada.
+- Ao se romper, o líquido se espalha rapidamente e reage ao contato com o ar, incendiando-se quase instantaneamente.
+- As chamas aderem às superfícies atingidas, espalhando calor intenso e crepitante que transforma o local em uma área perigosa, com labaredas que persistem por alguns instantes antes de se dissiparem.","
+- Os alvos atigindos que não estiverem na área de efeito podemo gastar um turno para extinguir as chamas e encerrar o efeito da bomba.",,Área de 3 Hex
+BOMB-009,Granada de Chamas,Granada de Chamas | Obra-Prima,Obra-Prima,Bomba,Dano,,6 Turnos,"
+- No impacto cria uma área de chamas.
+- Causa 1d6 + 3 de dano de fogo nos alvos na área impactada.
+- Alvos que entrarem na área irão sofrer 1d6 + 3 de dano de fogo pelo restante da duração.",,1000,1.5,"
+- Um recipiente de vidro reforçado preenchido por um líquido espesso de tonalidade laranja-avermelhada, atravessado por veios mais escuros que se movem lentamente como brasas submersas.
+- Quando agitada, pequenas faíscas luminosas surgem e desaparecem no interior, e o conteúdo parece aquecer levemente o próprio frasco. Um pavio alquímico curto permanece selado no topo, liberando um discreto cheiro de resina queimada.
+- Ao se romper, o líquido se espalha rapidamente e reage ao contato com o ar, incendiando-se quase instantaneamente.
+- As chamas aderem às superfícies atingidas, espalhando calor intenso e crepitante que transforma o local em uma área perigosa, com labaredas que persistem por alguns instantes antes de se dissiparem.","
+- Os alvos atigindos que não estiverem na área de efeito podemo gastar um turno para extinguir as chamas e encerrar o efeito da bomba.",,Área de 4 Hex
+BOMB-010,Granada de Cola,Granada de Cola | Comum,Comum,Bomba,Utilidade,,2 Turnos,Cria uma área de superfície extremamente pegajosa.,,100,0.25,"
+- Um frasco esférico de vidro espesso preenchido por um líquido viscoso de tonalidade negro-esverdeada com reflexos oleosos que se deformam lentamente à luz.
+- O conteúdo move-se com extrema lentidão quando agitado, formando camadas espessas que parecem aderir ao próprio vidro. Pequenas bolhas ficam presas no interior, sugerindo uma substância densa e persistentemente pegajosa.
+- Ao se romper, a mistura se espalha rapidamente pelo solo, expandindo-se em uma camada brilhante e irregular que gruda em tudo que toca.
+- A superfície resultante parece viva — fios finos se esticam e se retraem quando algo tenta se mover, como se o chão tentasse segurar qualquer passo descuidado.","
+- Qualquer criatura que entrar ou iniciar o turno na área deve realizar teste de HT ou DX (definir conforme sua adaptação) para resistir.
+- Em caso de falha, sofre efeito equivalente à magia Pés Enraizados.
+- Assim que a vítima resistir com sucesso, fica livre para agir dentro daquele hexágono específico.
+- Ao pisar em outro hexágono pegajoso — mesmo um do qual já tenha escapado — deve realizar novo teste e pode sofrer Pés Enraizados novamente.",,Área de 2 Hex
+BOMB-011,Granada de Cola,Granada de Cola | Boa,Boa,Bomba,Utilidade,,3 Turnos,Cria uma área de superfície extremamente pegajosa.,,200,0.5,"
+- Um frasco esférico de vidro espesso preenchido por um líquido viscoso de tonalidade negro-esverdeada com reflexos oleosos que se deformam lentamente à luz.
+- O conteúdo move-se com extrema lentidão quando agitado, formando camadas espessas que parecem aderir ao próprio vidro. Pequenas bolhas ficam presas no interior, sugerindo uma substância densa e persistentemente pegajosa.
+- Ao se romper, a mistura se espalha rapidamente pelo solo, expandindo-se em uma camada brilhante e irregular que gruda em tudo que toca.
+- A superfície resultante parece viva — fios finos se esticam e se retraem quando algo tenta se mover, como se o chão tentasse segurar qualquer passo descuidado.","
+- Qualquer criatura que entrar ou iniciar o turno na área deve realizar teste de HT ou DX (definir conforme sua adaptação) para resistir.
+- Em caso de falha, sofre efeito equivalente à magia Pés Enraizados.
+- Assim que a vítima resistir com sucesso, fica livre para agir dentro daquele hexágono específico.
+- Ao pisar em outro hexágono pegajoso — mesmo um do qual já tenha escapado — deve realizar novo teste e pode sofrer Pés Enraizados novamente.",,Área de 2 Hex
+BOMB-012,Granada de Cola,Granada de Cola | Superior,Superior,Bomba,Utilidade,,4 Turnos,Cria uma área de superfície extremamente pegajosa.,,300,0.75,"
+- Um frasco esférico de vidro espesso preenchido por um líquido viscoso de tonalidade negro-esverdeada com reflexos oleosos que se deformam lentamente à luz.
+- O conteúdo move-se com extrema lentidão quando agitado, formando camadas espessas que parecem aderir ao próprio vidro. Pequenas bolhas ficam presas no interior, sugerindo uma substância densa e persistentemente pegajosa.
+- Ao se romper, a mistura se espalha rapidamente pelo solo, expandindo-se em uma camada brilhante e irregular que gruda em tudo que toca.
+- A superfície resultante parece viva — fios finos se esticam e se retraem quando algo tenta se mover, como se o chão tentasse segurar qualquer passo descuidado.","
+- Qualquer criatura que entrar ou iniciar o turno na área deve realizar teste de HT ou DX (definir conforme sua adaptação) para resistir.
+- Em caso de falha, sofre efeito equivalente à magia Pés Enraizados.
+- Assim que a vítima resistir com sucesso, fica livre para agir dentro daquele hexágono específico.
+- Ao pisar em outro hexágono pegajoso — mesmo um do qual já tenha escapado — deve realizar novo teste e pode sofrer Pés Enraizados novamente.",,Área de 3 Hex
+BOMB-013,Granada de Cola,Granada de Cola | Excelente,Excelente,Bomba,Utilidade,,5 Turnos,Cria uma área de superfície extremamente pegajosa.,,400,1.0,"
+- Um frasco esférico de vidro espesso preenchido por um líquido viscoso de tonalidade negro-esverdeada com reflexos oleosos que se deformam lentamente à luz.
+- O conteúdo move-se com extrema lentidão quando agitado, formando camadas espessas que parecem aderir ao próprio vidro. Pequenas bolhas ficam presas no interior, sugerindo uma substância densa e persistentemente pegajosa.
+- Ao se romper, a mistura se espalha rapidamente pelo solo, expandindo-se em uma camada brilhante e irregular que gruda em tudo que toca.
+- A superfície resultante parece viva — fios finos se esticam e se retraem quando algo tenta se mover, como se o chão tentasse segurar qualquer passo descuidado.","
+- Qualquer criatura que entrar ou iniciar o turno na área deve realizar teste de HT ou DX (definir conforme sua adaptação) para resistir.
+- Em caso de falha, sofre efeito equivalente à magia Pés Enraizados.
+- Assim que a vítima resistir com sucesso, fica livre para agir dentro daquele hexágono específico.
+- Ao pisar em outro hexágono pegajoso — mesmo um do qual já tenha escapado — deve realizar novo teste e pode sofrer Pés Enraizados novamente.",,Área de 3 Hex
+BOMB-014,Granada de Cola,Granada de Cola | Obra-Prima,Obra-Prima,Bomba,Utilidade,,6 Turnos,Cria uma área de superfície extremamente pegajosa.,,500,1.25,"
+- Um frasco esférico de vidro espesso preenchido por um líquido viscoso de tonalidade negro-esverdeada com reflexos oleosos que se deformam lentamente à luz.
+- O conteúdo move-se com extrema lentidão quando agitado, formando camadas espessas que parecem aderir ao próprio vidro. Pequenas bolhas ficam presas no interior, sugerindo uma substância densa e persistentemente pegajosa.
+- Ao se romper, a mistura se espalha rapidamente pelo solo, expandindo-se em uma camada brilhante e irregular que gruda em tudo que toca.
+- A superfície resultante parece viva — fios finos se esticam e se retraem quando algo tenta se mover, como se o chão tentasse segurar qualquer passo descuidado.","
+- Qualquer criatura que entrar ou iniciar o turno na área deve realizar teste de HT ou DX (definir conforme sua adaptação) para resistir.
+- Em caso de falha, sofre efeito equivalente à magia Pés Enraizados.
+- Assim que a vítima resistir com sucesso, fica livre para agir dentro daquele hexágono específico.
+- Ao pisar em outro hexágono pegajoso — mesmo um do qual já tenha escapado — deve realizar novo teste e pode sofrer Pés Enraizados novamente.",,Área de 4 Hex
+BOMB-015,Granada de Graxa,Granada de Graxa | Comum,Comum,Bomba,Utilidade,,2 Turnos,Cria uma área extremamente escorregadia.,,100,0.25,"
+- Um frasco esférico de vidro espesso preenchido por um líquido translúcido de tonalidade amarelada com brilho oleoso intenso.
+- Mesmo parado, o conteúdo parece deslizar sobre si mesmo, formando camadas suaves que nunca permanecem estáveis por muito tempo. Quando agitado, o líquido se espalha pelo interior do vidro em um movimento rápido e silencioso, deixando trilhas lisas que desaparecem quase instantaneamente.
+- Ao se romper, a substância se espalha em uma camada fina e reluzente que transforma o terreno em uma superfície traiçoeira.
+- A luz reflete em padrões irregulares, denunciando o perigo: passos perdem firmeza, apoios falham e movimentos tornam-se incertos, como se o chão tivesse sido polido até a impossibilidade de aderência.","
+- Qualquer criatura que entrar em um hexágono da área deve realizar teste de DX-2; em caso de falha, cai.
+- Uma nova rolagem de DX-2 é necessária para se levantar (não é necessária para sentar ou ajoelhar).
+- Enquanto estiver na área: –3 em ataques corpo a corpo e defesas ativas; –2 em outras habilidades físicas, incluindo ataques com projéteis e armas de arremesso.
+- Pode ser aplicada em superfícies verticais, tornando a escalada impossível enquanto durar o efeito.
+- Superfícies com inclinação intermediária ficam a critério do mestre.",,Área de 2 Hex
+BOMB-016,Granada de Graxa,Granada de Graxa | Boa,Boa,Bomba,Utilidade,,3 Turnos,Cria uma área extremamente escorregadia.,,200,0.5,"
+- Um frasco esférico de vidro espesso preenchido por um líquido translúcido de tonalidade amarelada com brilho oleoso intenso.
+- Mesmo parado, o conteúdo parece deslizar sobre si mesmo, formando camadas suaves que nunca permanecem estáveis por muito tempo. Quando agitado, o líquido se espalha pelo interior do vidro em um movimento rápido e silencioso, deixando trilhas lisas que desaparecem quase instantaneamente.
+- Ao se romper, a substância se espalha em uma camada fina e reluzente que transforma o terreno em uma superfície traiçoeira.
+- A luz reflete em padrões irregulares, denunciando o perigo: passos perdem firmeza, apoios falham e movimentos tornam-se incertos, como se o chão tivesse sido polido até a impossibilidade de aderência.","
+- Qualquer criatura que entrar em um hexágono da área deve realizar teste de DX-2; em caso de falha, cai.
+- Uma nova rolagem de DX-2 é necessária para se levantar (não é necessária para sentar ou ajoelhar).
+- Enquanto estiver na área: –3 em ataques corpo a corpo e defesas ativas; –2 em outras habilidades físicas, incluindo ataques com projéteis e armas de arremesso.
+- Pode ser aplicada em superfícies verticais, tornando a escalada impossível enquanto durar o efeito.
+- Superfícies com inclinação intermediária ficam a critério do mestre.",,Área de 2 Hex
+BOMB-017,Granada de Graxa,Granada de Graxa | Superior,Superior,Bomba,Utilidade,,4 Turnos,Cria uma área extremamente escorregadia.,,300,0.75,"
+- Um frasco esférico de vidro espesso preenchido por um líquido translúcido de tonalidade amarelada com brilho oleoso intenso.
+- Mesmo parado, o conteúdo parece deslizar sobre si mesmo, formando camadas suaves que nunca permanecem estáveis por muito tempo. Quando agitado, o líquido se espalha pelo interior do vidro em um movimento rápido e silencioso, deixando trilhas lisas que desaparecem quase instantaneamente.
+- Ao se romper, a substância se espalha em uma camada fina e reluzente que transforma o terreno em uma superfície traiçoeira.
+- A luz reflete em padrões irregulares, denunciando o perigo: passos perdem firmeza, apoios falham e movimentos tornam-se incertos, como se o chão tivesse sido polido até a impossibilidade de aderência.","
+- Qualquer criatura que entrar em um hexágono da área deve realizar teste de DX-2; em caso de falha, cai.
+- Uma nova rolagem de DX-2 é necessária para se levantar (não é necessária para sentar ou ajoelhar).
+- Enquanto estiver na área: –3 em ataques corpo a corpo e defesas ativas; –2 em outras habilidades físicas, incluindo ataques com projéteis e armas de arremesso.
+- Pode ser aplicada em superfícies verticais, tornando a escalada impossível enquanto durar o efeito.
+- Superfícies com inclinação intermediária ficam a critério do mestre.",,Área de 3 Hex
+BOMB-018,Granada de Graxa,Granada de Graxa | Excelente,Excelente,Bomba,Utilidade,,5 Turnos,Cria uma área extremamente escorregadia.,,400,1.0,"
+- Um frasco esférico de vidro espesso preenchido por um líquido translúcido de tonalidade amarelada com brilho oleoso intenso.
+- Mesmo parado, o conteúdo parece deslizar sobre si mesmo, formando camadas suaves que nunca permanecem estáveis por muito tempo. Quando agitado, o líquido se espalha pelo interior do vidro em um movimento rápido e silencioso, deixando trilhas lisas que desaparecem quase instantaneamente.
+- Ao se romper, a substância se espalha em uma camada fina e reluzente que transforma o terreno em uma superfície traiçoeira.
+- A luz reflete em padrões irregulares, denunciando o perigo: passos perdem firmeza, apoios falham e movimentos tornam-se incertos, como se o chão tivesse sido polido até a impossibilidade de aderência.","
+- Qualquer criatura que entrar em um hexágono da área deve realizar teste de DX-2; em caso de falha, cai.
+- Uma nova rolagem de DX-2 é necessária para se levantar (não é necessária para sentar ou ajoelhar).
+- Enquanto estiver na área: –3 em ataques corpo a corpo e defesas ativas; –2 em outras habilidades físicas, incluindo ataques com projéteis e armas de arremesso.
+- Pode ser aplicada em superfícies verticais, tornando a escalada impossível enquanto durar o efeito.
+- Superfícies com inclinação intermediária ficam a critério do mestre.",,Área de 3 Hex
+BOMB-019,Granada de Graxa,Granada de Graxa | Obra-Prima,Obra-Prima,Bomba,Utilidade,,6 Turnos,Cria uma área extremamente escorregadia.,,500,1.25,"
+- Um frasco esférico de vidro espesso preenchido por um líquido translúcido de tonalidade amarelada com brilho oleoso intenso.
+- Mesmo parado, o conteúdo parece deslizar sobre si mesmo, formando camadas suaves que nunca permanecem estáveis por muito tempo. Quando agitado, o líquido se espalha pelo interior do vidro em um movimento rápido e silencioso, deixando trilhas lisas que desaparecem quase instantaneamente.
+- Ao se romper, a substância se espalha em uma camada fina e reluzente que transforma o terreno em uma superfície traiçoeira.
+- A luz reflete em padrões irregulares, denunciando o perigo: passos perdem firmeza, apoios falham e movimentos tornam-se incertos, como se o chão tivesse sido polido até a impossibilidade de aderência.","
+- Qualquer criatura que entrar em um hexágono da área deve realizar teste de DX-2; em caso de falha, cai.
+- Uma nova rolagem de DX-2 é necessária para se levantar (não é necessária para sentar ou ajoelhar).
+- Enquanto estiver na área: –3 em ataques corpo a corpo e defesas ativas; –2 em outras habilidades físicas, incluindo ataques com projéteis e armas de arremesso.
+- Pode ser aplicada em superfícies verticais, tornando a escalada impossível enquanto durar o efeito.
+- Superfícies com inclinação intermediária ficam a critério do mestre.",,Área de 4 Hex
+BOMB-020,Bomba de Fumaça,Bomba de Fumaça | Comum,Comum,Bomba,Utilidade,,2 Turnos,Cria uma área de fumaça pesada,,100,0.25,"
+- Um pequeno cilindro metálico de paredes finas, selado com tampa rosqueada e um anel de ativação discreto.
+- Ao ser acionado, emite um estalo seco seguido por um jato denso de fumaça que se expande com surpreendente rapidez. A névoa gerada é espessa, de tonalidade acinzentada ou levemente esbranquiçada, espalhando-se em redemoinhos pesados que abraçam o chão antes de subir lentamente.
+- A fumaça tem cheiro levemente acre e textura quase palpável — não queime, mas irrita olhos e garganta se inalada por muito tempo.
+- Em poucos segundos, o ambiente se torna um mar turvo de silhuetas imprecisas, onde formas se desfazem a poucos passos de distância. Sons parecem mais próximos do que realmente estão, e a orientação espacial torna-se incerta.","
+- Visão além de 1 Hex sofre -4 de penalidade.
+- Visão além de 2 metros é impossível (apenas silhuetas).
+- Ataques à distância contra alvos dentro da fumaça sofrem –4 (ou mais, a critério do Mestre).",,Área de 2 Hex
+BOMB-021,Bomba de Fumaça,Bomba de Fumaça | Boa,Boa,Bomba,Utilidade,,3 Turnos,Cria uma área de fumaça pesada,,200,0.5,"
+- Um pequeno cilindro metálico de paredes finas, selado com tampa rosqueada e um anel de ativação discreto.
+- Ao ser acionado, emite um estalo seco seguido por um jato denso de fumaça que se expande com surpreendente rapidez. A névoa gerada é espessa, de tonalidade acinzentada ou levemente esbranquiçada, espalhando-se em redemoinhos pesados que abraçam o chão antes de subir lentamente.
+- A fumaça tem cheiro levemente acre e textura quase palpável — não queime, mas irrita olhos e garganta se inalada por muito tempo.
+- Em poucos segundos, o ambiente se torna um mar turvo de silhuetas imprecisas, onde formas se desfazem a poucos passos de distância. Sons parecem mais próximos do que realmente estão, e a orientação espacial torna-se incerta.","
+- Visão além de 1 Hex sofre -4 de penalidade.
+- Visão além de 2 metros é impossível (apenas silhuetas).
+- Ataques à distância contra alvos dentro da fumaça sofrem –4 (ou mais, a critério do Mestre).",,Área de 2 Hex
+BOMB-022,Bomba de Fumaça,Bomba de Fumaça | Superior,Superior,Bomba,Utilidade,,4 Turnos,Cria uma área de fumaça pesada,,300,0.75,"
+- Um pequeno cilindro metálico de paredes finas, selado com tampa rosqueada e um anel de ativação discreto.
+- Ao ser acionado, emite um estalo seco seguido por um jato denso de fumaça que se expande com surpreendente rapidez. A névoa gerada é espessa, de tonalidade acinzentada ou levemente esbranquiçada, espalhando-se em redemoinhos pesados que abraçam o chão antes de subir lentamente.
+- A fumaça tem cheiro levemente acre e textura quase palpável — não queime, mas irrita olhos e garganta se inalada por muito tempo.
+- Em poucos segundos, o ambiente se torna um mar turvo de silhuetas imprecisas, onde formas se desfazem a poucos passos de distância. Sons parecem mais próximos do que realmente estão, e a orientação espacial torna-se incerta.","
+- Visão além de 1 Hex sofre -4 de penalidade.
+- Visão além de 2 metros é impossível (apenas silhuetas).
+- Ataques à distância contra alvos dentro da fumaça sofrem –4 (ou mais, a critério do Mestre).",,Área de 3 Hex
+BOMB-023,Bomba de Fumaça,Bomba de Fumaça | Excelente,Excelente,Bomba,Utilidade,,5 Turnos,Cria uma área de fumaça pesada,,400,1.0,"
+- Um pequeno cilindro metálico de paredes finas, selado com tampa rosqueada e um anel de ativação discreto.
+- Ao ser acionado, emite um estalo seco seguido por um jato denso de fumaça que se expande com surpreendente rapidez. A névoa gerada é espessa, de tonalidade acinzentada ou levemente esbranquiçada, espalhando-se em redemoinhos pesados que abraçam o chão antes de subir lentamente.
+- A fumaça tem cheiro levemente acre e textura quase palpável — não queime, mas irrita olhos e garganta se inalada por muito tempo.
+- Em poucos segundos, o ambiente se torna um mar turvo de silhuetas imprecisas, onde formas se desfazem a poucos passos de distância. Sons parecem mais próximos do que realmente estão, e a orientação espacial torna-se incerta.","
+- Visão além de 1 Hex sofre -4 de penalidade.
+- Visão além de 2 metros é impossível (apenas silhuetas).
+- Ataques à distância contra alvos dentro da fumaça sofrem –4 (ou mais, a critério do Mestre).",,Área de 3 Hex
+BOMB-024,Bomba de Fumaça,Bomba de Fumaça | Obra-Prima,Obra-Prima,Bomba,Utilidade,,6 Turnos,Cria uma área de fumaça pesada,,500,1.25,"
+- Um pequeno cilindro metálico de paredes finas, selado com tampa rosqueada e um anel de ativação discreto.
+- Ao ser acionado, emite um estalo seco seguido por um jato denso de fumaça que se expande com surpreendente rapidez. A névoa gerada é espessa, de tonalidade acinzentada ou levemente esbranquiçada, espalhando-se em redemoinhos pesados que abraçam o chão antes de subir lentamente.
+- A fumaça tem cheiro levemente acre e textura quase palpável — não queime, mas irrita olhos e garganta se inalada por muito tempo.
+- Em poucos segundos, o ambiente se torna um mar turvo de silhuetas imprecisas, onde formas se desfazem a poucos passos de distância. Sons parecem mais próximos do que realmente estão, e a orientação espacial torna-se incerta.","
+- Visão além de 1 Hex sofre -4 de penalidade.
+- Visão além de 2 metros é impossível (apenas silhuetas).
+- Ataques à distância contra alvos dentro da fumaça sofrem –4 (ou mais, a critério do Mestre).",,Área de 4 Hex
+BOMB-025,Bomba de Luz,Bomba de Luz | Comum,Comum,Bomba,Utilidade,,Instantânea,"Explosão luminosa que cega, temporariamente, aqueles que estejam olhando diretamente ou periféricamente para o centro da detonação.",,100,0.25,"
+- Um pequeno artefato cilíndrico de metal claro, com ranhuras laterais para melhor empunhadura e um anel de ativação firme.
+- Ao ser acionado, emite um silvo curto e quase imperceptível — seguido por um clarão branco-absoluto que rasga o ambiente como um relâmpago contido em espaço fechado.
+- A luz não apenas ilumina: ela invade. Por uma fração de segundo, todas as sombras desaparecem. Contornos se dissolvem. A visão se torna puro branco. O mundo é reduzido a um estilhaço luminoso que parece atravessar as pálpebras fechadas.
+- Mesmo quem não esteja diretamente na área da explosão pode ser afetado se estiver olhando para o centro do clarão — a intensidade do pulso luminoso se propaga em linha de visão, expandindo seu efeito muito além do ponto físico de detonação.
+- Após o estouro, restam manchas coloridas dançando no campo visual, silhuetas invertidas e uma sensação de desorientação abrupta. O silêncio que segue parece pesado demais, como se o mundo tivesse piscado e ainda não tivesse voltado completamente.","
+- Qualquer criatura com linha de visão para o ponto de detonação realiza um teste de HT -2.
+- Em caso de falha, cegueira por 2 turnos.
+- Em caso de falha crítica, cegueira por 4 Turnos.
+- Em caso de sucesso, redutor de -1 em qualquer teste de habilidade para acertar um alvo.
+- Em lugares fechados, a área de efeito é multiplicada por 2.",,Área de 4 Hex
+BOMB-026,Bomba de Luz,Bomba de Luz | Boa,Boa,Bomba,Utilidade,,Instantânea,"Explosão luminosa que cega, temporariamente, aqueles que estejam olhando diretamente ou periféricamente para o centro da detonação.",,200,0.5,"
+- Um pequeno artefato cilíndrico de metal claro, com ranhuras laterais para melhor empunhadura e um anel de ativação firme.
+- Ao ser acionado, emite um silvo curto e quase imperceptível — seguido por um clarão branco-absoluto que rasga o ambiente como um relâmpago contido em espaço fechado.
+- A luz não apenas ilumina: ela invade. Por uma fração de segundo, todas as sombras desaparecem. Contornos se dissolvem. A visão se torna puro branco. O mundo é reduzido a um estilhaço luminoso que parece atravessar as pálpebras fechadas.
+- Mesmo quem não esteja diretamente na área da explosão pode ser afetado se estiver olhando para o centro do clarão — a intensidade do pulso luminoso se propaga em linha de visão, expandindo seu efeito muito além do ponto físico de detonação.
+- Após o estouro, restam manchas coloridas dançando no campo visual, silhuetas invertidas e uma sensação de desorientação abrupta. O silêncio que segue parece pesado demais, como se o mundo tivesse piscado e ainda não tivesse voltado completamente.","
+- Qualquer criatura com linha de visão para o ponto de detonação realiza um teste de HT -3.
+- Em caso de falha, cegueira por 2 turnos.
+- Em caso de falha crítica, cegueira por 4 Turnos.
+- Em caso de sucesso, redutor de -1 em qualquer teste de habilidade para acertar um alvo.
+- Em lugares fechados, a área de efeito é multiplicada por 2.",,Área de 4 Hex
+BOMB-027,Bomba de Luz,Bomba de Luz | Superior,Superior,Bomba,Utilidade,,Instantânea,"Explosão luminosa que cega, temporariamente, aqueles que estejam olhando diretamente ou periféricamente para o centro da detonação.",,300,0.75,"
+- Um pequeno artefato cilíndrico de metal claro, com ranhuras laterais para melhor empunhadura e um anel de ativação firme.
+- Ao ser acionado, emite um silvo curto e quase imperceptível — seguido por um clarão branco-absoluto que rasga o ambiente como um relâmpago contido em espaço fechado.
+- A luz não apenas ilumina: ela invade. Por uma fração de segundo, todas as sombras desaparecem. Contornos se dissolvem. A visão se torna puro branco. O mundo é reduzido a um estilhaço luminoso que parece atravessar as pálpebras fechadas.
+- Mesmo quem não esteja diretamente na área da explosão pode ser afetado se estiver olhando para o centro do clarão — a intensidade do pulso luminoso se propaga em linha de visão, expandindo seu efeito muito além do ponto físico de detonação.
+- Após o estouro, restam manchas coloridas dançando no campo visual, silhuetas invertidas e uma sensação de desorientação abrupta. O silêncio que segue parece pesado demais, como se o mundo tivesse piscado e ainda não tivesse voltado completamente.","
+- Qualquer criatura com linha de visão para o ponto de detonação realiza um teste de HT -4.
+- Em caso de falha, cegueira por 2 turnos.
+- Em caso de falha crítica, cegueira por 4 Turnos.
+- Em caso de sucesso, redutor de -1 em qualquer teste de habilidade para acertar um alvo.
+- Em lugares fechados, a área de efeito é multiplicada por 2.",,Área de 5 Hex
+BOMB-028,Bomba de Luz,Bomba de Luz | Excelente,Excelente,Bomba,Utilidade,,Instantânea,"Explosão luminosa que cega, temporariamente, aqueles que estejam olhando diretamente ou periféricamente para o centro da detonação.",,400,1.0,"
+- Um pequeno artefato cilíndrico de metal claro, com ranhuras laterais para melhor empunhadura e um anel de ativação firme.
+- Ao ser acionado, emite um silvo curto e quase imperceptível — seguido por um clarão branco-absoluto que rasga o ambiente como um relâmpago contido em espaço fechado.
+- A luz não apenas ilumina: ela invade. Por uma fração de segundo, todas as sombras desaparecem. Contornos se dissolvem. A visão se torna puro branco. O mundo é reduzido a um estilhaço luminoso que parece atravessar as pálpebras fechadas.
+- Mesmo quem não esteja diretamente na área da explosão pode ser afetado se estiver olhando para o centro do clarão — a intensidade do pulso luminoso se propaga em linha de visão, expandindo seu efeito muito além do ponto físico de detonação.
+- Após o estouro, restam manchas coloridas dançando no campo visual, silhuetas invertidas e uma sensação de desorientação abrupta. O silêncio que segue parece pesado demais, como se o mundo tivesse piscado e ainda não tivesse voltado completamente.","
+- Qualquer criatura com linha de visão para o ponto de detonação realiza um teste de HT -5.
+- Em caso de falha, cegueira por 2 turnos.
+- Em caso de falha crítica, cegueira por 4 Turnos.
+- Em caso de sucesso, redutor de -1 em qualquer teste de habilidade para acertar um alvo.
+- Em lugares fechados, a área de efeito é multiplicada por 2.",,Área de 5 Hex
+BOMB-029,Bomba de Luz,Bomba de Luz | Obra-Prima,Obra-Prima,Bomba,Utilidade,,Instantânea,"Explosão luminosa que cega, temporariamente, aqueles que estejam olhando diretamente ou periféricamente para o centro da detonação.",,500,1.25,"
+- Um pequeno artefato cilíndrico de metal claro, com ranhuras laterais para melhor empunhadura e um anel de ativação firme.
+- Ao ser acionado, emite um silvo curto e quase imperceptível — seguido por um clarão branco-absoluto que rasga o ambiente como um relâmpago contido em espaço fechado.
+- A luz não apenas ilumina: ela invade. Por uma fração de segundo, todas as sombras desaparecem. Contornos se dissolvem. A visão se torna puro branco. O mundo é reduzido a um estilhaço luminoso que parece atravessar as pálpebras fechadas.
+- Mesmo quem não esteja diretamente na área da explosão pode ser afetado se estiver olhando para o centro do clarão — a intensidade do pulso luminoso se propaga em linha de visão, expandindo seu efeito muito além do ponto físico de detonação.
+- Após o estouro, restam manchas coloridas dançando no campo visual, silhuetas invertidas e uma sensação de desorientação abrupta. O silêncio que segue parece pesado demais, como se o mundo tivesse piscado e ainda não tivesse voltado completamente.","
+- Qualquer criatura com linha de visão para o ponto de detonação realiza um teste de HT -6.
+- Em caso de falha, cegueira por 2 turnos.
+- Em caso de falha crítica, cegueira por 4 Turnos.
+- Em caso de sucesso, redutor de -1 em qualquer teste de habilidade para acertar um alvo.
+- Em lugares fechados, a área de efeito é multiplicada por 2.",,Área de 7 Hex
+BOMB-030,Granada Elétrica,Granada Elétrica | Comum,Comum,Bomba,Utilidade,,Instantânea,Explosão elétrica que paraliza qualquer criatura por 1 Turno.,,100,0.25,"
+- Um cilindro robusto revestido por placas segmentadas e pequenos condutores metálicos visíveis sob uma malha protetora.
+- Ao ser ativada, emite um zumbido crescente, como o carregamento de um capacitor prestes a romper seu limite. No momento da detonação, não há fogo nem estilhaços — apenas um pulso seco seguido por uma explosão de ar azul-esbranquiçado que se ramifica em arcos elétricos curtos e violentos.
+- Após a descarga, permanece no ar um cheiro leve de ozônio e o eco do estalo elétrico dissipando-se.
+- A descarga não se propaga como um raio contínuo, mas como uma onda súbita de energia estática condensada. O ar crepita. Pelos se eriçam. Músculos contraem involuntariamente. Pequenas faíscas saltam entre armaduras metálicas, armas e superfícies úmidas.
+- Quem estiver próximo sente o impacto atravessar o corpo como um espasmo profundo — não é dor intensa, mas uma interrupção abrupta do controle muscular. Por um instante, o corpo simplesmente deixa de obedecer.","
+- Qualquer criatura dentro da área realiza teste de HT-3.
+- Em caso de falha, fica atordoado.
+- Em caso de falha crítica, fica atordoado e cai de joelhos; perde a próxima ação depois do atordoamente automáticamente.
+- Alvos usando armaduras pesadas sofrem -1 adicional no teste de HT.
+- Em superfícies molhadas a área de efeito é multiplicada por 2.
+- Em caso de sucesso, sofre -2 de DX no próximo turno devido a espasmos residuais.",,Área de 2 Hex
+BOMB-031,Granada Elétrica,Granada Elétrica | Boa,Boa,Bomba,Utilidade,,Instantânea,Explosão elétrica que paraliza qualquer criatura por 1 Turno.,,200,0.5,"
+- Um cilindro robusto revestido por placas segmentadas e pequenos condutores metálicos visíveis sob uma malha protetora.
+- Ao ser ativada, emite um zumbido crescente, como o carregamento de um capacitor prestes a romper seu limite. No momento da detonação, não há fogo nem estilhaços — apenas um pulso seco seguido por uma explosão de ar azul-esbranquiçado que se ramifica em arcos elétricos curtos e violentos.
+- Após a descarga, permanece no ar um cheiro leve de ozônio e o eco do estalo elétrico dissipando-se.
+- A descarga não se propaga como um raio contínuo, mas como uma onda súbita de energia estática condensada. O ar crepita. Pelos se eriçam. Músculos contraem involuntariamente. Pequenas faíscas saltam entre armaduras metálicas, armas e superfícies úmidas.
+- Quem estiver próximo sente o impacto atravessar o corpo como um espasmo profundo — não é dor intensa, mas uma interrupção abrupta do controle muscular. Por um instante, o corpo simplesmente deixa de obedecer.","
+- Qualquer criatura dentro da área realiza teste de HT-3.
+- Em caso de falha, fica atordoado.
+- Em caso de falha crítica, fica atordoado e cai de joelhos; perde a próxima ação depois do atordoamente automáticamente.
+- Alvos usando armaduras pesadas sofrem -1 adicional no teste de HT.
+- Em superfícies molhadas a área de efeito é multiplicada por 2.
+- Em caso de sucesso, sofre -2 de DX no próximo turno devido a espasmos residuais.",,Área de 2 Hex
+BOMB-032,Granada Elétrica,Granada Elétrica | Superior,Superior,Bomba,Utilidade,,Instantânea,Explosão elétrica que paraliza qualquer criatura por 1 Turno.,,300,0.75,"
+- Um cilindro robusto revestido por placas segmentadas e pequenos condutores metálicos visíveis sob uma malha protetora.
+- Ao ser ativada, emite um zumbido crescente, como o carregamento de um capacitor prestes a romper seu limite. No momento da detonação, não há fogo nem estilhaços — apenas um pulso seco seguido por uma explosão de ar azul-esbranquiçado que se ramifica em arcos elétricos curtos e violentos.
+- Após a descarga, permanece no ar um cheiro leve de ozônio e o eco do estalo elétrico dissipando-se.
+- A descarga não se propaga como um raio contínuo, mas como uma onda súbita de energia estática condensada. O ar crepita. Pelos se eriçam. Músculos contraem involuntariamente. Pequenas faíscas saltam entre armaduras metálicas, armas e superfícies úmidas.
+- Quem estiver próximo sente o impacto atravessar o corpo como um espasmo profundo — não é dor intensa, mas uma interrupção abrupta do controle muscular. Por um instante, o corpo simplesmente deixa de obedecer.","
+- Qualquer criatura dentro da área realiza teste de HT-4.
+- Em caso de falha, fica atordoado.
+- Em caso de falha crítica, fica atordoado e cai de joelhos; perde a próxima ação depois do atordoamente automáticamente.
+- Alvos usando armaduras pesadas sofrem -1 adicional no teste de HT.
+- Em superfícies molhadas a área de efeito é multiplicada por 2.
+- Em caso de sucesso, sofre -2 de DX no próximo turno devido a espasmos residuais.",,Área de 3 Hex
+BOMB-033,Granada Elétrica,Granada Elétrica | Excelente,Excelente,Bomba,Utilidade,,Instantânea,Explosão elétrica que paraliza qualquer criatura por 1 Turno.,,400,1.0,"
+- Um cilindro robusto revestido por placas segmentadas e pequenos condutores metálicos visíveis sob uma malha protetora.
+- Ao ser ativada, emite um zumbido crescente, como o carregamento de um capacitor prestes a romper seu limite. No momento da detonação, não há fogo nem estilhaços — apenas um pulso seco seguido por uma explosão de ar azul-esbranquiçado que se ramifica em arcos elétricos curtos e violentos.
+- Após a descarga, permanece no ar um cheiro leve de ozônio e o eco do estalo elétrico dissipando-se.
+- A descarga não se propaga como um raio contínuo, mas como uma onda súbita de energia estática condensada. O ar crepita. Pelos se eriçam. Músculos contraem involuntariamente. Pequenas faíscas saltam entre armaduras metálicas, armas e superfícies úmidas.
+- Quem estiver próximo sente o impacto atravessar o corpo como um espasmo profundo — não é dor intensa, mas uma interrupção abrupta do controle muscular. Por um instante, o corpo simplesmente deixa de obedecer.","
+- Qualquer criatura dentro da área realiza teste de HT-4.
+- Em caso de falha, fica atordoado.
+- Em caso de falha crítica, fica atordoado e cai de joelhos; perde a próxima ação depois do atordoamente automáticamente.
+- Alvos usando armaduras pesadas sofrem -1 adicional no teste de HT.
+- Em superfícies molhadas a área de efeito é multiplicada por 2.
+- Em caso de sucesso, sofre -2 de DX no próximo turno devido a espasmos residuais.",,Área de 3 Hex
+BOMB-034,Granada Elétrica,Granada Elétrica | Obra-Prima,Obra-Prima,Bomba,Utilidade,,Instantânea,Explosão elétrica que paraliza qualquer criatura por 1 Turno.,,500,1.25,"
+- Um cilindro robusto revestido por placas segmentadas e pequenos condutores metálicos visíveis sob uma malha protetora.
+- Ao ser ativada, emite um zumbido crescente, como o carregamento de um capacitor prestes a romper seu limite. No momento da detonação, não há fogo nem estilhaços — apenas um pulso seco seguido por uma explosão de ar azul-esbranquiçado que se ramifica em arcos elétricos curtos e violentos.
+- Após a descarga, permanece no ar um cheiro leve de ozônio e o eco do estalo elétrico dissipando-se.
+- A descarga não se propaga como um raio contínuo, mas como uma onda súbita de energia estática condensada. O ar crepita. Pelos se eriçam. Músculos contraem involuntariamente. Pequenas faíscas saltam entre armaduras metálicas, armas e superfícies úmidas.
+- Quem estiver próximo sente o impacto atravessar o corpo como um espasmo profundo — não é dor intensa, mas uma interrupção abrupta do controle muscular. Por um instante, o corpo simplesmente deixa de obedecer.","
+- Qualquer criatura dentro da área realiza teste de HT-5.
+- Em caso de falha, fica atordoado.
+- Em caso de falha crítica, fica atordoado e cai de joelhos; perde a próxima ação depois do atordoamente automáticamente.
+- Alvos usando armaduras pesadas sofrem -1 adicional no teste de HT.
+- Em superfícies molhadas a área de efeito é multiplicada por 2.
+- Em caso de sucesso, sofre -2 de DX no próximo turno devido a espasmos residuais.",,Área de 4 Hex
+BOMB-035,Bomba de Sono,Bomba de Sono | Comum,Comum,Bomba,Utilidade,,2 Turnos,Adormece os alvos.,,100,0.25,"
+- Um frasco esférico de vidro fino contendo um pó marfim pálido, quase perolado, que cintila suavemente mesmo na penumbra.
+- Ao ser movimentado, o conteúdo se comporta como areia extremamente fina, formando redemoinhos delicados que parecem mais leves que o ar.
+- Pequenos brilhos surgem e desaparecem no interior, como reflexos de luar aprisionados.
+- Ao se romper, o pó se dispersa em uma névoa dourada quase imperceptível, pairando por um breve instante antes de se espalhar silenciosamente pelo ambiente.
+- O ar se preenche com um aroma adocicado e suave, lembrando flores noturnas e páginas antigas.
+- A inalação é inevitável para quem estiver próximo — e, com ela, vem um torpor súbito, como se o mundo perdesse peso e a consciência fosse gentilmente puxada para o sono.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos da bomba.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.",,Área de 2 Hex
+BOMB-036,Bomba de Sono,Bomba de Sono | Boa,Boa,Bomba,Utilidade,,3 Turnos,Adormece os alvos.,,200,0.5,"
+- Um frasco esférico de vidro fino contendo um pó marfim pálido, quase perolado, que cintila suavemente mesmo na penumbra.
+- Ao ser movimentado, o conteúdo se comporta como areia extremamente fina, formando redemoinhos delicados que parecem mais leves que o ar.
+- Pequenos brilhos surgem e desaparecem no interior, como reflexos de luar aprisionados.
+- Ao se romper, o pó se dispersa em uma névoa dourada quase imperceptível, pairando por um breve instante antes de se espalhar silenciosamente pelo ambiente.
+- O ar se preenche com um aroma adocicado e suave, lembrando flores noturnas e páginas antigas.
+- A inalação é inevitável para quem estiver próximo — e, com ela, vem um torpor súbito, como se o mundo perdesse peso e a consciência fosse gentilmente puxada para o sono.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos da bomba.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.",,Área de 2 Hex
+BOMB-037,Bomba de Sono,Bomba de Sono | Superior,Superior,Bomba,Utilidade,,4 Turnos,Adormece os alvos.,,300,0.75,"
+- Um frasco esférico de vidro fino contendo um pó marfim pálido, quase perolado, que cintila suavemente mesmo na penumbra.
+- Ao ser movimentado, o conteúdo se comporta como areia extremamente fina, formando redemoinhos delicados que parecem mais leves que o ar.
+- Pequenos brilhos surgem e desaparecem no interior, como reflexos de luar aprisionados.
+- Ao se romper, o pó se dispersa em uma névoa dourada quase imperceptível, pairando por um breve instante antes de se espalhar silenciosamente pelo ambiente.
+- O ar se preenche com um aroma adocicado e suave, lembrando flores noturnas e páginas antigas.
+- A inalação é inevitável para quem estiver próximo — e, com ela, vem um torpor súbito, como se o mundo perdesse peso e a consciência fosse gentilmente puxada para o sono.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos da bomba.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.",,Área de 3 Hex
+BOMB-038,Bomba de Sono,Bomba de Sono | Excelente,Excelente,Bomba,Utilidade,,5 Turnos,Adormece os alvos.,,400,1.0,"
+- Um frasco esférico de vidro fino contendo um pó marfim pálido, quase perolado, que cintila suavemente mesmo na penumbra.
+- Ao ser movimentado, o conteúdo se comporta como areia extremamente fina, formando redemoinhos delicados que parecem mais leves que o ar.
+- Pequenos brilhos surgem e desaparecem no interior, como reflexos de luar aprisionados.
+- Ao se romper, o pó se dispersa em uma névoa dourada quase imperceptível, pairando por um breve instante antes de se espalhar silenciosamente pelo ambiente.
+- O ar se preenche com um aroma adocicado e suave, lembrando flores noturnas e páginas antigas.
+- A inalação é inevitável para quem estiver próximo — e, com ela, vem um torpor súbito, como se o mundo perdesse peso e a consciência fosse gentilmente puxada para o sono.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos da bomba.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.",,Área de 3 Hex
+BOMB-039,Bomba de Sono,Bomba de Sono | Obra-Prima,Obra-Prima,Bomba,Utilidade,,6 Turnos,Adormece os alvos.,,500,1.25,"
+- Um frasco esférico de vidro fino contendo um pó marfim pálido, quase perolado, que cintila suavemente mesmo na penumbra.
+- Ao ser movimentado, o conteúdo se comporta como areia extremamente fina, formando redemoinhos delicados que parecem mais leves que o ar.
+- Pequenos brilhos surgem e desaparecem no interior, como reflexos de luar aprisionados.
+- Ao se romper, o pó se dispersa em uma névoa dourada quase imperceptível, pairando por um breve instante antes de se espalhar silenciosamente pelo ambiente.
+- O ar se preenche com um aroma adocicado e suave, lembrando flores noturnas e páginas antigas.
+- A inalação é inevitável para quem estiver próximo — e, com ela, vem um torpor súbito, como se o mundo perdesse peso e a consciência fosse gentilmente puxada para o sono.","
+- A vítimia precisa fazer dois testes de HT, com redutor de -6  e -4, respectivamente, para resistir aos efeitos da bomba.
+- Se falhar no primeiro teste o alvo cairá no sono, se passar no primeiro sofrerá penalidade de -5 em qualquer teste de percepção e feitiços sensoriais, se passar em ambos evitará ambos os efeitos.",,Área de 4 Hex
