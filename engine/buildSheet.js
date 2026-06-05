@@ -49,6 +49,7 @@ function buildSheet({ pc = {}, race = {}, character = {}, inventory = {} } = {})
     ammoContainerInventory: inventory.ammo_containers || [],
     looseAmmoInventory: inventory.loose_ammo || [],
     alchemyInventory: inventory.alchemy || [],
+    survivalGearInventory: inventory.survival_gear || [],
   });
 
   /**
