@@ -14,7 +14,7 @@ describe("EQUIPMENT ARMOR", () => {
 
   const slotMap = {
     Cabeça: "head",
-    Torso: "torso",
+    Tronco: "torso",
     Braços: "arms",
     Mãos: "hands",
     Pernas: "legs",
@@ -25,7 +25,7 @@ describe("EQUIPMENT ARMOR", () => {
     test("Should export SLOTS", () => {
       expect(SLOTS).toEqual([
         "Cabeça",
-        "Torso",
+        "Tronco",
         "Braços",
         "Mãos",
         "Pernas",

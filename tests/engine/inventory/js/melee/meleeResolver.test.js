@@ -115,6 +115,7 @@ describe("meleeResolver", () => {
         final_hit_points: 35,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: true,
         storedAt: null,
       });
@@ -170,6 +171,7 @@ describe("meleeResolver", () => {
         final_hit_points: 18,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
       });

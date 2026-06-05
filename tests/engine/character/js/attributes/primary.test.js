@@ -36,6 +36,7 @@ describe("PRIMARY ATTRIBUTES", () => {
       expect(result.primary_attributes[attr]).toEqual({
         base_value: 10,
         modifier: 0,
+        race_modifier: 0,
         value: 10,
         points: 0,
       });
@@ -102,10 +103,10 @@ describe("PRIMARY ATTRIBUTES", () => {
     });
 
     expect(result.primary_attributes).toEqual({
-      ST: { base_value: 12, modifier: 1, value: 13, points: 20 },
-      DX: { base_value: 9, modifier: 0, value: 9, points: -20 },
-      IQ: { base_value: 10, modifier: 3, value: 13, points: 0 },
-      HT: { base_value: 11, modifier: -1, value: 10, points: 10 },
+      ST: { base_value: 12, modifier: 1, race_modifier: 0, value: 13, points: 20 },
+      DX: { base_value: 9, modifier: 0, race_modifier: 0, value: 9, points: -20 },
+      IQ: { base_value: 10, modifier: 3, race_modifier: 0, value: 13, points: 0 },
+      HT: { base_value: 11, modifier: -1, race_modifier: 0, value: 10, points: 10 },
     });
 
     expect(result.character_points).toEqual({

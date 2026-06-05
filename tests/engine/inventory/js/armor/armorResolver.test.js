@@ -110,6 +110,7 @@ describe("equipmentArmorUtils", () => {
 
         final_hit_points: 15,
 
+        _instanceId: null,
         is_equipped: true,
 
         storedAt: "backpack",

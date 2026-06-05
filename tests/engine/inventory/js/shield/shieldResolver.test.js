@@ -102,6 +102,7 @@ describe("shieldResolver", () => {
         final_hit_points: 15,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: true,
         storedAt: "backpack",
       });
@@ -151,6 +152,7 @@ describe("shieldResolver", () => {
         final_hit_points: 8,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
       });

@@ -122,6 +122,7 @@ describe("rangedResolver", () => {
         final_hit_points: 25,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: true,
         storedAt: null,
       });
@@ -180,6 +181,7 @@ describe("rangedResolver", () => {
         final_hit_points: 13,
 
         // RUNTIME
+        _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
       });
