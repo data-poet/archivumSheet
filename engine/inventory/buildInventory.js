@@ -5,6 +5,7 @@ const { buildMeleeSlots } = require("./js/melee/melee.js");
 const { buildRangedSlots } = require("./js/ranged/ranged.js");
 const { buildAmmoSlots } = require("./js/ammo/ammo.js");
 const { buildAlchemySlots } = require("./js/alchemy/alchemy.js");
+const { buildSurvivalGearSlots } = require("./js/survivalGear/survivalGear.js");
 
 /**
  * Builds inventory data
@@ -19,6 +20,7 @@ function buildInventory({
   ammoContainerInventory = [],
   looseAmmoInventory = [],
   alchemyInventory = [],
+  survivalGearInventory = [],
 } = {}) {
   const armor = buildArmorSlots(armorInventory);
   const shield = buildShieldSlots(shieldInventory);
@@ -26,6 +28,7 @@ function buildInventory({
   const ranged = buildRangedSlots(rangedInventory, ST);
   const ammo = buildAmmoSlots(ammoContainerInventory, looseAmmoInventory);
   const alchemy = buildAlchemySlots(alchemyInventory);
+  const survivalGear = buildSurvivalGearSlots(survivalGearInventory);
 
   const effectiveWeight =
     weight +
@@ -34,7 +37,8 @@ function buildInventory({
     melee.carried_melee_weapons_weight +
     ranged.carried_ranged_weapons_weight +
     ammo.carried_ammo_weight +
-    alchemy.carried_alchemy_weight;
+    alchemy.carried_alchemy_weight +
+    survivalGear.carried_survival_gear_weight;
 
   const carryWeight = calculateCarryWeight(ST, effectiveWeight);
 
@@ -48,6 +52,7 @@ function buildInventory({
       ranged,
       ammo,
       alchemy,
+      survivalGear,
     },
   };
 }
