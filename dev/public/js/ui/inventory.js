@@ -25,8 +25,9 @@ export function updateInventoryUI(sheet) {
   const meleeWeight = sheet?.inventory?.melee?.carried_melee_weight || 0;
   const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
   const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
+  const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
   const weight =
-    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight;
+    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight;
 
   // Update weight detail spans
   const set = (id, val) => {
@@ -38,6 +39,7 @@ export function updateInventoryUI(sheet) {
   set("melee_weight", meleeWeight);
   set("ranged_weight", rangedWeight);
   set("ammo_weight", ammoWeight);
+  set("alchemy_weight", alchemyWeight);
   set("total_weight", weight);
 
   // Encumbrance state

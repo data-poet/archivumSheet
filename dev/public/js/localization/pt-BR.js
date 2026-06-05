@@ -76,6 +76,7 @@ export const LABELS = {
     shieldWeight: "Escudo",
     meleeWeight: "Corpo a Corpo",
     rangedWeight: "Longo Alcance",
+    alchemyWeight: "Alquimia",
     totalWeight: "Peso Total",
     encumbrance: "Sobrecarga",
     carryLimits: "Limites de Carga",
@@ -241,6 +242,27 @@ export const LABELS = {
     hp: "PV",
     tr: "TR",
     prec: "PREC",
+  },
+
+  // ── Alchemy consumables ───────────────────────────────────────────────────
+  alchemy: {
+    loadAlchemy:  "Carregar Alquimia",
+    addAlchemy:   "Adicionar",
+    title:        "Alquimia",
+    typeFilter:   "— Tipo —",
+    noEntries:    "Nenhum consumível adicionado",
+    qty:          "Qtd.",
+    type:         "Tipo",
+    category:     "Categoria",
+    tier:         "Tier",
+    duration:     "Duração",
+    effect:       "Efeito",
+    toxicity:     "Toxicidade",
+    method:       "Método",
+    effectArea:   "Área de Efeito",
+    description:  "Descrição",
+    observation:  "Observação",
+    alchemyWeight: "Alquimia",
   },
 
   // ── Equipment: Ammo ───────────────────────────────────────────────────────

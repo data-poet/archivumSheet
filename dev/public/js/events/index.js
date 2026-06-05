@@ -35,6 +35,7 @@ import {
   updateRangedTierOptions,
 } from "../inventory/ranged.js";
 import { loadAmmo, updateLooseAmmoOptions } from "../inventory/ammo.js";
+import { loadAlchemy } from "../inventory/alchemy.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 import {
   loadRaces,
@@ -78,6 +79,16 @@ import {
   handleAddContainer,
   handleAddLooseAmmo,
 } from "./ammoEvents.js";
+import {
+  handleAlchemyClick,
+  handleAlchemyInput,
+  handleAlchemyChange,
+  handleAddAlchemy,
+} from "./alchemyEvents.js";
+import {
+  updateAlchemyTypeOptions,
+  updateAlchemyTierOptions,
+} from "../inventory/alchemy.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BIND ALL UI LISTENERS
@@ -135,6 +146,12 @@ export function bindUI() {
   on("addAmmoContainerBtn", "click", handleAddContainer);
   on("addLooseAmmoBtn", "click", handleAddLooseAmmo);
 
+  // ── Alchemy ───────────────────────────────────────────────────────────────
+  on("loadAlchemyBtn", "click", loadAlchemy);
+  on("alchemyTypeFilter", "change", updateAlchemyTypeOptions);
+  on("alchemyNameSelect", "change", updateAlchemyTierOptions);
+  on("addAlchemyBtn", "click", handleAddAlchemy);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -170,6 +187,7 @@ export function bindUI() {
     if (handleMeleeClick(e)) return;
     if (handleRangedClick(e)) return;
     if (handleAmmoClick(e)) return;
+    if (handleAlchemyClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -181,6 +199,7 @@ export function bindUI() {
     if (handleMeleeInput(e)) return;
     if (handleRangedInput(e)) return;
     if (handleAmmoInput(e)) return;
+    if (handleAlchemyInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -191,6 +210,7 @@ export function bindUI() {
     if (handleMeleeChange(e)) return;
     if (handleRangedChange(e)) return;
     if (handleAmmoChange(e)) return;
+    if (handleAlchemyChange(e)) return;
   });
 
   // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────

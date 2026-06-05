@@ -14,6 +14,7 @@ let _meleeCounter = 1;
 let _rangedCounter = 1;
 let _ammoContainerCounter = 1;
 let _looseAmmoCounter = 1;
+let _alchemyCounter = 1;
 
 export function nextArmorInstanceId() {
   return `armor-inst-${_armorCounter++}`;
@@ -39,6 +40,10 @@ export function nextLooseAmmoInstanceId() {
   return `loose-ammo-inst-${_looseAmmoCounter++}`;
 }
 
+export function nextAlchemyInstanceId() {
+  return `alchemy-inst-${_alchemyCounter++}`;
+}
+
 /**
  * Reset all counters — used only during sheet import so imported
  * instance IDs don't collide with freshly generated ones.
@@ -50,4 +55,5 @@ export function resetInstanceCounters() {
   _rangedCounter = 1;
   _ammoContainerCounter = 1;
   _looseAmmoCounter = 1;
+  _alchemyCounter = 1;
 }

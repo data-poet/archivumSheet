@@ -125,6 +125,13 @@ app.get("/api/ammo_containers", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/alchemy", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_alchemy_consumables.csv"),
+  );
+  res.json(data);
+});
+
 /* -----------------------
    CHARACTER BUILDER
 ------------------------ */

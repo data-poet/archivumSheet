@@ -117,6 +117,7 @@ export async function runEngine() {
         ranged: selected.ranged_weapons,
         ammo_containers: selected.ammo_containers,
         loose_ammo: selected.loose_ammo,
+        alchemy: selected.alchemy,
       },
     });
 

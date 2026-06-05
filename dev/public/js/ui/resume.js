@@ -24,12 +24,13 @@ function renderResumeWeight(sheet) {
   const weightEl = el("weight");
   const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
 
-  const armorWeight  = sheet?.inventory?.armor?.carried_armor_weight   || 0;
-  const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
-  const meleeWeight  = sheet?.inventory?.melee?.carried_melee_weight   || 0;
-  const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
-  const ammoWeight   = sheet?.inventory?.ammo?.carried_ammo_weight     || 0;
-  const totalWeight  = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight;
+  const armorWeight   = sheet?.inventory?.armor?.carried_armor_weight    || 0;
+  const shieldWeight  = sheet?.inventory?.shield?.carried_shield_weight  || 0;
+  const meleeWeight   = sheet?.inventory?.melee?.carried_melee_weight    || 0;
+  const rangedWeight  = sheet?.inventory?.ranged?.carried_ranged_weight  || 0;
+  const ammoWeight    = sheet?.inventory?.ammo?.carried_ammo_weight      || 0;
+  const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
+  const totalWeight   = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight;
 
   // Encumbrance key
   let stateKey = "none";
@@ -69,6 +70,10 @@ function renderResumeWeight(sheet) {
         <td>${t("ammo.ammoWeight")}</td>
         <td class="col-num">${ammoWeight}</td>
       </tr>
+      <tr>
+        <td>${t("alchemy.alchemyWeight")}</td>
+        <td class="col-num">${alchemyWeight}</td>
+      </tr>
       <tr class="resume-total-row">
         <td><strong>${t("resume.totalWeight")}</strong></td>
         <td class="col-num"><strong>${totalWeight}</strong></td>
@@ -79,12 +84,13 @@ function renderResumeWeight(sheet) {
   // Keep the legacy span IDs in sync so updateInventoryUI (called separately)
   // also works — just set the ones that live outside the resume table
   const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
-  set("armor_weight",  armorWeight);
-  set("shield_weight", shieldWeight);
-  set("melee_weight",  meleeWeight);
-  set("ranged_weight", rangedWeight);
-  set("ammo_weight",   ammoWeight);
-  set("total_weight",  totalWeight);
+  set("armor_weight",   armorWeight);
+  set("shield_weight",  shieldWeight);
+  set("melee_weight",   meleeWeight);
+  set("ranged_weight",  rangedWeight);
+  set("ammo_weight",    ammoWeight);
+  set("alchemy_weight", alchemyWeight);
+  set("total_weight",   totalWeight);
   set("encumbrance", encumbranceLabel);
 
   // Carry limits table

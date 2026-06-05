@@ -20,12 +20,12 @@
   --color-remove-hover: #b91c1c;
 
   /* Section accent colors */
-  --accent-attr: #2563eb;
+  --accent-attr: #ff5555;
   --accent-trait: #16a34a;
-  --accent-equip: #b45309;
-  --accent-magic: #7c3aed;
-  --accent-inv: #475569;
-  --accent-resume: #475569;
+  --accent-equip: #8be9fd;
+  --accent-magic: #bd93f9;
+  --accent-inv: #ff79c6;
+  --accent-resume: #ff5555;
 
   /* Spacing & shape */
   --radius: 6px;
@@ -45,9 +45,9 @@
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
   --fs-base: clamp(11px, 2.5vw, 13px);
-  --fs-sm:   clamp(10px, 2.2vw, 12px);
-  --fs-xs:   clamp(9px,  2vw,   11px);
-  --fs-xxs:  clamp(8px,  1.8vw, 10px);
+  --fs-sm: clamp(10px, 2.2vw, 12px);
+  --fs-xs: clamp(9px, 2vw, 11px);
+  --fs-xxs: clamp(8px, 1.8vw, 10px);
 
   /* Detail row (unified) */
   --detail-bg: #f4f4fb;
@@ -145,7 +145,9 @@ body {
   align-items: center;
   gap: 4px;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .topbar-btn:hover {
@@ -186,7 +188,9 @@ body {
   text-transform: uppercase;
   padding: 6px 2px;
   border-top: 3px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -228,8 +232,12 @@ body {
   }
 
   /* Hide mobile nav elements */
-  .l-topbar  { display: none; }
-  .l-bottomnav { display: none; }
+  .l-topbar {
+    display: none;
+  }
+  .l-bottomnav {
+    display: none;
+  }
 
   /* ── Desktop sidebar ───────────────────────────────────────────────────── */
   .l-sidebar {
@@ -277,7 +285,9 @@ body {
     flex: 1;
   }
 
-  .sidebar-nav li { width: 100%; }
+  .sidebar-nav li {
+    width: 100%;
+  }
 
   .sidebar-link {
     display: flex;
@@ -289,7 +299,9 @@ body {
     width: 100%;
     white-space: nowrap;
     border-left: 3px solid transparent;
-    transition: color 0.15s, background 0.15s;
+    transition:
+      color 0.15s,
+      background 0.15s;
   }
 
   .sidebar-link:hover {
@@ -321,7 +333,9 @@ body {
     text-overflow: ellipsis;
   }
 
-  .l-sidebar:hover .sidebar-label { opacity: 1; }
+  .l-sidebar:hover .sidebar-label {
+    opacity: 1;
+  }
 
   .sidebar-bottom {
     width: 100%;
@@ -344,7 +358,9 @@ body {
     width: 100%;
     padding: 10px 0;
     border-left: 3px solid transparent;
-    transition: color 0.15s, background 0.15s;
+    transition:
+      color 0.15s,
+      background 0.15s;
     text-align: left;
   }
 
@@ -376,7 +392,9 @@ body {
     pointer-events: none;
   }
 
-  .l-sidebar:hover .sidebar-action-label { opacity: 1; }
+  .l-sidebar:hover .sidebar-action-label {
+    opacity: 1;
+  }
 
   /* ── Desktop main content ─────────────────────────────────────────────── */
   .l-main {
@@ -447,22 +465,40 @@ details > *:not(summary) {
 }
 
 /* ── Section accent colors ──────────────────────────────────────────────── */
-.box--attr    details summary { border-left: 3px solid var(--accent-attr); }
-.box--trait   details summary { border-left: 3px solid var(--accent-trait); }
-.box--equip   details summary { border-left: 3px solid var(--accent-equip); }
-.box--magic   details summary { border-left: 3px solid var(--accent-magic); }
-.box--inv     details summary { border-left: 3px solid var(--accent-inv); }
-.box--resume  details summary { border-left: 3px solid var(--accent-resume); }
-.box--character details summary { border-left: 3px solid var(--accent-attr); }
-.box--engine  details summary,
-.box--output  details summary { border-left: 3px solid #94a3b8; }
+.box--attr details summary {
+  border-left: 3px solid var(--accent-attr);
+}
+.box--trait details summary {
+  border-left: 3px solid var(--accent-trait);
+}
+.box--equip details summary {
+  border-left: 3px solid var(--accent-equip);
+}
+.box--magic details summary {
+  border-left: 3px solid var(--accent-magic);
+}
+.box--inv details summary {
+  border-left: 3px solid var(--accent-inv);
+}
+.box--resume details summary {
+  border-left: 3px solid var(--accent-resume);
+}
+.box--character details summary {
+  border-left: 3px solid var(--accent-attr);
+}
+.box--engine details summary,
+.box--output details summary {
+  border-left: 3px solid #94a3b8;
+}
 
 /* Thicker border on top-level (parent) expanders */
 .box--attr > details > summary,
 .box--trait > details > summary,
 .box--equip > details > summary,
 .box--magic > details > summary,
-.box--inv   > details > summary { border-left-width: 4px; }
+.box--inv > details > summary {
+  border-left-width: 4px;
+}
 
 /* ── Nested boxes ───────────────────────────────────────────────────────── */
 .box--nested {
@@ -478,11 +514,11 @@ details > *:not(summary) {
 }
 
 /* Sub-section summaries */
-.box--attr  .box--nested details summary,
+.box--attr .box--nested details summary,
 .box--trait .box--nested details summary,
 .box--equip .box--nested details summary,
 .box--magic .box--nested details summary,
-.box--inv   .box--nested details summary {
+.box--inv .box--nested details summary {
   font-size: var(--fs-sm);
   font-weight: 600;
   min-height: 36px;
@@ -491,11 +527,24 @@ details > *:not(summary) {
   border-bottom: none;
 }
 
-.box--attr  .box--nested details summary { border-left: 3px solid color-mix(in srgb, var(--accent-attr)  60%, transparent); }
-.box--trait .box--nested details summary { border-left: 3px solid color-mix(in srgb, var(--accent-trait) 60%, transparent); }
-.box--equip .box--nested details summary { border-left: 3px solid color-mix(in srgb, var(--accent-equip) 60%, transparent); }
-.box--magic .box--nested details summary { border-left: 3px solid color-mix(in srgb, var(--accent-magic) 60%, transparent); }
-.box--inv   .box--nested details summary { border-left: 3px solid color-mix(in srgb, var(--accent-inv)   60%, transparent); }
+.box--attr .box--nested details summary {
+  border-left: 3px solid color-mix(in srgb, var(--accent-attr) 60%, transparent);
+}
+.box--trait .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-trait) 60%, transparent);
+}
+.box--equip .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-equip) 60%, transparent);
+}
+.box--magic .box--nested details summary {
+  border-left: 3px solid
+    color-mix(in srgb, var(--accent-magic) 60%, transparent);
+}
+.box--inv .box--nested details summary {
+  border-left: 3px solid color-mix(in srgb, var(--accent-inv) 60%, transparent);
+}
 
 .box--nested details[open] > summary {
   border-bottom: 1px solid var(--color-border);
@@ -548,8 +597,12 @@ button {
   font-weight: 500;
 }
 
-button:hover  { background: var(--color-btn-hover); }
-button:active { transform: scale(0.98); }
+button:hover {
+  background: var(--color-btn-hover);
+}
+button:active {
+  transform: scale(0.98);
+}
 
 button.btn-remove {
   background: none;
@@ -574,7 +627,9 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type="number"] { -moz-appearance: textfield; }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    NUM-STEPPER  — wraps every modifier / hp / quantity input
@@ -634,8 +689,12 @@ input[type="number"] { -moz-appearance: textfield; }
   border-radius: 0 0 var(--radius-sm) 0;
 }
 
-.stepper-btn:hover  { background: var(--color-btn-hover); }
-.stepper-btn:active { background: var(--color-border); }
+.stepper-btn:hover {
+  background: var(--color-btn-hover);
+}
+.stepper-btn:active {
+  background: var(--color-border);
+}
 
 /* ── Mobile: wider input, full-width stepper in table cells ─────────────── */
 @media (max-width: 480px) {
@@ -690,12 +749,23 @@ td {
   vertical-align: middle;
 }
 
-tbody tr:nth-child(even) { background: var(--color-row-alt); }
-tbody tr:hover            { background: var(--color-row-hover); }
+tbody tr:nth-child(even) {
+  background: var(--color-row-alt);
+}
+tbody tr:hover {
+  background: var(--color-row-hover);
+}
 
-td.col-num    { text-align: center; }
-td.col-center { text-align: center; }
-td.col-action { text-align: center; width: 60px; }
+td.col-num {
+  text-align: center;
+}
+td.col-center {
+  text-align: center;
+}
+td.col-action {
+  text-align: center;
+  width: 60px;
+}
 
 /* Inputs inside tables — num-stepper handles width */
 table input[type="number"],
@@ -864,7 +934,9 @@ tr.spell-detail-row details[open] summary {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
-.scaling-list li { margin-bottom: 1px; }
+.scaling-list li {
+  margin-bottom: 1px;
+}
 
 .scaling-note {
   margin: 2px 0 0;
@@ -897,7 +969,9 @@ tr.spell-detail-row details[open] summary {
   min-height: 36px;
 }
 
-.equip-sub details[open] summary { border-bottom: none; }
+.equip-sub details[open] summary {
+  border-bottom: none;
+}
 
 .equip-sub details > *:not(summary) {
   padding: 4px 4px 8px;
@@ -998,7 +1072,9 @@ tr.spell-detail-row details[open] summary {
   gap: 0.4rem;
   margin-bottom: 0.5rem;
 }
-.race-selects select { width: 100%; }
+.race-selects select {
+  width: 100%;
+}
 
 /* Race modifier tags */
 .race-modifiers {
@@ -1039,7 +1115,9 @@ tr.spell-detail-row details[open] summary {
   margin: 0 0 8px;
 }
 
-.resume-base-weight-row { margin-bottom: 6px; }
+.resume-base-weight-row {
+  margin-bottom: 6px;
+}
 
 .resume-table {
   width: 100%;
@@ -1057,14 +1135,18 @@ tr.spell-detail-row details[open] summary {
   border-top: 2px solid var(--color-border-strong);
 }
 
-.resume-points-value { font-variant-numeric: tabular-nums; }
+.resume-points-value {
+  font-variant-numeric: tabular-nums;
+}
 
 .resume-encumbrance {
   font-size: var(--fs-xs);
   margin: 4px 0 8px;
   color: var(--color-text-muted);
 }
-.resume-encumbrance strong { color: var(--color-text); }
+.resume-encumbrance strong {
+  color: var(--color-text);
+}
 
 .resume-limits-table {
   font-size: var(--fs-xxs);
@@ -1102,8 +1184,14 @@ tr.trait-innate td {
 /* ═══════════════════════════════════════════════════════════════════════════
    ATTRIBUTE CELLS
    ═══════════════════════════════════════════════════════════════════════════ */
-.race-mod-cell { color: var(--color-text-muted); font-size: var(--fs-xs); }
-.race-mod-cell.race-mod-active { color: #4a7a3a; font-weight: 700; }
+.race-mod-cell {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+.race-mod-cell.race-mod-active {
+  color: #4a7a3a;
+  font-weight: 700;
+}
 
 /* ── HP modifier block ─────────────────────────────────────────────────────── */
 .hp-modifier {
@@ -1137,7 +1225,10 @@ pre {
 /* ═══════════════════════════════════════════════════════════════════════════
    TYPOGRAPHY HELPERS
    ═══════════════════════════════════════════════════════════════════════════ */
-h1 { font-size: 20px; margin: 0 0 12px; }
+h1 {
+  font-size: 20px;
+  margin: 0 0 12px;
+}
 
 h3 {
   font-size: var(--fs-xs);
@@ -1165,7 +1256,9 @@ h4 {
 /* ═══════════════════════════════════════════════════════════════════════════
    AMMO
    ═══════════════════════════════════════════════════════════════════════════ */
-.ammo-container-slot { margin-bottom: 0; }
+.ammo-container-slot {
+  margin-bottom: 0;
+}
 
 .ammo-type-badge {
   display: inline-block;
@@ -1199,9 +1292,14 @@ h4 {
   font-weight: 600;
 }
 
-.ammo-contents-table { width: 100%; margin-bottom: 6px; }
+.ammo-contents-table {
+  width: 100%;
+  margin-bottom: 6px;
+}
 
-.ammo-add-to-container { margin-top: 6px; }
+.ammo-add-to-container {
+  margin-top: 6px;
+}
 
 .ammo-full {
   font-size: var(--fs-xxs);

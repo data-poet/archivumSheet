@@ -13,6 +13,7 @@ export const state = {
     races: [],
     ammo: [],
     ammo_containers: [],
+    alchemy: [],
   },
 
   // ===== USER SELECTION =====
@@ -37,6 +38,7 @@ export const state = {
     ranged_weapons: [],
     ammo_containers: [],
     loose_ammo: [],
+    alchemy: [],
   },
 
   // ===== UI STATE =====
