@@ -14,6 +14,7 @@ export const state = {
     ammo: [],
     ammo_containers: [],
     alchemy: [],
+    survivalGear: [],
   },
 
   // ===== USER SELECTION =====
@@ -39,6 +40,7 @@ export const state = {
     ammo_containers: [],
     loose_ammo: [],
     alchemy: [],
+    survivalGear: [],
   },
 
   // ===== UI STATE =====

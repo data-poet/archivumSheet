@@ -118,6 +118,7 @@ export async function runEngine() {
         ammo_containers: selected.ammo_containers,
         loose_ammo: selected.loose_ammo,
         alchemy: selected.alchemy,
+        survival_gear: selected.survivalGear,
       },
     });
 

@@ -10,6 +10,7 @@ import { renderEquippedMelee, renderStoredMelee } from "./renderMelee.js";
 import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
 import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 import { renderAlchemy } from "./renderAlchemy.js";
+import { renderSurvivalGear } from "./renderSurvivalGear.js";
 
 /**
  * Re-render all list UI sections.
@@ -34,4 +35,5 @@ export function renderLists(selected, data, sheet) {
   renderAmmoContainers(selected, data, sheet);
   renderLooseAmmo(selected, data, sheet);
   renderAlchemy(selected, data, sheet);
+  renderSurvivalGear(selected, data, sheet);
 }

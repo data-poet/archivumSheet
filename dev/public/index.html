@@ -291,6 +291,7 @@
                 <span id="ranged_weight" style="display: none">0</span>
                 <span id="ammo_weight" style="display: none">0</span>
                 <span id="alchemy_weight" style="display: none">0</span>
+                <span id="survival_gear_weight" style="display: none">0</span>
                 <span id="total_weight" style="display: none">0</span>
               </div>
 
@@ -776,6 +777,32 @@
                 <div id="alchemyList"></div>
               </details>
             </div>
+
+            <!-- Survival Gear -->
+            <div class="box box--equip box--nested">
+              <details>
+                <summary id="sec-survival-gear"></summary>
+                <div class="controls-row">
+                  <button id="loadSurvivalGearBtn"></button>
+                  <select id="survivalGearTypeFilter"></select>
+                  <select id="survivalGearNameSelect"></select>
+                  <input
+                    id="survivalGearQty"
+                    type="number"
+                    min="1"
+                    value="1"
+                    style="width: 64px"
+                  />
+                  <select id="survivalGearStorage">
+                    <option value="backpack" id="opt-survival-gear-backpack"></option>
+                    <option value="stash" id="opt-survival-gear-stash"></option>
+                    <option value="camp" id="opt-survival-gear-camp"></option>
+                  </select>
+                  <button id="addSurvivalGearBtn"></button>
+                </div>
+                <div id="survivalGearList"></div>
+              </details>
+            </div>
           </details>
         </div>
       </section>
@@ -910,6 +937,7 @@
         setText("sec-ranged", L.sections.ranged);
         setText("sec-ammo", L.sections.munition);
         setText("sec-alchemy", L.alchemy.title);
+        setText("sec-survival-gear", L.survivalGear.title);
         setText("sec-inventory", L.sections.inventory);
         setText("sec-output", L.output.title);
 
@@ -1006,6 +1034,8 @@
         btn("addLooseAmmoBtn", L.ammo.addLooseAmmo);
         btn("loadAlchemyBtn", L.alchemy.loadAlchemy);
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
+        btn("loadSurvivalGearBtn", L.survivalGear.loadSurvivalGear);
+        btn("addSurvivalGearBtn",  L.survivalGear.addSurvivalGear);
 
         // Storage select options
         const storageMap = [
@@ -1033,6 +1063,9 @@
           ["opt-alchemy-backpack", L.storage.backpack],
           ["opt-alchemy-stash", L.storage.stash],
           ["opt-alchemy-camp", L.storage.camp],
+          ["opt-survival-gear-backpack", L.storage.backpack],
+          ["opt-survival-gear-stash", L.storage.stash],
+          ["opt-survival-gear-camp", L.storage.camp],
         ];
         storageMap.forEach(([id, text]) => setText(id, text));
 

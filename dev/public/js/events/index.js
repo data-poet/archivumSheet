@@ -36,6 +36,7 @@ import {
 } from "../inventory/ranged.js";
 import { loadAmmo, updateLooseAmmoOptions } from "../inventory/ammo.js";
 import { loadAlchemy } from "../inventory/alchemy.js";
+import { loadSurvivalGear } from "../inventory/survivalGear.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 import {
   loadRaces,
@@ -86,10 +87,15 @@ import {
   handleAddAlchemy,
 } from "./alchemyEvents.js";
 import {
+  handleSurvivalGearClick,
+  handleSurvivalGearInput,
+  handleSurvivalGearChange,
+  handleAddSurvivalGear,
+} from "./survivalGearEvents.js";
+import {
   updateAlchemyTypeOptions,
   updateAlchemyTierOptions,
 } from "../inventory/alchemy.js";
-
 // ─────────────────────────────────────────────────────────────────────────────
 // BIND ALL UI LISTENERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -152,6 +158,11 @@ export function bindUI() {
   on("alchemyNameSelect", "change", updateAlchemyTierOptions);
   on("addAlchemyBtn", "click", handleAddAlchemy);
 
+  // ── Survival Gear ─────────────────────────────────────────────────────────
+  on("loadSurvivalGearBtn", "click", loadSurvivalGear);
+  on("survivalGearTypeFilter", "change", handleSurvivalGearChange);
+  on("addSurvivalGearBtn", "click", handleAddSurvivalGear);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -188,6 +199,7 @@ export function bindUI() {
     if (handleRangedClick(e)) return;
     if (handleAmmoClick(e)) return;
     if (handleAlchemyClick(e)) return;
+    if (handleSurvivalGearClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -200,6 +212,7 @@ export function bindUI() {
     if (handleRangedInput(e)) return;
     if (handleAmmoInput(e)) return;
     if (handleAlchemyInput(e)) return;
+    if (handleSurvivalGearInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -211,6 +224,7 @@ export function bindUI() {
     if (handleRangedChange(e)) return;
     if (handleAmmoChange(e)) return;
     if (handleAlchemyChange(e)) return;
+    if (handleSurvivalGearChange(e)) return;
   });
 
   // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────

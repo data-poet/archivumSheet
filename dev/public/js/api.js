@@ -76,6 +76,10 @@ export async function fetchAlchemy() {
   return getJSON("/api/alchemy");
 }
 
+export async function fetchSurvivalGear() {
+  return getJSON("/api/survival_gear");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);
