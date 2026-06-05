@@ -101,6 +101,7 @@ export function exportSheet() {
       loose_ammo:     selected.loose_ammo,
       alchemy:        selected.alchemy,
       survivalGear:   selected.survivalGear,
+      customInventory: selected.customInventory,
     },
   };
 
@@ -255,6 +256,7 @@ function _applyImport(payload) {
   selected.loose_ammo     = inventory.loose_ammo     ?? [];
   selected.alchemy        = inventory.alchemy        ?? [];
   selected.survivalGear   = inventory.survivalGear   ?? [];
+  selected.customInventory = inventory.customInventory ?? [];
 
   // ── Re-render lists and recalculate ───────────────────────────────────────
   renderLists(selected, data);

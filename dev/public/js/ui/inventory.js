@@ -27,8 +27,9 @@ export function updateInventoryUI(sheet) {
   const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
   const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
   const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
+  const customInventoryWeight = sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
   const weight =
-    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight + survivalGearWeight;
+    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight + survivalGearWeight + customInventoryWeight;
 
   // Update weight detail spans
   const set = (id, val) => {
@@ -42,6 +43,7 @@ export function updateInventoryUI(sheet) {
   set("ammo_weight", ammoWeight);
   set("alchemy_weight", alchemyWeight);
   set("survival_gear_weight", survivalGearWeight);
+  set("custom_inventory_weight", customInventoryWeight);
   set("total_weight", weight);
 
   // Encumbrance state

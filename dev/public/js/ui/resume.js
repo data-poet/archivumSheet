@@ -31,7 +31,8 @@ function renderResumeWeight(sheet) {
   const ammoWeight    = sheet?.inventory?.ammo?.carried_ammo_weight      || 0;
   const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
   const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
-  const totalWeight   = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight + survivalGearWeight;
+  const customInventoryWeight = sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const totalWeight   = baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight + survivalGearWeight + customInventoryWeight;
 
   // Encumbrance key
   let stateKey = "none";
@@ -79,6 +80,10 @@ function renderResumeWeight(sheet) {
         <td>${t("survivalGear.survivalGearWeight")}</td>
         <td class="col-num">${survivalGearWeight}</td>
       </tr>
+      <tr>
+        <td>${t("customInventory.customInventoryWeight")}</td>
+        <td class="col-num">${customInventoryWeight}</td>
+      </tr>
       <tr class="resume-total-row">
         <td><strong>${t("resume.totalWeight")}</strong></td>
         <td class="col-num"><strong>${totalWeight}</strong></td>
@@ -96,6 +101,7 @@ function renderResumeWeight(sheet) {
   set("ammo_weight",    ammoWeight);
   set("alchemy_weight", alchemyWeight);
   set("survival_gear_weight", survivalGearWeight);
+  set("custom_inventory_weight", customInventoryWeight);
   set("total_weight",   totalWeight);
   set("encumbrance", encumbranceLabel);
 

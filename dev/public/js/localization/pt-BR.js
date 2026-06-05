@@ -78,6 +78,7 @@ export const LABELS = {
     rangedWeight: "Longo Alcance",
     alchemyWeight: "Alquimia",
     survivalGearWeight: "Sobrevivência",
+    customInventoryWeight: "Inv. Personalizado",
     totalWeight: "Peso Total",
     encumbrance: "Sobrecarga",
     carryLimits: "Limites de Carga",
@@ -256,6 +257,20 @@ export const LABELS = {
     survivalGearWeight: "Sobrevivência",
   },
 
+  // ── Custom (user-defined) inventory ───────────────────────────────────────
+  customInventory: {
+    title: "Inventário Personalizado",
+    addItem: "Adicionar Item",
+    namePlaceholder: "Nome do item",
+    weightLabel: "Peso",
+    priceLabel: "Preço",
+    qtyLabel: "Qtd.",
+    qty: "Qtd.",
+    descriptionLabel: "Descrição (opcional)",
+    description: "Descrição",
+    customInventoryWeight: "Inventário Personalizado",
+  },
+
   // ── Alchemy consumables ───────────────────────────────────────────────────
   alchemy: {
     loadAlchemy: "Carregar Alquimia",
@@ -327,8 +342,7 @@ export const LABELS = {
       heavy: "Pesada",
       veryHeavy: "Muito Pesada",
     },
-    comingSoon:
-      "Em desenvolvimento — Poções e Inventário Livre serão adicionados aqui.",
+    comingSoon: "Em desenvolvimento — Poções serão adicionadas aqui.",
   },
 
   // ── Output (debug) ────────────────────────────────────────────────────────

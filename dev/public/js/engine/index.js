@@ -119,6 +119,7 @@ export async function runEngine() {
         loose_ammo: selected.loose_ammo,
         alchemy: selected.alchemy,
         survival_gear: selected.survivalGear,
+        custom_inventory: selected.customInventory,
       },
     });
 

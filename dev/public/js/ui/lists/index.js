@@ -11,6 +11,7 @@ import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
 import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 import { renderAlchemy } from "./renderAlchemy.js";
 import { renderSurvivalGear } from "./renderSurvivalGear.js";
+import { renderCustomInventory } from "./renderCustomInventory.js";
 
 /**
  * Re-render all list UI sections.
@@ -36,4 +37,5 @@ export function renderLists(selected, data, sheet) {
   renderLooseAmmo(selected, data, sheet);
   renderAlchemy(selected, data, sheet);
   renderSurvivalGear(selected, data, sheet);
+  renderCustomInventory(selected, data, sheet);
 }

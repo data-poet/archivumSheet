@@ -37,6 +37,11 @@ import {
 import { loadAmmo, updateLooseAmmoOptions } from "../inventory/ammo.js";
 import { loadAlchemy } from "../inventory/alchemy.js";
 import { loadSurvivalGear } from "../inventory/survivalGear.js";
+import {
+  handleCustomInventoryClick,
+  handleCustomInventoryInput,
+  handleAddCustomItem,
+} from "./customInventoryEvents.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 import {
   loadRaces,
@@ -163,6 +168,9 @@ export function bindUI() {
   on("survivalGearTypeFilter", "change", handleSurvivalGearChange);
   on("addSurvivalGearBtn", "click", handleAddSurvivalGear);
 
+  // ── Custom Inventory ──────────────────────────────────────────────────────
+  on("addCustomItemBtn", "click", handleAddCustomItem);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -200,6 +208,7 @@ export function bindUI() {
     if (handleAmmoClick(e)) return;
     if (handleAlchemyClick(e)) return;
     if (handleSurvivalGearClick(e)) return;
+    if (handleCustomInventoryClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -213,6 +222,7 @@ export function bindUI() {
     if (handleAmmoInput(e)) return;
     if (handleAlchemyInput(e)) return;
     if (handleSurvivalGearInput(e)) return;
+    if (handleCustomInventoryInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
