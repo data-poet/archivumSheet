@@ -1,0 +1,12 @@
+ammo_id,ammo_type,ammo_name,ammo_category,ammo_price,ammo_weight,ammo_effect,ammo_description
+AMMO-000,Flecha,Flecha,Dano,2,0.05,Causa dano perfurante padrão.,Flecha comum usada em combate e caça.
+AMMO-001,Flecha,Flecha Cega,Dano,3,0.05,Causa dano contundente não letal.,Flecha com ponta romba para captura e treino.
+AMMO-002,Flecha,Flecha Sagrada,Dano,25,0.05,"Causa +3 dano sagrado adicional contra mortos-vivos, demônios, espíritos e criaturas da noite.",Flecha abençoada por poder divino.
+AMMO-003,Flecha,Flecha de Agarre,Utilitária,15,0.05,Pode se prender ao alvo ou superfície atingida.,Flecha equipada com ganchos de fixação.
+AMMO-004,Flecha,Flecha Assobiadora,Utilitária,5,0.05,Produz assobio audível durante o voo.,Flecha usada para sinalização e comunicação.
+AMMO-005,Flecha,Flecha de Fumaça,Utilitária,20,0.05,"Cria uma pequena nuvem de fumaça, de 2 Hex de área, ao impacto.",Flecha contendo cápsula de fumaça.
+AMMO-006,Flecha,Flecha Cegante,Utilitária,30,0.05,Emite clarão intenso ao impacto.,Flecha alquímica projetada para ofuscar inimigos.
+AMMO-007,Flecha,Flecha de Adamantina,Utilitária,100,0.05,Ignora parte da resistência de materiais resistentes.,Flecha forjada em adamantina pura.
+AMMO-008,Flecha,Flecha Pedra Fogo,Elemental,35,0.05,Causa dano adicional de fogo ao impacto.,Flecha contendo pedra elemental de fogo.
+AMMO-009,Flecha,Flecha Pedra Gelo,Elemental,35,0.05,Causa dano adicional de gelo ao impacto.,Flecha contendo pedra elemental de gelo.
+AMMO-010,Flecha,Flecha Pedra Tempestade,Elemental,35,0.05,Causa dano adicional elétrico ao impacto.,Flecha contendo pedra elemental de tempestade.

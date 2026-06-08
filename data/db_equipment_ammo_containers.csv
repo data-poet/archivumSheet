@@ -1,0 +1,6 @@
+container_id,container_box_name,container_name,container_type,container_capacity,container_weight,container_price,container_ammo_type,is_carriable
+CONTAINER-000,ALJAVA LOMBAR | 30,Aljava Lombar,Comum,30,1.8,72,Flecha,TRUE
+CONTAINER-001,ALJAVA ACOPLADA | 6,Aljava Acoplada,Comum,6,0.5,20,Flecha,TRUE
+CONTAINER-002,ALJAVA DE QUADRIL | 18,Aljava de Quadril,Comum,18,1.2,48,Flecha,TRUE
+CONTAINER-003,ALJAVA TUBULAR | 24,Aljava Tubular,Comum,24,2,100,Flecha,TRUE
+CONTAINER-004,ALJAVA DE SOLO | 60,Aljava de Solo,Comum,60,4,40,Flecha,TRUE
