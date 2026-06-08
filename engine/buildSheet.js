@@ -10,7 +10,12 @@ function sumObjectValues(obj = {}) {
   );
 }
 
-function buildSheet({ pc = {}, race = {}, character = {}, inventory = {} } = {}) {
+function buildSheet({
+  pc = {},
+  race = {},
+  character = {},
+  inventory = {},
+} = {}) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
    * 1. INITIAL CHARACTER BUILD
@@ -50,6 +55,7 @@ function buildSheet({ pc = {}, race = {}, character = {}, inventory = {} } = {})
     looseAmmoInventory: inventory.loose_ammo || [],
     alchemyInventory: inventory.alchemy || [],
     survivalGearInventory: inventory.survival_gear || [],
+    customInventory: inventory.custom_inventory || [],
   });
 
   /**
