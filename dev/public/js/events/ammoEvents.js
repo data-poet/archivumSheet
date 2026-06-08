@@ -3,6 +3,7 @@ import {
   addContainer, moveContainer, removeContainer,
   addAmmoToContainer, updateContainerAmmoQuantity, removeAmmoFromContainer,
   addLooseAmmo, updateLooseAmmoQuantity, removeLooseAmmo,
+  moveLooseAmmo, moveAmmoInContainer,
   updateAmmoOptions, updateLooseAmmoOptions, updateLooseAmmoTypeFilter,
 } from "../inventory/ammo.js";
 import { renderLists } from "../ui.js";
@@ -67,11 +68,14 @@ export function handleAmmoClick(e) {
 }
 
 // ─── Input ────────────────────────────────────────────────────────────────────
+// The global stepper handler (events/index.js) fires input events on ± clicks;
+// these handlers receive them and enforce capacity clamping via the inventory layer.
 
 export function handleAmmoInput(e) {
   if (e.target.classList.contains("ammo-qty-in-container")) {
     const instanceId = e.target.dataset.instanceId;
-    const ammoId = e.target.dataset.ammoId;
+    const ammoId     = e.target.dataset.ammoId;
+    if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     if (!instanceId || !ammoId) return true;
     updateContainerAmmoQuantity(instanceId, ammoId, isNaN(quantity) ? 0 : quantity);
@@ -80,6 +84,7 @@ export function handleAmmoInput(e) {
   if (e.target.classList.contains("loose-ammo-qty")) {
     const ammoId   = e.target.dataset.ammoId;
     const storedAt = e.target.dataset.storedAt;
+    if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     if (!ammoId || !storedAt) return true;
     updateLooseAmmoQuantity(ammoId, storedAt, isNaN(quantity) ? 0 : quantity);
@@ -93,6 +98,21 @@ export function handleAmmoInput(e) {
 export function handleAmmoChange(e) {
   if (e.target.classList.contains("ammo-container-storage-select")) {
     moveContainer(e.target.dataset.instanceId, e.target.value); return true;
+  }
+  if (e.target.classList.contains("loose-ammo-location-select")) {
+    const ammoId  = e.target.dataset.ammoId;
+    const fromLoc = e.target.dataset.storedAt;
+    const toLoc   = e.target.value;
+    moveLooseAmmo(ammoId, fromLoc, toLoc);
+    return true;
+  }
+  if (e.target.classList.contains("ammo-in-container-move-select")) {
+    const fromInstanceId = e.target.dataset.fromInstanceId;
+    const ammoId         = e.target.dataset.ammoId;
+    const toInstanceId   = e.target.value;
+    if (!toInstanceId || toInstanceId === fromInstanceId) return true;
+    moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId);
+    return true;
   }
   if (e.target.id === "ammoTypeFilter") {
     updateAmmoOptions(); return true;

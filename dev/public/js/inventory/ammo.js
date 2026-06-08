@@ -141,23 +141,39 @@ export function removeContainer(instanceId) {
   triggerAutoRun();
 }
 
-/** Add ammo to a container's contents. */
+/** Resolve the numeric capacity for a container_id from data. */
+function getContainerCapacity(containerId) {
+  const record = data.ammo_containers.find((c) => c.container_id === containerId);
+  return record ? parseInt(record.container_capacity, 10) : Infinity;
+}
+
+/** Sum all quantities currently in a container's contents. */
+function usedCapacity(container) {
+  return container.contents.reduce((s, e) => s + e.quantity, 0);
+}
+
+/** Add ammo to a container's contents, clamped to remaining capacity. */
 export function addAmmoToContainer(instanceId, ammoId, quantity) {
   const container = findContainerByInstanceId(instanceId);
   if (!container || !ammoId || quantity <= 0) return;
 
+  const capacity  = getContainerCapacity(container.container_id);
+  const remaining = capacity - usedCapacity(container);
+  if (remaining <= 0) return;
+
+  const clamped  = Math.min(quantity, remaining);
   const existing = container.contents.find((e) => e.ammo_id === ammoId);
   if (existing) {
-    existing.quantity += quantity;
+    existing.quantity += clamped;
   } else {
-    container.contents.push({ ammo_id: ammoId, quantity });
+    container.contents.push({ ammo_id: ammoId, quantity: clamped });
   }
 
   renderLists(selected, data);
   triggerAutoRun();
 }
 
-/** Update the quantity of an ammo entry inside a container. */
+/** Update the quantity of an ammo entry inside a container, clamped to capacity. */
 export function updateContainerAmmoQuantity(instanceId, ammoId, quantity) {
   const container = findContainerByInstanceId(instanceId);
   if (!container) return;
@@ -165,8 +181,13 @@ export function updateContainerAmmoQuantity(instanceId, ammoId, quantity) {
   if (quantity <= 0) {
     container.contents = container.contents.filter((e) => e.ammo_id !== ammoId);
   } else {
+    const capacity    = getContainerCapacity(container.container_id);
+    const otherUsed   = container.contents
+      .filter((e) => e.ammo_id !== ammoId)
+      .reduce((s, e) => s + e.quantity, 0);
+    const maxAllowed  = capacity - otherUsed;
     const entry = container.contents.find((e) => e.ammo_id === ammoId);
-    if (entry) entry.quantity = quantity;
+    if (entry) entry.quantity = Math.min(quantity, Math.max(0, maxAllowed));
   }
 
   renderLists(selected, data);
@@ -228,6 +249,76 @@ export function removeLooseAmmo(ammoId, storedAt) {
   selected.loose_ammo = selected.loose_ammo.filter(
     (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
   );
+  renderLists(selected, data);
+  triggerAutoRun();
+}
+
+/**
+ * Move loose ammo from one location to another, merging if target already has
+ * an entry for the same ammo_id.
+ */
+export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
+  if (fromLocation === toLocation) return;
+
+  const source = selected.loose_ammo.find(
+    (a) => a.ammo_id === ammoId && a.storedAt === fromLocation,
+  );
+  if (!source) return;
+
+  const qty = source.quantity;
+  // Remove source
+  selected.loose_ammo = selected.loose_ammo.filter(
+    (a) => !(a.ammo_id === ammoId && a.storedAt === fromLocation),
+  );
+  // Merge into destination
+  const dest = selected.loose_ammo.find(
+    (a) => a.ammo_id === ammoId && a.storedAt === toLocation,
+  );
+  if (dest) {
+    dest.quantity += qty;
+  } else {
+    selected.loose_ammo.push({ ammo_id: ammoId, quantity: qty, storedAt: toLocation });
+  }
+
+  renderLists(selected, data);
+  triggerAutoRun();
+}
+
+/**
+ * Move an ammo entry from one container to another, clamped to destination
+ * capacity and merging if the destination already has that ammo_id.
+ */
+export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
+  if (fromInstanceId === toInstanceId) return;
+
+  const from = findContainerByInstanceId(fromInstanceId);
+  const to   = findContainerByInstanceId(toInstanceId);
+  if (!from || !to) return;
+
+  const sourceEntry = from.contents.find((e) => e.ammo_id === ammoId);
+  if (!sourceEntry) return;
+
+  const toCapacity  = getContainerCapacity(to.container_id);
+  const toUsed      = usedCapacity(to);
+  const remaining   = toCapacity - toUsed;
+  if (remaining <= 0) return;
+
+  const transferQty = Math.min(sourceEntry.quantity, remaining);
+
+  // Subtract from source
+  sourceEntry.quantity -= transferQty;
+  if (sourceEntry.quantity <= 0) {
+    from.contents = from.contents.filter((e) => e.ammo_id !== ammoId);
+  }
+
+  // Merge into destination
+  const destEntry = to.contents.find((e) => e.ammo_id === ammoId);
+  if (destEntry) {
+    destEntry.quantity += transferQty;
+  } else {
+    to.contents.push({ ammo_id: ammoId, quantity: transferQty });
+  }
+
   renderLists(selected, data);
   triggerAutoRun();
 }

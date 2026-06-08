@@ -2,6 +2,7 @@ import {
   addCustomItem,
   updateCustomItemQuantity,
   removeCustomItem,
+  moveCustomItem,
 } from "../inventory/customInventory.js";
 
 // ─── Click ────────────────────────────────────────────────────────────────────
@@ -20,8 +21,21 @@ export function handleCustomInventoryInput(e) {
   if (e.target.classList.contains("custom-item-qty")) {
     const customItemId = e.target.dataset.customItemId;
     if (!customItemId) return true;
+    if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     updateCustomItemQuantity(customItemId, isNaN(quantity) ? 0 : quantity);
+    return true;
+  }
+  return false;
+}
+
+// ─── Change ───────────────────────────────────────────────────────────────────
+
+export function handleCustomInventoryChange(e) {
+  if (e.target.classList.contains("custom-item-location-select")) {
+    const customItemId = e.target.dataset.customItemId;
+    const toLoc        = e.target.value;
+    moveCustomItem(customItemId, toLoc);
     return true;
   }
   return false;

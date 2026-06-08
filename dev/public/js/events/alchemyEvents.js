@@ -3,6 +3,7 @@ import {
   addAlchemy,
   updateAlchemyQuantity,
   removeAlchemy,
+  moveAlchemy,
   updateAlchemyTypeOptions,
   updateAlchemyNameOptions,
   updateAlchemyTierOptions,
@@ -30,6 +31,7 @@ export function handleAlchemyInput(e) {
   if (e.target.classList.contains("alchemy-qty")) {
     const consumableId = e.target.dataset.consumableId;
     const storedAt = e.target.dataset.storedAt;
+    if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     if (!consumableId || !storedAt) return true;
     updateAlchemyQuantity(
@@ -45,6 +47,13 @@ export function handleAlchemyInput(e) {
 // ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleAlchemyChange(e) {
+  if (e.target.classList.contains("alchemy-location-select")) {
+    const consumableId = e.target.dataset.consumableId;
+    const fromLoc      = e.target.dataset.storedAt;
+    const toLoc        = e.target.value;
+    moveAlchemy(consumableId, fromLoc, toLoc);
+    return true;
+  }
   if (e.target.id === "alchemyTypeFilter") {
     updateAlchemyTypeOptions();
     return true;

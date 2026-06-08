@@ -142,3 +142,32 @@ export function removeAlchemy(consumableId, storedAt) {
   renderLists(selected, data);
   triggerAutoRun();
 }
+
+/**
+ * Move an alchemy entry from one location to another, merging quantities
+ * if the destination already has the same consumable_id.
+ */
+export function moveAlchemy(consumableId, fromLocation, toLocation) {
+  if (fromLocation === toLocation) return;
+
+  const source = selected.alchemy.find(
+    (e) => e.consumable_id === consumableId && e.storedAt === fromLocation,
+  );
+  if (!source) return;
+
+  const qty = source.quantity;
+  selected.alchemy = selected.alchemy.filter(
+    (e) => !(e.consumable_id === consumableId && e.storedAt === fromLocation),
+  );
+  const dest = selected.alchemy.find(
+    (e) => e.consumable_id === consumableId && e.storedAt === toLocation,
+  );
+  if (dest) {
+    dest.quantity += qty;
+  } else {
+    selected.alchemy.push({ consumable_id: consumableId, quantity: qty, storedAt: toLocation });
+  }
+
+  renderLists(selected, data);
+  triggerAutoRun();
+}

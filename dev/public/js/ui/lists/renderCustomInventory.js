@@ -4,6 +4,23 @@ import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../shared/constants.js";
 import { detailRow } from "./renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function customItemLocationSelect(customItemId, currentLocation) {
+  const options = STORAGE_LOCATIONS
+    .map(
+      (loc) =>
+        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+    )
+    .join("");
+  return `<select
+    class="custom-item-location-select"
+    data-custom-item-id="${customItemId}"
+  >${options}</select>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN RENDER
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -43,17 +60,24 @@ function renderCustomInventorySection(location, entries, sheet) {
           <tr>
             <td>${entry.name}</td>
             <td class="col-num">
-              <input
-                type="number"
-                min="1"
-                class="custom-item-qty"
-                data-custom-item-id="${entry.custom_item_id}"
-                value="${entry.quantity}"
-                style="width:60px"
-              />
+              <div class="num-stepper">
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  class="custom-item-qty"
+                  data-custom-item-id="${entry.custom_item_id}"
+                  value="${entry.quantity}"
+                  style="width:50px"
+                />
+                <div class="stepper-btns">
+                  <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                  <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                </div>
+              </div>
             </td>
             <td class="col-num">${totalWeight}</td>
             <td class="col-action">
+              ${customItemLocationSelect(entry.custom_item_id, location)}
               <button
                 class="btn-remove remove-custom-item"
                 data-custom-item-id="${entry.custom_item_id}"

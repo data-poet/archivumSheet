@@ -28,6 +28,20 @@ function consumableDetailFields(record) {
   ];
 }
 
+function alchemyLocationSelect(consumableId, currentLocation) {
+  const options = STORAGE_LOCATIONS
+    .map(
+      (loc) =>
+        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+    )
+    .join("");
+  return `<select
+    class="alchemy-location-select"
+    data-consumable-id="${consumableId}"
+    data-stored-at="${currentLocation}"
+  >${options}</select>`;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN RENDER
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,13 +63,13 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
   let bodyRows = "";
 
   if (sectionEntries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
-        const record      = getConsumableRecord(entry.consumable_id, alchemyData);
-        const name        = record?.consumable_name ?? entry.consumable_id;
-        const tier        = record?.consumable_tier ?? "—";
+        const record         = getConsumableRecord(entry.consumable_id, alchemyData);
+        const name           = record?.consumable_name ?? entry.consumable_id;
+        const tier           = record?.consumable_tier ?? "—";
         const resolvedBucket = sheet?.inventory?.alchemy?.[location];
         const resolvedEntry  = resolvedBucket?.find(
           (e) => e.consumable_id === entry.consumable_id,
@@ -67,18 +81,25 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
             <td>${name}</td>
             <td class="col-num">${tier}</td>
             <td class="col-num">
-              <input
-                type="number"
-                min="1"
-                class="alchemy-qty"
-                data-consumable-id="${entry.consumable_id}"
-                data-stored-at="${location}"
-                value="${entry.quantity}"
-                style="width:60px"
-              />
+              <div class="num-stepper">
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  class="alchemy-qty"
+                  data-consumable-id="${entry.consumable_id}"
+                  data-stored-at="${location}"
+                  value="${entry.quantity}"
+                  style="width:50px"
+                />
+                <div class="stepper-btns">
+                  <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                  <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                </div>
+              </div>
             </td>
             <td class="col-num">${totalWeight}</td>
             <td class="col-action">
+              ${alchemyLocationSelect(entry.consumable_id, location)}
               <button
                 class="btn-remove remove-alchemy"
                 data-consumable-id="${entry.consumable_id}"

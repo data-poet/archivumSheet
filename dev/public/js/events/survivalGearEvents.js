@@ -3,6 +3,7 @@ import {
   addSurvivalGear,
   updateSurvivalGearQuantity,
   removeSurvivalGear,
+  moveSurvivalGear,
   updateSurvivalGearTypeOptions,
   updateSurvivalGearNameOptions,
 } from "../inventory/survivalGear.js";
@@ -28,6 +29,7 @@ export function handleSurvivalGearInput(e) {
   if (e.target.classList.contains("survival-gear-qty")) {
     const gearId = e.target.dataset.gearId;
     const storedAt = e.target.dataset.storedAt;
+    if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     if (!gearId || !storedAt) return true;
     updateSurvivalGearQuantity(
@@ -43,6 +45,13 @@ export function handleSurvivalGearInput(e) {
 // ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleSurvivalGearChange(e) {
+  if (e.target.classList.contains("survival-gear-location-select")) {
+    const gearId  = e.target.dataset.gearId;
+    const fromLoc = e.target.dataset.storedAt;
+    const toLoc   = e.target.value;
+    moveSurvivalGear(gearId, fromLoc, toLoc);
+    return true;
+  }
   if (e.target.id === "survivalGearTypeFilter") {
     updateSurvivalGearTypeOptions();
     return true;

@@ -62,3 +62,19 @@ export function removeCustomItem(customItemId) {
   renderLists(selected, state.data, state.sheet);
   triggerAutoRun();
 }
+
+/**
+ * Move a custom item to a different location.
+ * Custom items are unique per custom_item_id so no merging is needed.
+ */
+export function moveCustomItem(customItemId, toLocation) {
+  const entry = selected.customInventory.find(
+    (e) => e.custom_item_id === customItemId,
+  );
+  if (!entry || entry.storedAt === toLocation) return;
+
+  entry.storedAt = toLocation;
+
+  renderLists(selected, state.data, state.sheet);
+  triggerAutoRun();
+}

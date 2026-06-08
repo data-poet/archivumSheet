@@ -114,3 +114,32 @@ export function removeSurvivalGear(gearId, storedAt) {
   renderLists(selected, data);
   triggerAutoRun();
 }
+
+/**
+ * Move a survival gear entry from one location to another, merging quantities
+ * if the destination already has the same adventure_gear_id.
+ */
+export function moveSurvivalGear(gearId, fromLocation, toLocation) {
+  if (fromLocation === toLocation) return;
+
+  const source = selected.survivalGear.find(
+    (e) => e.adventure_gear_id === gearId && e.storedAt === fromLocation,
+  );
+  if (!source) return;
+
+  const qty = source.quantity;
+  selected.survivalGear = selected.survivalGear.filter(
+    (e) => !(e.adventure_gear_id === gearId && e.storedAt === fromLocation),
+  );
+  const dest = selected.survivalGear.find(
+    (e) => e.adventure_gear_id === gearId && e.storedAt === toLocation,
+  );
+  if (dest) {
+    dest.quantity += qty;
+  } else {
+    selected.survivalGear.push({ adventure_gear_id: gearId, quantity: qty, storedAt: toLocation });
+  }
+
+  renderLists(selected, data);
+  triggerAutoRun();
+}

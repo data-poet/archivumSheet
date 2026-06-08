@@ -40,6 +40,7 @@ import { loadSurvivalGear } from "../inventory/survivalGear.js";
 import {
   handleCustomInventoryClick,
   handleCustomInventoryInput,
+  handleCustomInventoryChange,
   handleAddCustomItem,
 } from "./customInventoryEvents.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
@@ -235,6 +236,7 @@ export function bindUI() {
     if (handleAmmoChange(e)) return;
     if (handleAlchemyChange(e)) return;
     if (handleSurvivalGearChange(e)) return;
+    if (handleCustomInventoryChange(e)) return;
   });
 
   // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────
