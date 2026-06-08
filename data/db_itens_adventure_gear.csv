@@ -1,0 +1,66 @@
+adventure_gear_id,adventure_gear_name,adventure_gear_type,adventure_gear_price,adventure_gear_weight,adventure_gear_observation
+GEAR-000,Ração,Alimentos,2,0.3,"
+- Uma refeição com carne seca e queijo."
+GEAR-001,Refeição Simples,Alimentos,4,0.6,"
+- Refeições simples encontradas numa taverna."
+GEAR-002,Água (1L),Alimentos,0,1,
+GEAR-003,Vinho (1L),Alimentos,2,1,
+GEAR-004,Aguardente (1L),Alimentos,1.5,1,
+GEAR-005,Kit Simples,Médico,100,1,"
+- Bônus de +1 na perícia PRIMEIROS SOCORROS."
+GEAR-006,Kit Sobrevivência,Médico,300,5,"
+- Bônus de +2 na perícia PRIMEIROS SOCORROS."
+GEAR-007,Maleta de Cirurgião,Médico,500,7.5,"
+- Bônus de +3 na perícia PRIMEIROS SOCORROS.
+- Redutor de -3 na perícia CIRURGIA na ausência deste."
+GEAR-008,Básico Pessoal,Exploração,10,1,"
+- Aquelas coisas que ninguém, a não ser um idiota, deixaria em casa (colher, garfo, xícara, perdeneira, toalha e etc).
+- Redutor de -2 em qualquer teste de Sobrevivência se estiver sem eles."
+GEAR-009,Pedra de Amolar,Exploração,5,0.5,"
+- Um armeiro pode achar uma depois de 1 hora de procura e um teste de habilidade."
+GEAR-010,Tocha,Exploração,3,0.5,"
+- Queimará durante 1h."
+GEAR-011,Lampião,Exploração,50,1,
+GEAR-012,Combustível para Lampião,Exploração,5,0.5,"
+- 0.5L dura 24 h."
+GEAR-013,Barraca (1 Pessoa),Acampamento,50,2.5,"
+- Inclui cordas, não precisa estacas."
+GEAR-014,Barraca (2 Pessoas),Acampamento,80,6,"
+- Inclui cordas, é necessário levar ou improvisar um mastro de 2 m."
+GEAR-015,Barraca (4 Pessoas),Acampamento,150,14,"
+- Inclui cordas, é necessário levar ou improvisar 2 mastros de 2 m."
+GEAR-016,Barraca (8 Pessoas),Acampamento,180,27,"
+- Inclui cordas, é necessário levar ou improvisar 4 mastros de 2 m."
+GEAR-017,Barraca (20 Pessoas),Acampamento,300,45,"
+- Inclui cordas, é necessário levar ou improvisar 10 mastros de 2 m."
+GEAR-018,Vara (2m),Acampamento,10,1.5,"
+- Para armar barracas ou cutucar coisas duvidosas."
+GEAR-019,Manta (Lâ Grossa),Acampamento,20,2.5,
+GEAR-020,Saco de Dormir,Acampamento,100,7,- Para clima muito frio.
+GEAR-021,Rede de Pesca,Acampamento,30,5,
+GEAR-022,Moringa Pequena (1L),Acampamento,3,1,
+GEAR-023,Moringa Grande (5L),Acampamento,5,2,
+GEAR-024,Odre Pequeno (5L),Acampamento,10,0.5,
+GEAR-025,Odre Grande (25L),Acampamento,30,1,
+GEAR-026,"Sacola Pequena (Até 1,5 kg)",Carga,10,0.25,
+GEAR-027,Sacola Grande (Até 5 kg),Carga,30,0.5,
+GEAR-028,Mochila Pequena (Até 20kg),Carga,80,1.5,
+GEAR-029,Mochila Grande (Até 20kg),Carga,120,5,
+GEAR-030,Cordão 3/16 pol (10m),Escalada,5,0.25,"
+- Suporta até 40kg."
+GEAR-031,Corda 3/8 pol (10m),Escalada,15,0.8,"
+- Suporta até 135kg."
+GEAR-032,Corda 3/4 pol (10m),Escalada,25,2.5,"
+- Suporta até 450kg."
+GEAR-033,"Cabo 1,5 pol (10m)",Escalada,100,8,"
+- Suporta até 1700kg."
+GEAR-034,"Espeto de Ferro (""Piton"")",Escalada,3,0.25,
+GEAR-035,Arpéu,Escalada,20,1,"
+- Suporta até 150kg."
+GEAR-036,Gazuas (Qualidade Comum),Infiltração,30,0.05,
+GEAR-037,Gazuas (Boa Qualidade),Infiltração,200,0.05,
+GEAR-038,Picareta,Ferramenta,15,4,
+GEAR-039,Pá,Ferramenta,30,3,
+GEAR-040,Pé-de-Cabra,Ferramenta,10,5,
+GEAR-041,Martelo,Ferramenta,12,2,
+GEAR-042,Machadinha,Ferramenta,20,1,
