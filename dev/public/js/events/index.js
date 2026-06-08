@@ -1,42 +1,17 @@
 import { on } from "../shared/dom.js";
 import { runEngine } from "../engine/index.js";
+import { addAdv, filterAdvByType } from "../traits/advantages.js";
+import { addDis, filterDisByType } from "../traits/disadvantages.js";
+import { addSkill, filterSkillsByCategory } from "../traits/skills.js";
+import { addSpell, filterSpellsBySchool } from "../traits/spells.js";
 import {
-  loadAdvantages,
-  addAdv,
-  filterAdvByType,
-} from "../traits/advantages.js";
-import {
-  loadDisadvantages,
-  addDis,
-  filterDisByType,
-} from "../traits/disadvantages.js";
-import {
-  loadSkills,
-  addSkill,
-  filterSkillsByCategory,
-} from "../traits/skills.js";
-import {
-  loadSpells,
-  addSpell,
-  filterSpellsBySchool,
-} from "../traits/spells.js";
-import {
-  loadArmors,
   updateArmorNameOptions,
   updateArmorTierOptions,
 } from "../inventory/armor.js";
-import { loadShields, updateShieldTierOptions } from "../inventory/shield.js";
-import {
-  loadMeleeWeapons,
-  updateMeleeTierOptions,
-} from "../inventory/melee.js";
-import {
-  loadRangedWeapons,
-  updateRangedTierOptions,
-} from "../inventory/ranged.js";
-import { loadAmmo, updateLooseAmmoOptions } from "../inventory/ammo.js";
-import { loadAlchemy } from "../inventory/alchemy.js";
-import { loadSurvivalGear } from "../inventory/survivalGear.js";
+import { updateShieldTierOptions } from "../inventory/shield.js";
+import { updateMeleeTierOptions } from "../inventory/melee.js";
+import { updateRangedTierOptions } from "../inventory/ranged.js";
+import { updateLooseAmmoOptions } from "../inventory/ammo.js";
 import {
   handleCustomInventoryClick,
   handleCustomInventoryInput,
@@ -45,7 +20,6 @@ import {
 } from "./customInventoryEvents.js";
 import { exportSheet, importSheet } from "../store/persistence.js";
 import {
-  loadRaces,
   filterSubRacesByName,
   selectSubRace,
 } from "../character/races.js";
@@ -108,64 +82,52 @@ import {
 
 export function bindUI() {
   // ── Character Info & Race ────────────────────────────────────────────────
-  on("loadRacesBtn", "click", loadRaces);
   on("raceNameSelect", "change", filterSubRacesByName);
   on("raceSubSelect", "change", selectSubRace);
 
   // ── Traits ────────────────────────────────────────────────────────────────
-  on("loadAdvantagesBtn", "click", loadAdvantages);
   on("advTypeSelect", "change", filterAdvByType);
   on("advSelect", "change", () => {}); // keeps select reactive
   on("addAdvBtn", "click", addAdv);
 
-  on("loadDisadvantagesBtn", "click", loadDisadvantages);
   on("disTypeSelect", "change", filterDisByType);
   on("disSelect", "change", () => {}); // keeps select reactive
   on("addDisBtn", "click", addDis);
 
-  on("loadSkillsBtn", "click", loadSkills);
   on("skillCategorySelect", "change", filterSkillsByCategory);
   on("addSkillBtn", "click", addSkill);
 
-  on("loadSpellsBtn", "click", loadSpells);
   on("spellSchoolSelect", "change", filterSpellsBySchool);
   on("addSpellBtn", "click", addSpell);
 
   // ── Armor ─────────────────────────────────────────────────────────────────
-  on("loadArmorsBtn", "click", loadArmors);
   on("armorSlotSelect", "change", updateArmorNameOptions);
   on("armorNameSelect", "change", updateArmorTierOptions);
   on("addArmorBtn", "click", handleAddArmor);
 
   // ── Shields ───────────────────────────────────────────────────────────────
-  on("loadShieldsBtn", "click", loadShields);
   on("shieldNameSelect", "change", updateShieldTierOptions);
   on("addShieldBtn", "click", handleAddShield);
 
   // ── Melee ─────────────────────────────────────────────────────────────────
-  on("loadMeleeWeaponsBtn", "click", loadMeleeWeapons);
   on("meleeNameSelect", "change", updateMeleeTierOptions);
   on("addMeleeBtn", "click", handleAddMelee);
 
   // ── Ranged ─────────────────────────────────────────────────────────────────
-  on("loadRangedWeaponsBtn", "click", loadRangedWeapons);
   on("rangedNameSelect", "change", updateRangedTierOptions);
   on("addRangedBtn", "click", handleAddRanged);
 
   // ── Ammo ──────────────────────────────────────────────────────────────────
-  on("loadAmmoBtn", "click", loadAmmo);
   on("looseAmmoTypeFilter", "change", updateLooseAmmoOptions);
   on("addAmmoContainerBtn", "click", handleAddContainer);
   on("addLooseAmmoBtn", "click", handleAddLooseAmmo);
 
   // ── Alchemy ───────────────────────────────────────────────────────────────
-  on("loadAlchemyBtn", "click", loadAlchemy);
   on("alchemyTypeFilter", "change", updateAlchemyTypeOptions);
   on("alchemyNameSelect", "change", updateAlchemyTierOptions);
   on("addAlchemyBtn", "click", handleAddAlchemy);
 
   // ── Survival Gear ─────────────────────────────────────────────────────────
-  on("loadSurvivalGearBtn", "click", loadSurvivalGear);
   on("survivalGearTypeFilter", "change", handleSurvivalGearChange);
   on("addSurvivalGearBtn", "click", handleAddSurvivalGear);
 

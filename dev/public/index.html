@@ -238,7 +238,6 @@
               <div class="character-race">
                 <h3 id="sec-race"></h3>
                 <div class="race-selects">
-                  <button id="loadRacesBtn"></button>
                   <select id="raceNameSelect" style="display: none">
                     <option value="" id="opt-race-none"></option>
                   </select>
@@ -488,7 +487,6 @@
               <details>
                 <summary id="sec-advantages"></summary>
                 <div class="controls-row">
-                  <button id="loadAdvantagesBtn"></button>
                   <select id="advTypeSelect">
                     <option value="" id="opt-adv-type"></option>
                   </select>
@@ -504,7 +502,6 @@
               <details>
                 <summary id="sec-disadvantages"></summary>
                 <div class="controls-row">
-                  <button id="loadDisadvantagesBtn"></button>
                   <select id="disTypeSelect">
                     <option value="" id="opt-dis-type"></option>
                   </select>
@@ -526,7 +523,6 @@
           <details>
             <summary id="sec-skills"></summary>
             <div class="controls-row">
-              <button id="loadSkillsBtn"></button>
               <select id="skillCategorySelect">
                 <option value="" id="opt-skill-cat"></option>
               </select>
@@ -546,7 +542,6 @@
           <details>
             <summary id="sec-magic"></summary>
             <div class="controls-row">
-              <button id="loadSpellsBtn"></button>
               <select id="spellSchoolSelect">
                 <option value="" id="opt-school"></option>
               </select>
@@ -571,7 +566,6 @@
               <details>
                 <summary id="sec-armor"></summary>
                 <div class="controls-row">
-                  <button id="loadArmorsBtn"></button>
                   <select id="armorSlotSelect"></select>
                   <select id="armorNameSelect"></select>
                   <select id="armorTierSelect"></select>
@@ -601,7 +595,6 @@
               <details>
                 <summary id="sec-shields"></summary>
                 <div class="controls-row">
-                  <button id="loadShieldsBtn"></button>
                   <select id="shieldNameSelect"></select>
                   <select id="shieldTierSelect"></select>
                   <select id="shieldMaterialSelect"></select>
@@ -630,7 +623,6 @@
               <details>
                 <summary id="sec-melee"></summary>
                 <div class="controls-row">
-                  <button id="loadMeleeWeaponsBtn"></button>
                   <select id="meleeNameSelect"></select>
                   <select id="meleeTierSelect"></select>
                   <select id="meleeMaterialSelect"></select>
@@ -660,7 +652,6 @@
               <details>
                 <summary id="sec-ranged"></summary>
                 <div class="controls-row">
-                  <button id="loadRangedWeaponsBtn"></button>
                   <select id="rangedNameSelect"></select>
                   <select id="rangedTierSelect"></select>
                   <select id="rangedMaterialSelect"></select>
@@ -695,7 +686,6 @@
                   <details>
                     <summary id="sec-ammo-containers"></summary>
                     <div class="controls-row">
-                      <button id="loadAmmoBtn"></button>
                       <select id="ammoContainerSelect"></select>
                       <select id="ammoContainerStorage">
                         <option
@@ -759,7 +749,6 @@
               <details>
                 <summary id="sec-alchemy"></summary>
                 <div class="controls-row">
-                  <button id="loadAlchemyBtn"></button>
                   <select id="alchemyTypeFilter"></select>
                   <select id="alchemyNameSelect"></select>
                   <select id="alchemyTierSelect"></select>
@@ -786,7 +775,6 @@
               <details>
                 <summary id="sec-survival-gear"></summary>
                 <div class="controls-row">
-                  <button id="loadSurvivalGearBtn"></button>
                   <select id="survivalGearTypeFilter"></select>
                   <select id="survivalGearNameSelect"></select>
                   <input
@@ -1069,8 +1057,6 @@
         setText("opt-sex-f", L.character.sexFemale);
 
         // Race
-        const loadRacesBtn = document.getElementById("loadRacesBtn");
-        if (loadRacesBtn) loadRacesBtn.textContent = L.character.loadRaces;
         setText("opt-race-none", L.character.selectRace);
         setText("opt-subrace-none", L.character.selectSubRace);
 
@@ -1108,36 +1094,25 @@
           const b = document.getElementById(id);
           if (b) b.textContent = text;
         };
-        btn("loadAdvantagesBtn", L.traits.loadAdvantages);
         btn("addAdvBtn", L.traits.addAdvantage);
-        btn("loadDisadvantagesBtn", L.traits.loadDisadvantages);
         btn("addDisBtn", L.traits.addDisadvantage);
-        btn("loadSkillsBtn", L.traits.loadSkills);
         btn("addSkillBtn", L.traits.addSkill);
         setText("opt-adv-type", L.traits.typeFilter);
         setText("opt-dis-type", L.traits.typeFilter);
         setText("opt-skill-cat", L.traits.categoryFilter);
 
         // Magic
-        btn("loadSpellsBtn", L.magic.loadSpells);
         btn("addSpellBtn", L.magic.addSpell);
         setText("opt-school", L.magic.schoolFilter);
 
         // Equipment buttons
-        btn("loadArmorsBtn", L.armor.loadArmors);
         btn("addArmorBtn", L.armor.addArmor);
-        btn("loadShieldsBtn", L.shield.loadShields);
         btn("addShieldBtn", L.shield.addShield);
-        btn("loadMeleeWeaponsBtn", L.melee.loadMelee);
         btn("addMeleeBtn", L.melee.addMelee);
-        btn("loadRangedWeaponsBtn", L.ranged.loadRanged);
         btn("addRangedBtn", L.ranged.addRanged);
-        btn("loadAmmoBtn", L.ammo.loadAmmo);
         btn("addAmmoContainerBtn", L.ammo.addContainer);
         btn("addLooseAmmoBtn", L.ammo.addLooseAmmo);
-        btn("loadAlchemyBtn", L.alchemy.loadAlchemy);
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
-        btn("loadSurvivalGearBtn", L.survivalGear.loadSurvivalGear);
         btn("addSurvivalGearBtn", L.survivalGear.addSurvivalGear);
         btn("addCustomItemBtn", L.customInventory.addItem);
         setAttr(
