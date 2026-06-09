@@ -7,25 +7,12 @@ function buildCharacterSecondary({
   skills = {},
   carry_weight = null,
   effects = {},
+  advantages = {},
 }) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
    * 1. SECONDARY ATTRIBUTES
    * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Derived stats:
-   *
-   * - HP
-   * - FP
-   * - Dodge
-   * - Move
-   * - Speed
-   * - Base damage
-   *
-   * These may be affected by:
-   *
-   * - trait effects
-   * - encumbrance
    */
 
   const secondaryResult = buildSecondaryAttributes(
@@ -46,6 +33,7 @@ function buildCharacterSecondary({
    *   skill_id: {
    *     base_value,
    *     modifier,
+   *     isTrainedWithMaster,
    *   }
    * }
    */
@@ -54,19 +42,16 @@ function buildCharacterSecondary({
     ? Object.fromEntries(
         skills.map((skill) => [
           skill.skill_id,
-
           {
-            base_value: Number(skill.base ?? 0),
-
+            base_value: Number(skill.base_value ?? skill.base ?? 0),
             modifier: Number(skill.modifier ?? 0),
+            isTrainedWithMaster: Boolean(skill.isTrainedWithMaster ?? false),
           },
         ]),
       )
     : skills;
 
-  const skillsResult = buildSkills(normalizedSkills, {
-    primary_attributes,
-  });
+  const skillsResult = buildSkills(normalizedSkills, { primary_attributes }, advantages);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────

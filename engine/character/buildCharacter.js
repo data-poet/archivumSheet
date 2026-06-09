@@ -73,6 +73,8 @@ function buildCharacter({
     carry_weight,
 
     effects,
+
+    advantages: primary.advantages,
   });
 
   /**
