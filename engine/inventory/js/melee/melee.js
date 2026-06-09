@@ -83,6 +83,8 @@ function getMaterialDB() {
       material_name: row.material_name,
       material_type: row.material_type,
       material_tier: row.material_tier,
+      material_bal_modifier: Number(row.material_bal_modifier || 0),
+      material_gdp_modifier: Number(row.material_gdp_modifier || 0),
       material_dr_modifier: Number(row.material_dr_modifier || 0),
       material_atk_effect: row.material_atk_effect || null,
       material_weight_modifier: Number(row.material_weight_modifier || 1),

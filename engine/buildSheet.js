@@ -3,6 +3,7 @@ const { buildInventory } = require("./inventory/buildInventory");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
 const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
+const { computeWeaponDamage } = require("./inventory/js/shared/weaponDamage");
 
 function sumObjectValues(obj = {}) {
   return Object.values(obj).reduce(
@@ -92,18 +93,63 @@ function buildSheet({
    * field computed by computeShieldBlock.
    */
 
-  const _dxValue   = characterData.primary_attributes.DX.value;
-  const _skills    = characterData.skills || {};
+  const _dxValue = characterData.primary_attributes.DX.value;
+  const _skills = characterData.skills || {};
   const _shieldInv = inventoryResult.inventory.shield;
 
   function _attachBlock(shieldObj) {
     if (!shieldObj) return;
-    shieldObj.block = computeShieldBlock(shieldObj.shield_id, _skills, _dxValue);
+    shieldObj.block = computeShieldBlock(
+      shieldObj.shield_id,
+      _skills,
+      _dxValue,
+    );
   }
 
   _attachBlock(_shieldInv.equipped);
   for (const bucket of ["backpack", "stash", "camp"]) {
     (_shieldInv[bucket] || []).forEach(_attachBlock);
+  }
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 3.6 WEAPON DAMAGE COMPUTATION
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Depends on the final character base_damage, so it is computed here after
+   * both the character and inventory layers are fully resolved.
+   *
+   * Each resolved melee and ranged instance (all buckets) receives
+   * weapon_gdp_damage and/or weapon_bal_damage fields, depending on the
+   * weapon's damage type:
+   *   - "Perfuração" → weapon_gdp_damage
+   *   - "Contusão" or "Corte" → weapon_bal_damage
+   * Both can appear simultaneously (e.g. "Corte, Perfuração").
+   */
+
+  const _baseDamage = characterData.base_damage;
+  const _meleeInv = inventoryResult.inventory.melee;
+  const _rangedInv = inventoryResult.inventory.ranged;
+
+  function _attachWeaponDamage(weapon) {
+    if (!weapon) return;
+    const damages = computeWeaponDamage(
+      weapon.weapon_damage_type,
+      weapon.weapon_final_gdp_modifier,
+      weapon.weapon_final_bal_modifier ?? null,
+      _baseDamage,
+    );
+    if (damages.weapon_gdp_damage !== undefined) {
+      weapon.weapon_gdp_damage = damages.weapon_gdp_damage;
+    }
+    if (damages.weapon_bal_damage !== undefined) {
+      weapon.weapon_bal_damage = damages.weapon_bal_damage;
+    }
+  }
+
+  for (const bucket of ["equipped", "backpack", "stash", "camp"]) {
+    (_meleeInv[bucket] || []).forEach(_attachWeaponDamage);
+    (_rangedInv[bucket] || []).forEach(_attachWeaponDamage);
   }
 
   /**
