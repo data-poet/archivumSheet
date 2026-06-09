@@ -163,6 +163,10 @@ export const LABELS = {
     duration: "Duração",
     scaling: "Escalonamento",
     observation: "Observação",
+    parry: "Aparar",
+    actions: "Ações",
+    trainedWithMaster: "Treinado com Mestre",
+    preDef: "Pré-Definido como",
   },
 
   // ── Magic ─────────────────────────────────────────────────────────────────

@@ -102,8 +102,9 @@ export async function runEngine() {
 
         skills: Object.entries(selected.skills).map(([skill_id, data]) => ({
           skill_id,
-          base: Number(data.base) || 0,
+          base_value: Number(data.base_value ?? data.base) || 0,
           modifier: Number(data.modifier) || 0,
+          isTrainedWithMaster: Boolean(data.isTrainedWithMaster ?? false),
         })),
 
         spells: selected.spells,

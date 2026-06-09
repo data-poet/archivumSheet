@@ -1,9 +1,8 @@
 import {
   renderAdvantages,
   renderDisadvantages,
-  renderSkills,
-  renderSpells,
 } from "./renderTraits.js";
+import { renderSkills, renderSpells } from "./renderSkills.js";
 import { renderArmorSlots, renderStoredArmors } from "./renderArmor.js";
 import { renderEquippedShield, renderStoredShields } from "./renderShield.js";
 import { renderEquippedMelee, renderStoredMelee } from "./renderMelee.js";
@@ -23,7 +22,7 @@ import { renderCustomInventory } from "./renderCustomInventory.js";
 export function renderLists(selected, data, sheet) {
   renderAdvantages(selected, data, sheet);
   renderDisadvantages(selected, data, sheet);
-  renderSkills(selected, data);
+  renderSkills(selected, data, sheet);
   renderSpells(selected, data);
   renderArmorSlots(selected, data, sheet);
   renderStoredArmors(selected, data, sheet);

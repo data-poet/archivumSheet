@@ -54,7 +54,7 @@ export function addSkill() {
   if (!id) return;
 
   if (!selected.skills[id]) {
-    selected.skills[id] = { base: 10, modifier: 0 };
+    selected.skills[id] = { base_value: 10, modifier: 0, isTrainedWithMaster: false };
   }
 
   renderLists(selected, data);

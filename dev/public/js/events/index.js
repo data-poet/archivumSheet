@@ -30,6 +30,11 @@ import {
 
 import { handleTraitClick, handleTraitInput } from "./traitEvents.js";
 import {
+  handleSkillClick,
+  handleSkillChange,
+  handleSkillInput,
+} from "./skillEvents.js";
+import {
   handleArmorClick,
   handleArmorInput,
   handleArmorChange,
@@ -164,6 +169,7 @@ export function bindUI() {
   // ── Global delegated click ────────────────────────────────────────────────
   document.addEventListener("click", (e) => {
     if (handleTraitClick(e)) return;
+    if (handleSkillClick(e)) return;
     if (handleArmorClick(e)) return;
     if (handleShieldClick(e)) return;
     if (handleMeleeClick(e)) return;
@@ -178,6 +184,7 @@ export function bindUI() {
   document.addEventListener("input", (e) => {
     if (handleCharacterInput(e)) return;
     if (handleTraitInput(e)) return;
+    if (handleSkillInput(e)) return;
     if (handleArmorInput(e)) return;
     if (handleShieldInput(e)) return;
     if (handleMeleeInput(e)) return;
@@ -190,6 +197,7 @@ export function bindUI() {
 
   // ── Global delegated change ───────────────────────────────────────────────
   document.addEventListener("change", (e) => {
+    if (handleSkillChange(e)) return;
     if (handleCharacterChange(e)) return;
     if (handleArmorChange(e)) return;
     if (handleShieldChange(e)) return;
