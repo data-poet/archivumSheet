@@ -2,6 +2,7 @@ const { buildCharacter } = require("./character/buildCharacter");
 const { buildInventory } = require("./inventory/buildInventory");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
+const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
 
 function sumObjectValues(obj = {}) {
   return Object.values(obj).reduce(
@@ -78,6 +79,32 @@ function buildSheet({
 
   const characterData = characterResult.character;
   const iq = characterData.primary_attributes.IQ.value;
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 3.5 SHIELD BLOCK COMPUTATION
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Block depends on the final character skills and DX, so it is computed here
+   * after both the character and inventory layers are fully resolved.
+   *
+   * Each resolved shield (equipped + all storage buckets) receives a `block`
+   * field computed by computeShieldBlock.
+   */
+
+  const _dxValue   = characterData.primary_attributes.DX.value;
+  const _skills    = characterData.skills || {};
+  const _shieldInv = inventoryResult.inventory.shield;
+
+  function _attachBlock(shieldObj) {
+    if (!shieldObj) return;
+    shieldObj.block = computeShieldBlock(shieldObj.shield_id, _skills, _dxValue);
+  }
+
+  _attachBlock(_shieldInv.equipped);
+  for (const bucket of ["backpack", "stash", "camp"]) {
+    (_shieldInv[bucket] || []).forEach(_attachBlock);
+  }
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
