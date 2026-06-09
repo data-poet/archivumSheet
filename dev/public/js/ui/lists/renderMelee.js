@@ -57,6 +57,12 @@ function meleeDetailFields(resolved, weaponData) {
     { label: t("melee.reach"), value: resolved?.weapon_reach ?? reach },
     { label: t("melee.minST"), value: src.weapon_min_strength ?? "—" },
     { label: t("melee.damageType"), value: src.weapon_damage_type ?? "—" },
+    ...(resolved?.weapon_gdp_damage != null
+      ? [{ label: t("melee.gdpDmg"), value: resolved.weapon_gdp_damage }]
+      : []),
+    ...(resolved?.weapon_bal_damage != null
+      ? [{ label: t("melee.balDmg"), value: resolved.weapon_bal_damage }]
+      : []),
     {
       label: t("common.description"),
       value: formatRichText(weaponData?.weapon_description),

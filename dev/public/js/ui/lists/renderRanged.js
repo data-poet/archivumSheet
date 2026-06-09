@@ -49,6 +49,9 @@ function rangedDetailFields(resolved, weaponData) {
     },
     { label: t("ranged.minST"), value: src.weapon_min_strength ?? "—" },
     { label: t("ranged.damageType"), value: src.weapon_damage_type ?? "—" },
+    ...(resolved?.weapon_gdp_damage != null
+      ? [{ label: t("ranged.gdpDmg"), value: resolved.weapon_gdp_damage }]
+      : []),
     { label: t("ranged.tr"), value: src.weapon_tr ?? "—" },
     { label: t("ranged.prec"), value: src.weapon_prec ?? "—" },
     {
