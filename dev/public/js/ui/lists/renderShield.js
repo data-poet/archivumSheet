@@ -34,6 +34,7 @@ function shieldDetailFields(resolved, shieldData) {
   const src = resolved ?? shieldData;
   if (!src) return [];
   return [
+    { label: t("shield.block"), value: resolved?.block ?? "—" },
     { label: t("common.type"), value: src.shield_type ?? "—" },
     { label: t("shield.gdpMod"), value: shieldData?.shield_gdp_modifier ?? "—" },
     {

@@ -219,6 +219,7 @@ export const LABELS = {
     dr: "RD",
     hp: "PV",
     gdpMod: "Mod. GDP",
+    block: "Bloqueio",
   },
 
   // ── Equipment: Melee ──────────────────────────────────────────────────────
