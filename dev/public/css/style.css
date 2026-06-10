@@ -19,13 +19,21 @@
   --color-remove: #dc2626;
   --color-remove-hover: #b91c1c;
 
-  /* Section accent colors */
-  --accent-attr: #ff5555;
-  --accent-trait: #16a34a;
-  --accent-equip: #8be9fd;
-  --accent-magic: #bd93f9;
-  --accent-inv: #ff79c6;
-  --accent-resume: #ff5555;
+  /* Section accent colors — one per section, readable on light + dark */
+  --accent-character: #c62828;
+  --accent-attributes: #d96b1d;
+  --accent-traits: #b8860b;
+  --accent-skills: #4f8a2f;
+  --accent-magic: #006b42;
+  --accent-equipment: #2563eb;
+  --accent-inventory: #5b21b6;
+
+  /* Legacy aliases kept so existing non-tab CSS still resolves */
+  --accent-attr: var(--accent-attributes);
+  --accent-trait: var(--accent-traits);
+  --accent-equip: var(--accent-equipment);
+  --accent-inv: var(--accent-inventory);
+  --accent-resume: var(--accent-character);
 
   /* Spacing & shape */
   --radius: 6px;
@@ -44,10 +52,10 @@
   /* Typography — fluid scale */
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
-  --fs-base: clamp(11px, 2.5vw, 13px);
-  --fs-sm: clamp(10px, 2.2vw, 12px);
-  --fs-xs: clamp(9px, 2vw, 11px);
-  --fs-xxs: clamp(8px, 1.8vw, 10px);
+  --fs-base: clamp(10px, 2.3vw, 12px);
+  --fs-sm: clamp(9px, 2vw, 11px);
+  --fs-xs: clamp(8px, 1.8vw, 10px);
+  --fs-xxs: clamp(7px, 1.6vw, 9px);
 
   /* Detail row (unified) */
   --detail-bg: #f4f4fb;
@@ -182,7 +190,7 @@ body {
   gap: 2px;
   text-decoration: none;
   color: var(--color-text-muted);
-  font-size: 9px;
+  font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -195,12 +203,35 @@ body {
 }
 
 .bottomnav-link.is-active {
-  color: var(--accent-attr);
-  border-top-color: var(--accent-attr);
+  color: var(--_section-accent, var(--accent-character));
+  border-top-color: var(--_section-accent, var(--accent-character));
+}
+
+/* Per-section accent via data-section on the active bottom nav link */
+.bottomnav-link[data-section="section-character"] {
+  --_section-accent: var(--accent-character);
+}
+.bottomnav-link[data-section="section-attributes"] {
+  --_section-accent: var(--accent-attributes);
+}
+.bottomnav-link[data-section="section-traits"] {
+  --_section-accent: var(--accent-traits);
+}
+.bottomnav-link[data-section="section-skills"] {
+  --_section-accent: var(--accent-skills);
+}
+.bottomnav-link[data-section="section-magic"] {
+  --_section-accent: var(--accent-magic);
+}
+.bottomnav-link[data-section="section-equipment"] {
+  --_section-accent: var(--accent-equipment);
+}
+.bottomnav-link[data-section="section-inventory"] {
+  --_section-accent: var(--accent-inventory);
 }
 
 .bottomnav-icon {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
 }
 
@@ -310,9 +341,36 @@ body {
   }
 
   .sidebar-link.is-active {
-    color: var(--accent-attr);
-    border-left-color: var(--accent-attr);
-    background: color-mix(in srgb, var(--accent-attr) 8%, transparent);
+    color: var(--_section-accent, var(--accent-character));
+    border-left-color: var(--_section-accent, var(--accent-character));
+    background: color-mix(
+      in srgb,
+      var(--_section-accent, var(--accent-character)) 8%,
+      transparent
+    );
+  }
+
+  /* Per-section accent via data-section on the active link */
+  .sidebar-link[data-section="section-character"] {
+    --_section-accent: var(--accent-character);
+  }
+  .sidebar-link[data-section="section-attributes"] {
+    --_section-accent: var(--accent-attributes);
+  }
+  .sidebar-link[data-section="section-traits"] {
+    --_section-accent: var(--accent-traits);
+  }
+  .sidebar-link[data-section="section-skills"] {
+    --_section-accent: var(--accent-skills);
+  }
+  .sidebar-link[data-section="section-magic"] {
+    --_section-accent: var(--accent-magic);
+  }
+  .sidebar-link[data-section="section-equipment"] {
+    --_section-accent: var(--accent-equipment);
+  }
+  .sidebar-link[data-section="section-inventory"] {
+    --_section-accent: var(--accent-inventory);
   }
 
   .sidebar-icon {
@@ -1209,6 +1267,180 @@ tr.trait-innate td {
 
 .hp-modifier .num-stepper input {
   width: 52px;
+}
+
+/* Wider inputs for player name and character name */
+#playerNameInput,
+#characterNameInput {
+  min-width: clamp(160px, 40vw, 280px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAB STRIP — horizontal scrollable tabs inside each section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+ * .tab-strip sits at the top of a .box, replacing the old <details><summary>.
+ * It scrolls horizontally on mobile so any number of tabs fit without wrapping.
+ */
+.tab-strip {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.tab-strip::-webkit-scrollbar {
+  display: none; /* Safari / Chrome */
+}
+
+/* Tab buttons */
+.tab-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: clamp(8px, 2.5vw, 12px) clamp(12px, 3vw, 20px);
+  min-height: 44px; /* tap target */
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.tab-btn:active {
+  transform: none; /* override global button:active scale */
+}
+
+/* Collapse chevron — pinned to the right end of the strip */
+.tab-strip-collapse {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0 clamp(10px, 3vw, 16px);
+  min-height: 44px; /* tap target */
+  min-width: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.15s,
+    transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-strip-collapse:hover {
+  color: var(--color-text);
+}
+
+/* Chevron rotates 90° when expanded */
+.tab-strip-collapse[aria-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+/* ── Section collapse — hides all tab panels ─────────────────────────────── */
+.box.is-collapsed .tab-panel {
+  display: none !important;
+}
+
+/* Collapsed box: strip still visible but bottom border softened */
+.box.is-collapsed .tab-strip {
+  border-bottom-color: transparent;
+}
+
+/* Active state — unique accent per section */
+#section-character .tab-btn.is-active {
+  color: var(--accent-character);
+  border-bottom-color: var(--accent-character);
+}
+#section-attributes .tab-btn.is-active {
+  color: var(--accent-attributes);
+  border-bottom-color: var(--accent-attributes);
+}
+#section-traits .tab-btn.is-active {
+  color: var(--accent-traits);
+  border-bottom-color: var(--accent-traits);
+}
+#section-skills .tab-btn.is-active {
+  color: var(--accent-skills);
+  border-bottom-color: var(--accent-skills);
+}
+#section-magic .tab-btn.is-active {
+  color: var(--accent-magic);
+  border-bottom-color: var(--accent-magic);
+}
+#section-equipment .tab-btn.is-active {
+  color: var(--accent-equipment);
+  border-bottom-color: var(--accent-equipment);
+}
+#section-inventory .tab-btn.is-active {
+  color: var(--accent-inventory);
+  border-bottom-color: var(--accent-inventory);
+}
+
+/* Tab panels */
+.tab-panel {
+  display: none;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+/* Section accent top-border on the box — unique per section */
+#section-character .box {
+  border-top: 3px solid var(--accent-character);
+}
+#section-attributes .box {
+  border-top: 3px solid var(--accent-attributes);
+}
+#section-traits .box {
+  border-top: 3px solid var(--accent-traits);
+}
+#section-skills .box {
+  border-top: 3px solid var(--accent-skills);
+}
+#section-magic .box {
+  border-top: 3px solid var(--accent-magic);
+}
+#section-equipment .box {
+  border-top: 3px solid var(--accent-equipment);
+}
+#section-inventory .box {
+  border-top: 3px solid var(--accent-inventory);
+}
+
+/* Nested <details> inside tab panels keep accent styling */
+#section-attributes .tab-panel details summary {
+  border-left: 3px solid color-mix(in srgb, var(--accent-attr) 60%, transparent);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

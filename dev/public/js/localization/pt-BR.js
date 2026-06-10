@@ -20,11 +20,47 @@ export const LABELS = {
   // ── Navigation ────────────────────────────────────────────────────────────
   nav: {
     character: "Personagem",
+    attributes: "Atributos",
     traits: "Traços",
     skills: "Perícias",
     magic: "Magia",
     equipment: "Equipamento",
     inventory: "Inventário",
+  },
+
+  // ── Tab labels (per section) ──────────────────────────────────────────────
+  tabs: {
+    character: {
+      info: "Personagem",
+      resume: "Resumo",
+    },
+    attributes: {
+      primary: "Primários",
+      secondary: "Secundários",
+      baseDamage: "Dano Base",
+    },
+    traits: {
+      advantages: "Vantagens",
+      disadvantages: "Desvantagens",
+    },
+    skills: {
+      skills: "Perícias",
+    },
+    magic: {
+      spells: "Magias",
+    },
+    equipment: {
+      armor: "Armaduras",
+      shields: "Escudos",
+      melee: "Corpo a Corpo",
+      ranged: "À Distância",
+      ammo: "Munição",
+    },
+    inventory: {
+      alchemy: "Alquimia",
+      survivalGear: "Sobrevivência",
+      customInventory: "Itens Livres",
+    },
   },
 
   // ── Sections / headings ───────────────────────────────────────────────────

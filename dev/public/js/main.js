@@ -1,4 +1,5 @@
 import { bindUI } from "./events/index.js";
+import { initTabs } from "./ui/tabs.js";
 import { setupAutoRun } from "./engine/attributes.js";
 import { updateActualValues } from "./ui.js";
 import { runEngine } from "./engine/index.js";
@@ -20,6 +21,7 @@ import { loadSurvivalGear } from "./inventory/survivalGear.js";
 window.onload = async () => {
   initAutoRun(runEngine);
   bindUI();
+  initTabs();
   setupAutoRun();
   updateActualValues();
 
