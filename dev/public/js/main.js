@@ -16,6 +16,8 @@ import { loadRangedWeapons } from "./inventory/ranged.js";
 import { loadAmmo } from "./inventory/ammo.js";
 import { loadAlchemy } from "./inventory/alchemy.js";
 import { loadSurvivalGear } from "./inventory/survivalGear.js";
+import { initCharacters } from "./store/characters.js";
+import { initCharacterSelector } from "./ui/characterSelector.js";
 
 // ===== INIT =====
 window.onload = async () => {
@@ -40,5 +42,9 @@ window.onload = async () => {
     loadSurvivalGear(),
   ]);
 
-  runEngine();
+  // Init character persistence (loads active character into state)
+  initCharacters();
+
+  // Wire character selector UI
+  initCharacterSelector();
 };

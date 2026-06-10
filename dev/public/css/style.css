@@ -42,49 +42,27 @@
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
 
   /* Topbar / bottom-nav sizes — fluid */
-  /* Mobile minimums kept at 48px/52px. Desktop scales up cleanly. */
-  --topbar-h: clamp(48px, 1vw + 44px, 64px);
-  --bottomnav-h: clamp(52px, 1vw + 48px, 64px);
+  --topbar-h: clamp(48px, 6vw, 56px);
+  --bottomnav-h: clamp(52px, 7vw, 60px);
 
   /* Sidebar width (desktop) */
-  --sidebar-w: 64px; /* Slightly bumped for desktop cursor target space */
-  --sidebar-w-exp: 240px; /* Expanded for readable text links on 1920px screens */
+  --sidebar-w: 56px;
+  --sidebar-w-exp: 200px;
 
   /* Typography — fluid scale */
-  /* Keeps your exact mobile minimums, but opens up the maximums for 1920px desktop readability */
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
-  --fs-base: clamp(
-    10px,
-    0.4vw + 9px,
-    16px
-  ); /* 10px on mobile -> scales smoothly to 16px */
-  --fs-sm: clamp(
-    9px,
-    0.35vw + 8px,
-    14px
-  ); /* 9px on mobile -> scales smoothly to 14px */
-  --fs-xs: clamp(
-    8px,
-    0.3vw + 7px,
-    12px
-  ); /* 8px on mobile -> scales smoothly to 12px */
-  --fs-xxs: clamp(
-    7px,
-    0.25vw + 6px,
-    11px
-  ); /* 7px on mobile -> scales smoothly to 11px */
+  --fs-base: clamp(10px, 2.3vw, 12px);
+  --fs-sm: clamp(9px, 2vw, 11px);
+  --fs-xs: clamp(8px, 1.8vw, 10px);
+  --fs-xxs: clamp(7px, 1.6vw, 9px);
 
   /* Detail row (unified) */
   --detail-bg: #f4f4fb;
-  --detail-label-w: clamp(
-    80px,
-    4vw + 65px,
-    120px
-  ); /* Fluid: 80px on mobile, 120px on desktop */
+  --detail-label-w: 80px;
 
   /* Content width cap for desktop */
-  --content-max-w: 1440px; /* Increased to utilize 1920px desktop real estate better without over-stretching */
+  --content-max-w: 1200px;
 }
 
 /* ── Reset ───────────────────────────────────────────────────────────────── */
@@ -280,13 +258,15 @@ body {
 @media (min-width: 768px) {
   body {
     display: flex;
-    padding-top: 0;
+    flex-direction: column;
+    padding-top: var(--topbar-h);
     padding-bottom: 0;
   }
 
-  /* Hide mobile nav elements */
+  /* Keep topbar visible on desktop too */
   .l-topbar {
-    display: none;
+    display: flex;
+    z-index: 300;
   }
   .l-bottomnav {
     display: none;
@@ -296,7 +276,7 @@ body {
   .l-sidebar {
     display: flex;
     position: fixed;
-    top: 0;
+    top: var(--topbar-h);
     left: 0;
     bottom: 0;
     width: var(--sidebar-w);
@@ -321,13 +301,6 @@ body {
     display: flex;
     justify-content: center;
     flex-shrink: 0;
-  }
-
-  .sidebar-logo-img {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-    border-radius: 6px;
   }
 
   .sidebar-nav {
@@ -414,65 +387,6 @@ body {
   }
 
   .l-sidebar:hover .sidebar-label {
-    opacity: 1;
-  }
-
-  .sidebar-bottom {
-    width: 100%;
-    padding: 8px 0;
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .sidebar-action {
-    background: none;
-    border: none;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px 0;
-    border-left: 3px solid transparent;
-    transition:
-      color 0.15s,
-      background 0.15s;
-    text-align: left;
-  }
-
-  .sidebar-action:hover {
-    color: var(--color-text);
-    background: var(--color-bg);
-  }
-
-  .sidebar-action-icon {
-    font-size: 18px;
-    min-width: var(--sidebar-w);
-    text-align: center;
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-    height: auto;
-    margin: 0;
-  }
-
-  .sidebar-action-label {
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    opacity: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: opacity 0.15s 0.05s;
-    pointer-events: none;
-  }
-
-  .l-sidebar:hover .sidebar-action-label {
     opacity: 1;
   }
 
@@ -1564,4 +1478,181 @@ h4 {
   color: var(--color-text-muted);
   margin: 4px 0 0;
   font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHARACTER SELECTOR — topbar button + popover
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Topbar selector button ─────────────────────────────────────────────── */
+.char-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-character);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  max-width: clamp(140px, 40vw, 260px);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background 0.15s;
+  min-height: 36px;
+}
+
+.char-selector-btn:hover {
+  background: color-mix(in srgb, var(--accent-character) 85%, #000);
+}
+
+.char-selector-btn:active {
+  transform: scale(0.98);
+}
+
+.char-selector-btn-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.char-selector-btn-race {
+  font-size: var(--fs-xs);
+  opacity: 0.8;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.char-selector-btn-chevron {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+/* ── Popover container ──────────────────────────────────────────────────── */
+.char-selector-popover {
+  display: none;
+  position: fixed;
+  top: calc(var(--topbar-h) + 4px);
+  right: clamp(8px, 3vw, 16px);
+  width: clamp(260px, 80vw, 380px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 500;
+  overflow: hidden;
+}
+
+.char-selector-popover.is-open {
+  display: block;
+}
+
+/* ── Character list ─────────────────────────────────────────────────────── */
+.char-selector-list,
+.char-selector-actions {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.char-selector-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-left: 3px solid transparent;
+}
+
+.char-selector-item:hover {
+  background: var(--color-bg);
+}
+
+.char-selector-item.is-active {
+  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
+  border-left-color: var(--accent-character);
+}
+
+.char-selector-radio {
+  font-size: 16px;
+  color: var(--accent-character);
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.char-selector-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.char-selector-item-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-selector-item-race {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.char-selector-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 0;
+}
+
+/* ── Action items ───────────────────────────────────────────────────────── */
+.char-selector-action-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition:
+    background 0.12s,
+    color 0.12s;
+  border-left: 3px solid transparent;
+}
+
+.char-selector-action-item:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.char-selector-action-remove:hover {
+  color: var(--color-remove);
+  background: #fee2e2;
+}
+
+.char-selector-action-icon {
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
 }

@@ -18,7 +18,6 @@ import {
   handleCustomInventoryChange,
   handleAddCustomItem,
 } from "./customInventoryEvents.js";
-import { exportSheet, importSheet } from "../store/persistence.js";
 import {
   filterSubRacesByName,
   selectSubRace,
@@ -141,30 +140,6 @@ export function bindUI() {
 
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
-
-  // ── Persistence ───────────────────────────────────────────────────────────
-  on("exportSheetBtn", "click", exportSheet);
-
-  on("importSheetBtn", "click", () => {
-    document.getElementById("importFileInput")?.click();
-  });
-
-  const importFileInput = document.getElementById("importFileInput");
-  if (importFileInput) {
-    importFileInput.addEventListener("change", async (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-
-      try {
-        await importSheet(file);
-      } catch (err) {
-        alert(`Import error: ${err.message}`);
-      } finally {
-        // Reset so the same file can be re-imported if needed
-        importFileInput.value = "";
-      }
-    });
-  }
 
   // ── Global delegated click ────────────────────────────────────────────────
   document.addEventListener("click", (e) => {

@@ -29,13 +29,14 @@
         <span class="topbar-logo-name" id="topbar-title">Archivum Sheet</span>
       </div>
       <div class="topbar-actions">
-        <button id="exportSheetBtn-mobile" class="topbar-btn">
-          <span class="topbar-btn-icon">⬇️</span>
-          <span id="lbl-export-mobile"></span>
-        </button>
-        <button id="importSheetBtn-mobile" class="topbar-btn">
-          <span class="topbar-btn-icon">⬆️</span>
-          <span id="lbl-import-mobile"></span>
+        <button
+          id="char-selector-btn"
+          class="char-selector-btn"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+        >
+          <span class="char-selector-btn-name">—</span>
+          <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
         </button>
       </div>
     </header>
@@ -44,13 +45,6 @@
          DESKTOP: Sidebar nav
          ═══════════════════════════════════════════════════════════════════════ -->
     <nav class="l-sidebar" id="sidebar" aria-label="Navegação">
-      <div class="sidebar-logo">
-        <img
-          src="/images/chrome-touch-icon-128x128.png"
-          alt="Archivum Sheet"
-          class="sidebar-logo-img"
-        />
-      </div>
       <ul class="sidebar-nav" role="list">
         <li>
           <a
@@ -123,22 +117,6 @@
           </a>
         </li>
       </ul>
-      <div class="sidebar-bottom">
-        <button id="exportSheetBtn" class="sidebar-action" title="">
-          <span class="sidebar-action-icon">⬇️</span>
-          <span class="sidebar-action-label" id="lbl-export"></span>
-        </button>
-        <button id="importSheetBtn" class="sidebar-action" title="">
-          <span class="sidebar-action-icon">⬆️</span>
-          <span class="sidebar-action-label" id="lbl-import"></span>
-        </button>
-        <input
-          id="importFileInput"
-          type="file"
-          accept=".json"
-          style="display: none"
-        />
-      </div>
     </nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
@@ -150,12 +128,26 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-character" class="l-section">
         <div class="box box--character">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-character">
-            <button class="tab-btn" data-tab="tab-char-info" id="tab-btn-char-info"></button>
-            <button class="tab-btn" data-tab="tab-char-resume" id="tab-btn-char-resume"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-char-info"
+              id="tab-btn-char-info"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-char-resume"
+              id="tab-btn-char-resume"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Personagem (info + race) -->
@@ -168,7 +160,10 @@
                   <tbody>
                     <tr>
                       <td>
-                        <label for="playerNameInput" id="lbl-playerName"></label>
+                        <label
+                          for="playerNameInput"
+                          id="lbl-playerName"
+                        ></label>
                       </td>
                       <td>
                         <input
@@ -181,7 +176,10 @@
                     </tr>
                     <tr>
                       <td>
-                        <label for="characterNameInput" id="lbl-characterName"></label>
+                        <label
+                          for="characterNameInput"
+                          id="lbl-characterName"
+                        ></label>
                       </td>
                       <td>
                         <input
@@ -225,7 +223,10 @@
                     </tr>
                     <tr>
                       <td>
-                        <label for="characterWeightInput" id="lbl-weight"></label>
+                        <label
+                          for="characterWeightInput"
+                          id="lbl-weight"
+                        ></label>
                       </td>
                       <td>
                         <input
@@ -296,7 +297,9 @@
                 <span id="ammo_weight" style="display: none">0</span>
                 <span id="alchemy_weight" style="display: none">0</span>
                 <span id="survival_gear_weight" style="display: none">0</span>
-                <span id="custom_inventory_weight" style="display: none">0</span>
+                <span id="custom_inventory_weight" style="display: none"
+                  >0</span
+                >
                 <span id="total_weight" style="display: none">0</span>
               </div>
 
@@ -315,7 +318,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -324,13 +326,31 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-attributes" class="l-section">
         <div class="box box--attr">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-attributes">
-            <button class="tab-btn" data-tab="tab-attr-primary" id="tab-btn-attr-primary"></button>
-            <button class="tab-btn" data-tab="tab-attr-secondary" id="tab-btn-attr-secondary"></button>
-            <button class="tab-btn" data-tab="tab-attr-damage" id="tab-btn-attr-damage"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-attr-primary"
+              id="tab-btn-attr-primary"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-attr-secondary"
+              id="tab-btn-attr-secondary"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-attr-damage"
+              id="tab-btn-attr-damage"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Primários -->
@@ -350,44 +370,88 @@
                   <tr>
                     <td><strong>ST</strong></td>
                     <td class="col-num">
-                      <input id="ST_base" type="number" min="1" max="20" value="10" />
+                      <input
+                        id="ST_base"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="10"
+                      />
                     </td>
                     <td class="col-num" id="ST_race">0</td>
                     <td class="col-num">
-                      <input id="ST_mod" type="text" inputmode="numeric" value="0" />
+                      <input
+                        id="ST_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
                     </td>
                     <td class="col-num" id="ST_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>DX</strong></td>
                     <td class="col-num">
-                      <input id="DX_base" type="number" min="1" max="20" value="10" />
+                      <input
+                        id="DX_base"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="10"
+                      />
                     </td>
                     <td class="col-num" id="DX_race">0</td>
                     <td class="col-num">
-                      <input id="DX_mod" type="text" inputmode="numeric" value="0" />
+                      <input
+                        id="DX_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
                     </td>
                     <td class="col-num" id="DX_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>IQ</strong></td>
                     <td class="col-num">
-                      <input id="IQ_base" type="number" min="1" max="20" value="10" />
+                      <input
+                        id="IQ_base"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="10"
+                      />
                     </td>
                     <td class="col-num" id="IQ_race">0</td>
                     <td class="col-num">
-                      <input id="IQ_mod" type="text" inputmode="numeric" value="0" />
+                      <input
+                        id="IQ_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
                     </td>
                     <td class="col-num" id="IQ_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>HT</strong></td>
                     <td class="col-num">
-                      <input id="HT_base" type="number" min="1" max="20" value="10" />
+                      <input
+                        id="HT_base"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="10"
+                      />
                     </td>
                     <td class="col-num" id="HT_race">0</td>
                     <td class="col-num">
-                      <input id="HT_mod" type="text" inputmode="numeric" value="0" />
+                      <input
+                        id="HT_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
                     </td>
                     <td class="col-num" id="HT_actual">10</td>
                   </tr>
@@ -431,7 +495,6 @@
               </table>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -440,12 +503,26 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-traits" class="l-section">
         <div class="box box--trait">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-traits">
-            <button class="tab-btn" data-tab="tab-traits-advantages" id="tab-btn-traits-advantages"></button>
-            <button class="tab-btn" data-tab="tab-traits-disadvantages" id="tab-btn-traits-disadvantages"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-traits-advantages"
+              id="tab-btn-traits-advantages"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-traits-disadvantages"
+              id="tab-btn-traits-disadvantages"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Vantagens -->
@@ -471,7 +548,6 @@
             </div>
             <div id="disList"></div>
           </div>
-
         </div>
       </section>
 
@@ -480,11 +556,21 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-skills" class="l-section">
         <div class="box box--trait">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-skills">
-            <button class="tab-btn" data-tab="tab-skills-list" id="tab-btn-skills-list"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-skills-list"
+              id="tab-btn-skills-list"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Perícias -->
@@ -498,7 +584,6 @@
             </div>
             <div id="skillList"></div>
           </div>
-
         </div>
       </section>
 
@@ -507,11 +592,21 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-magic" class="l-section">
         <div class="box box--magic">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-magic">
-            <button class="tab-btn" data-tab="tab-magic-spells" id="tab-btn-magic-spells"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-magic-spells"
+              id="tab-btn-magic-spells"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Magias -->
@@ -525,7 +620,6 @@
             </div>
             <div id="spellList"></div>
           </div>
-
         </div>
       </section>
 
@@ -534,15 +628,41 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-equipment" class="l-section">
         <div class="box box--equip">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-equipment">
-            <button class="tab-btn" data-tab="tab-equip-armor" id="tab-btn-equip-armor"></button>
-            <button class="tab-btn" data-tab="tab-equip-shields" id="tab-btn-equip-shields"></button>
-            <button class="tab-btn" data-tab="tab-equip-melee" id="tab-btn-equip-melee"></button>
-            <button class="tab-btn" data-tab="tab-equip-ranged" id="tab-btn-equip-ranged"></button>
-            <button class="tab-btn" data-tab="tab-equip-ammo" id="tab-btn-equip-ammo"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-equip-armor"
+              id="tab-btn-equip-armor"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-equip-shields"
+              id="tab-btn-equip-shields"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-equip-melee"
+              id="tab-btn-equip-melee"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-equip-ranged"
+              id="tab-btn-equip-ranged"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-equip-ammo"
+              id="tab-btn-equip-ammo"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Armaduras -->
@@ -657,8 +777,14 @@
                 <div class="controls-row">
                   <select id="ammoContainerSelect"></select>
                   <select id="ammoContainerStorage">
-                    <option value="equipped" id="opt-ammo-cont-equipped"></option>
-                    <option value="backpack" id="opt-ammo-cont-backpack"></option>
+                    <option
+                      value="equipped"
+                      id="opt-ammo-cont-equipped"
+                    ></option>
+                    <option
+                      value="backpack"
+                      id="opt-ammo-cont-backpack"
+                    ></option>
                     <option value="stash" id="opt-ammo-cont-stash"></option>
                     <option value="camp" id="opt-ammo-cont-camp"></option>
                   </select>
@@ -691,7 +817,6 @@
               </details>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -700,13 +825,31 @@
            ─────────────────────────────────────────────────────────────────── -->
       <section id="section-inventory" class="l-section">
         <div class="box box--inv">
-
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-inventory">
-            <button class="tab-btn" data-tab="tab-inv-alchemy" id="tab-btn-inv-alchemy"></button>
-            <button class="tab-btn" data-tab="tab-inv-survival" id="tab-btn-inv-survival"></button>
-            <button class="tab-btn" data-tab="tab-inv-custom" id="tab-btn-inv-custom"></button>
-                      <button class="tab-strip-collapse" aria-expanded="false" aria-label="Expandir seção" type="button">&#8250;</button>
+            <button
+              class="tab-btn"
+              data-tab="tab-inv-alchemy"
+              id="tab-btn-inv-alchemy"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-inv-survival"
+              id="tab-btn-inv-survival"
+            ></button>
+            <button
+              class="tab-btn"
+              data-tab="tab-inv-custom"
+              id="tab-btn-inv-custom"
+            ></button>
+            <button
+              class="tab-strip-collapse"
+              aria-expanded="false"
+              aria-label="Expandir seção"
+              type="button"
+            >
+              &#8250;
+            </button>
           </nav>
 
           <!-- Panel: Alquimia -->
@@ -715,7 +858,13 @@
               <select id="alchemyTypeFilter"></select>
               <select id="alchemyNameSelect"></select>
               <select id="alchemyTierSelect"></select>
-              <input id="alchemyQty" type="number" min="1" value="1" style="width: 64px" />
+              <input
+                id="alchemyQty"
+                type="number"
+                min="1"
+                value="1"
+                style="width: 64px"
+              />
               <select id="alchemyStorage">
                 <option value="backpack" id="opt-alchemy-backpack"></option>
                 <option value="stash" id="opt-alchemy-stash"></option>
@@ -731,9 +880,18 @@
             <div class="controls-row">
               <select id="survivalGearTypeFilter"></select>
               <select id="survivalGearNameSelect"></select>
-              <input id="survivalGearQty" type="number" min="1" value="1" style="width: 64px" />
+              <input
+                id="survivalGearQty"
+                type="number"
+                min="1"
+                value="1"
+                style="width: 64px"
+              />
               <select id="survivalGearStorage">
-                <option value="backpack" id="opt-survival-gear-backpack"></option>
+                <option
+                  value="backpack"
+                  id="opt-survival-gear-backpack"
+                ></option>
                 <option value="stash" id="opt-survival-gear-stash"></option>
                 <option value="camp" id="opt-survival-gear-camp"></option>
               </select>
@@ -745,21 +903,73 @@
           <!-- Panel: Inventário Personalizado -->
           <div class="tab-panel" id="tab-inv-custom">
             <div class="controls-row controls-row--labeled">
-              <label style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75em;">
+              <label
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 2px;
+                  font-size: 0.75em;
+                "
+              >
                 Nome
-                <input id="customItemName" type="text" style="flex: 2; min-width: 120px" />
+                <input
+                  id="customItemName"
+                  type="text"
+                  style="flex: 2; min-width: 120px"
+                />
               </label>
-              <label style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75em;">
+              <label
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 2px;
+                  font-size: 0.75em;
+                "
+              >
                 Peso
-                <input id="customItemWeight" type="number" min="0" step="0.01" value="0" style="width: 70px" />
+                <input
+                  id="customItemWeight"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  style="width: 70px"
+                />
               </label>
-              <label style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75em;">
+              <label
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 2px;
+                  font-size: 0.75em;
+                "
+              >
                 Preço
-                <input id="customItemPrice" type="number" min="0" step="0.01" value="0" style="width: 70px" />
+                <input
+                  id="customItemPrice"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  style="width: 70px"
+                />
               </label>
-              <label style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75em;">
+              <label
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 2px;
+                  font-size: 0.75em;
+                "
+              >
                 Qtd.
-                <input id="customItemQty" type="number" min="1" value="1" style="width: 64px" />
+                <input
+                  id="customItemQty"
+                  type="number"
+                  min="1"
+                  value="1"
+                  style="width: 64px"
+                />
               </label>
               <select id="customItemStorage">
                 <option value="backpack" id="opt-custom-backpack"></option>
@@ -773,7 +983,6 @@
             </div>
             <div id="customInventoryList"></div>
           </div>
-
         </div>
       </section>
 
@@ -852,6 +1061,22 @@
       </a>
     </nav>
 
+    <!-- Character selector popover (shared mobile + desktop) -->
+    <div
+      id="char-selector-popover"
+      class="char-selector-popover"
+      role="listbox"
+      aria-label="Selecionar personagem"
+    ></div>
+
+    <!-- Hidden file input for import / replace -->
+    <input
+      id="importFileInput"
+      type="file"
+      accept=".json"
+      style="display: none"
+    />
+
     <!-- Hidden control required by events/index.js -->
     <button id="runEngineBtn" style="display: none"></button>
 
@@ -876,14 +1101,10 @@
       function initAppShell() {
         const L = LABELS;
 
-        // Top bar (mobile)
+        // Top bar
         setText("topbar-title", L.app.title);
-        setText("lbl-export-mobile", L.app.export);
-        setText("lbl-import-mobile", L.app.import);
 
         // Sidebar (desktop)
-        setText("lbl-export", L.app.export);
-        setText("lbl-import", L.app.import);
         setText("nav-lbl-character", L.nav.character);
         setText("nav-lbl-attributes", L.nav.attributes);
         setText("nav-lbl-traits", L.nav.traits);
@@ -903,41 +1124,41 @@
 
         // Tab button labels
         // section-character
-        setText("tab-btn-char-info",    L.tabs.character.info);
-        setText("tab-btn-char-resume",  L.tabs.character.resume);
+        setText("tab-btn-char-info", L.tabs.character.info);
+        setText("tab-btn-char-resume", L.tabs.character.resume);
         // section-attributes
-        setText("tab-btn-attr-primary",   L.tabs.attributes.primary);
+        setText("tab-btn-attr-primary", L.tabs.attributes.primary);
         setText("tab-btn-attr-secondary", L.tabs.attributes.secondary);
-        setText("tab-btn-attr-damage",    L.tabs.attributes.baseDamage);
+        setText("tab-btn-attr-damage", L.tabs.attributes.baseDamage);
         // section-traits
-        setText("tab-btn-traits-advantages",    L.tabs.traits.advantages);
+        setText("tab-btn-traits-advantages", L.tabs.traits.advantages);
         setText("tab-btn-traits-disadvantages", L.tabs.traits.disadvantages);
         // section-skills
         setText("tab-btn-skills-list", L.tabs.skills.skills);
         // section-magic
         setText("tab-btn-magic-spells", L.tabs.magic.spells);
         // section-equipment
-        setText("tab-btn-equip-armor",   L.tabs.equipment.armor);
+        setText("tab-btn-equip-armor", L.tabs.equipment.armor);
         setText("tab-btn-equip-shields", L.tabs.equipment.shields);
-        setText("tab-btn-equip-melee",   L.tabs.equipment.melee);
-        setText("tab-btn-equip-ranged",  L.tabs.equipment.ranged);
-        setText("tab-btn-equip-ammo",    L.tabs.equipment.ammo);
+        setText("tab-btn-equip-melee", L.tabs.equipment.melee);
+        setText("tab-btn-equip-ranged", L.tabs.equipment.ranged);
+        setText("tab-btn-equip-ammo", L.tabs.equipment.ammo);
         // section-inventory
-        setText("tab-btn-inv-alchemy",  L.tabs.inventory.alchemy);
+        setText("tab-btn-inv-alchemy", L.tabs.inventory.alchemy);
         setText("tab-btn-inv-survival", L.tabs.inventory.survivalGear);
-        setText("tab-btn-inv-custom",   L.tabs.inventory.customInventory);
+        setText("tab-btn-inv-custom", L.tabs.inventory.customInventory);
 
         // Sub-section summaries still in use (equip sub-details, output)
         setText("sec-armor-equipped", L.sections.equipped);
-        setText("sec-armor-stored",   L.sections.stored);
+        setText("sec-armor-stored", L.sections.stored);
         setText("sec-shield-equipped", L.sections.equipped);
-        setText("sec-shield-stored",   L.sections.stored);
+        setText("sec-shield-stored", L.sections.stored);
         setText("sec-melee-equipped", L.sections.equipped);
-        setText("sec-melee-stored",   L.sections.stored);
+        setText("sec-melee-stored", L.sections.stored);
         setText("sec-ranged-equipped", L.sections.equipped);
-        setText("sec-ranged-stored",   L.sections.stored);
+        setText("sec-ranged-stored", L.sections.stored);
         setText("sec-ammo-containers", L.ammo.containers);
-        setText("sec-ammo-loose",      L.ammo.looseAmmo);
+        setText("sec-ammo-loose", L.ammo.looseAmmo);
         setText("sec-output", L.output.title);
 
         // Character info labels
@@ -958,7 +1179,7 @@
 
         // Character info panel headings
         setText("sec-character-info", L.sections.characterInfo);
-        setText("sec-race",           L.sections.race);
+        setText("sec-race", L.sections.race);
 
         // Resume labels
         setText("sec-resume-weight", L.resume.weightTitle);
@@ -1067,26 +1288,9 @@
           ["opt-custom-camp", L.storage.camp],
         ];
         storageMap.forEach(([id, text]) => setText(id, text));
-
-        // sidebar action titles
-        const expBtn = document.getElementById("exportSheetBtn");
-        const impBtn = document.getElementById("importSheetBtn");
-        if (expBtn) expBtn.title = L.app.exportTitle;
-        if (impBtn) impBtn.title = L.app.importTitle;
       }
 
       initAppShell();
-
-      // ── Wire mobile export/import buttons to the same handlers ─────────────
-      // The actual logic lives in the events module bound to the desktop IDs.
-      // We simply forward click events so only one handler needs to exist.
-      function forwardClick(fromId, toId) {
-        const from = document.getElementById(fromId);
-        const to = document.getElementById(toId);
-        if (from && to) from.addEventListener("click", () => to.click());
-      }
-      forwardClick("exportSheetBtn-mobile", "exportSheetBtn");
-      forwardClick("importSheetBtn-mobile", "importSheetBtn");
 
       // ── Active nav highlighting (shared between sidebar & bottom nav) ────────
       const allNavLinks = document.querySelectorAll(

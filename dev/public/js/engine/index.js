@@ -1,5 +1,7 @@
 import { state } from "../state.js";
 import { buildSheet } from "../api.js";
+import { saveActiveCharacter } from "../store/characters.js";
+import { updateSelectorButton } from "../ui/characterSelector.js";
 import { getPrimaryAttributes } from "./attributes.js";
 import {
   renderOutput,
@@ -155,6 +157,10 @@ export async function runEngine() {
     state.sheet = json;
 
     renderLists(selected, state.data, state.sheet);
+
+    // Persist active character and refresh selector label
+    saveActiveCharacter();
+    updateSelectorButton();
   } catch (err) {
     renderOutput({ error: err.message });
   }

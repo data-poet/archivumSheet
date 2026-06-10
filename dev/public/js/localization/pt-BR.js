@@ -17,6 +17,18 @@ export const LABELS = {
     importTitle: "Importar Ficha",
   },
 
+  // ── Multi-character selector ──────────────────────────────────────────────
+  characters: {
+    add: "Adicionar Personagem",
+    remove: "Remover Personagem",
+    replace: "Substituir",
+    unnamed: "Sem nome",
+    newCharacter: "Novo Personagem",
+    namePrompt: "Nome do novo personagem:",
+    confirmRemove: "Remover personagem",
+    cannotRemoveLast: "Não é possível remover o único personagem.",
+  },
+
   // ── Navigation ────────────────────────────────────────────────────────────
   nav: {
     character: "Personagem",
