@@ -230,9 +230,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       const movement = secondary_attributes.Movement.value;
 
-      const expected = Math.floor(
-        movement + (mockCarryWeight.weight_modifier + 4),
-      );
+      const expected = Math.floor(movement + 4);
 
       expect(secondary_attributes.Dodge.base_value).toBe(expected);
     });

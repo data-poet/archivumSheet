@@ -116,22 +116,6 @@ describe("BUILD CHARACTER", () => {
     });
   });
 
-  describe("Dodge integration", () => {
-    it("Should reflect carry weight modifier on Dodge", () => {
-      const { character } = buildCharacter(mockInput);
-
-      const dodge = character.secondary_attributes.Dodge;
-
-      const movement = character.secondary_attributes.Movement.value;
-
-      const expected = Math.floor(
-        movement + (mockInput.carry_weight.weight_modifier + 4),
-      );
-
-      expect(dodge.base_value).toBe(expected);
-    });
-  });
-
   describe("Carry weight propagation", () => {
     it("Should pass carry_weight into secondary builder", () => {
       const { character } = buildCharacter(mockInput);

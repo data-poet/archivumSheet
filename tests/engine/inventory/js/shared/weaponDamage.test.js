@@ -1,7 +1,7 @@
 const {
   computeWeaponDamage,
   formatDamageString,
-} = require("engine/inventory/js/weaponDamage");
+} = require("engine/inventory/js/shared/weaponDamage");
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 

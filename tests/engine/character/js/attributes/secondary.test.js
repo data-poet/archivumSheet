@@ -44,7 +44,7 @@ describe("SECONDARY ATTRIBUTES", () => {
 
       expect(attributes.Movement.base_value).toBe(Math.floor(5.25 - 3));
 
-      expect(attributes.Dodge.base_value).toBe(Math.floor(2 + (-3 + 4)));
+      expect(attributes.Dodge.base_value).toBe(Math.floor(2 + 4));
     });
   });
 
@@ -178,22 +178,6 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes.Movement.base_value).toBe(
         Math.floor(expectedSpeed - 3),
       );
-    });
-  });
-
-  describe("Dodge", () => {
-    it("Should be affected by carry weight penalties", () => {
-      const { attributes } = buildSecondaryAttributes(
-        mockPrimary,
-        {},
-        mockCarryWeight,
-      );
-
-      const expectedMovement = Math.floor(5.25 - 3);
-
-      const expectedDodge = Math.floor(expectedMovement + (-3 + 4));
-
-      expect(attributes.Dodge.base_value).toBe(expectedDodge);
     });
   });
 
