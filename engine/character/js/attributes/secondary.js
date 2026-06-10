@@ -146,9 +146,7 @@ function buildSecondaryAttributes(
     ...config.Movement,
   });
 
-  let dodgeBase = Math.floor(
-    result.Movement.value + (carry.weight_modifier + 4),
-  );
+  let dodgeBase = Math.floor(result.Movement.value + 4);
 
   if (effects?.secondary?.Dodge?.base) {
     dodgeBase += effects.secondary.Dodge.base;
