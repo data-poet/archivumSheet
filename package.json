@@ -2,7 +2,7 @@
   "name": "archivumsheet",
   "version": "1.0.0",
   "description": "Online GURPS (Archivum) Character Sheet",
-  "main": "index.js",
+  "main": "dev/server.js",
   "directories": {
     "test": "tests"
   },
