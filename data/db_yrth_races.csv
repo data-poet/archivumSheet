@@ -1,0 +1,48 @@
+race_id,race_name,race_sub_name,race_st_modifier,race_dx_modifier,race_iq_modifier,race_ht_modifier,race_attributes_modifiers_points,race_innate_advantage_id,race_innate_advantage_name,race_innate_disadvantage_id,race_innate_ability,race_physical_maturity,race_mental_maturity,race_life_expectancy
+RACE-000,Anão,Anão da Montanha,1,0,0,1,20,ADV-086,VISÃO NOTURNA,,,25,50,1000
+RACE-001,Anão,Anão da Colina,0,0,0,1,10,ADV-086,VISÃO NOTURNA,,,25,50,1000
+RACE-002,Anão,Duergar,1,0,0,0,10,ADV-086,VISÃO NOTURNA,,,25,50,1000
+RACE-003,Draconato,Draconto Vermelho,1,0,0,1,20,ADV-095,RIJEZA +2,DIS-053,,15,30,120
+RACE-004,Draconato,Draconto Azul,0,0,1,0,20,ADV-095,RIJEZA +2,,,20,30,120
+RACE-005,Draconato,Draconato Verde,0,1,0,0,20,ADV-095,RIJEZA +2,,,20,30,120
+RACE-006,Draconato,Draconato Negro,1,0,0,0,10,ADV-095,RIJEZA +2,,,20,30,120
+RACE-007,Draconato,Draconato Branco,0,0,0,1,10,ADV-095,RIJEZA +2,,,20,30,120
+RACE-008,Draconato,Draconato Dourado,0,0,1,0,20,ADV-095,RIJEZA +2,,,20,30,120
+RACE-009,Draconato,Draconato Prateado,0,0,1,0,20,ADV-095,RIJEZA +2,,,20,30,120
+RACE-010,Draconato,Draconato de Cobre,0,1,0,0,20,ADV-095,RIJEZA +2,,,20,30,120
+RACE-011,Draconato,Draconato de Latão,0,0,0,1,10,ADV-095,RIJEZA +2,,,20,30,120
+RACE-012,Draconato,Draconato de Bronze,1,0,0,0,10,ADV-095,RIJEZA +2,,,20,30,120
+RACE-013,Elfo,Elfo do Sol,1,0,0,1,20,,BENÇÃO DO SOL,,,60,120,-
+RACE-014,Elfo,Elfo da Lua,0,1,0,0,20,,BENÇÃO DA LUA,,,60,120,-
+RACE-015,Elfo,Elfo da Floresta,0,1,0,0,20,"ADV-019,ADV-056","EMPATIA COM ANIMAIS, ULTRA-FLEXIBILIDADE DAS JUNTAS",,,60,120,-
+RACE-016,Elfo,Elfo do Mar,0,0,0,2,20,"ADV-098, ADV-103","ANFÍBIO, BRÂNQUIAS",,,60,120,-
+RACE-017,Elfo,Elfo da Montanha,0,0,1,0,20,ADV-086,"VISÃO NOTURNA, CRIATIVIDADE",,,60,120,-
+RACE-018,Elfo,Elfo Negro,0,1,0,0,20,"ADV-086, ADV-102",VISÃO NOTURNA,,,60,120,-
+RACE-019,Fauno,Fauno,0,0,0,1,10,,,,,10,25,80
+RACE-020,Gnomo,Gnomo da Pedra,-1,0,1,0,10,ADV-102,CRIATIVIDADE,,,5,20,300
+RACE-021,Gnomo,Gnomo da Floresta,-1,0,1,0,10,,,,,5,20,300
+RACE-022,Gnomo,Gnomo das Profundezas (Svirfneblin),-1,1,0,0,10,ADV-086,VISÃO NOTURNA,,,5,20,300
+RACE-023,Goblin,Goblin da Floresta,-1,1,0,0,10,,,,,7,15,60
+RACE-024,Goblin,Goblin da Pedra,0,0,0,0,0,,,,,7,15,60
+RACE-025,Goblin,Goblin da Neve,0,0,0,0,0,,,,,7,15,60
+RACE-026,Goblin,Goblin do Deserto,0,0,0,1,10,,,,,7,15,60
+RACE-027,Goblin,Goblin do Pantâno,0,0,0,1,10,,,,,7,15,60
+RACE-028,Goblin,Goblin da Selva,-1,1,0,0,10,,,,,7,15,60
+RACE-029,Hafling,Hafling,-1,0,0,1,0,ADV-071,SORTE,,,20,35,150
+RACE-030,Humano,Humano,0,0,0,0,0,ADV-101,VERSATILIDADE HUMANA,DIS-053,,18,30,80
+RACE-031,Orc,Orc Selvagem,2,0,-1,0,0,,,,,7,15,60
+RACE-032,Orc,Orc Civilizado,1,0,-1,0,-10,,,,,14,21,70
+RACE-033,Repitiliano,Repitiliano Salamandra,0,0,0,1,10,ADV-098,ANFÍBIO,,,10,15,80
+RACE-034,Repitiliano,Repitiliano Lagartixa,0,1,0,0,20,ADV-100,EQUILÍBRIO PERFEITO,,,10,15,80
+RACE-035,Repitiliano,Repitiliano Camaleão,-1,0,1,0,10,ADV-099,CAMALEÃO,DIS-053,,10,15,80
+RACE-036,Repitiliano,Repitiliano Crocodilo,2,0,-1,0,0,ADV-095,RIJEZA +2,,,10,15,80
+RACE-037,Repitiliano,Repitiliano Serpente,0,1,0,0,20,ADV-050,IMUNIDADE,,,10,15,80
+RACE-038,Tiefiling,Tiefiling Vermelho (Azazel),0,0,1,0,20,,,DIS-053,,20,30,80
+RACE-039,Tiefiling,Tiefiling Rosa (Asmodeus),0,0,1,0,20,,,,,20,30,80
+RACE-040,Tiefiling,Tiefling Azul (Beelzebub),0,1,0,0,20,,,,,20,30,80
+RACE-041,Tiefiling,Tiefling Verde (Leviathan),1,0,0,0,10,,,,,20,30,80
+RACE-042,Tiefiling,Tiefling Amarelo (Mammon),0,0,1,0,20,,,,,20,30,80
+RACE-043,Tiefiling,Tiefling Roxo (Lucifer),0,1,0,0,20,,,,,20,30,80
+RACE-044,Tiefiling,Tiefling Negro (Belphegor),1,0,0,0,10,,,,,20,30,80
+RACE-045,Meio-Elfo,Meio-Elfo,0,0,0,0,0,,,,,36,80,300
+RACE-046,Meio-Orc,Meio-Orc,0,0,0,1,10,,,,,12,25,80
