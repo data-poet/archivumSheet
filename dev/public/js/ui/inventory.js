@@ -22,14 +22,26 @@ export function updateInventoryUI(sheet) {
 
   const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
-  const meleeWeight = sheet?.inventory?.melee?.carried_melee_weight || 0;
-  const rangedWeight = sheet?.inventory?.ranged?.carried_ranged_weight || 0;
+  const meleeWeight =
+    sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
+  const rangedWeight =
+    sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
   const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
   const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
-  const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
-  const customInventoryWeight = sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const survivalGearWeight =
+    sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
+  const customInventoryWeight =
+    sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
   const weight =
-    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight + ammoWeight + alchemyWeight + survivalGearWeight + customInventoryWeight;
+    baseWeight +
+    armorWeight +
+    shieldWeight +
+    meleeWeight +
+    rangedWeight +
+    ammoWeight +
+    alchemyWeight +
+    survivalGearWeight +
+    customInventoryWeight;
 
   // Update weight detail spans
   const set = (id, val) => {
