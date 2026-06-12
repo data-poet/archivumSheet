@@ -71,6 +71,7 @@ export const LABELS = {
     inventory: {
       alchemy: "Alquimia",
       survivalGear: "Sobrevivência",
+      coinPurse: "Bolsa de Moedas",
       customInventory: "Itens Livres",
     },
   },
@@ -109,6 +110,9 @@ export const LABELS = {
   resume: {
     title: "Resumo do Personagem",
     weightTitle: "Peso Carregado",
+    weightDetail: "Detalhes de Peso",
+    valueTitle: "Valor Carregado",
+    valueDetail: "Detalhes de Valor",
     pointsTitle: "Pontos Gastos",
     category: "Categoria",
     points: "Pts",
@@ -119,6 +123,8 @@ export const LABELS = {
     disadvantages: "Desvantagens",
     spells: "Magias",
     total: "Total",
+    totalWeight: "Peso Total",
+    totalValue: "Valor Total",
     baseWeightLabel: "Peso Base (kg):",
     armorWeight: "Armadura",
     shieldWeight: "Escudo",
@@ -127,7 +133,6 @@ export const LABELS = {
     alchemyWeight: "Alquimia",
     survivalGearWeight: "Sobrevivência",
     customInventoryWeight: "Inv. Personalizado",
-    totalWeight: "Peso Total",
     encumbrance: "Sobrecarga",
     carryLimits: "Limites de Carga",
   },
@@ -371,6 +376,22 @@ export const LABELS = {
     weight: "Peso",
     effect: "Efeito",
     description: "Descrição",
+  },
+
+  // ── Coin purse ────────────────────────────────────────────────────────────
+  coinPurse: {
+    title: "Bolsa de Moedas",
+    copper: "Cobre",
+    silver: "Prata",
+    gold: "Ouro",
+    qty: "Qtd.",
+    weight: "Peso",
+    value: "Valor (cobre)",
+    location: "Local",
+    coinPurseWeight: "Bolsa de Moedas",
+    addCoins: "Adicionar",
+    selectCoinType: "— Moeda —",
+    selectLocation: "— Local —",
   },
 
   // ── Storage locations ─────────────────────────────────────────────────────

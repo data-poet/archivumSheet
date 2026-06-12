@@ -1098,10 +1098,26 @@ tr.spell-detail-row details[open] summary {
 /* ═══════════════════════════════════════════════════════════════════════════
    RESUME PANEL
    ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Top row: weight + value side by side */
 .resume-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Points row: single full-width column */
+.resume-grid--points {
+  grid-template-columns: 1fr;
+  margin-bottom: 0;
+}
+
+/* ── On narrow mobile, stack weight + value vertically ─────────────────── */
+@media (max-width: 480px) {
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .resume-col-title {
@@ -1120,6 +1136,7 @@ tr.spell-detail-row details[open] summary {
 .resume-table {
   width: 100%;
   margin-bottom: 8px;
+  border-collapse: collapse;
 }
 
 .resume-table td,
@@ -1154,6 +1171,42 @@ tr.spell-detail-row details[open] summary {
 .resume-limits-table td {
   padding: 3px 6px;
   text-align: center;
+}
+
+/* ── Expander row ──────────────────────────────────────────────────────── */
+.resume-expander-row td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.resume-expander-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 2px 0;
+  width: 100%;
+  text-align: left;
+}
+
+.resume-expander-btn:hover {
+  color: var(--color-text);
+}
+
+.resume-expander-arrow {
+  display: inline-block;
+  font-size: 1em;
+  transition: transform 0.15s ease;
+  transform: rotate(0deg);
+}
+
+.resume-expander-arrow--open {
+  transform: rotate(90deg);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

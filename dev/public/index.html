@@ -281,7 +281,23 @@
                   />
                 </div>
                 <table class="resume-table">
-                  <tbody id="resume_weight_tbody"></tbody>
+                  <tbody>
+                    <tr class="resume-expander-row" data-tbody-target="resume_weight_tbody">
+                      <td colspan="2">
+                        <button class="resume-expander-btn" aria-expanded="false" aria-label="Expandir">
+                          <span class="resume-expander-arrow">&#8250;</span>
+                          <span id="sec-resume-weight-detail"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody id="resume_weight_tbody" hidden></tbody>
+                  <tbody>
+                    <tr class="resume-total-row">
+                      <td><strong id="lbl-resume-totalWeight"></strong></td>
+                      <td class="col-num" id="resume_total_weight_cell"><strong>0</strong></td>
+                    </tr>
+                  </tbody>
                 </table>
                 <p class="resume-encumbrance">
                   <strong id="lbl-encumbrance"></strong>
@@ -297,13 +313,39 @@
                 <span id="ammo_weight" style="display: none">0</span>
                 <span id="alchemy_weight" style="display: none">0</span>
                 <span id="survival_gear_weight" style="display: none">0</span>
-                <span id="custom_inventory_weight" style="display: none"
-                  >0</span
-                >
+                <span id="custom_inventory_weight" style="display: none">0</span>
                 <span id="total_weight" style="display: none">0</span>
               </div>
 
               <!-- Points col -->
+              <!-- Value col -->
+              <div class="resume-col">
+                <h3 class="resume-col-title" id="sec-resume-value"></h3>
+                <table class="resume-table">
+                  <tbody>
+                    <tr class="resume-expander-row" data-tbody-target="resume_value_tbody">
+                      <td colspan="2">
+                        <button class="resume-expander-btn" aria-expanded="false" aria-label="Expandir">
+                          <span class="resume-expander-arrow">&#8250;</span>
+                          <span id="sec-resume-value-detail"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody id="resume_value_tbody" class="resume-collapsible" hidden></tbody>
+                  <tbody>
+                    <tr class="resume-total-row">
+                      <td><strong id="lbl-resume-totalValue"></strong></td>
+                      <td class="col-num" id="resume_total_value_cell"><strong>0</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <!-- Points row: full width below -->
+            <div class="resume-grid resume-grid--points">
               <div class="resume-col">
                 <h3 class="resume-col-title" id="sec-resume-points"></h3>
                 <table class="resume-table">
@@ -317,6 +359,7 @@
                 </table>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -370,88 +413,140 @@
                   <tr>
                     <td><strong>ST</strong></td>
                     <td class="col-num">
-                      <input
-                        id="ST_base"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value="10"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="ST_base"
+                          type="text"
+                          inputmode="numeric"
+                          data-min="5"
+                          data-max="20"
+                          value="10"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="ST_race">0</td>
                     <td class="col-num">
-                      <input
-                        id="ST_mod"
-                        type="text"
-                        inputmode="numeric"
-                        value="0"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="ST_mod"
+                          type="text"
+                          inputmode="numeric"
+                          value="0"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="ST_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>DX</strong></td>
                     <td class="col-num">
-                      <input
-                        id="DX_base"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value="10"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="DX_base"
+                          type="text"
+                          inputmode="numeric"
+                          data-min="5"
+                          data-max="20"
+                          value="10"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="DX_race">0</td>
                     <td class="col-num">
-                      <input
-                        id="DX_mod"
-                        type="text"
-                        inputmode="numeric"
-                        value="0"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="DX_mod"
+                          type="text"
+                          inputmode="numeric"
+                          value="0"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="DX_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>IQ</strong></td>
                     <td class="col-num">
-                      <input
-                        id="IQ_base"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value="10"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="IQ_base"
+                          type="text"
+                          inputmode="numeric"
+                          data-min="5"
+                          data-max="20"
+                          value="10"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="IQ_race">0</td>
                     <td class="col-num">
-                      <input
-                        id="IQ_mod"
-                        type="text"
-                        inputmode="numeric"
-                        value="0"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="IQ_mod"
+                          type="text"
+                          inputmode="numeric"
+                          value="0"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="IQ_actual">10</td>
                   </tr>
                   <tr>
                     <td><strong>HT</strong></td>
                     <td class="col-num">
-                      <input
-                        id="HT_base"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value="10"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="HT_base"
+                          type="text"
+                          inputmode="numeric"
+                          data-min="5"
+                          data-max="20"
+                          value="10"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="HT_race">0</td>
                     <td class="col-num">
-                      <input
-                        id="HT_mod"
-                        type="text"
-                        inputmode="numeric"
-                        value="0"
-                      />
+                      <div class="num-stepper">
+                        <input
+                          id="HT_mod"
+                          type="text"
+                          inputmode="numeric"
+                          value="0"
+                        />
+                        <div class="stepper-btns">
+                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                        </div>
+                      </div>
                     </td>
                     <td class="col-num" id="HT_actual">10</td>
                   </tr>
@@ -839,6 +934,11 @@
             ></button>
             <button
               class="tab-btn"
+              data-tab="tab-inv-coin"
+              id="tab-btn-inv-coin"
+            ></button>
+            <button
+              class="tab-btn"
               data-tab="tab-inv-custom"
               id="tab-btn-inv-custom"
             ></button>
@@ -898,6 +998,11 @@
               <button id="addSurvivalGearBtn"></button>
             </div>
             <div id="survivalGearList"></div>
+          </div>
+
+          <!-- Panel: Bolsa de Moedas -->
+          <div class="tab-panel" id="tab-inv-coin">
+            <div id="coinPurseList"></div>
           </div>
 
           <!-- Panel: Inventário Personalizado -->
@@ -1146,6 +1251,7 @@
         // section-inventory
         setText("tab-btn-inv-alchemy", L.tabs.inventory.alchemy);
         setText("tab-btn-inv-survival", L.tabs.inventory.survivalGear);
+        setText("tab-btn-inv-coin", L.tabs.inventory.coinPurse);
         setText("tab-btn-inv-custom", L.tabs.inventory.customInventory);
 
         // Sub-section summaries still in use (equip sub-details, output)
@@ -1183,9 +1289,14 @@
 
         // Resume labels
         setText("sec-resume-weight", L.resume.weightTitle);
+        setText("sec-resume-weight-detail", L.resume.weightDetail);
+        setText("sec-resume-value", L.resume.valueTitle);
+        setText("sec-resume-value-detail", L.resume.valueDetail);
         setText("sec-resume-points", L.resume.pointsTitle);
         setText("lbl-baseWeight", L.resume.baseWeightLabel);
         setText("lbl-encumbrance", L.resume.encumbrance + ":");
+        setText("lbl-resume-totalWeight", L.resume.totalWeight);
+        setText("lbl-resume-totalValue", L.resume.totalValue);
         setText("th-resume-category", L.resume.category);
         setText("th-resume-points", L.resume.points);
 
@@ -1291,6 +1402,21 @@
       }
 
       initAppShell();
+
+      // ── Resume expander (collapsible detail rows) ─────────────────────────
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".resume-expander-btn");
+        if (!btn) return;
+        const tbodyId = btn.closest("tr")?.dataset.tbodyTarget;
+        if (!tbodyId) return;
+        const tbody   = document.getElementById(tbodyId);
+        if (!tbody) return;
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!expanded));
+        tbody.hidden = expanded;
+        btn.querySelector(".resume-expander-arrow")
+           .classList.toggle("resume-expander-arrow--open", !expanded);
+      });
 
       // ── Active nav highlighting (shared between sidebar & bottom nav) ────────
       const allNavLinks = document.querySelectorAll(

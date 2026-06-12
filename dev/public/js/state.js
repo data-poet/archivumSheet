@@ -43,6 +43,7 @@ export const state = {
     alchemy: [],
     survivalGear: [],
     customInventory: [],
+    coins: [],
   },
 
   // ===== UI STATE =====

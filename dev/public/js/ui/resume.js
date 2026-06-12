@@ -7,16 +7,11 @@ import { el } from "../shared/dom.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // renderResume
-//
-// Renders the "Resumo do Personagem" panel:
-//   - Weight breakdown + encumbrance state (moved from the old Inventory box)
-//   - Character points breakdown per category + grand total
-//
-// Called after every runEngine() resolve. Engine is the single source of truth.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function renderResume(sheet) {
   renderResumeWeight(sheet);
+  renderResumeValue(sheet);
   renderResumePoints(sheet);
 }
 
@@ -25,21 +20,19 @@ export function renderResume(sheet) {
 function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
 
-  const weightEl = el("weight");
+  const weightEl   = el("weight");
   const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
 
-  const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
-  const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
-  const meleeWeight =
-    sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
-  const rangedWeight =
-    sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
-  const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
-  const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
-  const survivalGearWeight =
-    sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
-  const customInventoryWeight =
-    sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const armorWeight        = sheet?.inventory?.armor?.carried_armor_weight || 0;
+  const shieldWeight       = sheet?.inventory?.shield?.carried_shield_weight || 0;
+  const meleeWeight        = sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
+  const rangedWeight       = sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
+  const ammoWeight         = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
+  const alchemyWeight      = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
+  const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
+  const customWeight       = sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const coinPurseWeight    = sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
+
   const totalWeight =
     baseWeight +
     armorWeight +
@@ -49,83 +42,57 @@ function renderResumeWeight(sheet) {
     ammoWeight +
     alchemyWeight +
     survivalGearWeight +
-    customInventoryWeight;
+    customWeight +
+    coinPurseWeight;
 
   // Encumbrance key
   let stateKey = "none";
   if (carry) {
-    if (totalWeight >= carry.limits.veryHeavy) stateKey = "overloaded";
-    else if (totalWeight >= carry.limits.heavy) stateKey = "veryHeavy";
-    else if (totalWeight >= carry.limits.medium) stateKey = "heavy";
-    else if (totalWeight >= carry.limits.light) stateKey = "medium";
-    else if (totalWeight > carry.limits.none) stateKey = "light";
+    if      (totalWeight >= carry.limits.veryHeavy) stateKey = "overloaded";
+    else if (totalWeight >= carry.limits.heavy)     stateKey = "veryHeavy";
+    else if (totalWeight >= carry.limits.medium)    stateKey = "heavy";
+    else if (totalWeight >= carry.limits.light)     stateKey = "medium";
+    else if (totalWeight > carry.limits.none)       stateKey = "light";
   }
 
   const encumbranceLabel = carry
     ? `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`
     : "—";
 
-  // Weight rows tbody
+  // ── Detail rows (collapsible tbody — JS only sets innerHTML) ─────────────
   const weightTbody = el("resume_weight_tbody");
   if (weightTbody) {
     weightTbody.innerHTML = `
-      <tr>
-        <td>${t("resume.armorWeight")}</td>
-        <td class="col-num">${armorWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("resume.shieldWeight")}</td>
-        <td class="col-num">${shieldWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("resume.meleeWeight")}</td>
-        <td class="col-num">${meleeWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("resume.rangedWeight")}</td>
-        <td class="col-num">${rangedWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("ammo.ammoWeight")}</td>
-        <td class="col-num">${ammoWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("alchemy.alchemyWeight")}</td>
-        <td class="col-num">${alchemyWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("survivalGear.survivalGearWeight")}</td>
-        <td class="col-num">${survivalGearWeight}</td>
-      </tr>
-      <tr>
-        <td>${t("customInventory.customInventoryWeight")}</td>
-        <td class="col-num">${customInventoryWeight}</td>
-      </tr>
-      <tr class="resume-total-row">
-        <td><strong>${t("resume.totalWeight")}</strong></td>
-        <td class="col-num"><strong>${totalWeight}</strong></td>
-      </tr>
+      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorWeight}</td></tr>
+      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldWeight}</td></tr>
+      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeWeight}</td></tr>
+      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedWeight}</td></tr>
+      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoWeight}</td></tr>
+      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyWeight}</td></tr>
+      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearWeight}</td></tr>
+      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customWeight}</td></tr>
+      <tr><td>${t("coinPurse.coinPurseWeight")}</td><td class="col-num">${coinPurseWeight}</td></tr>
     `;
   }
 
-  // Keep the legacy span IDs in sync so updateInventoryUI (called separately)
-  // also works — just set the ones that live outside the resume table
-  const set = (id, val) => {
-    const e = el(id);
-    if (e) e.textContent = val;
-  };
-  set("armor_weight", armorWeight);
-  set("shield_weight", shieldWeight);
-  set("melee_weight", meleeWeight);
-  set("ranged_weight", rangedWeight);
-  set("ammo_weight", ammoWeight);
-  set("alchemy_weight", alchemyWeight);
-  set("survival_gear_weight", survivalGearWeight);
-  set("custom_inventory_weight", customInventoryWeight);
-  set("total_weight", totalWeight);
-  set("encumbrance", encumbranceLabel);
+  // ── Total cell (always visible) ───────────────────────────────────────────
+  const totalWeightCell = el("resume_total_weight_cell");
+  if (totalWeightCell) totalWeightCell.innerHTML = `<strong>${totalWeight}</strong>`;
 
-  // Carry limits table
+  // ── Legacy hidden spans ───────────────────────────────────────────────────
+  const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
+  set("armor_weight",            armorWeight);
+  set("shield_weight",           shieldWeight);
+  set("melee_weight",            meleeWeight);
+  set("ranged_weight",           rangedWeight);
+  set("ammo_weight",             ammoWeight);
+  set("alchemy_weight",          alchemyWeight);
+  set("survival_gear_weight",    survivalGearWeight);
+  set("custom_inventory_weight", customWeight);
+  set("total_weight",            totalWeight);
+  set("encumbrance",             encumbranceLabel);
+
+  // ── Carry limits table ────────────────────────────────────────────────────
   const limitsEl = el("carry_limits");
   if (limitsEl && carry) {
     limitsEl.innerHTML = `
@@ -153,6 +120,48 @@ function renderResumeWeight(sheet) {
   }
 }
 
+// ── Value resume ──────────────────────────────────────────────────────────────
+
+function renderResumeValue(sheet) {
+  const armorValue        = sheet?.inventory?.armor?.carried_armor_value || 0;
+  const shieldValue       = sheet?.inventory?.shield?.carried_shield_value || 0;
+  const meleeValue        = sheet?.inventory?.melee?.carried_melee_weapons_value || 0;
+  const rangedValue       = sheet?.inventory?.ranged?.carried_ranged_weapons_value || 0;
+  const ammoValue         = sheet?.inventory?.ammo?.carried_ammo_value || 0;
+  const alchemyValue      = sheet?.inventory?.alchemy?.carried_alchemy_value || 0;
+  const survivalGearValue = sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
+  const customValue       = sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
+
+  const totalValue =
+    armorValue +
+    shieldValue +
+    meleeValue +
+    rangedValue +
+    ammoValue +
+    alchemyValue +
+    survivalGearValue +
+    customValue;
+
+  // ── Detail rows (collapsible tbody) ──────────────────────────────────────
+  const valueTbody = el("resume_value_tbody");
+  if (valueTbody) {
+    valueTbody.innerHTML = `
+      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorValue}</td></tr>
+      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldValue}</td></tr>
+      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeValue}</td></tr>
+      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedValue}</td></tr>
+      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoValue}</td></tr>
+      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyValue}</td></tr>
+      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearValue}</td></tr>
+      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customValue}</td></tr>
+    `;
+  }
+
+  // ── Total cell (always visible) ───────────────────────────────────────────
+  const totalValueCell = el("resume_total_value_cell");
+  if (totalValueCell) totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
+}
+
 // ── Character Points ──────────────────────────────────────────────────────────
 
 function renderResumePoints(sheet) {
@@ -161,32 +170,24 @@ function renderResumePoints(sheet) {
   if (!pointsTbody) return;
 
   const rows = [
-    {
-      label: t("resume.primaryAttributes"),
-      value: pts?.primary_attributes ?? 0,
-    },
-    {
-      label: t("resume.secondaryAttributes"),
-      value: pts?.secondary_attributes ?? 0,
-    },
-    { label: t("resume.advantages"), value: pts?.advantages ?? 0 },
-    { label: t("resume.disadvantages"), value: pts?.disadvantages ?? 0 },
-    { label: t("resume.skills"), value: pts?.skills ?? 0 },
-    { label: t("resume.spells"), value: pts?.spells ?? 0 },
+    { label: t("resume.primaryAttributes"),   value: pts?.primary_attributes   ?? 0 },
+    { label: t("resume.secondaryAttributes"), value: pts?.secondary_attributes ?? 0 },
+    { label: t("resume.advantages"),          value: pts?.advantages           ?? 0 },
+    { label: t("resume.disadvantages"),       value: pts?.disadvantages        ?? 0 },
+    { label: t("resume.skills"),              value: pts?.skills               ?? 0 },
+    { label: t("resume.spells"),              value: pts?.spells               ?? 0 },
   ];
 
   const total = rows.reduce((sum, r) => sum + Number(r.value || 0), 0);
 
   pointsTbody.innerHTML =
     rows
-      .map(
-        (r) => `
-      <tr>
-        <td>${r.label}</td>
-        <td class="col-num resume-points-value">${r.value}</td>
-      </tr>
-    `,
-      )
+      .map((r) => `
+        <tr>
+          <td>${r.label}</td>
+          <td class="col-num resume-points-value">${r.value}</td>
+        </tr>
+      `)
       .join("") +
     `<tr class="resume-total-row">
       <td><strong>${t("resume.total")}</strong></td>

@@ -123,6 +123,7 @@ export async function runEngine() {
         alchemy: selected.alchemy,
         survival_gear: selected.survivalGear,
         custom_inventory: selected.customInventory,
+        coins: selected.coins,
       },
     });
 

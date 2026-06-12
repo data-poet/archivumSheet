@@ -19,9 +19,12 @@ import {
   handleAddCustomItem,
 } from "./customInventoryEvents.js";
 import {
-  filterSubRacesByName,
-  selectSubRace,
-} from "../character/races.js";
+  handleCoinPurseClick,
+  handleCoinPurseInput,
+  handleCoinPurseChange,
+  handleAddCoins,
+} from "./coinPurseEvents.js";
+import { filterSubRacesByName, selectSubRace } from "../character/races.js";
 import {
   handleCharacterInput,
   handleCharacterChange,
@@ -138,6 +141,9 @@ export function bindUI() {
   // ── Custom Inventory ──────────────────────────────────────────────────────
   on("addCustomItemBtn", "click", handleAddCustomItem);
 
+  // ── Coin Purse ────────────────────────────────────────────────────────────
+  on("addCoinBtn", "click", handleAddCoins);
+
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
@@ -153,6 +159,7 @@ export function bindUI() {
     if (handleAlchemyClick(e)) return;
     if (handleSurvivalGearClick(e)) return;
     if (handleCustomInventoryClick(e)) return;
+    if (handleCoinPurseClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -168,6 +175,7 @@ export function bindUI() {
     if (handleAlchemyInput(e)) return;
     if (handleSurvivalGearInput(e)) return;
     if (handleCustomInventoryInput(e)) return;
+    if (handleCoinPurseInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -182,6 +190,7 @@ export function bindUI() {
     if (handleAlchemyChange(e)) return;
     if (handleSurvivalGearChange(e)) return;
     if (handleCustomInventoryChange(e)) return;
+    if (handleCoinPurseChange(e)) return;
   });
 
   // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────
@@ -192,9 +201,13 @@ export function bindUI() {
     if (!input) return;
     const step = parseFloat(input.dataset.step ?? input.step) || 1;
     const current = parseFloat(input.value) || 0;
-    const next = btn.classList.contains("stepper-inc")
+    let next = btn.classList.contains("stepper-inc")
       ? current + step
       : current - step;
+    if (input.dataset.min !== undefined)
+      next = Math.max(next, Number(input.dataset.min));
+    if (input.dataset.max !== undefined)
+      next = Math.min(next, Number(input.dataset.max));
     input.value = next;
     input.dispatchEvent(new Event("input", { bubbles: true }));
   });
