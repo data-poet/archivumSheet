@@ -11,7 +11,7 @@ describe("shieldResolver", () => {
     shield_name: "Escudo Redondo",
     shield_type: "Leve",
     shield_tier: "Comum",
-    shield_damage_resistence: 2,
+    shield_damage_resistance: 2,
     shield_weight: 3,
     shield_price: 100,
     shield_hit_points: 10,
@@ -37,7 +37,7 @@ describe("shieldResolver", () => {
       const result = applyMaterialToShield(mockShield, mockMaterial);
 
       expect(result).toEqual({
-        shield_final_damage_resistence: 3,
+        shield_final_damage_resistance: 3,
         shield_final_weight: 3.15,
         shield_final_price: 110,
         shield_final_hit_points: 20,
@@ -48,7 +48,7 @@ describe("shieldResolver", () => {
       const result = applyMaterialToShield(mockShield, null);
 
       expect(result).toEqual({
-        shield_final_damage_resistence: 2,
+        shield_final_damage_resistance: 2,
         shield_final_weight: 3,
         shield_final_price: 100,
         shield_final_hit_points: 10,
@@ -75,7 +75,7 @@ describe("shieldResolver", () => {
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
-        shield_damage_resistence: 2,
+        shield_damage_resistance: 2,
         shield_weight: 3,
         shield_price: 100,
         shield_hit_points: 10,
@@ -92,7 +92,7 @@ describe("shieldResolver", () => {
         material_hit_points_modifier: 2,
 
         // FINAL VALUES
-        shield_final_damage_resistence: 3,
+        shield_final_damage_resistance: 3,
         shield_final_weight: 3.15,
         shield_final_price: 110,
         shield_final_hit_points: 20,
@@ -126,7 +126,7 @@ describe("shieldResolver", () => {
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
-        shield_damage_resistence: 2,
+        shield_damage_resistance: 2,
         shield_weight: 3,
         shield_price: 100,
         shield_hit_points: 10,
@@ -143,7 +143,7 @@ describe("shieldResolver", () => {
         material_hit_points_modifier: 0,
 
         // FINAL VALUES
-        shield_final_damage_resistence: 2,
+        shield_final_damage_resistance: 2,
         shield_final_weight: 3,
         shield_final_price: 100,
         shield_final_hit_points: 10,

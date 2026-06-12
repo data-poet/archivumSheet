@@ -41,7 +41,7 @@ function getShieldDB() {
       shield_name: row.shield_name,
       shield_type: row.shield_type,
       shield_tier: row.shield_tier,
-      shield_damage_resistence: Number(row.shield_damage_resistence),
+      shield_damage_resistance: Number(row.shield_damage_resistance),
       shield_weight: Number(row.shield_weight),
       shield_price: Number(row.shield_price),
       shield_hit_points: Number(row.shield_hit_points),
@@ -169,7 +169,7 @@ function buildShieldSlots(shieldInventory = []) {
   const backpack = buildStorageBucket();
 
   let carried_shield_weight = 0;
-  let carried_shield_value  = 0;
+  let carried_shield_value = 0;
 
   for (const instance of shieldInventory) {
     const shield = shieldDb[instance.shield_id];
@@ -186,7 +186,7 @@ function buildShieldSlots(shieldInventory = []) {
       equipped = resolvedShield;
 
       carried_shield_weight += resolvedShield.shield_final_weight;
-      carried_shield_value  += resolvedShield.total_value;
+      carried_shield_value += resolvedShield.total_value;
 
       continue;
     }
@@ -213,7 +213,7 @@ function buildShieldSlots(shieldInventory = []) {
       backpack.push(resolvedShield);
 
       carried_shield_weight += resolvedShield.shield_final_weight;
-      carried_shield_value  += resolvedShield.total_value;
+      carried_shield_value += resolvedShield.total_value;
     }
   }
 

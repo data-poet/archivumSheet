@@ -43,7 +43,7 @@ function getArmorDB() {
       armor_piece_location: row.armor_piece_location,
       armor_type: row.armor_type,
       armor_tier: row.armor_tier,
-      armor_damage_resistence: Number(row.armor_damage_resistence),
+      armor_damage_resistance: Number(row.armor_damage_resistance),
       armor_weight: Number(row.armor_weight),
       armor_price: Number(row.armor_price),
       armor_hit_points: Number(row.armor_hit_points),
@@ -172,7 +172,7 @@ function buildArmorSlots(armorInventory = []) {
   const backpack = buildStorageSlots();
 
   let carried_armor_weight = 0;
-  let carried_armor_value  = 0;
+  let carried_armor_value = 0;
 
   for (const instance of armorInventory) {
     const armor = armorDb[instance.armor_id];
@@ -191,7 +191,7 @@ function buildArmorSlots(armorInventory = []) {
       equipped[slot] = resolvedArmor;
 
       carried_armor_weight += resolvedArmor.armor_final_weight;
-      carried_armor_value  += resolvedArmor.total_value;
+      carried_armor_value += resolvedArmor.total_value;
 
       continue;
     }
@@ -218,7 +218,7 @@ function buildArmorSlots(armorInventory = []) {
       backpack[slot].push(resolvedArmor);
 
       carried_armor_weight += resolvedArmor.armor_final_weight;
-      carried_armor_value  += resolvedArmor.total_value;
+      carried_armor_value += resolvedArmor.total_value;
     }
   }
 

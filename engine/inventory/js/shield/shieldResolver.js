@@ -16,7 +16,7 @@ function round2(value) {
 function applyMaterialToShield(shield, material) {
   if (!material) {
     return {
-      shield_final_damage_resistence: round2(shield.shield_damage_resistence),
+      shield_final_damage_resistance: round2(shield.shield_damage_resistance),
       shield_final_weight: round2(shield.shield_weight),
       shield_final_price: round2(shield.shield_price),
       shield_final_hit_points: round2(shield.shield_hit_points),
@@ -24,8 +24,8 @@ function applyMaterialToShield(shield, material) {
   }
 
   return {
-    shield_final_damage_resistence: round2(
-      shield.shield_damage_resistence +
+    shield_final_damage_resistance: round2(
+      shield.shield_damage_resistance +
         Number(material.material_dr_modifier || 0),
     ),
     shield_final_weight: round2(
@@ -62,7 +62,7 @@ function resolveShieldPiece(instance, shield, material = null) {
     shield_box_name: shield.shield_box_name,
     shield_type: shield.shield_type,
     shield_tier: shield.shield_tier,
-    shield_damage_resistence: shield.shield_damage_resistence,
+    shield_damage_resistance: shield.shield_damage_resistance,
     shield_weight: shield.shield_weight,
     shield_price: shield.shield_price,
     shield_hit_points: shield.shield_hit_points,

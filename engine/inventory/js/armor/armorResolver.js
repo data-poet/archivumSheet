@@ -11,7 +11,7 @@ function round2(value) {
 function applyMaterialToArmor(armor, material) {
   if (!material) {
     return {
-      armor_final_damage_resistence: round2(armor.armor_damage_resistence),
+      armor_final_damage_resistance: round2(armor.armor_damage_resistance),
       armor_final_weight: round2(armor.armor_weight),
       armor_final_price: round2(armor.armor_price),
       armor_final_hit_points: round2(armor.armor_hit_points),
@@ -19,8 +19,8 @@ function applyMaterialToArmor(armor, material) {
   }
 
   return {
-    armor_final_damage_resistence: round2(
-      armor.armor_damage_resistence +
+    armor_final_damage_resistance: round2(
+      armor.armor_damage_resistance +
         Number(material.material_dr_modifier || 0),
     ),
 
@@ -61,7 +61,7 @@ function resolveArmorPiece(instance, armor, material = null) {
     armor_piece_location: SLOT_MAP[armor.armor_piece_location],
     armor_type: armor.armor_type,
     armor_tier: armor.armor_tier,
-    armor_damage_resistence: armor.armor_damage_resistence,
+    armor_damage_resistance: armor.armor_damage_resistance,
     armor_weight: armor.armor_weight,
     armor_price: armor.armor_price,
     armor_hit_points: armor.armor_hit_points,

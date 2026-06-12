@@ -18,7 +18,7 @@ describe("equipmentArmorUtils", () => {
     armor_piece_location: "Cabeça",
     armor_type: "Leve",
     armor_tier: "Comum",
-    armor_damage_resistence: 2,
+    armor_damage_resistance: 2,
     armor_weight: 1.5,
     armor_price: 100,
     armor_hit_points: 10,
@@ -45,7 +45,7 @@ describe("equipmentArmorUtils", () => {
       const result = applyMaterialToArmor(mockArmor, mockMaterial);
 
       expect(result).toEqual({
-        armor_final_damage_resistence: 3,
+        armor_final_damage_resistance: 3,
         armor_final_weight: 1.58,
         armor_final_price: 110,
         armor_final_hit_points: 20,
@@ -56,7 +56,7 @@ describe("equipmentArmorUtils", () => {
       const result = applyMaterialToArmor(mockArmor, null);
 
       expect(result).toEqual({
-        armor_final_damage_resistence: 2,
+        armor_final_damage_resistance: 2,
         armor_final_weight: 1.5,
         armor_final_price: 100,
         armor_final_hit_points: 10,
@@ -86,7 +86,7 @@ describe("equipmentArmorUtils", () => {
 
         armor_type: "Leve",
         armor_tier: "Comum",
-        armor_damage_resistence: 2,
+        armor_damage_resistance: 2,
         armor_weight: 1.5,
         armor_price: 100,
         armor_hit_points: 10,
@@ -101,7 +101,7 @@ describe("equipmentArmorUtils", () => {
         material_price_modifier: 1.1,
         material_hit_points_modifier: 2,
 
-        armor_final_damage_resistence: 3,
+        armor_final_damage_resistance: 3,
         armor_final_weight: 1.58,
         armor_final_price: 110,
         armor_final_hit_points: 20,
@@ -130,7 +130,7 @@ describe("equipmentArmorUtils", () => {
 
       expect(result.material_id).toBeNull();
       expect(result.material_name).toBeNull();
-      expect(result.armor_final_damage_resistence).toBe(2);
+      expect(result.armor_final_damage_resistance).toBe(2);
       expect(result.armor_final_weight).toBe(1.5);
       expect(result.armor_piece_location).toBe("head");
       expect(result.hit_points_modifier).toBe(-2);
