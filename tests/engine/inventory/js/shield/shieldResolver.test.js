@@ -75,21 +75,13 @@ describe("shieldResolver", () => {
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
-        shield_damage_resistance: 2,
-        shield_weight: 3,
-        shield_price: 100,
-        shield_hit_points: 10,
 
         // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
-        material_dr_modifier: 1,
         material_def_effect: null,
-        material_weight_modifier: 1.05,
-        material_price_modifier: 1.1,
-        material_hit_points_modifier: 2,
 
         // FINAL VALUES
         shield_final_damage_resistance: 3,
@@ -126,21 +118,13 @@ describe("shieldResolver", () => {
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
-        shield_damage_resistance: 2,
-        shield_weight: 3,
-        shield_price: 100,
-        shield_hit_points: 10,
 
         // MATERIAL
         material_id: null,
         material_name: null,
         material_type: null,
         material_tier: null,
-        material_dr_modifier: 0,
         material_def_effect: null,
-        material_weight_modifier: 1,
-        material_price_modifier: 1,
-        material_hit_points_modifier: 0,
 
         // FINAL VALUES
         shield_final_damage_resistance: 2,

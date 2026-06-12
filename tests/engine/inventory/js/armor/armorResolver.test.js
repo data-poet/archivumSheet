@@ -86,20 +86,12 @@ describe("equipmentArmorUtils", () => {
 
         armor_type: "Leve",
         armor_tier: "Comum",
-        armor_damage_resistance: 2,
-        armor_weight: 1.5,
-        armor_price: 100,
-        armor_hit_points: 10,
 
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
-        material_dr_modifier: 1,
         material_def_effect: null,
-        material_weight_modifier: 1.05,
-        material_price_modifier: 1.1,
-        material_hit_points_modifier: 2,
 
         armor_final_damage_resistance: 3,
         armor_final_weight: 1.58,

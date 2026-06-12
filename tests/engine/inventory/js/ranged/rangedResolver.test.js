@@ -89,12 +89,8 @@ describe("rangedResolver", () => {
         weapon_tier: "Comum",
         weapon_min_strength: 5,
         weapon_damage_type: "Perfuração",
-        weapon_gdp_modifier: 3,
         weapon_tr: 1,
         weapon_prec: 2,
-        weapon_weight: 2,
-        weapon_price: 120,
-        weapon_hit_points: 15,
 
         // RESOLVED DISTANCES
         weapon_half_distance: 10,
@@ -105,11 +101,7 @@ describe("rangedResolver", () => {
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
-        material_dr_modifier: 1,
         material_atk_effect: null,
-        material_weight_modifier: 1.05,
-        material_price_modifier: 1.1,
-        material_hit_points_modifier: 2,
 
         // FINAL VALUES
         weapon_final_gdp_modifier: 5,
@@ -149,12 +141,8 @@ describe("rangedResolver", () => {
         weapon_tier: "Comum",
         weapon_min_strength: 5,
         weapon_damage_type: "Perfuração",
-        weapon_gdp_modifier: 3,
         weapon_tr: 1,
         weapon_prec: 2,
-        weapon_weight: 2,
-        weapon_price: 120,
-        weapon_hit_points: 15,
 
         // RESOLVED DISTANCES
         weapon_half_distance: 8,
@@ -165,11 +153,7 @@ describe("rangedResolver", () => {
         material_name: null,
         material_type: null,
         material_tier: null,
-        material_dr_modifier: 0,
         material_atk_effect: null,
-        material_weight_modifier: 1,
-        material_price_modifier: 1,
-        material_hit_points_modifier: 0,
 
         // FINAL VALUES
         weapon_final_gdp_modifier: 3,

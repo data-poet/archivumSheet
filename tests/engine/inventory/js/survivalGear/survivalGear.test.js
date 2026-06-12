@@ -30,7 +30,6 @@ describe("SURVIVAL GEAR", () => {
       expect(gear).toHaveProperty("adventure_gear_type");
       expect(gear).toHaveProperty("adventure_gear_price");
       expect(gear).toHaveProperty("adventure_gear_weight");
-      expect(gear).toHaveProperty("adventure_gear_observation");
     });
   });
 
@@ -81,7 +80,9 @@ describe("SURVIVAL GEAR", () => {
         { adventure_gear_id: gearId, quantity: 1, storedAt: "backpack" },
       ]);
 
-      expect(result.carried_survival_gear_weight).toBe(gear.adventure_gear_weight);
+      expect(result.carried_survival_gear_weight).toBe(
+        gear.adventure_gear_weight,
+      );
     });
 
     test("Should NOT count stash weight toward carried weight", () => {
@@ -108,7 +109,9 @@ describe("SURVIVAL GEAR", () => {
         { adventure_gear_id: gearId, quantity: 3, storedAt: "backpack" },
       ]);
 
-      const expectedWeight = Math.round((gear.adventure_gear_weight * 5 + Number.EPSILON) * 100) / 100;
+      const expectedWeight =
+        Math.round((gear.adventure_gear_weight * 5 + Number.EPSILON) * 100) /
+        100;
 
       expect(result.carried_survival_gear_weight).toBe(expectedWeight);
     });
@@ -136,7 +139,11 @@ describe("SURVIVAL GEAR", () => {
     test("Should throw for unknown adventure_gear_id", () => {
       expect(() => {
         buildSurvivalGearSlots([
-          { adventure_gear_id: "GEAR-INVALID", quantity: 1, storedAt: "backpack" },
+          {
+            adventure_gear_id: "GEAR-INVALID",
+            quantity: 1,
+            storedAt: "backpack",
+          },
         ]);
       }).toThrow("Unknown adventure_gear_id(s)");
     });

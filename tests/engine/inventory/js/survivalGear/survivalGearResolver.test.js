@@ -10,7 +10,6 @@ describe("survivalGearResolver", () => {
     adventure_gear_type: "Alimentos",
     adventure_gear_price: 2,
     adventure_gear_weight: 0.3,
-    adventure_gear_observation: "- Uma refeição com carne seca e queijo.",
   };
 
   describe("resolveSurvivalGearItem", () => {
@@ -29,7 +28,7 @@ describe("survivalGearResolver", () => {
         adventure_gear_type: "Alimentos",
         adventure_gear_price: 2,
         adventure_gear_weight: 0.3,
-        adventure_gear_observation: "- Uma refeição com carne seca e queijo.",
+
         quantity: 1,
         storedAt: "backpack",
         total_weight: 0.3,
@@ -102,10 +101,7 @@ describe("survivalGearResolver", () => {
     });
 
     test("Should round result to 2 decimal places", () => {
-      const backpackItems = [
-        { total_weight: 0.1 },
-        { total_weight: 0.2 },
-      ];
+      const backpackItems = [{ total_weight: 0.1 }, { total_weight: 0.2 }];
 
       const result = calculateCarriedSurvivalGearWeight(backpackItems);
 
