@@ -1120,6 +1120,144 @@ tr.spell-detail-row details[open] summary {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESUME ROWS — new layout system
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.resume-row {
+  margin-bottom: 1rem;
+}
+
+/* Two-column side-by-side on desktop, stacked on mobile */
+.resume-row--two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .resume-row--two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Header + bars: side by side on desktop, stacked on mobile */
+.resume-row--header-bars {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .resume-row--header-bars {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Points row always full-width */
+.resume-row--points {
+  margin-bottom: 1rem;
+}
+
+.resume-full-col {
+  width: 100%;
+}
+
+/* ── Character header ──────────────────────────────────────────────────── */
+.resume-header-block {
+  display: flex;
+  align-items: center;
+}
+
+.resume-char-name {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+/* ── Bars block ────────────────────────────────────────────────────────── */
+.resume-bars-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.resume-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.resume-bar-label {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.resume-bar-values {
+  font-size: var(--fs-xxs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.resume-bar-track {
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.resume-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.resume-bar--hp       { background: #e05252; }
+.resume-bar--mana     { background: #4a90d9; }
+.resume-bar--toxicity { background: #3aaa5c; }
+
+/* ── Section collapsible cards ─────────────────────────────────────────── */
+.resume-section-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: 4px 0 4px 2px;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 0;
+}
+
+.resume-section-toggle:hover {
+  color: var(--color-text);
+}
+
+.resume-section-title {
+  flex: 1;
+}
+
+.resume-collapse-body {
+  padding-top: 4px;
+}
+
 .resume-col-title {
   font-size: var(--fs-xxs);
   font-weight: 700;
@@ -1173,7 +1311,7 @@ tr.spell-detail-row details[open] summary {
   text-align: center;
 }
 
-/* ── Expander row ──────────────────────────────────────────────────────── */
+/* ── Expander row (legacy weight/value tables) ─────────────────────────── */
 .resume-expander-row td {
   padding: 4px 6px;
   border-bottom: 1px solid var(--color-border);

@@ -2,20 +2,508 @@ import {
   t,
   getEncumbranceLabel,
   getCarryLimitLabel,
+  getSecondaryAttributeLabel,
 } from "../localization/pt-BR.js";
 import { el } from "../shared/dom.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// renderResume
+// Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderResume(sheet) {
+const ARMOR_SLOTS = [
+  { key: "head",   label: "Cabeça"  },
+  { key: "torso",  label: "Tronco"  },
+  { key: "arms",   label: "Braços"  },
+  { key: "hands",  label: "Mãos"    },
+  { key: "legs",   label: "Pernas"  },
+  { key: "feet",   label: "Pés"     },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// renderResume(sheet, data)
+//   sheet  — engine output (state.sheet)
+//   data   — raw DB arrays (state.data) — used for ammo name lookup
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function renderResume(sheet, data = {}) {
+  renderResumeHeader(sheet);
+  renderResumeBars(sheet);
+  renderResumeTraits(sheet);
+  renderResumeSkills(sheet);
+  renderResumeMagic(sheet, data);
+  renderResumeArmor(sheet);
+  renderResumeShield(sheet);
+  renderResumeMelee(sheet);
+  renderResumeRanged(sheet);
+  renderResumeAmmo(sheet, data);
+  renderResumeAlchemy(sheet);
   renderResumeWeight(sheet);
   renderResumeValue(sheet);
   renderResumePoints(sheet);
 }
 
-// ── Weight / Encumbrance ──────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// 1. Header — character name | sub-race
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeHeader(sheet) {
+  const nameEl = el("resume_header_name");
+  if (!nameEl) return;
+
+  const charName  = sheet?.pc?.character_name  || "";
+  const subRace   = sheet?.race?.race_sub_name  || "";
+  const separator = charName && subRace ? " | " : "";
+
+  nameEl.textContent = charName + separator + subRace;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2. HP / Mana / Toxicity bars
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeBars(sheet) {
+  const attrs = sheet?.character?.secondary_attributes;
+  if (!attrs) return;
+
+  _renderBar("resume_bar_hp",       attrs.HP,       "resume-bar--hp");
+  _renderBar("resume_bar_mana",     attrs.Mana,     "resume-bar--mana");
+  _renderBar("resume_bar_toxicity", attrs.Toxicity, "resume-bar--toxicity");
+}
+
+function _renderBar(containerId, attr, modifierClass) {
+  const container = el(containerId);
+  if (!container || !attr) return;
+
+  // total = base_value + bought * step (step is always 4 for these three)
+  const total   = (attr.base_value ?? 0) + (attr.bought ?? 0) * 4;
+  // modifier is damage taken / spent — only shrink when negative
+  const rawMod  = attr.modifier ?? 0;
+  const lost    = rawMod < 0 ? Math.abs(rawMod) : 0;
+  const current = Math.max(0, total - lost);
+
+  const pct     = total > 0 ? Math.round((current / total) * 100) : 0;
+  const label   = getSecondaryAttributeLabel(
+    modifierClass === "resume-bar--hp"       ? "HP"
+    : modifierClass === "resume-bar--mana"   ? "Mana"
+    : "Toxicity"
+  );
+
+  container.innerHTML = `
+    <div class="resume-bar-header">
+      <span class="resume-bar-label">${label}</span>
+      <span class="resume-bar-values">${current}/${total}</span>
+    </div>
+    <div class="resume-bar-track">
+      <div
+        class="resume-bar-fill ${modifierClass}"
+        style="width: ${pct}%"
+        role="progressbar"
+        aria-valuenow="${current}"
+        aria-valuemin="0"
+        aria-valuemax="${total}"
+      ></div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3. Advantages & Disadvantages (collapsed tables)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeTraits(sheet) {
+  const advantages    = sheet?.character?.advantages    || {};
+  const disadvantages = sheet?.character?.disadvantages || {};
+
+  const advEntries = Object.values(advantages);
+  const disEntries = Object.values(disadvantages);
+
+  _renderCollapsibleNameList("resume_advantages_container", advEntries, t("resume.advantages"));
+  _renderCollapsibleNameList("resume_disadvantages_container", disEntries, t("resume.disadvantages"));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. Skills (collapsed table — name, value, actions)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeSkills(sheet) {
+  const skills  = sheet?.character?.skills || {};
+  const entries = Object.values(skills);
+  const container = el("resume_skills_container");
+  if (!container) return;
+
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = entries
+    .map((s) => `
+      <tr>
+        <td>${s.name ?? "—"}</td>
+        <td class="col-num">${s.value ?? "—"}</td>
+        <td class="col-num">${s.actions ?? "—"}</td>
+      </tr>
+    `)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("resume.skills"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table resume-table--skills">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("traits.final")}</th>
+              <th class="col-num">${t("traits.actions")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. Magic (collapsed table — spell name, cost, value)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeMagic(sheet, data) {
+  const spells    = sheet?.grimoire || {};
+  const spellsDb  = data?.spells ?? [];
+  const entries   = Object.entries(spells);
+  const container = el("resume_magic_container");
+  if (!container) return;
+
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = entries
+    .map(([id, s]) => {
+      const dbRow  = spellsDb.find((r) => r.spell_id === id);
+      const cost   = dbRow?.spell_cost ?? "—";
+      return `
+        <tr>
+          <td>${s.name ?? "—"}</td>
+          <td class="col-num">${cost}</td>
+          <td class="col-num">${s.value ?? "—"}</td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("resume.spells"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table resume-table--magic">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("traits.spellCost")}</th>
+              <th class="col-num">${t("traits.final")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. Equipped Armor (collapsed — slot | DR)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeArmor(sheet) {
+  const equipped  = sheet?.inventory?.armor?.equipped || {};
+  const container = el("resume_armor_container");
+  if (!container) return;
+
+  // Check if any slot is filled
+  const hasAny = ARMOR_SLOTS.some((s) => equipped[s.key] != null);
+  if (!hasAny) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = ARMOR_SLOTS
+    .map(({ key, label }) => {
+      const piece = equipped[key];
+      const dr    = piece ? piece.armor_final_damage_resistance : "—";
+      return `<tr><td>${label}</td><td class="col-num">${dr}</td></tr>`;
+    })
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.armor"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("armor.slot")}</th>
+              <th class="col-num">${t("armor.dr")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. Equipped Shield (collapsed — name | DR | block)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeShield(sheet) {
+  const equippedShield = sheet?.inventory?.shield?.equipped;
+  const container      = el("resume_shield_container");
+  if (!container) return;
+
+  if (!equippedShield) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const dr    = equippedShield.shield_final_damage_resistance ?? "—";
+  const block = equippedShield.block ?? "—";
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.shields"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("shield.dr")}</th>
+              <th class="col-num">${t("shield.block")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${equippedShield.shield_name ?? "—"}</td>
+              <td class="col-num">${dr}</td>
+              <td class="col-num">${block}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 8. Equipped Melee (collapsed — name | BAL dmg | GDP dmg)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeMelee(sheet) {
+  const equipped  = sheet?.inventory?.melee?.equipped ?? [];
+  const container = el("resume_melee_container");
+  if (!container) return;
+
+  if (equipped.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = equipped
+    .map((w) => `
+      <tr>
+        <td>${w.weapon_name ?? "—"}</td>
+        <td class="col-num">${w.weapon_bal_damage ?? "—"}</td>
+        <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
+      </tr>
+    `)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.melee"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("melee.balDmg")}</th>
+              <th class="col-num">${t("melee.gdpDmg")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 9. Equipped Ranged (collapsed — name | TR | PREC)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeRanged(sheet) {
+  const equipped  = sheet?.inventory?.ranged?.equipped ?? [];
+  const container = el("resume_ranged_container");
+  if (!container) return;
+
+  if (equipped.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = equipped
+    .map((w) => `
+      <tr>
+        <td>${w.weapon_name ?? "—"}</td>
+        <td class="col-num">${w.weapon_tr ?? "—"}</td>
+        <td class="col-num">${w.weapon_prec ?? "—"}</td>
+      </tr>
+    `)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.ranged"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("ranged.tr")}</th>
+              <th class="col-num">${t("ranged.prec")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 10. Ammo — equipped containers only (collapsed — name | qty)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeAmmo(sheet, data) {
+  const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
+  const ammoDb             = data?.ammo ?? [];
+  const container          = el("resume_ammo_container");
+  if (!container) return;
+
+  // Collect all ammo entries across equipped containers
+  const entries = [];
+  for (const cont of equippedContainers) {
+    for (const item of cont.contents ?? []) {
+      const dbRow   = ammoDb.find((a) => a.ammo_id === item.ammo_id);
+      const name    = dbRow?.ammo_name ?? item.ammo_id;
+      // Merge same ammo_id across containers
+      const existing = entries.find((e) => e.ammo_id === item.ammo_id);
+      if (existing) {
+        existing.quantity += item.quantity;
+      } else {
+        entries.push({ ammo_id: item.ammo_id, name, quantity: item.quantity });
+      }
+    }
+  }
+
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = entries
+    .map((e) => `
+      <tr>
+        <td>${e.name}</td>
+        <td class="col-num">${e.quantity}</td>
+      </tr>
+    `)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.munition"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("ammo.qty")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 11. Alchemy (collapsed — name | tier | qty)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeAlchemy(sheet) {
+  const backpack  = sheet?.inventory?.alchemy?.backpack ?? [];
+  const container = el("resume_alchemy_container");
+  if (!container) return;
+
+  if (backpack.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = backpack
+    .map((a) => `
+      <tr>
+        <td>${a.consumable_name ?? "—"}</td>
+        <td class="col-num">${a.consumable_tier ?? "—"}</td>
+        <td class="col-num">${a.quantity ?? 1}</td>
+      </tr>
+    `)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("alchemy.title"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("common.tier")}</th>
+              <th class="col-num">${t("alchemy.qty")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Weight (existing logic, kept compatible)
+// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
@@ -34,18 +522,9 @@ function renderResumeWeight(sheet) {
   const coinPurseWeight    = sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
 
   const totalWeight =
-    baseWeight +
-    armorWeight +
-    shieldWeight +
-    meleeWeight +
-    rangedWeight +
-    ammoWeight +
-    alchemyWeight +
-    survivalGearWeight +
-    customWeight +
-    coinPurseWeight;
+    baseWeight + armorWeight + shieldWeight + meleeWeight + rangedWeight +
+    ammoWeight + alchemyWeight + survivalGearWeight + customWeight + coinPurseWeight;
 
-  // Encumbrance key
   let stateKey = "none";
   if (carry) {
     if      (totalWeight >= carry.limits.veryHeavy) stateKey = "overloaded";
@@ -59,7 +538,6 @@ function renderResumeWeight(sheet) {
     ? `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`
     : "—";
 
-  // ── Detail rows (collapsible tbody — JS only sets innerHTML) ─────────────
   const weightTbody = el("resume_weight_tbody");
   if (weightTbody) {
     weightTbody.innerHTML = `
@@ -75,11 +553,10 @@ function renderResumeWeight(sheet) {
     `;
   }
 
-  // ── Total cell (always visible) ───────────────────────────────────────────
   const totalWeightCell = el("resume_total_weight_cell");
   if (totalWeightCell) totalWeightCell.innerHTML = `<strong>${totalWeight}</strong>`;
 
-  // ── Legacy hidden spans ───────────────────────────────────────────────────
+  // Legacy hidden spans
   const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
   set("armor_weight",            armorWeight);
   set("shield_weight",           shieldWeight);
@@ -92,7 +569,6 @@ function renderResumeWeight(sheet) {
   set("total_weight",            totalWeight);
   set("encumbrance",             encumbranceLabel);
 
-  // ── Carry limits table ────────────────────────────────────────────────────
   const limitsEl = el("carry_limits");
   if (limitsEl && carry) {
     limitsEl.innerHTML = `
@@ -120,7 +596,9 @@ function renderResumeWeight(sheet) {
   }
 }
 
-// ── Value resume ──────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Value resume
+// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeValue(sheet) {
   const armorValue        = sheet?.inventory?.armor?.carried_armor_value || 0;
@@ -133,16 +611,9 @@ function renderResumeValue(sheet) {
   const customValue       = sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
 
   const totalValue =
-    armorValue +
-    shieldValue +
-    meleeValue +
-    rangedValue +
-    ammoValue +
-    alchemyValue +
-    survivalGearValue +
-    customValue;
+    armorValue + shieldValue + meleeValue + rangedValue +
+    ammoValue + alchemyValue + survivalGearValue + customValue;
 
-  // ── Detail rows (collapsible tbody) ──────────────────────────────────────
   const valueTbody = el("resume_value_tbody");
   if (valueTbody) {
     valueTbody.innerHTML = `
@@ -157,12 +628,13 @@ function renderResumeValue(sheet) {
     `;
   }
 
-  // ── Total cell (always visible) ───────────────────────────────────────────
   const totalValueCell = el("resume_total_value_cell");
   if (totalValueCell) totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
 }
 
-// ── Character Points ──────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Character Points
+// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumePoints(sheet) {
   const pts = sheet?.character?.character_points;
@@ -193,4 +665,68 @@ function renderResumePoints(sheet) {
       <td><strong>${t("resume.total")}</strong></td>
       <td class="col-num resume-points-value"><strong>${total}</strong></td>
     </tr>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Renders a simple collapsed list with only item names.
+ * Hides the container when entries array is empty.
+ */
+function _renderCollapsibleNameList(containerId, entries, title) {
+  const container = el(containerId);
+  if (!container) return;
+
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = entries
+    .map((item) => `<tr><td>${item.name ?? "—"}</td></tr>`)
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(title)}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+/** Returns the HTML for a collapsible section header button. */
+function _collapsibleHeader(title) {
+  return `
+    <button class="resume-section-toggle" type="button" aria-expanded="false">
+      <span class="resume-expander-arrow">&#8250;</span>
+      <span class="resume-section-title">${title}</span>
+    </button>
+  `;
+}
+
+/** Attaches toggle behaviour to a freshly rendered container. */
+function _bindCollapse(container) {
+  const btn  = container.querySelector(".resume-section-toggle");
+  const body = container.querySelector(".resume-collapse-body");
+  if (!btn || !body) return;
+
+  // Start collapsed
+  body.hidden = true;
+  btn.setAttribute("aria-expanded", "false");
+
+  btn.addEventListener("click", () => {
+    const isOpen = body.hidden === false;
+    body.hidden  = isOpen;
+    btn.setAttribute("aria-expanded", String(!isOpen));
+    const arrow = btn.querySelector(".resume-expander-arrow");
+    if (arrow) arrow.classList.toggle("resume-expander-arrow--open", !isOpen);
+  });
 }

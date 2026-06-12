@@ -265,21 +265,76 @@
 
           <!-- Panel: Resumo -->
           <div class="tab-panel" id="tab-char-resume">
-            <div class="resume-grid">
+
+            <!-- ── Row 1: header + bars ─────────────────────────────────── -->
+            <div class="resume-row resume-row--header-bars">
+              <!-- Character title -->
+              <div class="resume-header-block">
+                <p class="resume-char-name" id="resume_header_name"></p>
+              </div>
+              <!-- HP / Mana / Toxicity bars -->
+              <div class="resume-bars-block">
+                <div id="resume_bar_hp"></div>
+                <div id="resume_bar_mana"></div>
+                <div id="resume_bar_toxicity"></div>
+              </div>
+            </div>
+
+            <!-- ── Row 2: points ────────────────────────────────────────── -->
+            <div class="resume-row resume-row--points">
+              <div class="resume-full-col">
+                <h3 class="resume-col-title" id="sec-resume-points"></h3>
+                <table class="resume-table">
+                  <thead>
+                    <tr>
+                      <th id="th-resume-category"></th>
+                      <th class="col-num" id="th-resume-points"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="resume_points_tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
+            <div class="resume-row resume-row--two-col">
+              <div class="resume-col" id="resume_advantages_container"></div>
+              <div class="resume-col" id="resume_disadvantages_container"></div>
+            </div>
+
+            <!-- ── Row 4: skills (full width) ───────────────────────────── -->
+            <div class="resume-row">
+              <div class="resume-full-col" id="resume_skills_container"></div>
+            </div>
+
+            <!-- ── Row 5: magic (full width) ────────────────────────────── -->
+            <div class="resume-row">
+              <div class="resume-full-col" id="resume_magic_container"></div>
+            </div>
+
+            <!-- ── Row 6: armor | shield ────────────────────────────────── -->
+            <div class="resume-row resume-row--two-col">
+              <div class="resume-col" id="resume_armor_container"></div>
+              <div class="resume-col" id="resume_shield_container"></div>
+            </div>
+
+            <!-- ── Row 7: melee | ranged ────────────────────────────────── -->
+            <div class="resume-row resume-row--two-col">
+              <div class="resume-col" id="resume_melee_container"></div>
+              <div class="resume-col" id="resume_ranged_container"></div>
+            </div>
+
+            <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
+            <div class="resume-row resume-row--two-col">
+              <div class="resume-col" id="resume_ammo_container"></div>
+              <div class="resume-col" id="resume_alchemy_container"></div>
+            </div>
+
+            <!-- ── Row 9: weight | value ────────────────────────────────── -->
+            <div class="resume-row resume-row--two-col">
               <!-- Weight col -->
               <div class="resume-col">
                 <h3 class="resume-col-title" id="sec-resume-weight"></h3>
-                <div class="controls-row resume-base-weight-row">
-                  <label for="weight">
-                    <strong id="lbl-baseWeight"></strong>
-                  </label>
-                  <input
-                    id="weight"
-                    type="number"
-                    value="0"
-                    style="width: 70px"
-                  />
-                </div>
                 <table class="resume-table">
                   <tbody>
                     <tr class="resume-expander-row" data-tbody-target="resume_weight_tbody">
@@ -317,7 +372,6 @@
                 <span id="total_weight" style="display: none">0</span>
               </div>
 
-              <!-- Points col -->
               <!-- Value col -->
               <div class="resume-col">
                 <h3 class="resume-col-title" id="sec-resume-value"></h3>
@@ -339,23 +393,6 @@
                       <td class="col-num" id="resume_total_value_cell"><strong>0</strong></td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
-
-            </div>
-
-            <!-- Points row: full width below -->
-            <div class="resume-grid resume-grid--points">
-              <div class="resume-col">
-                <h3 class="resume-col-title" id="sec-resume-points"></h3>
-                <table class="resume-table">
-                  <thead>
-                    <tr>
-                      <th id="th-resume-category"></th>
-                      <th class="col-num" id="th-resume-points"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="resume_points_tbody"></tbody>
                 </table>
               </div>
             </div>
@@ -1007,6 +1044,18 @@
 
           <!-- Panel: Inventário Personalizado -->
           <div class="tab-panel" id="tab-inv-custom">
+            <!-- Peso Base (moved here from Resumo for organisation) -->
+            <div class="controls-row resume-base-weight-row">
+              <label for="weight">
+                <strong id="lbl-baseWeight"></strong>
+              </label>
+              <input
+                id="weight"
+                type="number"
+                value="0"
+                style="width: 70px"
+              />
+            </div>
             <div class="controls-row controls-row--labeled">
               <label
                 style="

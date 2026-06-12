@@ -204,7 +204,7 @@ export const LABELS = {
     diff: "Dificuldade",
     base: "Base",
     mod: "Mod",
-    final: "Final",
+    final: "NH Final",
     school: "Escola",
     tier: "Tier",
     spellType: "Tipo",
