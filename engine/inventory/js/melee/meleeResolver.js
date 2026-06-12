@@ -77,24 +77,13 @@ function resolveMeleeWeapons(instance, weapon, material = null) {
     weapon_min_strength: weapon.weapon_min_strength,
     weapon_damage_type: weapon.weapon_damage_type,
     weapon_reach: calculateHex(weapon.weapon_length),
-    weapon_bal_modifier: weapon.weapon_bal_modifier,
-    weapon_gdp_modifier: weapon.weapon_gdp_modifier,
-    weapon_weight: weapon.weapon_weight,
-    weapon_price: weapon.weapon_price,
-    weapon_hit_points: weapon.weapon_hit_points,
 
     // MATERIAL
     material_id: material?.material_id || null,
     material_name: material?.material_name || null,
     material_type: material?.material_type || null,
     material_tier: material?.material_tier || null,
-    material_dr_modifier: Number(material?.material_dr_modifier || 0),
     material_atk_effect: material?.material_atk_effect || null,
-    material_weight_modifier: Number(material?.material_weight_modifier || 1),
-    material_price_modifier: Number(material?.material_price_modifier || 1),
-    material_hit_points_modifier: Number(
-      material?.material_hit_points_modifier || 0,
-    ),
 
     // FINAL VALUES
     ...finalStats,

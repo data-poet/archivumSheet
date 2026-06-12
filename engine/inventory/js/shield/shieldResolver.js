@@ -62,23 +62,13 @@ function resolveShieldPiece(instance, shield, material = null) {
     shield_box_name: shield.shield_box_name,
     shield_type: shield.shield_type,
     shield_tier: shield.shield_tier,
-    shield_damage_resistance: shield.shield_damage_resistance,
-    shield_weight: shield.shield_weight,
-    shield_price: shield.shield_price,
-    shield_hit_points: shield.shield_hit_points,
 
     // MATERIAL
     material_id: material?.material_id || null,
     material_name: material?.material_name || null,
     material_type: material?.material_type || null,
     material_tier: material?.material_tier || null,
-    material_dr_modifier: Number(material?.material_dr_modifier || 0),
     material_def_effect: material?.material_def_effect || null,
-    material_weight_modifier: Number(material?.material_weight_modifier || 1),
-    material_price_modifier: Number(material?.material_price_modifier || 1),
-    material_hit_points_modifier: Number(
-      material?.material_hit_points_modifier || 0,
-    ),
 
     // FINAL VALUES
     ...finalStats,

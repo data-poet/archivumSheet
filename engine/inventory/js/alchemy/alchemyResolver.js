@@ -30,8 +30,6 @@ function resolveAlchemyConsumable(instance, consumable) {
     consumable_toxicity: consumable.consumable_toxicity,
     consumable_price: consumable.consumable_price,
     consumable_weight: consumable.consumable_weight,
-    consumable_description: consumable.consumable_description,
-    consumable_observation: consumable.consumable_observation,
     consumable_method: consumable.consumable_method,
     consumable_effect_area: consumable.consumable_effect_area,
 

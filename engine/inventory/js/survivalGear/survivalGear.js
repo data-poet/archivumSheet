@@ -38,7 +38,6 @@ function getSurvivalGearDB() {
       adventure_gear_type: row.adventure_gear_type,
       adventure_gear_price: Number(row.adventure_gear_price),
       adventure_gear_weight: Number(row.adventure_gear_weight),
-      adventure_gear_observation: row.adventure_gear_observation || null,
     };
   }
 

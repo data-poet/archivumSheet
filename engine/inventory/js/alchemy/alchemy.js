@@ -47,8 +47,6 @@ function getAlchemyDB() {
         : null,
       consumable_price: Number(row.consumable_price),
       consumable_weight: Number(row.consumable_weight),
-      consumable_description: row.consumable_description || null,
-      consumable_observation: row.consumable_observation || null,
       consumable_method: row.consumable_method || null,
       consumable_effect_area: row.consumable_effect_area || null,
     };
@@ -129,7 +127,7 @@ function buildAlchemySlots(alchemyInventory = []) {
   // ── TOTALS ────────────────────────────────────────────────────────────────
 
   const carried_alchemy_weight = calculateCarriedAlchemyWeight(backpack);
-  const carried_alchemy_value  = calculateCarriedAlchemyValue(backpack);
+  const carried_alchemy_value = calculateCarriedAlchemyValue(backpack);
 
   return {
     stash,

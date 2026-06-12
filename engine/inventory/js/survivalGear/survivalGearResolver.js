@@ -23,7 +23,6 @@ function resolveSurvivalGearItem(instance, gear) {
     adventure_gear_type: gear.adventure_gear_type,
     adventure_gear_price: gear.adventure_gear_price,
     adventure_gear_weight: gear.adventure_gear_weight,
-    adventure_gear_observation: gear.adventure_gear_observation,
 
     // RUNTIME
     quantity: instance.quantity,
