@@ -42,27 +42,49 @@
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
 
   /* Topbar / bottom-nav sizes — fluid */
-  --topbar-h: clamp(48px, 6vw, 56px);
-  --bottomnav-h: clamp(52px, 7vw, 60px);
+  /* Mobile minimums kept at 48px/52px. Desktop scales up cleanly. */
+  --topbar-h: clamp(48px, 1vw + 44px, 64px);
+  --bottomnav-h: clamp(52px, 1vw + 48px, 64px);
 
   /* Sidebar width (desktop) */
-  --sidebar-w: 56px;
-  --sidebar-w-exp: 200px;
+  --sidebar-w: 64px; /* Slightly bumped for desktop cursor target space */
+  --sidebar-w-exp: 240px; /* Expanded for readable text links on 1920px screens */
 
   /* Typography — fluid scale */
+  /* Keeps your exact mobile minimums, but opens up the maximums for 1920px desktop readability */
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
-  --fs-base: clamp(10px, 2.3vw, 12px);
-  --fs-sm: clamp(9px, 2vw, 11px);
-  --fs-xs: clamp(8px, 1.8vw, 10px);
-  --fs-xxs: clamp(7px, 1.6vw, 9px);
+  --fs-base: clamp(
+    10px,
+    0.4vw + 9px,
+    16px
+  ); /* 10px on mobile -> scales smoothly to 16px */
+  --fs-sm: clamp(
+    9px,
+    0.35vw + 8px,
+    14px
+  ); /* 9px on mobile -> scales smoothly to 14px */
+  --fs-xs: clamp(
+    8px,
+    0.3vw + 7px,
+    12px
+  ); /* 8px on mobile -> scales smoothly to 12px */
+  --fs-xxs: clamp(
+    7px,
+    0.25vw + 6px,
+    11px
+  ); /* 7px on mobile -> scales smoothly to 11px */
 
   /* Detail row (unified) */
   --detail-bg: #f4f4fb;
-  --detail-label-w: 80px;
+  --detail-label-w: clamp(
+    80px,
+    4vw + 65px,
+    120px
+  ); /* Fluid: 80px on mobile, 120px on desktop */
 
   /* Content width cap for desktop */
-  --content-max-w: 1200px;
+  --content-max-w: 1440px; /* Increased to utilize 1920px desktop real estate better without over-stretching */
 }
 
 /* ── Reset ───────────────────────────────────────────────────────────────── */
@@ -1222,9 +1244,15 @@ tr.spell-detail-row details[open] summary {
   transition: width 0.3s ease;
 }
 
-.resume-bar--hp       { background: #e05252; }
-.resume-bar--mana     { background: #4a90d9; }
-.resume-bar--toxicity { background: #3aaa5c; }
+.resume-bar--hp {
+  background: #e05252;
+}
+.resume-bar--mana {
+  background: #4a90d9;
+}
+.resume-bar--toxicity {
+  background: #3aaa5c;
+}
 
 /* ── Section collapsible cards ─────────────────────────────────────────── */
 .resume-section-toggle {
