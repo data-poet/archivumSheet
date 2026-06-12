@@ -265,7 +265,6 @@
 
           <!-- Panel: Resumo -->
           <div class="tab-panel" id="tab-char-resume">
-
             <!-- ── Row 1: header + bars ─────────────────────────────────── -->
             <div class="resume-row resume-row--header-bars">
               <!-- Character title -->
@@ -281,20 +280,36 @@
             </div>
 
             <!-- ── Row 2: points ────────────────────────────────────────── -->
-            <div class="resume-row resume-row--points">
-              <div class="resume-full-col">
-                <h3 class="resume-col-title" id="sec-resume-points"></h3>
-                <table class="resume-table">
-                  <thead>
-                    <tr>
-                      <th id="th-resume-category"></th>
-                      <th class="col-num" id="th-resume-points"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="resume_points_tbody"></tbody>
-                </table>
-              </div>
-            </div>
+            <table class="resume-table">
+              <tbody>
+                <tr
+                  class="resume-expander-row"
+                  data-tbody-target="resume_points_tbody"
+                >
+                  <td colspan="2">
+                    <button class="resume-expander-btn" aria-expanded="false">
+                      <span class="resume-expander-arrow">&#8250;</span>
+                      <span id="sec-resume-points-detail"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+
+              <tbody
+                id="resume_points_tbody"
+                class="resume-collapsible"
+                hidden
+              ></tbody>
+
+              <tbody>
+                <tr class="resume-total-row">
+                  <td><strong id="lbl-resume-totalPoints"></strong></td>
+                  <td class="col-num" id="resume_total_points_cell">
+                    <strong>0</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
             <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
             <div class="resume-row resume-row--two-col">
@@ -337,9 +352,16 @@
                 <h3 class="resume-col-title" id="sec-resume-weight"></h3>
                 <table class="resume-table">
                   <tbody>
-                    <tr class="resume-expander-row" data-tbody-target="resume_weight_tbody">
+                    <tr
+                      class="resume-expander-row"
+                      data-tbody-target="resume_weight_tbody"
+                    >
                       <td colspan="2">
-                        <button class="resume-expander-btn" aria-expanded="false" aria-label="Expandir">
+                        <button
+                          class="resume-expander-btn"
+                          aria-expanded="false"
+                          aria-label="Expandir"
+                        >
                           <span class="resume-expander-arrow">&#8250;</span>
                           <span id="sec-resume-weight-detail"></span>
                         </button>
@@ -350,7 +372,9 @@
                   <tbody>
                     <tr class="resume-total-row">
                       <td><strong id="lbl-resume-totalWeight"></strong></td>
-                      <td class="col-num" id="resume_total_weight_cell"><strong>0</strong></td>
+                      <td class="col-num" id="resume_total_weight_cell">
+                        <strong>0</strong>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -368,7 +392,9 @@
                 <span id="ammo_weight" style="display: none">0</span>
                 <span id="alchemy_weight" style="display: none">0</span>
                 <span id="survival_gear_weight" style="display: none">0</span>
-                <span id="custom_inventory_weight" style="display: none">0</span>
+                <span id="custom_inventory_weight" style="display: none"
+                  >0</span
+                >
                 <span id="total_weight" style="display: none">0</span>
               </div>
 
@@ -377,26 +403,38 @@
                 <h3 class="resume-col-title" id="sec-resume-value"></h3>
                 <table class="resume-table">
                   <tbody>
-                    <tr class="resume-expander-row" data-tbody-target="resume_value_tbody">
+                    <tr
+                      class="resume-expander-row"
+                      data-tbody-target="resume_value_tbody"
+                    >
                       <td colspan="2">
-                        <button class="resume-expander-btn" aria-expanded="false" aria-label="Expandir">
+                        <button
+                          class="resume-expander-btn"
+                          aria-expanded="false"
+                          aria-label="Expandir"
+                        >
                           <span class="resume-expander-arrow">&#8250;</span>
                           <span id="sec-resume-value-detail"></span>
                         </button>
                       </td>
                     </tr>
                   </tbody>
-                  <tbody id="resume_value_tbody" class="resume-collapsible" hidden></tbody>
+                  <tbody
+                    id="resume_value_tbody"
+                    class="resume-collapsible"
+                    hidden
+                  ></tbody>
                   <tbody>
                     <tr class="resume-total-row">
                       <td><strong id="lbl-resume-totalValue"></strong></td>
-                      <td class="col-num" id="resume_total_value_cell"><strong>0</strong></td>
+                      <td class="col-num" id="resume_total_value_cell">
+                        <strong>0</strong>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -460,8 +498,20 @@
                           value="10"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -475,8 +525,20 @@
                           value="0"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -495,8 +557,20 @@
                           value="10"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -510,8 +584,20 @@
                           value="0"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -530,8 +616,20 @@
                           value="10"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -545,8 +643,20 @@
                           value="0"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -565,8 +675,20 @@
                           value="10"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -580,8 +702,20 @@
                           value="0"
                         />
                         <div class="stepper-btns">
-                          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-                          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+                          <button
+                            class="stepper-btn stepper-inc"
+                            tabindex="-1"
+                            aria-label="+"
+                          >
+                            +
+                          </button>
+                          <button
+                            class="stepper-btn stepper-dec"
+                            tabindex="-1"
+                            aria-label="−"
+                          >
+                            −
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -1049,12 +1183,7 @@
               <label for="weight">
                 <strong id="lbl-baseWeight"></strong>
               </label>
-              <input
-                id="weight"
-                type="number"
-                value="0"
-                style="width: 70px"
-              />
+              <input id="weight" type="number" value="0" style="width: 70px" />
             </div>
             <div class="controls-row controls-row--labeled">
               <label
@@ -1342,10 +1471,12 @@
         setText("sec-resume-value", L.resume.valueTitle);
         setText("sec-resume-value-detail", L.resume.valueDetail);
         setText("sec-resume-points", L.resume.pointsTitle);
+        setText("sec-resume-points-detail", L.resume.pointsDetail);
         setText("lbl-baseWeight", L.resume.baseWeightLabel);
         setText("lbl-encumbrance", L.resume.encumbrance + ":");
         setText("lbl-resume-totalWeight", L.resume.totalWeight);
         setText("lbl-resume-totalValue", L.resume.totalValue);
+        setText("lbl-resume-totalPoints", L.resume.totalPoints);
         setText("th-resume-category", L.resume.category);
         setText("th-resume-points", L.resume.points);
 
@@ -1458,13 +1589,14 @@
         if (!btn) return;
         const tbodyId = btn.closest("tr")?.dataset.tbodyTarget;
         if (!tbodyId) return;
-        const tbody   = document.getElementById(tbodyId);
+        const tbody = document.getElementById(tbodyId);
         if (!tbody) return;
         const expanded = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!expanded));
         tbody.hidden = expanded;
-        btn.querySelector(".resume-expander-arrow")
-           .classList.toggle("resume-expander-arrow--open", !expanded);
+        btn
+          .querySelector(".resume-expander-arrow")
+          .classList.toggle("resume-expander-arrow--open", !expanded);
       });
 
       // ── Active nav highlighting (shared between sidebar & bottom nav) ────────
