@@ -94,6 +94,7 @@ describe("ammoResolver — resolveContainer", () => {
       remaining_capacity: 0,
       contents_weight: 1.0,
       total_weight: 1.5,
+      total_value: 17.16,
     });
   });
 
@@ -190,6 +191,7 @@ describe("ammoResolver — resolveLooseAmmo", () => {
       ammo_id: "AMMO-001",
       ammo_name: "Broadhead Arrow",
       ammo_type: "arrow",
+      ammo_category: undefined,
       ammo_weight: 0.05,
       ammo_price: 0.1,
       ammo_effect: "bleed",
@@ -198,6 +200,7 @@ describe("ammoResolver — resolveLooseAmmo", () => {
       quantity: 5,
       storedAt: "backpack",
       total_weight: 0.25,
+      total_value: 0.5,
     });
   });
 

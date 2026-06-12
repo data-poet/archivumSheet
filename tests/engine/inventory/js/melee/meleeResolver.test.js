@@ -118,6 +118,7 @@ describe("meleeResolver", () => {
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
+        total_value: 165,
       });
     });
 
@@ -174,6 +175,7 @@ describe("meleeResolver", () => {
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
+        total_value: 150,
       });
     });
   });

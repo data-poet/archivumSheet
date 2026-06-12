@@ -27,6 +27,7 @@ describe("customInventoryResolver", () => {
         description: "Encontrada nas ruínas.",
         storedAt: "backpack",
         total_weight: 1,
+        total_value: 20,
       });
     });
 

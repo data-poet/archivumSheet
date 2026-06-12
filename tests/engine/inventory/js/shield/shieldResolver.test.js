@@ -105,6 +105,7 @@ describe("shieldResolver", () => {
         _instanceId: null,
         is_equipped: true,
         storedAt: "backpack",
+        total_value: 110,
       });
     });
 
@@ -155,6 +156,7 @@ describe("shieldResolver", () => {
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
+        total_value: 100,
       });
     });
   });

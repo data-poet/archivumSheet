@@ -114,6 +114,7 @@ describe("equipmentArmorUtils", () => {
         is_equipped: true,
 
         storedAt: "backpack",
+        total_value: 110,
       });
     });
 

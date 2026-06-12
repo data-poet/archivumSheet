@@ -33,6 +33,7 @@ describe("survivalGearResolver", () => {
         quantity: 1,
         storedAt: "backpack",
         total_weight: 0.3,
+        total_value: 2,
       });
     });
 

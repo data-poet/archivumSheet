@@ -125,6 +125,7 @@ describe("rangedResolver", () => {
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
+        total_value: 132,
       });
     });
 
@@ -184,6 +185,7 @@ describe("rangedResolver", () => {
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
+        total_value: 120,
       });
     });
   });
