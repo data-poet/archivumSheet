@@ -39,6 +39,7 @@ function resolveAlchemyConsumable(instance, consumable) {
     quantity: instance.quantity,
     storedAt: instance.storedAt,
     total_weight,
+    total_value: round2(consumable.consumable_price * instance.quantity),
   };
 }
 
@@ -59,10 +60,25 @@ function calculateCarriedAlchemyWeight(backpackConsumables) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// VALUE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sums total_value for backpack consumables only.
+ * Stash and camp do not count toward carried value.
+ */
+function calculateCarriedAlchemyValue(backpackConsumables) {
+  return round2(
+    backpackConsumables.reduce((sum, entry) => sum + entry.total_value, 0),
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   resolveAlchemyConsumable,
   calculateCarriedAlchemyWeight,
+  calculateCarriedAlchemyValue,
 };

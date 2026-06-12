@@ -1,46 +1,48 @@
-const { VALID_STORED_AT } = require("./customInventoryConstants.js");
+const { VALID_STORED_AT, VALID_COIN_TYPES } = require("./coinPurseConstants");
+
+const { validateCoinInstance } = require("./coinPurseValidation");
 
 const {
-  validateCustomInventoryInstance,
-} = require("./customInventoryValidation.js");
-
-const {
-  resolveCustomInventoryItem,
-  calculateCarriedCustomInventoryWeight,
-  calculateCarriedCustomInventoryValue,
-} = require("./customInventoryResolver.js");
+  resolveCoin,
+  calculateCarriedCoinPurseWeight,
+  sumCoinValue,
+} = require("./coinPurseResolver");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Builds the resolved custom inventory, distributed across storage locations.
+ * Builds the resolved coin purse, distributed across storage locations.
  *
- * There is no backing database — every item is fully self-described by the
- * instance object. Only backpack items contribute to carried weight.
+ * State shape: one entry per coin_type + storedAt combination.
+ * There is no backing database — coin types are defined by constants.
+ *
+ * Carried weight: backpack only (stash and camp excluded).
+ * total_coin_purse_value: all coins across all locations (copper equivalent).
+ * carried_coin_purse_value: backpack coins only (copper equivalent).
  */
-function buildCustomInventorySlots(customInventory = []) {
+function buildCoinPurseSlots(coinInventory = []) {
   // ── VALIDATE ──────────────────────────────────────────────────────────────
 
-  const instanceErrors = customInventory.flatMap((instance, index) =>
-    validateCustomInventoryInstance(instance, index),
+  const instanceErrors = coinInventory.flatMap((instance, index) =>
+    validateCoinInstance(instance, index),
   );
 
   if (instanceErrors.length > 0) {
     throw new Error(
-      `[buildCustomInventorySlots] Invalid customInventory:\n${instanceErrors.join("\n")}`,
+      `[buildCoinPurseSlots] Invalid coinInventory:\n${instanceErrors.join("\n")}`,
     );
   }
 
   // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
-  const stash = [];
-  const camp = [];
+  const stash    = [];
+  const camp     = [];
   const backpack = [];
 
-  for (const instance of customInventory) {
-    const resolved = resolveCustomInventoryItem(instance);
+  for (const instance of coinInventory) {
+    const resolved = resolveCoin(instance);
 
     if (instance.storedAt === "stash") {
       stash.push(resolved);
@@ -59,17 +61,23 @@ function buildCustomInventorySlots(customInventory = []) {
 
   // ── TOTALS ────────────────────────────────────────────────────────────────
 
-  const carried_custom_inventory_weight =
-    calculateCarriedCustomInventoryWeight(backpack);
-  const carried_custom_inventory_value =
-    calculateCarriedCustomInventoryValue(backpack);
+  const carried_coin_purse_weight = calculateCarriedCoinPurseWeight(backpack);
+
+  const total_coin_purse_value = sumCoinValue([
+    ...backpack,
+    ...stash,
+    ...camp,
+  ]);
+
+  const carried_coin_purse_value = sumCoinValue(backpack);
 
   return {
     stash,
     camp,
     backpack,
-    carried_custom_inventory_weight,
-    carried_custom_inventory_value,
+    carried_coin_purse_weight,
+    total_coin_purse_value,
+    carried_coin_purse_value,
   };
 }
 
@@ -78,6 +86,7 @@ function buildCustomInventorySlots(customInventory = []) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
-  buildCustomInventorySlots,
+  buildCoinPurseSlots,
   VALID_STORED_AT,
+  VALID_COIN_TYPES,
 };

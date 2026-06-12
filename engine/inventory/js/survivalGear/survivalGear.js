@@ -9,6 +9,7 @@ const { validateSurvivalGearInstance } = require("./survivalGearValidation.js");
 const {
   resolveSurvivalGearItem,
   calculateCarriedSurvivalGearWeight,
+  calculateCarriedSurvivalGearValue,
 } = require("./survivalGearResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -117,12 +118,15 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
 
   const carried_survival_gear_weight =
     calculateCarriedSurvivalGearWeight(backpack);
+  const carried_survival_gear_value =
+    calculateCarriedSurvivalGearValue(backpack);
 
   return {
     stash,
     camp,
     backpack,
     carried_survival_gear_weight,
+    carried_survival_gear_value,
   };
 }
 

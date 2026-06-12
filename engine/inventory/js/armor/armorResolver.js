@@ -90,6 +90,9 @@ function resolveArmorPiece(instance, armor, material = null) {
       finalStats.armor_final_hit_points + hitPointsModifier,
     ),
 
+    // VALUE — armor has no quantity; one instance = one piece
+    total_value: round2(finalStats.armor_final_price),
+
     // RUNTIME
     is_equipped: instance.is_equipped,
 
@@ -132,6 +135,40 @@ function calculateTotalArmorWeight(armorInventory, armorDb, materialDb = {}) {
   }, 0);
 }
 
+/**
+ * Calculates total armor value (equipped + backpack).
+ * Stash and camp are excluded — mirrors the weight convention.
+ */
+function calculateTotalArmorValue(armorInventory, armorDb, materialDb = {}) {
+  return round2(
+    armorInventory.reduce((sum, instance) => {
+      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
+        return sum;
+      }
+
+      const armor = armorDb[instance.armor_id];
+      if (!armor) return sum;
+
+      const material = instance.material_id
+        ? materialDb[instance.material_id]
+        : null;
+
+      const resolved = resolveArmorPiece(instance, armor, material);
+
+      return sum + resolved.total_value;
+    }, 0),
+  );
+}
+
+/**
+ * Calculates carried armor value (equipped + backpack).
+ * Named alias for calculateTotalArmorValue — kept for symmetry with the
+ * carried/total weight pair.
+ */
+function calculateCarriedArmorValue(armorInventory, armorDb, materialDb = {}) {
+  return calculateTotalArmorValue(armorInventory, armorDb, materialDb);
+}
+
 // Exports
 
 module.exports = {
@@ -139,4 +176,6 @@ module.exports = {
   resolveArmorPiece,
   buildEquippedSlots,
   calculateTotalArmorWeight,
+  calculateTotalArmorValue,
+  calculateCarriedArmorValue,
 };

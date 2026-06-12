@@ -29,6 +29,7 @@ function resolveCustomInventoryItem(instance) {
     description: instance.description?.trim() || null,
     storedAt: instance.storedAt,
     total_weight,
+    total_value: round2(instance.price * instance.quantity),
   };
 }
 
@@ -47,10 +48,25 @@ function calculateCarriedCustomInventoryWeight(backpackItems) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// VALUE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sums total_value for backpack items only.
+ * Stash and camp do not count toward carried value.
+ */
+function calculateCarriedCustomInventoryValue(backpackItems) {
+  return round2(
+    backpackItems.reduce((sum, entry) => sum + entry.total_value, 0),
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   resolveCustomInventoryItem,
   calculateCarriedCustomInventoryWeight,
+  calculateCarriedCustomInventoryValue,
 };

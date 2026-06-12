@@ -18,6 +18,7 @@ const {
   resolveLooseAmmo,
   calculateTotalEquippedAmmo,
   calculateCarriedAmmoWeight,
+  calculateCarriedAmmoValue,
 } = require("./ammoResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -219,11 +220,18 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     loose.backpack,
   );
 
+  const carried_ammo_value = calculateCarriedAmmoValue(
+    containers.equipped,
+    containers.backpack,
+    loose.backpack,
+  );
+
   return {
     containers,
     loose,
     total_equipped_ammo,
     carried_ammo_weight,
+    carried_ammo_value,
   };
 }
 

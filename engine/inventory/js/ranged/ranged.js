@@ -9,6 +9,8 @@ const { validateRangedInstance } = require("./rangedValidation.js");
 const {
   resolveRangedWeapons,
   calculateTotalRangedWeight,
+  calculateTotalRangedValue,
+  calculateCarriedRangedValue,
 } = require("./rangedResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -165,6 +167,7 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
   const backpack = buildStorageBucket();
 
   let carried_ranged_weapons_weight = 0;
+  let carried_ranged_weapons_value  = 0;
 
   for (const instance of rangedInventory) {
     const ranged = rangedDb[instance.weapon_id];
@@ -181,6 +184,7 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       equipped.push(resolvedRanged);
 
       carried_ranged_weapons_weight += resolvedRanged.weapon_final_weight;
+      carried_ranged_weapons_value  += resolvedRanged.total_value;
 
       continue;
     }
@@ -207,12 +211,20 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       backpack.push(resolvedRanged);
 
       carried_ranged_weapons_weight += resolvedRanged.weapon_final_weight;
+      carried_ranged_weapons_value  += resolvedRanged.total_value;
     }
   }
 
   // TOTALS
 
   const total_ranged_weight = calculateTotalRangedWeight(
+    rangedInventory,
+    rangedDb,
+    materialDb,
+    ST,
+  );
+
+  const total_ranged_value = calculateTotalRangedValue(
     rangedInventory,
     rangedDb,
     materialDb,
@@ -226,6 +238,8 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     backpack,
     total_ranged_weight,
     carried_ranged_weapons_weight,
+    total_ranged_value,
+    carried_ranged_weapons_value,
   };
 }
 

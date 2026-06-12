@@ -7,6 +7,7 @@ const { buildAmmoSlots } = require("./js/ammo/ammo.js");
 const { buildAlchemySlots } = require("./js/alchemy/alchemy.js");
 const { buildSurvivalGearSlots } = require("./js/survivalGear/survivalGear.js");
 const { buildCustomInventorySlots } = require("./js/customInventory/customInventory.js");
+const { buildCoinPurseSlots } = require("./js/coinPurse/coinPurse.js");
 
 /**
  * Builds inventory data
@@ -23,6 +24,7 @@ function buildInventory({
   alchemyInventory = [],
   survivalGearInventory = [],
   customInventory = [],
+  coinInventory = [],
 } = {}) {
   const armor = buildArmorSlots(armorInventory);
   const shield = buildShieldSlots(shieldInventory);
@@ -32,6 +34,7 @@ function buildInventory({
   const alchemy = buildAlchemySlots(alchemyInventory);
   const survivalGear = buildSurvivalGearSlots(survivalGearInventory);
   const customInv = buildCustomInventorySlots(customInventory);
+  const coinPurse = buildCoinPurseSlots(coinInventory);
 
   const effectiveWeight =
     weight +
@@ -42,7 +45,8 @@ function buildInventory({
     ammo.carried_ammo_weight +
     alchemy.carried_alchemy_weight +
     survivalGear.carried_survival_gear_weight +
-    customInv.carried_custom_inventory_weight;
+    customInv.carried_custom_inventory_weight +
+    coinPurse.carried_coin_purse_weight;
 
   const carryWeight = calculateCarryWeight(ST, effectiveWeight);
 
@@ -58,6 +62,7 @@ function buildInventory({
       alchemy,
       survivalGear,
       customInventory: customInv,
+      coinPurse,
     },
   };
 }

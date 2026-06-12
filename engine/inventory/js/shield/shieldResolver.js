@@ -89,6 +89,9 @@ function resolveShieldPiece(instance, shield, material = null) {
       finalStats.shield_final_hit_points + hitPointsModifier,
     ),
 
+    // VALUE — one instance = one piece
+    total_value: round2(finalStats.shield_final_price),
+
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,
@@ -128,6 +131,44 @@ function calculateTotalShieldWeight(
   }, 0);
 }
 
+/**
+ * Calculates total shield value (equipped + backpack).
+ * Stash and camp are excluded — mirrors the weight convention.
+ */
+function calculateTotalShieldValue(shieldInventory, shieldDb, materialDb = {}) {
+  return round2(
+    shieldInventory.reduce((sum, instance) => {
+      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
+        return sum;
+      }
+
+      const shield = shieldDb[instance.shield_id];
+      if (!shield) return sum;
+
+      const material = instance.material_id
+        ? materialDb[instance.material_id]
+        : null;
+
+      const resolved = resolveShieldPiece(instance, shield, material);
+
+      return sum + resolved.total_value;
+    }, 0),
+  );
+}
+
+/**
+ * Calculates carried shield value (equipped + backpack).
+ * Named alias for calculateTotalShieldValue — kept for symmetry with the
+ * carried/total weight pair.
+ */
+function calculateCarriedShieldValue(
+  shieldInventory,
+  shieldDb,
+  materialDb = {},
+) {
+  return calculateTotalShieldValue(shieldInventory, shieldDb, materialDb);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,4 +177,6 @@ module.exports = {
   applyMaterialToShield,
   resolveShieldPiece,
   calculateTotalShieldWeight,
+  calculateTotalShieldValue,
+  calculateCarriedShieldValue,
 };

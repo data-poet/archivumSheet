@@ -34,6 +34,13 @@ function resolveContainer(instance, container, ammoDb) {
 
   const total_weight = round2(container.container_weight + contents_weight);
 
+  const contents_value = resolvedContents.reduce((sum, entry) => {
+    const ammo = ammoDb[entry.ammo_id];
+    return sum + round2((ammo?.ammo_price ?? 0) * entry.quantity);
+  }, 0);
+
+  const total_value = round2(container.container_price + contents_value);
+
   return {
     // CONTAINER BASE
     _instanceId: instance._instanceId,
@@ -56,6 +63,7 @@ function resolveContainer(instance, container, ammoDb) {
     remaining_capacity: container.container_capacity - used_capacity,
     contents_weight,
     total_weight,
+    total_value,
   };
 }
 
@@ -68,6 +76,7 @@ function resolveContainer(instance, container, ammoDb) {
  */
 function resolveLooseAmmo(instance, ammo) {
   const total_weight = round2(ammo.ammo_weight * instance.quantity);
+  const total_value  = round2(ammo.ammo_price  * instance.quantity);
 
   return {
     // AMMO BASE
@@ -84,6 +93,7 @@ function resolveLooseAmmo(instance, ammo) {
     quantity: instance.quantity,
     storedAt: instance.storedAt,
     total_weight,
+    total_value,
   };
 }
 
@@ -140,6 +150,35 @@ function calculateCarriedAmmoWeight(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// CARRIED AMMO VALUE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sums the total value that counts toward carried inventory:
+ * - equipped containers (container + contents)
+ * - backpack containers (container + contents)
+ * - backpack loose ammo
+ *
+ * Stash and camp are excluded — mirrors the weight convention.
+ */
+function calculateCarriedAmmoValue(
+  equippedContainers,
+  backpackContainers,
+  looseBackpack,
+) {
+  const containerValue = [...equippedContainers, ...backpackContainers].reduce(
+    (sum, c) => sum + c.total_value,
+    0,
+  );
+
+  const looseValue = looseBackpack.reduce((sum, l) => sum + l.total_value, 0);
+
+  return (
+    Math.round((containerValue + looseValue + Number.EPSILON) * 100) / 100
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -148,4 +187,5 @@ module.exports = {
   resolveLooseAmmo,
   calculateTotalEquippedAmmo,
   calculateCarriedAmmoWeight,
+  calculateCarriedAmmoValue,
 };

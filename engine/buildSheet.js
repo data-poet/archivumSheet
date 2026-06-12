@@ -58,6 +58,7 @@ function buildSheet({
     alchemyInventory: inventory.alchemy || [],
     survivalGearInventory: inventory.survival_gear || [],
     customInventory: inventory.custom_inventory || [],
+    coinInventory: inventory.coins || [],
   });
 
   /**

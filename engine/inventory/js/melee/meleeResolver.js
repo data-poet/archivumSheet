@@ -105,6 +105,9 @@ function resolveMeleeWeapons(instance, weapon, material = null) {
       finalStats.weapon_final_hit_points + hitPointsModifier,
     ),
 
+    // VALUE — one instance = one piece
+    total_value: round2(finalStats.weapon_final_price),
+
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,
@@ -140,6 +143,40 @@ function calculateTotalMeleeWeight(meleeInventory, meleeDb, materialDb = {}) {
   }, 0);
 }
 
+/**
+ * Calculates total melee value (equipped + backpack).
+ * Stash and camp are excluded — mirrors the weight convention.
+ */
+function calculateTotalMeleeValue(meleeInventory, meleeDb, materialDb = {}) {
+  return round2(
+    meleeInventory.reduce((sum, instance) => {
+      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
+        return sum;
+      }
+
+      const weapon = meleeDb[instance.weapon_id];
+      if (!weapon) return sum;
+
+      const material = instance.material_id
+        ? materialDb[instance.material_id]
+        : null;
+
+      const resolved = resolveMeleeWeapons(instance, weapon, material);
+
+      return sum + resolved.total_value;
+    }, 0),
+  );
+}
+
+/**
+ * Calculates carried melee value (equipped + backpack).
+ * Named alias for calculateTotalMeleeValue — kept for symmetry with the
+ * carried/total weight pair.
+ */
+function calculateCarriedMeleeValue(meleeInventory, meleeDb, materialDb = {}) {
+  return calculateTotalMeleeValue(meleeInventory, meleeDb, materialDb);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -148,5 +185,7 @@ module.exports = {
   applyMaterialToMelee,
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
+  calculateTotalMeleeValue,
+  calculateCarriedMeleeValue,
   calculateHex,
 };

@@ -9,6 +9,8 @@ const { validateMeleeInstance } = require("./meleeValidation.js");
 const {
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
+  calculateTotalMeleeValue,
+  calculateCarriedMeleeValue,
 } = require("./meleeResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -163,6 +165,7 @@ function buildMeleeSlots(meleeInventory = []) {
   const backpack = buildStorageBucket();
 
   let carried_melee_weapons_weight = 0;
+  let carried_melee_weapons_value  = 0;
 
   for (const instance of meleeInventory) {
     const melee = meleeDb[instance.weapon_id];
@@ -179,6 +182,7 @@ function buildMeleeSlots(meleeInventory = []) {
       equipped.push(resolvedMelee);
 
       carried_melee_weapons_weight += resolvedMelee.weapon_final_weight;
+      carried_melee_weapons_value  += resolvedMelee.total_value;
 
       continue;
     }
@@ -205,12 +209,19 @@ function buildMeleeSlots(meleeInventory = []) {
       backpack.push(resolvedMelee);
 
       carried_melee_weapons_weight += resolvedMelee.weapon_final_weight;
+      carried_melee_weapons_value  += resolvedMelee.total_value;
     }
   }
 
   // TOTALS
 
   const total_melee_weight = calculateTotalMeleeWeight(
+    meleeInventory,
+    meleeDb,
+    materialDb,
+  );
+
+  const total_melee_value = calculateTotalMeleeValue(
     meleeInventory,
     meleeDb,
     materialDb,
@@ -223,6 +234,8 @@ function buildMeleeSlots(meleeInventory = []) {
     backpack,
     total_melee_weight,
     carried_melee_weapons_weight,
+    total_melee_value,
+    carried_melee_weapons_value,
   };
 }
 

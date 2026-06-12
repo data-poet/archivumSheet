@@ -12,6 +12,8 @@ const {
 const {
   resolveShieldPiece,
   calculateTotalShieldWeight,
+  calculateTotalShieldValue,
+  calculateCarriedShieldValue,
 } = require("./shieldResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -167,6 +169,7 @@ function buildShieldSlots(shieldInventory = []) {
   const backpack = buildStorageBucket();
 
   let carried_shield_weight = 0;
+  let carried_shield_value  = 0;
 
   for (const instance of shieldInventory) {
     const shield = shieldDb[instance.shield_id];
@@ -183,6 +186,7 @@ function buildShieldSlots(shieldInventory = []) {
       equipped = resolvedShield;
 
       carried_shield_weight += resolvedShield.shield_final_weight;
+      carried_shield_value  += resolvedShield.total_value;
 
       continue;
     }
@@ -209,12 +213,19 @@ function buildShieldSlots(shieldInventory = []) {
       backpack.push(resolvedShield);
 
       carried_shield_weight += resolvedShield.shield_final_weight;
+      carried_shield_value  += resolvedShield.total_value;
     }
   }
 
   // TOTALS
 
   const total_shield_weight = calculateTotalShieldWeight(
+    shieldInventory,
+    shieldDb,
+    materialDb,
+  );
+
+  const total_shield_value = calculateTotalShieldValue(
     shieldInventory,
     shieldDb,
     materialDb,
@@ -227,6 +238,8 @@ function buildShieldSlots(shieldInventory = []) {
     backpack,
     total_shield_weight,
     carried_shield_weight,
+    total_shield_value,
+    carried_shield_value,
   };
 }
 

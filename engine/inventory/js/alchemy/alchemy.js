@@ -9,6 +9,7 @@ const { validateAlchemyInstance } = require("./alchemyValidation.js");
 const {
   resolveAlchemyConsumable,
   calculateCarriedAlchemyWeight,
+  calculateCarriedAlchemyValue,
 } = require("./alchemyResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -128,12 +129,14 @@ function buildAlchemySlots(alchemyInventory = []) {
   // ── TOTALS ────────────────────────────────────────────────────────────────
 
   const carried_alchemy_weight = calculateCarriedAlchemyWeight(backpack);
+  const carried_alchemy_value  = calculateCarriedAlchemyValue(backpack);
 
   return {
     stash,
     camp,
     backpack,
     carried_alchemy_weight,
+    carried_alchemy_value,
   };
 }
 

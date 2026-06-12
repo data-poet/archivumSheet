@@ -1,5 +1,7 @@
+const { COIN_WEIGHT, COIN_VALUE } = require("./coinPurseConstants");
+
 // ─────────────────────────────────────────────────────────────────────────────
-// SURVIVAL GEAR RESOLVER
+// HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
 function round2(value) {
@@ -11,25 +13,26 @@ function round2(value) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Merges a survival gear DB record + instance state into a fully resolved entry.
+ * Resolves a coin instance into a display-ready entry.
+ *
+ * total_weight — physical weight of the stack (kg)
+ * total_value  — monetary value in copper pieces
  */
-function resolveSurvivalGearItem(instance, gear) {
-  const total_weight = round2(gear.adventure_gear_weight * instance.quantity);
+function resolveCoin(instance) {
+  const coin_weight = COIN_WEIGHT[instance.coin_type];
+  const coin_value  = COIN_VALUE[instance.coin_type];
+
+  const total_weight = round2(coin_weight * instance.quantity);
+  const total_value  = coin_value * instance.quantity;
 
   return {
-    // DB BASE
-    adventure_gear_id: gear.adventure_gear_id,
-    adventure_gear_name: gear.adventure_gear_name,
-    adventure_gear_type: gear.adventure_gear_type,
-    adventure_gear_price: gear.adventure_gear_price,
-    adventure_gear_weight: gear.adventure_gear_weight,
-    adventure_gear_observation: gear.adventure_gear_observation,
-
-    // RUNTIME
-    quantity: instance.quantity,
-    storedAt: instance.storedAt,
+    coin_type:    instance.coin_type,
+    quantity:     instance.quantity,
+    storedAt:     instance.storedAt,
+    coin_weight,
+    coin_value,
     total_weight,
-    total_value: round2(gear.adventure_gear_price * instance.quantity),
+    total_value,
   };
 }
 
@@ -38,14 +41,12 @@ function resolveSurvivalGearItem(instance, gear) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Sums the total weight that counts toward carry.
- *
- * Only backpack items count.
- * Stash and camp are excluded.
+ * Sums total_weight for backpack coins only.
+ * Stash and camp do not count toward carry.
  */
-function calculateCarriedSurvivalGearWeight(backpackItems) {
+function calculateCarriedCoinPurseWeight(backpackCoins) {
   return round2(
-    backpackItems.reduce((sum, entry) => sum + entry.total_weight, 0),
+    backpackCoins.reduce((sum, entry) => sum + entry.total_weight, 0),
   );
 }
 
@@ -54,13 +55,10 @@ function calculateCarriedSurvivalGearWeight(backpackItems) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Sums total_value for backpack items only.
- * Stash and camp do not count toward carried value.
+ * Sums total_value (in copper) across a flat array of resolved coin entries.
  */
-function calculateCarriedSurvivalGearValue(backpackItems) {
-  return round2(
-    backpackItems.reduce((sum, entry) => sum + entry.total_value, 0),
-  );
+function sumCoinValue(coins) {
+  return coins.reduce((sum, entry) => sum + entry.total_value, 0);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,7 +66,7 @@ function calculateCarriedSurvivalGearValue(backpackItems) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
-  resolveSurvivalGearItem,
-  calculateCarriedSurvivalGearWeight,
-  calculateCarriedSurvivalGearValue,
+  resolveCoin,
+  calculateCarriedCoinPurseWeight,
+  sumCoinValue,
 };

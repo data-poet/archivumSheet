@@ -137,6 +137,9 @@ function resolveRangedWeapons(instance, weapon, material = null, ST = 0) {
       finalStats.weapon_final_hit_points + hitPointsModifier,
     ),
 
+    // VALUE — one instance = one piece
+    total_value: round2(finalStats.weapon_final_price),
+
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,
@@ -177,6 +180,50 @@ function calculateTotalRangedWeight(
   }, 0);
 }
 
+/**
+ * Calculates total ranged value (equipped + backpack).
+ * Stash and camp are excluded — mirrors the weight convention.
+ */
+function calculateTotalRangedValue(
+  rangedInventory,
+  rangedDb,
+  materialDb = {},
+  ST = 0,
+) {
+  return round2(
+    rangedInventory.reduce((sum, instance) => {
+      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
+        return sum;
+      }
+
+      const weapon = rangedDb[instance.weapon_id];
+      if (!weapon) return sum;
+
+      const material = instance.material_id
+        ? materialDb[instance.material_id]
+        : null;
+
+      const resolved = resolveRangedWeapons(instance, weapon, material, ST);
+
+      return sum + resolved.total_value;
+    }, 0),
+  );
+}
+
+/**
+ * Calculates carried ranged value (equipped + backpack).
+ * Named alias for calculateTotalRangedValue — kept for symmetry with the
+ * carried/total weight pair.
+ */
+function calculateCarriedRangedValue(
+  rangedInventory,
+  rangedDb,
+  materialDb = {},
+  ST = 0,
+) {
+  return calculateTotalRangedValue(rangedInventory, rangedDb, materialDb, ST);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -185,5 +232,7 @@ module.exports = {
   applyMaterialToRanged,
   resolveRangedWeapons,
   calculateTotalRangedWeight,
+  calculateTotalRangedValue,
+  calculateCarriedRangedValue,
   resolveDistanceFormula,
 };

@@ -13,6 +13,8 @@ const {
   resolveArmorPiece,
   buildEquippedSlots,
   calculateTotalArmorWeight,
+  calculateTotalArmorValue,
+  calculateCarriedArmorValue,
 } = require("./armorResolver.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,6 +172,7 @@ function buildArmorSlots(armorInventory = []) {
   const backpack = buildStorageSlots();
 
   let carried_armor_weight = 0;
+  let carried_armor_value  = 0;
 
   for (const instance of armorInventory) {
     const armor = armorDb[instance.armor_id];
@@ -188,6 +191,7 @@ function buildArmorSlots(armorInventory = []) {
       equipped[slot] = resolvedArmor;
 
       carried_armor_weight += resolvedArmor.armor_final_weight;
+      carried_armor_value  += resolvedArmor.total_value;
 
       continue;
     }
@@ -214,12 +218,19 @@ function buildArmorSlots(armorInventory = []) {
       backpack[slot].push(resolvedArmor);
 
       carried_armor_weight += resolvedArmor.armor_final_weight;
+      carried_armor_value  += resolvedArmor.total_value;
     }
   }
 
   // TOTALS
 
   const total_armor_weight = calculateTotalArmorWeight(
+    armorInventory,
+    armorDb,
+    materialDb,
+  );
+
+  const total_armor_value = calculateTotalArmorValue(
     armorInventory,
     armorDb,
     materialDb,
@@ -232,6 +243,8 @@ function buildArmorSlots(armorInventory = []) {
     backpack,
     total_armor_weight,
     carried_armor_weight,
+    total_armor_value,
+    carried_armor_value,
   };
 }
 
