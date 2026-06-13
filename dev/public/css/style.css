@@ -1329,6 +1329,16 @@ tr.spell-detail-row details[open] summary {
   color: var(--color-text);
 }
 
+/* Coins row — always right-aligned, below the carried total */
+.resume-coins-cell {
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  text-align: right !important;
+  padding-top: 4px !important;
+  border-top: none !important;
+}
+
 .resume-limits-table {
   font-size: var(--fs-xxs);
   width: 100%;

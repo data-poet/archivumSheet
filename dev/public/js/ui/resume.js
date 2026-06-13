@@ -675,6 +675,21 @@ function renderResumeValue(sheet) {
   const totalValueCell = el("resume_total_value_cell");
   if (totalValueCell)
     totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
+
+  // ── Coins in backpack ─────────────────────────────────────────────────────
+  const backpackCoins = sheet?.inventory?.coinPurse?.backpack ?? [];
+  const totalCoins = backpackCoins.reduce(
+    (sum, entry) => sum + (entry.total_value ?? 0),
+    0,
+  );
+  const hasCoins = backpackCoins.length > 0;
+
+  const coinsRowEl = el("resume_coins_row");
+  if (coinsRowEl) coinsRowEl.hidden = !hasCoins;
+
+  document.querySelectorAll(".resume-coins-value").forEach((span) => {
+    span.textContent = totalCoins.toLocaleString("pt-BR");
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

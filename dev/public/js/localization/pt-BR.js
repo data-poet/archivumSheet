@@ -137,6 +137,7 @@ export const LABELS = {
     customInventoryWeight: "Inv. Personalizado",
     encumbrance: "Sobrecarga",
     carryLimits: "Limites de Carga",
+    coinsCarried: "💰 na mochila",
   },
 
   // ── Attributes table headers ───────────────────────────────────────────────
