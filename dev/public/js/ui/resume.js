@@ -641,8 +641,8 @@ function renderResumeWeight(sheet) {
         survivalGearWeight +
         customWeight +
         coinPurseWeight) *
-        100,
-    ) / 100;
+        1000,
+    ) / 1000;
 
   let stateKey = "none";
   if (carry) {
