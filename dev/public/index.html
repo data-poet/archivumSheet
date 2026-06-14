@@ -30,6 +30,13 @@
       </div>
       <div class="topbar-actions">
         <button
+          id="view-mode-btn"
+          class="topbar-btn"
+          type="button"
+          aria-label="Entrar no modo visualização"
+          aria-pressed="false"
+        >📃</button>
+        <button
           id="char-selector-btn"
           class="char-selector-btn"
           aria-haspopup="listbox"
@@ -134,11 +141,6 @@
               class="tab-btn"
               data-tab="tab-char-info"
               id="tab-btn-char-info"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-char-resume"
-              id="tab-btn-char-resume"
             ></button>
             <button
               class="tab-strip-collapse"
@@ -263,192 +265,13 @@
             </div>
           </div>
 
-          <!-- Panel: Resumo -->
-          <div class="tab-panel" id="tab-char-resume">
-            <!-- ── Row 1: character name | sub-race ──────────────────────── -->
-            <div class="resume-row resume-row--name">
-              <p class="resume-char-name" id="resume_header_name"></p>
-            </div>
-
-            <!-- ── Row 2: primary attribute boxes ───────────────────────── -->
-            <div class="resume-row resume-row--primary-attrs" id="resume_primary_attrs"></div>
-
-            <!-- ── Row 3: bars + secondary snapshot ─────────────────────── -->
-            <div class="resume-row resume-row--bars-secondary">
-              <!-- HP / Mana / Toxicity bars -->
-              <div class="resume-bars-block">
-                <div id="resume_bar_hp"></div>
-                <div id="resume_bar_mana"></div>
-                <div id="resume_bar_toxicity"></div>
-              </div>
-              <!-- Secondary attributes snapshot (collapsible) -->
-              <div id="resume_secondary_snapshot"></div>
-            </div>
-
-            <!-- ── Row 2: points ────────────────────────────────────────── -->
-            <table class="resume-table">
-              <tbody>
-                <tr
-                  class="resume-expander-row"
-                  data-tbody-target="resume_points_tbody"
-                >
-                  <td colspan="2">
-                    <button class="resume-expander-btn" aria-expanded="false">
-                      <span class="resume-expander-arrow">&#8250;</span>
-                      <span id="sec-resume-points-detail"></span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-
-              <tbody
-                id="resume_points_tbody"
-                class="resume-collapsible"
-                hidden
-              ></tbody>
-
-              <tbody>
-                <tr class="resume-total-row">
-                  <td><strong id="lbl-resume-totalPoints"></strong></td>
-                  <td class="col-num" id="resume_total_points_cell">
-                    <strong>0</strong>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
-            <div class="resume-row resume-row--two-col">
-              <div class="resume-col" id="resume_advantages_container"></div>
-              <div class="resume-col" id="resume_disadvantages_container"></div>
-            </div>
-
-            <!-- ── Row 4: skills (full width) ───────────────────────────── -->
-            <div class="resume-row">
-              <div class="resume-full-col" id="resume_skills_container"></div>
-            </div>
-
-            <!-- ── Row 5: magic (full width) ────────────────────────────── -->
-            <div class="resume-row">
-              <div class="resume-full-col" id="resume_magic_container"></div>
-            </div>
-
-            <!-- ── Row 6: armor | shield ────────────────────────────────── -->
-            <div class="resume-row resume-row--two-col">
-              <div class="resume-col" id="resume_armor_container"></div>
-              <div class="resume-col" id="resume_shield_container"></div>
-            </div>
-
-            <!-- ── Row 7: melee | ranged ────────────────────────────────── -->
-            <div class="resume-row resume-row--two-col">
-              <div class="resume-col" id="resume_melee_container"></div>
-              <div class="resume-col" id="resume_ranged_container"></div>
-            </div>
-
-            <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
-            <div class="resume-row resume-row--two-col">
-              <div class="resume-col" id="resume_ammo_container"></div>
-              <div class="resume-col" id="resume_alchemy_container"></div>
-            </div>
-
-            <!-- ── Row 9: weight | value ────────────────────────────────── -->
-            <div class="resume-row resume-row--two-col">
-              <!-- Weight col -->
-              <div class="resume-col">
-                <h3 class="resume-col-title" id="sec-resume-weight"></h3>
-                <table class="resume-table">
-                  <tbody>
-                    <tr
-                      class="resume-expander-row"
-                      data-tbody-target="resume_weight_tbody"
-                    >
-                      <td colspan="2">
-                        <button
-                          class="resume-expander-btn"
-                          aria-expanded="false"
-                          aria-label="Expandir"
-                        >
-                          <span class="resume-expander-arrow">&#8250;</span>
-                          <span id="sec-resume-weight-detail"></span>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody id="resume_weight_tbody" hidden></tbody>
-                  <tbody>
-                    <tr class="resume-total-row">
-                      <td><strong id="lbl-resume-totalWeight"></strong></td>
-                      <td class="col-num" id="resume_total_weight_cell">
-                        <strong>0</strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p class="resume-encumbrance">
-                  <strong id="lbl-encumbrance"></strong>
-                  <span id="encumbrance">—</span>
-                </p>
-                <div id="carry_limits"></div>
-
-                <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
-                <span id="armor_weight" style="display: none">0</span>
-                <span id="shield_weight" style="display: none">0</span>
-                <span id="melee_weight" style="display: none">0</span>
-                <span id="ranged_weight" style="display: none">0</span>
-                <span id="ammo_weight" style="display: none">0</span>
-                <span id="alchemy_weight" style="display: none">0</span>
-                <span id="survival_gear_weight" style="display: none">0</span>
-                <span id="custom_inventory_weight" style="display: none"
-                  >0</span
-                >
-                <span id="total_weight" style="display: none">0</span>
-              </div>
-
-              <!-- Value col -->
-              <div class="resume-col">
-                <h3 class="resume-col-title" id="sec-resume-value"></h3>
-                <table class="resume-table">
-                  <tbody>
-                    <tr
-                      class="resume-expander-row"
-                      data-tbody-target="resume_value_tbody"
-                    >
-                      <td colspan="2">
-                        <button
-                          class="resume-expander-btn"
-                          aria-expanded="false"
-                          aria-label="Expandir"
-                        >
-                          <span class="resume-expander-arrow">&#8250;</span>
-                          <span id="sec-resume-value-detail"></span>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody
-                    id="resume_value_tbody"
-                    class="resume-collapsible"
-                    hidden
-                  ></tbody>
-                  <tbody>
-                    <tr class="resume-total-row">
-                      <td><strong id="lbl-resume-totalValue"></strong></td>
-                      <td class="col-num" id="resume_total_value_cell">
-                        <strong>0</strong>
-                      </td>
-                    </tr>
-                    <tr class="resume-coins-row" id="resume_coins_row" hidden>
-                      <td colspan="2" class="resume-coins-cell">
-                        <span class="resume-coins-value">0</span>
-                        <span id="lbl-resume-coins-carried"></span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         </div>
+      </section>
+
+      <!-- ───────────────────────────────────────────────────────────────────
+           SECTION: ATRIBUTOS — tabs: Primários · Secundários · Dano Base
+           ─────────────────────────────────────────────────────────────────── -->
       </section>
 
       <!-- ───────────────────────────────────────────────────────────────────
@@ -1292,7 +1115,199 @@
           </details>
         </div>
       </section>
+
     </main>
+
+    <!-- ─────────────────────────────────────────────────────────────────────────
+         VIEW MODE — full-page resume; shown only when .is-view-mode is set.
+         Lives outside <main> so hiding #main-content does not affect it.
+         ───────────────────────────────────────────────────────────────────── -->
+    <div id="view-mode-resume" class="view-mode-resume" aria-label="Resumo do personagem"></div>
+
+    <!-- Hidden resume source panel — kept in DOM for renderResume() IDs;
+         cloned into #view-mode-resume by viewMode.js when in view mode.   -->
+    <div id="tab-char-resume" style="display:none" aria-hidden="true">
+      <!-- ── Row 1: character name | sub-race ──────────────────────── -->
+      <div class="resume-row resume-row--name">
+        <p class="resume-char-name" id="resume_header_name"></p>
+      </div>
+
+      <!-- ── Row 2: primary attribute boxes ───────────────────────── -->
+      <div class="resume-row resume-row--primary-attrs" id="resume_primary_attrs"></div>
+
+      <!-- ── Row 3: bars + secondary snapshot ─────────────────────── -->
+      <div class="resume-row resume-row--bars-secondary">
+        <!-- HP / Mana / Toxicity bars -->
+        <div class="resume-bars-block">
+          <div id="resume_bar_hp"></div>
+          <div id="resume_bar_mana"></div>
+          <div id="resume_bar_toxicity"></div>
+        </div>
+        <!-- Secondary attributes snapshot (collapsible) -->
+        <div id="resume_secondary_snapshot"></div>
+      </div>
+
+      <!-- ── Row 2: points ────────────────────────────────────────── -->
+      <table class="resume-table">
+        <tbody>
+          <tr
+            class="resume-expander-row"
+            data-tbody-target="resume_points_tbody"
+          >
+            <td colspan="2">
+              <button class="resume-expander-btn" aria-expanded="false">
+                <span class="resume-expander-arrow">&#8250;</span>
+                <span id="sec-resume-points-detail"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody
+          id="resume_points_tbody"
+          class="resume-collapsible"
+          hidden
+        ></tbody>
+
+        <tbody>
+          <tr class="resume-total-row">
+            <td><strong id="lbl-resume-totalPoints"></strong></td>
+            <td class="col-num" id="resume_total_points_cell">
+              <strong>0</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
+      <div class="resume-row resume-row--two-col">
+        <div class="resume-col" id="resume_advantages_container"></div>
+        <div class="resume-col" id="resume_disadvantages_container"></div>
+      </div>
+
+      <!-- ── Row 4: skills (full width) ───────────────────────────── -->
+      <div class="resume-row">
+        <div class="resume-full-col" id="resume_skills_container"></div>
+      </div>
+
+      <!-- ── Row 5: magic (full width) ────────────────────────────── -->
+      <div class="resume-row">
+        <div class="resume-full-col" id="resume_magic_container"></div>
+      </div>
+
+      <!-- ── Row 6: armor | shield ────────────────────────────────── -->
+      <div class="resume-row resume-row--two-col">
+        <div class="resume-col" id="resume_armor_container"></div>
+        <div class="resume-col" id="resume_shield_container"></div>
+      </div>
+
+      <!-- ── Row 7: melee | ranged ────────────────────────────────── -->
+      <div class="resume-row resume-row--two-col">
+        <div class="resume-col" id="resume_melee_container"></div>
+        <div class="resume-col" id="resume_ranged_container"></div>
+      </div>
+
+      <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
+      <div class="resume-row resume-row--two-col">
+        <div class="resume-col" id="resume_ammo_container"></div>
+        <div class="resume-col" id="resume_alchemy_container"></div>
+      </div>
+
+      <!-- ── Row 9: weight | value ────────────────────────────────── -->
+      <div class="resume-row resume-row--two-col">
+        <!-- Weight col -->
+        <div class="resume-col">
+          <h3 class="resume-col-title" id="sec-resume-weight"></h3>
+          <table class="resume-table">
+            <tbody>
+              <tr
+                class="resume-expander-row"
+                data-tbody-target="resume_weight_tbody"
+              >
+                <td colspan="2">
+                  <button
+                    class="resume-expander-btn"
+                    aria-expanded="false"
+                    aria-label="Expandir"
+                  >
+                    <span class="resume-expander-arrow">&#8250;</span>
+                    <span id="sec-resume-weight-detail"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tbody id="resume_weight_tbody" class="resume-collapsible" hidden></tbody>
+            <tbody>
+              <tr class="resume-total-row">
+                <td><strong id="lbl-resume-totalWeight"></strong></td>
+                <td class="col-num" id="resume_total_weight_cell">
+                  <strong>0</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="resume-encumbrance">
+            <strong id="lbl-encumbrance"></strong>
+            <span id="encumbrance">—</span>
+          </p>
+          <div id="carry_limits"></div>
+
+          <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
+          <span id="armor_weight" style="display: none">0</span>
+          <span id="shield_weight" style="display: none">0</span>
+          <span id="melee_weight" style="display: none">0</span>
+          <span id="ranged_weight" style="display: none">0</span>
+          <span id="ammo_weight" style="display: none">0</span>
+          <span id="alchemy_weight" style="display: none">0</span>
+          <span id="survival_gear_weight" style="display: none">0</span>
+          <span id="custom_inventory_weight" style="display: none">0</span>
+          <span id="total_weight" style="display: none">0</span>
+        </div>
+
+        <!-- Value col -->
+        <div class="resume-col">
+          <h3 class="resume-col-title" id="sec-resume-value"></h3>
+          <table class="resume-table">
+            <tbody>
+              <tr
+                class="resume-expander-row"
+                data-tbody-target="resume_value_tbody"
+              >
+                <td colspan="2">
+                  <button
+                    class="resume-expander-btn"
+                    aria-expanded="false"
+                    aria-label="Expandir"
+                  >
+                    <span class="resume-expander-arrow">&#8250;</span>
+                    <span id="sec-resume-value-detail"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tbody
+              id="resume_value_tbody"
+              class="resume-collapsible"
+              hidden
+            ></tbody>
+            <tbody>
+              <tr class="resume-total-row">
+                <td><strong id="lbl-resume-totalValue"></strong></td>
+                <td class="col-num" id="resume_total_value_cell">
+                  <strong>0</strong>
+                </td>
+              </tr>
+              <tr class="resume-coins-row" id="resume_coins_row" hidden>
+                <td colspan="2" class="resume-coins-cell">
+                  <span class="resume-coins-value">0</span>
+                  <span id="lbl-resume-coins-carried"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MOBILE: Bottom tab navigation
@@ -1420,7 +1435,6 @@
         // Tab button labels
         // section-character
         setText("tab-btn-char-info", L.tabs.character.info);
-        setText("tab-btn-char-resume", L.tabs.character.resume);
         // section-attributes
         setText("tab-btn-attr-primary", L.tabs.attributes.primary);
         setText("tab-btn-attr-secondary", L.tabs.attributes.secondary);
@@ -1597,12 +1611,14 @@
       initAppShell();
 
       // ── Resume expander (collapsible detail rows) ─────────────────────────
+      // Resolved locally within the same <table> so the handler works in both
+      // the hidden source panel and the id-stripped clone in #view-mode-resume.
       document.addEventListener("click", (e) => {
         const btn = e.target.closest(".resume-expander-btn");
         if (!btn) return;
-        const tbodyId = btn.closest("tr")?.dataset.tbodyTarget;
-        if (!tbodyId) return;
-        const tbody = document.getElementById(tbodyId);
+        const table = btn.closest("table");
+        if (!table) return;
+        const tbody = table.querySelector("tbody.resume-collapsible");
         if (!tbody) return;
         const expanded = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!expanded));

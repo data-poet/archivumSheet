@@ -26,6 +26,7 @@ const ARMOR_SLOTS = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function renderResume(sheet, data = {}) {
+  initResumeExpanders(); // no-op after first call
   renderResumeHeader(sheet);
   renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
@@ -629,16 +630,19 @@ function renderResumeWeight(sheet) {
     sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
 
   const totalWeight =
-    baseWeight +
-    armorWeight +
-    shieldWeight +
-    meleeWeight +
-    rangedWeight +
-    ammoWeight +
-    alchemyWeight +
-    survivalGearWeight +
-    customWeight +
-    coinPurseWeight;
+    Math.ceil(
+      (baseWeight +
+        armorWeight +
+        shieldWeight +
+        meleeWeight +
+        rangedWeight +
+        ammoWeight +
+        alchemyWeight +
+        survivalGearWeight +
+        customWeight +
+        coinPurseWeight) *
+        100,
+    ) / 100;
 
   let stateKey = "none";
   if (carry) {
@@ -863,7 +867,11 @@ function _collapsibleHeader(title) {
   `;
 }
 
-/** Attaches toggle behaviour to a freshly rendered container. */
+/**
+ * Sets the initial collapsed state of a freshly rendered container.
+ * Click handling is delegated globally via initResumeExpanders() so that
+ * cloned nodes in #view-mode-resume also respond without re-binding.
+ */
 function _bindCollapse(container) {
   const btn = container.querySelector(".resume-section-toggle");
   const body = container.querySelector(".resume-collapse-body");
@@ -872,8 +880,27 @@ function _bindCollapse(container) {
   // Start collapsed
   body.hidden = true;
   btn.setAttribute("aria-expanded", "false");
+}
 
-  btn.addEventListener("click", () => {
+/**
+ * Wires a single delegated listener on document for .resume-section-toggle.
+ * Call once (guard prevents duplicate registration).
+ * Delegated binding covers both the hidden source panel and the cloned
+ * #view-mode-resume without needing to re-bind after every innerHTML clone.
+ */
+let _expandersBound = false;
+export function initResumeExpanders() {
+  if (_expandersBound) return;
+  _expandersBound = true;
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".resume-section-toggle");
+    if (!btn) return;
+    // Walk up to find the nearest .resume-collapse-body sibling
+    const parent = btn.parentElement;
+    if (!parent) return;
+    const body = parent.querySelector(".resume-collapse-body");
+    if (!body) return;
     const isOpen = body.hidden === false;
     body.hidden = isOpen;
     btn.setAttribute("aria-expanded", String(!isOpen));

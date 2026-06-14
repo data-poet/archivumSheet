@@ -426,6 +426,14 @@ export const LABELS = {
     comingSoon: "Em desenvolvimento — Poções serão adicionadas aqui.",
   },
 
+  // ── View mode toggle ──────────────────────────────────────────────────────
+  viewMode: {
+    btnView: "📃 Visualizar",
+    btnEdit: "📝 Editar",
+    ariaView: "Entrar no modo visualização",
+    ariaEdit: "Voltar ao modo edição",
+  },
+
   // ── Output (debug) ────────────────────────────────────────────────────────
   output: {
     title: "Saída",

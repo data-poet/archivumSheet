@@ -10,6 +10,7 @@ import {
   renderSecondaryAttributes,
   renderDamage,
   renderResume,
+  syncViewMode,
 } from "../ui.js";
 
 const selected = state.selected;
@@ -153,6 +154,7 @@ export async function runEngine() {
     renderSecondaryAttributes(json);
     renderDamage(json);
     renderResume(json, state.data);
+    syncViewMode();
 
     // Store resolved sheet so render files can use final computed values
     state.sheet = json;

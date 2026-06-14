@@ -1947,3 +1947,42 @@ h4 {
   flex-shrink: 0;
   line-height: 1;
 }
+
+/* ── View mode ────────────────────────────────────────────────────────────── */
+
+/* The full-page resume container — hidden in edit mode */
+.view-mode-resume {
+  display: none;
+}
+
+/* When .is-view-mode is on <body>: */
+
+/* Hide nav layers */
+.is-view-mode .l-sidebar,
+.is-view-mode .l-bottomnav {
+  display: none !important;
+}
+
+/* Remove bottom padding reserved for bottom nav */
+.is-view-mode {
+  padding-bottom: 0;
+}
+
+/* Hide the regular edit-mode main content */
+.is-view-mode #main-content {
+  display: none;
+}
+
+/* Show and style the view-mode resume container.
+   Body already has padding-top: var(--topbar-h), so no extra margin needed. */
+.is-view-mode .view-mode-resume {
+  display: block;
+  padding: clamp(8px, 3vw, 20px);
+}
+
+/* On desktop, no margin-left needed either — sidebar is hidden */
+@media (min-width: 768px) {
+  .is-view-mode .view-mode-resume {
+    padding: clamp(12px, 2vw, 20px);
+  }
+}
