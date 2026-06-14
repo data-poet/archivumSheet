@@ -265,18 +265,24 @@
 
           <!-- Panel: Resumo -->
           <div class="tab-panel" id="tab-char-resume">
-            <!-- ── Row 1: header + bars ─────────────────────────────────── -->
-            <div class="resume-row resume-row--header-bars">
-              <!-- Character title -->
-              <div class="resume-header-block">
-                <p class="resume-char-name" id="resume_header_name"></p>
-              </div>
+            <!-- ── Row 1: character name | sub-race ──────────────────────── -->
+            <div class="resume-row resume-row--name">
+              <p class="resume-char-name" id="resume_header_name"></p>
+            </div>
+
+            <!-- ── Row 2: primary attribute boxes ───────────────────────── -->
+            <div class="resume-row resume-row--primary-attrs" id="resume_primary_attrs"></div>
+
+            <!-- ── Row 3: bars + secondary snapshot ─────────────────────── -->
+            <div class="resume-row resume-row--bars-secondary">
               <!-- HP / Mana / Toxicity bars -->
               <div class="resume-bars-block">
                 <div id="resume_bar_hp"></div>
                 <div id="resume_bar_mana"></div>
                 <div id="resume_bar_toxicity"></div>
               </div>
+              <!-- Secondary attributes snapshot (collapsible) -->
+              <div id="resume_secondary_snapshot"></div>
             </div>
 
             <!-- ── Row 2: points ────────────────────────────────────────── -->

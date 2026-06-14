@@ -127,6 +127,7 @@ export const LABELS = {
     totalPoints: "Total de Pontos",
     totalWeight: "Peso Total",
     totalValue: "Valor Total",
+    secondarySnapshot: "Atributos Secundários",
     baseWeightLabel: "Peso Base (kg):",
     armorWeight: "Armadura",
     shieldWeight: "Escudo",

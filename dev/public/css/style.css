@@ -1198,7 +1198,6 @@ tr.spell-detail-row details[open] summary {
   font-weight: 700;
   color: var(--color-text);
   margin: 0;
-  white-space: nowrap;
   letter-spacing: 0.01em;
 }
 
@@ -1254,7 +1253,70 @@ tr.spell-detail-row details[open] summary {
   background: #3aaa5c;
 }
 
-/* ── Section collapsible cards ─────────────────────────────────────────── */
+/* ── Name row ──────────────────────────────────────────────────────────── */
+.resume-row--name {
+  margin-bottom: 0.5rem;
+}
+
+/* ── Primary attribute boxes ───────────────────────────────────────────── */
+.resume-row--primary-attrs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.resume-attr-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  border-top: 2px solid var(--accent-character);
+  min-width: 0;
+}
+
+.resume-attr-acronym {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.resume-attr-value {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+/* ── Bars + secondary snapshot row ────────────────────────────────────── */
+.resume-row--bars-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .resume-row--bars-secondary {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Secondary snapshot table ──────────────────────────────────────────── */
+.resume-table--secondary-snapshot td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  width: 3em;
+}
+
+
 .resume-section-toggle {
   background: none;
   border: none;

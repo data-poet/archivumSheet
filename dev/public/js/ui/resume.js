@@ -27,7 +27,9 @@ const ARMOR_SLOTS = [
 
 export function renderResume(sheet, data = {}) {
   renderResumeHeader(sheet);
+  renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
+  renderResumeSecondarySnapshot(sheet);
   renderResumeTraits(sheet);
   renderResumeSkills(sheet);
   renderResumeMagic(sheet, data);
@@ -55,6 +57,88 @@ function renderResumeHeader(sheet) {
   const separator = charName && subRace ? " | " : "";
 
   nameEl.textContent = charName + separator + subRace;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 1b. Primary attribute boxes (ST / DX / IQ / HT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumePrimaryAttributes(sheet) {
+  const container = el("resume_primary_attrs");
+  if (!container) return;
+
+  const primary = sheet?.character?.primary_attributes;
+  if (!primary) {
+    container.innerHTML = "";
+    return;
+  }
+
+  const attrs = ["ST", "DX", "IQ", "HT"];
+
+  container.innerHTML = attrs
+    .map((key) => {
+      const value = primary[key]?.value ?? "—";
+      return `
+        <div class="resume-attr-box">
+          <span class="resume-attr-acronym">${key}</span>
+          <span class="resume-attr-value">${value}</span>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 1c. Secondary attributes snapshot (collapsible — Will, Vision, Hearing,
+//     Smell, BasicSpeed, Movement, Dodge)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SECONDARY_SNAPSHOT_KEYS = [
+  "Will",
+  "Vision",
+  "Hearing",
+  "Smell",
+  "BasicSpeed",
+  "Movement",
+  "Dodge",
+];
+
+function renderResumeSecondarySnapshot(sheet) {
+  const container = el("resume_secondary_snapshot");
+  if (!container) return;
+
+  const sec = sheet?.character?.secondary_attributes;
+  if (!sec) {
+    container.innerHTML = "";
+    return;
+  }
+
+  const rows = SECONDARY_SNAPSHOT_KEYS.map((key) => {
+    const attr = sec[key];
+    if (!attr) return "";
+    const value =
+      key === "BasicSpeed"
+        ? Number(attr.value).toFixed(2)
+        : (attr.value ?? "—");
+    return `
+      <tr>
+        <td>${getSecondaryAttributeLabel(key)}</td>
+        <td class="col-num">${value}</td>
+      </tr>
+    `;
+  }).join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("resume.secondarySnapshot"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table resume-table--secondary-snapshot">
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
