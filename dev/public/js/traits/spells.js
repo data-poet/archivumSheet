@@ -2,6 +2,7 @@ import { state } from "../state.js";
 import { fetchSpells } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
+import { t } from "../localization/pt-BR.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -13,7 +14,7 @@ export async function loadSpells() {
 
   const schools = [...new Set(data.spells.map((s) => s.spell_school))].sort();
   const schoolEl = document.getElementById("spellSchoolSelect");
-  schoolEl.innerHTML = `<option value="">— School —</option>`;
+  schoolEl.innerHTML = `<option value="">${t("magic.schoolFilter")}</option>`;
   schools.forEach((sc) => {
     const opt = document.createElement("option");
     opt.value = sc;

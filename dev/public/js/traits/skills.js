@@ -2,6 +2,7 @@ import { state } from "../state.js";
 import { fetchSkills } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
+import { t } from "../localization/pt-BR.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -13,7 +14,7 @@ export async function loadSkills() {
 
   const types = [...new Set(data.skills.map((s) => s.skill_category))].sort();
   const typeEl = document.getElementById("skillCategorySelect");
-  typeEl.innerHTML = `<option value="">— Category —</option>`;
+  typeEl.innerHTML = `<option value="">${t("traits.categoryFilter")}</option>`;
   types.forEach((t) => {
     const opt = document.createElement("option");
     opt.value = t;

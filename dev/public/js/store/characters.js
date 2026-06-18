@@ -238,7 +238,7 @@ export function saveActiveCharacter() {
   const raceId = state.selected.character?.race_id;
   if (raceId) {
     const raceRow = state.data.races.find((r) => r.race_id === raceId);
-    store.list[idx].race = raceRow?.race_name ?? "";
+    store.list[idx].race = raceRow?.race_sub_name || raceRow?.race_name || "";
   } else {
     store.list[idx].race = "";
   }
@@ -319,7 +319,7 @@ export function replaceActiveCharacter(payload) {
   const raceId = payload?.race?.race_id;
   if (raceId) {
     const raceRow = state.data.races.find((r) => r.race_id === raceId);
-    store.list[idx].race = raceRow?.race_name ?? "";
+    store.list[idx].race = raceRow?.race_sub_name || raceRow?.race_name || "";
   } else {
     store.list[idx].race = "";
   }
