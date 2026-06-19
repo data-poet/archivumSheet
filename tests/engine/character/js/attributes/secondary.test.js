@@ -179,6 +179,19 @@ describe("SECONDARY ATTRIBUTES", () => {
         Math.floor(expectedSpeed - 3),
       );
     });
+
+    it("Should not allow bought levels (always 0)", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {
+          Movement: { bought: 3 },
+        },
+        mockCarryWeight,
+      );
+
+      expect(attributes.Movement.bought).toBe(0);
+      expect(attributes.Movement.value).toBe(attributes.Movement.base_value);
+    });
   });
 
   describe("Points system", () => {

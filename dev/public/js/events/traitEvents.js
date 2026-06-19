@@ -27,6 +27,7 @@ export function handleTraitInput(e) {
 
     if (!selected.secondary[name]) selected.secondary[name] = { bought: 0, modifier: 0 };
     if (field === "bought") {
+      if (name === "Movement") return true;
       const max = name === "BasicSpeed" ? 6 : 5;
       selected.secondary[name].bought = Math.max(0, Math.min(max, value));
     }

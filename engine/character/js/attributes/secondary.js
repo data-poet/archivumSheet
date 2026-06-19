@@ -143,7 +143,9 @@ function buildSecondaryAttributes(
 
   result.Movement = resolveSecondary({
     base_value: movementBase,
-    ...config.Movement,
+    maxBought: 0,
+    bought: 0,
+    modifier: config.Movement?.modifier ?? 0,
   });
 
   let dodgeBase = Math.floor(result.Movement.value + 4);

@@ -64,7 +64,7 @@ describe("BUILD SHEET", () => {
 
       const baseSpeed = (HT + DX) / 4 + 2 * 0.5;
 
-      const expected = Math.floor(baseSpeed - 3);
+      const expected = Math.floor(baseSpeed - 2);
 
       expect(movement.base_value).toBe(expected);
     });

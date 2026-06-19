@@ -28,21 +28,17 @@ export function renderSecondaryAttributes(sheet) {
 
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
-      const isBasicSpeed = name === "BasicSpeed";
+      const isBasicSpeed  = name === "BasicSpeed";
+      const isMovement    = name === "Movement";
 
       const baseDisplay  = isBasicSpeed ? Number(data.base_value).toFixed(2) : data.base_value;
       const valueDisplay = isBasicSpeed ? Number(data.value).toFixed(2)      : data.value;
 
-      const boughtMax    = isBasicSpeed ? 6 : 5;
       const modifierStep = isBasicSpeed ? 0.5 : 1;
 
-      return `
-        <tr>
-          <td><strong>${getSecondaryAttributeLabel(name)}</strong></td>
-
-          <td>${baseDisplay}</td>
-
-          <td>
+      const boughtCell = isMovement
+        ? `<td>—</td>`
+        : `<td>
             <div class="num-stepper">
               <input
                 type="text"
@@ -57,7 +53,15 @@ export function renderSecondaryAttributes(sheet) {
                 <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
               </div>
             </div>
-          </td>
+          </td>`;
+
+      return `
+        <tr>
+          <td><strong>${getSecondaryAttributeLabel(name)}</strong></td>
+
+          <td>${baseDisplay}</td>
+
+          ${boughtCell}
 
           <td>
             <div class="num-stepper">

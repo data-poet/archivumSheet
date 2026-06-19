@@ -190,8 +190,8 @@ describe("INVENTORY BUILDER", () => {
     expect(carry.limits.veryHeavy).toBe(100);
 
     // modifier
-    // 35 → between 30 and 60
-    expect(carry.weight_modifier).toBe(-3);
+    // 35 → heavy range (ST*3 < weight <= ST*6) → -2
+    expect(carry.weight_modifier).toBe(-2);
   });
 
   test("Should include armor inventory", () => {

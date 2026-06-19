@@ -6,34 +6,39 @@ describe("CARRY WEIGHT", () => {
   const run = (st, load) => calculateCarryWeight(st, load);
 
   describe("Weight modifiers", () => {
-    test("No load, when load <= ST", () => {
+    test("No load (none), when load <= ST", () => {
       const result = run(10, 10);
       expect(result.weight_modifier).toBe(0);
     });
 
-    test("Light load, when ST <= load < ST*2", () => {
+    test("Light load, when ST < load <= ST*2", () => {
       const result = run(10, 15);
+      expect(result.weight_modifier).toBe(0);
+    });
+
+    test("Light load at upper boundary (load = ST*2)", () => {
+      const result = run(10, 20);
+      expect(result.weight_modifier).toBe(0);
+    });
+
+    test("Medium load, when ST*2 < load <= ST*3", () => {
+      const result = run(10, 25);
       expect(result.weight_modifier).toBe(-1);
     });
 
-    test("Medium load, when ST*2 <= load < ST*3", () => {
-      const result = run(10, 21);
+    test("Heavy load, when ST*3 < load <= ST*6", () => {
+      const result = run(10, 45);
       expect(result.weight_modifier).toBe(-2);
     });
 
-    test("Heavy load, when ST*3 <= load < ST*6", () => {
-      const result = run(10, 45);
-      expect(result.weight_modifier).toBe(-3);
-    });
-
-    test("Very Heavy load, when ST*6 <= load < ST*10", () => {
+    test("Very Heavy load, when ST*6 < load <= ST*10", () => {
       const result = run(10, 75);
-      expect(result.weight_modifier).toBe(-4);
+      expect(result.weight_modifier).toBe(-3);
     });
 
     test("Overloaded, when load > ST*10", () => {
       const result = run(10, 120);
-      expect(result.weight_modifier).toBe(-5);
+      expect(result.weight_modifier).toBe(-4);
     });
   });
 
