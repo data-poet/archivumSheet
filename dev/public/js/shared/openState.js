@@ -2,7 +2,8 @@
  * openState.js
  *
  * Shared helpers for snapshotting and restoring the open/closed state of
- * <details> elements before and after a DOM re-render.
+ * <details> elements and the horizontal scroll position of .table-wrapper
+ * elements before and after a DOM re-render.
  *
  * Two strategies are supported:
  *
@@ -21,7 +22,11 @@
  */
 
 /**
- * Snapshot all open <details> inside `scope`, then render, then restore.
+ * Snapshot all open <details> and .table-wrapper scroll positions inside
+ * `scope`, then render, then restore both.
+ *
+ * Scroll positions are indexed by DOM order so nested wrappers (e.g. ammo
+ * containers) are handled correctly without needing extra keys.
  *
  * @param {string}   scope     - CSS selector for the container to search
  * @param {Function} keyFn     - (detailsEl) => string|null key
@@ -38,15 +43,27 @@ export function withOpenState(scope, keyFn, renderFn) {
     if (key) open.add(key);
   });
 
+  // Snapshot: collect scrollLeft of every .table-wrapper by index
+  const scrollPositions = Array.from(
+    container.querySelectorAll(".table-wrapper")
+  ).map((w) => w.scrollLeft);
+
   renderFn();
 
-  if (open.size === 0) return;
-
   // Restore: re-open matching <details>
-  container.querySelectorAll("details").forEach((d) => {
-    const key = keyFn(d);
-    if (key && open.has(key)) d.setAttribute("open", "");
-  });
+  if (open.size > 0) {
+    container.querySelectorAll("details").forEach((d) => {
+      const key = keyFn(d);
+      if (key && open.has(key)) d.setAttribute("open", "");
+    });
+  }
+
+  // Restore: scroll positions by index
+  if (scrollPositions.some((s) => s > 0)) {
+    container.querySelectorAll(".table-wrapper").forEach((w, i) => {
+      if (scrollPositions[i]) w.scrollLeft = scrollPositions[i];
+    });
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
