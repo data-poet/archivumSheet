@@ -50,20 +50,26 @@ export function withOpenState(scope, keyFn, renderFn) {
 
   renderFn();
 
-  // Restore: re-open matching <details>
-  if (open.size > 0) {
-    container.querySelectorAll("details").forEach((d) => {
-      const key = keyFn(d);
-      if (key && open.has(key)) d.setAttribute("open", "");
-    });
-  }
+  // Restore after reflow: rAF ensures the browser has finished laying out
+  // the new DOM before we write back open state and scroll positions.
+  // Without this, a synchronous restore is overwritten by the browser's
+  // post-innerHTML reflow triggered by the stepper button click.
+  requestAnimationFrame(() => {
+    // Restore: re-open matching <details>
+    if (open.size > 0) {
+      container.querySelectorAll("details").forEach((d) => {
+        const key = keyFn(d);
+        if (key && open.has(key)) d.setAttribute("open", "");
+      });
+    }
 
-  // Restore: scroll positions by index
-  if (scrollPositions.some((s) => s > 0)) {
-    container.querySelectorAll(".table-wrapper").forEach((w, i) => {
-      if (scrollPositions[i]) w.scrollLeft = scrollPositions[i];
-    });
-  }
+    // Restore: scroll positions by index
+    if (scrollPositions.some((s) => s > 0)) {
+      container.querySelectorAll(".table-wrapper").forEach((w, i) => {
+        if (scrollPositions[i]) w.scrollLeft = scrollPositions[i];
+      });
+    }
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
