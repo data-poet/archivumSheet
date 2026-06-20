@@ -36,12 +36,15 @@ function shieldDetailFields(resolved, shieldData) {
   return [
     { label: t("shield.block"), value: resolved?.block ?? "—" },
     { label: t("common.type"), value: src.shield_type ?? "—" },
-    { label: t("shield.gdpMod"), value: shieldData?.shield_gdp_modifier ?? "—" },
+    {
+      label: t("shield.gdpMod"),
+      value: shieldData?.shield_gdp_modifier ?? "—",
+    },
     {
       label: t("shield.dr"),
       value:
-        resolved?.shield_final_damage_resistence ??
-        src.shield_damage_resistence ??
+        resolved?.shield_final_damage_resistance ??
+        src.shield_damage_resistance ??
         src.shield_damage_resistance ??
         "—",
     },

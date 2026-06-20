@@ -47,8 +47,8 @@ function armorDetailFields(resolved, armorData) {
     {
       label: t("armor.dr"),
       value:
-        resolved?.armor_final_damage_resistence ??
-        src.armor_damage_resistence ??
+        resolved?.armor_final_damage_resistance ??
+        src.armor_damage_resistance ??
         src.armor_damage_resistance ??
         "—",
     },
