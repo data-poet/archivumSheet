@@ -12,6 +12,7 @@ import {
   renderResume,
   syncViewMode,
 } from "../ui.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 
 const selected = state.selected;
 
@@ -159,7 +160,14 @@ export async function runEngine() {
     // Store resolved sheet so render files can use final computed values
     state.sheet = json;
 
+    // Snapshot open details + scroll positions across all list containers
+    // before renderLists wipes and rebuilds the DOM, then restore in a rAF
+    // so the user's scroll position and open detail rows survive the re-render.
+    const snapshots = snapshotAll();
+
     renderLists(selected, state.data, state.sheet);
+
+    requestAnimationFrame(() => restoreAll(snapshots));
 
     // Persist active character and refresh selector label
     saveActiveCharacter();
