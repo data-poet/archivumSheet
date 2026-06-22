@@ -30,15 +30,15 @@ export const LABELS = {
   },
 
   // ── Navigation ────────────────────────────────────────────────────────────
-  nav: {
-    character: "Personagem",
-    attributes: "Atributos",
-    traits: "Traços",
-    skills: "Perícias",
-    magic: "Magia",
-    equipment: "Equipamento",
-    inventory: "Inventário",
-  },
+  nav: [
+    { key: "section-character", label: "Personagem", icon: "1️⃣" },
+    { key: "section-attributes", label: "Atributos", icon: "2️⃣" },
+    { key: "section-traits", label: "Traços", icon: "3️⃣" },
+    { key: "section-skills", label: "Perícias", icon: "4️⃣" },
+    { key: "section-magic", label: "Magia", icon: "5️⃣" },
+    { key: "section-equipment", label: "Equipamento", icon: "6️⃣" },
+    { key: "section-inventory", label: "Inventário", icon: "7️⃣" },
+  ],
 
   // ── Tab labels (per section) ──────────────────────────────────────────────
   tabs: {

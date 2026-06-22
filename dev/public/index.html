@@ -51,80 +51,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════════
          DESKTOP: Sidebar nav
          ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-sidebar" id="sidebar" aria-label="Navegação">
-      <ul class="sidebar-nav" role="list">
-        <li>
-          <a
-            href="#section-character"
-            class="sidebar-link is-active"
-            data-section="section-character"
-          >
-            <span class="sidebar-icon" aria-hidden="true">1️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-character"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-attributes"
-            class="sidebar-link"
-            data-section="section-attributes"
-          >
-            <span class="sidebar-icon" aria-hidden="true">2️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-attributes"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-traits"
-            class="sidebar-link"
-            data-section="section-traits"
-          >
-            <span class="sidebar-icon" aria-hidden="true">3️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-traits"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-skills"
-            class="sidebar-link"
-            data-section="section-skills"
-          >
-            <span class="sidebar-icon" aria-hidden="true">4️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-skills"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-magic"
-            class="sidebar-link"
-            data-section="section-magic"
-          >
-            <span class="sidebar-icon" aria-hidden="true">5️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-magic"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-equipment"
-            class="sidebar-link"
-            data-section="section-equipment"
-          >
-            <span class="sidebar-icon" aria-hidden="true">6️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-equipment"></span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="#section-inventory"
-            class="sidebar-link"
-            data-section="section-inventory"
-          >
-            <span class="sidebar-icon" aria-hidden="true">7️⃣</span>
-            <span class="sidebar-label" id="nav-lbl-inventory"></span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MAIN CONTENT
@@ -133,7 +60,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: PERSONAGEM — tabs: Personagem · Resumo
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-character" class="l-section">
+      <section id="section-character" class="l-section" data-section="section-character">
         <div class="box box--character">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-character">
@@ -277,7 +204,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: ATRIBUTOS — tabs: Primários · Secundários · Dano Base
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-attributes" class="l-section">
+      <section id="section-attributes" class="l-section" data-section="section-attributes">
         <div class="box box--attr">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-attributes">
@@ -602,7 +529,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: TRAÇOS — tabs: Vantagens · Desvantagens
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-traits" class="l-section">
+      <section id="section-traits" class="l-section" data-section="section-traits">
         <div class="box box--trait">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-traits">
@@ -655,7 +582,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: PERÍCIAS — tab: Perícias
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-skills" class="l-section">
+      <section id="section-skills" class="l-section" data-section="section-skills">
         <div class="box box--trait">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-skills">
@@ -691,7 +618,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: MAGIA — tab: Magias
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-magic" class="l-section">
+      <section id="section-magic" class="l-section" data-section="section-magic">
         <div class="box box--magic">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-magic">
@@ -727,7 +654,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: EQUIPAMENTO — tabs: Armaduras · Escudos · C-a-C · Distância · Munição
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-equipment" class="l-section">
+      <section id="section-equipment" class="l-section" data-section="section-equipment">
         <div class="box box--equip">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-equipment">
@@ -924,7 +851,7 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: INVENTÁRIO — tabs: Alquimia · Sobrevivência · Itens Livres
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-inventory" class="l-section">
+      <section id="section-inventory" class="l-section" data-section="section-inventory">
         <div class="box box--inv">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-inventory">
@@ -1121,12 +1048,15 @@
     <!-- ─────────────────────────────────────────────────────────────────────────
          VIEW MODE — full-page resume; shown only when .is-view-mode is set.
          Lives outside <main> so hiding #main-content does not affect it.
+         viewMode.js moves #tab-char-resume here via appendChild on enter,
+         and back to #resume-panel-host via appendChild on exit.
          ───────────────────────────────────────────────────────────────────── -->
     <div id="view-mode-resume" class="view-mode-resume" aria-label="Resumo do personagem"></div>
 
-    <!-- Hidden resume source panel — kept in DOM for renderResume() IDs;
-         cloned into #view-mode-resume by viewMode.js when in view mode.   -->
-    <div id="tab-char-resume" style="display:none" aria-hidden="true">
+    <!-- Edit-mode anchor: #tab-char-resume lives here when not in view mode.
+         viewMode.js moves the panel between this host and #view-mode-resume. -->
+    <div id="resume-panel-host" style="display:none" aria-hidden="true">
+    <div id="tab-char-resume">
       <!-- ── Row 1: character name | sub-race ──────────────────────── -->
       <div class="resume-row resume-row--name">
         <p class="resume-char-name" id="resume_header_name"></p>
@@ -1308,68 +1238,12 @@
         </div>
       </div>
     </div>
+    </div><!-- /#resume-panel-host -->
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MOBILE: Bottom tab navigation
          ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções">
-      <a
-        href="#section-character"
-        class="bottomnav-link is-active"
-        data-section="section-character"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">1️⃣</span>
-        <span id="bnav-lbl-character"></span>
-      </a>
-      <a
-        href="#section-attributes"
-        class="bottomnav-link"
-        data-section="section-attributes"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">2️⃣</span>
-        <span id="bnav-lbl-attributes"></span>
-      </a>
-      <a
-        href="#section-traits"
-        class="bottomnav-link"
-        data-section="section-traits"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">3️⃣</span>
-        <span id="bnav-lbl-traits"></span>
-      </a>
-      <a
-        href="#section-skills"
-        class="bottomnav-link"
-        data-section="section-skills"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">4️⃣</span>
-        <span id="bnav-lbl-skills"></span>
-      </a>
-      <a
-        href="#section-magic"
-        class="bottomnav-link"
-        data-section="section-magic"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">5️⃣</span>
-        <span id="bnav-lbl-magic"></span>
-      </a>
-      <a
-        href="#section-equipment"
-        class="bottomnav-link"
-        data-section="section-equipment"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">6️⃣</span>
-        <span id="bnav-lbl-equipment"></span>
-      </a>
-      <a
-        href="#section-inventory"
-        class="bottomnav-link"
-        data-section="section-inventory"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">7️⃣</span>
-        <span id="bnav-lbl-inventory"></span>
-      </a>
-    </nav>
+    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
 
     <!-- Character selector popover (shared mobile + desktop) -->
     <div
@@ -1414,23 +1288,7 @@
         // Top bar
         setText("topbar-title", L.app.title);
 
-        // Sidebar (desktop)
-        setText("nav-lbl-character", L.nav.character);
-        setText("nav-lbl-attributes", L.nav.attributes);
-        setText("nav-lbl-traits", L.nav.traits);
-        setText("nav-lbl-skills", L.nav.skills);
-        setText("nav-lbl-magic", L.nav.magic);
-        setText("nav-lbl-equipment", L.nav.equipment);
-        setText("nav-lbl-inventory", L.nav.inventory);
-
-        // Bottom nav (mobile)
-        setText("bnav-lbl-character", L.nav.character);
-        setText("bnav-lbl-attributes", L.nav.attributes);
-        setText("bnav-lbl-traits", L.nav.traits);
-        setText("bnav-lbl-skills", L.nav.skills);
-        setText("bnav-lbl-magic", L.nav.magic);
-        setText("bnav-lbl-equipment", L.nav.equipment);
-        setText("bnav-lbl-inventory", L.nav.inventory);
+        // Nav labels are now rendered by nav.js (initNav) from LABELS.nav
 
         // Tab button labels
         // section-character
@@ -1611,8 +1469,8 @@
       initAppShell();
 
       // ── Resume expander (collapsible detail rows) ─────────────────────────
-      // Resolved locally within the same <table> so the handler works in both
-      // the hidden source panel and the id-stripped clone in #view-mode-resume.
+      // Resolved locally within the same <table> so the handler works wherever
+      // the resume panel currently lives (edit host or view-mode container).
       document.addEventListener("click", (e) => {
         const btn = e.target.closest(".resume-expander-btn");
         if (!btn) return;

@@ -1,4 +1,5 @@
 import { bindUI } from "./events/index.js";
+import { initNav } from "./ui/nav.js";
 import { initTabs } from "./ui/tabs.js";
 import { initViewMode } from "./ui/viewMode.js";
 import { setupAutoRun } from "./engine/attributes.js";
@@ -24,6 +25,7 @@ import { initCharacterSelector } from "./ui/characterSelector.js";
 window.onload = async () => {
   initAutoRun(runEngine);
   bindUI();
+  initNav();
   initTabs();
   initViewMode();
   setupAutoRun();

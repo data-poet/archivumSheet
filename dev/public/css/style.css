@@ -28,12 +28,11 @@
   --accent-equipment: #2563eb;
   --accent-inventory: #5b21b6;
 
-  /* Legacy aliases kept so existing non-tab CSS still resolves */
-  --accent-attr: var(--accent-attributes);
-  --accent-trait: var(--accent-traits);
-  --accent-equip: var(--accent-equipment);
-  --accent-inv: var(--accent-inventory);
-  --accent-resume: var(--accent-character);
+  /* Bar colors — HP / Mana / Toxicity */
+  --color-bar-hp: #e05252;
+  --color-bar-mana: #4a90d9;
+  --color-bar-toxicity: #3aaa5c;
+  --bar-h: 13px;
 
   /* Spacing & shape */
   --radius: 6px;
@@ -229,26 +228,26 @@ body {
   border-top-color: var(--_section-accent, var(--accent-character));
 }
 
-/* Per-section accent via data-section on the active bottom nav link */
-.bottomnav-link[data-section="section-character"] {
+/* Per-section accent — one block shared by bottomnav, sidebar and <section> elements */
+[data-section="section-character"] {
   --_section-accent: var(--accent-character);
 }
-.bottomnav-link[data-section="section-attributes"] {
+[data-section="section-attributes"] {
   --_section-accent: var(--accent-attributes);
 }
-.bottomnav-link[data-section="section-traits"] {
+[data-section="section-traits"] {
   --_section-accent: var(--accent-traits);
 }
-.bottomnav-link[data-section="section-skills"] {
+[data-section="section-skills"] {
   --_section-accent: var(--accent-skills);
 }
-.bottomnav-link[data-section="section-magic"] {
+[data-section="section-magic"] {
   --_section-accent: var(--accent-magic);
 }
-.bottomnav-link[data-section="section-equipment"] {
+[data-section="section-equipment"] {
   --_section-accent: var(--accent-equipment);
 }
-.bottomnav-link[data-section="section-inventory"] {
+[data-section="section-inventory"] {
   --_section-accent: var(--accent-inventory);
 }
 
@@ -367,28 +366,7 @@ body {
     );
   }
 
-  /* Per-section accent via data-section on the active link */
-  .sidebar-link[data-section="section-character"] {
-    --_section-accent: var(--accent-character);
-  }
-  .sidebar-link[data-section="section-attributes"] {
-    --_section-accent: var(--accent-attributes);
-  }
-  .sidebar-link[data-section="section-traits"] {
-    --_section-accent: var(--accent-traits);
-  }
-  .sidebar-link[data-section="section-skills"] {
-    --_section-accent: var(--accent-skills);
-  }
-  .sidebar-link[data-section="section-magic"] {
-    --_section-accent: var(--accent-magic);
-  }
-  .sidebar-link[data-section="section-equipment"] {
-    --_section-accent: var(--accent-equipment);
-  }
-  .sidebar-link[data-section="section-inventory"] {
-    --_section-accent: var(--accent-inventory);
-  }
+  /* Per-section accent is inherited from the shared [data-section] rule above */
 
   .sidebar-icon {
     font-size: 18px;
@@ -425,6 +403,352 @@ body {
     scroll-margin-top: 16px;
     max-width: var(--content-max-w);
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHARACTER SELECTOR — topbar button + popover
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Topbar selector button ─────────────────────────────────────────────── */
+.char-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-character);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  max-width: clamp(140px, 40vw, 260px);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background 0.15s;
+  min-height: 36px;
+}
+
+.char-selector-btn:hover {
+  background: color-mix(in srgb, var(--accent-character) 85%, #000);
+}
+
+.char-selector-btn:active {
+  transform: scale(0.98);
+}
+
+.char-selector-btn-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.char-selector-btn-race {
+  font-size: var(--fs-xs);
+  opacity: 0.8;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.char-selector-btn-chevron {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+/* ── Popover container ──────────────────────────────────────────────────── */
+.char-selector-popover {
+  display: none;
+  position: fixed;
+  top: calc(var(--topbar-h) + 4px);
+  right: clamp(8px, 3vw, 16px);
+  width: clamp(260px, 80vw, 380px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 500;
+  overflow: hidden;
+}
+
+.char-selector-popover.is-open {
+  display: block;
+}
+
+/* ── Character list ─────────────────────────────────────────────────────── */
+.char-selector-list,
+.char-selector-actions {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.char-selector-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-left: 3px solid transparent;
+}
+
+.char-selector-item:hover {
+  background: var(--color-bg);
+}
+
+.char-selector-item.is-active {
+  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
+  border-left-color: var(--accent-character);
+}
+
+.char-selector-radio {
+  font-size: 16px;
+  color: var(--accent-character);
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.char-selector-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.char-selector-item-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-selector-item-race {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.char-selector-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 0;
+}
+
+/* ── Action items ───────────────────────────────────────────────────────── */
+.char-selector-action-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition:
+    background 0.12s,
+    color 0.12s;
+  border-left: 3px solid transparent;
+}
+
+.char-selector-action-item:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.char-selector-action-remove:hover {
+  color: var(--color-remove);
+  background: #fee2e2;
+}
+
+.char-selector-action-icon {
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── View mode ────────────────────────────────────────────────────────────── */
+
+/* The full-page resume container — hidden in edit mode */
+.view-mode-resume {
+  display: none;
+}
+
+/* When .is-view-mode is on <body>: */
+
+/* Hide nav layers */
+.is-view-mode .l-sidebar,
+.is-view-mode .l-bottomnav {
+  display: none !important;
+}
+
+/* Remove bottom padding reserved for bottom nav */
+.is-view-mode {
+  padding-bottom: 0;
+}
+
+/* Hide the regular edit-mode main content */
+.is-view-mode #main-content {
+  display: none;
+}
+
+/* Show and style the view-mode resume container.
+   Body already has padding-top: var(--topbar-h), so no extra margin needed. */
+.is-view-mode .view-mode-resume {
+  display: block;
+  padding: clamp(8px, 3vw, 20px);
+}
+
+/* On desktop, no margin-left needed either — sidebar is hidden */
+@media (min-width: 768px) {
+  .is-view-mode .view-mode-resume {
+    padding: clamp(12px, 2vw, 20px);
+  }
+}
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAB STRIP — horizontal scrollable tabs inside each section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+ * .tab-strip sits at the top of a .box, replacing the old <details><summary>.
+ * It scrolls horizontally on mobile so any number of tabs fit without wrapping.
+ */
+.tab-strip {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.tab-strip::-webkit-scrollbar {
+  display: none; /* Safari / Chrome */
+}
+
+/* Tab buttons */
+.tab-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: clamp(8px, 2.5vw, 12px) clamp(12px, 3vw, 20px);
+  min-height: 44px; /* tap target */
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.tab-btn:active {
+  transform: none; /* override global button:active scale */
+}
+
+/* Collapse chevron — pinned to the right end of the strip */
+.tab-strip-collapse {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0 clamp(10px, 3vw, 16px);
+  min-height: 44px; /* tap target */
+  min-width: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.15s,
+    transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-strip-collapse:hover {
+  color: var(--color-text);
+}
+
+/* Chevron rotates 90° when expanded */
+.tab-strip-collapse[aria-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+/* ── Section collapse — hides all tab panels ─────────────────────────────── */
+.box.is-collapsed .tab-panel {
+  display: none !important;
+}
+
+/* Collapsed box: strip still visible but bottom border softened */
+.box.is-collapsed .tab-strip {
+  border-bottom-color: transparent;
+}
+
+/* Active tab uses the section accent inherited from the parent <section data-section> */
+.tab-btn.is-active {
+  color: var(--_section-accent, var(--accent-character));
+  border-bottom-color: var(--_section-accent, var(--accent-character));
+}
+
+/* Tab panels */
+.tab-panel {
+  display: none;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+/* Section accent top-border on boxes — inherited from parent <section data-section> */
+[data-section] .box {
+  border-top: 3px solid var(--_section-accent, var(--accent-character));
+}
+
+/* Nested <details> inside tab panels keep accent styling */
+[data-section] .tab-panel details summary {
+  border-left: 3px solid
+    color-mix(
+      in srgb,
+      var(--_section-accent, var(--accent-attributes)) 60%,
+      transparent
+    );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -482,25 +806,22 @@ details > *:not(summary) {
 
 /* ── Section accent colors ──────────────────────────────────────────────── */
 .box--attr details summary {
-  border-left: 3px solid var(--accent-attr);
+  border-left: 3px solid var(--accent-attributes);
 }
 .box--trait details summary {
-  border-left: 3px solid var(--accent-trait);
+  border-left: 3px solid var(--accent-traits);
 }
 .box--equip details summary {
-  border-left: 3px solid var(--accent-equip);
+  border-left: 3px solid var(--accent-equipment);
 }
 .box--magic details summary {
   border-left: 3px solid var(--accent-magic);
 }
 .box--inv details summary {
-  border-left: 3px solid var(--accent-inv);
-}
-.box--resume details summary {
-  border-left: 3px solid var(--accent-resume);
+  border-left: 3px solid var(--accent-inventory);
 }
 .box--character details summary {
-  border-left: 3px solid var(--accent-attr);
+  border-left: 3px solid var(--accent-attributes);
 }
 .box--engine details summary,
 .box--output details summary {
@@ -514,61 +835,6 @@ details > *:not(summary) {
 .box--magic > details > summary,
 .box--inv > details > summary {
   border-left-width: 4px;
-}
-
-/* ── Nested boxes ───────────────────────────────────────────────────────── */
-.box--nested {
-  margin: 0 0 0 14px;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  background: none;
-}
-
-.box > details > .box--nested:first-of-type {
-  margin-top: 2px;
-}
-
-/* Sub-section summaries */
-.box--attr .box--nested details summary,
-.box--trait .box--nested details summary,
-.box--equip .box--nested details summary,
-.box--magic .box--nested details summary,
-.box--inv .box--nested details summary {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  min-height: 36px;
-  padding: 6px 10px;
-  background: none;
-  border-bottom: none;
-}
-
-.box--attr .box--nested details summary {
-  border-left: 3px solid color-mix(in srgb, var(--accent-attr) 60%, transparent);
-}
-.box--trait .box--nested details summary {
-  border-left: 3px solid
-    color-mix(in srgb, var(--accent-trait) 60%, transparent);
-}
-.box--equip .box--nested details summary {
-  border-left: 3px solid
-    color-mix(in srgb, var(--accent-equip) 60%, transparent);
-}
-.box--magic .box--nested details summary {
-  border-left: 3px solid
-    color-mix(in srgb, var(--accent-magic) 60%, transparent);
-}
-.box--inv .box--nested details summary {
-  border-left: 3px solid color-mix(in srgb, var(--accent-inv) 60%, transparent);
-}
-
-.box--nested details[open] > summary {
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 4px;
-}
-
-.box--nested details > *:not(summary) {
-  padding-top: 8px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -606,7 +872,7 @@ input[type="text"] {
 select:focus,
 input:focus {
   outline: none;
-  border-color: var(--accent-attr);
+  border-color: var(--accent-attributes);
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
@@ -1043,6 +1309,61 @@ tr.spell-detail-row details[open] summary {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   AMMO
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ammo-container-slot {
+  margin-bottom: 0;
+}
+
+.ammo-type-badge {
+  display: inline-block;
+  background: var(--color-accent, #4a6fa5);
+  color: #fff;
+  font-size: var(--fs-xxs);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ammo-container-body {
+  padding: 6px 10px 10px 10px;
+  border-left: 2px solid var(--color-border, #333);
+  margin: 0 0 12px 4px;
+}
+
+.ammo-container-meta {
+  display: flex;
+  gap: 14px;
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ammo-not-carriable {
+  color: var(--color-danger, #e55);
+  font-weight: 600;
+}
+
+.ammo-contents-table {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.ammo-add-to-container {
+  margin-top: 6px;
+}
+
+.ammo-full {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin: 4px 0 0;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    CHARACTER PANEL
    ═══════════════════════════════════════════════════════════════════════════ */
 .character-panel-grid {
@@ -1118,32 +1439,62 @@ tr.spell-detail-row details[open] summary {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   RESUME PANEL
+   ATTRIBUTE CELLS
    ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Top row: weight + value side by side */
-.resume-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
+.race-mod-cell {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+.race-mod-cell.race-mod-active {
+  color: #4a7a3a;
+  font-weight: 700;
 }
 
-/* Points row: single full-width column */
-.resume-grid--points {
-  grid-template-columns: 1fr;
-  margin-bottom: 0;
+/* ── HP modifier block ─────────────────────────────────────────────────────── */
+.hp-modifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
 }
 
-/* ── On narrow mobile, stack weight + value vertically ─────────────────── */
-@media (max-width: 480px) {
-  .resume-grid {
-    grid-template-columns: 1fr;
-  }
+.hp-modifier .num-stepper input {
+  width: 52px;
+}
+
+/* Wider inputs for player name and character name */
+#playerNameInput,
+#characterNameInput {
+  min-width: clamp(160px, 40vw, 280px);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   RESUME ROWS — new layout system
+   INNATE TRAITS
+   ═══════════════════════════════════════════════════════════════════════════ */
+tr.trait-innate td {
+  background: #faf9f0;
+  color: var(--color-text-muted);
+}
+
+.trait-innate-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #78716c;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 3px;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESUME ROWS — layout system
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .resume-row {
@@ -1163,21 +1514,6 @@ tr.spell-detail-row details[open] summary {
   }
 }
 
-/* Header + bars: side by side on desktop, stacked on mobile */
-.resume-row--header-bars {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 600px) {
-  .resume-row--header-bars {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Points row always full-width */
 .resume-row--points {
   margin-bottom: 1rem;
@@ -1185,12 +1521,6 @@ tr.spell-detail-row details[open] summary {
 
 .resume-full-col {
   width: 100%;
-}
-
-/* ── Character header ──────────────────────────────────────────────────── */
-.resume-header-block {
-  display: flex;
-  align-items: center;
 }
 
 .resume-char-name {
@@ -1231,26 +1561,26 @@ tr.spell-detail-row details[open] summary {
 }
 
 .resume-bar-track {
-  height: 10px;
+  height: var(--bar-h);
   background: var(--color-border);
-  border-radius: 5px;
+  border-radius: calc(var(--bar-h) / 2);
   overflow: hidden;
 }
 
 .resume-bar-fill {
   height: 100%;
-  border-radius: 5px;
+  border-radius: calc(var(--bar-h) / 2);
   transition: width 0.3s ease;
 }
 
 .resume-bar--hp {
-  background: #e05252;
+  background: var(--color-bar-hp);
 }
 .resume-bar--mana {
-  background: #4a90d9;
+  background: var(--color-bar-mana);
 }
 .resume-bar--toxicity {
-  background: #3aaa5c;
+  background: var(--color-bar-toxicity);
 }
 
 /* Stepper row below each HP/Mana/Toxicity bar */
@@ -1287,7 +1617,7 @@ tr.spell-detail-row details[open] summary {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   border-top: 2px solid var(--accent-character);
-  min-width: 0;
+  min-width: 56px;
 }
 
 .resume-attr-acronym {
@@ -1326,7 +1656,6 @@ tr.spell-detail-row details[open] summary {
   font-variant-numeric: tabular-nums;
   width: 3em;
 }
-
 
 .resume-section-toggle {
   background: none;
@@ -1385,7 +1714,7 @@ tr.spell-detail-row details[open] summary {
 }
 
 .resume-total-row td {
-  background: color-mix(in srgb, var(--accent-inv) 8%, transparent);
+  background: color-mix(in srgb, var(--accent-inventory) 8%, transparent);
   border-top: 2px solid var(--color-border-strong);
 }
 
@@ -1459,241 +1788,12 @@ tr.spell-detail-row details[open] summary {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   INNATE TRAITS
+   PERSISTENCE TOOLBAR
    ═══════════════════════════════════════════════════════════════════════════ */
-tr.trait-innate td {
-  background: #faf9f0;
-  color: var(--color-text-muted);
-}
-
-.trait-innate-tag {
-  display: inline-block;
-  margin-left: 6px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #78716c;
-  border: 1px solid currentColor;
-  border-radius: 3px;
-  padding: 0 3px;
-  vertical-align: middle;
-  opacity: 0.7;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   ATTRIBUTE CELLS
-   ═══════════════════════════════════════════════════════════════════════════ */
-.race-mod-cell {
-  color: var(--color-text-muted);
-  font-size: var(--fs-xs);
-}
-.race-mod-cell.race-mod-active {
-  color: #4a7a3a;
-  font-weight: 700;
-}
-
-/* ── HP modifier block ─────────────────────────────────────────────────────── */
-.hp-modifier {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  flex-wrap: wrap;
-}
-
-.hp-modifier .num-stepper input {
-  width: 52px;
-}
-
-/* Wider inputs for player name and character name */
-#playerNameInput,
-#characterNameInput {
-  min-width: clamp(160px, 40vw, 280px);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   TAB STRIP — horizontal scrollable tabs inside each section
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/*
- * .tab-strip sits at the top of a .box, replacing the old <details><summary>.
- * It scrolls horizontally on mobile so any number of tabs fit without wrapping.
- */
-.tab-strip {
+.persistence-toolbar {
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface);
-  margin: 0;
-  padding: 0;
-  gap: 0;
-  flex-shrink: 0;
-}
-
-.tab-strip::-webkit-scrollbar {
-  display: none; /* Safari / Chrome */
-}
-
-/* Tab buttons */
-.tab-btn {
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  border-radius: 0;
-  color: var(--color-text-muted);
-  font-family: inherit;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  padding: clamp(8px, 2.5vw, 12px) clamp(12px, 3vw, 20px);
-  min-height: 44px; /* tap target */
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  transition:
-    color 0.15s,
-    border-color 0.15s,
-    background 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.tab-btn:hover {
-  color: var(--color-text);
-  background: var(--color-bg);
-}
-
-.tab-btn:active {
-  transform: none; /* override global button:active scale */
-}
-
-/* Collapse chevron — pinned to the right end of the strip */
-.tab-strip-collapse {
-  flex-shrink: 0;
-  margin-left: auto;
-  background: none;
-  border: none;
-  border-radius: 0;
-  color: var(--color-text-muted);
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0 clamp(10px, 3vw, 16px);
-  min-height: 44px; /* tap target */
-  min-width: 44px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    color 0.15s,
-    transform 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.tab-strip-collapse:hover {
-  color: var(--color-text);
-}
-
-/* Chevron rotates 90° when expanded */
-.tab-strip-collapse[aria-expanded="true"] {
-  transform: rotate(90deg);
-}
-
-/* ── Section collapse — hides all tab panels ─────────────────────────────── */
-.box.is-collapsed .tab-panel {
-  display: none !important;
-}
-
-/* Collapsed box: strip still visible but bottom border softened */
-.box.is-collapsed .tab-strip {
-  border-bottom-color: transparent;
-}
-
-/* Active state — unique accent per section */
-#section-character .tab-btn.is-active {
-  color: var(--accent-character);
-  border-bottom-color: var(--accent-character);
-}
-#section-attributes .tab-btn.is-active {
-  color: var(--accent-attributes);
-  border-bottom-color: var(--accent-attributes);
-}
-#section-traits .tab-btn.is-active {
-  color: var(--accent-traits);
-  border-bottom-color: var(--accent-traits);
-}
-#section-skills .tab-btn.is-active {
-  color: var(--accent-skills);
-  border-bottom-color: var(--accent-skills);
-}
-#section-magic .tab-btn.is-active {
-  color: var(--accent-magic);
-  border-bottom-color: var(--accent-magic);
-}
-#section-equipment .tab-btn.is-active {
-  color: var(--accent-equipment);
-  border-bottom-color: var(--accent-equipment);
-}
-#section-inventory .tab-btn.is-active {
-  color: var(--accent-inventory);
-  border-bottom-color: var(--accent-inventory);
-}
-
-/* Tab panels */
-.tab-panel {
-  display: none;
-  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
-}
-
-.tab-panel.is-active {
-  display: block;
-}
-
-/* Section accent top-border on the box — unique per section */
-#section-character .box {
-  border-top: 3px solid var(--accent-character);
-}
-#section-attributes .box {
-  border-top: 3px solid var(--accent-attributes);
-}
-#section-traits .box {
-  border-top: 3px solid var(--accent-traits);
-}
-#section-skills .box {
-  border-top: 3px solid var(--accent-skills);
-}
-#section-magic .box {
-  border-top: 3px solid var(--accent-magic);
-}
-#section-equipment .box {
-  border-top: 3px solid var(--accent-equipment);
-}
-#section-inventory .box {
-  border-top: 3px solid var(--accent-inventory);
-}
-
-/* Nested <details> inside tab panels keep accent styling */
-#section-attributes .tab-panel details summary {
-  border-left: 3px solid color-mix(in srgb, var(--accent-attr) 60%, transparent);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   OUTPUT (debug)
-   ═══════════════════════════════════════════════════════════════════════════ */
-pre {
-  max-height: 400px;
-  overflow: auto;
-  background: #111;
-  color: #0f0;
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xxs);
-  margin: 0;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1719,281 +1819,16 @@ h4 {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   PERSISTENCE TOOLBAR
+   OUTPUT (debug)
    ═══════════════════════════════════════════════════════════════════════════ */
-.persistence-toolbar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   AMMO
-   ═══════════════════════════════════════════════════════════════════════════ */
-.ammo-container-slot {
-  margin-bottom: 0;
-}
-
-.ammo-type-badge {
-  display: inline-block;
-  background: var(--color-accent, #4a6fa5);
-  color: #fff;
-  font-size: var(--fs-xxs);
-  padding: 2px 7px;
-  border-radius: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.ammo-container-body {
-  padding: 6px 10px 10px 10px;
-  border-left: 2px solid var(--color-border, #333);
-  margin: 0 0 12px 4px;
-}
-
-.ammo-container-meta {
-  display: flex;
-  gap: 14px;
-  font-size: var(--fs-xxs);
-  color: var(--color-text-muted);
-  margin-bottom: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.ammo-not-carriable {
-  color: var(--color-danger, #e55);
-  font-weight: 600;
-}
-
-.ammo-contents-table {
-  width: 100%;
-  margin-bottom: 6px;
-}
-
-.ammo-add-to-container {
-  margin-top: 6px;
-}
-
-.ammo-full {
-  font-size: var(--fs-xxs);
-  color: var(--color-text-muted);
-  margin: 4px 0 0;
-  font-style: italic;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   CHARACTER SELECTOR — topbar button + popover
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ── Topbar selector button ─────────────────────────────────────────────── */
-.char-selector-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--accent-character);
-  color: #fff;
-  border: none;
+pre {
+  max-height: 400px;
+  overflow: auto;
+  background: #111;
+  color: #0f0;
+  padding: 10px;
   border-radius: var(--radius-sm);
-  padding: 6px 12px;
-  font-family: inherit;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  cursor: pointer;
-  max-width: clamp(140px, 40vw, 260px);
-  white-space: nowrap;
-  overflow: hidden;
-  transition: background 0.15s;
-  min-height: 36px;
-}
-
-.char-selector-btn:hover {
-  background: color-mix(in srgb, var(--accent-character) 85%, #000);
-}
-
-.char-selector-btn:active {
-  transform: scale(0.98);
-}
-
-.char-selector-btn-name {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 700;
-}
-
-.char-selector-btn-race {
-  font-size: var(--fs-xs);
-  opacity: 0.8;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.char-selector-btn-chevron {
-  font-size: 16px;
-  line-height: 1;
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-
-/* ── Popover container ──────────────────────────────────────────────────── */
-.char-selector-popover {
-  display: none;
-  position: fixed;
-  top: calc(var(--topbar-h) + 4px);
-  right: clamp(8px, 3vw, 16px);
-  width: clamp(260px, 80vw, 380px);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  z-index: 500;
-  overflow: hidden;
-}
-
-.char-selector-popover.is-open {
-  display: block;
-}
-
-/* ── Character list ─────────────────────────────────────────────────────── */
-.char-selector-list,
-.char-selector-actions {
-  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
   margin: 0;
-  padding: 6px 0;
-}
-
-.char-selector-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: background 0.12s;
-  border-left: 3px solid transparent;
-}
-
-.char-selector-item:hover {
-  background: var(--color-bg);
-}
-
-.char-selector-item.is-active {
-  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
-  border-left-color: var(--accent-character);
-}
-
-.char-selector-radio {
-  font-size: 16px;
-  color: var(--accent-character);
-  flex-shrink: 0;
-  width: 20px;
-  text-align: center;
-}
-
-.char-selector-item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  overflow: hidden;
-}
-
-.char-selector-item-name {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.char-selector-item-race {
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ── Divider ────────────────────────────────────────────────────────────── */
-.char-selector-divider {
-  height: 1px;
-  background: var(--color-border);
-  margin: 4px 0;
-}
-
-/* ── Action items ───────────────────────────────────────────────────────── */
-.char-selector-action-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  color: var(--color-text-muted);
-  transition:
-    background 0.12s,
-    color 0.12s;
-  border-left: 3px solid transparent;
-}
-
-.char-selector-action-item:hover {
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-
-.char-selector-action-remove:hover {
-  color: var(--color-remove);
-  background: #fee2e2;
-}
-
-.char-selector-action-icon {
-  font-size: 16px;
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-/* ── View mode ────────────────────────────────────────────────────────────── */
-
-/* The full-page resume container — hidden in edit mode */
-.view-mode-resume {
-  display: none;
-}
-
-/* When .is-view-mode is on <body>: */
-
-/* Hide nav layers */
-.is-view-mode .l-sidebar,
-.is-view-mode .l-bottomnav {
-  display: none !important;
-}
-
-/* Remove bottom padding reserved for bottom nav */
-.is-view-mode {
-  padding-bottom: 0;
-}
-
-/* Hide the regular edit-mode main content */
-.is-view-mode #main-content {
-  display: none;
-}
-
-/* Show and style the view-mode resume container.
-   Body already has padding-top: var(--topbar-h), so no extra margin needed. */
-.is-view-mode .view-mode-resume {
-  display: block;
-  padding: clamp(8px, 3vw, 20px);
-}
-
-/* On desktop, no margin-left needed either — sidebar is hidden */
-@media (min-width: 768px) {
-  .is-view-mode .view-mode-resume {
-    padding: clamp(12px, 2vw, 20px);
-  }
 }

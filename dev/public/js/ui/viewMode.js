@@ -3,18 +3,24 @@
  *
  * Controls the app-level Edit ↔ View mode toggle.
  *
- * Edit mode (📝) — default app: sidebar/bottomnav visible, main content shown.
- * View mode  (📃) — only topbar + resume view: sidebar/bottomnav hidden,
- *                   main content hidden, #view-mode-resume shown.
+ * Edit mode (📝) — default: sidebar/bottomnav visible, main content shown.
+ *   The resume panel (#tab-char-resume) lives inside #main-content as a
+ *   hidden source element. renderResume() always writes into its IDs.
+ *
+ * View mode (📃) — only topbar + resume:
+ *   The resume panel node is physically moved into #view-mode-resume via
+ *   appendChild (a real DOM move, not a clone). IDs remain unique; event
+ *   listeners and JS-set state (element.hidden, etc.) survive intact.
+ *   On exit, the panel is moved back into #main-content.
  *
  * The toggle button (#view-mode-btn) lives in the topbar.
  * Mode is persisted via viewModeState.js (localStorage).
  *
  * Public API:
- *   initViewMode()  — call once from main.js after initTabs(); reads persisted
- *                     state, applies it to the DOM, wires the button.
- *   syncViewMode()  — call after every renderResume() so the view-mode panel
- *                     always reflects the latest engine output.
+ *   initViewMode()  — call once from main.js after initTabs().
+ *   syncViewMode()  — no-op (kept for call-site compatibility; moves are
+ *                     handled by applyMode on toggle, and renderResume()
+ *                     writes directly into the live panel wherever it is).
  */
 
 import { isViewMode, setViewMode } from "../store/viewModeState.js";
@@ -24,43 +30,33 @@ import { t } from "../localization/pt-BR.js";
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BTN_ID = "view-mode-btn";
-const SOURCE_ID = "tab-char-resume";   // the existing resume panel (edit mode)
-const TARGET_ID = "view-mode-resume";  // the full-page view mode container
-const MAIN_ID = "main-content";
-const SIDEBAR_ID = "sidebar";
-const BOTTOMNAV_ID = "bottomnav";
-const BODY_CLASS = "is-view-mode";
+const BTN_ID      = "view-mode-btn";
+const PANEL_ID    = "tab-char-resume";    // the single resume panel node
+const TARGET_ID   = "view-mode-resume";   // view-mode container
+const EDIT_HOST_ID = "resume-panel-host"; // edit-mode anchor (empty div in HTML)
+const BODY_CLASS  = "is-view-mode";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Internal helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Clone the resume panel content into the view-mode container.
- * We use cloneNode(true) rather than innerHTML so that JS-set properties
- * (e.g. element.hidden, element.textContent) are copied faithfully.
- * IDs in the clone are suffixed with "-vm" to avoid duplicate-ID conflicts;
- * the originals in #tab-char-resume remain the sole targets for renderResume().
+ * Move the resume panel to the appropriate container.
+ * appendChild is idempotent when the node is already in the target — safe
+ * to call on every render cycle without double-move risk.
+ *
+ * @param {boolean} viewMode
  */
-function syncResumeContent() {
-  const source = document.getElementById(SOURCE_ID);
-  const target = document.getElementById(TARGET_ID);
-  if (!source || !target) return;
-
-  // Deep-clone the live DOM tree (copies .hidden, .textContent, etc.)
-  const clone = source.cloneNode(true);
-
-  // Remove all id attributes from the clone to prevent duplicate IDs.
-  // Event delegation on document handles clicks; no IDs are needed in the clone.
-  clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
-
-  // Replace target contents with the fresh clone's children
-  target.replaceChildren(...clone.childNodes);
+function _movePanel(viewMode) {
+  const panel  = document.getElementById(PANEL_ID);
+  const target = document.getElementById(viewMode ? TARGET_ID : EDIT_HOST_ID);
+  if (!panel || !target) return;
+  if (panel.parentElement === target) return; // already in the right place
+  target.appendChild(panel);
 }
 
 /**
- * Apply or remove the view-mode class on <body> and update button label.
+ * Apply or remove the view-mode class on <body>, update button, move panel.
  * @param {boolean} viewMode
  */
 function applyMode(viewMode) {
@@ -78,9 +74,7 @@ function applyMode(viewMode) {
     btn.setAttribute("aria-pressed", String(viewMode));
   }
 
-  // Sync content into the view panel whenever entering view mode,
-  // so the panel is never shown stale.
-  if (viewMode) syncResumeContent();
+  _movePanel(viewMode);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -105,9 +99,8 @@ export function initViewMode() {
 }
 
 /**
- * Called at the end of every renderResume() invocation (via engine/index.js).
- * Keeps the view-mode panel live while in view mode.
+ * Kept for call-site compatibility (called from engine/index.js).
+ * No longer needed: renderResume() writes into the live panel node wherever
+ * it currently lives, so no explicit sync step is required.
  */
-export function syncViewMode() {
-  if (isViewMode()) syncResumeContent();
-}
+export function syncViewMode() {}

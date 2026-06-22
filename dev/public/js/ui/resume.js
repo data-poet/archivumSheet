@@ -8,6 +8,16 @@ import { el } from "../shared/dom.js";
 import { calcMaxHp, calcActualHp } from "../shared/durabilityUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Collapse state — module-level Map keyed by section title text.
+// Bodies stay in the DOM (element.hidden); state survives re-renders because
+// renderResume() writes into existing containers, not via innerHTML on the
+// root panel. _bindCollapse() is only called on newly created containers.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** @type {Map<string, boolean>} title → true when open */
+const _collapseOpen = new Map();
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -29,9 +39,6 @@ const ARMOR_SLOTS = [
 export function renderResume(sheet, data = {}) {
   initResumeExpanders(); // no-op after first call
 
-  // Preserve open/closed state of collapsible resume sections across re-renders.
-  const collapseSnap = _snapshotResumeCollapse();
-
   renderResumeHeader(sheet);
   renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
@@ -48,8 +55,6 @@ export function renderResume(sheet, data = {}) {
   renderResumeWeight(sheet);
   renderResumeValue(sheet);
   renderResumePoints(sheet);
-
-  _restoreResumeCollapse(collapseSnap);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -865,40 +870,45 @@ function _hpStepperCell({ cssClass, dataAttrs, maxHp, modifier, actualHp }) {
   `;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Collapsible section helpers
+//
+// State lives in the module-level _collapseOpen Map (keyed by title text).
+// Bodies stay permanently in the DOM with `hidden` toggled — no snapshot or
+// restore is needed across re-renders because each _bindCollapse call reads
+// the Map and applies the current state immediately after innerHTML is set.
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Snapshot the open/closed state of every resume collapsible section,
- * keyed by the section title text. Must be called before innerHTML re-render.
- * @returns {Set<string>} set of titles whose body is currently visible
+ * Build the toggle button HTML string.
  */
-function _snapshotResumeCollapse() {
-  const open = new Set();
-  document.querySelectorAll(".resume-section-toggle").forEach((btn) => {
-    const body = btn.parentElement?.querySelector(".resume-collapse-body");
-    if (body && !body.hidden) {
-      const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
-      if (title) open.add(title);
-    }
-  });
-  return open;
+function _collapsibleHeader(title) {
+  return `
+    <button class="resume-section-toggle" type="button" aria-expanded="false">
+      <span class="resume-expander-arrow">&#8250;</span>
+      <span class="resume-section-title">${title}</span>
+    </button>
+  `;
 }
 
 /**
- * Restore the open/closed state of resume sections from a snapshot.
- * Must be called after re-render so the new buttons/bodies exist in DOM.
- * @param {Set<string>} open
+ * Apply persisted open/closed state from _collapseOpen to a freshly
+ * rendered container. Called immediately after setting container.innerHTML.
+ *
+ * @param {Element} container
  */
-function _restoreResumeCollapse(open) {
-  if (!open.size) return;
-  document.querySelectorAll(".resume-section-toggle").forEach((btn) => {
-    const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
-    if (!open.has(title)) return;
-    const body = btn.parentElement?.querySelector(".resume-collapse-body");
-    if (!body) return;
-    body.hidden = false;
-    btn.setAttribute("aria-expanded", "true");
-    const arrow = btn.querySelector(".resume-expander-arrow");
-    if (arrow) arrow.classList.add("resume-expander-arrow--open");
-  });
+function _bindCollapse(container) {
+  const btn  = container.querySelector(".resume-section-toggle");
+  const body = container.querySelector(".resume-collapse-body");
+  if (!btn || !body) return;
+
+  const title  = btn.querySelector(".resume-section-title")?.textContent ?? "";
+  const isOpen = _collapseOpen.get(title) ?? false;
+
+  body.hidden = !isOpen;
+  btn.setAttribute("aria-expanded", String(isOpen));
+  const arrow = btn.querySelector(".resume-expander-arrow");
+  if (arrow) arrow.classList.toggle("resume-expander-arrow--open", isOpen);
 }
 
 function _renderCollapsibleNameList(containerId, entries, title) {
@@ -925,23 +935,6 @@ function _renderCollapsibleNameList(containerId, entries, title) {
   _bindCollapse(container);
 }
 
-function _collapsibleHeader(title) {
-  return `
-    <button class="resume-section-toggle" type="button" aria-expanded="false">
-      <span class="resume-expander-arrow">&#8250;</span>
-      <span class="resume-section-title">${title}</span>
-    </button>
-  `;
-}
-
-function _bindCollapse(container) {
-  const btn  = container.querySelector(".resume-section-toggle");
-  const body = container.querySelector(".resume-collapse-body");
-  if (!btn || !body) return;
-  body.hidden = true;
-  btn.setAttribute("aria-expanded", "false");
-}
-
 let _expandersBound = false;
 export function initResumeExpanders() {
   if (_expandersBound) return;
@@ -954,10 +947,16 @@ export function initResumeExpanders() {
     if (!parent) return;
     const body = parent.querySelector(".resume-collapse-body");
     if (!body) return;
+
     const isOpen = body.hidden === false;
+    const title  = btn.querySelector(".resume-section-title")?.textContent ?? "";
+
     body.hidden = isOpen;
     btn.setAttribute("aria-expanded", String(!isOpen));
     const arrow = btn.querySelector(".resume-expander-arrow");
     if (arrow) arrow.classList.toggle("resume-expander-arrow--open", !isOpen);
+
+    // Persist new state into module Map
+    _collapseOpen.set(title, !isOpen);
   });
 }
