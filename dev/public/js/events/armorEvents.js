@@ -90,6 +90,20 @@ export function handleArmorClick(e) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleArmorInput(e) {
+  if (e.target.classList.contains("resume-armor-hp")) {
+    const slot         = e.target.dataset.slot;
+    const equippedArmor = findEquippedArmorInSlot(slot);
+    if (!equippedArmor) return true;
+    if (/^-$/.test(e.target.value)) return true;
+    const armorData = data.armors.find((a) => a.armor_id === equippedArmor.armor_id);
+    const { maxHp } = resolveHp(equippedArmor, armorData?.armor_hit_points ?? 0, data.materials);
+    equippedArmor.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
+    _updateResumeHpDisplay(e.target, maxHp, equippedArmor.hit_points_modifier);
+    _deferRender();
+    triggerAutoRun();
+    return true;
+  }
+
   if (e.target.classList.contains("equipped-armor-hp")) {
     const slot = e.target.dataset.slot;
     const equippedArmor = findEquippedArmorInSlot(slot);
@@ -216,6 +230,14 @@ function _deferRender() {
     renderLists(selected, data);
     _restoreAll(snap);
   }, 300);
+}
+
+/** Patch the "atual" strong inside a resume HP cell without re-rendering. */
+function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
+  const cell = inputEl.closest("td");
+  if (!cell) return;
+  const actual = cell.querySelector(".resume-hp-actual");
+  if (actual) actual.textContent = maxHp + (modifier || 0);
 }
 
 /** Patch just the "atual" strong next to the HP modifier input without re-rendering. */

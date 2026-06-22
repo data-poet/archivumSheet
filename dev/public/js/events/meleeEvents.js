@@ -48,6 +48,13 @@ function _deferRender() {
   _deferTimer = setTimeout(() => { renderLists(selected, data); _restore(snap); }, 300);
 }
 
+function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
+  const cell = inputEl.closest("td");
+  if (!cell) return;
+  const actual = cell.querySelector(".resume-hp-actual");
+  if (actual) actual.textContent = maxHp + (modifier || 0);
+}
+
 function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
@@ -74,6 +81,20 @@ export function handleMeleeClick(e) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleMeleeInput(e) {
+  if (e.target.classList.contains("resume-melee-hp")) {
+    const instanceId    = e.target.dataset.instanceId;
+    const meleeInstance = findMeleeByInstanceId(instanceId);
+    if (!meleeInstance) return true;
+    if (/^-$/.test(e.target.value)) return true;
+    const weaponData = data.melee_weapons.find((w) => w.weapon_id === meleeInstance.weapon_id);
+    const { maxHp }  = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
+    _updateResumeHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
+    _deferRender();
+    triggerAutoRun();
+    return true;
+  }
+
   if (e.target.classList.contains("equipped-melee-hp")) {
     const instanceId = e.target.dataset.instanceId;
     const meleeInstance = findMeleeByInstanceId(instanceId);

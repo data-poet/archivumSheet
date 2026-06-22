@@ -47,6 +47,13 @@ function _deferRender() {
   _deferTimer = setTimeout(() => { renderLists(selected, data); _restore(snap); }, 300);
 }
 
+function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
+  const cell = inputEl.closest("td");
+  if (!cell) return;
+  const actual = cell.querySelector(".resume-hp-actual");
+  if (actual) actual.textContent = maxHp + (modifier || 0);
+}
+
 function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
@@ -82,6 +89,19 @@ export function handleShieldClick(e) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleShieldInput(e) {
+  if (e.target.classList.contains("resume-shield-hp")) {
+    const equippedShield = selected.shields.find((s) => s.is_equipped);
+    if (!equippedShield) return true;
+    if (/^-$/.test(e.target.value)) return true;
+    const shieldData = data.shields.find((s) => s.shield_id === equippedShield.shield_id);
+    const { maxHp }  = resolveHp(equippedShield, shieldData?.shield_hit_points ?? 0, data.materials);
+    equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
+    _updateResumeHpDisplay(e.target, maxHp, equippedShield.hit_points_modifier);
+    _deferRender();
+    triggerAutoRun();
+    return true;
+  }
+
   if (e.target.classList.contains("equipped-shield-hp")) {
     const equippedShield = selected.shields.find((s) => s.is_equipped);
     if (!equippedShield) return true;

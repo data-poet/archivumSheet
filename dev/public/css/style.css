@@ -1253,6 +1253,17 @@ tr.spell-detail-row details[open] summary {
   background: #3aaa5c;
 }
 
+/* Stepper row below each HP/Mana/Toxicity bar */
+.resume-bar-stepper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.resume-bar-stepper .num-stepper input {
+  width: 52px;
+}
+
 /* ── Name row ──────────────────────────────────────────────────────────── */
 .resume-row--name {
   margin-bottom: 0.5rem;

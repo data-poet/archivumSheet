@@ -48,6 +48,13 @@ function _deferRender() {
   _deferTimer = setTimeout(() => { renderLists(selected, data); _restore(snap); }, 300);
 }
 
+function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
+  const cell = inputEl.closest("td");
+  if (!cell) return;
+  const actual = cell.querySelector(".resume-hp-actual");
+  if (actual) actual.textContent = maxHp + (modifier || 0);
+}
+
 function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
@@ -74,6 +81,20 @@ export function handleRangedClick(e) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleRangedInput(e) {
+  if (e.target.classList.contains("resume-ranged-hp")) {
+    const instanceId      = e.target.dataset.instanceId;
+    const rangedInstance  = findRangedByInstanceId(instanceId);
+    if (!rangedInstance) return true;
+    if (/^-$/.test(e.target.value)) return true;
+    const weaponData = data.ranged_weapons.find((w) => w.weapon_id === rangedInstance.weapon_id);
+    const { maxHp }  = resolveHp(rangedInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    rangedInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
+    _updateResumeHpDisplay(e.target, maxHp, rangedInstance.hit_points_modifier);
+    _deferRender();
+    triggerAutoRun();
+    return true;
+  }
+
   if (e.target.classList.contains("equipped-ranged-hp")) {
     const instanceId = e.target.dataset.instanceId;
     const rangedInstance = findRangedByInstanceId(instanceId);
