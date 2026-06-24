@@ -88,10 +88,8 @@ export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_I
   instance.is_equipped = true;
   instance.storedAt = null;
 
-  // Mirror equip state to ranged counterpart.
-  const linked = selected.ranged_weapons.find(
-    (r) => r._linkedInstanceId === instanceId,
-  );
+  // Mirror equip state to ranged counterpart (bidirectional lookup).
+  const linked = _findLinkedRanged(instance);
   if (linked) {
     linked.is_equipped = true;
     linked.storedAt = null;
@@ -108,6 +106,28 @@ export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_I
 // ─────────────────────────────────────────────────────────────────────────────
 // DUAL-USE SYNC HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Find the ranged counterpart for a melee instance, regardless of which side
+ * created the pair. Two cases:
+ *   • Melee was created first  → ranged has _linkedInstanceId === melee._instanceId
+ *   • Ranged was created first → melee has _linkedInstanceId === ranged._instanceId
+ */
+function _findLinkedRanged(meleeInstance) {
+  if (!meleeInstance) return null;
+  const byRangedLink = selected.ranged_weapons.find(
+    (r) => r._linkedInstanceId === meleeInstance._instanceId,
+  );
+  if (byRangedLink) return byRangedLink;
+  if (meleeInstance._linkedInstanceId) {
+    return (
+      selected.ranged_weapons.find(
+        (r) => r._instanceId === meleeInstance._linkedInstanceId,
+      ) ?? null
+    );
+  }
+  return null;
+}
 
 /**
  * If weaponId is a dual-use melee weapon, push a mirrored ranged instance
@@ -136,11 +156,13 @@ function _syncRangedCounterpart(meleeInstanceId, weaponId, materialId, isEquippe
 }
 
 /**
- * Remove the ranged counterpart linked to a given melee instanceId.
+ * Remove the ranged counterpart linked to a given melee instance.
  */
-function _removeRangedCounterpart(meleeInstanceId) {
+function _removeRangedCounterpart(meleeInstance) {
+  const linked = _findLinkedRanged(meleeInstance);
+  if (!linked) return;
   selected.ranged_weapons = selected.ranged_weapons.filter(
-    (r) => r._linkedInstanceId !== meleeInstanceId,
+    (r) => r._instanceId !== linked._instanceId,
   );
 }
 
@@ -194,10 +216,8 @@ export function moveMelee(instanceId, storedAt) {
   melee.is_equipped = false;
   melee.storedAt = storedAt;
 
-  // Mirror storage move to ranged counterpart.
-  const linked = selected.ranged_weapons.find(
-    (r) => r._linkedInstanceId === instanceId,
-  );
+  // Mirror storage move to ranged counterpart (bidirectional lookup).
+  const linked = _findLinkedRanged(melee);
   if (linked) {
     linked.is_equipped = false;
     linked.storedAt = storedAt;
@@ -209,7 +229,8 @@ export function moveMelee(instanceId, storedAt) {
 
 /** Remove a melee weapon instance by instanceId. */
 export function removeMelee(instanceId) {
-  _removeRangedCounterpart(instanceId);
+  const melee = findMeleeByInstanceId(instanceId);
+  _removeRangedCounterpart(melee);
 
   selected.melee_weapons = selected.melee_weapons.filter(
     (w) => w._instanceId !== instanceId,

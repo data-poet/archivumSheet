@@ -90,6 +90,13 @@ export function handleMeleeInput(e) {
     const { maxHp }  = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateResumeHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
+    // Mirror HP modifier to ranged counterpart (bidirectional lookup).
+    const linkedRanged =
+      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      (meleeInstance._linkedInstanceId
+        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        : null);
+    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -104,6 +111,13 @@ export function handleMeleeInput(e) {
     const { maxHp } = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
+    // Mirror HP modifier to ranged counterpart (bidirectional lookup).
+    const linkedRanged =
+      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      (meleeInstance._linkedInstanceId
+        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        : null);
+    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -118,6 +132,13 @@ export function handleMeleeInput(e) {
     const { maxHp } = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
+    // Mirror HP modifier to ranged counterpart (bidirectional lookup).
+    const linkedRanged =
+      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      (meleeInstance._linkedInstanceId
+        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        : null);
+    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -185,10 +206,12 @@ export function handleMeleeChange(e) {
     if (!meleeInstance) return true;
     if (!destination) { meleeInstance.is_equipped = true; meleeInstance.storedAt = null; }
     else { meleeInstance.is_equipped = false; meleeInstance.storedAt = destination; }
-    // Mirror to ranged counterpart.
-    const linked = state.selected.ranged_weapons?.find(
-      (r) => r._linkedInstanceId === instanceId,
-    );
+    // Mirror to ranged counterpart (bidirectional: ranged may point at us, or we may point at ranged).
+    const linked =
+      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      (meleeInstance._linkedInstanceId
+        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        : null);
     if (linked) {
       linked.is_equipped = meleeInstance.is_equipped;
       linked.storedAt = meleeInstance.storedAt;

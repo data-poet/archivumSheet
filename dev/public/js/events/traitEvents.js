@@ -16,6 +16,26 @@ export function handleTraitClick(e) {
 export function handleTraitInput(e) {
   const selected = state.selected;
 
+  // ── Resume: primary attribute modifier stepper ────────────────────────────
+  if (e.target.classList.contains("resume-primary-mod-input")) {
+    const { attr } = e.target.dataset;
+    const raw = e.target.value;
+
+    if (/^-$|^-?\d*$/.test(raw) === false) return true; // allow partial entry
+    if (raw === "-" || raw === "") return true;
+
+    const value = parseInt(raw, 10);
+    if (isNaN(value)) return true;
+
+    // Mirror to the canonical edit-view DOM input the engine reads from
+    const editInput = document.getElementById(`${attr}_mod`);
+    if (editInput) {
+      editInput.value = value;
+      editInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    return true;
+  }
+
   if (e.target.classList.contains("secondary-input")) {
     const { name, field } = e.target.dataset;
     const raw = e.target.value;

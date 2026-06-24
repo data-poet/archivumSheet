@@ -224,6 +224,132 @@ describe("SECONDARY ATTRIBUTES", () => {
     });
   });
 
+  describe("final_base_value", () => {
+    it("Should equal base_value when nothing is bought", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      expect(attributes.HP.final_base_value).toBe(attributes.HP.base_value);
+      expect(attributes.BasicSpeed.final_base_value).toBe(attributes.BasicSpeed.base_value);
+    });
+
+    it("Should equal base_value + bought * step", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { bought: 2 }, BasicSpeed: { bought: 2 } },
+        mockCarryWeight,
+      );
+      expect(attributes.HP.final_base_value).toBe(attributes.HP.base_value + 2 * 4);
+      expect(attributes.BasicSpeed.final_base_value).toBe(
+        attributes.BasicSpeed.base_value + 2 * 0.5,
+      );
+    });
+
+    it("value should equal final_base_value + modifier", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { bought: 1, modifier: -3 } },
+        mockCarryWeight,
+      );
+      expect(attributes.HP.value).toBe(attributes.HP.final_base_value - 3);
+    });
+  });
+
+  describe("HP < 1/3 rule — BasicSpeed halving", () => {
+    it("Should NOT halve BasicSpeed when HP is at full", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const normalSpeed = attributes.BasicSpeed.final_base_value; // no modifier → value = final_base_value
+      expect(attributes.BasicSpeed.value).toBe(normalSpeed);
+    });
+
+    it("Should halve BasicSpeed (floor) when current HP < final_base_value / 3", () => {
+      const { attributes: attrsFull } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const hpFinalBase = attrsFull.HP.final_base_value;
+      // drive HP below 1/3 threshold
+      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { modifier: severeInjury } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.HP.value).toBeLessThan(hpFinalBase / 3);
+      expect(attributes.BasicSpeed.value).toBe(
+        Math.floor(attrsFull.BasicSpeed.value / 2),
+      );
+    });
+
+    it("Should cascade halved BasicSpeed into Movement", () => {
+      const { attributes: attrsFull } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const hpFinalBase = attrsFull.HP.final_base_value;
+      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { modifier: severeInjury } },
+        mockCarryWeight,
+      );
+
+      const halvedSpeed = Math.floor(attrsFull.BasicSpeed.value / 2);
+      const expectedMovement = Math.floor(halvedSpeed + mockCarryWeight.weight_modifier);
+      expect(attributes.Movement.base_value).toBe(expectedMovement);
+    });
+
+    it("Should cascade halved Movement into Dodge", () => {
+      const { attributes: attrsFull } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const hpFinalBase = attrsFull.HP.final_base_value;
+      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { modifier: severeInjury } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.Dodge.base_value).toBe(attributes.Movement.value + 4);
+    });
+
+    it("Should NOT halve BasicSpeed when HP is exactly at 1/3 boundary (not below)", () => {
+      const { attributes: attrsFull } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const hpFinalBase = attrsFull.HP.final_base_value;
+      // Place HP at exactly ceil(hpFinalBase/3), which is >= hpFinalBase/3 → no halving
+      const safeHp = Math.ceil(hpFinalBase / 3);
+      const modifier = -(hpFinalBase - safeHp);
+
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { modifier } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.HP.value).toBeGreaterThanOrEqual(hpFinalBase / 3);
+      expect(attributes.BasicSpeed.value).toBe(attrsFull.BasicSpeed.value);
+    });
+  });
+
   describe("Structure integrity", () => {
     it("Should return attributes, damage and points", () => {
       const result = buildSecondaryAttributes(mockPrimary, {}, mockCarryWeight);
@@ -250,7 +376,7 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes).toHaveProperty("Dodge");
     });
 
-    it("Each attribute should have base_value, bought, modifier, value", () => {
+    it("Each attribute should have base_value, bought, modifier, value, final_base_value", () => {
       const { attributes } = buildSecondaryAttributes(
         mockPrimary,
         {},
@@ -261,6 +387,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         expect(attr).toHaveProperty("base_value");
         expect(attr).toHaveProperty("bought");
         expect(attr).toHaveProperty("modifier");
+        expect(attr).toHaveProperty("final_base_value");
         expect(attr).toHaveProperty("value");
         expect(attr).toHaveProperty("points");
       });

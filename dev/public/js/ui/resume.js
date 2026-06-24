@@ -87,11 +87,25 @@ function renderResumePrimaryAttributes(sheet) {
 
   container.innerHTML = attrs
     .map((key) => {
-      const value = primary[key]?.value ?? "—";
+      const value   = primary[key]?.value ?? "—";
+      const modVal  = primary[key]?.modifier ?? 0;
       return `
         <div class="resume-attr-box">
           <span class="resume-attr-acronym">${key}</span>
           <span class="resume-attr-value">${value}</span>
+          <div class="num-stepper resume-attr-mod-stepper">
+            <input
+              type="text"
+              inputmode="numeric"
+              class="resume-primary-mod-input"
+              data-attr="${key}"
+              value="${modVal}"
+            />
+            <div class="stepper-btns">
+              <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+              <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+            </div>
+          </div>
         </div>
       `;
     })
@@ -116,14 +130,35 @@ function renderResumeSecondarySnapshot(sheet) {
   const rows = SECONDARY_SNAPSHOT_KEYS.map((key) => {
     const attr = sec[key];
     if (!attr) return "";
+    const isBasicSpeed = key === "BasicSpeed";
     const value =
-      key === "BasicSpeed"
+      isBasicSpeed
         ? Number(attr.value).toFixed(2)
         : (attr.value ?? "—");
+    const modifierStep = isBasicSpeed ? 0.5 : 1;
+    const rawMod = attr.modifier ?? 0;
+
     return `
       <tr>
         <td>${getSecondaryAttributeLabel(key)}</td>
         <td class="col-num">${value}</td>
+        <td>
+          <div class="num-stepper resume-secondary-mod-stepper">
+            <input
+              type="text"
+              inputmode="numeric"
+              class="secondary-input"
+              data-name="${key}"
+              data-field="modifier"
+              data-step="${modifierStep}"
+              value="${rawMod}"
+            />
+            <div class="stepper-btns">
+              <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+              <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+            </div>
+          </div>
+        </td>
       </tr>
     `;
   }).join("");
@@ -158,7 +193,7 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
   const container = el(containerId);
   if (!container || !attr) return;
 
-  const total   = (attr.base_value ?? 0) + (attr.bought ?? 0) * 4;
+  const total   = attr.final_base_value ?? ((attr.base_value ?? 0) + (attr.bought ?? 0) * 4);
   const rawMod  = attr.modifier ?? 0;
   const lost    = rawMod < 0 ? Math.abs(rawMod) : 0;
   const current = Math.max(0, total - lost);
@@ -527,6 +562,7 @@ function renderResumeRanged(sheet) {
           <td>${w.weapon_name ?? "—"}</td>
           <td class="col-num">${w.weapon_tr ?? "—"}</td>
           <td class="col-num">${w.weapon_prec ?? "—"}</td>
+          <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
           ${hpCell}
         </tr>
       `;
@@ -543,6 +579,7 @@ function renderResumeRanged(sheet) {
               <th>${t("common.name")}</th>
               <th class="col-num">${t("ranged.tr")}</th>
               <th class="col-num">${t("ranged.prec")}</th>
+              <th class="col-num">${t("ranged.gdpDmg")}</th>
               <th class="col-num">${t("armor.hp")}</th>
             </tr>
           </thead>

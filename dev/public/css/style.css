@@ -1635,6 +1635,46 @@ tr.trait-innate td {
   color: var(--color-text);
 }
 
+/* Modifier stepper inside primary attr box */
+.resume-attr-mod-stepper {
+  width: 100%;
+  margin-top: 2px;
+}
+
+.resume-attr-mod-stepper input {
+  width: 100%;
+  font-size: var(--fs-xxs);
+  text-align: center;
+  padding: 1px 2px;
+}
+
+.resume-attr-mod-stepper .stepper-btns {
+  flex-direction: row;
+}
+
+.resume-attr-mod-stepper .stepper-btn {
+  font-size: var(--fs-xxs);
+  padding: 0 4px;
+  line-height: 1.4;
+}
+
+/* Modifier stepper inside secondary snapshot table */
+.resume-secondary-mod-stepper {
+  min-width: 70px;
+}
+
+.resume-secondary-mod-stepper input {
+  font-size: var(--fs-xs);
+  text-align: center;
+  padding: 1px 2px;
+}
+
+/* Ensure modifier column doesn't overflow */
+.resume-table--secondary-snapshot td:last-child {
+  width: 90px;
+  padding-right: 0;
+}
+
 /* ── Bars + secondary snapshot row ────────────────────────────────────── */
 .resume-row--bars-secondary {
   display: grid;

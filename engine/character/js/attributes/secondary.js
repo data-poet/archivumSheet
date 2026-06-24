@@ -20,12 +20,14 @@ function resolveSecondary({
   step = 1,
 }) {
   const safeBought = clamp(bought, 0, maxBought);
+  const final_base_value = base_value + safeBought * step;
 
   return {
     base_value,
     bought: safeBought,
     modifier,
-    value: base_value + safeBought * step + modifier,
+    final_base_value,
+    value: final_base_value + modifier,
     points: safeBought * 5,
   };
 }
@@ -127,6 +129,22 @@ function buildSecondaryAttributes(
       ...config.BasicSpeed,
     }),
   };
+
+  /**
+   * HP < 1/3 rule — halve BasicSpeed (floor) when current HP is below 1/3
+   * of final_base_value. Movement and Dodge cascade from the (possibly halved)
+   * BasicSpeed.value, so they are computed afterwards.
+   *
+   * current HP = final_base_value + modifier  (modifier is ≤ 0 when injured)
+   */
+  const hpFinalBase = result.HP.final_base_value;
+  const hpCurrent   = result.HP.value; // final_base_value + modifier
+  if (hpCurrent < hpFinalBase / 3) {
+    result.BasicSpeed = {
+      ...result.BasicSpeed,
+      value: Math.floor(result.BasicSpeed.value / 2),
+    };
+  }
 
   /**
    * Movement & Dodge (depends on BasicSpeed + carry weight)
