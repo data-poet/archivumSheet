@@ -4,7 +4,8 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
-import { nextMeleeInstanceId } from "../store/instanceId.js";
+import { nextMeleeInstanceId, nextRangedInstanceId } from "../store/instanceId.js";
+import { MELEE_TO_RANGED } from "../shared/dualUseWeapons.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -87,6 +88,15 @@ export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_I
   instance.is_equipped = true;
   instance.storedAt = null;
 
+  // Mirror equip state to ranged counterpart.
+  const linked = selected.ranged_weapons.find(
+    (r) => r._linkedInstanceId === instanceId,
+  );
+  if (linked) {
+    linked.is_equipped = true;
+    linked.storedAt = null;
+  }
+
   renderLists(selected, data);
   triggerAutoRun();
 }
@@ -95,18 +105,61 @@ export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_I
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+// DUAL-USE SYNC HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * If weaponId is a dual-use melee weapon, push a mirrored ranged instance
+ * into selected.ranged_weapons with the same storage/equip state, material,
+ * and a _linkedInstanceId pointing back to meleeInstanceId.
+ */
+function _syncRangedCounterpart(meleeInstanceId, weaponId, materialId, isEquipped, storedAt) {
+  const rangedWeaponId = MELEE_TO_RANGED[weaponId];
+  if (!rangedWeaponId) return;
+
+  // Guard: counterpart already exists (prevents loops from ranged-side sync).
+  const alreadyLinked = selected.ranged_weapons.some(
+    (r) => r._linkedInstanceId === meleeInstanceId,
+  );
+  if (alreadyLinked) return;
+
+  selected.ranged_weapons.push({
+    _instanceId: nextRangedInstanceId(),
+    _linkedInstanceId: meleeInstanceId,
+    weapon_id: rangedWeaponId,
+    material_id: materialId,
+    hit_points_modifier: 0,
+    is_equipped: isEquipped,
+    storedAt,
+  });
+}
+
+/**
+ * Remove the ranged counterpart linked to a given melee instanceId.
+ */
+function _removeRangedCounterpart(meleeInstanceId) {
+  selected.ranged_weapons = selected.ranged_weapons.filter(
+    (r) => r._linkedInstanceId !== meleeInstanceId,
+  );
+}
+
 /** Add a melee weapon directly as equipped. */
 export function addEquippedMelee(weaponId, materialId = null) {
   if (!weaponId) return;
 
+  const instanceId = nextMeleeInstanceId();
+
   selected.melee_weapons.push({
-    _instanceId: nextMeleeInstanceId(),
+    _instanceId: instanceId,
     weapon_id: weaponId,
     material_id: materialId,
     hit_points_modifier: 0,
     is_equipped: true,
     storedAt: null,
   });
+
+  _syncRangedCounterpart(instanceId, weaponId, materialId, true, null);
 
   renderLists(selected, data);
   triggerAutoRun();
@@ -116,14 +169,18 @@ export function addEquippedMelee(weaponId, materialId = null) {
 export function addStoredMelee(meleeId, materialId = null, storedAt = "backpack") {
   if (!meleeId) return;
 
+  const instanceId = nextMeleeInstanceId();
+
   selected.melee_weapons.push({
-    _instanceId: nextMeleeInstanceId(),
+    _instanceId: instanceId,
     weapon_id: meleeId,
     material_id: materialId,
     hit_points_modifier: 0,
     is_equipped: false,
     storedAt,
   });
+
+  _syncRangedCounterpart(instanceId, meleeId, materialId, false, storedAt);
 
   renderLists(selected, data);
   triggerAutoRun();
@@ -137,12 +194,23 @@ export function moveMelee(instanceId, storedAt) {
   melee.is_equipped = false;
   melee.storedAt = storedAt;
 
+  // Mirror storage move to ranged counterpart.
+  const linked = selected.ranged_weapons.find(
+    (r) => r._linkedInstanceId === instanceId,
+  );
+  if (linked) {
+    linked.is_equipped = false;
+    linked.storedAt = storedAt;
+  }
+
   renderLists(selected, data);
   triggerAutoRun();
 }
 
 /** Remove a melee weapon instance by instanceId. */
 export function removeMelee(instanceId) {
+  _removeRangedCounterpart(instanceId);
+
   selected.melee_weapons = selected.melee_weapons.filter(
     (w) => w._instanceId !== instanceId,
   );

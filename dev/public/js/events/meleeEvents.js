@@ -185,6 +185,14 @@ export function handleMeleeChange(e) {
     if (!meleeInstance) return true;
     if (!destination) { meleeInstance.is_equipped = true; meleeInstance.storedAt = null; }
     else { meleeInstance.is_equipped = false; meleeInstance.storedAt = destination; }
+    // Mirror to ranged counterpart.
+    const linked = state.selected.ranged_weapons?.find(
+      (r) => r._linkedInstanceId === instanceId,
+    );
+    if (linked) {
+      linked.is_equipped = meleeInstance.is_equipped;
+      linked.storedAt = meleeInstance.storedAt;
+    }
     _renderAll();
     triggerAutoRun();
     return true;
