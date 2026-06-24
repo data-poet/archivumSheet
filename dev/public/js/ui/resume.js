@@ -36,7 +36,7 @@ const ARMOR_SLOTS = [
 //   data   — raw DB arrays (state.data) — used for ammo name lookup
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderResume(sheet, data = {}) {
+export function renderResume(sheet, data = {}, selected = {}) {
   initResumeExpanders(); // no-op after first call
 
   renderResumeHeader(sheet);
@@ -50,7 +50,7 @@ export function renderResume(sheet, data = {}) {
   renderResumeShield(sheet);
   renderResumeMelee(sheet);
   renderResumeRanged(sheet);
-  renderResumeAmmo(sheet, data);
+  renderResumeAmmo(sheet, data, selected);
   renderResumeAlchemy(sheet);
   renderResumeWeight(sheet);
   renderResumeValue(sheet);
@@ -592,23 +592,46 @@ function renderResumeRanged(sheet) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 10. Ammo — equipped containers only (collapsed — name | qty)
+// 10. Ammo — equipped containers only (collapsed — name | qty stepper)
+//
+// Quantities are aggregated across all equipped containers per ammo_id.
+// The stepper writes to the first equipped container (by insertion order)
+// that holds the given ammo_id via class "resume-ammo-qty".
 // ─────────────────────────────────────────────────────────────────────────────
 
-function renderResumeAmmo(sheet, data) {
+function renderResumeAmmo(sheet, data, selected) {
   const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
   const ammoDb  = data?.ammo ?? [];
   const container = el("resume_ammo_container");
   if (!container) return;
 
+  // Build aggregated entries, tracking the first instanceId per ammo_id
+  // (used as the decrement target).
   const entries = [];
+  // selected.ammo_containers preserves insertion order — filter to equipped only
+  const equippedSelected = (selected?.ammo_containers ?? []).filter(
+    (c) => c.storedAt === "equipped",
+  );
+
   for (const cont of equippedContainers) {
     for (const item of cont.contents ?? []) {
       const dbRow = ammoDb.find((a) => a.ammo_id === item.ammo_id);
       const name  = dbRow?.ammo_name ?? item.ammo_id;
       const existing = entries.find((e) => e.ammo_id === item.ammo_id);
-      if (existing) existing.quantity += item.quantity;
-      else entries.push({ ammo_id: item.ammo_id, name, quantity: item.quantity });
+      if (existing) {
+        existing.quantity += item.quantity;
+      } else {
+        // Find the first selected equipped container holding this ammo_id
+        const firstInst = equippedSelected.find(
+          (c) => c.contents.some((e) => e.ammo_id === item.ammo_id),
+        );
+        entries.push({
+          ammo_id:     item.ammo_id,
+          name,
+          quantity:    item.quantity,
+          instanceId:  firstInst?._instanceId ?? "",
+        });
+      }
     }
   }
 
@@ -620,7 +643,23 @@ function renderResumeAmmo(sheet, data) {
       (e) => `
       <tr>
         <td>${e.name}</td>
-        <td class="col-num">${e.quantity}</td>
+        <td class="col-num">
+          <div class="num-stepper">
+            <input
+              type="text"
+              inputmode="numeric"
+              class="resume-ammo-qty"
+              data-ammo-id="${e.ammo_id}"
+              data-instance-id="${e.instanceId}"
+              value="${e.quantity}"
+              style="width:50px"
+            />
+            <div class="stepper-btns">
+              <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+              <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+            </div>
+          </div>
+        </td>
       </tr>
     `,
     )
@@ -663,7 +702,23 @@ function renderResumeAlchemy(sheet) {
       <tr>
         <td>${a.consumable_name ?? "—"}</td>
         <td class="col-num">${a.consumable_tier ?? "—"}</td>
-        <td class="col-num">${a.quantity ?? 1}</td>
+        <td class="col-num">
+          <div class="num-stepper">
+            <input
+              type="text"
+              inputmode="numeric"
+              class="alchemy-qty"
+              data-consumable-id="${a.consumable_id}"
+              data-stored-at="${a.storedAt}"
+              value="${a.quantity ?? 1}"
+              style="width:50px"
+            />
+            <div class="stepper-btns">
+              <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+              <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+            </div>
+          </div>
+        </td>
       </tr>
     `,
     )

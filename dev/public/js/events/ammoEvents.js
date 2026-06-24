@@ -12,6 +12,49 @@ import { ammoDetailKeyFn } from "../shared/openState.js";
 const selected = state.selected;
 const data = state.data;
 
+// ─── Resume ammo stepper helper ───────────────────────────────────────────────
+// The resume view shows an aggregated quantity for each ammo_id across all
+// equipped containers. When the player adjusts the stepper, we translate the
+// new aggregate into a delta and apply it to the first equipped container
+// (by insertion order) that holds the given ammo_id.
+
+function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
+  // Calculate current total across all equipped containers
+  const equippedContainers = selected.ammo_containers.filter(
+    (c) => c.storedAt === "equipped",
+  );
+  const currentTotal = equippedContainers.reduce((sum, c) => {
+    const entry = c.contents.find((e) => e.ammo_id === ammoId);
+    return sum + (entry?.quantity ?? 0);
+  }, 0);
+
+  const delta = newTotal - currentTotal;
+  if (delta === 0) return;
+
+  if (delta > 0) {
+    // Increment: add to the first container
+    const firstContainer = selected.ammo_containers.find(
+      (c) => c._instanceId === firstInstanceId,
+    );
+    if (!firstContainer) return;
+    const entry = firstContainer.contents.find((e) => e.ammo_id === ammoId);
+    if (entry) {
+      updateContainerAmmoQuantity(firstInstanceId, ammoId, entry.quantity + delta);
+    }
+  } else {
+    // Decrement: drain from first container first, overflow to next
+    let remaining = Math.abs(delta);
+    for (const cont of equippedContainers) {
+      if (remaining <= 0) break;
+      const entry = cont.contents.find((e) => e.ammo_id === ammoId);
+      if (!entry || entry.quantity <= 0) continue;
+      const toRemove = Math.min(remaining, entry.quantity);
+      updateContainerAmmoQuantity(cont._instanceId, ammoId, entry.quantity - toRemove);
+      remaining -= toRemove;
+    }
+  }
+}
+
 // ─── Open-state helpers ───────────────────────────────────────────────────────
 
 function _snapshot() {
@@ -88,6 +131,16 @@ export function handleAmmoInput(e) {
     const quantity = parseInt(e.target.value, 10);
     if (!ammoId || !storedAt) return true;
     updateLooseAmmoQuantity(ammoId, storedAt, isNaN(quantity) ? 0 : quantity);
+    return true;
+  }
+  if (e.target.classList.contains("resume-ammo-qty")) {
+    const ammoId     = e.target.dataset.ammoId;
+    const instanceId = e.target.dataset.instanceId;
+    if (e.target.value === "-" || e.target.value === "") return true;
+    if (!ammoId || !instanceId) return true;
+    const newTotal = parseInt(e.target.value, 10);
+    if (isNaN(newTotal) || newTotal < 0) return true;
+    _applyResumeAmmoQty(ammoId, instanceId, newTotal);
     return true;
   }
   return false;

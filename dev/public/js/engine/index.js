@@ -154,7 +154,7 @@ export async function runEngine() {
     updateInventoryUI(json);
     renderSecondaryAttributes(json);
     renderDamage(json);
-    renderResume(json, state.data);
+    renderResume(json, state.data, state.selected);
     syncViewMode();
 
     // Store resolved sheet so render files can use final computed values
