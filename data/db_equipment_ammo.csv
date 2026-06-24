@@ -10,3 +10,8 @@ AMMO-007,Flecha,Flecha de Adamantina,Utilitária,100,0.05,Ignora parte da resist
 AMMO-008,Flecha,Flecha Pedra Fogo,Elemental,35,0.05,Causa dano adicional de fogo ao impacto.,Flecha contendo pedra elemental de fogo.
 AMMO-009,Flecha,Flecha Pedra Gelo,Elemental,35,0.05,Causa dano adicional de gelo ao impacto.,Flecha contendo pedra elemental de gelo.
 AMMO-010,Flecha,Flecha Pedra Tempestade,Elemental,35,0.05,Causa dano adicional elétrico ao impacto.,Flecha contendo pedra elemental de tempestade.
+AMMO-011,Faca,Adaga de Arremesso | Comum,Dano,10,0.2,Causa dano perfurante padrão.,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+AMMO-012,Faca,Adaga de Arremesso | Boa,Dano,20,0.2,Causa dano perfurante padrão.,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+AMMO-013,Faca,Adaga de Arremesso | Superior,Dano,40,0.2,Causa dano perfurante padrão.,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+AMMO-014,Faca,Adaga de Arremesso | Excelente,Dano,80,0.2,Causa dano perfurante padrão.,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
+AMMO-015,Faca,Adaga de Arremesso | Obra-Prima,Dano,160,0.2,Causa dano perfurante padrão.,"Não é um item comum. Seu peso é balanceado para arremesso. Usada para combate a curta distância, leva desvantagem contra equivalentes de mesmo peso."
