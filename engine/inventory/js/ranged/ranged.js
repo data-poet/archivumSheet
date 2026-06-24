@@ -4,6 +4,11 @@ const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
 const { VALID_STORED_AT } = require("./rangedConstants.js");
 
+const {
+  isRangedDualUse,
+  getMeleeCounterpart,
+} = require("../shared/dualUseWeapons.js");
+
 const { validateRangedInstance } = require("./rangedValidation.js");
 
 const {
@@ -253,4 +258,6 @@ module.exports = {
   _getRangedDB: getRangedDB,
   _getMaterialDB: getMaterialDB,
   _validateRangedInstance: validateRangedInstance,
+  _isRangedDualUse: isRangedDualUse,
+  _getMeleeCounterpart: getMeleeCounterpart,
 };

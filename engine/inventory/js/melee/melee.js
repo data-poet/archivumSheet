@@ -4,6 +4,11 @@ const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
 const { VALID_STORED_AT } = require("./meleeConstants.js");
 
+const {
+  isMeleeDualUse,
+  getRangedCounterpart,
+} = require("../shared/dualUseWeapons.js");
+
 const { validateMeleeInstance } = require("./meleeValidation.js");
 
 const {
@@ -249,4 +254,6 @@ module.exports = {
   _getMeleeDB: getMeleeDB,
   _getMaterialDB: getMaterialDB,
   _validateMeleeInstance: validateMeleeInstance,
+  _isMeleeDualUse: isMeleeDualUse,
+  _getRangedCounterpart: getRangedCounterpart,
 };
