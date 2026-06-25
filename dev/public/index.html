@@ -1486,39 +1486,7 @@
           .classList.toggle("resume-expander-arrow--open", !expanded);
       });
 
-      // ── Active nav highlighting (shared between sidebar & bottom nav) ────────
-      const allNavLinks = document.querySelectorAll(
-        ".sidebar-link, .bottomnav-link",
-      );
-
-      function setActiveNav(sectionId) {
-        allNavLinks.forEach((l) =>
-          l.classList.toggle("is-active", l.dataset.section === sectionId),
-        );
-      }
-
-      // Click: smooth scroll + instant highlight
-      allNavLinks.forEach((link) => {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.getElementById(this.dataset.section);
-          if (target)
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-          setActiveNav(this.dataset.section);
-        });
-      });
-
-      // Scroll: highlight nav as sections come into view
-      const sections = document.querySelectorAll(".l-section");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) setActiveNav(entry.target.id);
-          });
-        },
-        { threshold: 0.25 },
-      );
-      sections.forEach((s) => observer.observe(s));
+      // Nav highlighting and scroll handled by nav.js (initNav)
     </script>
   </body>
 </html>
