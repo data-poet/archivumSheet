@@ -1438,6 +1438,20 @@ tr.spell-detail-row details[open] summary {
   color: var(--color-text-muted);
 }
 
+/* Character points block */
+.character-points-block {
+  margin-top: 1rem;
+}
+
+.character-points-block h3 {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 0.5rem;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    ATTRIBUTE CELLS
    ═══════════════════════════════════════════════════════════════════════════ */

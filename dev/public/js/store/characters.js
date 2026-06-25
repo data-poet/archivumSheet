@@ -57,6 +57,8 @@ function _blankData() {
       character_age: null,
       character_weight: null,
       race_id: null,
+      starting_points: null,
+      experience_points: null,
     },
     race: {},
     character: {
@@ -141,23 +143,27 @@ function _applyData(data) {
   const { pc = {}, race = {}, character = {}, inventory = {} } = data;
 
   selected.character = {
-    player_name:      pc.player_name      ?? "",
-    character_name:   pc.character_name   ?? "",
-    character_sex:    pc.character_sex    ?? "",
-    character_age:    pc.character_age    ?? null,
-    character_weight: pc.character_weight ?? null,
-    race_id:          race.race_id        ?? null,
+    player_name:       pc.player_name       ?? "",
+    character_name:    pc.character_name    ?? "",
+    character_sex:     pc.character_sex     ?? "",
+    character_age:     pc.character_age     ?? null,
+    character_weight:  pc.character_weight  ?? null,
+    race_id:           race.race_id         ?? null,
+    starting_points:   pc.starting_points   ?? null,
+    experience_points: pc.experience_points ?? null,
   };
 
   const setVal = (id, v) => {
     const el = document.getElementById(id);
     if (el) el.value = v ?? "";
   };
-  setVal("playerNameInput",      selected.character.player_name);
-  setVal("characterNameInput",   selected.character.character_name);
-  setVal("characterSexSelect",   selected.character.character_sex);
-  setVal("characterAgeInput",    selected.character.character_age);
-  setVal("characterWeightInput", selected.character.character_weight);
+  setVal("playerNameInput",        selected.character.player_name);
+  setVal("characterNameInput",     selected.character.character_name);
+  setVal("characterSexSelect",     selected.character.character_sex);
+  setVal("characterAgeInput",      selected.character.character_age);
+  setVal("characterWeightInput",   selected.character.character_weight);
+  setVal("startingPointsInput",    selected.character.starting_points);
+  setVal("experiencePointsInput",  selected.character.experience_points);
 
   if (selected.character.race_id && state.data.races.length) {
     restoreRaceSelection(selected.character.race_id);

@@ -13,6 +13,8 @@ import {
   syncViewMode,
 } from "../ui.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";
+import { showToast } from "../store/persistence.js";
+import { t } from "../localization/pt-BR.js";
 
 const selected = state.selected;
 
@@ -38,6 +40,8 @@ export async function runEngine() {
       character_sex: info.character_sex || "",
       character_age: info.character_age ?? null,
       character_weight: info.character_weight ?? null,
+      starting_points: info.starting_points ?? null,
+      experience_points: info.experience_points ?? null,
     };
 
     // ── Build race object ──────────────────────────────────────────────────
@@ -159,6 +163,26 @@ export async function runEngine() {
 
     // Store resolved sheet so render files can use final computed values
     state.sheet = json;
+
+    // ── Insufficient points warning ────────────────────────────────────────
+    const cp = json.character?.character_points ?? {};
+    const totalSpent =
+      (cp.primary_attributes   ?? 0) +
+      (cp.secondary_attributes ?? 0) +
+      (cp.advantages           ?? 0) +
+      (cp.disadvantages        ?? 0) +
+      (cp.skills               ?? 0) +
+      (cp.spells               ?? 0);
+
+    const startingPts   = json.pc?.starting_points   ?? null;
+    const experiencePts = json.pc?.experience_points ?? null;
+
+    if (startingPts !== null || experiencePts !== null) {
+      const available = (startingPts ?? 0) + (experiencePts ?? 0);
+      if (totalSpent > available) {
+        showToast(t("resume.insufficientPoints"), "error");
+      }
+    }
 
     // Snapshot open details + scroll positions across all list containers
     // before renderLists wipes and rebuilds the DOM, then restore in a rAF

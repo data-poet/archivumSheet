@@ -27,6 +27,8 @@ export const state = {
       character_age: null,
       character_weight: null,
       race_id: null,
+      starting_points: null,
+      experience_points: null,
     },
     advantages: {},
     disadvantages: {},

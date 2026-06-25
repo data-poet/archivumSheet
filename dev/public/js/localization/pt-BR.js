@@ -125,6 +125,9 @@ export const LABELS = {
     spells: "Magias",
     total: "Total",
     totalPoints: "Total de Pontos",
+    availablePoints: "Disponíveis",
+    sparePoints: "Restantes",
+    insufficientPoints: "Pontos insuficientes — gasto total excede os pontos disponíveis.",
     totalWeight: "Peso Total",
     totalValue: "Valor Total",
     secondarySnapshot: "Atributos Secundários",
@@ -173,6 +176,9 @@ export const LABELS = {
     noRace: "Nenhuma",
     raceModifiers: "Modificadores Raciais",
     innate: "Inato",
+    pointsTitle: "Pontos",
+    startingPoints: "Pontos Iniciais",
+    experiencePoints: "Pontos de Experiência",
   },
 
   // ── Secondary attributes ──────────────────────────────────────────────────

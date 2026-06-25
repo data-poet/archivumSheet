@@ -190,8 +190,43 @@
                 ></div>
               </div>
             </div>
-          </div>
 
+            <!-- Points block -->
+            <div class="character-points-block">
+              <h3 id="sec-character-points"></h3>
+              <table class="character-info-table">
+                <tbody>
+                  <tr>
+                    <td><label for="startingPointsInput" id="lbl-startingPoints"></label></td>
+                    <td>
+                      <input
+                        type="number"
+                        id="startingPointsInput"
+                        class="character-input"
+                        data-field="starting_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="experiencePointsInput" id="lbl-experiencePoints"></label></td>
+                    <td>
+                      <input
+                        type="number"
+                        id="experiencePointsInput"
+                        class="character-input"
+                        data-field="experience_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -1335,6 +1370,8 @@
         setText("lbl-sex", L.character.sex);
         setText("lbl-age", L.character.age);
         setText("lbl-weight", L.character.weight);
+        setText("lbl-startingPoints", L.character.startingPoints);
+        setText("lbl-experiencePoints", L.character.experiencePoints);
 
         // Sex options
         setText("opt-sex-none", L.character.sexOption);
@@ -1348,6 +1385,7 @@
         // Character info panel headings
         setText("sec-character-info", L.sections.characterInfo);
         setText("sec-race", L.sections.race);
+        setText("sec-character-points", L.character.pointsTitle);
 
         // Resume labels
         setText("sec-resume-weight", L.resume.weightTitle);
