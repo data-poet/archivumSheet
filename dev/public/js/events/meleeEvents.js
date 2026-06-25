@@ -68,6 +68,10 @@ export function handleMeleeClick(e) {
   if (e.target.classList.contains("remove-melee")) {
     removeMelee(e.target.dataset.instanceId); return true;
   }
+
+  if (e.target.classList.contains("remove-equipped-melee")) {
+    removeMelee(e.target.dataset.instanceId); return true;
+  }
   if (e.target.classList.contains("equip-stored-melee")) {
     const instanceId = e.target.dataset.instanceId;
     const meleeToEquip = findMeleeByInstanceId(instanceId);

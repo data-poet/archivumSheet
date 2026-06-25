@@ -141,6 +141,7 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
           dataAttrs: `data-instance-id="${instanceId}"`,
         })}
         ${equippedMoveSelect("equipped-ranged-move", `data-instance-id="${instanceId}"`)}
+        <button class="btn-remove remove-equipped-ranged" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
     ${equippedDetailBlock(rangedDetailFields(resolved, weaponData))}

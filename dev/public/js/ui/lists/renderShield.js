@@ -121,6 +121,7 @@ export function renderEquippedShield(selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-shield-move")}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
       </div>
     </div>
     ${equippedDetailBlock(fields)}

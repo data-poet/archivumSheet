@@ -68,6 +68,10 @@ export function handleShieldClick(e) {
     removeShield(e.target.dataset.instanceId); return true;
   }
 
+  if (e.target.classList.contains("remove-equipped-shield")) {
+    removeShield(e.target.dataset.instanceId); return true;
+  }
+
   if (e.target.classList.contains("equip-stored-shield")) {
     const instanceId = e.target.dataset.instanceId;
     const shieldToEquip = findShieldByInstanceId(instanceId);

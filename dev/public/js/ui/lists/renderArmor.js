@@ -142,6 +142,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-armor-move", `data-slot="${slot}"`)}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
       </div>
     </div>
     ${equippedDetailBlock(fields)}

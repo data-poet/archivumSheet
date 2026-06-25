@@ -68,6 +68,10 @@ export function handleRangedClick(e) {
   if (e.target.classList.contains("remove-ranged")) {
     removeRanged(e.target.dataset.instanceId); return true;
   }
+
+  if (e.target.classList.contains("remove-equipped-ranged")) {
+    removeRanged(e.target.dataset.instanceId); return true;
+  }
   if (e.target.classList.contains("equip-stored-ranged")) {
     const instanceId = e.target.dataset.instanceId;
     const rangedToEquip = findRangedByInstanceId(instanceId);

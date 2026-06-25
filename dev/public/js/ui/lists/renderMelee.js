@@ -137,6 +137,7 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
           dataAttrs: `data-instance-id="${instanceId}"`,
         })}
         ${equippedMoveSelect("equipped-melee-move", `data-instance-id="${instanceId}"`)}
+        <button class="btn-remove remove-equipped-melee" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
     ${equippedDetailBlock(meleeDetailFields(resolved, weaponData))}

@@ -65,6 +65,11 @@ export function handleArmorClick(e) {
     return true;
   }
 
+  if (e.target.classList.contains("remove-equipped-armor")) {
+    removeArmor(e.target.dataset.instanceId);
+    return true;
+  }
+
   if (e.target.classList.contains("equip-stored-armor")) {
     const instanceId = e.target.dataset.instanceId;
     const armorToEquip = findArmorByInstanceId(instanceId);
