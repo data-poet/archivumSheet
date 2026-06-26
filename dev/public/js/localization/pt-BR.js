@@ -44,6 +44,7 @@ export const LABELS = {
   tabs: {
     character: {
       info: "Personagem",
+      image: "Imagem",
       resume: "Resumo",
     },
     attributes: {
@@ -438,6 +439,28 @@ export const LABELS = {
     btnEdit: "📝 Editar",
     ariaView: "Entrar no modo visualização",
     ariaEdit: "Voltar ao modo edição",
+  },
+
+  // ── Character image ───────────────────────────────────────────────────────
+  characterImage: {
+    tabLabel:        "Imagem",
+    uploadBtn:       "Carregar Imagem",
+    clearBtn:        "Remover",
+    scale:           "Escala",
+    position:        "Posição",
+    background:      "Fundo",
+    bgAverage:       "Automático",
+    bgBlack:         "Preto",
+    bgWhite:         "Branco",
+    presetCover:     "Cobrir",
+    presetContain:   "Conter",
+    presetCenter:    "Centro",
+    presetTop:       "Topo",
+    presetBottom:    "Base",
+    presetLeft:      "Esquerda",
+    presetRight:     "Direita",
+    noImage:         "Nenhuma imagem carregada",
+    dragHint:        "Arraste para reposicionar",
   },
 
   // ── Output (debug) ────────────────────────────────────────────────────────

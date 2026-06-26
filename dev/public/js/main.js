@@ -20,6 +20,7 @@ import { loadAlchemy } from "./inventory/alchemy.js";
 import { loadSurvivalGear } from "./inventory/survivalGear.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./ui/characterSelector.js";
+import { initCharacterImage } from "./events/characterImageEvents.js";
 
 // ===== INIT =====
 window.onload = async () => {
@@ -51,4 +52,7 @@ window.onload = async () => {
 
   // Wire character selector UI
   initCharacterSelector();
+
+  // Init character portrait
+  initCharacterImage();
 };

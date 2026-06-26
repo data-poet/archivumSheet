@@ -19,6 +19,7 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../character/races.js";
+import { renderCharacterImage, renderResumeImage } from "../events/characterImageEvents.js";
 
 const STORAGE_KEY = "archivum_characters";
 const SCHEMA_VERSION = 1;
@@ -59,6 +60,16 @@ function _blankData() {
       race_id: null,
       starting_points: null,
       experience_points: null,
+      image: {
+        uploaded:    false,
+        data:        "",
+        background:  "",
+        color:       { r: "", g: "", b: "" },
+        orientation: "",
+        position:    { x: "", y: "" },
+        size:        { width: "", height: "" },
+        scale:       "",
+      },
     },
     race: {},
     character: {
@@ -151,6 +162,16 @@ function _applyData(data) {
     race_id:           race.race_id         ?? null,
     starting_points:   pc.starting_points   ?? null,
     experience_points: pc.experience_points ?? null,
+    image: pc.image ?? {
+      uploaded:    false,
+      data:        "",
+      background:  "",
+      color:       { r: "", g: "", b: "" },
+      orientation: "",
+      position:    { x: "", y: "" },
+      size:        { width: "", height: "" },
+      scale:       "",
+    },
   };
 
   const setVal = (id, v) => {
@@ -200,6 +221,8 @@ function _applyData(data) {
   selected.customInventory = inventory.customInventory ?? [];
 
   renderLists(selected, state.data);
+  renderCharacterImage();
+  renderResumeImage();
   triggerAutoRun();
 }
 

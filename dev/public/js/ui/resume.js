@@ -6,6 +6,7 @@ import {
 } from "../localization/pt-BR.js";
 import { el } from "../shared/dom.js";
 import { calcMaxHp, calcActualHp } from "../shared/durabilityUtils.js";
+import { renderResumeImage } from "../events/characterImageEvents.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Collapse state — module-level Map keyed by section title text.
@@ -40,6 +41,7 @@ export function renderResume(sheet, data = {}, selected = {}) {
   initResumeExpanders(); // no-op after first call
 
   renderResumeHeader(sheet);
+  renderResumeImage();
   renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
   renderResumeSecondarySnapshot(sheet);

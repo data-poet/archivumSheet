@@ -70,6 +70,11 @@
               id="tab-btn-char-info"
             ></button>
             <button
+              class="tab-btn"
+              data-tab="tab-char-image"
+              id="tab-btn-char-image"
+            ></button>
+            <button
               class="tab-strip-collapse"
               aria-expanded="false"
               aria-label="Expandir seção"
@@ -227,6 +232,76 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <!-- Panel: Imagem do Personagem -->
+          <div class="tab-panel" id="tab-char-image">
+            <div class="charimg-editor">
+
+              <!-- Preview area (drag-to-reposition) -->
+              <div class="charimg-preview-wrap">
+                <div class="charimg-bg" id="charimg-bg">
+                  <div class="charimg-preview" id="charimg-preview">
+                    <!-- .charimg-img injected by JS when uploaded -->
+                  </div>
+                </div>
+                <p class="charimg-drag-hint" id="charimg-drag-hint"></p>
+              </div>
+
+              <!-- Controls -->
+              <div class="charimg-controls">
+
+                <!-- Upload + Clear -->
+                <div class="charimg-row charimg-row--upload">
+                  <label class="charimg-upload-btn" for="charimg-file-input" id="charimg-upload-lbl"></label>
+                  <input
+                    id="charimg-file-input"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                    style="display:none"
+                  />
+                  <button class="charimg-clear-btn" id="charimg-clear-btn" type="button" id="charimg-clear-lbl"></button>
+                </div>
+
+                <!-- Scale slider -->
+                <div class="charimg-row charimg-row--scale">
+                  <label class="charimg-label" id="charimg-scale-lbl" for="charimg-scale"></label>
+                  <input
+                    id="charimg-scale"
+                    type="range"
+                    min="10"
+                    max="400"
+                    step="1"
+                    value="100"
+                  />
+                  <span class="charimg-scale-val" id="charimg-scale-val">100%</span>
+                </div>
+
+                <!-- Size presets -->
+                <div class="charimg-row charimg-row--presets">
+                  <button class="charimg-size-btn" data-size="cover"   id="charimg-preset-cover"></button>
+                  <button class="charimg-size-btn" data-size="contain" id="charimg-preset-contain"></button>
+                </div>
+
+                <!-- Position presets -->
+                <div class="charimg-row charimg-row--pos">
+                  <button class="charimg-pos-btn" data-pos="center" id="charimg-pos-center"></button>
+                  <button class="charimg-pos-btn" data-pos="top"    id="charimg-pos-top"></button>
+                  <button class="charimg-pos-btn" data-pos="bottom" id="charimg-pos-bottom"></button>
+                  <button class="charimg-pos-btn" data-pos="left"   id="charimg-pos-left"></button>
+                  <button class="charimg-pos-btn" data-pos="right"  id="charimg-pos-right"></button>
+                </div>
+
+                <!-- Background -->
+                <div class="charimg-row charimg-row--bg">
+                  <span class="charimg-label" id="charimg-bg-lbl"></span>
+                  <button class="charimg-bg-radio" data-bg="average" id="charimg-bg-average"></button>
+                  <button class="charimg-bg-radio" data-bg="black"   id="charimg-bg-black"></button>
+                  <button class="charimg-bg-radio" data-bg="white"   id="charimg-bg-white"></button>
+                </div>
+
+              </div><!-- /.charimg-controls -->
+            </div><!-- /.charimg-editor -->
           </div>
         </div>
       </section>
@@ -1092,8 +1167,14 @@
          viewMode.js moves the panel between this host and #view-mode-resume. -->
     <div id="resume-panel-host" style="display:none" aria-hidden="true">
     <div id="tab-char-resume">
-      <!-- ── Row 1: character name | sub-race ──────────────────────── -->
+      <!-- ── Row 1: character portrait + name | sub-race ──────────────── -->
       <div class="resume-row resume-row--name">
+        <!-- Portrait (hidden when no image uploaded) -->
+        <div id="resume-charimg-wrapper" class="resume-charimg-wrapper" hidden>
+          <div class="resume-charimg-frame" id="resume-charimg-bg">
+            <img id="resume-charimg-img" class="resume-charimg-img" src="" alt="" />
+          </div>
+        </div>
         <p class="resume-char-name" id="resume_header_name"></p>
       </div>
 
@@ -1328,6 +1409,7 @@
         // Tab button labels
         // section-character
         setText("tab-btn-char-info", L.tabs.character.info);
+        setText("tab-btn-char-image", L.tabs.character.image);
         // section-attributes
         setText("tab-btn-attr-primary", L.tabs.attributes.primary);
         setText("tab-btn-attr-secondary", L.tabs.attributes.secondary);
@@ -1502,6 +1584,22 @@
           ["opt-custom-camp", L.storage.camp],
         ];
         storageMap.forEach(([id, text]) => setText(id, text));
+        // Character image tab
+        setText("charimg-upload-lbl",   L.characterImage.uploadBtn);
+        setText("charimg-clear-btn",    L.characterImage.clearBtn);
+        setText("charimg-scale-lbl",    L.characterImage.scale);
+        setText("charimg-drag-hint",    L.characterImage.dragHint);
+        setText("charimg-bg-lbl",       L.characterImage.background);
+        setText("charimg-bg-average",   L.characterImage.bgAverage);
+        setText("charimg-bg-black",     L.characterImage.bgBlack);
+        setText("charimg-bg-white",     L.characterImage.bgWhite);
+        setText("charimg-preset-cover",   L.characterImage.presetCover);
+        setText("charimg-preset-contain", L.characterImage.presetContain);
+        setText("charimg-pos-center",   L.characterImage.presetCenter);
+        setText("charimg-pos-top",      L.characterImage.presetTop);
+        setText("charimg-pos-bottom",   L.characterImage.presetBottom);
+        setText("charimg-pos-left",     L.characterImage.presetLeft);
+        setText("charimg-pos-right",    L.characterImage.presetRight);
       }
 
       initAppShell();

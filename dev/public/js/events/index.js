@@ -29,6 +29,11 @@ import {
   handleCharacterInput,
   handleCharacterChange,
 } from "./characterEvents.js";
+import {
+  handleCharacterImageClick,
+  handleCharacterImageChange,
+  handleCharacterImageInput,
+} from "./characterImageEvents.js";
 
 import { handleTraitClick, handleTraitInput } from "./traitEvents.js";
 import {
@@ -160,6 +165,7 @@ export function bindUI() {
     if (handleSurvivalGearClick(e)) return;
     if (handleCustomInventoryClick(e)) return;
     if (handleCoinPurseClick(e)) return;
+    if (handleCharacterImageClick(e)) return;
   });
 
   // ── Global delegated input ────────────────────────────────────────────────
@@ -176,6 +182,7 @@ export function bindUI() {
     if (handleSurvivalGearInput(e)) return;
     if (handleCustomInventoryInput(e)) return;
     if (handleCoinPurseInput(e)) return;
+    if (handleCharacterImageInput(e)) return;
   });
 
   // ── Global delegated change ───────────────────────────────────────────────
@@ -191,6 +198,7 @@ export function bindUI() {
     if (handleSurvivalGearChange(e)) return;
     if (handleCustomInventoryChange(e)) return;
     if (handleCoinPurseChange(e)) return;
+    if (handleCharacterImageChange(e)) return;
   });
 
   // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────
