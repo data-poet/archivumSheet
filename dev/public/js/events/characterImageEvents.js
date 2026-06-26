@@ -64,7 +64,6 @@ function _previewEl()   { return document.getElementById("charimg-preview"); }
 function _imageEl()     { return document.getElementById("charimg-img"); }
 function _bgEl()        { return document.getElementById("charimg-bg"); }
 function _scaleInput()  { return document.getElementById("charimg-scale"); }
-function _scaleVal()    { return document.getElementById("charimg-scale-val"); }
 
 // ── Render helpers ────────────────────────────────────────────────────────────
 
@@ -94,19 +93,17 @@ function _applyPosition(imgEl) {
   imgEl.style.top  = img.position.y + "%";
 }
 
-/** Sync scale slider + display text from state. */
+/** Sync scale slider from state. */
 function _syncScaleControls() {
   const scaleEl = _scaleInput();
-  const valEl   = _scaleVal();
   const scale   = _img().scale ?? 100;
   if (scaleEl) scaleEl.value = scale;
-  if (valEl)   valEl.textContent = scale + "%";
 }
 
 /** Update the radio button visual selection for background. */
 function _syncBgRadios() {
   const bg = _img().background || "average";
-  document.querySelectorAll(".charimg-bg-radio").forEach((r) => {
+  document.querySelectorAll(".charimg-radio-btn").forEach((r) => {
     r.classList.toggle("is-active", r.dataset.bg === bg);
   });
 }
@@ -286,7 +283,7 @@ async function _loadFile(file) {
 
 export function handleCharacterImageClick(e) {
   // Background radio buttons
-  const bgBtn = e.target.closest(".charimg-bg-radio");
+  const bgBtn = e.target.closest(".charimg-radio-btn");
   if (bgBtn) {
     const bg = bgBtn.dataset.bg;
     if (!bg) return false;
@@ -298,39 +295,8 @@ export function handleCharacterImageClick(e) {
     return true;
   }
 
-  // Position preset buttons
-  const posBtn = e.target.closest(".charimg-pos-btn");
-  if (posBtn) {
-    if (!_img().uploaded) return false;
-    const preset = posBtn.dataset.pos;
-    const imgEl  = _imageEl();
-    const prevEl = _previewEl();
-    if (!imgEl || !prevEl) return false;
-
-    const pr = prevEl.getBoundingClientRect();
-    const ir = imgEl.getBoundingClientRect();
-    let x = parseFloat(imgEl.style.left) || 50;
-    let y = parseFloat(imgEl.style.top)  || 50;
-
-    if (preset === "center") { x = 50; y = 50; }
-    else if (preset === "top")    { y = ((ir.height / 2) / pr.height) * 100; }
-    else if (preset === "bottom") { y = ((pr.height - ir.height / 2) / pr.height) * 100; }
-    else if (preset === "left")   { x = ((ir.width / 2) / pr.width) * 100; }
-    else if (preset === "right")  { x = ((pr.width - ir.width / 2) / pr.width) * 100; }
-
-    x = parseFloat(x.toFixed(2));
-    y = parseFloat(y.toFixed(2));
-
-    imgEl.style.left = x + "%";
-    imgEl.style.top  = y + "%";
-    _setImg({ position: { x, y } });
-    renderResumeImage();
-    triggerAutoRun();
-    return true;
-  }
-
-  // Cover / Contain presets
-  const sizeBtn = e.target.closest(".charimg-size-btn");
+  // Size presets (cover / contain) — now shares .charimg-preset-btn with data-size
+  const sizeBtn = e.target.closest(".charimg-preset-btn[data-size]");
   if (sizeBtn) {
     if (!_img().uploaded) return false;
     const preset  = sizeBtn.dataset.size;
@@ -354,11 +320,41 @@ export function handleCharacterImageClick(e) {
     }
 
     imgEl.style.width = scale + "%";
-    // Also reset position to center
-    imgEl.style.left = "50%";
-    imgEl.style.top  = "50%";
+    imgEl.style.left  = "50%";
+    imgEl.style.top   = "50%";
     _setImg({ scale, position: { x: 50, y: 50 } });
     _syncScaleControls();
+    renderResumeImage();
+    triggerAutoRun();
+    return true;
+  }
+
+  // Position presets — .charimg-preset-btn with data-pos
+  const posBtn = e.target.closest(".charimg-preset-btn[data-pos]");
+  if (posBtn) {
+    if (!_img().uploaded) return false;
+    const preset = posBtn.dataset.pos;
+    const imgEl  = _imageEl();
+    const prevEl = _previewEl();
+    if (!imgEl || !prevEl) return false;
+
+    const pr = prevEl.getBoundingClientRect();
+    const ir = imgEl.getBoundingClientRect();
+    let x = parseFloat(imgEl.style.left) || 50;
+    let y = parseFloat(imgEl.style.top)  || 50;
+
+    if (preset === "center") { x = 50; y = 50; }
+    else if (preset === "top")    { y = ((ir.height / 2) / pr.height) * 100; }
+    else if (preset === "bottom") { y = ((pr.height - ir.height / 2) / pr.height) * 100; }
+    else if (preset === "left")   { x = ((ir.width  / 2) / pr.width)  * 100; }
+    else if (preset === "right")  { x = ((pr.width  - ir.width  / 2) / pr.width)  * 100; }
+
+    x = parseFloat(x.toFixed(2));
+    y = parseFloat(y.toFixed(2));
+
+    imgEl.style.left = x + "%";
+    imgEl.style.top  = y + "%";
+    _setImg({ position: { x, y } });
     renderResumeImage();
     triggerAutoRun();
     return true;
@@ -404,8 +400,6 @@ export function handleCharacterImageInput(e) {
   // Scale slider
   if (e.target.id === "charimg-scale") {
     const scale  = parseInt(e.target.value, 10);
-    const valEl  = _scaleVal();
-    if (valEl) valEl.textContent = scale + "%";
     const imgEl  = _imageEl();
     if (imgEl) imgEl.style.width = scale + "%";
     _setImg({ scale });

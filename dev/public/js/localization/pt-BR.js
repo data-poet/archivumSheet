@@ -444,10 +444,9 @@ export const LABELS = {
   // ── Character image ───────────────────────────────────────────────────────
   characterImage: {
     tabLabel:        "Imagem",
-    uploadBtn:       "Carregar Imagem",
-    clearBtn:        "Remover",
-    scale:           "Escala",
-    position:        "Posição",
+    uploadBtn:       "Selecionar imagem",
+    clearBtn:        "✕",
+    sizeAndPosition: "Tamanho & Posição",
     background:      "Fundo",
     bgAverage:       "Automático",
     bgBlack:         "Preto",
@@ -459,8 +458,7 @@ export const LABELS = {
     presetBottom:    "Base",
     presetLeft:      "Esquerda",
     presetRight:     "Direita",
-    noImage:         "Nenhuma imagem carregada",
-    dragHint:        "Arraste para reposicionar",
+    dragHint:        "Arraste a imagem para reposicionar. Máx 1 MB.",
   },
 
   // ── Output (debug) ────────────────────────────────────────────────────────

@@ -4,6 +4,7 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../character/races.js";
+import { renderCharacterImage, renderResumeImage } from "../events/characterImageEvents.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SCHEMA VERSION
@@ -80,7 +81,7 @@ export function exportSheet() {
   const payload = {
     version:    SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
-    pc:         sheet?.pc ?? selected.character,
+    pc:         { ...(sheet?.pc ?? selected.character), image: selected.character.image },
     race:       sheet?.race ?? {},
     character: {
       primary:        getPrimaryAttributes(),
@@ -210,6 +211,16 @@ function _applyImport(payload) {
     race_id:           race?.race_id         ?? null,
     starting_points:   pc?.starting_points   ?? null,
     experience_points: pc?.experience_points ?? null,
+    image: pc?.image ?? {
+      uploaded:    false,
+      data:        "",
+      background:  "",
+      color:       { r: "", g: "", b: "" },
+      orientation: "",
+      position:    { x: "", y: "" },
+      size:        { width: "", height: "" },
+      scale:       "",
+    },
   };
 
   // ── PC info → DOM inputs ──────────────────────────────────────────────────
@@ -264,5 +275,7 @@ function _applyImport(payload) {
 
   // ── Re-render lists and recalculate ───────────────────────────────────────
   renderLists(selected, data);
+  renderCharacterImage();
+  renderResumeImage();
   triggerAutoRun();
 }
