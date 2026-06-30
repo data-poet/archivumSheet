@@ -92,6 +92,7 @@ function _blankData() {
       alchemy: [],
       survivalGear: [],
       customInventory: [],
+      coins: [],
     },
   };
 }
@@ -141,6 +142,7 @@ function _captureCurrentData() {
       alchemy: selected.alchemy,
       survivalGear: selected.survivalGear,
       customInventory: selected.customInventory,
+      coins: selected.coins,
     },
   };
 }
@@ -219,6 +221,7 @@ function _applyData(data) {
   selected.alchemy         = inventory.alchemy        ?? [];
   selected.survivalGear    = inventory.survivalGear   ?? [];
   selected.customInventory = inventory.customInventory ?? [];
+  selected.coins           = inventory.coins          ?? [];
 
   renderLists(selected, state.data);
   renderCharacterImage();

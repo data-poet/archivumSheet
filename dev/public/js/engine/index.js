@@ -42,6 +42,16 @@ export async function runEngine() {
       character_weight: info.character_weight ?? null,
       starting_points: info.starting_points ?? null,
       experience_points: info.experience_points ?? null,
+      image: info.image ?? {
+        uploaded:    false,
+        data:        "",
+        background:  "",
+        color:       { r: "", g: "", b: "" },
+        orientation: "",
+        position:    { x: "", y: "" },
+        size:        { width: "", height: "" },
+        scale:       "",
+      },
     };
 
     // ── Build race object ──────────────────────────────────────────────────

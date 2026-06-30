@@ -103,6 +103,7 @@ export function exportSheet() {
       alchemy:        selected.alchemy,
       survivalGear:   selected.survivalGear,
       customInventory: selected.customInventory,
+      coins:          selected.coins,
     },
   };
 
@@ -272,6 +273,7 @@ function _applyImport(payload) {
   selected.alchemy        = inventory.alchemy        ?? [];
   selected.survivalGear   = inventory.survivalGear   ?? [];
   selected.customInventory = inventory.customInventory ?? [];
+  selected.coins          = inventory.coins          ?? [];
 
   // ── Re-render lists and recalculate ───────────────────────────────────────
   renderLists(selected, data);
