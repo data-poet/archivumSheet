@@ -9,7 +9,11 @@ const { buildSheet } = require("../engine/buildSheet.js");
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "10mb",
+  }),
+);
 
 // prevent favicon noise
 app.get("/favicon.ico", (req, res) => {
@@ -112,9 +116,7 @@ app.get("/api/ranged_weapons", (req, res) => {
 });
 
 app.get("/api/ammo", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_ammo.csv"),
-  );
+  const data = loadCSV(path.join(__dirname, "../data/db_equipment_ammo.csv"));
   res.json(data);
 });
 
