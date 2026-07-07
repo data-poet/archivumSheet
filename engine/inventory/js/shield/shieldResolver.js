@@ -146,19 +146,6 @@ function calculateTotalShieldValue(shieldInventory, shieldDb, materialDb = {}) {
   );
 }
 
-/**
- * Calculates carried shield value (equipped + backpack).
- * Named alias for calculateTotalShieldValue — kept for symmetry with the
- * carried/total weight pair.
- */
-function calculateCarriedShieldValue(
-  shieldInventory,
-  shieldDb,
-  materialDb = {},
-) {
-  return calculateTotalShieldValue(shieldInventory, shieldDb, materialDb);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -168,5 +155,4 @@ module.exports = {
   resolveShieldPiece,
   calculateTotalShieldWeight,
   calculateTotalShieldValue,
-  calculateCarriedShieldValue,
 };

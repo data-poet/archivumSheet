@@ -150,15 +150,6 @@ function calculateTotalArmorValue(armorInventory, armorDb, materialDb = {}) {
   );
 }
 
-/**
- * Calculates carried armor value (equipped + backpack).
- * Named alias for calculateTotalArmorValue — kept for symmetry with the
- * carried/total weight pair.
- */
-function calculateCarriedArmorValue(armorInventory, armorDb, materialDb = {}) {
-  return calculateTotalArmorValue(armorInventory, armorDb, materialDb);
-}
-
 // Exports
 
 module.exports = {
@@ -167,5 +158,4 @@ module.exports = {
   buildEquippedSlots,
   calculateTotalArmorWeight,
   calculateTotalArmorValue,
-  calculateCarriedArmorValue,
 };

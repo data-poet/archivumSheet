@@ -15,8 +15,9 @@ const {
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
   calculateTotalMeleeValue,
-  calculateCarriedMeleeValue,
 } = require("./meleeResolver.js");
+
+const { getMaterialsDB } = require("../shared/materialsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MELEE DB
@@ -63,49 +64,6 @@ function getMeleeDB() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MATERIAL DB
-// ─────────────────────────────────────────────────────────────────────────────
-
-let _materialDB = null;
-
-function getMaterialDB() {
-  if (_materialDB) {
-    return _materialDB;
-  }
-
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_crafting_materials.csv",
-  );
-
-  const rows = loadCSV(filePath);
-
-  _materialDB = {};
-
-  for (const row of rows) {
-    _materialDB[row.material_id] = {
-      material_id: row.material_id,
-
-      material_name: row.material_name,
-      material_type: row.material_type,
-      material_tier: row.material_tier,
-      material_bal_modifier: Number(row.material_bal_modifier || 0),
-      material_gdp_modifier: Number(row.material_gdp_modifier || 0),
-      material_dr_modifier: Number(row.material_dr_modifier || 0),
-      material_atk_effect: row.material_atk_effect || null,
-      material_weight_modifier: Number(row.material_weight_modifier || 1),
-      material_price_modifier: Number(row.material_price_modifier || 1),
-      material_hit_points_modifier: Number(
-        row.material_hit_points_modifier || 0,
-      ),
-    };
-  }
-
-  return _materialDB;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -121,7 +79,7 @@ function buildStorageBucket() {
 function buildMeleeSlots(meleeInventory = []) {
   const meleeDb = getMeleeDB();
 
-  const materialDb = getMaterialDB();
+  const materialDb = getMaterialsDB();
 
   // VALIDATE INSTANCES
 
@@ -252,7 +210,7 @@ module.exports = {
   buildMeleeSlots,
   VALID_STORED_AT,
   _getMeleeDB: getMeleeDB,
-  _getMaterialDB: getMaterialDB,
+  _getMaterialDB: getMaterialsDB,
   _validateMeleeInstance: validateMeleeInstance,
   _isMeleeDualUse: isMeleeDualUse,
   _getRangedCounterpart: getRangedCounterpart,

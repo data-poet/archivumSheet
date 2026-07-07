@@ -14,8 +14,9 @@ const {
   buildEquippedSlots,
   calculateTotalArmorWeight,
   calculateTotalArmorValue,
-  calculateCarriedArmorValue,
 } = require("./armorResolver.js");
+
+const { getMaterialsDB } = require("../shared/materialsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARMOR DB
@@ -54,47 +55,6 @@ function getArmorDB() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MATERIAL DB
-// ─────────────────────────────────────────────────────────────────────────────
-
-let _materialDB = null;
-
-function getMaterialDB() {
-  if (_materialDB) {
-    return _materialDB;
-  }
-
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_crafting_materials.csv",
-  );
-
-  const rows = loadCSV(filePath);
-
-  _materialDB = {};
-
-  for (const row of rows) {
-    _materialDB[row.material_id] = {
-      material_id: row.material_id,
-
-      material_name: row.material_name,
-      material_type: row.material_type,
-      material_tier: row.material_tier,
-      material_dr_modifier: Number(row.material_dr_modifier || 0),
-      material_def_effect: row.material_def_effect || null,
-      material_weight_modifier: Number(row.material_weight_modifier || 1),
-      material_price_modifier: Number(row.material_price_modifier || 1),
-      material_hit_points_modifier: Number(
-        row.material_hit_points_modifier || 0,
-      ),
-    };
-  }
-
-  return _materialDB;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -109,7 +69,7 @@ function buildStorageSlots() {
 function buildArmorSlots(armorInventory = []) {
   const armorDb = getArmorDB();
 
-  const materialDb = getMaterialDB();
+  const materialDb = getMaterialsDB();
 
   // VALIDATE INSTANCES
 
@@ -257,7 +217,7 @@ module.exports = {
   SLOTS,
   VALID_STORED_AT,
   _getArmorDB: getArmorDB,
-  _getMaterialDB: getMaterialDB,
+  _getMaterialDB: getMaterialsDB,
   _validateArmorInstance: validateArmorInstance,
   _validateSingleEquippedPerSlot: validateSingleEquippedPerSlot,
 };

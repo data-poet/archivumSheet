@@ -157,15 +157,6 @@ function calculateTotalMeleeValue(meleeInventory, meleeDb, materialDb = {}) {
   );
 }
 
-/**
- * Calculates carried melee value (equipped + backpack).
- * Named alias for calculateTotalMeleeValue — kept for symmetry with the
- * carried/total weight pair.
- */
-function calculateCarriedMeleeValue(meleeInventory, meleeDb, materialDb = {}) {
-  return calculateTotalMeleeValue(meleeInventory, meleeDb, materialDb);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -175,6 +166,5 @@ module.exports = {
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
   calculateTotalMeleeValue,
-  calculateCarriedMeleeValue,
   calculateHex,
 };

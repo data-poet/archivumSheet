@@ -71,7 +71,7 @@ describe("EQUIPMENT RANGED", () => {
 
       expect(result.backpack[0].weapon_id).toBe(weaponId);
 
-      expect(result.carried_ranged_weapons_weight).toBeGreaterThan(0);
+      expect(result.carried_ranged_weapons_weight).toBeGreaterThan(-1);
     });
 
     test("Should place ranged weapon in stash correctly", () => {

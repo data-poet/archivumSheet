@@ -199,20 +199,6 @@ function calculateTotalRangedValue(
   );
 }
 
-/**
- * Calculates carried ranged value (equipped + backpack).
- * Named alias for calculateTotalRangedValue — kept for symmetry with the
- * carried/total weight pair.
- */
-function calculateCarriedRangedValue(
-  rangedInventory,
-  rangedDb,
-  materialDb = {},
-  ST = 0,
-) {
-  return calculateTotalRangedValue(rangedInventory, rangedDb, materialDb, ST);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -222,6 +208,5 @@ module.exports = {
   resolveRangedWeapons,
   calculateTotalRangedWeight,
   calculateTotalRangedValue,
-  calculateCarriedRangedValue,
   resolveDistanceFormula,
 };
