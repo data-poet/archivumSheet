@@ -20,50 +20,50 @@ DIS-005,FALIDO | -25,FALIDO,-25,Social,"
 - Você não tem emprego ou fonte de renda, nenhum dinheiro ou outro patrimônio qualquer, que não seja a roupa do corpo.
 - Você é incapaz de conseguir ttrabalho ou não existe emprego disponível.",Módulo Básico 3e,16
 DIS-006,REPUTAÇÃO -1 | -5,REPUTAÇÃO -1,-5,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 DIS-007,REPUTAÇÃO -2 | -10,REPUTAÇÃO -2,-10,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 DIS-008,REPUTAÇÃO -3 | 15,REPUTAÇÃO -3,15,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 DIS-009,REPUTAÇÃO -4 | 20,REPUTAÇÃO -4,20,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 DIS-010,HABITO LEVE | -5,HABITO LEVE,-5,Social,"
-- O personagem se comporta parte do (ou todo o) tempo de maneira repugnante aos outros.
-- Quanto pior o seu comportamento, maior o número de pontos.
-- Pode-se especificar o comportamento no momento em que o personagem é criado e estimar o bônus junto com o Mestre.
-- Alguns exemplos: Odor de suor, coceira crônica e cantarolar o tempo todo fora de tom poderiam valer -5 pontos cada. Fazer trocadilhos de mau gosto ou cuspir no chão poderiam valer -10 pontos cada. Hábitos
-dignos de um bônus de -15 pontos são possíveis, mas serão deixados a cargo da imaginação daqueles que são depravados o suficiente para desejá-los.
-- Subtraia 1 ponto de todos os testes de reação feitos por pessoas capazes de observar seu hábito para cada -5 pontos de bônus conseguidos com ele.
-- Lembre-se que certos hábitos repugnantes não incomodarão aos não-humanos. Um camarada que fique babando irritaria outras pessoas, mas um marciano nem notaria e um troll poderia achar atraente.
-- O redutor devido a um hábito detestável deve ser usado com membros da raça do personagem e o Mestre deverá cuidar das diferentes reações de outras raças.",Módulo Básico 3e,26
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,26
 DIS-011,HABITO DETESTÁVEL | -10,HABITO DETESTÁVEL,-10,Social,"
 - O personagem se comporta parte do (ou todo o) tempo de maneira repugnante aos outros.
 - Quanto pior o seu comportamento, maior o número de pontos.
@@ -311,105 +311,101 @@ DIS-044,DISTRAÇÃO | -15,DISTRAÇÃO,-15,Mental,"
 - As pessoas distraídas têm, também, uma tendência a se esquecer de objetos (como as chaves do carro e o talão de cheques) e tarefas triviais (como pagar contas).
 - Sempre que a realização de uma destas tarefas tiver alguma relevância, o Mestre poderá exigir um teste contra IQ-2.",Módulo Básico 3e,30
 DIS-045,VICIO | -10,VICIO,-10,Mental,"
-O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
-- Se a dose diária custa $20 ou menos: -5 pontos.
-- Se a dose diária custa de $21 a $100: -10 pontos.
-- Se a dose diária custa mais de $100: -20 pontos.
-- Se a droga for alucinógena ou incapacitante: -10 pontos.
-- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
-- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
-
-Efeitos das Drogas:
-- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
-- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
-- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
-- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
-
-Regeneração:
-- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
-- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
-- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
-- Todo dia o viciado faz um teste de HT, + ou - Vontade.
-- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
-- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
-- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
-- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
-- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
+- O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir).
+- O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+    - Se a dose diária custa $20 ou menos: -5 pontos.
+    - Se a dose diária custa de $21 a $100: -10 pontos.
+    - Se a dose diária custa mais de $100: -20 pontos.
+    - Se a droga for alucinógena ou incapacitante: -10 pontos.
+    - Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+    - Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+- Efeitos das Drogas:
+    - Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+    - Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+    - Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+    - O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+- Regeneração:
+    - Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+    - Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+    - A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+    - Todo dia o viciado faz um teste de HT, + ou - Vontade.
+    - Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+    - Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+    - Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+    - O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+    - Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
 DIS-046,VICIO GRAVE | -15,VICIO GRAVE,-15,Mental,"
-O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
-- Se a dose diária custa $20 ou menos: -5 pontos.
-- Se a dose diária custa de $21 a $100: -10 pontos.
-- Se a dose diária custa mais de $100: -20 pontos.
-- Se a droga for alucinógena ou incapacitante: -10 pontos.
-- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
-- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
-
-Efeitos das Drogas:
-- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
-- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
-- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
-- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
-
-Regeneração:
-- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
-- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
-- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
-- Todo dia o viciado faz um teste de HT, + ou - Vontade.
-- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
-- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
-- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
-- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
-- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
+- O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir).
+- O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+    - Se a dose diária custa $20 ou menos: -5 pontos.
+    - Se a dose diária custa de $21 a $100: -10 pontos.
+    - Se a dose diária custa mais de $100: -20 pontos.
+    - Se a droga for alucinógena ou incapacitante: -10 pontos.
+    - Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+    - Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+- Efeitos das Drogas:
+    - Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+    - Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+    - Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+    - O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+- Regeneração:
+    - Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+    - Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+    - A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+    - Todo dia o viciado faz um teste de HT, + ou - Vontade.
+    - Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+    - Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+    - Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+    - O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+    - Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
 DIS-047,VICIO LEVE | -5,VICIO LEVE,-5,Mental,"
-O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
-- Se a dose diária custa $20 ou menos: -5 pontos.
-- Se a dose diária custa de $21 a $100: -10 pontos.
-- Se a dose diária custa mais de $100: -20 pontos.
-- Se a droga for alucinógena ou incapacitante: -10 pontos.
-- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
-- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
-
-Efeitos das Drogas:
-- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
-- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
-- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
-- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
-
-Regeneração:
-- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
-- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
-- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
-- Todo dia o viciado faz um teste de HT, + ou - Vontade.
-- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
-- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
-- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
-- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
-- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
+- O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir).
+- O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+    - Se a dose diária custa $20 ou menos: -5 pontos.
+    - Se a dose diária custa de $21 a $100: -10 pontos.
+    - Se a dose diária custa mais de $100: -20 pontos.
+    - Se a droga for alucinógena ou incapacitante: -10 pontos.
+    - Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+    - Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+- Efeitos das Drogas:
+    - Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+    - Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+    - Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+    - O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+- Regeneração:
+    - Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+    - Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+    - A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+    - Todo dia o viciado faz um teste de HT, + ou - Vontade.
+    - Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+    - Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+    - Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+    - O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+    - Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
 DIS-048,VICIO MUITO GRAVE | -20,VICIO MUITO GRAVE,-20,Mental,"
-O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir). O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
-- Se a dose diária custa $20 ou menos: -5 pontos.
-- Se a dose diária custa de $21 a $100: -10 pontos.
-- Se a dose diária custa mais de $100: -20 pontos.
-- Se a droga for alucinógena ou incapacitante: -10 pontos.
-- Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
-- Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
-
-Efeitos das Drogas:
-- Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
-- Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
-- Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
-- O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
-
-Regeneração:
-- Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
-- Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
-- A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
-- Todo dia o viciado faz um teste de HT, + ou - Vontade.
-- Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
-- Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
-- Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
-- O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
-- Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
+- O personagem é viciado em alguma droga que ele precisa ingerir diariamente ou sofrer as penalidades de Regeneração (veja a seguir).
+- O bônus para esta desvantagem depende do tipo de droga em que se está viciado:
+    - Se a dose diária custa $20 ou menos: -5 pontos.
+    - Se a dose diária custa de $21 a $100: -10 pontos.
+    - Se a dose diária custa mais de $100: -20 pontos.
+    - Se a droga for alucinógena ou incapacitante: -10 pontos.
+    - Se a droga for altamente viciadora (-5 em testes de Regeneração): -5 pontos.
+    - Se a droga for totalmente viciadora (-10 em testes de Regeneração): -10 pontos.
+- Efeitos das Drogas:
+    - Uma droga incapacitante deixará quem a usa inconsciente (ou alegre e inutilmente sonolento) por mais ou menos duas horas (quatro horas para personagens com ST menor do que 10, uma hora para aqueles com ST maior do que 15).
+    - Uma droga estimulante afetará quem a usa pelo mesmo período de tempo: o usuário acredita estar mais inteligente, mas na verdade seu IQ estará temporariamente diminuído de 1 ponto. No entanto, ele recebe +1 de bônus em sua Velocidade.
+    - Uma droga alucinógena torna seus usuários inúteis para o trabalho ou combate, apesar de eles poderem estar ativos e falantes. Algumas drogas (como o tabaco) não apresentam nenhum destes efeitos, enquanto que outras têm um efeito próprio. Também é possível a existência de efeitos colaterais.
+    - O Mestre tem toda a liberdade para pesquisar ou inventar efeitos colaterais para drogas reais ou imaginárias.
+- Regeneração:
+    - Algumas vezes, um viciado em drogas tenta, voluntariamente ou não, deixar o vício.
+    - Isto pode acontecer se ele estiver aprisionado, viajar para um lugar onde não existe a droga à disposição ou simplesmente porque ele não é capaz de sustentar o vício financeiramente.
+    - A Regeneração é um processo doloroso, que exige duas semanas (14 dias) de testes de HT bem sucedidos (o Mestre poderá mudar este tempo, conforme ele achar apropriado, para uma droga específica).
+    - Todo dia o viciado faz um teste de HT, + ou - Vontade.
+    - Cada sucesso o aproxima um dia do momento em que ele conseguirá se livrar do vício.
+    - Uma falha significa que o viciado deve ceder à ânsia (se a droga estiver disponível) e tomar uma dose.
+    - Se isto acontecer, ele deverá começar todo o processo novamente (se ele ainda estiver disposto a fazê-lo). Se a droga não estiver disponível, o viciado perderá um ponto de vida e poderá tentar continuar o processo de Regeneração, mas aquele dia não deverá ser contado como um dos 14 necessários para sua cura. 
+    - O HP perdida durante a Regeneração não pode ser recuperada (pelo menos por algum meio “normal”) até que ela seja concluída ou abandonada.
+    - Lembre-se que você deverá “recomprar” a desvantagem do Vício antes de começar o processo voluntariamente, ou imediatamente após a Regeneração forçada. Veja pág. 82.",Módulo Básico 3e,30
 DIS-049,CODIGO DE HONRA LEVE | -5,CODIGO DE HONRA LEVE,-5,Mental,"
 - O personagem tem orgulho de um conjunto de princípios que ele segue
 todo o tempo.

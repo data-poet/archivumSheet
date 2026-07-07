@@ -71,62 +71,63 @@ SKILL-009,CARREIRO | CAVALOS - M|M,CARREIRO | CAVALOS,Animais,M,M,IQ,- ADESTRAME
 - Ela inclui a habilidade de atrelar e cuidar dos animais, e de avaliá-los antes de uma compra.
 - Conduzir um grupo com mais de 4 animais, ou um grupo com animais desconhecidos, submete o NH do personagem a um redutor de -2. Cada espécie de animal exige uma perícia diferente.
 - O nível pré-definido em cada uma delas é igual ao nível em qualquer uma das outras -3.
-
-Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
-- Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
-- O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
--  Jogue também 2 dados para cada animal. 
-- Um resultado igual a 12 significa uma perna quebrada.
-- O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
+- Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
+    - Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
+    - O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
+    -  Jogue também 2 dados para cada animal. 
+    - Um resultado igual a 12 significa uma perna quebrada.
+    - O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
 SKILL-010,CARREIRO | CAMELOS - M|M,CARREIRO | CAMELOS,Animais,M,M,IQ,- ADESTRAMENTO DE ANIMAIS -4,Módulo Básico,47,"
 - Esta é a perícia na condução de juntas de animais, como um carroção.
 - Ela inclui a habilidade de atrelar e cuidar dos animais, e de avaliá-los antes de uma compra.
 - Conduzir um grupo com mais de 4 animais, ou um grupo com animais desconhecidos, submete o NH do personagem a um redutor de -2. Cada espécie de animal exige uma perícia diferente.
 - O nível pré-definido em cada uma delas é igual ao nível em qualquer uma das outras -3.
-
-Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
-- Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
-- O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
--  Jogue também 2 dados para cada animal. 
-- Um resultado igual a 12 significa uma perna quebrada.
-- O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
+- Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
+    - Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
+    - O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
+    -  Jogue também 2 dados para cada animal. 
+    - Um resultado igual a 12 significa uma perna quebrada.
+    - O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
 SKILL-011,CARREIRO | BOIS - M|M,CARREIRO | BOIS,Animais,M,M,IQ,- ADESTRAMENTO DE ANIMAIS -4,Módulo Básico,47,"
 - Esta é a perícia na condução de juntas de animais, como um carroção.
 - Ela inclui a habilidade de atrelar e cuidar dos animais, e de avaliá-los antes de uma compra.
 - Conduzir um grupo com mais de 4 animais, ou um grupo com animais desconhecidos, submete o NH do personagem a um redutor de -2. Cada espécie de animal exige uma perícia diferente.
 - O nível pré-definido em cada uma delas é igual ao nível em qualquer uma das outras -3.
-
-Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
-- Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
-- O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
--  Jogue também 2 dados para cada animal. 
-- Um resultado igual a 12 significa uma perna quebrada.
-- O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
+- Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
+    - Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
+    - O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
+    -  Jogue também 2 dados para cada animal. 
+    - Um resultado igual a 12 significa uma perna quebrada.
+    - O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
 SKILL-012,CARREIRO | ELEFANTES - M|M,CARREIRO | ELEFANTES,Animais,M,M,IQ,- ADESTRAMENTO DE ANIMAIS -4,Módulo Básico,47,"
 - Esta é a perícia na condução de juntas de animais, como um carroção.
 - Ela inclui a habilidade de atrelar e cuidar dos animais, e de avaliá-los antes de uma compra.
 - Conduzir um grupo com mais de 4 animais, ou um grupo com animais desconhecidos, submete o NH do personagem a um redutor de -2. Cada espécie de animal exige uma perícia diferente.
 - O nível pré-definido em cada uma delas é igual ao nível em qualquer uma das outras -3.
-
-Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
-- Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
-- O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
--  Jogue também 2 dados para cada animal. 
-- Um resultado igual a 12 significa uma perna quebrada.
-- O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
-SKILL-013,VETERINÁRIA | PEQUENOS - M|D,VETERINÁRIA | PEQUENOS,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
+- Quando um carroção ou uma carga (um canhão, p.ex.) for movimentado a galope (mais de 30 km/h ou 10 hexes/turno), o condutor deverá fazer um teste de Carreiro a cada 10 segundos, com um redutor que pode ir até -5 devido a um terreno ruim.
+    - Uma falha numa jogada significa que a carga foi derrubada. Isto equivale a uma queda de 5 metros (dano igual a 5d6-10) para cada homem ou animal envolvido.
+    - O condutor precisará ser bem sucedido em testes de Adestramento de Animais para conseguir acalmar os animais
+    -  Jogue também 2 dados para cada animal. 
+    - Um resultado igual a 12 significa uma perna quebrada.
+    - O tempo requerido para reacomodar a carga dependerá do que está sendo transportado, do terreno e do clima.",ADESTRAMENTO DE ANIMAIS,
+SKILL-013,VETERINÁRIA | PEQUENOS - M|D,VETERINÁRIA | PEQUENOS,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"
+- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
 - Modificadores: +5 se o animal já o conhece e confia em você; -2 ou pior se o animal for de um tipo com o qual você não está familiarizado.
 - É permitida uma Especialização opcional (pág. 43).",,
-SKILL-014,VETERINÁRIA | GRANDES - M|D,VETERINÁRIA | GRANDES,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
+SKILL-014,VETERINÁRIA | GRANDES - M|D,VETERINÁRIA | GRANDES,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"
+- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
 - Modificadores: +5 se o animal já o conhece e confia em você; -2 ou pior se o animal for de um tipo com o qual você não está familiarizado.
 - É permitida uma Especialização opcional (pág. 43).",,
-SKILL-015,VETERINÁRIA | SILVESTRES - M|D,VETERINÁRIA | SILVESTRES,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
+SKILL-015,VETERINÁRIA | SILVESTRES - M|D,VETERINÁRIA | SILVESTRES,Animais,M,D,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"
+- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
 - Modificadores: +5 se o animal já o conhece e confia em você; -2 ou pior se o animal for de um tipo com o qual você não está familiarizado.
 - É permitida uma Especialização opcional (pág. 43).",,
-SKILL-016,VETERINÁRIA | EXÓTICOS - M|MD,VETERINÁRIA | EXÓTICOS,Animais,M,MD,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
+SKILL-016,VETERINÁRIA | EXÓTICOS - M|MD,VETERINÁRIA | EXÓTICOS,Animais,M,MD,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"
+- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
 - Modificadores: +5 se o animal já o conhece e confia em você; -2 ou pior se o animal for de um tipo com o qual você não está familiarizado.
 - É permitida uma Especialização opcional (pág. 43).",,
-SKILL-017,VETERINÁRIA | MÁGICOS - M|MD,VETERINÁRIA | MÁGICOS,Animais,M,MD,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
+SKILL-017,VETERINÁRIA | MÁGICOS - M|MD,VETERINÁRIA | MÁGICOS,Animais,M,MD,IQ,- ADESTRAMENTO DE ANIMAIS -5,Módulo Básico,47,"
+- Esta é a habilidade em cuidar de animais feridos ou doentes. Trata-se de uma perícia Médica (veja pág. 56). 
 - Modificadores: +5 se o animal já o conhece e confia em você; -2 ou pior se o animal for de um tipo com o qual você não está familiarizado.
 - É permitida uma Especialização opcional (pág. 43).",,
 SKILL-018,ARTISTA - M|D,ARTISTA,Artísticas,M,D,IQ,"
@@ -528,7 +529,8 @@ SKILL-073,ARMAS DE FOGO | LANÇA FOGUETES - F|F,ARMAS DE FOGO | LANÇA FOGUETES,
 - Some 1 a seu nível de habilidade, se tiver IQ igual a 10 ou 11, e 2 para IQ 12+.
 - Modificadores: Veja Familiaridade, (pág. 43). -2 para uma arma de um tipo conhecido com a qual não se está familiarizado (ex.: calibre . 22 quando se está acostumado com calibre 38); - 4 ou mais para uma arma em más condições; - 4 ou mais para uma arma de tipo desconhecido (ex.: um fuzilquando se está acostumado a atirar com pistolas).
 - Todos os modificadores descritos para armas de projétil, devem ser aplicados.",,
-SKILL-074,ARTES MARCIAIS | JUDÔ - F|D,ARTES MARCIAIS | JUDÔ,Armas e Combate,F,D,DX,,Módulo Básico,51,"- Esta perícia representa uma habilidade geral em tombos e chaves e não uma escola específica de combate desarmado. Não é possível usar Judô se tiver alguma coisa nas mãos ou se sua Carga for maior do que Leve. Usando Judô, será possível aparar com qualquer uma das mãos como se ela fosse uma
+SKILL-074,ARTES MARCIAIS | JUDÔ - F|D,ARTES MARCIAIS | JUDÔ,Armas e Combate,F,D,DX,,Módulo Básico,51,"
+- Esta perícia representa uma habilidade geral em tombos e chaves e não uma escola específica de combate desarmado. Não é possível usar Judô se tiver alguma coisa nas mãos ou se sua Carga for maior do que Leve. Usando Judô, será possível aparar com qualquer uma das mãos como se ela fosse uma
 arma, usando 2/3 de seu NH em Judô como seu Aparar. A chance de se machucar ao aparar uma arma com as mãos também é menor (v. pág. 101).
 - Se conseguir aparar com sucesso, você poderá tentar derrubar aquele adversário em seu próximo turno, se ele estiver em um hexágono adjacente ao seu; isto é um ataque. Faça seu teste de Judô. Seu oponente poderá usar qualquer defesa ativa (ele pode aparar sua mão com uma espada). Se ele falhar em sua defesa, terá sido derrubado. Um resultado igual a 17 ou 18 em sua jogada de ataque significa que você foi derrubado. Note que num ataque total você não pode tentar 2 tombos, mas pode fazer uma tentativa com um bônus de +4. É possível também usar esta perícia para derrubar seu oponente se você o estiver Segurando (Combate de Perto, pág. 111); -5 se você estiver deitado no chão.
 - Quando derrubar um adversário, ele cairá onde você desejar, num raio de 2 hexágonos a seu redor. Um destes hexágonos deverá ser o que ele ocupava antes, seu hexágono, ou qualquer hexágono adjacente a um destes. Ele deve fazer um teste de HT; uma falha significará que ele está atordoado. Se você o atirar contra alguém, aquela pessoa deverá conseguir um sucesso em uma jogada contra DX+3 ou ST+3 (o que for maior), para evitar ser derrubada.
@@ -590,35 +592,43 @@ SKILL-086,ARREMESSO DE LANÇA - F|F,ARREMESSO DE LANÇA,Armas e Combate,F,F,DX,"
 - DX -4
 - BROQUEL -2",Módulo Básico,52,"
 - Habilidade no arremesso de qualquer tipo de lança, dardo, etc.",,
-SKILL-087,RAPIDEZ DE RECARGA | ARMAS DE PÓLVORA - F|F,RAPIDEZ DE RECARGA | ARMAS DE PÓLVORA,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-087,RAPIDEZ DE RECARGA | ARMAS DE PÓLVORA - F|F,RAPIDEZ DE RECARGA | ARMAS DE PÓLVORA,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-088,RAPIDEZ DE RECARGA | PISTOLAS - F|F,RAPIDEZ DE RECARGA | PISTOLAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-088,RAPIDEZ DE RECARGA | PISTOLAS - F|F,RAPIDEZ DE RECARGA | PISTOLAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-089,RAPIDEZ DE RECARGA | REVÓLVERES - F|F,RAPIDEZ DE RECARGA | REVÓLVERES,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-089,RAPIDEZ DE RECARGA | REVÓLVERES - F|F,RAPIDEZ DE RECARGA | REVÓLVERES,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-090,RAPIDEZ DE RECARGA | SUBMETRALHADORAS - F|F,RAPIDEZ DE RECARGA | SUBMETRALHADORAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-090,RAPIDEZ DE RECARGA | SUBMETRALHADORAS - F|F,RAPIDEZ DE RECARGA | SUBMETRALHADORAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-091,RAPIDEZ DE RECARGA | METRALHADORAS - F|F,RAPIDEZ DE RECARGA | METRALHADORAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-091,RAPIDEZ DE RECARGA | METRALHADORAS - F|F,RAPIDEZ DE RECARGA | METRALHADORAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-092,RAPIDEZ DE RECARGA | RIFLES - F|F,RAPIDEZ DE RECARGA | RIFLES,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-092,RAPIDEZ DE RECARGA | RIFLES - F|F,RAPIDEZ DE RECARGA | RIFLES,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-093,RAPIDEZ DE RECARGA | ESCOPETAS - F|F,RAPIDEZ DE RECARGA | ESCOPETAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-093,RAPIDEZ DE RECARGA | ESCOPETAS - F|F,RAPIDEZ DE RECARGA | ESCOPETAS,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
-SKILL-094,RAPIDEZ DE RECARGA | LANÇA FOGUETES - F|F,RAPIDEZ DE RECARGA | LANÇA FOGUETES,Armas e Combate,F,F,DX,,Módulo Básico,52,"- Esta é a habilidade em carregar rapidamente uma arma de fogo.
+SKILL-094,RAPIDEZ DE RECARGA | LANÇA FOGUETES - F|F,RAPIDEZ DE RECARGA | LANÇA FOGUETES,Armas e Combate,F,F,DX,,Módulo Básico,52,"
+- Esta é a habilidade em carregar rapidamente uma arma de fogo.
 - Não é a mesma coisa que Sacar Rápido, mas você poderia, usando as perícias certas, recarregar muito rapidamente sacando um municiador rápido ou um pente de seu cinto ou bolso e colocando na arma.
 - Uma falha em uma tentativa de Rapidez de Recarga acrescentará ao tempo normal de carga aquele que seria economizado se a tentativa tivesse sido bem sucedida. Uma falha crítica derruba ou danifica a munição; o processo de carga deve ser iniciado novamente ou a munição tem que ser recuperada.
 - Para algumas armas especiais o efeito de Rapidez de Recarga pode ser diferente conforme decisão do Mestre.",,
@@ -1457,35 +1467,32 @@ SKILL-219,FALSIFICAÇÃO - M|D,FALSIFICAÇÃO,Ladrões e Espiões,M,D,IQ,"
 - Note que também é necessário coordenação e boa visão. Haverá um redutor de -1 para cada ponto que sua DX for menor do que 10.",,
 SKILL-220,OCULTAMENTO - M|M,OCULTAMENTO,Ladrões e Espiões,M,M,IQ,"
 - IQ -5
-- PRESTIDIGITAÇÃO -3",Módulo Básico,66,"Esta é a habilidade de esconder objetos em seu corpo ou no de outras pessoas (normalmente com a cooperação delas). É também a habilidade de encontrar estes objetos escondidos por outrem.
-
-Detecção
-Encontrar um objeto escondido em uma pessoa é uma Disputa deHabilidades; o resultado do teste de Visão (ou perícia Ocultamento +/-modificadores de Visão) daquele que procura vs. a perícia Ocultamento de quem escondeu. O Mestre deverá impor modificadores conforme as circunstâncias. Exemplo: o “procurador” estará submetido a um redutor de -5 se ele
-não estiver especificamente à procura do objeto escondido, ou de -2 se ele estiver olhando rapidamente para uma quantidade grande de pessoas conforme elas passam. As disputas deveriam ser realizadas em segredo e uma resposta do tipo “Você não vê a arma que ele tem debaixo do paletó”, acabaria por invalidá-la.
-Faça um teste em separado para cada objeto escondido. “Procuradores” que venham porventura a encontrar um objeto, normalmente não desconfiarão da existência de outros.
-Todas as partes do corpo humano podem ser usadas para esconder armas (incluindo a parte interna. Esta é a razão pela qual os prisioneiros são submetidos a uma RCC quando chegam a um presídio). Uma revista do tipo “mãos-para-o-alto-e-apalpação-da-pessoa-revistada” leva um minuto. Num caso destes há um bônus de +1 para o procurador. Uma revista minuciosa das roupas e cabelos de uma pessoa exige 3 minutos e dá um bônus de +3. Uma revista completa, incluindo cavidades corporais, leva 5 minutos e dá um bônus igual a +5. Um aparelho de raio-X (ou similar) dá um bônus adicional de +5 numa tentativa de detectar objetos contendo algum tipo de metal.
-Se houver mais de uma pessoa fazendo a revista, o Mestre deverá fazer uma disputa de habilidades para cada um dos revistadores.
-O Mestre tem toda a liberdade para omitir os testes desnecessários; nenhum ser humano é capaz de fazer uma espingarda passar por uma revista. Do mesmo modo, é praticamente impossível encontrar uma faca ou uma jóia em uma pessoa vestida normalmente sem um teste de raio-X ou uma revista completa. Em geral, se o bônus líquido no teste for maior ou igual a +3, será necessário uma revista completa. Se o redutor devido ao tamanho for igual a -2 (ou pior), uma revista completa automaticamente achará o objeto escondido.
-
-Ocultação
-O tamanho e a forma do objeto determinam a possibilidade de ocultá-lo. Alguns exemplos:
-- +6: Uma pedra preciosa do tamanho de uma ervilha; um selo.
-- +5: Uma gazua; uma jóia grande; uma moeda pequena. Em NT8+: um disco de computador; uma carta.
-- +4: Um conjunto de gazuas; uma adaga; uma moeda grande.
-- +3: Um disquete do séc. XX ou CD sem o estojo.
-- +2: Uma faca pequena, um revólver comum pequeno (ex. Baby Browning).
-- +1: Uma faca grande; um estilingue.
-- 0: Uma pistola média (ex.: Luger).
-- -1: Uma arma grande (ex.: Colt).
-- -2: Uma pistola grande; uma espada pequena.
-- -3: Uma granada de mão.
-- -4: Um montante.
-- -5: Uma submetralhadora Thompson; uma cimitarra.
-
-As roupas também afetam o nível de habilidade efetivo. Uma freira Carmelita vestindo um hábito completo (bônus de +5) seria capaz de passar uma bazuca ou um machado em uma revista visual. Uma corista de Las Vegas em trajes de trabalho (redutor de -5) teria problemas em esconder até mesmo uma adaga. É claro que a corista poderia escapar à revista (a menos que a guarda estivesse completamente entediada) porque ela obviamente não poderia esconder nada naquela roupa. A nudez completa impõe um redutor de -7 e roupas desenhadas especialmente para esconder objetos podem ter um bônus de até +4.
-Um coldre executado de maneira adequada pode ajudar a esconder uma arma. Um coldre feito sob medida custa aproximadamente $200 e dá um bônus de +2 no NH de Ocultamento para a arma que ele contém. Um bom coldre axilar fabricado comercialmente custará $100 e dará um bônus de +1. Um coldre axilar de qualidade razoável custa mais ou menos $50 e não dá bônus algum. Um coldre barato, um não axilar, ou a falta de um coldre impõe um redutor de -1 à tentativa de esconder uma arma de fogo.
-Objetos que se movem ou fazem barulho impõem um redutor de, no
-mínimo, -1.",,
+- PRESTIDIGITAÇÃO -3",Módulo Básico,66,"
+- Esta é a habilidade de esconder objetos em seu corpo ou no de outras pessoas (normalmente com a cooperação delas). É também a habilidade de encontrar estes objetos escondidos por outrem.
+- Detecção
+    - Encontrar um objeto escondido em uma pessoa é uma Disputa deHabilidades; o resultado do teste de Visão (ou perícia Ocultamento +/-modificadores de Visão) daquele que procura vs. a perícia Ocultamento de quem escondeu. O Mestre deverá impor modificadores conforme as circunstâncias. Exemplo: o “procurador” estará submetido a um redutor de -5 se ele não estiver especificamente à procura do objeto escondido, ou de -2 se ele estiver olhando rapidamente para uma quantidade grande de pessoas conforme elas passam. As disputas deveriam ser realizadas em segredo e uma resposta do tipo “Você não vê a arma que ele tem debaixo do paletó”, acabaria por invalidá-la.
+    - Faça um teste em separado para cada objeto escondido. “Procuradores” que venham porventura a encontrar um objeto, normalmente não desconfiarão da existência de outros.
+    - Todas as partes do corpo humano podem ser usadas para esconder armas (incluindo a parte interna. Esta é a razão pela qual os prisioneiros são submetidos a uma RCC quando chegam a um presídio). Uma revista do tipo “mãos-para-o-alto-e-apalpação-da-pessoa-revistada” leva um minuto. Num caso destes há um bônus de +1 para o procurador. Uma revista minuciosa das roupas e cabelos de uma pessoa exige 3 minutos e dá um bônus de +3. Uma revista completa, incluindo cavidades corporais, leva 5 minutos e dá um bônus igual a +5. Um aparelho de raio-X (ou similar) dá um bônus adicional de +5 numa tentativa de detectar objetos contendo algum tipo de metal.
+    - Se houver mais de uma pessoa fazendo a revista, o Mestre deverá fazer uma disputa de habilidades para cada um dos revistadores.
+    - O Mestre tem toda a liberdade para omitir os testes desnecessários; nenhum ser humano é capaz de fazer uma espingarda passar por uma revista. Do mesmo modo, é praticamente impossível encontrar uma faca ou uma jóia em uma pessoa vestida normalmente sem um teste de raio-X ou uma revista completa. Em geral, se o bônus líquido no teste for maior ou igual a +3, será necessário uma revista completa. Se o redutor devido ao tamanho for igual a -2 (ou pior), uma revista completa automaticamente achará o objeto escondido.
+- Ocultação
+    - O tamanho e a forma do objeto determinam a possibilidade de ocultá-lo. Alguns exemplos:
+        - +6: Uma pedra preciosa do tamanho de uma ervilha; um selo.
+        - +5: Uma gazua; uma jóia grande; uma moeda pequena. Em NT8+: um disco de computador; uma carta.
+        - +4: Um conjunto de gazuas; uma adaga; uma moeda grande.
+        - +3: Um disquete do séc. XX ou CD sem o estojo.
+        - +2: Uma faca pequena, um revólver comum pequeno (ex. Baby Browning).
+        - +1: Uma faca grande; um estilingue.
+        - 0: Uma pistola média (ex.: Luger).
+        - -1: Uma arma grande (ex.: Colt).
+        - -2: Uma pistola grande; uma espada pequena.
+        - -3: Uma granada de mão.
+        - -4: Um montante.
+        - -5: Uma submetralhadora Thompson; uma cimitarra.
+    - As roupas também afetam o nível de habilidade efetivo. Uma freira Carmelita vestindo um hábito completo (bônus de +5) seria capaz de passar uma bazuca ou um machado em uma revista visual. Uma corista de Las Vegas em trajes de trabalho (redutor de -5) teria problemas em esconder até mesmo uma adaga. É claro que a corista poderia escapar à revista (a menos que a guarda estivesse completamente entediada) porque ela obviamente não poderia esconder nada naquela roupa.
+    - A nudez completa impõe um redutor de -7 e roupas desenhadas especialmente para esconder objetos podem ter um bônus de até +4.
+    - Um coldre executado de maneira adequada pode ajudar a esconder uma arma. Um coldre feito sob medida custa aproximadamente $200 e dá um bônus de +2 no NH de Ocultamento para a arma que ele contém. Um bom coldre axilar fabricado comercialmente custará $100 e dará um bônus de +1. Um coldre axilar de qualidade razoável custa mais ou menos $50 e não dá bônus algum. Um coldre barato, um não axilar, ou a falta de um coldre impõe um redutor de -1 à tentativa de esconder uma arma de fogo.
+    - Objetos que se movem ou fazem barulho impõem um redutor de, no mínimo, -1.",,
 SKILL-221,SERVIÇO SECRETO - M|M,SERVIÇO SECRETO,Ladrões e Espiões,M,M,IQ,"
 - IQ -6",Módulo Básico,66,"
 - A capacidade de analisar e interpretar informações secretas (normalmente militares) a fim de avaliar os planos e recursos do inimigo.",,

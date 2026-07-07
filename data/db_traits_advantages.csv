@@ -27,41 +27,41 @@ ADV-006,PODRE DE RICO | 50,PODRE DE RICO,50,Social,"
 - Trabalha 10 horas por semana, à procura de negócios.
 - Você pode comprar o que quiser sem precisar se preocupar com o preço.",Módulo Básico 3e,16
 ADV-007,REPUTAÇÃO 1 | 5,REPUTAÇÃO 1,5,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 ADV-008,REPUTAÇÃO 2 | 10,REPUTAÇÃO 2,10,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 ADV-009,REPUTAÇÃO 3 | 15,REPUTAÇÃO 3,15,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 ADV-010,REPUTAÇÃO 4 | 20,REPUTAÇÃO 4,20,Social,"
-A reputação pode ser uma vantagem ou uma desvantagem. Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é. A reputação tem quatro componentes:
-
-- Detalhe (A razão de você ser conhecido)
-- Modificador de Reação: ±5/nível; máximo de ±4
-- Pessoas Afetadas
-- Frequência de Reconhecimento
-
-É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
+- A reputação pode ser uma vantagem ou uma desvantagem.
+- Ela afeta as reações ao seu personagem com base no que as pessoas ouviram falar sobre você. Em contraste, o Estigma Social e o Trato Social são reações baseadas no que você é, e não em quem você é.
+- A reputação tem quatro componentes:
+    - Detalhe (A razão de você ser conhecido)
+    - Modificador de Reação: ±5/nível; máximo de ±4
+    - Pessoas Afetadas
+    - Frequência de Reconhecimento
+- É possível ter mais de uma reputação, e as reputações podem se sobrepor. A soma dessas combinações não pode ser inferior a -4 nem superior a +4.",Módulo Básico 3e,17
 ADV-011,AMBIDESTRIA | 10,AMBIDESTRIA,10,Física,"
 - O personagem é capaz de usar as duas mãos com a mesma habilidade.
 - Ele não está sujeito ao redutor de -4 sobre seu atributo DX por estar usando a mão ambiesquerda e pode lutar (ou agir) com qualquer uma das mãos indistintamente, ou com ambas de uma vez (em um Ataque Total).
@@ -407,197 +407,189 @@ ADV-072,SORTE EXTRAORDINÁRIA | 30,SORTE EXTRAORDINÁRIA,30,Mental,"
 - Sua sorte se aplica somente a jogadas feitas pelo seu personagem como uma tentativa de fazer alguma coisa, OU em eventos externos que o afetam ou a todo o grupo, OU quando você está sendo atacado (neste caso você pode fazer o atacante jogar três vezes e assumir o pior resultado).
 - Note também que a Sorte não pode ser economizada. Você não pode jogar durante horas sem usar a Sorte e, depois, usá-la várias vezes em seguida!",Módulo Básico 3e,21
 ADV-073,HIERARQUIA MILITAR 1 | 5,HIERARQUIA MILITAR 1,5,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-074,HIERARQUIA MILITAR 2 | 10,HIERARQUIA MILITAR 2,10,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-075,HIERARQUIA MILITAR 3 | 15,HIERARQUIA MILITAR 3,15,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-076,HIERARQUIA MILITAR 4 | 20,HIERARQUIA MILITAR 4,20,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-077,HIERARQUIA MILITAR 5 | 25,HIERARQUIA MILITAR 5,25,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-078,HIERARQUIA MILITAR 6 | 30,HIERARQUIA MILITAR 6,30,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-079,HIERARQUIA MILITAR 7 | 35,HIERARQUIA MILITAR 7,35,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-080,HIERARQUIA MILITAR 8 | 40,HIERARQUIA MILITAR 8,40,Social,"
-Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar. Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal. Custo: 5 pontos por nível, até o máximo de 8 níveis. O título dos postos varia de organização para organização. Exemplos típicos:
 
-- Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
-- Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
-- Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
-- Nível 5: Comando de Batalhão (Tenente-Coronel)
-- Nível 4: Comando de Companhia (Capitão ou Major)
-- Nível 3: Comando de Pelotão (Tenente ou Subtenente)
-- Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
-- Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
-- Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
-
-Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5. A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
-
-Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
-
-Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante). Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
-
-Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
-
-Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
-
-Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
+- Da mesma maneira que o Status (pág. 16) reflete sua posição na sociedade, o Posto Militar (também chamado “graduação”) reflete sua posição numa organização militar ou paramilitar.
+- Todos os postos têm autoridade sobre os inferiores, independente da capacidade pessoal.
+- O título dos postos varia de organização para organização.
+- Exemplos típicos:
+    - Nível 8: Comando de Unidade ou mais (General de Exército, General de Divisão ou Almirante)
+    - Nível 7: Comando de Divisão (Brigadeiro ou General de Brigada)
+    - Nível 6: Comando de Brigada/Grupo/Regimento (Coronel ou Capitão de um encouraçado ou porta-aviães)
+    - Nível 5: Comando de Batalhão (Tenente-Coronel)
+    - Nível 4: Comando de Companhia (Capitão ou Major)
+    - Nível 3: Comando de Pelotão (Tenente ou Subtenente)
+    - Nível 2: Oficial subalterno associado ao comando de um pelotão companhia ou batalhão (Primeiro Sargento ou Sargento- Ajudante)
+    - Nível 1: Oficial subalterno associado ao comando de um pelotão (Sargento ou Segundo-Sargento)
+    - Nível 0: Militar sem patente (Praça, Piloto-Aviador ou Marinheiro)
+- Em bons exércitos profissionais, os Oficiais Superiores (nível 5 ou 6) têm que ter um NH em Liderança maior ou igual a 12. Oficiais-Generais (nível maior ou igual a 7) devem ter Liderança no mínimo igual a 13. Este pré-requisito pode ser satisfeito pelo seu NH pré-definido, que é ST-5.
+- A incompetência nos níveis mais altos não é tolerada de nenhuma forma. (Mas os oficiais incompetentes são comuns em forças menos profissionais ou dominadas politicamente.)
+- Recomenda-se, com veemência, que o Mestre não permita que nenhum PC seja criado com um nível maior do que 5 na Hierarquia Militar, já que postos altos são concedidos normalmente apenas para líderes de capacidade comprovada.
+- Um posto militar, ao contrário do Status Social, não é mantido com dinheiro. No entanto, a insubordinação, covardia muito grande ou estupidez podem provocar a perda temporária ou permanente de um posto militar, dependendo da reação do superior (representado pelo Mestre). As Patentes são conferidas por oficiais superiores (normalmente de nível maior ou igual a 6) para aumentar temporariamente seu nível hierárquico por um período de tempo pré-determinado (até o fim de uma batalha, campanha ou algo semelhante).
+- Para manter o posto, o personagem deve satisfazer as exigências daquele posto e pagar os pontos de personagem (v. pág. 81).
+- Em alguns exércitos, os postos militares podem ser comprados com dinheiro. Num caso destes, o PC que for Rico, Muito Rico ou Podre de Rico receberá o nível 3 automaticamente, se desejar. Níveis ainda mais altos custam pontos de personagem além do dinheiro. Um nível de Riqueza menor ou igual a Médio exige o dobro de pontos para começar com um Posto Militar entre 1 e 6. Depois que o personagem foi criado, o posto militar poderá ser conseguido com o número normal de pontos, se a quantia de dinheiro necessária estiver disponível.
+- Em muitos lugares, o Posto Militar traz associado consigo algum Status Social que não precisa ser pago separadamente e não tem nenhum custo em dinheiro para ser mantido. O “NH pré-definido” aqui é 1 nível de Status para cada 3 níveis na Hierarquia Militar, arredondando para o número mais próximo. Nos lugares onde esta relação for diferente, ela será mencionada nos livros de referência.
+- Os Postos Militares são quase sempre acompanhados de uma carga significativa de Dever (v. pág. 39).",Módulo Básico 3e,22
 ADV-081,TALENTO MUSICAL +1 | 1,TALENTO MUSICAL +1,1,Mental,"
 - Você tem um talendo natural para música e instrumentos musicais.
 - Seu nível de habilidade musical deve ser adicionado a seu atributo IQ quando você está estudando Canto ou algum instrumento musical, isto é, quando estiver estudando uma perícia musical, você a aprenderá como se sua IQ fosse igual a (IQ + Talento Musical).",Módulo Básico 3e,22
@@ -757,31 +749,34 @@ ADV-112,VISÃO DAS SOMBRAS | 0,VISÃO DAS SOMBRAS,0,Racial,"
 ADV-113,OLHOS DE AZAZEL | 0,OLHOS DE AZAZEL,0,Racial,"
 - Uma vez a cada hora de jogo, você pode perceber hostilidade ou intenções violentas de alvos que possa ver.
 - Note também que o olhar não pode ser economizado. Você não pode jogar durante horas sem usar o olhar e, depois, usá-la várias vezes em seguida!
-- Uma vez por dia pode tornar uma manobra de ataque em ataque total, sem o redutor de perder sua manobra de defesa ativa.",Autoral,
+- Uma vez por dia, ao realizar um Ataque Total, você mantém o direito a uma Defesa Ativa normalmente.",Autoral,
 ADV-114,OLHOS DE ASMODEUS | 0,OLHOS DE ASMODEUS,0,Racial,"
-- Uma vez a cada hora de jogo, você pode ganhar +1 em testes de Persuasão, Sedução ou Diplomacia.
+- Uma vez a cada hora de jogo, você pode ganhar +1 em testes de influência.
 - Note também que o olhar não pode ser economizado. Você não pode jogar durante horas sem usar o olhar e, depois, usá-la várias vezes em seguida!
 - Uma vez por dia pode descobrir o que uma pessoa mais deseja, momentaneamente, em uma interação social.",Autoral,
 ADV-115,OLHOS DE BEELZEBUB | 0,OLHOS DE BEELZEBUB,0,Racial,"
 - Uma vez por dia pode escolher um alvo que possa ver e:
-    - Cada golpe ou feitiço que acerte o alvo (que não seja aparado, bloqueado ou desviado), lhe concede um bônus de +1 para acertar este;
-    - Golpes consecutivos acumulam o bônus;
-    - Ao errar (ter seu golpe aparado, bloqueado ou desviado), aplica-se um redutor equivalente ao bônus que estava sobre o alvo;
-    - Ao errar não se pode ganhar bônus contra o alvo e o redutor permance até o fim do embate.
-- Esse efeito pode ser utilizado em um alvo por vez, mas pode ser utilizado em mais de um alvo caso o redutor seja aplicado contra algum deles.
-",Autoral,
+    - Cada ataque ou feitiço que atinja o alvo (e não seja aparado, bloqueado, desviado ou resistido), lhe concede um bônus cumulativo de +1 em futuras ações contra este;
+    - O bônus aplica-se a ataques, feitiços, testes resistidos e testes de influência realizados contra o alvo;
+    - O bônus é cumulativo até o máximo de +5;
+    - Caso falhe em uma ação contra o alvo, perde todo o bônus acumulado e sofre um redutor equivalente até o fim do embate.
+- Esse efeito pode ser utilizado em apenas um alvo por vez, mas pode ser utilizado em um novo alvo após perder o bônus acumulado contra o anterior.",Autoral,
 ADV-116,OLHOS DE LEVIATHAN | 0,OLHOS DE LEVIATHAN,0,Racial,"
-- Uma vez por dia pode copiar uma perícia ou feitiço de um alvo que você possa ver.
+- Uma vez por dia pode copiar uma perícia ou feitiço que tenha acabado de observar.
 - A perícia ou feitiço copiado tem seu nível de habilidade igual ao seu atributo de DX ou IQ, conforme o atributo deste, com +5 de bônus.
 - Essa habilidade pode ser utilizada apenas uma vez por dia.
 - Uma vez usada em combate a habilidade pode ser utilizada até o fim deste.",Autoral,
 ADV-117,OLHOS DE MAMMON | 0,OLHOS DE MAMMON,0,Racial,"
 - Uma vez a cada hora de jogo, você pode ganhar +1 em testes de Comércio ou Barganha.
 - Note também que o olhar não pode ser economizado. Você não pode jogar durante horas sem usar o olhar e, depois, usá-la várias vezes em seguida!
-- Uma vez por dia pode adcionar um bônus de +1 a uma jogada equivalente a cada 2000 moedas carregadas.",Autoral,
+- Uma vez por dia, escolha um alvo que possua um item de valor, enquanto ela permanecer portando esse item, você recebe +2 em qualquer teste contra este.",Autoral,
 ADV-118,OLHOS DE LUCIFER | 0,OLHOS DE LUCIFER,0,Racial,"
-- Uma vez a cada hora de jogo, você pode ganhar +1 em testes de Comércio ou Barganha.
-- Note também que o olhar não pode ser economizado. Você não pode jogar durante horas sem usar o olhar e, depois, usá-la várias vezes em seguida!
-- Uma vez por dia pode descobrir o menor preço que um mercador está disposto a pagar ou vender determinado item.",Autoral,
+- Uma vez por dia pode escolher um alvo que possa ver e:
+    - Sempre que obtiver sucesso contra o alvo em um teste resistido, ataque ou influência social, recebe um bônus cumulativo de +1 em futuras ações contra este;
+    - O bônus aplica-se a ataques, feitiços, testes resistidos e testes de influência realizados contra o alvo;
+    - O bônus é cumulativo até o máximo de +5;
+    - Caso falhe em uma ação contra o alvo, perde todo o bônus acumulado.
+- Esse efeito pode ser utilizado em apenas um alvo por vez e permanece até o fim da cena ou combate.
+",Autoral,
 ADV-119,OLHOS DE BELPHEGOR | 0,OLHOS DE BELPHEGOR,0,Racial,"
 - Ao utilizar a manobra avaliar, desde o primeiro turno avaliando aplica-se a mecânica da manobra aguardar.",Autoral,
