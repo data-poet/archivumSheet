@@ -1202,38 +1202,6 @@
         <div id="resume_secondary_snapshot"></div>
       </div>
 
-      <!-- ── Row 2: points ────────────────────────────────────────── -->
-      <table class="resume-table">
-        <tbody>
-          <tr
-            class="resume-expander-row"
-            data-tbody-target="resume_points_tbody"
-          >
-            <td colspan="2">
-              <button class="resume-expander-btn" aria-expanded="false">
-                <span class="resume-expander-arrow">&#8250;</span>
-                <span id="sec-resume-points-detail"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-
-        <tbody
-          id="resume_points_tbody"
-          class="resume-collapsible"
-          hidden
-        ></tbody>
-
-        <tbody>
-          <tr class="resume-total-row">
-            <td><strong id="lbl-resume-totalPoints"></strong></td>
-            <td class="col-num" id="resume_total_points_cell">
-              <strong>0</strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
       <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
       <div class="resume-row resume-row--two-col">
         <div class="resume-col" id="resume_advantages_container"></div>
@@ -1362,6 +1330,38 @@
           </table>
         </div>
       </div>
+
+      <!-- ── Row: points (moved to end of resume) ─────────────────── -->
+      <table class="resume-table">
+        <tbody>
+          <tr
+            class="resume-expander-row"
+            data-tbody-target="resume_points_tbody"
+          >
+            <td colspan="2">
+              <button class="resume-expander-btn" aria-expanded="false">
+                <span class="resume-expander-arrow">&#8250;</span>
+                <span id="sec-resume-points-detail"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody
+          id="resume_points_tbody"
+          class="resume-collapsible"
+          hidden
+        ></tbody>
+
+        <tbody>
+          <tr class="resume-total-row">
+            <td><strong id="lbl-resume-totalPoints"></strong></td>
+            <td class="col-num" id="resume_total_points_cell">
+              <strong>0</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     </div><!-- /#resume-panel-host -->
 

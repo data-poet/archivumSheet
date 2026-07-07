@@ -3,6 +3,7 @@ import { fetchSkills } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
+import { getSkillAttributeBase } from "../shared/attributeUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -55,7 +56,14 @@ export function addSkill() {
   if (!id) return;
 
   if (!selected.skills[id]) {
-    selected.skills[id] = { base_value: 10, modifier: 0, isTrainedWithMaster: false };
+    const skillRow = data.skills.find((s) => s.skill_id === id);
+    const attribute = skillRow?.skill_base_attribute || "DX";
+
+    selected.skills[id] = {
+      base_value: getSkillAttributeBase(state, attribute),
+      modifier: 0,
+      isTrainedWithMaster: false,
+    };
   }
 
   renderLists(selected, data);

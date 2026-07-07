@@ -3,6 +3,7 @@ import { fetchSpells } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
+import { getSpellAttributeBase } from "../shared/attributeUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -59,7 +60,10 @@ export function addSpell() {
   if (!name) return;
 
   if (!selected.spells[name]) {
-    selected.spells[name] = { base_value: 10, modifier: 0 };
+    selected.spells[name] = {
+      base_value: getSpellAttributeBase(state),
+      modifier: 0,
+    };
   }
 
   renderLists(selected, data);
