@@ -54,6 +54,9 @@ export function initReferenceTabs() {
       }
     };
 
+    // Force the section to start collapsed on page load
+    applyCollapse(true);
+
     if (collapseBtn) {
       collapseBtn.addEventListener("click", (e) => {
         e.stopPropagation();

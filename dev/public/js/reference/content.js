@@ -95,10 +95,41 @@ export async function loadReferenceContent() {
         const markdown = await res.text();
         const html = window.marked.parse(markdown);
         panel.innerHTML = `<div class="reference-prose">${html}</div>`;
+        _renderMath(panel);
       } catch (err) {
         console.error(`Failed to load reference content: ${file}`, err);
         panel.innerHTML = `<p class="reference-error">${LABELS.reference.loadError}</p>`;
       }
     }),
   );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Math rendering (KaTeX)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Renders LaTeX math formulas inside a freshly-rendered panel.
+ *
+ * Runs after marked has already turned the markdown into HTML, so this
+ * walks the resulting DOM (via KaTeX's auto-render extension) looking for
+ * delimited math and replacing it in place. Supports both inline math
+ * ($...$ or \(...\)) and display/block math ($$...$$ or \[...\]).
+ *
+ * KaTeX is loaded from CDN in reference.html (deferred, before this module
+ * script), so window.renderMathInElement should already be defined by the
+ * time this runs. Guarded regardless, in case the CDN script fails to load.
+ */
+function _renderMath(panel) {
+  if (typeof window.renderMathInElement !== "function") return;
+
+  window.renderMathInElement(panel, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false },
+    ],
+    throwOnError: false,
+  });
 }

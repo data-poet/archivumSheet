@@ -2200,6 +2200,14 @@ pre {
   margin-top: 0;
 }
 
+/* KaTeX display math can exceed the width of a phone screen (long formulas,
+   wide matrices); scroll horizontally instead of overflowing the box. */
+.reference-prose .katex-display {
+  margin: 0.6em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .reference-prose h1,
 .reference-prose h2,
 .reference-prose h3,
