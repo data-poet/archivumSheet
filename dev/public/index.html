@@ -29,6 +29,14 @@
         <span class="topbar-logo-name" id="topbar-title">Archivum Sheet</span>
       </div>
       <div class="topbar-actions">
+        <a
+          id="reference-link-btn"
+          class="topbar-btn"
+          href="/reference.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir referência de regras"
+        ><span class="topbar-btn-icon">📖</span><span id="reference-link-btn-label">Ref</span></a>
         <button
           id="view-mode-btn"
           class="topbar-btn"
@@ -1412,6 +1420,9 @@
 
         // Top bar
         setText("topbar-title", L.app.title);
+        setAttr("reference-link-btn", "aria-label", L.reference.openReference);
+        setAttr("reference-link-btn", "title", L.reference.openReference);
+        setText("reference-link-btn-label", L.reference.refButtonLabel);
 
         // Nav labels are now rendered by nav.js (initNav) from LABELS.nav
 

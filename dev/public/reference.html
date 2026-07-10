@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archivum Sheet — Referência</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/chrome-touch-icon-192x192.png"
+    />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <meta
+      name="msapplication-TileImage"
+      content="/images/ms-touch-icon-144x144-precomposed.png"
+    />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Markdown renderer for the static reference content (see reference/content.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MOBILE: Top bar
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <header class="l-topbar" id="topbar">
+      <div class="topbar-logo">
+        <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
+        <span class="topbar-logo-name" id="topbar-title">Archivum — Referência</span>
+      </div>
+      <div class="topbar-actions">
+        <a
+          id="back-to-sheet-btn"
+          class="topbar-btn"
+          href="/"
+          aria-label="Voltar à Ficha"
+          title="Voltar à Ficha"
+        >📋</a>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         DESKTOP: Sidebar nav (built by reference/nav.js)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MAIN CONTENT — sections/tabs built by reference/content.js
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <main class="l-main" id="reference-main"></main>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MOBILE: Bottom tab navigation (built by reference/nav.js)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
+
+    <script type="module" src="/js/reference/main.js"></script>
+  </body>
+</html>

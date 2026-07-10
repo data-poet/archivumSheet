@@ -27,6 +27,7 @@
   --accent-magic: #006b42;
   --accent-equipment: #2563eb;
   --accent-inventory: #5b21b6;
+  --accent-combat: #7a1f2e; /* reference page — Combate section */
 
   /* Bar colors — HP / Mana / Toxicity */
   --color-bar-hp: #e05252;
@@ -249,6 +250,9 @@ body {
 }
 [data-section="section-inventory"] {
   --_section-accent: var(--accent-inventory);
+}
+[data-section="section-combat"] {
+  --_section-accent: var(--accent-combat);
 }
 
 .bottomnav-icon {
@@ -826,6 +830,9 @@ details > *:not(summary) {
 .box--engine details summary,
 .box--output details summary {
   border-left: 3px solid #94a3b8;
+}
+.box--reference details summary {
+  border-left: 3px solid var(--_section-accent, var(--accent-combat));
 }
 
 /* Thicker border on top-level (parent) expanders */
@@ -1916,7 +1923,7 @@ pre {
 .charimg-bg {
   width: 240px;
   height: 240px;
-  border-radius: 4px;        /* card corners */
+  border-radius: 4px; /* card corners */
   overflow: hidden;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -2010,7 +2017,9 @@ pre {
   border-radius: var(--radius-sm);
   font-size: var(--fs-sm);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 
 .charimg-clear-btn:hover {
@@ -2149,3 +2158,190 @@ pre {
   pointer-events: none;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   REFERENCE PAGE — static rules/consultation page (reference.html)
+   Reuses .l-topbar/.l-sidebar/.l-bottomnav/.l-main/.l-section/.box/.tab-strip/
+   .tab-panel as-is. This block only adds what's specific to the reference
+   page: the topbar link button, and markdown-rendered prose typography.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* .topbar-btn is used as a <button> everywhere else in the app; here it also
+   doubles as an <a> (reference link, back-to-sheet link), so strip the
+   default anchor underline. Harmless no-op on <button> elements. */
+.topbar-btn {
+  text-decoration: none;
+}
+
+/* Tab panels get a minimum height so short markdown files don't leave the
+   box looking oddly cramped while content is still loading. */
+.box--reference .tab-panel {
+  min-height: 80px;
+}
+
+.reference-loading,
+.reference-error {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  padding: 8px 0;
+}
+
+.reference-error {
+  color: var(--color-remove);
+}
+
+/* ── Markdown prose ──────────────────────────────────────────────────────── */
+.reference-prose {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+.reference-prose > *:first-child {
+  margin-top: 0;
+}
+
+.reference-prose h1,
+.reference-prose h2,
+.reference-prose h3,
+.reference-prose h4 {
+  color: var(--color-text);
+  line-height: 1.3;
+  margin: 1.4em 0 0.6em;
+}
+
+.reference-prose h1 {
+  font-size: 1.35em;
+  border-bottom: 2px solid var(--_section-accent, var(--accent-combat));
+  padding-bottom: 0.3em;
+}
+
+.reference-prose h2 {
+  font-size: 1.15em;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.25em;
+}
+
+.reference-prose h3 {
+  font-size: 1.05em;
+}
+
+.reference-prose p {
+  margin: 0 0 0.8em;
+}
+
+.reference-prose ul,
+.reference-prose ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.4em;
+}
+
+.reference-prose li {
+  margin-bottom: 0.3em;
+}
+
+.reference-prose li > ul,
+.reference-prose li > ol {
+  margin-top: 0.3em;
+}
+
+.reference-prose strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.reference-prose em {
+  color: var(--color-text-muted);
+}
+
+.reference-prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 1.2em 0;
+}
+
+.reference-prose code {
+  font-family: var(--font-mono);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  font-size: 0.9em;
+}
+
+.reference-prose blockquote {
+  margin: 0 0 0.8em;
+  padding: 6px 12px;
+  border-left: 3px solid var(--color-border-strong);
+  color: var(--color-text-muted);
+  background: var(--color-row-alt);
+}
+
+.reference-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 0.8em;
+  font-size: 0.95em;
+}
+
+.reference-prose th,
+.reference-prose td {
+  border: 1px solid var(--color-border);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.reference-prose th {
+  background: var(--color-row-alt);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   INVERTED NESTING:
+   - Outer groups get the boxed container treatment.
+   - Innermost (most nested) items become plain, uppercase, unboxed headers.
+   ========================================================================== */
+
+/* 1. THE CONTAINERS (Outer/Group Details)
+   Applies to any <details> that contains another <details> */
+.reference-prose details:has(details) {
+  margin-bottom: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Remove default padding adjustments for outer containers */
+.reference-prose details:has(details) > *:not(summary) {
+  padding: 4px 10px;
+}
+
+/* Handle open state for boxed outer groups if needed */
+.reference-prose details:has(details)[open] > summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* 2. THE INNERMOST ITEMS (Most Nested Details)
+   Applies to a <details> that does NOT contain any further <details> */
+.reference-prose details:not(:has(details)) {
+  margin-bottom: 4px;
+  border: none;
+  border-radius: 0;
+}
+
+/* The innermost text/summary styling: plain, uppercase, no box */
+.reference-prose details:not(:has(details)) > summary {
+  border-left: none !important;
+  background: none;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 4px;
+  min-height: 36px;
+}
+
+/* Reset inner content padding since it no longer has a box */
+.reference-prose details:not(:has(details)) > *:not(summary) {
+  padding: 4px 0 4px 10px;
+}

@@ -128,7 +128,8 @@ export const LABELS = {
     totalPoints: "Total de Pontos",
     availablePoints: "Disponíveis",
     sparePoints: "Restantes",
-    insufficientPoints: "Pontos insuficientes — gasto total excede os pontos disponíveis.",
+    insufficientPoints:
+      "Pontos insuficientes — gasto total excede os pontos disponíveis.",
     totalWeight: "Peso Total",
     totalValue: "Valor Total",
     secondarySnapshot: "Atributos Secundários",
@@ -443,27 +444,65 @@ export const LABELS = {
 
   // ── Character image ───────────────────────────────────────────────────────
   characterImage: {
-    tabLabel:        "Imagem",
-    uploadBtn:       "Selecionar imagem",
-    clearBtn:        "✕",
+    tabLabel: "Imagem",
+    uploadBtn: "Selecionar imagem",
+    clearBtn: "✕",
     sizeAndPosition: "Tamanho & Posição",
-    background:      "Fundo",
-    bgAverage:       "Automático",
-    bgBlack:         "Preto",
-    bgWhite:         "Branco",
-    presetCover:     "Cobrir",
-    presetContain:   "Conter",
-    presetCenter:    "Centro",
-    presetTop:       "Topo",
-    presetBottom:    "Base",
-    presetLeft:      "Esquerda",
-    presetRight:     "Direita",
-    dragHint:        "Arraste a imagem para reposicionar. Máx 1 MB.",
+    background: "Fundo",
+    bgAverage: "Automático",
+    bgBlack: "Preto",
+    bgWhite: "Branco",
+    presetCover: "Cobrir",
+    presetContain: "Conter",
+    presetCenter: "Centro",
+    presetTop: "Topo",
+    presetBottom: "Base",
+    presetLeft: "Esquerda",
+    presetRight: "Direita",
+    dragHint: "Arraste a imagem para reposicionar. Máx 1 MB.",
   },
 
   // ── Output (debug) ────────────────────────────────────────────────────────
   output: {
     title: "Saída",
+  },
+
+  // ── Reference page (static rules/consultation page) ────────────────────────
+  // Structural config (key/icon/file) is mixed with labels here on purpose,
+  // following the same pattern already used by `nav` above. To add a new
+  // reference section: add an entry below + its .md files under
+  // /reference-content/<section-key-without-prefix>/. No HTML/JS changes needed.
+  reference: {
+    pageTitle: "Referência de Regras",
+    topbarTitle: "Archivum — Referência",
+    backToSheet: "Voltar à Ficha",
+    openReference: "Abrir referência de regras",
+    refButtonLabel: "Ref",
+    loadError: "Não foi possível carregar este conteúdo.",
+    sections: [
+      {
+        key: "section-combat",
+        label: "Combate",
+        icon: "⚔️",
+        tabs: [
+          {
+            key: "tab-combat-rules",
+            label: "Regras de Combate",
+            file: "/reference-content/combat/combat_rules.md",
+          },
+          {
+            key: "tab-combat-maneuvers",
+            label: "Manobras",
+            file: "/reference-content/combat/maneuvers.md",
+          },
+          {
+            key: "tab-combat-hit-locations",
+            label: "Locais de Acerto",
+            file: "/reference-content/combat/hit_locations.md",
+          },
+        ],
+      },
+    ],
   },
 };
 
