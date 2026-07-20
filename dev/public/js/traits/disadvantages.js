@@ -7,14 +7,25 @@ import { t } from "../localization/pt-BR.js";
 const data = state.data;
 const selected = state.selected;
 
+// Traits of this type only ever exist as race-innate grants (added by the
+// engine when a race is selected) and must never be manually browsable or
+// addable by the player. This does not affect data.disadvantages itself,
+// which must keep every row so renderTraits.js can still display innate
+// entries.
+const RACIAL_TYPE = "Racial";
+
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadDisadvantages() {
   data.disadvantages = await fetchDisadvantages();
 
-  // Populate type filter with sorted unique types
+  // Populate type filter with sorted unique types, excluding race-only traits
   const types = [
-    ...new Set(data.disadvantages.map((d) => d.disadvantage_type)),
+    ...new Set(
+      data.disadvantages
+        .filter((d) => d.disadvantage_type !== RACIAL_TYPE)
+        .map((d) => d.disadvantage_type),
+    ),
   ].sort();
   const typeEl = document.getElementById("disTypeSelect");
   typeEl.innerHTML = `<option value="">${t("traits.typeFilter")}</option>`;
@@ -33,9 +44,11 @@ export async function loadDisadvantages() {
 
 function populateDisSelect(type) {
   const sel = document.getElementById("disSelect");
-  const filtered = type
-    ? data.disadvantages.filter((d) => d.disadvantage_type === type)
-    : data.disadvantages;
+  const filtered = (
+    type
+      ? data.disadvantages.filter((d) => d.disadvantage_type === type)
+      : data.disadvantages
+  ).filter((d) => d.disadvantage_type !== RACIAL_TYPE);
 
   sel.innerHTML = "";
   filtered.forEach((d) => {
