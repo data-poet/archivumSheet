@@ -1,6 +1,7 @@
 import { buildReferenceSections, loadReferenceContent } from "./content.js";
 import { initReferenceNav } from "./nav.js";
 import { initReferenceTabs } from "./tabs.js";
+import { initTheme } from "../ui/theme.js";
 import { LABELS } from "../localization/pt-BR.js";
 
 function _hydrateShell() {
@@ -23,6 +24,7 @@ window.onload = async () => {
   buildReferenceSections();
   initReferenceNav();
   initReferenceTabs();
+  initTheme();
 
   await loadReferenceContent();
 };

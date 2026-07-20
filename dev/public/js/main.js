@@ -2,6 +2,7 @@ import { bindUI } from "./events/index.js";
 import { initNav } from "./ui/nav.js";
 import { initTabs } from "./ui/tabs.js";
 import { initViewMode } from "./ui/viewMode.js";
+import { initTheme } from "./ui/theme.js";
 import { setupAutoRun } from "./engine/attributes.js";
 import { updateActualValues } from "./ui.js";
 import { runEngine } from "./engine/index.js";
@@ -29,6 +30,7 @@ window.onload = async () => {
   initNav();
   initTabs();
   initViewMode();
+  initTheme();
   setupAutoRun();
   updateActualValues();
 

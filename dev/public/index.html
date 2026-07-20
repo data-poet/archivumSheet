@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archivum Sheet</title>
+    <!-- Applies the resolved theme before first paint, to avoid a flash of
+         the wrong theme. Mirrored in ui/theme.js, which keeps it in sync
+         afterward (button state, live OS-preference changes). -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem("archivum:theme");
+        var theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
     <link rel="stylesheet" href="/css/style.css" />
     <link
       rel="icon"
@@ -44,6 +59,13 @@
           aria-label="Entrar no modo visualização"
           aria-pressed="false"
         >📃</button>
+        <button
+          id="theme-toggle-btn"
+          class="topbar-btn topbar-btn-icon-only"
+          type="button"
+          aria-label="Mudar para modo escuro"
+          aria-pressed="false"
+        >☀️</button>
         <button
           id="char-selector-btn"
           class="char-selector-btn"

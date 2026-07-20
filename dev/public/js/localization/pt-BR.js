@@ -443,6 +443,14 @@ export const LABELS = {
     ariaEdit: "Voltar ao modo edição",
   },
 
+  // ── Theme toggle ────────────────────────────────────────────────────────────
+  theme: {
+    iconLight: "☀️",
+    iconDark: "🌙",
+    ariaLight: "Mudar para modo escuro",
+    ariaDark: "Mudar para modo claro",
+  },
+
   // ── Character image ───────────────────────────────────────────────────────
   characterImage: {
     tabLabel: "Imagem",
