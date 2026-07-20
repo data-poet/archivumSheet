@@ -17,6 +17,29 @@ function getAllSpells() {
 }
 
 /**
+ * Magic Aptitude (ADV-063 → ADV-065)
+ *
+ * Grants a flat bonus to the effective level of every learned spell.
+ * Only the highest-ranked advantage in the group applies (they are
+ * mutually exclusive tiers of the same trait).
+ */
+const magicAptitudeGroup = {
+  "ADV-063": 1,
+  "ADV-064": 2,
+  "ADV-065": 3,
+};
+
+function getAptitudeLevel(advantages = {}) {
+  let max = 0;
+  for (const id of Object.keys(advantages)) {
+    if (magicAptitudeGroup[id] && magicAptitudeGroup[id] > max) {
+      max = magicAptitudeGroup[id];
+    }
+  }
+  return max;
+}
+
+/**
  * Spell tier rules (single source of truth)
  */
 function getSpellTierByLevel(level) {
@@ -56,12 +79,13 @@ function resolveSpells({ selectedSpells = {}, character = {}, rows = [] }) {
   const resolved = {};
 
   const iq = character?.iq ?? character?.primary_attributes?.IQ?.value ?? 0;
+  const aptitude_level = getAptitudeLevel(character?.advantages);
 
   for (const [spellName, input] of Object.entries(selectedSpells)) {
     const base_value = Number(input.base_value ?? 0);
     const modifier = Number(input.modifier ?? 0);
 
-    const level = base_value + modifier;
+    const level = base_value + modifier + aptitude_level;
     const tier = getSpellTierByLevel(level);
 
     const normalizedInput = normalize(spellName);
@@ -97,6 +121,7 @@ function resolveSpells({ selectedSpells = {}, character = {}, rows = [] }) {
 
       base_value,
       modifier,
+      aptitude_level,
       level,
     };
   }

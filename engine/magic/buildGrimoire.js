@@ -35,14 +35,19 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
 
     const base_value = Number(spell.base_value ?? 0);
     const modifier = Number(spell.modifier ?? 0);
+    const aptitude_level = Number(spell.aptitude_level ?? 0);
 
-    const level = base_value + modifier;
-    const relative = level - attributeBase;
+    // Point cost is calculated on the level BEFORE Magic Aptitude (ADV-063→065):
+    // the advantage raises the effective NH for free, it does not make spells
+    // cheaper to learn to that NH.
+    const costLevel = base_value + modifier;
+    const level = costLevel + aptitude_level;
+    const relative = costLevel - attributeBase;
 
     const cost = getSpellCost({
       attribute,
       base: attributeBase,
-      level,
+      level: costLevel,
       difficulty: row.spell_difficulty,
     });
 
@@ -58,6 +63,7 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
       attribute_base: attributeBase,
       base_value,
       modifier,
+      aptitude_level,
       value: level,
       relative_level: relative,
       points: cost,

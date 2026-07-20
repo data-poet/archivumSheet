@@ -9,8 +9,8 @@ import {
   updateArmorTierOptions,
 } from "../inventory/armor.js";
 import { updateShieldTierOptions } from "../inventory/shield.js";
-import { updateMeleeTierOptions } from "../inventory/melee.js";
-import { updateRangedTierOptions } from "../inventory/ranged.js";
+import { updateMeleeTierOptions, updateMeleeTypeOptions } from "../inventory/melee.js";
+import { updateRangedTierOptions, updateRangedTypeOptions } from "../inventory/ranged.js";
 import { updateLooseAmmoOptions } from "../inventory/ammo.js";
 import {
   handleCustomInventoryClick,
@@ -122,10 +122,12 @@ export function bindUI() {
   on("addShieldBtn", "click", handleAddShield);
 
   // ── Melee ─────────────────────────────────────────────────────────────────
+  on("meleeTypeFilter", "change", updateMeleeTypeOptions);
   on("meleeNameSelect", "change", updateMeleeTierOptions);
   on("addMeleeBtn", "click", handleAddMelee);
 
   // ── Ranged ─────────────────────────────────────────────────────────────────
+  on("rangedTypeFilter", "change", updateRangedTypeOptions);
   on("rangedNameSelect", "change", updateRangedTierOptions);
   on("addRangedBtn", "click", handleAddRanged);
 

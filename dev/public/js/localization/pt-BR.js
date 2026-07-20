@@ -217,6 +217,7 @@ export const LABELS = {
     base: "Base",
     mod: "Mod",
     final: "NH Final",
+    aptitude: "Aptidão",
     school: "Escola",
     tier: "Tier",
     spellType: "Tipo",

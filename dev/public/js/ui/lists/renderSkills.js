@@ -169,9 +169,29 @@ function normalize(str) {
     .toLowerCase();
 }
 
-export function renderSpells(selected, data) {
+// Magic Aptitude (ADV-063 → ADV-065): whether the column is shown, and each
+// spell's bonus, are read straight from engine output (state.sheet) — the
+// engine is the single source of truth for this value, it is never
+// recomputed here.
+const MAGIC_APTITUDE_ADVANTAGE_IDS = ["ADV-063", "ADV-064", "ADV-065"];
+
+function hasMagicAptitude(sheet) {
+  const advantages = sheet?.character?.advantages ?? {};
+  return MAGIC_APTITUDE_ADVANTAGE_IDS.some((id) => advantages[id]);
+}
+
+function getAptitudeLevelForSpell(sheet, name) {
+  const grimoire = sheet?.grimoire ?? {};
+  const entry = Object.values(grimoire).find(
+    (g) => normalize(g.name) === normalize(name),
+  );
+  return entry?.aptitude_level ?? 0;
+}
+
+export function renderSpells(selected, data, sheet) {
   const entries = Object.entries(selected.spells);
-  const COLS = 7;
+  const showAptitude = hasMagicAptitude(sheet);
+  const COLS = showAptitude ? 8 : 7;
 
   const rows =
     entries.length === 0
@@ -180,7 +200,10 @@ export function renderSpells(selected, data) {
           .map(([name, spellState]) => {
             const base = spellState.base_value ?? 0;
             const mod = spellState.modifier ?? 0;
-            const final = base + mod;
+            const aptitude = showAptitude
+              ? getAptitudeLevelForSpell(sheet, name)
+              : 0;
+            const final = base + mod + aptitude;
             const tier = getSpellTier(final);
 
             const spell =
@@ -218,6 +241,7 @@ export function renderSpells(selected, data) {
             <td class="col-num">
               ${numStepper("spell-input", `data-name="${name}" data-field="modifier"`, mod)}
             </td>
+            ${showAptitude ? `<td class="col-num">${aptitude}</td>` : ""}
             <td class="col-num"><strong>${final}</strong></td>
             <td class="col-action">
               <button class="btn-remove remove-spell" data-name="${name}">✕</button>
@@ -257,6 +281,7 @@ export function renderSpells(selected, data) {
           <th class="col-center">${t("traits.tier")}</th>
           <th class="col-num">${t("traits.base")}</th>
           <th class="col-num">${t("traits.mod")}</th>
+          ${showAptitude ? `<th class="col-num">${t("traits.aptitude")}</th>` : ""}
           <th class="col-num">${t("traits.final")}</th>
           <th class="col-action"></th>
         </tr>

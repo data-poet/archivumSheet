@@ -24,7 +24,7 @@ export function renderLists(selected, data, sheet) {
   renderAdvantages(selected, data, sheet);
   renderDisadvantages(selected, data, sheet);
   renderSkills(selected, data, sheet);
-  renderSpells(selected, data);
+  renderSpells(selected, data, sheet);
   renderArmorSlots(selected, data, sheet);
   renderStoredArmors(selected, data, sheet);
   renderEquippedShield(selected, data, sheet);

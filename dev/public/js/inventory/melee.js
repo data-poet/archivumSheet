@@ -6,6 +6,7 @@ import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
 import { nextMeleeInstanceId, nextRangedInstanceId } from "../store/instanceId.js";
 import { MELEE_TO_RANGED } from "../shared/dualUseWeapons.js";
+import { t } from "../localization/pt-BR.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -30,16 +31,40 @@ export async function loadMeleeWeapons() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function loadMeleeSelectors() {
-  updateMeleeNameOptions();
-  updateMeleeTierOptions();
+  updateMeleeTypeOptions();
   updateMeleeMaterialOptions();
 }
 
+export function updateMeleeTypeOptions() {
+  const select = el("meleeTypeFilter");
+  if (!select) return;
+
+  const types = [...new Set(data.melee_weapons.map((w) => w.weapon_type))].sort();
+  const current = select.value;
+
+  select.innerHTML =
+    `<option value="">${t("traits.typeFilter")}</option>` +
+    types
+      .map(
+        (type) =>
+          `<option value="${type}" ${type === current ? "selected" : ""}>${type}</option>`,
+      )
+      .join("");
+
+  updateMeleeNameOptions();
+}
+
 export function updateMeleeNameOptions() {
+  const typeSelect = el("meleeTypeFilter");
   const nameSelect = el("meleeNameSelect");
   if (!nameSelect) return;
 
-  const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
+  const typeFilter = typeSelect?.value || "";
+  const filtered = typeFilter
+    ? data.melee_weapons.filter((w) => w.weapon_type === typeFilter)
+    : data.melee_weapons;
+
+  const names = [...new Set(filtered.map((w) => w.weapon_name))];
   populateSelect(nameSelect, names.map((n) => ({ value: n, label: n })));
   updateMeleeTierOptions();
 }

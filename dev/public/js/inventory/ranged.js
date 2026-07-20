@@ -6,6 +6,7 @@ import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
 import { nextRangedInstanceId, nextMeleeInstanceId } from "../store/instanceId.js";
 import { RANGED_TO_MELEE } from "../shared/dualUseWeapons.js";
+import { t } from "../localization/pt-BR.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -30,16 +31,40 @@ export async function loadRangedWeapons() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function loadRangedSelectors() {
-  updateRangedNameOptions();
-  updateRangedTierOptions();
+  updateRangedTypeOptions();
   updateRangedMaterialOptions();
 }
 
+export function updateRangedTypeOptions() {
+  const select = el("rangedTypeFilter");
+  if (!select) return;
+
+  const types = [...new Set(data.ranged_weapons.map((w) => w.weapon_type))].sort();
+  const current = select.value;
+
+  select.innerHTML =
+    `<option value="">${t("traits.typeFilter")}</option>` +
+    types
+      .map(
+        (type) =>
+          `<option value="${type}" ${type === current ? "selected" : ""}>${type}</option>`,
+      )
+      .join("");
+
+  updateRangedNameOptions();
+}
+
 export function updateRangedNameOptions() {
+  const typeSelect = el("rangedTypeFilter");
   const nameSelect = el("rangedNameSelect");
   if (!nameSelect) return;
 
-  const names = [...new Set(data.ranged_weapons.map((w) => w.weapon_name))];
+  const typeFilter = typeSelect?.value || "";
+  const filtered = typeFilter
+    ? data.ranged_weapons.filter((w) => w.weapon_type === typeFilter)
+    : data.ranged_weapons;
+
+  const names = [...new Set(filtered.map((w) => w.weapon_name))];
   populateSelect(
     nameSelect,
     names.map((n) => ({ value: n, label: n })),
