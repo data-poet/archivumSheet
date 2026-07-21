@@ -3,10 +3,9 @@
  *
  * Tab switching + section collapse for the reference page's
  * .tab-strip / .tab-panel pairs. Mirrors ../ui/tabs.js's collapse
- * mechanics (same .box.is-collapsed class, same CSS), but sections here
- * start EXPANDED rather than collapsed — this is a consultation page,
- * content should be visible immediately on arrival. The chevron still
- * lets the player collapse a section once they're done with it.
+ * mechanics (same .box.is-collapsed class, same CSS). Sections start
+ * COLLAPSED on load, same as edit mode — the chevron (or clicking a tab)
+ * expands a section on demand.
  */
 
 /**

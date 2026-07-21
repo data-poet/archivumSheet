@@ -937,6 +937,18 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
+/* ── Mobile: prevent iOS Safari auto-zoom on input focus ─────────────────
+   Any focused input/select under 16px font-size makes Safari zoom the
+   whole page in. --fs-sm/--fs-base only reach 16px on very wide viewports,
+   so every field (including table cells) is fixed at 16px below 768px. */
+@media (max-width: 767px) {
+  input[type="number"],
+  input[type="text"],
+  select {
+    font-size: 16px;
+  }
+}
+
 button {
   background: var(--color-btn-bg);
   cursor: pointer;
@@ -1199,6 +1211,14 @@ input[type="number"] {
     flex: 1;
     width: 0;
   }
+
+  /* Tap target: 32px was under the 44px touch guideline. Applies to every
+     table input, stepper-wrapped or plain. */
+  table input[type="number"],
+  table input[type="text"] {
+    min-height: 44px;
+    width: 56px;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1215,6 +1235,28 @@ table {
   width: 100%;
   font-size: var(--fs-sm);
   min-width: 0;
+}
+
+/* Sticky first column (item/skill/spell name) so it stays visible while
+   scrolling horizontally through numeric columns on narrow screens. Needs
+   an explicit background per row state or scrolled cells show through. */
+.table-wrapper th:first-child,
+.table-wrapper td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--color-surface);
+  box-shadow: 1px 0 0 0 var(--color-border);
+}
+.table-wrapper thead th:first-child {
+  z-index: 2;
+  background: var(--color-table-header-bg);
+}
+.table-wrapper tbody tr:nth-child(even) td:first-child {
+  background: var(--color-row-alt);
+}
+.table-wrapper tbody tr:hover td:first-child {
+  background: var(--color-row-hover);
 }
 
 thead tr {
