@@ -951,14 +951,22 @@ input:focus {
 }
 
 /* ── Mobile: prevent iOS Safari auto-zoom on input focus ─────────────────
-   Any focused input/select under 16px font-size makes Safari zoom the
+   Any focused text-entry field under 16px font-size makes Safari zoom the
    whole page in. --fs-sm/--fs-base only reach 16px on very wide viewports,
-   so every field (including table cells) is fixed at 16px below 768px. */
+   so every text/number field (including table cells) is fixed at 16px
+   below 768px. <select> is deliberately excluded — it opens a native
+   picker with no inline text cursor, so it isn't affected by the bug and
+   can stay on the normal fluid text scale. */
 @media (max-width: 767px) {
   input[type="number"],
-  input[type="text"],
-  select {
+  input[type="text"] {
     font-size: 16px;
+    padding: 3px 6px;
+  }
+
+  table input[type="number"],
+  table input[type="text"] {
+    padding: 2px 3px;
   }
 }
 
@@ -1026,7 +1034,9 @@ button.btn-danger:hover {
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .toast.is-visible {
@@ -1034,9 +1044,15 @@ button.btn-danger:hover {
   pointer-events: auto;
 }
 
-.toast--success { background: var(--color-success); }
-.toast--error   { background: var(--color-remove); }
-.toast--info    { background: var(--color-info); }
+.toast--success {
+  background: var(--color-success);
+}
+.toast--error {
+  background: var(--color-remove);
+}
+.toast--info {
+  background: var(--color-info);
+}
 
 .toast-icon {
   flex-shrink: 0;
