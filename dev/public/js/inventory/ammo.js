@@ -6,6 +6,7 @@ import { el, populateSelect } from "../shared/dom.js";
 import {
   nextAmmoContainerInstanceId,
 } from "../store/instanceId.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -134,11 +135,18 @@ export function moveContainer(instanceId, storedAt) {
 
 /** Remove a container (and all its contents) by instanceId. */
 export function removeContainer(instanceId) {
+  const before = structuredClone(selected.ammo_containers);
   selected.ammo_containers = selected.ammo_containers.filter(
     (c) => c._instanceId !== instanceId,
   );
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.ammo_containers = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 /** Resolve the numeric capacity for a container_id from data. */
@@ -199,10 +207,17 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
   const container = findContainerByInstanceId(instanceId);
   if (!container) return;
 
+  const before = structuredClone(selected.ammo_containers);
   container.contents = container.contents.filter((e) => e.ammo_id !== ammoId);
 
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.ammo_containers = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -246,11 +261,18 @@ export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
 
 /** Remove a loose ammo entry. */
 export function removeLooseAmmo(ammoId, storedAt) {
+  const before = structuredClone(selected.loose_ammo);
   selected.loose_ammo = selected.loose_ammo.filter(
     (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
   );
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.loose_ammo = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 /**

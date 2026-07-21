@@ -3,6 +3,7 @@ import { fetchAdvantages } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -77,7 +78,14 @@ export function addAdv() {
 }
 
 export function removeAdv(id) {
+  const before = structuredClone(selected.advantages);
   delete selected.advantages[id];
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.advantages = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }

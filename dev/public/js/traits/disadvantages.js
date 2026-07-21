@@ -3,6 +3,7 @@ import { fetchDisadvantages } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -78,7 +79,14 @@ export function addDis() {
 }
 
 export function removeDis(id) {
+  const before = structuredClone(selected.disadvantages);
   delete selected.disadvantages[id];
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.disadvantages = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }

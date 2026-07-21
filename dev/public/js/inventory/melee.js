@@ -7,6 +7,7 @@ import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
 import { nextMeleeInstanceId, nextRangedInstanceId } from "../store/instanceId.js";
 import { MELEE_TO_RANGED } from "../shared/dualUseWeapons.js";
 import { t } from "../localization/pt-BR.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -254,6 +255,9 @@ export function moveMelee(instanceId, storedAt) {
 
 /** Remove a melee weapon instance by instanceId. */
 export function removeMelee(instanceId) {
+  const beforeMelee = structuredClone(selected.melee_weapons);
+  const beforeRanged = structuredClone(selected.ranged_weapons);
+
   const melee = findMeleeByInstanceId(instanceId);
   _removeRangedCounterpart(melee);
 
@@ -262,6 +266,13 @@ export function removeMelee(instanceId) {
   );
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.melee_weapons = beforeMelee;
+    selected.ranged_weapons = beforeRanged;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

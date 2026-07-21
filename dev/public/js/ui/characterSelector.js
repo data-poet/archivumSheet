@@ -13,8 +13,9 @@ import {
   removeCharacter,
   saveActiveCharacter,
 } from "../store/characters.js";
-import { exportSheet, importSheet } from "../store/persistence.js";
+import { exportSheet, importSheet, showToast } from "../store/persistence.js";
 import { replaceActiveCharacter } from "../store/characters.js";
+import { showConfirm } from "./dialog.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TOPBAR BUTTON — shows active character name + race, opens popover on click
@@ -194,12 +195,18 @@ export function initCharacterSelector() {
         const chars = listCharacters();
         if (chars.length <= 1) {
           // Don't remove the last character, just reset it
-          alert(t("characters.cannotRemoveLast"));
+          showToast(t("characters.cannotRemoveLast"), "error");
           return;
         }
         const active = chars.find((c) => c.id === getActiveCharacterId());
         const name = active?.name || t("characters.unnamed");
-        if (!confirm(`${t("characters.confirmRemove")} "${name}"?`)) return;
+        const confirmed = await showConfirm({
+          title: t("characters.confirmRemoveTitle"),
+          message: `${t("characters.confirmRemove")} "${name}"?`,
+          confirmLabel: t("characters.remove"),
+          danger: true,
+        });
+        if (!confirmed) return;
         removeCharacter(getActiveCharacterId());
         closeSelector();
         updateSelectorButton();
@@ -265,7 +272,10 @@ export function initCharacterSelector() {
           updateSelectorButton();
         }
       } catch (err) {
-        alert(`Erro ao importar: ${err.message}`);
+        showToast(
+          `${t("characters.importErrorPrefix")}: ${err.message}`,
+          "error",
+        );
       } finally {
         fileInput.value = "";
         fileInput._mode = null;

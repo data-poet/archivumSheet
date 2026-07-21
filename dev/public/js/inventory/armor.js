@@ -5,6 +5,7 @@ import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
 import { nextArmorInstanceId } from "../store/instanceId.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -160,9 +161,16 @@ export function moveArmor(instanceId, storedAt) {
 
 /** Remove an armor instance by instanceId. */
 export function removeArmor(instanceId) {
+  const before = structuredClone(selected.armors);
   selected.armors = selected.armors.filter((a) => a._instanceId !== instanceId);
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.armors = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

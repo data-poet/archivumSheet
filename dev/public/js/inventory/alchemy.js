@@ -3,6 +3,7 @@ import { fetchAlchemy } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -136,11 +137,18 @@ export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
 
 /** Remove an entry entirely. */
 export function removeAlchemy(consumableId, storedAt) {
+  const before = structuredClone(selected.alchemy);
   selected.alchemy = selected.alchemy.filter(
     (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
   );
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.alchemy = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 /**

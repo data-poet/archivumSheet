@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
+import { offerUndo } from "../ui/undo.js";
 
 const selected = state.selected;
 
@@ -55,12 +56,19 @@ export function updateCustomItemQuantity(customItemId, quantity) {
 
 /** Remove an entry entirely by its custom_item_id. */
 export function removeCustomItem(customItemId) {
+  const before = structuredClone(selected.customInventory);
   selected.customInventory = selected.customInventory.filter(
     (e) => e.custom_item_id !== customItemId,
   );
 
   renderLists(selected, state.data, state.sheet);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.customInventory = before;
+    renderLists(selected, state.data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 /**

@@ -3,6 +3,7 @@ import { fetchSurvivalGear } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -108,11 +109,18 @@ export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
 
 /** Remove an entry entirely. */
 export function removeSurvivalGear(gearId, storedAt) {
+  const before = structuredClone(selected.survivalGear);
   selected.survivalGear = selected.survivalGear.filter(
     (e) => !(e.adventure_gear_id === gearId && e.storedAt === storedAt),
   );
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.survivalGear = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 /**

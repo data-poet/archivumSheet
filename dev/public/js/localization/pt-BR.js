@@ -26,7 +26,23 @@ export const LABELS = {
     newCharacter: "Novo Personagem",
     namePrompt: "Nome do novo personagem:",
     confirmRemove: "Remover personagem",
+    confirmRemoveTitle: "Remover personagem?",
     cannotRemoveLast: "Não é possível remover o único personagem.",
+    importErrorPrefix: "Erro ao importar",
+  },
+
+  // ── Themed confirm dialog (replaces window.confirm) ─────────────────────
+  dialog: {
+    confirm: "Confirmar",
+    cancel: "Cancelar",
+  },
+
+  // ── Character portrait upload/removal ────────────────────────────────────
+  characterImage: {
+    invalidType: "Arquivo inválido. Use JPG, PNG, GIF ou WEBP.",
+    tooLarge: "Imagem muito grande. Tamanho máximo: 1 MB.",
+    confirmRemoveTitle: "Remover imagem?",
+    confirmRemoveMessage: "Remover a imagem do personagem?",
   },
 
   // ── Navigation ────────────────────────────────────────────────────────────
@@ -265,6 +281,8 @@ export const LABELS = {
     actual: "Atual",
     add: "Adicionar",
     remove: "Remover",
+    removed: "Removido",
+    undo: "Desfazer",
   },
 
   // ── Equipment: Armor ──────────────────────────────────────────────────────

@@ -4,6 +4,7 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSpellAttributeBase } from "../shared/attributeUtils.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -71,9 +72,16 @@ export function addSpell() {
 }
 
 export function removeSpell(name) {
+  const before = structuredClone(selected.spells);
   delete selected.spells[name];
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.spells = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 export function updateSpell(name, field, value) {

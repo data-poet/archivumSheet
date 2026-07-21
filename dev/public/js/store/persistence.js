@@ -17,54 +17,54 @@ const SCHEMA_VERSION = 1;
 // A lightweight in-app notification — no alert() blocking the UI.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function showToast(message, type = "success") {
-  // Remove any existing toast
+const TOAST_ICONS = { success: "✓", error: "✕", info: "ℹ" };
+
+/**
+ * @param {string} message
+ * @param {"success"|"error"|"info"} [type]
+ * @param {Object} [options]
+ * @param {string} [options.actionLabel]  - if set, renders a tappable action button
+ * @param {Function} [options.onAction]   - called when the action button is tapped
+ * @param {number} [options.duration]     - ms before auto-dismiss (default 3000)
+ */
+export function showToast(message, type = "success", options = {}) {
+  // Remove any existing toast (and let it fully replace, no orphaned actions)
   document.getElementById("_archivum-toast")?.remove();
+
+  const { actionLabel, onAction, duration = 3000 } = options;
+  const icon = TOAST_ICONS[type] ?? TOAST_ICONS.info;
 
   const toast = document.createElement("div");
   toast.id = "_archivum-toast";
+  toast.className = `toast toast--${type}`;
 
-  const colors = {
-    success: { bg: "#22c55e", icon: "✓" },
-    error:   { bg: "#ef4444", icon: "✕" },
-    info:    { bg: "#3b82f6", icon: "ℹ" },
-  };
-  const { bg, icon } = colors[type] ?? colors.info;
-
-  Object.assign(toast.style, {
-    position:     "fixed",
-    bottom:       "76px",   // above mobile bottom nav
-    left:         "50%",
-    transform:    "translateX(-50%)",
-    background:   bg,
-    color:        "#fff",
-    padding:      "10px 18px",
-    borderRadius: "8px",
-    fontSize:     "14px",
-    fontWeight:   "600",
-    boxShadow:    "0 4px 12px rgba(0,0,0,0.2)",
-    zIndex:       "9999",
-    display:      "flex",
-    alignItems:   "center",
-    gap:          "8px",
-    whiteSpace:   "nowrap",
-    maxWidth:     "calc(100vw - 32px)",
-    opacity:      "0",
-    transition:   "opacity 0.2s ease",
-    pointerEvents:"none",
-  });
-
-  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+  toast.innerHTML = `
+    <span class="toast-icon" aria-hidden="true">${icon}</span>
+    <span class="toast-message">${message}</span>
+    ${actionLabel ? `<button type="button" class="toast-action">${actionLabel}</button>` : ""}
+  `;
   document.body.appendChild(toast);
 
-  // Fade in
-  requestAnimationFrame(() => { toast.style.opacity = "1"; });
-
-  // Fade out after 3 s
-  setTimeout(() => {
-    toast.style.opacity = "0";
+  let dismissed = false;
+  const dismiss = () => {
+    if (dismissed) return;
+    dismissed = true;
+    toast.classList.remove("is-visible");
     toast.addEventListener("transitionend", () => toast.remove(), { once: true });
-  }, 3000);
+  };
+
+  if (actionLabel && onAction) {
+    toast.querySelector(".toast-action")?.addEventListener("click", () => {
+      onAction();
+      dismiss();
+    });
+  }
+
+  // Fade in
+  requestAnimationFrame(() => toast.classList.add("is-visible"));
+
+  // Auto-dismiss
+  setTimeout(dismiss, duration);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

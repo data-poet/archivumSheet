@@ -5,6 +5,7 @@ import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
 import { nextShieldInstanceId } from "../store/instanceId.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -136,9 +137,16 @@ export function moveShield(instanceId, storedAt) {
 
 /** Remove a shield instance by instanceId. */
 export function removeShield(instanceId) {
+  const before = structuredClone(selected.shields);
   selected.shields = selected.shields.filter((s) => s._instanceId !== instanceId);
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.shields = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

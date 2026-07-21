@@ -18,6 +18,8 @@
   --color-btn-hover: #d0d0e6;
   --color-remove: #dc2626;
   --color-remove-hover: #b91c1c;
+  --color-success: #22c55e;
+  --color-info: #3b82f6;
 
   /* Section accent colors — one per section, readable on light + dark */
   --accent-character: #c62828;
@@ -116,6 +118,8 @@ html[data-theme="dark"] {
   --color-btn-hover: #35354a;
   --color-remove: #ef4444;
   --color-remove-hover: #f87171;
+  --color-success: #34d399;
+  --color-info: #60a5fa;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.4);
 
@@ -962,6 +966,149 @@ button.btn-remove {
 button.btn-remove:hover {
   background: var(--color-danger-bg);
   color: var(--color-remove-hover);
+}
+
+button.btn-danger {
+  background: var(--color-remove);
+  color: #fff;
+}
+
+button.btn-danger:hover {
+  background: var(--color-remove-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOAST — lightweight non-blocking notification (bottom-center)
+   Types: success / error / info. Info can carry an action button (undo).
+   ═══════════════════════════════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 76px; /* above mobile bottom nav */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 10px 18px;
+  border-radius: var(--radius);
+  background: var(--color-success);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast--success { background: var(--color-success); }
+.toast--error   { background: var(--color-remove); }
+.toast--info    { background: var(--color-info); }
+
+.toast-icon {
+  flex-shrink: 0;
+}
+
+.toast-message {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast-action {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.toast-action:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONFIRM DIALOG — themed replacement for window.confirm()
+   ═══════════════════════════════════════════════════════════════════════════ */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.dialog-overlay.is-visible {
+  opacity: 1;
+}
+
+.dialog-card {
+  width: clamp(260px, 90vw, 380px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 18px;
+}
+
+.dialog-title {
+  margin: 0 0 8px;
+  font-size: var(--fs-base);
+  color: var(--color-text);
+}
+
+.dialog-message {
+  margin: 0 0 16px;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: var(--fs-sm);
+}
+
+.dialog-btn-cancel {
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+}
+
+.dialog-btn-confirm {
+  background: var(--accent-equipment);
+  color: var(--color-on-accent);
+}
+
+.dialog-btn-danger {
+  background: var(--color-remove);
+  color: #fff;
+}
+
+.dialog-btn-danger:hover {
+  background: var(--color-remove-hover);
 }
 
 /* ── Hide native number spinners globally — we use .num-stepper instead ─── */

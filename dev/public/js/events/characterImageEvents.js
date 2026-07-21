@@ -12,6 +12,9 @@
 
 import { state } from "../state.js";
 import { triggerAutoRun } from "../engine/autorun.js";
+import { t } from "../localization/pt-BR.js";
+import { showToast } from "../store/persistence.js";
+import { showConfirm } from "../ui/dialog.js";
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
 
@@ -234,12 +237,12 @@ function _bindDrag(previewEl) {
 async function _loadFile(file) {
   // Type check
   if (!["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"].includes(file.type)) {
-    alert("Arquivo inválido. Use JPG, PNG, GIF ou WEBP.");
+    showToast(t("characterImage.invalidType"), "error");
     return;
   }
   // Size check (1 MB)
   if (file.size > 1_000_000) {
-    alert("Imagem muito grande. Tamanho máximo: 1 MB.");
+    showToast(t("characterImage.tooLarge"), "error");
     return;
   }
 
@@ -363,20 +366,28 @@ export function handleCharacterImageClick(e) {
   // Clear button
   if (e.target.closest("#charimg-clear-btn")) {
     if (!_img().uploaded) return false;
-    if (!confirm("Remover imagem do personagem?")) return true;
-    _setImg({
-      uploaded:    false,
-      data:        "",
-      background:  "",
-      color:       { r: "", g: "", b: "" },
-      orientation: "",
-      position:    { x: "", y: "" },
-      size:        { width: "", height: "" },
-      scale:       "",
+    // Claim the click synchronously; the dialog + mutation happen async.
+    showConfirm({
+      title: t("characterImage.confirmRemoveTitle"),
+      message: t("characterImage.confirmRemoveMessage"),
+      confirmLabel: t("common.remove"),
+      danger: true,
+    }).then((confirmed) => {
+      if (!confirmed) return;
+      _setImg({
+        uploaded:    false,
+        data:        "",
+        background:  "",
+        color:       { r: "", g: "", b: "" },
+        orientation: "",
+        position:    { x: "", y: "" },
+        size:        { width: "", height: "" },
+        scale:       "",
+      });
+      renderCharacterImage();
+      renderResumeImage();
+      triggerAutoRun();
     });
-    renderCharacterImage();
-    renderResumeImage();
-    triggerAutoRun();
     return true;
   }
 

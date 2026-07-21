@@ -4,6 +4,7 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSkillAttributeBase } from "../shared/attributeUtils.js";
+import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -71,9 +72,16 @@ export function addSkill() {
 }
 
 export function removeSkill(id) {
+  const before = structuredClone(selected.skills);
   delete selected.skills[id];
   renderLists(selected, data);
   triggerAutoRun();
+
+  offerUndo(() => {
+    selected.skills = before;
+    renderLists(selected, data);
+    triggerAutoRun();
+  });
 }
 
 export function updateSkill(id, field, value) {
