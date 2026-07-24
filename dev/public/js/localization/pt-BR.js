@@ -556,6 +556,18 @@ export const LABELS = {
           },
         ],
       },
+      {
+        key: "homebrew",
+        label: "Homebrew",
+        icon: "3️⃣",
+        tabs: [
+          {
+            key: "homebrew-rules",
+            label: "Regras do Mestre",
+            file: "/reference-content/homebrew/homebrew_rules.md",
+          },
+        ],
+      },
     ],
   },
 };
