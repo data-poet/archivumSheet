@@ -26,6 +26,8 @@ export function updateInventoryUI(sheet) {
     sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
   const rangedWeight =
     sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
+  const firearmsWeight =
+    sheet?.inventory?.firearms?.carried_firearms_weight || 0;
   const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
   const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
   const survivalGearWeight =
@@ -38,6 +40,7 @@ export function updateInventoryUI(sheet) {
     shieldWeight +
     meleeWeight +
     rangedWeight +
+    firearmsWeight +
     ammoWeight +
     alchemyWeight +
     survivalGearWeight +
@@ -52,6 +55,7 @@ export function updateInventoryUI(sheet) {
   set("shield_weight", shieldWeight);
   set("melee_weight", meleeWeight);
   set("ranged_weight", rangedWeight);
+  set("firearms_weight", firearmsWeight);
   set("ammo_weight", ammoWeight);
   set("alchemy_weight", alchemyWeight);
   set("survival_gear_weight", survivalGearWeight);

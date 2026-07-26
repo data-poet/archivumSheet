@@ -52,6 +52,7 @@ export function renderResume(sheet, data = {}, selected = {}) {
   renderResumeShield(sheet);
   renderResumeMelee(sheet);
   renderResumeRanged(sheet);
+  renderResumeFirearms(sheet);
   renderResumeAmmo(sheet, data, selected);
   renderResumeAlchemy(sheet);
   renderResumeWeight(sheet);
@@ -594,6 +595,81 @@ function renderResumeRanged(sheet) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 9.5 Equipped Firearms (collapsed — name | TR | PREC | GDP dmg | HP | munição)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeFirearms(sheet) {
+  const equipped  = sheet?.inventory?.firearms?.equipped ?? [];
+  const container = el("resume_firearms_container");
+  if (!container) return;
+
+  if (equipped.length === 0) { container.hidden = true; return; }
+  container.hidden = false;
+
+  const rows = equipped
+    .map((w) => {
+      const baseMaxHp  = w.weapon_final_hit_points ?? 0;
+      const modifier   = w.hit_points_modifier ?? 0;
+      const actualHp   = calcActualHp(baseMaxHp, modifier);
+      const instanceId = w._instanceId ?? "";
+
+      const hpCell = baseMaxHp > 0
+        ? _hpStepperCell({
+            cssClass:  "resume-firearm-hp",
+            dataAttrs: `data-instance-id="${instanceId}"`,
+            maxHp:     baseMaxHp,
+            modifier,
+            actualHp,
+          })
+        : `<td></td>`;
+
+      const magazineSize = w.weapon_final_magazine_size ?? 0;
+      const roundsLoaded  = w.rounds_loaded ?? 0;
+
+      const roundsCell = _roundsStepperCell({
+        cssClass:  "resume-firearm-rounds",
+        dataAttrs: `data-instance-id="${instanceId}"`,
+        magazineSize,
+        roundsLoaded,
+      });
+
+      return `
+        <tr>
+          <td>${w.weapon_name ?? "—"}</td>
+          <td class="col-num">${w.weapon_final_tr ?? "—"}</td>
+          <td class="col-num">${w.weapon_final_prec ?? "—"}</td>
+          <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
+          ${hpCell}
+          ${roundsCell}
+        </tr>
+      `;
+    })
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("sections.firearms"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th class="col-num">${t("ranged.tr")}</th>
+              <th class="col-num">${t("ranged.prec")}</th>
+              <th class="col-num">${t("ranged.gdpDmg")}</th>
+              <th class="col-num">${t("armor.hp")}</th>
+              <th class="col-num">${t("firearms.magazine")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 10. Ammo — equipped containers only (collapsed — name | qty stepper)
 //
 // Quantities are aggregated across all equipped containers per ammo_id.
@@ -760,6 +836,7 @@ function renderResumeWeight(sheet) {
   const shieldWeight       = sheet?.inventory?.shield?.carried_shield_weight      || 0;
   const meleeWeight        = sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
   const rangedWeight       = sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
+  const firearmsWeight     = sheet?.inventory?.firearms?.carried_firearms_weight || 0;
   const ammoWeight         = sheet?.inventory?.ammo?.carried_ammo_weight          || 0;
   const alchemyWeight      = sheet?.inventory?.alchemy?.carried_alchemy_weight    || 0;
   const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
@@ -773,6 +850,7 @@ function renderResumeWeight(sheet) {
         shieldWeight +
         meleeWeight +
         rangedWeight +
+        firearmsWeight +
         ammoWeight +
         alchemyWeight +
         survivalGearWeight +
@@ -801,6 +879,7 @@ function renderResumeWeight(sheet) {
       <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldWeight}</td></tr>
       <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeWeight}</td></tr>
       <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedWeight}</td></tr>
+      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsWeight}</td></tr>
       <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoWeight}</td></tr>
       <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyWeight}</td></tr>
       <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearWeight}</td></tr>
@@ -818,6 +897,7 @@ function renderResumeWeight(sheet) {
   set("shield_weight",         shieldWeight);
   set("melee_weight",          meleeWeight);
   set("ranged_weight",         rangedWeight);
+  set("firearms_weight",       firearmsWeight);
   set("ammo_weight",           ammoWeight);
   set("alchemy_weight",        alchemyWeight);
   set("survival_gear_weight",  survivalGearWeight);
@@ -861,13 +941,14 @@ function renderResumeValue(sheet) {
   const shieldValue       = sheet?.inventory?.shield?.carried_shield_value      || 0;
   const meleeValue        = sheet?.inventory?.melee?.carried_melee_weapons_value || 0;
   const rangedValue       = sheet?.inventory?.ranged?.carried_ranged_weapons_value || 0;
+  const firearmsValue     = sheet?.inventory?.firearms?.carried_firearms_value || 0;
   const ammoValue         = sheet?.inventory?.ammo?.carried_ammo_value          || 0;
   const alchemyValue      = sheet?.inventory?.alchemy?.carried_alchemy_value    || 0;
   const survivalGearValue = sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
   const customValue       = sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
 
   const totalValue =
-    armorValue + shieldValue + meleeValue + rangedValue +
+    armorValue + shieldValue + meleeValue + rangedValue + firearmsValue +
     ammoValue + alchemyValue + survivalGearValue + customValue;
 
   const valueTbody = el("resume_value_tbody");
@@ -877,6 +958,7 @@ function renderResumeValue(sheet) {
       <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldValue}</td></tr>
       <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeValue}</td></tr>
       <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedValue}</td></tr>
+      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsValue}</td></tr>
       <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoValue}</td></tr>
       <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyValue}</td></tr>
       <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearValue}</td></tr>
@@ -959,6 +1041,33 @@ function _hpStepperCell({ cssClass, dataAttrs, maxHp, modifier, actualHp }) {
           </div>
         </div>
         <strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>
+      </div>
+    </td>
+  `;
+}
+
+/** Rounds-loaded stepper + "Recarregar" button, used in the resume firearms row. */
+function _roundsStepperCell({ cssClass, dataAttrs, magazineSize, roundsLoaded }) {
+  return `
+    <td>
+      <div class="hp-modifier">
+        <div class="num-stepper">
+          <input
+            type="text"
+            inputmode="numeric"
+            class="${cssClass}"
+            ${dataAttrs}
+            data-min="0"
+            data-max="${magazineSize}"
+            value="${roundsLoaded}"
+          />
+          <div class="stepper-btns">
+            <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+            <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+          </div>
+        </div>
+        / <strong>${magazineSize}</strong>
+        <button class="btn-reload resume-reload-firearm" ${dataAttrs}>${t("firearms.reloadAction")}</button>
       </div>
     </td>
   `;

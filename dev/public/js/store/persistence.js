@@ -98,6 +98,7 @@ export function exportSheet() {
       shields:        selected.shields,
       melee_weapons:  selected.melee_weapons,
       ranged_weapons: selected.ranged_weapons,
+      firearms:       selected.firearms,
       ammo_containers: selected.ammo_containers,
       loose_ammo:     selected.loose_ammo,
       alchemy:        selected.alchemy,
@@ -268,6 +269,7 @@ function _applyImport(payload) {
   selected.shields        = inventory.shields        ?? [];
   selected.melee_weapons  = inventory.melee_weapons  ?? [];
   selected.ranged_weapons = inventory.ranged_weapons ?? [];
+  selected.firearms       = inventory.firearms       ?? [];
   selected.ammo_containers = inventory.ammo_containers ?? [];
   selected.loose_ammo     = inventory.loose_ammo     ?? [];
   selected.alchemy        = inventory.alchemy        ?? [];

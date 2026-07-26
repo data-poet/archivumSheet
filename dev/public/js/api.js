@@ -64,6 +64,10 @@ export async function fetchRangedWeapons() {
   return getJSON("/api/ranged_weapons");
 }
 
+export async function fetchFirearms() {
+  return getJSON("/api/firearms");
+}
+
 export async function fetchAmmo() {
   return getJSON("/api/ammo");
 }

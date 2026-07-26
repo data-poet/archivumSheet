@@ -11,6 +11,7 @@ import {
 import { updateShieldTierOptions } from "../inventory/shield.js";
 import { updateMeleeTierOptions, updateMeleeTypeOptions } from "../inventory/melee.js";
 import { updateRangedTierOptions, updateRangedTypeOptions } from "../inventory/ranged.js";
+import { updateFirearmTierOptions, updateFirearmTypeOptions } from "../inventory/firearms.js";
 import { updateLooseAmmoOptions } from "../inventory/ammo.js";
 import {
   handleCustomInventoryClick,
@@ -65,6 +66,12 @@ import {
   handleRangedChange,
   handleAddRanged,
 } from "./rangedEvents.js";
+import {
+  handleFirearmClick,
+  handleFirearmInput,
+  handleFirearmChange,
+  handleAddFirearm,
+} from "./firearmsEvents.js";
 import {
   handleAmmoClick,
   handleAmmoInput,
@@ -131,6 +138,11 @@ export function bindUI() {
   on("rangedNameSelect", "change", updateRangedTierOptions);
   on("addRangedBtn", "click", handleAddRanged);
 
+  // ── Firearms ──────────────────────────────────────────────────────────────
+  on("firearmTypeFilter", "change", updateFirearmTypeOptions);
+  on("firearmNameSelect", "change", updateFirearmTierOptions);
+  on("addFirearmBtn", "click", handleAddFirearm);
+
   // ── Ammo ──────────────────────────────────────────────────────────────────
   on("looseAmmoTypeFilter", "change", updateLooseAmmoOptions);
   on("addAmmoContainerBtn", "click", handleAddContainer);
@@ -162,6 +174,7 @@ export function bindUI() {
     if (handleShieldClick(e)) return;
     if (handleMeleeClick(e)) return;
     if (handleRangedClick(e)) return;
+    if (handleFirearmClick(e)) return;
     if (handleAmmoClick(e)) return;
     if (handleAlchemyClick(e)) return;
     if (handleSurvivalGearClick(e)) return;
@@ -179,6 +192,7 @@ export function bindUI() {
     if (handleShieldInput(e)) return;
     if (handleMeleeInput(e)) return;
     if (handleRangedInput(e)) return;
+    if (handleFirearmInput(e)) return;
     if (handleAmmoInput(e)) return;
     if (handleAlchemyInput(e)) return;
     if (handleSurvivalGearInput(e)) return;
@@ -195,6 +209,7 @@ export function bindUI() {
     if (handleShieldChange(e)) return;
     if (handleMeleeChange(e)) return;
     if (handleRangedChange(e)) return;
+    if (handleFirearmChange(e)) return;
     if (handleAmmoChange(e)) return;
     if (handleAlchemyChange(e)) return;
     if (handleSurvivalGearChange(e)) return;

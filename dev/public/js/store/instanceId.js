@@ -12,6 +12,7 @@ let _armorCounter = 1;
 let _shieldCounter = 1;
 let _meleeCounter = 1;
 let _rangedCounter = 1;
+let _firearmCounter = 1;
 let _ammoContainerCounter = 1;
 let _looseAmmoCounter = 1;
 let _alchemyCounter = 1;
@@ -30,6 +31,10 @@ export function nextMeleeInstanceId() {
 
 export function nextRangedInstanceId() {
   return `ranged-inst-${_rangedCounter++}`;
+}
+
+export function nextFirearmInstanceId() {
+  return `firearm-inst-${_firearmCounter++}`;
 }
 
 export function nextAmmoContainerInstanceId() {
@@ -53,6 +58,7 @@ export function resetInstanceCounters() {
   _shieldCounter = 1;
   _meleeCounter = 1;
   _rangedCounter = 1;
+  _firearmCounter = 1;
   _ammoContainerCounter = 1;
   _looseAmmoCounter = 1;
   _alchemyCounter = 1;

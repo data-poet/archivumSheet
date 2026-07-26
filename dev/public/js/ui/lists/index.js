@@ -7,6 +7,7 @@ import { renderArmorSlots, renderStoredArmors } from "./renderArmor.js";
 import { renderEquippedShield, renderStoredShields } from "./renderShield.js";
 import { renderEquippedMelee, renderStoredMelee } from "./renderMelee.js";
 import { renderEquippedRanged, renderStoredRanged } from "./renderRanged.js";
+import { renderEquippedFirearms, renderStoredFirearms } from "./renderFirearms.js";
 import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 import { renderAlchemy } from "./renderAlchemy.js";
 import { renderSurvivalGear } from "./renderSurvivalGear.js";
@@ -33,6 +34,8 @@ export function renderLists(selected, data, sheet) {
   renderStoredMelee(selected, data, sheet);
   renderEquippedRanged(selected, data, sheet);
   renderStoredRanged(selected, data, sheet);
+  renderEquippedFirearms(selected, data, sheet);
+  renderStoredFirearms(selected, data, sheet);
   renderAmmoContainers(selected, data, sheet);
   renderLooseAmmo(selected, data, sheet);
   renderAlchemy(selected, data, sheet);

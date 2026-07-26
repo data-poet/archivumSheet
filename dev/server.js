@@ -115,6 +115,14 @@ app.get("/api/ranged_weapons", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/firearms", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_equipment_firearms_weapons.csv"),
+  );
+
+  res.json(data);
+});
+
 app.get("/api/ammo", (req, res) => {
   const data = loadCSV(path.join(__dirname, "../data/db_equipment_ammo.csv"));
   res.json(data);

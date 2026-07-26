@@ -829,6 +829,11 @@
             ></button>
             <button
               class="tab-btn"
+              data-tab="tab-equip-firearms"
+              id="tab-btn-equip-firearms"
+            ></button>
+            <button
+              class="tab-btn"
               data-tab="tab-equip-ammo"
               id="tab-btn-equip-ammo"
             ></button>
@@ -943,6 +948,33 @@
               <details>
                 <summary id="sec-ranged-stored"></summary>
                 <div id="rangedStorageList"></div>
+              </details>
+            </div>
+          </div>
+
+          <!-- Panel: Armas de Fogo -->
+          <div class="tab-panel" id="tab-equip-firearms">
+            <div class="controls-row">
+              <select id="firearmTypeFilter"></select>
+              <select id="firearmNameSelect"></select>
+              <select id="firearmTierSelect"></select>
+              <select id="firearmMaterialSelect"></select>
+              <select id="firearmStorage">
+                <option value="equipped" id="opt-firearm-equipped"></option>
+                <option value="backpack" id="opt-firearm-backpack"></option>
+                <option value="stash" id="opt-firearm-stash"></option>
+                <option value="camp" id="opt-firearm-camp"></option>
+              </select>
+              <button id="addFirearmBtn"></button>
+            </div>
+            <div class="equip-sub">
+              <details>
+                <summary id="sec-firearm-equipped"></summary>
+                <div id="firearmSlots"></div>
+              </details>
+              <details>
+                <summary id="sec-firearm-stored"></summary>
+                <div id="firearmStorageList"></div>
               </details>
             </div>
           </div>
@@ -1262,6 +1294,11 @@
         <div class="resume-col" id="resume_ranged_container"></div>
       </div>
 
+      <!-- ── Row 7.5: firearms (full width) ──────────────────────── -->
+      <div class="resume-row">
+        <div class="resume-full-col" id="resume_firearms_container"></div>
+      </div>
+
       <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
       <div class="resume-row resume-row--two-col">
         <div class="resume-col" id="resume_ammo_container"></div>
@@ -1470,6 +1507,7 @@
         setText("tab-btn-equip-shields", L.tabs.equipment.shields);
         setText("tab-btn-equip-melee", L.tabs.equipment.melee);
         setText("tab-btn-equip-ranged", L.tabs.equipment.ranged);
+        setText("tab-btn-equip-firearms", L.tabs.equipment.firearms);
         setText("tab-btn-equip-ammo", L.tabs.equipment.ammo);
         // section-inventory
         setText("tab-btn-inv-alchemy", L.tabs.inventory.alchemy);
@@ -1486,6 +1524,8 @@
         setText("sec-melee-stored", L.sections.stored);
         setText("sec-ranged-equipped", L.sections.equipped);
         setText("sec-ranged-stored", L.sections.stored);
+        setText("sec-firearm-equipped", L.sections.equipped);
+        setText("sec-firearm-stored", L.sections.stored);
         setText("sec-ammo-containers", L.ammo.containers);
         setText("sec-ammo-loose", L.ammo.looseAmmo);
         setText("sec-output", L.output.title);
@@ -1571,6 +1611,7 @@
         btn("addShieldBtn", L.shield.addShield);
         btn("addMeleeBtn", L.melee.addMelee);
         btn("addRangedBtn", L.ranged.addRanged);
+        btn("addFirearmBtn", L.firearms.addFirearm);
         btn("addAmmoContainerBtn", L.ammo.addContainer);
         btn("addLooseAmmoBtn", L.ammo.addLooseAmmo);
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
@@ -1610,6 +1651,10 @@
           ["opt-ranged-backpack", L.storage.backpack],
           ["opt-ranged-stash", L.storage.stash],
           ["opt-ranged-camp", L.storage.camp],
+          ["opt-firearm-equipped", L.storage.equipped],
+          ["opt-firearm-backpack", L.storage.backpack],
+          ["opt-firearm-stash", L.storage.stash],
+          ["opt-firearm-camp", L.storage.camp],
           ["opt-ammo-cont-equipped", L.storage.equipped],
           ["opt-ammo-cont-backpack", L.storage.backpack],
           ["opt-ammo-cont-stash", L.storage.stash],

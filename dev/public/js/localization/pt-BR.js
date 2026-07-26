@@ -83,6 +83,7 @@ export const LABELS = {
       shields: "Escudos",
       melee: "Corpo a Corpo",
       ranged: "À Distância",
+      firearms: "Armas de Fogo",
       ammo: "Munição",
     },
     inventory: {
@@ -113,6 +114,7 @@ export const LABELS = {
     shields: "Escudos",
     melee: "Armas Corpo a Corpo",
     ranged: "Armas de Longo Alcance",
+    firearms: "Armas de Fogo",
     munition: "Munição",
     inventory: "Inventário",
     potions: "Poções",
@@ -336,6 +338,19 @@ export const LABELS = {
     hp: "PV",
     tr: "TR",
     prec: "PREC",
+  },
+
+  // ── Firearms (artificer builds) ─────────────────────────────────────────────
+  // Shares the "ranged" tab UI; damage/distance/tr/prec/reload-speed labels
+  // above are reused as-is since the concepts are identical.
+  firearms: {
+    firearm: "Arma de Fogo",
+    addFirearm: "Adicionar Arma de Fogo",
+    cdt: "CDT",
+    magazine: "Munição",
+    magazineMod: "Mod. Capacidade",
+    reloadAction: "Recarregar",
+    tuning: "Ajustes do Artificer",
   },
 
   // ── Survival Gear ─────────────────────────────────────────────────────────

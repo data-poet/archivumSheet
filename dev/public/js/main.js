@@ -16,6 +16,7 @@ import { loadArmors } from "./inventory/armor.js";
 import { loadShields } from "./inventory/shield.js";
 import { loadMeleeWeapons } from "./inventory/melee.js";
 import { loadRangedWeapons } from "./inventory/ranged.js";
+import { loadFirearms } from "./inventory/firearms.js";
 import { loadAmmo } from "./inventory/ammo.js";
 import { loadAlchemy } from "./inventory/alchemy.js";
 import { loadSurvivalGear } from "./inventory/survivalGear.js";
@@ -44,6 +45,7 @@ window.onload = async () => {
     loadShields(),
     loadMeleeWeapons(),
     loadRangedWeapons(),
+    loadFirearms(),
     loadAmmo(),
     loadAlchemy(),
     loadSurvivalGear(),
