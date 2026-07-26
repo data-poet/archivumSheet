@@ -4,6 +4,8 @@ const { _getArmorDB } = require("engine/inventory/js/armor/armor");
 
 const { _getShieldDB } = require("engine/inventory/js/shield/shield");
 
+const { _getFirearmsDB } = require("engine/inventory/js/firearms/firearms");
+
 const assertShape = require("tests/helpers/assertShape");
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -164,9 +166,13 @@ describe("INVENTORY BUILDER", () => {
 
   const shieldDb = _getShieldDB();
 
+  const firearmsDb = _getFirearmsDB();
+
   const armorId = Object.keys(armorDb)[0];
 
   const shieldId = Object.keys(shieldDb)[0];
+
+  const firearmId = Object.keys(firearmsDb)[0];
 
   test("Should build inventory with carry weight correctly", () => {
     const result = buildInventory({
@@ -398,6 +404,123 @@ describe("INVENTORY BUILDER", () => {
     const totalCarriedWeight =
       result.inventory.armor.carried_armor_weight +
       result.inventory.shield.carried_shield_weight;
+
+    expect(totalCarriedWeight).toBeGreaterThan(0);
+  });
+
+  // ── FIREARMS INTEGRATION ────────────────────────────────────────────────────
+
+  test("Should include firearms inventory", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      firearmsInventory: [],
+    });
+
+    expect(result.inventory).toHaveProperty("firearms");
+  });
+
+  test("Should include equipped firearm weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      firearmsInventory: [
+        {
+          weapon_id: firearmId,
+          is_equipped: true,
+          storedAt: null,
+        },
+      ],
+    });
+
+    expect(result.inventory.firearms.carried_firearms_weight).toBeGreaterThan(
+      0,
+    );
+  });
+
+  test("Should include backpack firearm weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      firearmsInventory: [
+        {
+          weapon_id: firearmId,
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+    });
+
+    expect(result.inventory.firearms.carried_firearms_weight).toBeGreaterThan(
+      0,
+    );
+  });
+
+  test("Should ignore stash firearm weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      firearmsInventory: [
+        {
+          weapon_id: firearmId,
+          is_equipped: false,
+          storedAt: "stash",
+        },
+      ],
+    });
+
+    expect(result.inventory.firearms.carried_firearms_weight).toBe(0);
+
+    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+  });
+
+  test("Should ignore camp firearm weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      firearmsInventory: [
+        {
+          weapon_id: firearmId,
+          is_equipped: false,
+          storedAt: "camp",
+        },
+      ],
+    });
+
+    expect(result.inventory.firearms.carried_firearms_weight).toBe(0);
+
+    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+  });
+
+  test("Should combine firearm carried weight with the rest of the inventory", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      armorInventory: [
+        {
+          armor_id: armorId,
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+      firearmsInventory: [
+        {
+          weapon_id: firearmId,
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+    });
+
+    expect(result.inventory.armor.carried_armor_weight).toBeGreaterThan(0);
+
+    expect(result.inventory.firearms.carried_firearms_weight).toBeGreaterThan(
+      0,
+    );
+
+    const totalCarriedWeight =
+      result.inventory.armor.carried_armor_weight +
+      result.inventory.firearms.carried_firearms_weight;
 
     expect(totalCarriedWeight).toBeGreaterThan(0);
   });
