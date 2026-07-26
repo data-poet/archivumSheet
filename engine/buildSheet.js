@@ -53,6 +53,7 @@ function buildSheet({
     shieldInventory: inventory.shield || [],
     meleeInventory: inventory.melee || [],
     rangedInventory: inventory.ranged || [],
+    firearmsInventory: inventory.firearms || [],
     ammoContainerInventory: inventory.ammo_containers || [],
     looseAmmoInventory: inventory.loose_ammo || [],
     alchemyInventory: inventory.alchemy || [],
