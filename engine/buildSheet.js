@@ -58,6 +58,7 @@ function buildSheet({
     looseAmmoInventory: inventory.loose_ammo || [],
     alchemyInventory: inventory.alchemy || [],
     survivalGearInventory: inventory.survival_gear || [],
+    accessoryInventory: inventory.accessories || [],
     customInventory: inventory.custom_inventory || [],
     coinInventory: inventory.coins || [],
   });

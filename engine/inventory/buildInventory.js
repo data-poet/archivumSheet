@@ -7,6 +7,7 @@ const { buildFirearmSlots } = require("./js/firearms/firearms.js");
 const { buildAmmoSlots } = require("./js/ammo/ammo.js");
 const { buildAlchemySlots } = require("./js/alchemy/alchemy.js");
 const { buildSurvivalGearSlots } = require("./js/survivalGear/survivalGear.js");
+const { buildAccessorySlots } = require("./js/accessories/accessories.js");
 const { buildCustomInventorySlots } = require("./js/customInventory/customInventory.js");
 const { buildCoinPurseSlots } = require("./js/coinPurse/coinPurse.js");
 
@@ -25,6 +26,7 @@ function buildInventory({
   looseAmmoInventory = [],
   alchemyInventory = [],
   survivalGearInventory = [],
+  accessoryInventory = [],
   customInventory = [],
   coinInventory = [],
 } = {}) {
@@ -36,6 +38,7 @@ function buildInventory({
   const ammo = buildAmmoSlots(ammoContainerInventory, looseAmmoInventory);
   const alchemy = buildAlchemySlots(alchemyInventory);
   const survivalGear = buildSurvivalGearSlots(survivalGearInventory);
+  const accessories = buildAccessorySlots(accessoryInventory);
   const customInv = buildCustomInventorySlots(customInventory);
   const coinPurse = buildCoinPurseSlots(coinInventory);
 
@@ -66,6 +69,7 @@ function buildInventory({
       ammo,
       alchemy,
       survivalGear,
+      accessories,
       customInventory: customInv,
       coinPurse,
     },
