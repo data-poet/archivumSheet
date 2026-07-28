@@ -149,6 +149,13 @@ app.get("/api/survival_gear", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/accessories", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_itens_accessories.csv"),
+  );
+  res.json(data);
+});
+
 /* -----------------------
    CHARACTER BUILDER
 ------------------------ */

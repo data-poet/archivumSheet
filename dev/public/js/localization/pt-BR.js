@@ -89,6 +89,7 @@ export const LABELS = {
     inventory: {
       alchemy: "Alquimia",
       survivalGear: "Sobrevivência",
+      accessories: "Acessórios",
       coinPurse: "Bolsa de Moedas",
       customInventory: "Itens Livres",
     },
@@ -119,6 +120,7 @@ export const LABELS = {
     inventory: "Inventário",
     potions: "Poções",
     survivalGear: "Equipamento de Sobrevivência",
+    accessories: "Acessórios",
     freeInventory: "Inventário Livre",
     output: "Saída",
     equipped: "Equipado",
@@ -285,6 +287,16 @@ export const LABELS = {
     remove: "Remover",
     removed: "Removido",
     undo: "Desfazer",
+    customize: "Personalizar",
+    customName: "Nome Personalizado",
+    customDescription: "Descrição Personalizada",
+    customEffect: "Efeito Personalizado",
+    customNamePlaceholder: "Ex: Anel do Vazio",
+    customDescriptionPlaceholder: "Descrição livre do item...",
+    customEffectPlaceholder: "Efeito mecânico livre do item...",
+    save: "Salvar",
+    cancel: "Cancelar",
+    noCustomFields: "Nenhuma personalização definida.",
   },
 
   // ── Equipment: Armor ──────────────────────────────────────────────────────
@@ -362,6 +374,14 @@ export const LABELS = {
     qty: "Qtd.",
     observation: "Observação",
     survivalGearWeight: "Sobrevivência",
+  },
+
+  // ── Accessories ────────────────────────────────────────────────────────────
+  accessories: {
+    title: "Acessórios",
+    addAccessory: "Adicionar Acessório",
+    accessory: "Acessório",
+    limitReached: "Limite de uso equipado atingido para este acessório",
   },
 
   // ── Custom (user-defined) inventory ───────────────────────────────────────

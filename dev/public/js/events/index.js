@@ -92,6 +92,12 @@ import {
   handleAddSurvivalGear,
 } from "./survivalGearEvents.js";
 import {
+  handleAccessoryClick,
+  handleAccessoryInput,
+  handleAccessoryChange,
+  handleAddAccessory,
+} from "./accessoriesEvents.js";
+import {
   updateAlchemyTypeOptions,
   updateAlchemyTierOptions,
 } from "../inventory/alchemy.js";
@@ -157,6 +163,9 @@ export function bindUI() {
   on("survivalGearTypeFilter", "change", handleSurvivalGearChange);
   on("addSurvivalGearBtn", "click", handleAddSurvivalGear);
 
+  // ── Accessories ───────────────────────────────────────────────────────────
+  on("addAccessoryBtn", "click", handleAddAccessory);
+
   // ── Custom Inventory ──────────────────────────────────────────────────────
   on("addCustomItemBtn", "click", handleAddCustomItem);
 
@@ -178,6 +187,7 @@ export function bindUI() {
     if (handleAmmoClick(e)) return;
     if (handleAlchemyClick(e)) return;
     if (handleSurvivalGearClick(e)) return;
+    if (handleAccessoryClick(e)) return;
     if (handleCustomInventoryClick(e)) return;
     if (handleCoinPurseClick(e)) return;
     if (handleCharacterImageClick(e)) return;
@@ -196,6 +206,7 @@ export function bindUI() {
     if (handleAmmoInput(e)) return;
     if (handleAlchemyInput(e)) return;
     if (handleSurvivalGearInput(e)) return;
+    if (handleAccessoryInput(e)) return;
     if (handleCustomInventoryInput(e)) return;
     if (handleCoinPurseInput(e)) return;
     if (handleCharacterImageInput(e)) return;
@@ -213,6 +224,7 @@ export function bindUI() {
     if (handleAmmoChange(e)) return;
     if (handleAlchemyChange(e)) return;
     if (handleSurvivalGearChange(e)) return;
+    if (handleAccessoryChange(e)) return;
     if (handleCustomInventoryChange(e)) return;
     if (handleCoinPurseChange(e)) return;
     if (handleCharacterImageChange(e)) return;

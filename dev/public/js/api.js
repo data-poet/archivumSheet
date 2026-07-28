@@ -84,6 +84,10 @@ export async function fetchSurvivalGear() {
   return getJSON("/api/survival_gear");
 }
 
+export async function fetchAccessories() {
+  return getJSON("/api/accessories");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

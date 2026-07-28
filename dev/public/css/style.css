@@ -1489,6 +1489,81 @@ tr.spell-detail-row details[open] summary {
   margin-bottom: 2px;
 }
 
+/* ── customFieldsBlock (pilot: editable custom name/description/effect) ──── */
+.custom-fields-block {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+}
+
+.custom-fields-empty {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0 0 4px;
+}
+
+.custom-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.custom-fields-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.custom-fields-edit-btn,
+.custom-fields-save-btn,
+.custom-fields-cancel-btn {
+  font-size: var(--fs-xs);
+  padding: 3px 10px;
+  min-height: unset;
+}
+
+.custom-fields-save-btn {
+  background: var(--color-accent, #4a6fa5);
+  color: #fff;
+}
+
+.item-detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--fs-xs);
+}
+
+.item-detail-field em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.item-detail-field span {
+  color: var(--color-text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.item-detail-field--full {
+  grid-column: 1 / -1;
+}
+
+.item-detail-field input,
+.item-detail-field textarea {
+  font-size: var(--fs-xs);
+  font-family: inherit;
+  padding: 4px 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .scaling-list {
   margin: 2px 0 2px 14px;
   padding: 0;
@@ -1567,6 +1642,10 @@ tr.spell-detail-row details[open] summary {
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
+}
+
+.equipped-accessory-name {
+  font-size: var(--fs-sm);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

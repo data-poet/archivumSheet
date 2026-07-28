@@ -11,6 +11,7 @@ import { renderEquippedFirearms, renderStoredFirearms } from "./renderFirearms.j
 import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 import { renderAlchemy } from "./renderAlchemy.js";
 import { renderSurvivalGear } from "./renderSurvivalGear.js";
+import { renderEquippedAccessories, renderStoredAccessories } from "./renderAccessories.js";
 import { renderCustomInventory } from "./renderCustomInventory.js";
 import { renderCoinPurse } from "./renderCoinPurse.js";
 
@@ -40,6 +41,8 @@ export function renderLists(selected, data, sheet) {
   renderLooseAmmo(selected, data, sheet);
   renderAlchemy(selected, data, sheet);
   renderSurvivalGear(selected, data, sheet);
+  renderEquippedAccessories(selected, data, sheet);
+  renderStoredAccessories(selected, data, sheet);
   renderCoinPurse(selected, data, sheet);
   renderCustomInventory(selected, data, sheet);
 }

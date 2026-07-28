@@ -1050,6 +1050,11 @@
             ></button>
             <button
               class="tab-btn"
+              data-tab="tab-inv-accessories"
+              id="tab-btn-inv-accessories"
+            ></button>
+            <button
+              class="tab-btn"
               data-tab="tab-inv-coin"
               id="tab-btn-inv-coin"
             ></button>
@@ -1114,6 +1119,38 @@
               <button id="addSurvivalGearBtn"></button>
             </div>
             <div id="survivalGearList"></div>
+          </div>
+
+          <!-- Panel: Acessórios -->
+          <div class="tab-panel" id="tab-inv-accessories">
+            <div class="controls-row">
+              <select id="accessoryNameSelect"></select>
+              <input
+                id="accessoryPriceInput"
+                type="number"
+                min="0"
+                step="0.01"
+                value="0"
+                style="width: 80px"
+              />
+              <select id="accessoryStorage">
+                <option value="equipped" id="opt-accessory-equipped"></option>
+                <option value="backpack" id="opt-accessory-backpack"></option>
+                <option value="stash" id="opt-accessory-stash"></option>
+                <option value="camp" id="opt-accessory-camp"></option>
+              </select>
+              <button id="addAccessoryBtn"></button>
+            </div>
+            <div class="equip-sub">
+              <details>
+                <summary id="sec-accessory-equipped"></summary>
+                <div id="accessorySlots"></div>
+              </details>
+              <details>
+                <summary id="sec-accessory-stored"></summary>
+                <div id="accessoryStorageList"></div>
+              </details>
+            </div>
           </div>
 
           <!-- Panel: Bolsa de Moedas -->
@@ -1512,6 +1549,7 @@
         // section-inventory
         setText("tab-btn-inv-alchemy", L.tabs.inventory.alchemy);
         setText("tab-btn-inv-survival", L.tabs.inventory.survivalGear);
+        setText("tab-btn-inv-accessories", L.tabs.inventory.accessories);
         setText("tab-btn-inv-coin", L.tabs.inventory.coinPurse);
         setText("tab-btn-inv-custom", L.tabs.inventory.customInventory);
 
@@ -1526,6 +1564,8 @@
         setText("sec-ranged-stored", L.sections.stored);
         setText("sec-firearm-equipped", L.sections.equipped);
         setText("sec-firearm-stored", L.sections.stored);
+        setText("sec-accessory-equipped", L.sections.equipped);
+        setText("sec-accessory-stored", L.sections.stored);
         setText("sec-ammo-containers", L.ammo.containers);
         setText("sec-ammo-loose", L.ammo.looseAmmo);
         setText("sec-output", L.output.title);
@@ -1616,6 +1656,7 @@
         btn("addLooseAmmoBtn", L.ammo.addLooseAmmo);
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
         btn("addSurvivalGearBtn", L.survivalGear.addSurvivalGear);
+        btn("addAccessoryBtn", L.accessories.addAccessory);
         btn("addCustomItemBtn", L.customInventory.addItem);
         setAttr(
           "customItemName",
@@ -1668,6 +1709,10 @@
           ["opt-survival-gear-backpack", L.storage.backpack],
           ["opt-survival-gear-stash", L.storage.stash],
           ["opt-survival-gear-camp", L.storage.camp],
+          ["opt-accessory-equipped", L.storage.equipped],
+          ["opt-accessory-backpack", L.storage.backpack],
+          ["opt-accessory-stash", L.storage.stash],
+          ["opt-accessory-camp", L.storage.camp],
           ["opt-custom-backpack", L.storage.backpack],
           ["opt-custom-stash", L.storage.stash],
           ["opt-custom-camp", L.storage.camp],

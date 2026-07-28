@@ -92,6 +92,7 @@ function _blankData() {
       loose_ammo: [],
       alchemy: [],
       survivalGear: [],
+      accessories: [],
       customInventory: [],
       coins: [],
     },
@@ -143,6 +144,7 @@ function _captureCurrentData() {
       loose_ammo: selected.loose_ammo,
       alchemy: selected.alchemy,
       survivalGear: selected.survivalGear,
+      accessories: selected.accessories,
       customInventory: selected.customInventory,
       coins: selected.coins,
     },
@@ -223,6 +225,7 @@ function _applyData(data) {
   selected.loose_ammo      = inventory.loose_ammo     ?? [];
   selected.alchemy         = inventory.alchemy        ?? [];
   selected.survivalGear    = inventory.survivalGear   ?? [];
+  selected.accessories     = inventory.accessories    ?? [];
   selected.customInventory = inventory.customInventory ?? [];
   selected.coins           = inventory.coins          ?? [];
 

@@ -49,6 +49,8 @@ const MANAGED_CONTAINER_IDS = [
   "looseAmmoList",
   "alchemyList",
   "survivalGearList",
+  "accessorySlots",
+  "accessoryStorageList",
   "customInventoryList",
   "coinPurseList",
 ];

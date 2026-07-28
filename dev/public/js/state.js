@@ -16,6 +16,7 @@ export const state = {
     ammo_containers: [],
     alchemy: [],
     survivalGear: [],
+    accessories: [],
     customInventory: [],
   },
 
@@ -57,6 +58,7 @@ export const state = {
     alchemy: [],
     survivalGear: [],
     customInventory: [],
+    accessories: [],
     coins: [],
   },
 

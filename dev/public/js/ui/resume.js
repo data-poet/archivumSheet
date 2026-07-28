@@ -945,11 +945,12 @@ function renderResumeValue(sheet) {
   const ammoValue         = sheet?.inventory?.ammo?.carried_ammo_value          || 0;
   const alchemyValue      = sheet?.inventory?.alchemy?.carried_alchemy_value    || 0;
   const survivalGearValue = sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
+  const accessoryValue    = sheet?.inventory?.accessories?.carried_accessory_value      || 0;
   const customValue       = sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
 
   const totalValue =
     armorValue + shieldValue + meleeValue + rangedValue + firearmsValue +
-    ammoValue + alchemyValue + survivalGearValue + customValue;
+    ammoValue + alchemyValue + survivalGearValue + accessoryValue + customValue;
 
   const valueTbody = el("resume_value_tbody");
   if (valueTbody) {
@@ -962,6 +963,7 @@ function renderResumeValue(sheet) {
       <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoValue}</td></tr>
       <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyValue}</td></tr>
       <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearValue}</td></tr>
+      <tr><td>${t("sections.accessories")}</td><td class="col-num">${accessoryValue}</td></tr>
       <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customValue}</td></tr>
     `;
   }
