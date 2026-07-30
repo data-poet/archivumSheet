@@ -97,6 +97,11 @@ function resolveMeleeWeapons(instance, weapon, material = null) {
     // VALUE — one instance = one piece
     total_value: round2(finalStats.weapon_final_price),
 
+    // CUSTOM FIELDS
+    weapon_custom_name: instance.weapon_custom_name?.trim() || null,
+    weapon_custom_description: instance.weapon_custom_description?.trim() || null,
+    weapon_custom_effect: instance.weapon_custom_effect?.trim() || null,
+
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,

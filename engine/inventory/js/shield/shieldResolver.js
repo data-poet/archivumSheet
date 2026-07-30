@@ -82,6 +82,11 @@ function resolveShieldPiece(instance, shield, material = null) {
     // VALUE — one instance = one piece
     total_value: round2(finalStats.shield_final_price),
 
+    // CUSTOM FIELDS
+    shield_custom_name: instance.shield_custom_name?.trim() || null,
+    shield_custom_description: instance.shield_custom_description?.trim() || null,
+    shield_custom_effect: instance.shield_custom_effect?.trim() || null,
+
     // RUNTIME
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,

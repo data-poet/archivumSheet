@@ -83,6 +83,11 @@ function resolveArmorPiece(instance, armor, material = null) {
     // VALUE — armor has no quantity; one instance = one piece
     total_value: round2(finalStats.armor_final_price),
 
+    // CUSTOM FIELDS
+    armor_custom_name: instance.armor_custom_name?.trim() || null,
+    armor_custom_description: instance.armor_custom_description?.trim() || null,
+    armor_custom_effect: instance.armor_custom_effect?.trim() || null,
+
     // RUNTIME
     is_equipped: instance.is_equipped,
 
