@@ -70,6 +70,9 @@ describe("rangedResolver", () => {
         hit_points_modifier: -5,
         is_equipped: true,
         storedAt: null,
+        weapon_custom_name: "Arco do Vento Norte",
+        weapon_custom_description: "Um arco entalhado com runas desgastadas.",
+        weapon_custom_effect: "+1 em testes de percepção contra o vento.",
       };
 
       const result = resolveRangedWeapons(
@@ -113,12 +116,34 @@ describe("rangedResolver", () => {
         hit_points_modifier: -5,
         final_hit_points: 25,
 
+        weapon_custom_name: "Arco do Vento Norte",
+        weapon_custom_description: "Um arco entalhado com runas desgastadas.",
+        weapon_custom_effect: "+1 em testes de percepção contra o vento.",
+
         // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
         total_value: 132,
       });
+    });
+
+    test("Should normalize blank/missing custom fields to null and trim whitespace", () => {
+      const instance = {
+        weapon_id: "RANGED-001",
+        hit_points_modifier: 0,
+        is_equipped: false,
+        storedAt: "camp",
+        weapon_custom_name: "   ",
+        weapon_custom_description: undefined,
+        weapon_custom_effect: "  Efeito com espaços  ",
+      };
+
+      const result = resolveRangedWeapons(instance, mockWeapon, null, 8);
+
+      expect(result.weapon_custom_name).toBeNull();
+      expect(result.weapon_custom_description).toBeNull();
+      expect(result.weapon_custom_effect).toBe("Efeito com espaços");
     });
 
     test("Should resolve ranged weapon without material", () => {
@@ -164,6 +189,10 @@ describe("rangedResolver", () => {
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 13,
+
+        weapon_custom_name: null,
+        weapon_custom_description: null,
+        weapon_custom_effect: null,
 
         // RUNTIME
         _instanceId: null,

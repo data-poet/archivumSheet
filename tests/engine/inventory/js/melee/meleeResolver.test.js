@@ -71,6 +71,9 @@ describe("meleeResolver", () => {
         hit_points_modifier: -5,
         is_equipped: true,
         storedAt: null,
+        weapon_custom_name: "Lâmina do Juramento",
+        weapon_custom_description: "Uma espada gasta pelo tempo.",
+        weapon_custom_effect: "+1 em testes de intimidação ao desembainhar.",
       };
 
       const result = resolveMeleeWeapons(instance, mockWeapon, mockMaterial);
@@ -105,12 +108,34 @@ describe("meleeResolver", () => {
         hit_points_modifier: -5,
         final_hit_points: 35,
 
+        weapon_custom_name: "Lâmina do Juramento",
+        weapon_custom_description: "Uma espada gasta pelo tempo.",
+        weapon_custom_effect: "+1 em testes de intimidação ao desembainhar.",
+
         // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
         total_value: 165,
       });
+    });
+
+    test("Should normalize blank/missing custom fields to null and trim whitespace", () => {
+      const instance = {
+        weapon_id: "MELEE-001",
+        hit_points_modifier: 0,
+        is_equipped: false,
+        storedAt: "camp",
+        weapon_custom_name: "   ",
+        weapon_custom_description: undefined,
+        weapon_custom_effect: "  Efeito com espaços  ",
+      };
+
+      const result = resolveMeleeWeapons(instance, mockWeapon);
+
+      expect(result.weapon_custom_name).toBeNull();
+      expect(result.weapon_custom_description).toBeNull();
+      expect(result.weapon_custom_effect).toBe("Efeito com espaços");
     });
 
     test("Should resolve melee weapon without material", () => {
@@ -152,6 +177,10 @@ describe("meleeResolver", () => {
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 18,
+
+        weapon_custom_name: null,
+        weapon_custom_description: null,
+        weapon_custom_effect: null,
 
         // RUNTIME
         _instanceId: null,

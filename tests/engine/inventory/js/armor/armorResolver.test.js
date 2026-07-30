@@ -72,6 +72,9 @@ describe("equipmentArmorUtils", () => {
         hit_points_modifier: -5,
         is_equipped: true,
         storedAt: "backpack",
+        armor_custom_name: "Capuz da Sombra",
+        armor_custom_description: "Um capuz remendado com retalhos escuros.",
+        armor_custom_effect: "+1 em testes de furtividade à noite.",
       };
 
       const result = resolveArmorPiece(instance, mockArmor, mockMaterial);
@@ -102,12 +105,34 @@ describe("equipmentArmorUtils", () => {
 
         final_hit_points: 15,
 
+        armor_custom_name: "Capuz da Sombra",
+        armor_custom_description: "Um capuz remendado com retalhos escuros.",
+        armor_custom_effect: "+1 em testes de furtividade à noite.",
+
         _instanceId: null,
         is_equipped: true,
 
         storedAt: "backpack",
         total_value: 110,
       });
+    });
+
+    test("Should normalize blank/missing custom fields to null and trim whitespace", () => {
+      const instance = {
+        armor_id: "ARMOR-000",
+        hit_points_modifier: 0,
+        is_equipped: false,
+        storedAt: "stash",
+        armor_custom_name: "   ",
+        armor_custom_description: undefined,
+        armor_custom_effect: "  Efeito com espaços  ",
+      };
+
+      const result = resolveArmorPiece(instance, mockArmor);
+
+      expect(result.armor_custom_name).toBeNull();
+      expect(result.armor_custom_description).toBeNull();
+      expect(result.armor_custom_effect).toBe("Efeito com espaços");
     });
 
     test("Should resolve armor without material", () => {

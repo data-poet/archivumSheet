@@ -77,6 +77,9 @@ describe("firearmsResolver", () => {
         rounds_loaded: 4,
         is_equipped: true,
         storedAt: null,
+        weapon_custom_name: "Revólver do Artificier Renegado",
+        weapon_custom_description: "Um revólver com o cano gravado à mão.",
+        weapon_custom_effect: "+1 em testes de Intimidação ao sacá-lo.",
       };
 
       const result = resolveFirearmWeapon(instance, mockWeapon, mockMaterial);
@@ -127,12 +130,34 @@ describe("firearmsResolver", () => {
         magazine_size_modifier: 2,
         rounds_loaded: 4,
 
+        weapon_custom_name: "Revólver do Artificier Renegado",
+        weapon_custom_description: "Um revólver com o cano gravado à mão.",
+        weapon_custom_effect: "+1 em testes de Intimidação ao sacá-lo.",
+
         // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
         total_value: 2200,
       });
+    });
+
+    test("Should normalize blank/missing custom fields to null and trim whitespace", () => {
+      const instance = {
+        weapon_id: "FIREARM-000",
+        hit_points_modifier: 0,
+        is_equipped: false,
+        storedAt: "camp",
+        weapon_custom_name: "   ",
+        weapon_custom_description: undefined,
+        weapon_custom_effect: "  Efeito com espaços  ",
+      };
+
+      const result = resolveFirearmWeapon(instance, mockWeapon);
+
+      expect(result.weapon_custom_name).toBeNull();
+      expect(result.weapon_custom_description).toBeNull();
+      expect(result.weapon_custom_effect).toBe("Efeito com espaços");
     });
 
     test("Should resolve firearm without material (no weight/price/HP change)", () => {

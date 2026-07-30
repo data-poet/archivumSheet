@@ -64,6 +64,9 @@ describe("shieldResolver", () => {
         hit_points_modifier: -5,
         is_equipped: true,
         storedAt: "backpack",
+        shield_custom_name: "Escudo do Guardião",
+        shield_custom_description: "Um escudo com brasão apagado pelo tempo.",
+        shield_custom_effect: "+1 em testes de Intimidação ao erguê-lo.",
       };
 
       const result = resolveShieldPiece(instance, mockShield, mockMaterial);
@@ -93,12 +96,34 @@ describe("shieldResolver", () => {
         hit_points_modifier: -5,
         final_hit_points: 15,
 
+        shield_custom_name: "Escudo do Guardião",
+        shield_custom_description: "Um escudo com brasão apagado pelo tempo.",
+        shield_custom_effect: "+1 em testes de Intimidação ao erguê-lo.",
+
         // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: "backpack",
         total_value: 110,
       });
+    });
+
+    test("Should normalize blank/missing custom fields to null and trim whitespace", () => {
+      const instance = {
+        shield_id: "SHIELD-000",
+        hit_points_modifier: 0,
+        is_equipped: false,
+        storedAt: "camp",
+        shield_custom_name: "   ",
+        shield_custom_description: undefined,
+        shield_custom_effect: "  Efeito com espaços  ",
+      };
+
+      const result = resolveShieldPiece(instance, mockShield);
+
+      expect(result.shield_custom_name).toBeNull();
+      expect(result.shield_custom_description).toBeNull();
+      expect(result.shield_custom_effect).toBe("Efeito com espaços");
     });
 
     test("Should resolve shield without material", () => {
@@ -135,6 +160,10 @@ describe("shieldResolver", () => {
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 8,
+
+        shield_custom_name: null,
+        shield_custom_description: null,
+        shield_custom_effect: null,
 
         // RUNTIME
         _instanceId: null,
