@@ -1,7 +1,7 @@
 import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
 import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../shared/constants.js";
-import { detailRow } from "./renderUtils.js";
+import { customItemEditRow } from "./renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -54,8 +54,6 @@ function renderCustomInventorySection(location, entries, sheet) {
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";
 
-        const detailFields = buildDetailFields(entry);
-
         return `
           <tr>
             <td>${entry.name}</td>
@@ -84,7 +82,13 @@ function renderCustomInventorySection(location, entries, sheet) {
               >✕</button>
             </td>
           </tr>
-          ${detailRow(4, detailFields)}`;
+          ${customItemEditRow(4, {
+            customItemId: entry.custom_item_id,
+            name: entry.name,
+            weight: entry.weight,
+            price: entry.price,
+            description: entry.description,
+          })}`;
       })
       .join("");
   }
@@ -103,16 +107,4 @@ function renderCustomInventorySection(location, entries, sheet) {
       <tbody>${bodyRows}</tbody>
     </table></div>
   `;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DETAIL FIELDS
-// ─────────────────────────────────────────────────────────────────────────────
-
-function buildDetailFields(entry) {
-  return [
-    { label: t("common.price"),               value: entry.price != null ? String(entry.price) : "—" },
-    { label: t("common.weight"),              value: entry.weight != null ? String(entry.weight) : "—" },
-    { label: t("customInventory.description"), value: entry.description ?? "" },
-  ];
 }

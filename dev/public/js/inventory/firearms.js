@@ -143,6 +143,9 @@ function _newFirearmInstance(weaponId, materialId, isEquipped, storedAt) {
     rounds_loaded: 0,
     is_equipped: isEquipped,
     storedAt,
+    weapon_custom_name: null,
+    weapon_custom_description: null,
+    weapon_custom_effect: null,
   };
 }
 
@@ -278,6 +281,29 @@ export function reloadFirearm(instanceId) {
   if (drained > 0) {
     instance.rounds_loaded = current + drained;
   }
+
+  renderLists(selected, data);
+  triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIELD UPDATES (custom fields)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Commits all three custom fields at once — called only when the user
+ * presses "Salvar" in the custom-fields editor, never on individual
+ * keystrokes. Blank strings are normalized to null.
+ */
+export function saveFirearmCustomFields(instanceId, { name, description, effect }) {
+  const instance = findFirearmByInstanceId(instanceId);
+  if (!instance) return;
+
+  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
+
+  instance.weapon_custom_name = norm(name);
+  instance.weapon_custom_description = norm(description);
+  instance.weapon_custom_effect = norm(effect);
 
   renderLists(selected, data);
   triggerAutoRun();

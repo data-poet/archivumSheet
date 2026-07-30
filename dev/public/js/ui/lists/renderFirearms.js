@@ -12,6 +12,8 @@ import {
   formatRichText,
   detailRow,
   equippedDetailBlock,
+  customFieldsEquippedDetail,
+  customFieldsDetailRow,
 } from "./renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -219,6 +221,12 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     </div>
     ${tuningBlock({ weaponData, inst, instanceId, prefix: "equipped" })}
     ${equippedDetailBlock(firearmDetailFields(resolved, weaponData))}
+    ${customFieldsEquippedDetail({
+      instanceId,
+      name: inst.weapon_custom_name,
+      description: inst.weapon_custom_description,
+      effect: inst.weapon_custom_effect,
+    })}
   `;
 }
 
@@ -292,6 +300,12 @@ function renderStorageSection(location, stored, data, sheet) {
             ${tuningBlock({ weaponData, inst, instanceId, prefix: "stored" })}
           </td>
         </tr>
+        ${customFieldsDetailRow(6, {
+          instanceId,
+          name: inst.weapon_custom_name,
+          description: inst.weapon_custom_description,
+          effect: inst.weapon_custom_effect,
+        })}
         `;
       })
       .join("");

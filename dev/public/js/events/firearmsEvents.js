@@ -4,11 +4,16 @@ import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipFirearm, moveFirearm, removeFirearm, findFirearmByInstanceId,
   reloadFirearm, computeFinalMagazineSize,
-  addEquippedFirearm, addStoredFirearm,
+  addEquippedFirearm, addStoredFirearm, saveFirearmCustomFields,
 } from "../inventory/firearms.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import {
+  openCustomFieldsEditor,
+  closeCustomFieldsEditor,
+  readCustomFieldsEditorValues,
+} from "../ui/lists/renderUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -106,6 +111,38 @@ export function handleFirearmClick(e) {
 
   if (e.target.classList.contains("reload-firearm") || e.target.classList.contains("resume-reload-firearm")) {
     reloadFirearm(e.target.dataset.instanceId); return true;
+  }
+
+  // ── Custom fields: edit / save / cancel ───────────────────────────────────
+  if (e.target.classList.contains("custom-fields-edit-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findFirearmByInstanceId(instanceId)) return false;
+    openCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-cancel-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findFirearmByInstanceId(instanceId)) return false;
+    closeCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-save-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findFirearmByInstanceId(instanceId)) return false;
+    const values = readCustomFieldsEditorValues(instanceId);
+    closeCustomFieldsEditor(instanceId);
+    if (values) {
+      const snap = _snapshot();
+      saveFirearmCustomFields(instanceId, values); // mutates + renders + runs engine
+      _restore(snap);
+    } else {
+      _renderAll();
+    }
+    return true;
   }
 
   return false;

@@ -13,6 +13,8 @@ import {
   formatRichText,
   detailRow,
   equippedDetailBlock,
+  customFieldsEquippedDetail,
+  customFieldsDetailRow,
 } from "./renderUtils.js";
 
 // Look up a resolved armor piece from the engine output by instanceId
@@ -146,6 +148,16 @@ function renderArmorSlot(slot, selected, data, sheet) {
       </div>
     </div>
     ${equippedDetailBlock(fields)}
+    ${
+      equippedInstance
+        ? customFieldsEquippedDetail({
+            instanceId: equippedInstance._instanceId,
+            name: equippedInstance.armor_custom_name,
+            description: equippedInstance.armor_custom_description,
+            effect: equippedInstance.armor_custom_effect,
+          })
+        : ""
+    }
   `;
 }
 
@@ -201,7 +213,13 @@ function renderStorageSection(location, storedArmors, data, sheet) {
             <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(7, armorDetailFields(resolved, armorData))}`;
+        ${detailRow(7, armorDetailFields(resolved, armorData))}
+        ${customFieldsDetailRow(7, {
+          instanceId,
+          name: inst.armor_custom_name,
+          description: inst.armor_custom_description,
+          effect: inst.armor_custom_effect,
+        })}`;
       })
       .join("");
   }

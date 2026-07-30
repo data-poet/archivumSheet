@@ -86,3 +86,37 @@ export function moveCustomItem(customItemId, toLocation) {
   renderLists(selected, state.data, state.sheet);
   triggerAutoRun();
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIELD UPDATES
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Commits name/weight/price/description at once — called only when the
+ * user presses "Salvar" in the edit form, never on individual keystrokes.
+ * Unlike catalog-backed items, every field here IS the item (there's no
+ * underlying DB record to fall back to), so invalid input is rejected
+ * outright rather than silently discarded.
+ *
+ * @returns {boolean} true if the entry was updated, false if rejected
+ */
+export function saveCustomItemFields(customItemId, { name, weight, price, description }) {
+  const entry = selected.customInventory.find(
+    (e) => e.custom_item_id === customItemId,
+  );
+  if (!entry) return false;
+
+  const trimmedName = name?.trim();
+  if (!trimmedName || isNaN(weight) || weight < 0 || isNaN(price) || price < 0) {
+    return false;
+  }
+
+  entry.name        = trimmedName;
+  entry.weight       = weight;
+  entry.price        = price;
+  entry.description  = description?.trim() || null;
+
+  renderLists(selected, state.data, state.sheet);
+  triggerAutoRun();
+  return true;
+}

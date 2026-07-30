@@ -173,11 +173,15 @@ export function restoreAll(snapshots) {
  */
 function _genericKeyFn(detailsEl) {
   // ── Table row pattern ─────────────────────────────────────────────────────
+  // Walk back through preceding <tr> siblings (not just the immediate one) —
+  // a data row may be followed by several sibling .detail-row rows (e.g. the
+  // stats detail row + the customize row), so the data row carrying the
+  // instance key may not be directly adjacent to this particular detail row.
   const row = detailsEl.closest("tr");
   if (row) {
-    const prev = row.previousElementSibling;
-    if (prev) {
-      for (const attr of ["data-instance-id", "data-id", "data-name", "data-ammo-id"]) {
+    let prev = row.previousElementSibling;
+    while (prev) {
+      for (const attr of ["data-instance-id", "data-id", "data-name", "data-ammo-id", "data-custom-item-id"]) {
         const val =
           prev.getAttribute(attr) ||
           prev.querySelector(`[${attr}]`)?.getAttribute(attr);
@@ -193,20 +197,28 @@ function _genericKeyFn(detailsEl) {
           return val;
         }
       }
+      // Stop walking once we hit a non-detail data row (found no key on it).
+      if (!prev.classList.contains("detail-row")) break;
+      prev = prev.previousElementSibling;
     }
   }
 
   // ── Div-block pattern (equipped slots) ────────────────────────────────────
+  // Walk back through preceding siblings (not just the immediate one) — an
+  // equipped slot may render several sibling .equipped-detail blocks (e.g.
+  // the stats details panel + the customize panel), so the slot-grid carrying
+  // the instance key may not be directly adjacent to this particular block.
   const block = detailsEl.closest(".equipped-detail");
   if (block) {
-    const slotGrid = block.previousElementSibling;
-    if (slotGrid) {
+    let sibling = block.previousElementSibling;
+    while (sibling) {
       const val =
-        slotGrid.getAttribute("data-instance-id") ||
-        slotGrid.querySelector("[data-instance-id]")?.getAttribute("data-instance-id") ||
-        slotGrid.getAttribute("data-slot") ||
-        slotGrid.querySelector("[data-slot]")?.getAttribute("data-slot");
+        sibling.getAttribute("data-instance-id") ||
+        sibling.querySelector("[data-instance-id]")?.getAttribute("data-instance-id") ||
+        sibling.getAttribute("data-slot") ||
+        sibling.querySelector("[data-slot]")?.getAttribute("data-slot");
       if (val) return val;
+      sibling = sibling.previousElementSibling;
     }
   }
 
@@ -227,13 +239,16 @@ export function tableRowKeyFn(keyAttr) {
   return (detailsEl) => {
     const row = detailsEl.closest("tr");
     if (!row) return null;
-    const prevRow = row.previousElementSibling;
-    if (!prevRow) return null;
-    return (
-      prevRow.getAttribute(keyAttr) ||
-      prevRow.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr) ||
-      null
-    );
+    let prevRow = row.previousElementSibling;
+    while (prevRow) {
+      const val =
+        prevRow.getAttribute(keyAttr) ||
+        prevRow.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr);
+      if (val) return val;
+      if (!prevRow.classList.contains("detail-row")) return null;
+      prevRow = prevRow.previousElementSibling;
+    }
+    return null;
   };
 }
 
@@ -248,13 +263,15 @@ export function divBlockKeyFn(keyAttr) {
   return (detailsEl) => {
     const block = detailsEl.closest(".equipped-detail");
     if (!block) return null;
-    const slotGrid = block.previousElementSibling;
-    if (!slotGrid) return null;
-    return (
-      slotGrid.getAttribute(keyAttr) ||
-      slotGrid.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr) ||
-      null
-    );
+    let sibling = block.previousElementSibling;
+    while (sibling) {
+      const val =
+        sibling.getAttribute(keyAttr) ||
+        sibling.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr);
+      if (val) return val;
+      sibling = sibling.previousElementSibling;
+    }
+    return null;
   };
 }
 

@@ -96,6 +96,9 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
     hit_points_modifier: 0,
     is_equipped: true,
     storedAt: null,
+    shield_custom_name: null,
+    shield_custom_description: null,
+    shield_custom_effect: null,
   });
 
   renderLists(selected, data);
@@ -117,6 +120,9 @@ export function addStoredShield(shieldId, materialId = null, storedAt = "backpac
     hit_points_modifier: 0,
     is_equipped: false,
     storedAt,
+    shield_custom_name: null,
+    shield_custom_description: null,
+    shield_custom_effect: null,
   });
 
   renderLists(selected, data);
@@ -147,6 +153,29 @@ export function removeShield(instanceId) {
     renderLists(selected, data);
     triggerAutoRun();
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIELD UPDATES (custom fields)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Commits all three custom fields at once — called only when the user
+ * presses "Salvar" in the custom-fields editor, never on individual
+ * keystrokes. Blank strings are normalized to null.
+ */
+export function saveShieldCustomFields(instanceId, { name, description, effect }) {
+  const instance = findShieldByInstanceId(instanceId);
+  if (!instance) return;
+
+  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
+
+  instance.shield_custom_name = norm(name);
+  instance.shield_custom_description = norm(description);
+  instance.shield_custom_effect = norm(effect);
+
+  renderLists(selected, data);
+  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

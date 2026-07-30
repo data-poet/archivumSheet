@@ -13,6 +13,8 @@ import {
   formatRichText,
   detailRow,
   equippedDetailBlock,
+  customFieldsEquippedDetail,
+  customFieldsDetailRow,
 } from "./renderUtils.js";
 
 function resolvedShield(sheet, instanceId) {
@@ -125,6 +127,16 @@ export function renderEquippedShield(selected, data, sheet) {
       </div>
     </div>
     ${equippedDetailBlock(fields)}
+    ${
+      equippedInstance
+        ? customFieldsEquippedDetail({
+            instanceId: equippedInstance._instanceId,
+            name: equippedInstance.shield_custom_name,
+            description: equippedInstance.shield_custom_description,
+            effect: equippedInstance.shield_custom_effect,
+          })
+        : ""
+    }
   `,
   );
 }
@@ -182,7 +194,13 @@ function renderStorageSection(location, stored, data, sheet) {
             <button class="btn-remove remove-shield" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(6, shieldDetailFields(resolved, shieldData))}`;
+        ${detailRow(6, shieldDetailFields(resolved, shieldData))}
+        ${customFieldsDetailRow(6, {
+          instanceId,
+          name: inst.shield_custom_name,
+          description: inst.shield_custom_description,
+          effect: inst.shield_custom_effect,
+        })}`;
       })
       .join("");
   }

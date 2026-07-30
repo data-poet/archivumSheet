@@ -3,11 +3,16 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipMelee, addStoredMelee, addEquippedMelee, moveMelee,
-  removeMelee, findMeleeByInstanceId,
+  removeMelee, findMeleeByInstanceId, saveMeleeCustomFields,
 } from "../inventory/melee.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import {
+  openCustomFieldsEditor,
+  closeCustomFieldsEditor,
+  readCustomFieldsEditorValues,
+} from "../ui/lists/renderUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -79,6 +84,43 @@ export function handleMeleeClick(e) {
     equipMelee(instanceId, meleeToEquip.weapon_id, meleeToEquip.material_id || "MAT-000");
     return true;
   }
+
+  // ── Custom fields: edit / save / cancel ───────────────────────────────────
+  // Generic buttons rendered by customFieldsBlock; only acted on here if the
+  // instanceId actually belongs to a melee weapon — lets other equipment
+  // types safely reuse the same button classes without collisions.
+
+  if (e.target.classList.contains("custom-fields-edit-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findMeleeByInstanceId(instanceId)) return false;
+    openCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-cancel-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findMeleeByInstanceId(instanceId)) return false;
+    closeCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-save-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findMeleeByInstanceId(instanceId)) return false;
+    const values = readCustomFieldsEditorValues(instanceId);
+    closeCustomFieldsEditor(instanceId);
+    if (values) {
+      const snap = _snapshot();
+      saveMeleeCustomFields(instanceId, values); // mutates + renders + runs engine
+      _restore(snap);
+    } else {
+      _renderAll();
+    }
+    return true;
+  }
+
   return false;
 }
 

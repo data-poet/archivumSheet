@@ -3,11 +3,16 @@ import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipArmor, addStoredArmor, moveArmor, removeArmor,
-  findEquippedArmorInSlot, findArmorByInstanceId,
+  findEquippedArmorInSlot, findArmorByInstanceId, saveArmorCustomFields,
 } from "../inventory/armor.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import {
+  openCustomFieldsEditor,
+  closeCustomFieldsEditor,
+  readCustomFieldsEditorValues,
+} from "../ui/lists/renderUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -86,6 +91,42 @@ export function handleArmorClick(e) {
     armorToEquip.storedAt = null;
     _renderAll();
     triggerAutoRun();
+    return true;
+  }
+
+  // ── Custom fields: edit / save / cancel ───────────────────────────────────
+  // Generic buttons rendered by customFieldsBlock; only acted on here if the
+  // instanceId actually belongs to an armor piece — lets other equipment
+  // types safely reuse the same button classes without collisions.
+
+  if (e.target.classList.contains("custom-fields-edit-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findArmorByInstanceId(instanceId)) return false;
+    openCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-cancel-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findArmorByInstanceId(instanceId)) return false;
+    closeCustomFieldsEditor(instanceId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-fields-save-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findArmorByInstanceId(instanceId)) return false;
+    const values = readCustomFieldsEditorValues(instanceId);
+    closeCustomFieldsEditor(instanceId);
+    if (values) {
+      const snap = _snapshotAll();
+      saveArmorCustomFields(instanceId, values); // mutates + renders + runs engine
+      _restoreAll(snap);
+    } else {
+      _renderAll();
+    }
     return true;
   }
 

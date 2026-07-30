@@ -295,3 +295,89 @@ export function equippedDetailBlock(fields) {
       </details>
     </div>`;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// customItemEditRow
+//
+// Fully user-defined custom-inventory entries have no catalog record behind
+// them — name/weight/price/description ARE the item, not an overlay on top
+// of one. So unlike customFieldsBlock (which only ever adds optional flavor
+// on top of catalog data), this block lets the person edit the entry's real
+// fields directly. Reuses the same open/close editor-state Set as
+// customFieldsBlock (keyed generically by id) so the interaction pattern
+// stays identical: closed read-only summary → "Editar" → detached uncontrolled
+// form → "Salvar"/"Cancelar".
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Reads the current (uncommitted) values out of an open custom-item editor's
+ * DOM. Returns null if that editor isn't open/found.
+ */
+export function readCustomItemEditorValues(customItemId) {
+  const container = document.querySelector(
+    `.custom-item-edit-block[data-custom-item-id="${customItemId}"]`,
+  );
+  if (!container) return null;
+
+  return {
+    name: container.querySelector(".custom-item-input-name")?.value ?? "",
+    weight: parseFloat(
+      container.querySelector(".custom-item-input-weight")?.value ?? "",
+    ),
+    price: parseFloat(
+      container.querySelector(".custom-item-input-price")?.value ?? "",
+    ),
+    description:
+      container.querySelector(".custom-item-input-description")?.value ?? "",
+  };
+}
+
+export function customItemEditRow(colspan, { customItemId, name, weight, price, description }) {
+  const editing = isCustomFieldsEditorOpen(customItemId);
+
+  const body = editing
+    ? `
+      <div class="custom-item-edit-block custom-item-edit-block--editing" data-custom-item-id="${customItemId}">
+        <div class="item-detail-grid custom-fields-grid">
+          <label class="item-detail-field">
+            <em>${t("common.name")}</em>
+            <input type="text" class="custom-item-input-name" value="${escapeAttr(name)}" />
+          </label>
+          <label class="item-detail-field">
+            <em>${t("common.weight")}</em>
+            <input type="number" min="0" step="0.01" class="custom-item-input-weight" value="${escapeAttr(weight)}" />
+          </label>
+          <label class="item-detail-field">
+            <em>${t("common.price")}</em>
+            <input type="number" min="0" step="0.01" class="custom-item-input-price" value="${escapeAttr(price)}" />
+          </label>
+          <label class="item-detail-field item-detail-field--full">
+            <em>${t("customInventory.description")}</em>
+            <textarea class="custom-item-input-description" rows="2">${escapeHtml(description)}</textarea>
+          </label>
+        </div>
+        <div class="custom-fields-actions">
+          <button type="button" class="custom-item-save-btn" data-custom-item-id="${customItemId}">${t("common.save")}</button>
+          <button type="button" class="custom-item-cancel-btn" data-custom-item-id="${customItemId}">${t("common.cancel")}</button>
+        </div>
+      </div>`
+    : `
+      <div class="custom-item-edit-block" data-custom-item-id="${customItemId}">
+        <div class="item-detail-grid">
+          <span class="item-detail"><em>${t("common.price")}:</em> ${price}</span>
+          <span class="item-detail"><em>${t("common.weight")}:</em> ${weight}</span>
+          ${description ? `<div class="item-detail-block"><em>${t("customInventory.description")}:</em>${escapeHtml(description)}</div>` : ""}
+        </div>
+        <button type="button" class="custom-item-edit-btn" data-custom-item-id="${customItemId}">${t("common.edit")}</button>
+      </div>`;
+
+  return `
+    <tr class="detail-row">
+      <td colspan="${colspan}">
+        <details ${editing ? "open" : ""}>
+          <summary>${editing ? t("common.edit") : t("common.details")}</summary>
+          ${body}
+        </details>
+      </td>
+    </tr>`;
+}

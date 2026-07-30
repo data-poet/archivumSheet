@@ -178,6 +178,9 @@ function _syncRangedCounterpart(meleeInstanceId, weaponId, materialId, isEquippe
     hit_points_modifier: 0,
     is_equipped: isEquipped,
     storedAt,
+    weapon_custom_name: null,
+    weapon_custom_description: null,
+    weapon_custom_effect: null,
   });
 }
 
@@ -205,6 +208,9 @@ export function addEquippedMelee(weaponId, materialId = null) {
     hit_points_modifier: 0,
     is_equipped: true,
     storedAt: null,
+    weapon_custom_name: null,
+    weapon_custom_description: null,
+    weapon_custom_effect: null,
   });
 
   _syncRangedCounterpart(instanceId, weaponId, materialId, true, null);
@@ -226,6 +232,9 @@ export function addStoredMelee(meleeId, materialId = null, storedAt = "backpack"
     hit_points_modifier: 0,
     is_equipped: false,
     storedAt,
+    weapon_custom_name: null,
+    weapon_custom_description: null,
+    weapon_custom_effect: null,
   });
 
   _syncRangedCounterpart(instanceId, meleeId, materialId, false, storedAt);
@@ -273,6 +282,40 @@ export function removeMelee(instanceId) {
     renderLists(selected, data);
     triggerAutoRun();
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIELD UPDATES (custom fields)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Commits all three custom fields at once — called only when the user
+ * presses "Salvar" in the custom-fields editor, never on individual
+ * keystrokes. Blank strings are normalized to null.
+ *
+ * Mirrors the values to the linked ranged counterpart (bidirectional
+ * lookup), same as hit_points_modifier/equip/storage state: a dual-use
+ * weapon is one physical item, so renaming it applies on both sides.
+ */
+export function saveMeleeCustomFields(instanceId, { name, description, effect }) {
+  const instance = findMeleeByInstanceId(instanceId);
+  if (!instance) return;
+
+  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
+
+  instance.weapon_custom_name = norm(name);
+  instance.weapon_custom_description = norm(description);
+  instance.weapon_custom_effect = norm(effect);
+
+  const linked = _findLinkedRanged(instance);
+  if (linked) {
+    linked.weapon_custom_name = instance.weapon_custom_name;
+    linked.weapon_custom_description = instance.weapon_custom_description;
+    linked.weapon_custom_effect = instance.weapon_custom_effect;
+  }
+
+  renderLists(selected, data);
+  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

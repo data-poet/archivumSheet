@@ -287,6 +287,7 @@ export const LABELS = {
     remove: "Remover",
     removed: "Removido",
     undo: "Desfazer",
+    edit: "Editar",
     customize: "Personalizar",
     customName: "Nome Personalizado",
     customDescription: "Descrição Personalizada",

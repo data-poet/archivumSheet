@@ -1516,13 +1516,17 @@ tr.spell-detail-row details[open] summary {
 
 .custom-fields-edit-btn,
 .custom-fields-save-btn,
-.custom-fields-cancel-btn {
+.custom-fields-cancel-btn,
+.custom-item-edit-btn,
+.custom-item-save-btn,
+.custom-item-cancel-btn {
   font-size: var(--fs-xs);
   padding: 3px 10px;
   min-height: unset;
 }
 
-.custom-fields-save-btn {
+.custom-fields-save-btn,
+.custom-item-save-btn {
   background: var(--color-accent, #4a6fa5);
   color: #fff;
 }

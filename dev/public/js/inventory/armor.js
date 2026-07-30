@@ -120,6 +120,9 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
     hit_points_modifier: 0,
     is_equipped: true,
     storedAt: null,
+    armor_custom_name: null,
+    armor_custom_description: null,
+    armor_custom_effect: null,
   });
 
   renderLists(selected, data);
@@ -141,6 +144,9 @@ export function addStoredArmor(armorId, materialId = null, storedAt = "backpack"
     hit_points_modifier: 0,
     is_equipped: false,
     storedAt,
+    armor_custom_name: null,
+    armor_custom_description: null,
+    armor_custom_effect: null,
   });
 
   renderLists(selected, data);
@@ -171,6 +177,29 @@ export function removeArmor(instanceId) {
     renderLists(selected, data);
     triggerAutoRun();
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIELD UPDATES (custom fields)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Commits all three custom fields at once — called only when the user
+ * presses "Salvar" in the custom-fields editor, never on individual
+ * keystrokes. Blank strings are normalized to null.
+ */
+export function saveArmorCustomFields(instanceId, { name, description, effect }) {
+  const instance = findArmorByInstanceId(instanceId);
+  if (!instance) return;
+
+  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
+
+  instance.armor_custom_name = norm(name);
+  instance.armor_custom_description = norm(description);
+  instance.armor_custom_effect = norm(effect);
+
+  renderLists(selected, data);
+  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

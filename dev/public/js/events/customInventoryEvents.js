@@ -3,7 +3,19 @@ import {
   updateCustomItemQuantity,
   removeCustomItem,
   moveCustomItem,
+  saveCustomItemFields,
 } from "../inventory/customInventory.js";
+import { state } from "../state.js";
+import { renderLists } from "../ui.js";
+import {
+  openCustomFieldsEditor,
+  closeCustomFieldsEditor,
+  readCustomItemEditorValues,
+} from "../ui/lists/renderUtils.js";
+
+function _renderAll() {
+  renderLists(state.selected, state.data, state.sheet);
+}
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -12,6 +24,39 @@ export function handleCustomInventoryClick(e) {
     removeCustomItem(e.target.dataset.customItemId);
     return true;
   }
+
+  if (e.target.classList.contains("custom-item-edit-btn")) {
+    openCustomFieldsEditor(e.target.dataset.customItemId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-item-cancel-btn")) {
+    closeCustomFieldsEditor(e.target.dataset.customItemId);
+    _renderAll();
+    return true;
+  }
+
+  if (e.target.classList.contains("custom-item-save-btn")) {
+    const customItemId = e.target.dataset.customItemId;
+    const values = readCustomItemEditorValues(customItemId);
+    if (!values) {
+      closeCustomFieldsEditor(customItemId);
+      _renderAll();
+      return true;
+    }
+
+    const ok = saveCustomItemFields(customItemId, values); // mutates + renders + runs engine if valid
+    if (ok) {
+      closeCustomFieldsEditor(customItemId);
+    }
+    // If invalid (blank name, negative weight/price, etc.), deliberately do
+    // NOT close the editor or re-render — a re-render would pull fresh markup
+    // from committed state and silently revert what the user just typed.
+    // Leaving the DOM untouched keeps their input in place so they can fix it.
+    return true;
+  }
+
   return false;
 }
 
