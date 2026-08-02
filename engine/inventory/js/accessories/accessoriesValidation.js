@@ -1,5 +1,14 @@
 const { VALID_STORED_AT } = require("./accessoriesConstants");
 
+const {
+  validateEnchantmentEntryShape,
+  validateEnchantmentEntryApplication,
+} = require("../shared/enchantmentsValidation.js");
+
+// enchantment_allowed_itens category for this item type — matches
+// SLOT_MAP's Portuguese keys convention used by armor
+const ACCESSORY_ITEM_CATEGORY = "Acessórios";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // VALIDATION
 // ─────────────────────────────────────────────────────────────────────────────
@@ -61,6 +70,52 @@ function validateAccessoryInstance(instance, index) {
     }
   }
 
+  // enchantments — optional; unlimited count, no slot system
+  if (instance.enchantments !== undefined) {
+    if (!Array.isArray(instance.enchantments)) {
+      errors.push(`${prefix}: enchantments must be an array when present`);
+    } else {
+      instance.enchantments.forEach((entry, entryIndex) => {
+        errors.push(
+          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
+        );
+      });
+    }
+  }
+
+  return errors;
+}
+
+/**
+ * DB-dependent enchantment checks (unknown ids, allowed_itens, target
+ * existence, value/step alignment) — separate pass from the shape-only
+ * checks above, same split armor/materials would need.
+ */
+function validateAccessoryEnchantments(
+  accessoryInventory,
+  enchantmentsDb,
+  targetsDb,
+) {
+  const errors = [];
+
+  accessoryInventory.forEach((instance, index) => {
+    const prefix = `accessoryInventory[${index}]`;
+    const entries = instance.enchantments || [];
+
+    entries.forEach((entry, entryIndex) => {
+      errors.push(
+        ...validateEnchantmentEntryApplication(
+          entry,
+          enchantmentsDb,
+          targetsDb,
+          ACCESSORY_ITEM_CATEGORY,
+          entryIndex,
+          prefix,
+        ),
+      );
+    });
+  });
+
   return errors;
 }
 
@@ -116,4 +171,6 @@ function validateAccessoryEquipLimits(instances, db) {
 module.exports = {
   validateAccessoryInstance,
   validateAccessoryEquipLimits,
+  validateAccessoryEnchantments,
+  ACCESSORY_ITEM_CATEGORY,
 };

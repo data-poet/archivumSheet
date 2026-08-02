@@ -37,8 +37,28 @@ function computeActions({ category, base_value, level, isTrainedWithMaster }) {
  * }
  *
  * advantages = { "ADV-055": { ... }, ... }  (keyed by advantage_id)
+ *
+ * enchantmentSkillGrants = { "SKILL-000": [0, 2] }  — one array entry per
+ *   equipped "Adicionar Perícia" enchantment targeting this skill, each the
+ *   extraPoints chosen above the granted attribute-based level. Multiple
+ *   grants don't stack — only the single highest-level candidate is used
+ *   (collision logic below), same as it would compete against the player's
+ *   own purchase.
+ *
+ * enchantmentSkillModifiers = { "SKILL-000": 2 }  — summed extraPoints from
+ *   equipped fortify_skill(+)/weaken_skill(-) enchantments targeting this
+ *   skill. Only takes effect on a skill that ends up known one way or
+ *   another (player-purchased or enchantment-granted) — per design, a
+ *   fortify/weaken enchantment on a skill nobody has is a no-op, it does
+ *   NOT create the skill on its own.
  */
-function buildSkills(selectedSkills = {}, character = {}, advantages = {}) {
+function buildSkills(
+  selectedSkills = {},
+  character = {},
+  advantages = {},
+  enchantmentSkillGrants = {},
+  enchantmentSkillModifiers = {},
+) {
   const filePath = path.join(process.cwd(), "data", "db_skills.csv");
   const rows = loadCSV(filePath);
 
@@ -53,28 +73,82 @@ function buildSkills(selectedSkills = {}, character = {}, advantages = {}) {
     const id = row.skill_id;
 
     const selected = selectedSkills[id];
-    if (!selected) continue;
+    const grants = enchantmentSkillGrants[id] || [];
+    const hasEnchantmentModifier = id in enchantmentSkillModifiers;
+    const enchantmentModifier = enchantmentSkillModifiers[id] || 0;
+
+    // Neither purchased nor granted — a fortify/weaken enchantment alone
+    // never creates an entry (no-op, per design).
+    if (!selected && grants.length === 0) continue;
 
     const attribute = row.skill_base_attribute || "DX";
 
     const attributeBase =
       primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
 
-    const base_value = Number(selected.base_value ?? 0);
-    const modifier = Number(selected.modifier ?? 0);
+    // For a granted skill's base_value specifically, use the FINAL
+    // (post-enchantment) attribute value, not the pre-enchantment
+    // attributeBase above (which stays as-is, unchanged, for cost and
+    // relative_level — those must not be inflated by equipment). This
+    // matches how spells already compute their grant base
+    // (character.primary_attributes.IQ.value) and reflects "the player's
+    // value" as literally shown on the sheet, including any ST/DX/IQ
+    // fortification from other equipped items.
+    const grantAttributeBase = primary?.[attribute]?.value ?? attributeBase;
 
-    // Player-defined skill level
-    const level = base_value + modifier;
+    // ── Determine the winning source: player's own paid purchase vs the
+    //    best equipped "Adicionar Perícia" grant. Whichever produces the
+    //    higher pre-fortify level wins; a tie prefers the player's paid
+    //    entry (don't forfeit already-spent points on a tie). Multiple
+    //    grants targeting the same skill don't stack — only the single
+    //    best one is considered, same as it competes against the player's
+    //    own purchase. ─────────────────────────────────────────────────────
 
-    // Relative level = skill vs attribute
+    const playerBaseValue = selected ? Number(selected.base_value ?? 0) : null;
+    const playerModifier = selected ? Number(selected.modifier ?? 0) : 0;
+    const playerLevel = selected ? playerBaseValue + playerModifier : -Infinity;
+
+    let bestGrantExtra = null;
+    let bestGrantLevel = -Infinity;
+    for (const extra of grants) {
+      const extraNum = Number(extra || 0);
+      const grantLevel = grantAttributeBase + extraNum;
+      if (grantLevel > bestGrantLevel) {
+        bestGrantLevel = grantLevel;
+        bestGrantExtra = extraNum;
+      }
+    }
+
+    let base_value, modifier, is_enchantment;
+    if (selected && (grants.length === 0 || playerLevel >= bestGrantLevel)) {
+      base_value = playerBaseValue;
+      modifier = playerModifier;
+      is_enchantment = false;
+    } else {
+      base_value = grantAttributeBase;
+      modifier = bestGrantExtra;
+      is_enchantment = true;
+    }
+
+    // Level before any fortify/weaken enchantment_modifier — this is what
+    // character points are spent on, so cost is computed from this, not
+    // the final (possibly magically-boosted) level.
+    const preEnchantmentLevel = base_value + modifier;
+
+    // Final effective level — what's actually rolled against in play.
+    const level = preEnchantmentLevel + enchantmentModifier;
+
+    // Relative level = skill vs attribute (uses the final effective level)
     const relative = level - attributeBase;
 
-    const cost = getSkillCost({
-      attribute,
-      base: attributeBase,
-      level,
-      difficulty: row.skill_difficulty,
-    });
+    const cost = is_enchantment
+      ? 0
+      : getSkillCost({
+          attribute,
+          base: attributeBase,
+          level: preEnchantmentLevel,
+          difficulty: row.skill_difficulty,
+        });
 
     // ── Parry ────────────────────────────────────────────────────────────────
     const parryModifier = Number(row.skill_parry_modifier || 0);
@@ -84,10 +158,13 @@ function buildSkills(selectedSkills = {}, character = {}, advantages = {}) {
     }
 
     // ── isTrainedWithMaster ──────────────────────────────────────────────────
+    // Preserved from the player's own selection whenever one exists, even
+    // if an enchantment grant currently wins on level — it's a
+    // player-declared training style, not tied to which source is winning.
     const category = row.skill_category || "";
     const isEligible = MASTER_ELIGIBLE_CATEGORIES.has(category);
     const isTrainedWithMaster = isEligible
-      ? Boolean(selected.isTrainedWithMaster ?? false)
+      ? Boolean(selected?.isTrainedWithMaster ?? false)
       : false;
 
     // ── Actions ──────────────────────────────────────────────────────────────
@@ -107,6 +184,8 @@ function buildSkills(selectedSkills = {}, character = {}, advantages = {}) {
       attribute_base: attributeBase,
       base_value,
       modifier,
+      enchantment_modifier: enchantmentModifier,
+      has_enchantment_modifier: hasEnchantmentModifier,
       value: level,
 
       relative_level: relative,
@@ -117,6 +196,7 @@ function buildSkills(selectedSkills = {}, character = {}, advantages = {}) {
       isTrainedWithMaster,
       actions,
 
+      is_enchantment,
       points: cost,
     };
 

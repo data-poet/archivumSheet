@@ -14,8 +14,9 @@ function buildAttribute(input = {}, costPerLevel) {
   const base_value = input.base_value ?? input.value ?? DEFAULT_VALUE;
   const race_modifier = input.race_modifier ?? 0;
   const modifier = input.modifier ?? 0;
+  const enchantment_modifier = input.enchantment_modifier ?? 0;
 
-  const value = base_value + race_modifier + modifier;
+  const value = base_value + race_modifier + modifier + enchantment_modifier;
 
   const difference = base_value - DEFAULT_VALUE;
   const cost = difference * costPerLevel;
@@ -25,6 +26,8 @@ function buildAttribute(input = {}, costPerLevel) {
       base_value,
       race_modifier,
       modifier,
+      enchantment_modifier,
+      has_enchantment_modifier: input.has_enchantment_modifier ?? false,
       value,
       points: cost,
     },

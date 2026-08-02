@@ -12,6 +12,11 @@ function buildCharacter({
   raceModifiers = {},
   innateAdvantageIds = [],
   innateDisadvantageIds = [],
+  enchantmentAttributeModifiers = {},
+  enchantmentAdvantageIds = [],
+  enchantmentDisadvantageIds = [],
+  enchantmentSkillGrants = {},
+  enchantmentSkillModifiers = {},
 }) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -23,6 +28,11 @@ function buildCharacter({
    * - primary attributes
    * - traits
    * - base costs
+   *
+   * enchantmentAttributeModifiers/enchantmentAdvantageIds/
+   * enchantmentDisadvantageIds come from collectEquippedEnchantments() on
+   * the resolved equipped items — computed by buildSheet.js before this
+   * call, since equipped items aren't known until inventory is resolved.
    */
 
   const primary = buildCharacterPrimary({
@@ -32,6 +42,9 @@ function buildCharacter({
     raceModifiers,
     innateAdvantageIds,
     innateDisadvantageIds,
+    enchantmentAttributeModifiers,
+    enchantmentAdvantageIds,
+    enchantmentDisadvantageIds,
   });
 
   /**
@@ -61,6 +74,7 @@ function buildCharacter({
    *
    * - trait effects
    * - encumbrance penalties
+   * - equipped-enchantment attribute modifiers and skill grants/modifiers
    */
 
   const secondary = buildCharacterSecondary({
@@ -75,6 +89,10 @@ function buildCharacter({
     effects,
 
     advantages: primary.advantages,
+
+    enchantmentAttributeModifiers,
+    enchantmentSkillGrants,
+    enchantmentSkillModifiers,
   });
 
   /**

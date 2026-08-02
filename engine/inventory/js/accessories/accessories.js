@@ -7,12 +7,18 @@ const { VALID_STORED_AT } = require("./accessoriesConstants.js");
 const {
   validateAccessoryInstance,
   validateAccessoryEquipLimits,
+  validateAccessoryEnchantments,
 } = require("./accessoriesValidation.js");
 
 const {
   resolveAccessoryItem,
   calculateCarriedAccessoryValue,
 } = require("./accessoriesResolver.js");
+
+const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
+const {
+  getEnchantmentTargetsDB,
+} = require("../shared/enchantmentTargetsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ACCESSORIES DB
@@ -104,6 +110,23 @@ function buildAccessorySlots(accessoryInventory = []) {
     );
   }
 
+  // ── VALIDATE ENCHANTMENTS ────────────────────────────────────────────────
+
+  const enchantmentsDb = getEnchantmentsDB();
+  const targetsDb = getEnchantmentTargetsDB();
+
+  const enchantmentErrors = validateAccessoryEnchantments(
+    accessoryInventory,
+    enchantmentsDb,
+    targetsDb,
+  );
+
+  if (enchantmentErrors.length > 0) {
+    throw new Error(
+      `[buildAccessorySlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
+    );
+  }
+
   // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const equipped = buildStorageBucket();
@@ -113,7 +136,12 @@ function buildAccessorySlots(accessoryInventory = []) {
 
   for (const instance of accessoryInventory) {
     const accessory = accessoriesDb[instance.accessory_id];
-    const resolved = resolveAccessoryItem(instance, accessory);
+    const resolved = resolveAccessoryItem(
+      instance,
+      accessory,
+      enchantmentsDb,
+      targetsDb,
+    );
 
     if (instance.is_equipped) {
       equipped.push(resolved);
@@ -159,4 +187,6 @@ module.exports = {
   buildAccessorySlots,
   VALID_STORED_AT,
   _getAccessoriesDB: getAccessoriesDB,
+  _getEnchantmentsDB: getEnchantmentsDB,
+  _getEnchantmentTargetsDB: getEnchantmentTargetsDB,
 };

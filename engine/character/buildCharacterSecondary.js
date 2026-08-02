@@ -1,6 +1,19 @@
 const { buildSecondaryAttributes } = require("./js/attributes/secondary");
 const { buildSkills } = require("./js/skills/skills");
 
+const SECONDARY_ATTRS = [
+  "HP",
+  "Mana",
+  "Toxicity",
+  "Will",
+  "Vision",
+  "Hearing",
+  "Smell",
+  "BasicSpeed",
+  "Movement",
+  "Dodge",
+];
+
 function buildCharacterSecondary({
   primary_attributes,
   secondaryAttributes = {},
@@ -8,16 +21,32 @@ function buildCharacterSecondary({
   carry_weight = null,
   effects = {},
   advantages = {},
+  enchantmentAttributeModifiers = {},
+  enchantmentSkillGrants = {},
+  enchantmentSkillModifiers = {},
 }) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
    * 1. SECONDARY ATTRIBUTES
    * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Merge equipped-enchantment modifiers into each secondary attribute's
+   * config before resolving — same has_enchantment_modifier presence-flag
+   * pattern as buildCharacterPrimary uses for ST/DX/IQ/HT.
    */
+
+  const secondaryWithEnchantments = {};
+  for (const attr of SECONDARY_ATTRS) {
+    secondaryWithEnchantments[attr] = {
+      ...(secondaryAttributes[attr] || {}),
+      enchantment_modifier: enchantmentAttributeModifiers[attr] ?? 0,
+      has_enchantment_modifier: attr in enchantmentAttributeModifiers,
+    };
+  }
 
   const secondaryResult = buildSecondaryAttributes(
     primary_attributes,
-    secondaryAttributes,
+    secondaryWithEnchantments,
     carry_weight,
     effects,
   );
@@ -51,7 +80,13 @@ function buildCharacterSecondary({
       )
     : skills;
 
-  const skillsResult = buildSkills(normalizedSkills, { primary_attributes }, advantages);
+  const skillsResult = buildSkills(
+    normalizedSkills,
+    { primary_attributes },
+    advantages,
+    enchantmentSkillGrants,
+    enchantmentSkillModifiers,
+  );
 
   /**
    * ───────────────────────────────────────────────────────────────────────────

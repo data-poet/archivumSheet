@@ -1,3 +1,7 @@
+const {
+  resolveItemEnchantments,
+} = require("../shared/enchantmentsResolver.js");
+
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
@@ -11,10 +15,28 @@ function round2(value) {
  * resolved entry.
  *
  * Accessories have no weight and no DB-driven price — price is entirely
- * user-input, since it is highly variable per item.
+ * user-input, since it is highly variable per item. Enchantments DO have a
+ * DB-driven price, added on top of the user-input price.
+ *
+ * Enchantment price is intrinsic to the item and counts toward total_value
+ * regardless of equip state — an enchanted ring is worth more whether it's
+ * worn or in the backpack. Whether the enchantment's MECHANICAL effect
+ * applies while unequipped is a separate, Phase 3 concern.
  */
-function resolveAccessoryItem(instance, accessory) {
+function resolveAccessoryItem(
+  instance,
+  accessory,
+  enchantmentsDb = {},
+  targetsDb = {},
+) {
   const price = Number(instance.price) || 0;
+
+  const { resolved: enchantments, total_price: enchantments_total_price } =
+    resolveItemEnchantments(
+      instance.enchantments || [],
+      enchantmentsDb,
+      targetsDb,
+    );
 
   return {
     // DB BASE
@@ -24,7 +46,9 @@ function resolveAccessoryItem(instance, accessory) {
 
     // RUNTIME
     price,
-    total_value: round2(price),
+    enchantments,
+    enchantments_total_price,
+    total_value: round2(price + enchantments_total_price),
 
     accessory_custom_name: instance.accessory_custom_name?.trim() || null,
     accessory_custom_description:

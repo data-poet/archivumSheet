@@ -4,6 +4,9 @@ const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
 const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
 const { computeWeaponDamage } = require("./inventory/js/shared/weaponDamage");
+const {
+  collectEquippedEnchantments,
+} = require("./character/js/enchantments/collectEquippedEnchantments");
 
 function sumObjectValues(obj = {}) {
   return Object.values(obj).reduce(
@@ -65,6 +68,24 @@ function buildSheet({
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
+   * 2.5 EQUIPPED ENCHANTMENT EFFECTS
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Bridges the inventory layer into the character layer: reads ONLY
+   * equipped items' resolved enchantments (Phase 1 scope: accessories —
+   * armor is Phase 2) and turns them into attribute modifiers,
+   * advantage/disadvantage grants, and skill/spell grants+modifiers. Must
+   * happen after inventory is built (equipped items aren't known before
+   * that) and before the final character build (which needs to consume
+   * this).
+   */
+
+  const equippedAccessories =
+    inventoryResult.inventory.accessories?.equipped || [];
+  const enchantmentEffects = collectEquippedEnchantments(equippedAccessories);
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
    * 3. FINAL CHARACTER BUILD
    * ───────────────────────────────────────────────────────────────────────────
    */
@@ -79,6 +100,11 @@ function buildSheet({
     raceModifiers: race.modifiers || {},
     innateAdvantageIds: race.innate_advantage_ids || [],
     innateDisadvantageIds: race.innate_disadvantage_ids || [],
+    enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
+    enchantmentAdvantageIds: enchantmentEffects.advantageIds,
+    enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
+    enchantmentSkillGrants: enchantmentEffects.skillGrants,
+    enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
   });
 
   const characterData = characterResult.character;
@@ -164,6 +190,8 @@ function buildSheet({
   const resolvedSpells = resolveAll({
     spells: character.spells,
     character: { ...characterData, iq },
+    enchantmentSpellGrants: enchantmentEffects.spellGrants,
+    enchantmentSpellModifiers: enchantmentEffects.spellModifiers,
   });
 
   /**

@@ -16,6 +16,8 @@ function resolveSecondary({
   base_value,
   bought = 0,
   modifier = 0,
+  enchantment_modifier = 0,
+  has_enchantment_modifier = false,
   maxBought = 5,
   step = 1,
 }) {
@@ -26,8 +28,10 @@ function resolveSecondary({
     base_value,
     bought: safeBought,
     modifier,
+    enchantment_modifier,
+    has_enchantment_modifier,
     final_base_value,
-    value: final_base_value + modifier,
+    value: final_base_value + modifier + enchantment_modifier,
     points: safeBought * 5,
   };
 }
@@ -164,6 +168,9 @@ function buildSecondaryAttributes(
     maxBought: 0,
     bought: 0,
     modifier: config.Movement?.modifier ?? 0,
+    enchantment_modifier: config.Movement?.enchantment_modifier ?? 0,
+    has_enchantment_modifier:
+      config.Movement?.has_enchantment_modifier ?? false,
   });
 
   let dodgeBase = Math.floor(result.Movement.value + 4);
