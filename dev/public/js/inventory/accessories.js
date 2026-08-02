@@ -3,8 +3,14 @@ import { fetchAccessories } from "../api.js";
 import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
+import { ACCESSORY_ITEM_CATEGORY } from "../shared/constants.js";
 import { nextAccessoryInstanceId } from "../store/instanceId.js";
 import { offerUndo } from "../ui/undo.js";
+import {
+  addEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "./enchantments.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -104,6 +110,7 @@ function _newAccessoryInstance(accessoryId, price, isEquipped, storedAt) {
     accessory_custom_name: null,
     accessory_custom_description: null,
     accessory_custom_effect: null,
+    enchantments: [],
   };
 }
 
@@ -180,6 +187,7 @@ export function removeAccessory(instanceId) {
   selected.accessories = selected.accessories.filter(
     (a) => a._instanceId !== instanceId,
   );
+  clearEnchantmentAddFormSelection(instanceId);
   updateAccessoryEquipOptionAvailability();
   renderLists(selected, data);
   triggerAutoRun();
@@ -224,6 +232,49 @@ export function saveAccessoryCustomFields(instanceId, { name, description, effec
 
   renderLists(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+//
+// Thin accessory-specific wrappers around the generic entry helpers in
+// enchantments.js — same relationship saveAccessoryCustomFields has with
+// customFieldsBlock. instance.enchantments defaults to [] defensively since
+// accessories saved before this feature existed won't have the field.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
+  const instance = findAccessoryByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  renderLists(selected, data, state.sheet);
+  triggerAutoRun();
+}
+
+export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
+  const instance = findAccessoryByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  renderLists(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderLists(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

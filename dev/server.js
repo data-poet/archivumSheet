@@ -156,6 +156,13 @@ app.get("/api/accessories", (req, res) => {
   res.json(data);
 });
 
+app.get("/api/enchantments", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_magic_enchantments.csv"),
+  );
+  res.json(data);
+});
+
 /* -----------------------
    CHARACTER BUILDER
 ------------------------ */

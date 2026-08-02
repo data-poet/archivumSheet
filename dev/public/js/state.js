@@ -18,6 +18,7 @@ export const state = {
     survivalGear: [],
     accessories: [],
     customInventory: [],
+    enchantments: [],
   },
 
   // ===== USER SELECTION =====

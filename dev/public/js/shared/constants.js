@@ -22,5 +22,11 @@ export const ARMOR_SLOTS = [
   "Pés",
 ];
 
+// ===== ENCHANTMENT allowed_itens categories =====
+// Matches enchantment_allowed_itens values from db_magic_enchantments.csv —
+// armor pieces reuse ARMOR_SLOTS' Portuguese keys above, accessories get
+// their own category since they aren't slotted the same way.
+export const ACCESSORY_ITEM_CATEGORY = "Acessórios";
+
 // ===== DEFAULT MATERIAL =====
 export const DEFAULT_MATERIAL_ID = "MAT-000";

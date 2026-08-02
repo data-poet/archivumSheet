@@ -6,8 +6,11 @@ export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
     const mod  = Number(document.getElementById(`${attr}_mod`).value)  || 0;
-    const raceMod =
-      state.sheet?.character?.primary_attributes?.[attr]?.race_modifier ?? 0;
+
+    const sheetAttr = state.sheet?.character?.primary_attributes?.[attr];
+    const raceMod = sheetAttr?.race_modifier ?? 0;
+    const enchantmentMod = sheetAttr?.enchantment_modifier ?? 0;
+    const hasEnchantment = sheetAttr?.has_enchantment_modifier ?? false;
 
     const raceCell = document.getElementById(`${attr}_race`);
     if (raceCell) {
@@ -15,7 +18,25 @@ export function updateActualValues() {
       raceCell.className = `col-num race-mod-cell${raceMod !== 0 ? " race-mod-active" : ""}`;
     }
 
-    document.getElementById(`${attr}_actual`).textContent = base + raceMod + mod;
+    // Only shown when an equipped enchanted item actually touches this
+    // attribute — presence-based (has_enchantment_modifier), not just
+    // "nonzero", since the engine already distinguishes the two (a +2/-2
+    // pair from two different items still counts as present).
+    const enchantmentCell = document.getElementById(`${attr}_enchantment`);
+    if (enchantmentCell) {
+      enchantmentCell.textContent = hasEnchantment
+        ? enchantmentMod > 0
+          ? `+${enchantmentMod}`
+          : `${enchantmentMod}`
+        : "—";
+      enchantmentCell.className = `col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}`;
+    }
+
+    // Reads enchantment_modifier from the engine (state.sheet) — there's no
+    // DOM input for it, unlike modifier/base, since it's entirely
+    // equipment-driven. The engine is the source of truth for this term.
+    document.getElementById(`${attr}_actual`).textContent =
+      base + raceMod + mod + enchantmentMod;
   });
 }
 
@@ -35,6 +56,14 @@ export function renderSecondaryAttributes(sheet) {
       const valueDisplay = isBasicSpeed ? Number(data.value).toFixed(2)      : data.value;
 
       const modifierStep = isBasicSpeed ? 0.5 : 1;
+
+      const enchantmentMod = data.enchantment_modifier ?? 0;
+      const hasEnchantment = data.has_enchantment_modifier ?? false;
+      const enchantmentDisplay = hasEnchantment
+        ? enchantmentMod > 0
+          ? `+${enchantmentMod}`
+          : `${enchantmentMod}`
+        : "—";
 
       const boughtCell = isMovement
         ? `<td>—</td>`
@@ -80,6 +109,8 @@ export function renderSecondaryAttributes(sheet) {
               </div>
             </div>
           </td>
+
+          <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}">${enchantmentDisplay}</td>
 
           <td>${valueDisplay}</td>
         </tr>

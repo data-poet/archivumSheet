@@ -88,6 +88,10 @@ export async function fetchAccessories() {
   return getJSON("/api/accessories");
 }
 
+export async function fetchEnchantments() {
+  return getJSON("/api/enchantments");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

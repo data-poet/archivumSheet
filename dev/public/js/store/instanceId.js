@@ -17,6 +17,7 @@ let _ammoContainerCounter = 1;
 let _looseAmmoCounter = 1;
 let _alchemyCounter = 1;
 let _accessoryCounter = 1;
+let _enchantmentCounter = 1;
 
 export function nextArmorInstanceId() {
   return `armor-inst-${_armorCounter++}`;
@@ -54,6 +55,12 @@ export function nextAccessoryInstanceId() {
   return `accessory-inst-${_accessoryCounter++}`;
 }
 
+/** Generic across equipment types — an enchantment application entry isn't
+ *  its own inventory item, just a sub-entry inside instance.enchantments. */
+export function nextEnchantmentInstanceId() {
+  return `enchantment-inst-${_enchantmentCounter++}`;
+}
+
 /**
  * Reset all counters — used only during sheet import so imported
  * instance IDs don't collide with freshly generated ones.
@@ -68,4 +75,5 @@ export function resetInstanceCounters() {
   _looseAmmoCounter = 1;
   _alchemyCounter = 1;
   _accessoryCounter = 1;
+  _enchantmentCounter = 1;
 }

@@ -23,7 +23,9 @@ export function renderAdvantages(selected, data, sheet) {
             const sheetEntry = advMap[id];
             const name = adv?.advantage_box_name ?? sheetEntry?.name ?? id;
             const isInnate = sheetEntry?.is_race_innate ?? false;
-            const cost = isInnate ? 0 : (adv?.advantage_cost ?? "—");
+            const isEnchantment = sheetEntry?.is_enchantment ?? false;
+            const cost =
+              isInnate || isEnchantment ? 0 : (adv?.advantage_cost ?? "—");
             const type = adv?.advantage_type ?? "—";
             const book = adv?.advantage_source_book ?? "—";
             const page = adv?.advantage_source_page ?? "—";
@@ -32,13 +34,19 @@ export function renderAdvantages(selected, data, sheet) {
             const innateTag = isInnate
               ? `<span class="trait-innate-tag">${t("character.innate")}</span>`
               : "";
-            const actionCell = isInnate
-              ? `<td class="col-action"></td>`
-              : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">✕</button></td>`;
+            const enchantmentTag = isEnchantment
+              ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
+              : "";
+            // Item-granted entries have nothing in the player's own
+            // selection to remove — same treatment as innate.
+            const actionCell =
+              isInnate || isEnchantment
+                ? `<td class="col-action"></td>`
+                : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">✕</button></td>`;
 
             return `
-          <tr ${isInnate ? 'class="trait-innate"' : ""}>
-            <td>${name}${innateTag}</td>
+          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
+            <td>${name}${innateTag}${enchantmentTag}</td>
             <td class="col-num">${cost}</td>
             <td>${type}</td>
             ${actionCell}
@@ -80,7 +88,9 @@ export function renderDisadvantages(selected, data, sheet) {
             const sheetEntry = disMap[id];
             const name = dis?.disadvantage_box_name ?? sheetEntry?.name ?? id;
             const isInnate = sheetEntry?.is_race_innate ?? false;
-            const cost = isInnate ? 0 : (dis?.disadvantage_cost ?? "—");
+            const isEnchantment = sheetEntry?.is_enchantment ?? false;
+            const cost =
+              isInnate || isEnchantment ? 0 : (dis?.disadvantage_cost ?? "—");
             const type = dis?.disadvantage_type ?? "—";
             const book = dis?.disadvantage_source_book ?? "—";
             const page = dis?.disadvantage_source_page ?? "—";
@@ -89,13 +99,17 @@ export function renderDisadvantages(selected, data, sheet) {
             const innateTag = isInnate
               ? `<span class="trait-innate-tag">${t("character.innate")}</span>`
               : "";
-            const actionCell = isInnate
-              ? `<td class="col-action"></td>`
-              : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">✕</button></td>`;
+            const enchantmentTag = isEnchantment
+              ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
+              : "";
+            const actionCell =
+              isInnate || isEnchantment
+                ? `<td class="col-action"></td>`
+                : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">✕</button></td>`;
 
             return `
-          <tr ${isInnate ? 'class="trait-innate"' : ""}>
-            <td>${name}${innateTag}</td>
+          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
+            <td>${name}${innateTag}${enchantmentTag}</td>
             <td class="col-num">${cost}</td>
             <td>${type}</td>
             ${actionCell}

@@ -1,8 +1,21 @@
 import { t } from "../../localization/pt-BR.js";
 import { setHTML } from "../../shared/dom.js";
-import { STORAGE_LABELS } from "../../shared/constants.js";
-import { equippedMoveSelect, storageOptions } from "../../shared/equipmentSelectors.js";
-import { customFieldsEquippedDetail, customFieldsDetailRow } from "./renderUtils.js";
+import {
+  STORAGE_LABELS,
+  ACCESSORY_ITEM_CATEGORY,
+} from "../../shared/constants.js";
+import {
+  equippedMoveSelect,
+  storageOptions,
+} from "../../shared/equipmentSelectors.js";
+import {
+  customFieldsEquippedDetail,
+  customFieldsDetailRow,
+} from "./renderUtils.js";
+import {
+  enchantmentsEquippedDetail,
+  enchantmentsDetailRow,
+} from "./renderEnchantments.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -30,11 +43,25 @@ function displayName(inst, record) {
   return inst.accessory_custom_name || record.accessory_name;
 }
 
+// Look up a resolved accessory from the engine output by instanceId —
+// mirrors resolvedArmor/resolvedMelee in their respective render files.
+function resolvedAccessory(sheet, instanceId) {
+  const inv = sheet?.inventory?.accessories;
+  if (!inv) return null;
+
+  for (const bucket of [inv.equipped, inv.stash, inv.camp, inv.backpack]) {
+    const found = (bucket || []).find((a) => a._instanceId === instanceId);
+    if (found) return found;
+  }
+
+  return null;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EQUIPPED ACCESSORIES
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderEquippedAccessories(selected, data) {
+export function renderEquippedAccessories(selected, data, sheet) {
   const equipped = selected.accessories.filter((a) => a.is_equipped);
 
   if (equipped.length === 0) {
@@ -47,15 +74,18 @@ export function renderEquippedAccessories(selected, data) {
 
   setHTML(
     "accessorySlots",
-    equipped.map((inst) => renderEquippedAccessorySlot(inst, data)).join(""),
+    equipped
+      .map((inst) => renderEquippedAccessorySlot(inst, data, sheet))
+      .join(""),
   );
 }
 
-function renderEquippedAccessorySlot(inst, data) {
+function renderEquippedAccessorySlot(inst, data, sheet) {
   const record = accessoryRecord(inst.accessory_id, data);
   if (!record) return "";
 
   const instanceId = inst._instanceId;
+  const resolved = resolvedAccessory(sheet, instanceId);
 
   return `
     <div class="equipped-slot-grid" data-instance-id="${instanceId}">
@@ -84,6 +114,12 @@ function renderEquippedAccessorySlot(inst, data) {
       description: inst.accessory_custom_description,
       effect: inst.accessory_custom_effect,
     })}
+    ${enchantmentsEquippedDetail({
+      instanceId,
+      entries: inst.enchantments || [],
+      itemCategory: ACCESSORY_ITEM_CATEGORY,
+      resolvedEntries: resolved?.enchantments,
+    })}
   `;
 }
 
@@ -91,15 +127,15 @@ function renderEquippedAccessorySlot(inst, data) {
 // STORED ACCESSORIES
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function renderStoredAccessories(selected, data) {
+export function renderStoredAccessories(selected, data, sheet) {
   const stored = selected.accessories.filter((a) => !a.is_equipped);
   const sections = ["backpack", "stash", "camp"]
-    .map((loc) => renderStorageSection(loc, stored, selected, data))
+    .map((loc) => renderStorageSection(loc, stored, selected, data, sheet))
     .join("");
   setHTML("accessoryStorageList", sections);
 }
 
-function renderStorageSection(location, stored, selected, data) {
+function renderStorageSection(location, stored, selected, data, sheet) {
   const accessories = stored.filter((a) => a.storedAt === location);
 
   let bodyRows;
@@ -113,6 +149,7 @@ function renderStorageSection(location, stored, selected, data) {
 
         const instanceId = inst._instanceId;
         const atLimit = isAtLimit(inst.accessory_id, selected, data);
+        const resolved = resolvedAccessory(sheet, instanceId);
 
         return `
         <tr data-instance-id="${instanceId}">
@@ -148,6 +185,12 @@ function renderStorageSection(location, stored, selected, data) {
           name: inst.accessory_custom_name,
           description: inst.accessory_custom_description,
           effect: inst.accessory_custom_effect,
+        })}
+        ${enchantmentsDetailRow(4, {
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: ACCESSORY_ITEM_CATEGORY,
+          resolvedEntries: resolved?.enchantments,
         })}
         `;
       })

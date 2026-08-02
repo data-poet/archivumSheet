@@ -198,6 +198,7 @@ export const LABELS = {
     noRace: "Nenhuma",
     raceModifiers: "Modificadores Raciais",
     innate: "Inato",
+    enchanted: "Encantado",
     pointsTitle: "Pontos",
     startingPoints: "Pontos Iniciais",
     experiencePoints: "Pontos de Experiência",
@@ -236,6 +237,7 @@ export const LABELS = {
     diff: "Dificuldade",
     base: "Base",
     mod: "Mod",
+    enchantment: "Encantamento",
     final: "NH Final",
     aptitude: "Aptidão",
     school: "Escola",
@@ -383,6 +385,17 @@ export const LABELS = {
     addAccessory: "Adicionar Acessório",
     accessory: "Acessório",
     limitReached: "Limite de uso equipado atingido para este acessório",
+  },
+
+  // ── Enchantments (Phase 1 pilot — accessories only) ───────────────────────
+  enchantments: {
+    title: "Encantamentos",
+    type: "Tipo de Encantamento",
+    target: "Alvo",
+    value: "Valor",
+    extraPoints: "Pontos Extras",
+    noneAttached: "Nenhum encantamento aplicado.",
+    noneAvailable: "Nenhum encantamento disponível para este item.",
   },
 
   // ── Custom (user-defined) inventory ───────────────────────────────────────

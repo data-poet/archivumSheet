@@ -10,12 +10,18 @@ import {
   saveAccessoryCustomFields,
   findAccessoryByInstanceId,
   updateAccessoryEquipOptionAvailability,
+  addAccessoryEnchantment,
+  removeAccessoryEnchantment,
 } from "../inventory/accessories.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
   readCustomFieldsEditorValues,
 } from "../ui/lists/renderUtils.js";
+import {
+  setEnchantmentAddFormSelection,
+  setEnchantmentAddFormTargetFilter,
+} from "../inventory/enchantments.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
 
 const data = state.data;
@@ -43,6 +49,35 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
       mutateAndRenderFn,
     );
   }
+}
+
+/**
+ * Reads the not-yet-committed enchantment "add" mini-form's current values
+ * straight out of the DOM (uncontrolled inputs — nothing writes to state
+ * until "Adicionar" is pressed, same spirit as readCustomFieldsEditorValues).
+ * Returns null if the form isn't found or has no type selected.
+ */
+function _readEnchantmentAddFormParams(instanceId) {
+  const form = document.querySelector(
+    `.enchantment-add-form[data-instance-id="${instanceId}"]`,
+  );
+  if (!form) return null;
+
+  const enchantmentId = form.querySelector(".enchantment-add-select")?.value;
+  if (!enchantmentId) return null;
+
+  const valueEl = form.querySelector(".enchantment-add-value");
+  const targetEl = form.querySelector(".enchantment-add-target");
+  const extraPointsEl = form.querySelector(".enchantment-add-extra-points");
+
+  return {
+    enchantmentId,
+    value: valueEl ? parseInt(valueEl.value, 10) : undefined,
+    target: targetEl ? targetEl.value : undefined,
+    extraPoints: extraPointsEl
+      ? parseInt(extraPointsEl.value, 10) || 0
+      : undefined,
+  };
 }
 
 // ─── Click ────────────────────────────────────────────────────────────────────
@@ -109,6 +144,35 @@ export function handleAccessoryClick(e) {
     return true;
   }
 
+  // ── Enchantments: remove / add ─────────────────────────────────────────────
+  // Generic .enchantment-* classes rendered by renderEnchantments.js; same
+  // ownership-check pattern as the custom-fields buttons above, so armor
+  // (Phase 2) can safely reuse the same block/button classes.
+
+  if (e.target.classList.contains("enchantment-remove-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    const entryInstanceId = e.target.dataset.entryInstanceId;
+    if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    _withPreservedOpenState(e, () => {
+      removeAccessoryEnchantment(instanceId, entryInstanceId);
+    });
+    return true;
+  }
+
+  if (e.target.classList.contains("enchantment-add-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    const params = _readEnchantmentAddFormParams(instanceId);
+    if (!params) return true;
+
+    _withPreservedOpenState(e, () => {
+      addAccessoryEnchantment(instanceId, params.enchantmentId, params);
+    });
+    return true;
+  }
+
   return false;
 }
 
@@ -141,6 +205,35 @@ export function handleAccessoryChange(e) {
     e.target.classList.contains("equipped-accessory-move")
   ) {
     moveAccessory(e.target.dataset.instanceId, e.target.value);
+    return true;
+  }
+
+  if (e.target.classList.contains("enchantment-add-select")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    setEnchantmentAddFormSelection(instanceId, e.target.value);
+
+    // Re-render so the params markup (value input vs. target select vs.
+    // target+extraPoints) switches to match the newly chosen effect_type.
+    _withPreservedOpenState(e, () => {
+      renderLists(selected, data, state.sheet);
+    });
+    return true;
+  }
+
+  if (e.target.classList.contains("enchantment-target-filter")) {
+    const instanceId = e.target.dataset.instanceId;
+    if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    setEnchantmentAddFormTargetFilter(instanceId, e.target.value);
+
+    // Re-render so the target select narrows to the chosen
+    // type/category/school — same cascading-filter pattern used
+    // elsewhere in the app for adding advantages/skills/spells directly.
+    _withPreservedOpenState(e, () => {
+      renderLists(selected, data, state.sheet);
+    });
     return true;
   }
 

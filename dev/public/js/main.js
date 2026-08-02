@@ -21,6 +21,7 @@ import { loadAmmo } from "./inventory/ammo.js";
 import { loadAlchemy } from "./inventory/alchemy.js";
 import { loadSurvivalGear } from "./inventory/survivalGear.js";
 import { loadAccessories } from "./inventory/accessories.js";
+import { loadEnchantments } from "./inventory/enchantments.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./ui/characterSelector.js";
 import { initCharacterImage } from "./events/characterImageEvents.js";
@@ -51,6 +52,7 @@ window.onload = async () => {
     loadAlchemy(),
     loadSurvivalGear(),
     loadAccessories(),
+    loadEnchantments(),
   ]);
 
   // Init character persistence (loads active character into state)
