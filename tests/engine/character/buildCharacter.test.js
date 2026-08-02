@@ -153,4 +153,68 @@ describe("BUILD CHARACTER", () => {
       expect(typeof character.disadvantages).toBe("object");
     });
   });
+
+  describe("Equipped enchantment integration (end-to-end through buildCharacter)", () => {
+    it("Should carry an attribute enchantment_modifier from input into the final primary attribute value", () => {
+      const { character } = buildCharacter({
+        ...mockInput,
+        enchantmentAttributeModifiers: { ST: 3 },
+      });
+
+      const { character: withoutEnchantment } = buildCharacter(mockInput);
+
+      expect(character.primary_attributes.ST.value).toBe(
+        withoutEnchantment.primary_attributes.ST.value + 3,
+      );
+      expect(character.primary_attributes.ST.has_enchantment_modifier).toBe(
+        true,
+      );
+    });
+
+    it("Should carry a granted advantage through with 0 cost and is_enchantment true", () => {
+      const { character } = buildCharacter({
+        ...mockInput,
+        enchantmentAdvantageIds: ["ADV-002"],
+      });
+
+      expect(character.advantages["ADV-002"]).toBeDefined();
+      expect(character.advantages["ADV-002"].is_enchantment).toBe(true);
+      expect(character.advantages["ADV-002"].points).toBe(0);
+      expect(character.character_points.advantages).toBe(
+        buildCharacter(mockInput).character.character_points.advantages,
+      );
+    });
+
+    it("Should carry a granted skill through using the final (enchanted) attribute value as its base", () => {
+      // SKILL-000 is IQ-based; give IQ a +2 enchantment_modifier and grant
+      // the skill fresh — the granted base_value should equal the final
+      // (enchanted) IQ, not the pre-enchantment one.
+      const { character } = buildCharacter({
+        ...mockInput,
+        advantages: [],
+        disadvantages: [],
+        skills: {},
+        enchantmentAttributeModifiers: { IQ: 2 },
+        enchantmentSkillGrants: { "SKILL-000": [0] },
+      });
+
+      const finalIQ = character.primary_attributes.IQ.value;
+
+      expect(character.skills["SKILL-000"]).toBeDefined();
+      expect(character.skills["SKILL-000"].base_value).toBe(finalIQ);
+      expect(character.skills["SKILL-000"].is_enchantment).toBe(true);
+      expect(character.skills["SKILL-000"].points).toBe(0);
+    });
+
+    it("Should carry a fortify_skill enchantment_modifier through to the final skill value", () => {
+      const { character } = buildCharacter({
+        ...mockInput,
+        skills: { "SKILL-000": { base_value: 14, modifier: 0 } },
+        enchantmentSkillModifiers: { "SKILL-000": 3 },
+      });
+
+      expect(character.skills["SKILL-000"].enchantment_modifier).toBe(3);
+      expect(character.skills["SKILL-000"].value).toBe(17);
+    });
+  });
 });

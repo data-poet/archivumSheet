@@ -211,6 +211,127 @@ describe("EQUIPMENT ACCESSORIES", () => {
       });
     });
 
+    test("Should resolve a real attribute enchantment end-to-end and add its price to total_value", () => {
+      const result = buildAccessorySlots([
+        {
+          accessory_id: ringId,
+          is_equipped: true,
+          storedAt: null,
+          price: 0,
+          enchantments: [
+            {
+              _instanceId: "ench-1",
+              enchantment_id: "ENCHANTMENT-000",
+              value: 1,
+            },
+          ],
+        },
+      ]);
+
+      // ENCHANTMENT-000 (Fortificar ST) at base value: base_price 5000
+      expect(result.equipped[0].enchantments_total_price).toBe(5000);
+      expect(result.equipped[0].total_value).toBe(5000);
+      expect(result.carried_accessory_value).toBe(5000);
+    });
+
+    test("Should resolve a real advantage-granting enchantment using the target's own point cost", () => {
+      const result = buildAccessorySlots([
+        {
+          accessory_id: ringId,
+          is_equipped: true,
+          storedAt: null,
+          price: 0,
+          enchantments: [
+            {
+              _instanceId: "ench-1",
+              enchantment_id: "ENCHANTMENT-028",
+              target: "ADV-000",
+            },
+          ],
+        },
+      ]);
+
+      // ENCHANTMENT-028 (Adicionar Vantagem) price_per_point 2000 × ADV-000 cost 5
+      expect(result.equipped[0].enchantments_total_price).toBe(10000);
+    });
+
+    test("Should throw for an unknown enchantment_id", () => {
+      expect(() =>
+        buildAccessorySlots([
+          {
+            accessory_id: ringId,
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [
+              { enchantment_id: "ENCHANTMENT-DOES-NOT-EXIST", value: 1 },
+            ],
+          },
+        ]),
+      ).toThrow(/Invalid enchantments/);
+    });
+
+    test("Should throw when an attribute enchantment's value is not an integer", () => {
+      expect(() =>
+        buildAccessorySlots([
+          {
+            accessory_id: ringId,
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1.5 }],
+          },
+        ]),
+      ).toThrow(/Invalid accessoryInventory/);
+    });
+
+    test("Should throw when a fortify_attribute enchantment's value is negative", () => {
+      expect(() =>
+        buildAccessorySlots([
+          {
+            accessory_id: ringId,
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: -1 }],
+          },
+        ]),
+      ).toThrow(/Invalid enchantments/);
+    });
+
+    test("Should throw when a weaken_attribute enchantment's value is positive", () => {
+      expect(() =>
+        buildAccessorySlots([
+          {
+            accessory_id: ringId,
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [{ enchantment_id: "ENCHANTMENT-001", value: 1 }],
+          },
+        ]),
+      ).toThrow(/Invalid enchantments/);
+    });
+
+    test("Should throw when an advantage-granting enchantment's target doesn't exist", () => {
+      expect(() =>
+        buildAccessorySlots([
+          {
+            accessory_id: ringId,
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [
+              {
+                enchantment_id: "ENCHANTMENT-028",
+                target: "ADV-DOES-NOT-EXIST",
+              },
+            ],
+          },
+        ]),
+      ).toThrow(/Invalid enchantments/);
+    });
+
     test("Should never produce a weight field anywhere in the result", () => {
       const result = buildAccessorySlots([
         { accessory_id: ringId, is_equipped: true, storedAt: null, price: 10 },

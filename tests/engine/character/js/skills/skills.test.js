@@ -266,3 +266,169 @@ describe("ACTIONS in buildSkills output", () => {
     expect(result.skills[eligibleId].actions).toBe(3);
   });
 });
+
+// ─── Equipped enchantment integration ─────────────────────────────────────────
+// SKILL-000 = ADESTRAMENTO DE ANIMAIS, IQ-based, no parry.
+// character fixture above sets IQ.base_value = 10.
+
+describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
+  test("Should create a skill purely from a grant when the player doesn't have it", () => {
+    const result = buildSkills(
+      {},
+      character,
+      {},
+      { "SKILL-000": [2] }, // grant: attributeBase(10) + 2 extra = 12
+    );
+
+    expect(result.skills["SKILL-000"]).toBeDefined();
+    expect(result.skills["SKILL-000"].base_value).toBe(10);
+    expect(result.skills["SKILL-000"].modifier).toBe(2);
+    expect(result.skills["SKILL-000"].value).toBe(12);
+    expect(result.skills["SKILL-000"].is_enchantment).toBe(true);
+    expect(result.skills["SKILL-000"].points).toBe(0);
+    expect(result.character_points.skills).toBe(0);
+  });
+
+  test("Should not create any entry from a fortify_skill modifier alone (no-op if not known)", () => {
+    const result = buildSkills(
+      {},
+      character,
+      {},
+      {},
+      { "SKILL-000": 3 },
+    );
+
+    expect(result.skills["SKILL-000"]).toBeUndefined();
+  });
+
+  test("Should prefer the player's own purchase when it's higher than the best grant", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 16, modifier: 0 } }, // player level 16
+      character,
+      {},
+      { "SKILL-000": [2] }, // grant level 12
+    );
+
+    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
+    expect(result.skills["SKILL-000"].value).toBe(16);
+    expect(result.skills["SKILL-000"].points).toBeGreaterThan(0);
+  });
+
+  test("Should prefer the grant when it's higher than the player's own purchase", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 11, modifier: 0 } }, // player level 11
+      character,
+      {},
+      { "SKILL-000": [5] }, // grant level 10 + 5 = 15
+    );
+
+    expect(result.skills["SKILL-000"].is_enchantment).toBe(true);
+    expect(result.skills["SKILL-000"].value).toBe(15);
+    expect(result.skills["SKILL-000"].points).toBe(0);
+  });
+
+  test("Should prefer the player's own purchase on a tie", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 12, modifier: 0 } }, // player level 12
+      character,
+      {},
+      { "SKILL-000": [2] }, // grant level 10 + 2 = 12 (tie)
+    );
+
+    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
+    expect(result.skills["SKILL-000"].points).toBeGreaterThan(0);
+  });
+
+  test("Should use the single highest grant when multiple items grant the same skill (no stacking)", () => {
+    const result = buildSkills(
+      {},
+      character,
+      {},
+      { "SKILL-000": [1, 4, 2] }, // best is +4 -> level 14
+    );
+
+    expect(result.skills["SKILL-000"].modifier).toBe(4);
+    expect(result.skills["SKILL-000"].value).toBe(14);
+  });
+
+  test("Should add a positive fortify_skill enchantment_modifier on top of the winning source", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      character,
+      {},
+      {},
+      { "SKILL-000": 3 },
+    );
+
+    expect(result.skills["SKILL-000"].enchantment_modifier).toBe(3);
+    expect(result.skills["SKILL-000"].has_enchantment_modifier).toBe(true);
+    expect(result.skills["SKILL-000"].value).toBe(17); // 14 + 3
+  });
+
+  test("Should subtract a negative weaken_skill enchantment_modifier", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      character,
+      {},
+      {},
+      { "SKILL-000": -3 },
+    );
+
+    expect(result.skills["SKILL-000"].value).toBe(11); // 14 - 3
+  });
+
+  test("Should not let enchantment_modifier affect points cost (cost reflects investment only)", () => {
+    const withoutModifier = buildSkills(
+      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      character,
+    );
+    const withModifier = buildSkills(
+      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      character,
+      {},
+      {},
+      { "SKILL-000": 5 },
+    );
+
+    expect(withModifier.skills["SKILL-000"].points).toBe(
+      withoutModifier.skills["SKILL-000"].points,
+    );
+    expect(withModifier.character_points.skills).toBe(
+      withoutModifier.character_points.skills,
+    );
+  });
+
+  test("Should default has_enchantment_modifier to false for a skill with no equipped fortify/weaken", () => {
+    const result = buildSkills(
+      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      character,
+    );
+
+    expect(result.skills["SKILL-000"].enchantment_modifier).toBe(0);
+    expect(result.skills["SKILL-000"].has_enchantment_modifier).toBe(false);
+  });
+
+  test("Should default is_enchantment to false for a normal player purchase", () => {
+    const result = buildSkills(selectedSkills, character);
+
+    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
+  });
+
+  test("Should use the FINAL (post-enchantment) attribute value as the grant base, not the pre-enchantment base_value", () => {
+    const enchantedCharacter = {
+      primary_attributes: {
+        ...character.primary_attributes,
+        IQ: { base_value: 10, value: 12 }, // IQ fortified by another equipped item
+      },
+    };
+
+    const result = buildSkills(
+      {},
+      enchantedCharacter,
+      {},
+      { "SKILL-000": [0] },
+    );
+
+    expect(result.skills["SKILL-000"].base_value).toBe(12); // final IQ, not base_value 10
+  });
+});

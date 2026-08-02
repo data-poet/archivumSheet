@@ -37,6 +37,8 @@ describe("PRIMARY ATTRIBUTES", () => {
         base_value: 10,
         modifier: 0,
         race_modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
         value: 10,
         points: 0,
       });
@@ -103,10 +105,42 @@ describe("PRIMARY ATTRIBUTES", () => {
     });
 
     expect(result.primary_attributes).toEqual({
-      ST: { base_value: 12, modifier: 1, race_modifier: 0, value: 13, points: 20 },
-      DX: { base_value: 9, modifier: 0, race_modifier: 0, value: 9, points: -20 },
-      IQ: { base_value: 10, modifier: 3, race_modifier: 0, value: 13, points: 0 },
-      HT: { base_value: 11, modifier: -1, race_modifier: 0, value: 10, points: 10 },
+      ST: {
+        base_value: 12,
+        modifier: 1,
+        race_modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
+        value: 13,
+        points: 20,
+      },
+      DX: {
+        base_value: 9,
+        modifier: 0,
+        race_modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
+        value: 9,
+        points: -20,
+      },
+      IQ: {
+        base_value: 10,
+        modifier: 3,
+        race_modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
+        value: 13,
+        points: 0,
+      },
+      HT: {
+        base_value: 11,
+        modifier: -1,
+        race_modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
+        value: 10,
+        points: 10,
+      },
     });
 
     expect(result.character_points).toEqual({
@@ -115,5 +149,45 @@ describe("PRIMARY ATTRIBUTES", () => {
       IQ: 0,
       HT: 10,
     });
+  });
+
+  test("Should add enchantment_modifier into value without affecting points cost", () => {
+    const result = buildPrimaryAttributes({
+      ST: {
+        base_value: 12,
+        modifier: 1,
+        enchantment_modifier: 3,
+        has_enchantment_modifier: true,
+      },
+    });
+
+    expect(result.primary_attributes.ST.value).toBe(16); // 12 + 1 + 3
+    expect(result.primary_attributes.ST.enchantment_modifier).toBe(3);
+    expect(result.primary_attributes.ST.has_enchantment_modifier).toBe(true);
+    // cost is still purely a function of base_value, unaffected by the
+    // enchantment — fortifying an attribute costs nothing in build points
+    expect(result.character_points.ST).toBe(20);
+  });
+
+  test("Should apply a negative enchantment_modifier (weaken)", () => {
+    const result = buildPrimaryAttributes({
+      DX: {
+        base_value: 10,
+        modifier: 0,
+        enchantment_modifier: -2,
+        has_enchantment_modifier: true,
+      },
+    });
+
+    expect(result.primary_attributes.DX.value).toBe(8); // 10 + 0 - 2
+  });
+
+  test("Should default has_enchantment_modifier to false when no equipped enchantment touches this attribute", () => {
+    const result = buildPrimaryAttributes({
+      HT: { base_value: 10, modifier: 0 },
+    });
+
+    expect(result.primary_attributes.HT.enchantment_modifier).toBe(0);
+    expect(result.primary_attributes.HT.has_enchantment_modifier).toBe(false);
   });
 });

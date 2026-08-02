@@ -147,4 +147,109 @@ describe("BUILD SHEET", () => {
       });
     });
   });
+
+  describe("Equipped enchantment integration (full pipeline: inventory → character)", () => {
+    it("Should boost a primary attribute from an equipped fortify_attribute accessory", () => {
+      const enchantedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: true,
+              storedAt: null,
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-000",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baseline = buildSheet(mockInput);
+      const enchanted = buildSheet(enchantedInput);
+
+      expect(enchanted.character.primary_attributes.ST.value).toBe(
+        baseline.character.primary_attributes.ST.value + 2,
+      );
+      expect(
+        enchanted.character.primary_attributes.ST.has_enchantment_modifier,
+      ).toBe(true);
+      // Fortifying costs no character points
+      expect(enchanted.character.character_points.primary_attributes).toBe(
+        baseline.character.character_points.primary_attributes,
+      );
+    });
+
+    it("Should NOT apply an enchantment from an item that isn't equipped", () => {
+      const unequippedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: false,
+              storedAt: "backpack",
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-000",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baseline = buildSheet(mockInput);
+      const result = buildSheet(unequippedInput);
+
+      expect(result.character.primary_attributes.ST.value).toBe(
+        baseline.character.primary_attributes.ST.value,
+      );
+      expect(
+        result.character.primary_attributes.ST.has_enchantment_modifier,
+      ).toBe(false);
+    });
+
+    it("Should grant an advantage from an equipped item with 0 point cost", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: true,
+              storedAt: null,
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-028",
+                  target: "ADV-000",
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      expect(result.character.advantages["ADV-000"]).toBeDefined();
+      expect(result.character.advantages["ADV-000"].is_enchantment).toBe(true);
+      expect(result.character.advantages["ADV-000"].points).toBe(0);
+    });
+  });
 });

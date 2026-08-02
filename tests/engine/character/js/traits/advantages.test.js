@@ -38,4 +38,38 @@ describe("ADVANTAGES", () => {
 
     expect(result.character_points.advantages).toBe(cost);
   });
+
+  test("Should mark innate advantages with is_race_innate and cost 0", () => {
+    const result = buildAdvantages(["ADV-002"], ["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.character_points.advantages).toBe(0);
+  });
+
+  test("Should mark enchantment-granted advantages with is_enchantment and cost 0", () => {
+    const result = buildAdvantages(["ADV-002"], [], ["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(true);
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.character_points.advantages).toBe(0);
+  });
+
+  test("Should default is_race_innate and is_enchantment to false for a normally-purchased advantage", () => {
+    const result = buildAdvantages(["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+    expect(result.advantages["ADV-002"].points).not.toBe(0);
+  });
+
+  test("Should let is_race_innate take priority if an id is somehow both innate and enchantment-granted", () => {
+    const result = buildAdvantages(["ADV-002"], ["ADV-002"], ["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+  });
 });

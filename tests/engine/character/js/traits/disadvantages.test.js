@@ -40,4 +40,20 @@ describe("DISADVANTAGES", () => {
 
     expect(result.character_points.disadvantages).toBe(cost);
   });
+
+  test("Should mark enchantment-granted disadvantages with is_enchantment and cost 0", () => {
+    const result = buildDisadvantages(["DIS-000"], [], ["DIS-000"]);
+
+    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(true);
+    expect(result.disadvantages["DIS-000"].is_race_innate).toBe(false);
+    expect(result.disadvantages["DIS-000"].points).toBe(0);
+    expect(result.character_points.disadvantages).toBe(0);
+  });
+
+  test("Should default is_enchantment to false for a normally-purchased disadvantage", () => {
+    const result = buildDisadvantages(["DIS-000"]);
+
+    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
+    expect(result.disadvantages["DIS-000"].points).not.toBe(0);
+  });
 });
