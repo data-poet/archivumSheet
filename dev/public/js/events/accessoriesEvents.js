@@ -11,6 +11,7 @@ import {
   findAccessoryByInstanceId,
   updateAccessoryEquipOptionAvailability,
   addAccessoryEnchantment,
+  updateAccessoryEnchantment,
   removeAccessoryEnchantment,
 } from "../inventory/accessories.js";
 import {
@@ -21,6 +22,7 @@ import {
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,
+  clearEnchantmentAddFormSelection,
 } from "../inventory/enchantments.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
 
@@ -52,23 +54,26 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
 }
 
 /**
- * Reads the not-yet-committed enchantment "add" mini-form's current values
- * straight out of the DOM (uncontrolled inputs — nothing writes to state
- * until "Adicionar" is pressed, same spirit as readCustomFieldsEditorValues).
+ * Reads a not-yet-committed enchantment form's current values straight out
+ * of the DOM (uncontrolled inputs — nothing writes to state until
+ * "Adicionar"/"Salvar" is pressed, same spirit as
+ * readCustomFieldsEditorValues). Works for both the add-form (formKey =
+ * parent item instanceId) and an entry's edit-form (formKey = the entry's
+ * own _instanceId) — same shared markup, see renderEnchantments.js.
  * Returns null if the form isn't found or has no type selected.
  */
-function _readEnchantmentAddFormParams(instanceId) {
+function _readEnchantmentFormParams(formKey) {
   const form = document.querySelector(
-    `.enchantment-add-form[data-instance-id="${instanceId}"]`,
+    `.enchantment-form[data-form-key="${formKey}"]`,
   );
   if (!form) return null;
 
-  const enchantmentId = form.querySelector(".enchantment-add-select")?.value;
+  const enchantmentId = form.querySelector(".enchantment-type-select")?.value;
   if (!enchantmentId) return null;
 
-  const valueEl = form.querySelector(".enchantment-add-value");
-  const targetEl = form.querySelector(".enchantment-add-target");
-  const extraPointsEl = form.querySelector(".enchantment-add-extra-points");
+  const valueEl = form.querySelector(".enchantment-value-input");
+  const targetEl = form.querySelector(".enchantment-target-select");
+  const extraPointsEl = form.querySelector(".enchantment-extra-points-input");
 
   return {
     enchantmentId,
@@ -144,7 +149,7 @@ export function handleAccessoryClick(e) {
     return true;
   }
 
-  // ── Enchantments: remove / add ─────────────────────────────────────────────
+  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
   // Generic .enchantment-* classes rendered by renderEnchantments.js; same
   // ownership-check pattern as the custom-fields buttons above, so armor
   // (Phase 2) can safely reuse the same block/button classes.
@@ -153,6 +158,10 @@ export function handleAccessoryClick(e) {
     const instanceId = e.target.dataset.instanceId;
     const entryInstanceId = e.target.dataset.entryInstanceId;
     if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    // Drop any in-progress edit-form selection for this entry — its
+    // _instanceId won't be reused, but there's no reason to keep it around.
+    clearEnchantmentAddFormSelection(entryInstanceId);
 
     _withPreservedOpenState(e, () => {
       removeAccessoryEnchantment(instanceId, entryInstanceId);
@@ -164,11 +173,34 @@ export function handleAccessoryClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findAccessoryByInstanceId(instanceId)) return false;
 
-    const params = _readEnchantmentAddFormParams(instanceId);
+    const params = _readEnchantmentFormParams(instanceId);
     if (!params) return true;
 
     _withPreservedOpenState(e, () => {
       addAccessoryEnchantment(instanceId, params.enchantmentId, params);
+    });
+    return true;
+  }
+
+  if (e.target.classList.contains("enchantment-save-btn")) {
+    const instanceId = e.target.dataset.instanceId;
+    const entryInstanceId = e.target.dataset.entryInstanceId;
+    if (!findAccessoryByInstanceId(instanceId)) return false;
+
+    const params = _readEnchantmentFormParams(entryInstanceId);
+    if (!params) return true;
+
+    // Reset so the next time this entry is expanded, its type-select
+    // starts fresh from whatever just got saved, not the pre-save choice.
+    clearEnchantmentAddFormSelection(entryInstanceId);
+
+    _withPreservedOpenState(e, () => {
+      updateAccessoryEnchantment(
+        instanceId,
+        entryInstanceId,
+        params.enchantmentId,
+        params,
+      );
     });
     return true;
   }
@@ -208,14 +240,19 @@ export function handleAccessoryChange(e) {
     return true;
   }
 
-  if (e.target.classList.contains("enchantment-add-select")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
+  if (e.target.classList.contains("enchantment-type-select")) {
+    const formKey = e.target.dataset.formKey;
+    if (!formKey) return false;
 
-    setEnchantmentAddFormSelection(instanceId, e.target.value);
+    setEnchantmentAddFormSelection(formKey, e.target.value);
 
     // Re-render so the params markup (value input vs. target select vs.
     // target+extraPoints) switches to match the newly chosen effect_type.
+    // No ownership check here (unlike the mutation handlers below) — this
+    // only writes to a UI-state Map keyed by formKey (either the item's
+    // own instanceId for the add-form, or an entry's _instanceId for an
+    // edit-form), never touches accessory data, so a stale formKey is
+    // harmless.
     _withPreservedOpenState(e, () => {
       renderLists(selected, data, state.sheet);
     });
@@ -223,10 +260,10 @@ export function handleAccessoryChange(e) {
   }
 
   if (e.target.classList.contains("enchantment-target-filter")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
+    const formKey = e.target.dataset.formKey;
+    if (!formKey) return false;
 
-    setEnchantmentAddFormTargetFilter(instanceId, e.target.value);
+    setEnchantmentAddFormTargetFilter(formKey, e.target.value);
 
     // Re-render so the target select narrows to the chosen
     // type/category/school — same cascading-filter pattern used

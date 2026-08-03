@@ -16,6 +16,33 @@ import { t } from "../../localization/pt-BR.js";
 // (spaces or tabs) to express nested sub-bullets; indentation depth is
 // normalized into list-nesting levels, so any consistent indent step works.
 // ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Shared "text input + increment/decrement buttons" control, used
+ * anywhere a numeric field needs mobile-friendly ± buttons rather than
+ * relying on the native (tiny, easy-to-mistap) number spinner. The ±
+ * buttons themselves are wired globally in events/index.js — it reads
+ * data-step/data-min/data-max off the input, so any caller that needs
+ * bounds should pass them as data-* attributes via dataAttrs, not native
+ * min/max/step (the input is type="text", not type="number").
+ */
+export function numStepper(cls, dataAttrs, value, stepAttr = "") {
+  return `
+    <div class="num-stepper">
+      <input
+        type="text"
+        inputmode="numeric"
+        class="${cls}"
+        ${dataAttrs}
+        ${stepAttr}
+        value="${value}"
+      />
+      <div class="stepper-btns">
+        <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+        <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+      </div>
+    </div>`;
+}
+
 export function formatRichText(raw) {
   if (!raw || raw.trim() === "") return "—";
 
@@ -255,7 +282,7 @@ function _customFieldsBody({ instanceId, name, description, effect }) {
 export function customFieldsEquippedDetail(params) {
   return `
     <div class="equipped-detail">
-      <details>
+      <details data-detail-kind="customize">
         <summary>${t("common.customize")}</summary>
         ${_customFieldsBody(params)}
       </details>
@@ -270,7 +297,7 @@ export function customFieldsDetailRow(colspan, params) {
   return `
     <tr class="detail-row">
       <td colspan="${colspan}">
-        <details>
+        <details data-detail-kind="customize">
           <summary>${t("common.customize")}</summary>
           ${_customFieldsBody(params)}
         </details>
@@ -289,7 +316,7 @@ export function equippedDetailBlock(fields) {
 
   return `
     <div class="equipped-detail">
-      <details>
+      <details data-detail-kind="stats">
         <summary>${t("common.details")}</summary>
         <div class="item-detail-grid">${content}</div>
       </details>

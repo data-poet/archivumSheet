@@ -8,6 +8,7 @@ import { nextAccessoryInstanceId } from "../store/instanceId.js";
 import { offerUndo } from "../ui/undo.js";
 import {
   addEnchantmentEntry,
+  updateEnchantmentEntry,
   removeEnchantmentEntry,
   clearEnchantmentAddFormSelection,
 } from "./enchantments.js";
@@ -257,6 +258,41 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
 
   renderLists(selected, data, state.sheet);
   triggerAutoRun();
+}
+
+/**
+ * Edits an already-attached entry in place — swapping it for a different
+ * enchantment entirely, or just changing its target/value/extraPoints.
+ * Keeps the entry's own _instanceId so its position in the list and its
+ * price-lookup identity survive the edit.
+ */
+export function updateAccessoryEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findAccessoryByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  renderLists(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderLists(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 export function removeAccessoryEnchantment(instanceId, entryInstanceId) {

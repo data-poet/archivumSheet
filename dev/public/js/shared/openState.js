@@ -21,6 +21,22 @@
  * call renderLists, then restore in a rAF.
  */
 
+/**
+ * Composes the final key from an instance-level key plus this specific
+ * <details>'s own data-detail-kind (if any). Without this, every sibling
+ * .equipped-detail/.detail-row block for the same instance (e.g. the
+ * "stats" panel + the "customize" panel + the "enchantments" panel) would
+ * collapse onto the same key, so opening one would force all of them open
+ * on the next re-render. data-detail-kind is optional — blocks that don't
+ * set it (single-block instances) just get the plain instance key, same as
+ * before this existed.
+ */
+function _withDetailKind(detailsEl, key) {
+  if (!key) return null;
+  const kind = detailsEl.dataset.detailKind;
+  return kind ? `${key}:${kind}` : key;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Internal: per-container snapshot helpers
 // ─────────────────────────────────────────────────────────────────────────────
@@ -192,9 +208,9 @@ function _genericKeyFn(detailsEl) {
               prev.getAttribute("data-instance-id") ||
               prev.querySelector("[data-instance-id]")?.getAttribute("data-instance-id") ||
               "";
-            return `${instanceId}:${val}`;
+            return _withDetailKind(detailsEl, `${instanceId}:${val}`);
           }
-          return val;
+          return _withDetailKind(detailsEl, val);
         }
       }
       // Stop walking once we hit a non-detail data row (found no key on it).
@@ -217,7 +233,7 @@ function _genericKeyFn(detailsEl) {
         sibling.querySelector("[data-instance-id]")?.getAttribute("data-instance-id") ||
         sibling.getAttribute("data-slot") ||
         sibling.querySelector("[data-slot]")?.getAttribute("data-slot");
-      if (val) return val;
+      if (val) return _withDetailKind(detailsEl, val);
       sibling = sibling.previousElementSibling;
     }
   }
@@ -244,7 +260,7 @@ export function tableRowKeyFn(keyAttr) {
       const val =
         prevRow.getAttribute(keyAttr) ||
         prevRow.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr);
-      if (val) return val;
+      if (val) return _withDetailKind(detailsEl, val);
       if (!prevRow.classList.contains("detail-row")) return null;
       prevRow = prevRow.previousElementSibling;
     }
@@ -268,7 +284,7 @@ export function divBlockKeyFn(keyAttr) {
       const val =
         sibling.getAttribute(keyAttr) ||
         sibling.querySelector(`[${keyAttr}]`)?.getAttribute(keyAttr);
-      if (val) return val;
+      if (val) return _withDetailKind(detailsEl, val);
       sibling = sibling.previousElementSibling;
     }
     return null;

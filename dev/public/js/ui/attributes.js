@@ -1,5 +1,39 @@
-import { getSecondaryAttributeLabel } from "../localization/pt-BR.js";
+import { getSecondaryAttributeLabel, t } from "../localization/pt-BR.js";
 import { state } from "../state.js";
+
+// ===== TABLE HEADERS =====
+// th-attr-*/th-sec-* ids existed in the HTML but were never populated —
+// pre-existing gap predating the enchantment column, not something new.
+// Fixing both tables' full header sets here rather than just the new
+// enchantment column, since attributes.base/race/modifier/etc. already
+// exist in the localization file, just unused until now.
+export function initAttributeTableHeaders() {
+  const primaryHeaders = {
+    "th-attr-attribute": "attributes.attribute",
+    "th-attr-base": "attributes.base",
+    "th-attr-race": "attributes.race",
+    "th-attr-modifier": "attributes.modifier",
+    "th-attr-enchantment": "attributes.enchantment",
+    "th-attr-actual": "attributes.actual",
+  };
+
+  const secondaryHeaders = {
+    "th-sec-attribute": "attributes.attribute",
+    "th-sec-base": "attributes.base",
+    "th-sec-bought": "attributes.bought",
+    "th-sec-modifier": "attributes.modifier",
+    "th-sec-enchantment": "attributes.enchantment",
+    "th-sec-final": "attributes.final",
+  };
+
+  for (const [id, key] of Object.entries({
+    ...primaryHeaders,
+    ...secondaryHeaders,
+  })) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(key);
+  }
+}
 
 // ===== PRIMARY ATTRIBUTES UI =====
 export function updateActualValues() {

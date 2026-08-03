@@ -3,6 +3,7 @@ export { getMaterialName, updateInventoryUI } from "./ui/inventory.js";
 export {
   updateActualValues,
   renderSecondaryAttributes,
+  initAttributeTableHeaders,
 } from "./ui/attributes.js";
 export { renderDamage } from "./ui/damage.js";
 export { renderOutput } from "./ui/output.js";

@@ -4,7 +4,7 @@ import { initTabs } from "./ui/tabs.js";
 import { initViewMode } from "./ui/viewMode.js";
 import { initTheme } from "./ui/theme.js";
 import { setupAutoRun } from "./engine/attributes.js";
-import { updateActualValues } from "./ui.js";
+import { updateActualValues, initAttributeTableHeaders } from "./ui.js";
 import { runEngine } from "./engine/index.js";
 import { initAutoRun } from "./engine/autorun.js";
 import { loadRaces } from "./character/races.js";
@@ -35,6 +35,7 @@ window.onload = async () => {
   initViewMode();
   initTheme();
   setupAutoRun();
+  initAttributeTableHeaders();
   updateActualValues();
 
   await Promise.all([

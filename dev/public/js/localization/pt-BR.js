@@ -172,6 +172,7 @@ export const LABELS = {
     base: "Base",
     race: "Raça",
     modifier: "Modificador",
+    enchantment: "Encantamento",
     actual: "Atual",
     bought: "Comprado",
     final: "Final",

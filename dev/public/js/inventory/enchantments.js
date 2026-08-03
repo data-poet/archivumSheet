@@ -27,8 +27,16 @@ const SPELL_EFFECT_TYPES = ["spell", "fortify_spell", "weaken_spell"];
 // Sign convention: fortify types are always a positive integer, weaken
 // types always negative. Mirrors engine/inventory/js/shared/
 // enchantmentsConstants.js's FORTIFY_EFFECT_TYPES/WEAKEN_EFFECT_TYPES.
-const FORTIFY_EFFECT_TYPES = ["fortify_attribute", "fortify_skill", "fortify_spell"];
-const WEAKEN_EFFECT_TYPES = ["weaken_attribute", "weaken_skill", "weaken_spell"];
+const FORTIFY_EFFECT_TYPES = [
+  "fortify_attribute",
+  "fortify_skill",
+  "fortify_spell",
+];
+const WEAKEN_EFFECT_TYPES = [
+  "weaken_attribute",
+  "weaken_skill",
+  "weaken_spell",
+];
 
 export function isAttributeType(effectType) {
   return ATTRIBUTE_EFFECT_TYPES.includes(effectType);
@@ -158,12 +166,22 @@ export function setEnchantmentAddFormSelection(instanceId, enchantmentId) {
   _addFormTargetFilter.delete(instanceId);
 }
 
-export function getEnchantmentAddFormSelection(instanceId, itemCategory) {
-  const selected = _addFormSelection.get(instanceId);
-  if (selected) return selected;
+/**
+ * Generic getter behind getEnchantmentAddFormSelection — takes an explicit
+ * fallback instead of assuming "first allowed enchantment", since an edit
+ * form (swapping an existing entry) should default to that entry's OWN
+ * current enchantment_id, not the first one in the catalog.
+ */
+export function getEnchantmentFormSelection(formKey, fallbackId) {
+  return _addFormSelection.get(formKey) || fallbackId;
+}
 
+export function getEnchantmentAddFormSelection(instanceId, itemCategory) {
   const allowed = getAllowedEnchantments(itemCategory);
-  return allowed[0]?.enchantment_id || null;
+  return getEnchantmentFormSelection(
+    instanceId,
+    allowed[0]?.enchantment_id || null,
+  );
 }
 
 export function clearEnchantmentAddFormSelection(instanceId) {
@@ -194,6 +212,33 @@ export function getEnchantmentAddFormTargetFilter(instanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Builds the type-specific fields (value / target / extraPoints) for an
+ * enchantment application, shared by both adding a new entry and swapping
+ * an existing one so the two can never drift out of sync.
+ */
+function _buildEntryFields(record, params = {}) {
+  const type = record.enchantment_effect_type;
+  const weaken = isWeakenType(type);
+  const fields = {};
+
+  if (isAttributeType(type)) {
+    const defaultValue = weaken
+      ? -record.enchantment_base_value
+      : record.enchantment_base_value;
+    fields.value = Number(params.value ?? defaultValue);
+  } else if (isPointType(type)) {
+    fields.target = params.target ?? null;
+  } else if (isSkillType(type) || isSpellType(type)) {
+    fields.target = params.target ?? null;
+    const isFortify = isFortifyType(type);
+    const defaultExtraPoints = isFortify ? 1 : weaken ? -1 : 0;
+    fields.extraPoints = Number(params.extraPoints ?? defaultExtraPoints);
+  }
+
+  return fields;
+}
+
+/**
  * Appends a new enchantment application entry, shaped according to the
  * enchantment's effect_type. Returns the new entry, or null if the
  * enchantment_id is unknown.
@@ -205,26 +250,40 @@ export function addEnchantmentEntry(entries, enchantmentId, params = {}) {
   const entry = {
     _instanceId: nextEnchantmentInstanceId(),
     enchantment_id: enchantmentId,
+    ..._buildEntryFields(record, params),
   };
 
-  const type = record.enchantment_effect_type;
-  const weaken = isWeakenType(type);
-
-  if (isAttributeType(type)) {
-    const defaultValue = weaken
-      ? -record.enchantment_base_value
-      : record.enchantment_base_value;
-    entry.value = Number(params.value ?? defaultValue);
-  } else if (isPointType(type)) {
-    entry.target = params.target ?? null;
-  } else if (isSkillType(type) || isSpellType(type)) {
-    entry.target = params.target ?? null;
-    const isFortify = isFortifyType(type);
-    const defaultExtraPoints = isFortify ? 1 : weaken ? -1 : 0;
-    entry.extraPoints = Number(params.extraPoints ?? defaultExtraPoints);
-  }
-
   entries.push(entry);
+  return entry;
+}
+
+/**
+ * Replaces an existing entry's enchantment_id + fields in place, keeping
+ * its own _instanceId — used to "swap" an attached enchantment for a
+ * different one (or just change its target/value/extraPoints) without
+ * losing its position in the list or its price-lookup identity mid-render.
+ * Returns the updated entry, or null if the entry or enchantment_id isn't
+ * found.
+ */
+export function updateEnchantmentEntry(
+  entries,
+  entryInstanceId,
+  enchantmentId,
+  params = {},
+) {
+  const record = getEnchantmentRecord(enchantmentId);
+  if (!record) return null;
+
+  const index = entries.findIndex((e) => e._instanceId === entryInstanceId);
+  if (index === -1) return null;
+
+  const entry = {
+    _instanceId: entryInstanceId,
+    enchantment_id: enchantmentId,
+    ..._buildEntryFields(record, params),
+  };
+
+  entries[index] = entry;
   return entry;
 }
 
@@ -232,15 +291,4 @@ export function removeEnchantmentEntry(entries, entryInstanceId) {
   const index = entries.findIndex((e) => e._instanceId === entryInstanceId);
   if (index === -1) return;
   entries.splice(index, 1);
-}
-
-export function updateEnchantmentEntryField(
-  entries,
-  entryInstanceId,
-  field,
-  value,
-) {
-  const entry = entries.find((e) => e._instanceId === entryInstanceId);
-  if (!entry) return;
-  entry[field] = value;
 }

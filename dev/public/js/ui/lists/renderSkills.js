@@ -1,30 +1,11 @@
 import { setHTML } from "../../shared/dom.js";
 import { t } from "../../localization/pt-BR.js";
-import { formatRichText, detailRow } from "./renderUtils.js";
+import { formatRichText, detailRow, numStepper } from "./renderUtils.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
-}
-
-/** Wraps a text/numeric input in a num-stepper with ± buttons on the right. */
-function numStepper(cls, dataAttrs, value, stepAttr = "") {
-  return `
-    <div class="num-stepper">
-      <input
-        type="text"
-        inputmode="numeric"
-        class="${cls}"
-        ${dataAttrs}
-        ${stepAttr}
-        value="${value}"
-      />
-      <div class="stepper-btns">
-        <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-        <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-      </div>
-    </div>`;
 }
 
 // Categories that support isTrainedWithMaster and the actions formula

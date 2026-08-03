@@ -1584,23 +1584,37 @@ tr.spell-detail-row details[open] summary {
   box-sizing: border-box;
 }
 
-/* ── Enchantments block (Phase 1 pilot) ─────────────────────────────────── */
+/* ── Enchantments block ──────────────────────────────────────────────────── */
 
 .enchantment-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 8px;
 }
 
 .enchantment-entry {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 6px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font-size: var(--fs-xs);
+  overflow: hidden;
+}
+
+.enchantment-entry-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.enchantment-entry-summary::-webkit-details-marker {
+  display: none;
+}
+
+.enchantment-entry[open] .enchantment-entry-summary {
+  border-bottom: 1px solid var(--color-border);
 }
 
 .enchantment-entry-label {
@@ -1613,7 +1627,11 @@ tr.spell-detail-row details[open] summary {
   white-space: nowrap;
 }
 
-.enchantment-add-form .item-detail-grid {
+.enchantment-entry-edit {
+  padding: 8px;
+}
+
+.enchantment-form .item-detail-grid {
   grid-template-columns: 1fr 1fr;
 }
 
