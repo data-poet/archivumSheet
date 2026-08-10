@@ -12,6 +12,7 @@ describe("getEnchantmentsDB", () => {
     {
       enchantment_id: "ENCHANTMENT-000",
       enchantment_name: "Fortificar ST",
+      enchantment_type: "Fortificar Atributo",
       enchantment_effect_type: "fortify_attribute",
       enchantment_is_parametric: "FALSE",
       enchantment_target: "ST",
@@ -27,6 +28,7 @@ describe("getEnchantmentsDB", () => {
     {
       enchantment_id: "ENCHANTMENT-026",
       enchantment_name: "Adicionar Vantagem",
+      enchantment_type: "Peculiaridade",
       enchantment_effect_type: "advantage",
       enchantment_is_parametric: "TRUE",
       enchantment_target: "",
@@ -65,6 +67,7 @@ describe("getEnchantmentsDB", () => {
     expect(result["ENCHANTMENT-000"]).toEqual({
       enchantment_id: "ENCHANTMENT-000",
       enchantment_name: "Fortificar ST",
+      enchantment_type: "Fortificar Atributo",
       enchantment_effect_type: "fortify_attribute",
       enchantment_is_parametric: false,
       enchantment_target: "ST",
@@ -106,6 +109,15 @@ describe("getEnchantmentsDB", () => {
       "Acessórios",
       "Cabeça",
     ]);
+  });
+
+  test("Should pass through enchantment_type as-is", () => {
+    const result = getEnchantmentsDB();
+
+    expect(result["ENCHANTMENT-000"].enchantment_type).toBe(
+      "Fortificar Atributo",
+    );
+    expect(result["ENCHANTMENT-026"].enchantment_type).toBe("Peculiaridade");
   });
 
   test("Should cache database after first load", () => {
