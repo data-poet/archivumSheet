@@ -22,6 +22,7 @@ import {
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,
+  setEnchantmentAddFormTypeFilter,
   clearEnchantmentAddFormSelection,
 } from "../inventory/enchantments.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
@@ -237,6 +238,22 @@ export function handleAccessoryChange(e) {
     e.target.classList.contains("equipped-accessory-move")
   ) {
     moveAccessory(e.target.dataset.instanceId, e.target.value);
+    return true;
+  }
+
+  if (e.target.classList.contains("enchantment-category-filter")) {
+    const formKey = e.target.dataset.formKey;
+    if (!formKey) return false;
+
+    setEnchantmentAddFormTypeFilter(formKey, e.target.value);
+
+    // Re-render so "Tipo de Encantamento" narrows to the chosen category —
+    // same cascading-filter pattern as enchantment-target-filter below,
+    // one level up. Also writes only to a UI-state Map, so no ownership
+    // check is needed here either.
+    _withPreservedOpenState(e, () => {
+      renderLists(selected, data, state.sheet);
+    });
     return true;
   }
 

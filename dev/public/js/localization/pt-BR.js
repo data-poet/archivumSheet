@@ -391,6 +391,8 @@ export const LABELS = {
   // ── Enchantments (Phase 1 pilot — accessories only) ───────────────────────
   enchantments: {
     title: "Encantamentos",
+    categoryFilter: "— Categoria —",
+    filterLabel: "Filtro",
     type: "Tipo de Encantamento",
     target: "Alvo",
     value: "Valor",

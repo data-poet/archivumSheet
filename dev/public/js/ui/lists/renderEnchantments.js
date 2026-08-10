@@ -13,8 +13,8 @@
  * with the entry's current values and keyed by the entry's own
  * _instanceId instead of the parent item's). Both the add-form and every
  * entry's edit-form share the same rendering + a `formKey` that scopes
- * their in-progress (uncommitted) type/target/filter selections —
- * see inventory/enchantments.js's getEnchantmentFormSelection.
+ * their in-progress (uncommitted) category/type/target/filter selections —
+ * see inventory/enchantments.js's _resolveFormSelectionId.
  *
  * Reads catalog/target data (data.enchantments, data.advantages,
  * data.disadvantages, data.skills, data.spells) directly — all loaded at
@@ -31,10 +31,12 @@ import { state } from "../../state.js";
 import { escapeHtml, escapeAttr, numStepper } from "./renderUtils.js";
 import {
   getAllowedEnchantments,
+  getEnchantmentTypeValues,
   getEnchantmentRecord,
-  getEnchantmentFormSelection,
   getEnchantmentAddFormSelection,
+  getEnchantmentEditFormSelection,
   getEnchantmentAddFormTargetFilter,
+  getEnchantmentAddFormTypeFilter,
   getUniqueSpellRows,
   isAttributeType,
   isAdvantageType,
@@ -154,6 +156,40 @@ const TARGET_PICKER_CONFIG = {
   },
 };
 
+/**
+ * "Categoria" filter — narrows the "Tipo de Encantamento" select itself,
+ * one level upstream of the target picker above. Carries the same
+ * <em>Filtro</em> label as the target picker's own filter select (see
+ * renderTargetPicker below) purely so the label row's height lines up
+ * with labeled fields ("Alvo", "Tipo de Encantamento", ...) it sits
+ * beside or above — an empty/no-label field looks visually "cut off"
+ * next to one that has a bold label pushing its input down.
+ *
+ * Own full-width row so it reads as a distinct step before
+ * "Tipo de Encantamento", not a paired field.
+ *
+ * Omitted entirely when the item category only ever offers one
+ * enchantment_type — a single-option filter narrows nothing.
+ */
+function renderCategoryFilter(formKey, itemCategory, typeFilter) {
+  const typeValues = getEnchantmentTypeValues(itemCategory);
+  if (typeValues.length <= 1) return "";
+
+  return `
+    <label class="item-detail-field item-detail-field--full">
+      <em>${t("enchantments.filterLabel")}</em>
+      <select class="enchantment-category-filter" data-form-key="${formKey}">
+        <option value="">${t("enchantments.categoryFilter")}</option>
+        ${typeValues
+          .map(
+            (v) =>
+              `<option value="${escapeAttr(v)}" ${v === typeFilter ? "selected" : ""}>${escapeHtml(v)}</option>`,
+          )
+          .join("")}
+      </select>
+    </label>`;
+}
+
 function targetPickerKind(type) {
   if (isAdvantageType(type)) return "advantage";
   if (isDisadvantageType(type)) return "disadvantage";
@@ -188,6 +224,7 @@ function renderTargetPicker(formKey, type, currentEntry) {
 
   return `
     <label class="item-detail-field">
+      <em>${t("enchantments.filterLabel")}</em>
       <select class="enchantment-target-filter" data-form-key="${formKey}">
         <option value="">${config.filterPlaceholder()}</option>
         ${filterValues
@@ -299,7 +336,8 @@ function paramsMarkup(record, formKey, currentEntry) {
 }
 
 function renderAddForm(instanceId, itemCategory) {
-  const allowed = getAllowedEnchantments(itemCategory);
+  const typeFilter = getEnchantmentAddFormTypeFilter(instanceId);
+  const allowed = getAllowedEnchantments(itemCategory, typeFilter);
 
   if (allowed.length === 0) {
     return `<p class="custom-fields-empty">${t("enchantments.noneAvailable")}</p>`;
@@ -311,7 +349,8 @@ function renderAddForm(instanceId, itemCategory) {
   return `
     <div class="enchantment-form" data-form-key="${instanceId}">
       <div class="item-detail-grid custom-fields-grid">
-        <label class="item-detail-field">
+        ${renderCategoryFilter(instanceId, itemCategory, typeFilter)}
+        <label class="item-detail-field item-detail-field--full">
           <em>${t("enchantments.type")}</em>
           <select class="enchantment-type-select" data-form-key="${instanceId}">
             ${allowed
@@ -342,17 +381,23 @@ function renderAddForm(instanceId, itemCategory) {
  * CURRENT enchantment_id rather than the first allowed one.
  */
 function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
-  const allowed = getAllowedEnchantments(itemCategory);
   const formKey = entry._instanceId;
+  const typeFilter = getEnchantmentAddFormTypeFilter(formKey);
+  const allowed = getAllowedEnchantments(itemCategory, typeFilter);
 
-  const selectedId = getEnchantmentFormSelection(formKey, entry.enchantment_id);
+  const selectedId = getEnchantmentEditFormSelection(
+    formKey,
+    itemCategory,
+    entry.enchantment_id,
+  );
   const record = selectedId ? getEnchantmentRecord(selectedId) : null;
   const swapped = selectedId !== entry.enchantment_id;
 
   return `
     <div class="enchantment-form" data-form-key="${formKey}">
       <div class="item-detail-grid custom-fields-grid">
-        <label class="item-detail-field">
+        ${renderCategoryFilter(formKey, itemCategory, typeFilter)}
+        <label class="item-detail-field item-detail-field--full">
           <em>${t("enchantments.type")}</em>
           <select class="enchantment-type-select" data-form-key="${formKey}">
             ${allowed
@@ -406,7 +451,7 @@ function renderEnchantmentEntry(
   return `
     <details class="enchantment-entry" data-detail-kind="entry:${entry._instanceId}">
       <summary class="enchantment-entry-summary">
-        <span class="enchantment-entry-label">${parts.join(" — ")}</span>
+        <span class="enchantment-entry-label">${parts.join(": ")}</span>
         <span class="enchantment-entry-price">${price != null ? price : "—"}</span>
       </summary>
       <div class="enchantment-entry-edit">

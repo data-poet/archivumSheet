@@ -85,14 +85,36 @@ export function getEnchantmentRecord(enchantmentId) {
  * "Pés", ... — matches SLOT_MAP's Portuguese keys). This is the raw
  * /api/enchantments row (unparsed CSV), so enchantment_allowed_itens is
  * still a comma string here, unlike the engine's own parsed DB.
+ *
+ * @param {string} [typeFilter] - optional enchantment_type ("Fortificar
+ *   Atributo", "Peculiaridade", "Perícia", "Feitiço", ...) to narrow the
+ *   result further. Omitted/empty means no narrowing.
  */
-export function getAllowedEnchantments(itemCategory) {
-  return data.enchantments.filter((e) =>
+export function getAllowedEnchantments(itemCategory, typeFilter) {
+  const allowed = data.enchantments.filter((e) =>
     (e.enchantment_allowed_itens || "")
       .split(",")
       .map((s) => s.trim())
       .includes(itemCategory),
   );
+
+  return typeFilter
+    ? allowed.filter((e) => e.enchantment_type === typeFilter)
+    : allowed;
+}
+
+/**
+ * Unique enchantment_type values among the enchantments allowed on a given
+ * item category — powers the "Categoria" filter that narrows the
+ * "Tipo de Encantamento" select before it lists individual enchantments.
+ * Same alphabetical-sort convention as the target picker's own filter
+ * value lists (advantage_type, skill_category, spell_school).
+ */
+export function getEnchantmentTypeValues(itemCategory) {
+  const allowed = getAllowedEnchantments(itemCategory);
+  return [
+    ...new Set(allowed.map((e) => e.enchantment_type).filter(Boolean)),
+  ].sort();
 }
 
 /**
@@ -157,6 +179,13 @@ const _addFormSelection = new Map();
  */
 const _addFormTargetFilter = new Map();
 
+/**
+ * Which enchantment_type ("Categoria") is currently chosen to narrow the
+ * "Tipo de Encantamento" select itself — one level upstream of
+ * _addFormSelection. Same per-instance tracking pattern.
+ */
+const _addFormTypeFilter = new Map();
+
 export function setEnchantmentAddFormSelection(instanceId, enchantmentId) {
   _addFormSelection.set(instanceId, enchantmentId);
   // A different enchantment type means a different target domain entirely
@@ -176,17 +205,47 @@ export function getEnchantmentFormSelection(formKey, fallbackId) {
   return _addFormSelection.get(formKey) || fallbackId;
 }
 
-export function getEnchantmentAddFormSelection(instanceId, itemCategory) {
-  const allowed = getAllowedEnchantments(itemCategory);
+/**
+ * Resolves the enchantment_id to show as selected in a "Tipo de
+ * Encantamento" select — shared by the add-form (no preferred id) and the
+ * edit-form (preferred id = the entry's current enchantment_id). Falls
+ * back to the first enchantment in the (possibly category-filtered) list
+ * whenever the preferred id isn't in it — e.g. right after the Categoria
+ * filter changes and excludes the previously chosen enchantment.
+ */
+function _resolveFormSelectionId(formKey, itemCategory, preferredId) {
+  const typeFilter = getEnchantmentAddFormTypeFilter(formKey);
+  const allowed = getAllowedEnchantments(itemCategory, typeFilter);
+  const inFilteredList =
+    preferredId && allowed.some((e) => e.enchantment_id === preferredId);
+
   return getEnchantmentFormSelection(
-    instanceId,
-    allowed[0]?.enchantment_id || null,
+    formKey,
+    inFilteredList ? preferredId : allowed[0]?.enchantment_id || null,
   );
+}
+
+export function getEnchantmentAddFormSelection(instanceId, itemCategory) {
+  return _resolveFormSelectionId(instanceId, itemCategory, null);
+}
+
+/**
+ * Same resolution as getEnchantmentAddFormSelection, but for an existing
+ * entry's edit/swap form, preferring the entry's own current
+ * enchantment_id over "first in list".
+ */
+export function getEnchantmentEditFormSelection(
+  formKey,
+  itemCategory,
+  currentEnchantmentId,
+) {
+  return _resolveFormSelectionId(formKey, itemCategory, currentEnchantmentId);
 }
 
 export function clearEnchantmentAddFormSelection(instanceId) {
   _addFormSelection.delete(instanceId);
   _addFormTargetFilter.delete(instanceId);
+  _addFormTypeFilter.delete(instanceId);
 }
 
 export function setEnchantmentAddFormTargetFilter(instanceId, filterValue) {
@@ -199,6 +258,23 @@ export function setEnchantmentAddFormTargetFilter(instanceId, filterValue) {
 
 export function getEnchantmentAddFormTargetFilter(instanceId) {
   return _addFormTargetFilter.get(instanceId) || "";
+}
+
+export function setEnchantmentAddFormTypeFilter(instanceId, filterValue) {
+  // A different category changes which enchantments are even selectable —
+  // any enchantment_id (and its own downstream target filter) chosen under
+  // the previous category no longer applies. Clear BEFORE setting the new
+  // filter value below, since clearEnchantmentAddFormSelection also wipes
+  // _addFormTypeFilter.
+  clearEnchantmentAddFormSelection(instanceId);
+
+  if (filterValue) {
+    _addFormTypeFilter.set(instanceId, filterValue);
+  }
+}
+
+export function getEnchantmentAddFormTypeFilter(instanceId) {
+  return _addFormTypeFilter.get(instanceId) || "";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
