@@ -54,6 +54,11 @@ function getEnchantmentsDB() {
       enchantment_id: row.enchantment_id,
 
       enchantment_name: row.enchantment_name,
+      // Player-facing category ("Fortificar Atributo", "Peculiaridade",
+      // "Perícia", "Feitiço", ...) — used only to group/filter the catalog
+      // in the UI, never branched on for computation (that's still driven
+      // entirely by enchantment_effect_type below).
+      enchantment_type: row.enchantment_type,
       enchantment_effect_type: row.enchantment_effect_type,
       enchantment_is_parametric: toBoolean(row.enchantment_is_parametric),
 
