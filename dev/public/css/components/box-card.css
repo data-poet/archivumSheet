@@ -1,0 +1,104 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOX / CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+.box {
+  margin-bottom: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* ── Collapsible details/summary ────────────────────────────────────────── */
+details summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  padding: clamp(8px, 2.5vw, 12px) clamp(10px, 3vw, 16px);
+  user-select: none;
+  background: var(--color-surface);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  min-height: 44px; /* minimum tap target */
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: "▶";
+  font-size: 9px;
+  color: var(--color-text-muted);
+  transition: transform 0.15s;
+  display: inline-block;
+  width: 12px;
+  flex-shrink: 0;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+details[open] summary {
+  border-bottom-color: var(--color-border);
+}
+
+details > *:not(summary) {
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+}
+
+/* ── Section accent colors ──────────────────────────────────────────────── */
+.box--attr details summary {
+  border-left: 3px solid var(--accent-attributes);
+}
+.box--trait details summary {
+  border-left: 3px solid var(--accent-traits);
+}
+.box--equip details summary {
+  border-left: 3px solid var(--accent-equipment);
+}
+.box--magic details summary {
+  border-left: 3px solid var(--accent-magic);
+}
+.box--inv details summary {
+  border-left: 3px solid var(--accent-inventory);
+}
+.box--character details summary {
+  border-left: 3px solid var(--accent-attributes);
+}
+.box--engine details summary,
+.box--output details summary {
+  border-left: 3px solid var(--color-neutral-border);
+}
+.box--reference details summary {
+  border-left: 3px solid var(--_section-accent, var(--accent-combat));
+}
+
+/* Thicker border on top-level (parent) expanders */
+.box--attr > details > summary,
+.box--trait > details > summary,
+.box--equip > details > summary,
+.box--magic > details > summary,
+.box--inv > details > summary {
+  border-left-width: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTROLS ROW
+   ═══════════════════════════════════════════════════════════════════════════ */
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.controls-row--labeled {
+  align-items: flex-end;
+}
+

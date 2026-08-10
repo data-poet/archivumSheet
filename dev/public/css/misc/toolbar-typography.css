@@ -1,0 +1,46 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERSISTENCE TOOLBAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+.persistence-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY HELPERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+h1 {
+  font-size: var(--fs-xl);
+  margin: 0 0 12px;
+}
+
+h3 {
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin: 12px 0 4px;
+}
+
+h4 {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin: 8px 0 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   OUTPUT (debug)
+   ═══════════════════════════════════════════════════════════════════════════ */
+pre {
+  max-height: 400px;
+  overflow: auto;
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  margin: 0;
+}
+

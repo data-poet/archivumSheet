@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARCHIVUM SHEET — style.css
+   Mobile-first, responsive. Primary users: phones during tabletop sessions.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ───────────────────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --color-bg: #f2f3f6;
+  --color-surface: #ffffff;
+  --color-border: #d4d4de;
+  --color-border-strong: #9494aa;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6a6a82;
+  --color-row-hover: #eef2ff;
+  --color-row-alt: #f8f8fb;
+  --color-btn-bg: #e6e6f0;
+  --color-btn-hover: #d0d0e6;
+  --color-remove: #dc2626;
+  --color-remove-hover: #b91c1c;
+  --color-success: #22c55e;
+  --color-info: #3b82f6;
+
+  /* Section accent colors — one per section, readable on light + dark */
+  --accent-character: #c62828;
+  --accent-attributes: #d96b1d;
+  --accent-traits: #b8860b;
+  --accent-skills: #4f8a2f;
+  --accent-magic: #006b42;
+  --accent-equipment: #2563eb;
+  --accent-inventory: #5b21b6;
+  --accent-combat: #7a1f2e; /* reference page — Combate section */
+
+  /* Bar colors — HP / Mana / Toxicity */
+  --color-bar-hp: #e05252;
+  --color-bar-mana: #4a90d9;
+  --color-bar-toxicity: #3aaa5c;
+  --bar-h: 13px;
+
+  /* Spacing & shape */
+  --radius: 6px;
+  --radius-sm: 4px;
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
+
+  /* Topbar / bottom-nav sizes — fluid */
+  /* Mobile minimums kept at 48px/52px. Desktop scales up cleanly. */
+  --topbar-h: clamp(48px, 1vw + 44px, 64px);
+  --bottomnav-h: clamp(52px, 1vw + 48px, 64px);
+
+  /* Sidebar width (desktop) */
+  --sidebar-w: 64px; /* Slightly bumped for desktop cursor target space */
+  --sidebar-w-exp: 240px; /* Expanded for readable text links on 1920px screens */
+
+  /* Typography — fluid scale */
+  /* Keeps your exact mobile minimums, but opens up the maximums for 1920px desktop readability */
+  --font-body: "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Courier New", monospace;
+  --fs-base: clamp(
+    10px,
+    0.4vw + 9px,
+    16px
+  ); /* 10px on mobile -> scales smoothly to 16px */
+  --fs-sm: clamp(
+    9px,
+    0.35vw + 8px,
+    14px
+  ); /* 9px on mobile -> scales smoothly to 14px */
+  --fs-xs: clamp(
+    8px,
+    0.3vw + 7px,
+    12px
+  ); /* 8px on mobile -> scales smoothly to 12px */
+  --fs-xxs: clamp(
+    7px,
+    0.25vw + 6px,
+    11px
+  ); /* 7px on mobile -> scales smoothly to 11px */
+
+  /* Headings/titles — bigger than --fs-base so titles never read smaller
+     than the body text they sit above. */
+  --fs-lg: clamp(
+    13px,
+    0.55vw + 11px,
+    18px
+  ); /* 13px on mobile -> scales smoothly to 18px */
+  --fs-xl: clamp(
+    16px,
+    0.7vw + 13px,
+    22px
+  ); /* 16px on mobile -> scales smoothly to 22px */
+
+  /* Detail row (unified) */
+  --detail-bg: #f4f4fb;
+  --detail-label-w: clamp(
+    80px,
+    4vw + 65px,
+    120px
+  ); /* Fluid: 80px on mobile, 120px on desktop */
+
+  /* Content width cap for desktop */
+  --content-max-w: 1440px; /* Increased to utilize 1920px desktop real estate better without over-stretching */
+
+  /* Misc semantic colors (theme-aware; see [data-theme="dark"] below) */
+  --color-danger-bg: #fee2e2; /* hover bg behind remove/danger icons */
+  --color-neutral-border: #94a3b8; /* engine/output box accent border */
+  --color-on-accent: #fff; /* text/icons on top of accent-colored buttons */
+  --color-table-header-bg: #ededf5; /* table headers, equipped-slot labels */
+  --color-race-mod-active: #4a7a3a; /* active race modifier text */
+  --color-innate-bg: #faf9f0; /* innate trait row background */
+  --color-innate-tag: #78716c; /* innate trait tag text */
+  --color-enchantment-bg: #f2eefb; /* enchantment-granted trait row background */
+  --color-enchantment-tag: #7c5cbf; /* enchantment-granted trait tag text */
+}
+
+/* ── Dark theme overrides ────────────────────────────────────────────────── *
+ * Applied via [data-theme="dark"] on <html>. Set synchronously by a small
+ * inline script in <head> (before first paint) and kept in sync at runtime
+ * by ui/theme.js. Section-accent colors and HP/Mana/Toxicity bar colors are
+ * intentionally left unchanged — they're already tuned to read well on both
+ * light and dark surfaces.
+ * ──────────────────────────────────────────────────────────────────────── */
+html[data-theme="dark"] {
+  --color-bg: #14141c;
+  --color-surface: #1e1e2a;
+  --color-border: #33333f;
+  --color-border-strong: #4d4d5e;
+  --color-text: #e8e8f0;
+  --color-text-muted: #9a9ab0;
+  --color-row-hover: #262636;
+  --color-row-alt: #1a1a26;
+  --color-btn-bg: #2a2a38;
+  --color-btn-hover: #35354a;
+  --color-remove: #ef4444;
+  --color-remove-hover: #f87171;
+  --color-success: #34d399;
+  --color-info: #60a5fa;
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.4);
+
+  --detail-bg: #20202c;
+
+  --color-danger-bg: #4a1f1f;
+  --color-neutral-border: #64748b;
+  --color-on-accent: #fff;
+  --color-table-header-bg: #262632;
+  --color-race-mod-active: #7cbf6a;
+  --color-innate-bg: #262420;
+  --color-innate-tag: #a8a296;
+  --color-enchantment-bg: #262038;
+  --color-enchantment-tag: #b39ddb;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  background: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  /* mobile: space for topbar + bottom nav */
+  padding-top: var(--topbar-h);
+  padding-bottom: var(--bottomnav-h);
+  min-height: 100dvh;
+}
+

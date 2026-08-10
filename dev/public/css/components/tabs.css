@@ -1,0 +1,131 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAB STRIP — horizontal scrollable tabs inside each section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+ * .tab-strip sits at the top of a .box, replacing the old <details><summary>.
+ * It scrolls horizontally on mobile so any number of tabs fit without wrapping.
+ */
+.tab-strip {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.tab-strip::-webkit-scrollbar {
+  display: none; /* Safari / Chrome */
+}
+
+/* Tab buttons */
+.tab-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: clamp(8px, 2.5vw, 12px) clamp(12px, 3vw, 20px);
+  min-height: 44px; /* tap target */
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.tab-btn:active {
+  transform: none; /* override global button:active scale */
+}
+
+/* Collapse chevron — pinned to the right end of the strip */
+.tab-strip-collapse {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0 clamp(10px, 3vw, 16px);
+  min-height: 44px; /* tap target */
+  min-width: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.15s,
+    transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-strip-collapse:hover {
+  color: var(--color-text);
+}
+
+/* Chevron rotates 90° when expanded */
+.tab-strip-collapse[aria-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+/* ── Section collapse — hides all tab panels ─────────────────────────────── */
+.box.is-collapsed .tab-panel {
+  display: none !important;
+}
+
+/* Collapsed box: strip still visible but bottom border softened */
+.box.is-collapsed .tab-strip {
+  border-bottom-color: transparent;
+}
+
+/* Active tab uses the section accent inherited from the parent <section data-section> */
+.tab-btn.is-active {
+  color: var(--_section-accent, var(--accent-character));
+  border-bottom-color: var(--_section-accent, var(--accent-character));
+}
+
+/* Tab panels */
+.tab-panel {
+  display: none;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+/* Section accent top-border on boxes — inherited from parent <section data-section> */
+[data-section] .box {
+  border-top: 3px solid var(--_section-accent, var(--accent-character));
+}
+
+/* Nested <details> inside tab panels keep accent styling */
+[data-section] .tab-panel details summary {
+  border-left: 3px solid
+    color-mix(
+      in srgb,
+      var(--_section-accent, var(--accent-attributes)) 60%,
+      transparent
+    );
+}
+

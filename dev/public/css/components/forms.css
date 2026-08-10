@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+select,
+button,
+input[type="number"],
+input[type="text"] {
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  padding: 6px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  min-height: 36px;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--accent-attributes);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* ── Mobile: prevent iOS Safari auto-zoom on input focus ─────────────────
+   Any focused text-entry field under 16px font-size makes Safari zoom the
+   whole page in. --fs-sm/--fs-base only reach 16px on very wide viewports,
+   so every text/number field (including table cells) is fixed at 16px
+   below 768px. <select> is deliberately excluded — it opens a native
+   picker with no inline text cursor, so it isn't affected by the bug and
+   can stay on the normal fluid text scale. */
+@media (max-width: 767px) {
+  input[type="number"],
+  input[type="text"] {
+    font-size: 16px;
+    padding: 3px 6px;
+  }
+
+  table input[type="number"],
+  table input[type="text"] {
+    padding: 2px 3px;
+  }
+}
+
+button {
+  background: var(--color-btn-bg);
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+button:hover {
+  background: var(--color-btn-hover);
+}
+button:active {
+  transform: scale(0.98);
+}
+
+button.btn-remove {
+  background: none;
+  border: none;
+  color: var(--color-remove);
+  padding: 4px 6px;
+  font-size: var(--fs-sm);
+  min-height: 36px;
+  min-width: 36px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+button.btn-remove:hover {
+  background: var(--color-danger-bg);
+  color: var(--color-remove-hover);
+}
+
+button.btn-danger {
+  background: var(--color-remove);
+  color: #fff;
+}
+
+button.btn-danger:hover {
+  background: var(--color-remove-hover);
+}
+

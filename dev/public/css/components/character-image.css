@@ -1,0 +1,264 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHARACTER IMAGE — Edit panel (tab-char-image)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Two-column editor layout ─────────────────────────────────────────────── */
+.charimg-editor {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.25rem;
+  padding: 0.75rem 0;
+  align-items: start;
+}
+
+@media (max-width: 560px) {
+  .charimg-editor {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Left column: circular preview ───────────────────────────────────────── */
+.charimg-preview-col {
+  display: flex;
+  justify-content: center;
+}
+
+/* Square card that clips to a circle */
+.charimg-bg {
+  width: 240px;
+  height: 240px;
+  border-radius: 4px; /* card corners */
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  position: relative;
+}
+
+/* Inner circle clip */
+.charimg-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  /* clip to circle matching the resume portrait */
+  border-radius: 50%;
+}
+
+.charimg-preview:active {
+  cursor: grabbing;
+}
+
+.charimg-img {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ── Right column: controls ───────────────────────────────────────────────── */
+.charimg-controls-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-top: 2px;
+}
+
+/* Section label ("Imagem") — matches the reference left-side gray label */
+.charimg-section-label {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.1rem;
+}
+
+/* Shared row */
+.charimg-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* Upload label-as-button */
+.charimg-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background 0.12s;
+}
+
+.charimg-upload-btn::before {
+  content: "↑";
+  font-size: 0.85em;
+}
+
+.charimg-upload-btn:hover {
+  background: var(--color-btn-hover);
+}
+
+/* Clear ✕ button */
+.charimg-clear-btn {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+
+.charimg-clear-btn:hover {
+  background: var(--color-remove);
+  color: var(--color-on-accent);
+  border-color: var(--color-remove);
+}
+
+/* Drag hint — small muted text below upload row */
+.charimg-drag-hint {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Group labels: "Tamanho & Posição", "Fundo" */
+.charimg-group-label {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.3rem 0 0;
+}
+
+/* Scale slider — full width in its row, then preset buttons follow */
+.charimg-row--scale {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.charimg-row--scale input[type="range"] {
+  width: 100%;
+  flex-basis: 100%;
+  accent-color: var(--accent-character);
+  margin-bottom: 2px;
+}
+
+/* Preset buttons (Cover, Contain, Center, Top, Bottom, Left, Right) */
+.charimg-preset-btn {
+  padding: 4px 9px;
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xxs);
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background 0.1s;
+}
+
+.charimg-preset-btn:hover {
+  background: var(--color-btn-hover);
+}
+
+/* Background radio row */
+.charimg-row--bg {
+  gap: 8px;
+}
+
+.charimg-radio-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+/* Circle radio button */
+.charimg-radio-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-btn-bg);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.charimg-radio-btn::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.charimg-radio-btn.is-active {
+  border-color: var(--accent-character);
+}
+
+.charimg-radio-btn.is-active::after {
+  background: var(--accent-character);
+}
+
+.charimg-radio-label {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHARACTER IMAGE — Resume portrait
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.resume-row--name {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.resume-charimg-wrapper {
+  flex-shrink: 0;
+}
+
+.resume-charimg-frame {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-border-strong);
+  position: relative;
+  background: var(--color-surface);
+}
+
+.resume-charimg-img {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  pointer-events: none;
+}
+

@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ATTRIBUTE CELLS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.race-mod-cell {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+.race-mod-cell.race-mod-active {
+  color: var(--color-race-mod-active);
+  font-weight: 700;
+}
+
+.enchantment-mod-cell {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+.enchantment-mod-cell.enchantment-mod-active {
+  color: var(--color-enchantment-tag);
+  font-weight: 700;
+}
+
+/* ── HP modifier block ─────────────────────────────────────────────────────── */
+.hp-modifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
+}
+
+.hp-modifier .num-stepper input {
+  width: 52px;
+}
+
+/* Wider inputs for player name and character name */
+#playerNameInput,
+#characterNameInput {
+  min-width: clamp(160px, 40vw, 280px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INNATE TRAITS
+   ═══════════════════════════════════════════════════════════════════════════ */
+tr.trait-innate td {
+  background: var(--color-innate-bg);
+  color: var(--color-text-muted);
+}
+
+tr.trait-enchantment td {
+  background: var(--color-enchantment-bg);
+  color: var(--color-text-muted);
+}
+
+.trait-innate-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-innate-tag);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 3px;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+.trait-enchantment-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-enchantment-tag);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 3px;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+

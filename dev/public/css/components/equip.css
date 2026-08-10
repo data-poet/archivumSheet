@@ -1,0 +1,136 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EQUIP-SUB
+   ═══════════════════════════════════════════════════════════════════════════ */
+.equip-sub details {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.equip-sub details summary {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px 4px;
+  border: none;
+  border-left: none !important;
+  background: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 36px;
+}
+
+.equip-sub details[open] summary {
+  border-bottom: none;
+}
+
+.equip-sub details > *:not(summary) {
+  padding: 4px 4px 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EQUIPPED SLOT GRID
+   ═══════════════════════════════════════════════════════════════════════════ */
+.equipped-slot-grid {
+  display: grid;
+  grid-template-columns: clamp(70px, 20vw, 100px) 1fr;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.equipped-slot-label {
+  background: var(--color-table-header-bg);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--color-border);
+}
+
+.equipped-slot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+}
+
+.equipped-accessory-name {
+  font-size: var(--fs-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STORAGE SECTION HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
+.storage-section-header {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: 8px 0 4px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AMMO
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ammo-container-slot {
+  margin-bottom: 0;
+}
+
+.ammo-type-badge {
+  display: inline-block;
+  background: var(--color-accent, #4a6fa5);
+  color: var(--color-on-accent);
+  font-size: var(--fs-xxs);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ammo-container-body {
+  padding: 6px 10px 10px 10px;
+  border-left: 2px solid var(--color-border, #333);
+  margin: 0 0 12px 4px;
+}
+
+.ammo-container-meta {
+  display: flex;
+  gap: 14px;
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ammo-not-carriable {
+  color: var(--color-danger, #e55);
+  font-weight: 600;
+}
+
+.ammo-contents-table {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.ammo-add-to-container {
+  margin-top: 6px;
+}
+
+.ammo-full {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  margin: 4px 0 0;
+  font-style: italic;
+}
+
