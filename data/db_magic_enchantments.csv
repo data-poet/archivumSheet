@@ -1,37 +1,37 @@
-enchantment_id,enchantment_name,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
-ENCHANTMENT-000,Fortificar ST,fortify_attribute,FALSE,ST,1,1,Acessórios,5000,5000,,,Aumenta a ST do usuário.
-ENCHANTMENT-001,Enfraquecer ST,weaken_attribute,FALSE,ST,1,1,Acessórios,5000,5000,,,Diminui a ST do usuário.
-ENCHANTMENT-002,Fortificar DX,fortify_attribute,FALSE,DX,1,1,Acessórios,10000,10000,,,Aumenta a DX do usuário.
-ENCHANTMENT-003,Enfraquecer DX,weaken_attribute,FALSE,DX,1,1,Acessórios,10000,10000,,,Diminui a DX do usuário.
-ENCHANTMENT-004,Fortificar IQ,fortify_attribute,FALSE,IQ,1,1,Acessórios,10000,10000,,,Aumenta a IQ do usuário.
-ENCHANTMENT-005,Enfraquecer IQ,weaken_attribute,FALSE,IQ,1,1,Acessórios,10000,10000,,,Diminui a IQ do usuário.
-ENCHANTMENT-006,Fortificar HT,fortify_attribute,FALSE,HT,1,1,Acessórios,5000,5000,,,Aumenta a HT do usuário.
-ENCHANTMENT-007,Enfraquecer HT,weaken_attribute,FALSE,HT,1,1,Acessórios,5000,5000,,,Diminui a HT do usuário.
-ENCHANTMENT-008,Fortificar PV,fortify_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Aumenta os PV do usuário.
-ENCHANTMENT-009,Enfraquecer PV,weaken_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Diminui os PV do usuário.
-ENCHANTMENT-010,Fortificar Mana,fortify_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Aumenta a Mana do usuário.
-ENCHANTMENT-011,Enfraquecer Mana,weaken_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Diminui a Mana do usuário.
-ENCHANTMENT-012,Fortificar Toxicidade,fortify_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Aumenta a Toxicidade do usuário.
-ENCHANTMENT-013,Enfraquecer Toxicidade,weaken_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Diminui a Toxicidade do usuário.
-ENCHANTMENT-014,Fortificar Vontade,fortify_attribute,FALSE,Will,1,1,Acessórios,10000,10000,,,Aumenta a Vontade do usuário.
-ENCHANTMENT-015,Enfraquecer Vontade,weaken_attribute,FALSE,Will,1,1,Acessórios,10000,10000,,,Diminui a Vontade do usuário.
-ENCHANTMENT-016,Fortificar Visão,fortify_attribute,FALSE,Vision,1,1,Acessórios,2500,2500,,,Aumenta a Visão do usuário.
-ENCHANTMENT-017,Enfraquecer Visão,weaken_attribute,FALSE,Vision,1,1,Acessórios,2500,2500,,,Diminui a Visão do usuário.
-ENCHANTMENT-018,Fortificar Audição,fortify_attribute,FALSE,Hearing,1,1,Acessórios,2500,2500,,,Aumenta a Audição do usuário.
-ENCHANTMENT-019,Enfraquecer Audição,weaken_attribute,FALSE,Hearing,1,1,Acessórios,2500,2500,,,Diminui a Audição do usuário.
-ENCHANTMENT-020,Fortificar Olfato,fortify_attribute,FALSE,Smell,1,1,Acessórios,2500,2500,,,Aumenta o Olfato do usuário.
-ENCHANTMENT-021,Enfraquecer Olfato,weaken_attribute,FALSE,Smell,1,1,Acessórios,2500,2500,,,Diminui o Olfato do usuário.
-ENCHANTMENT-022,Fortificar Velocidade Básica,fortify_attribute,FALSE,Basic Speed,1,1,Acessórios,10000,10000,,,Aumenta a Velocidade Básica do usuário.
-ENCHANTMENT-023,Enfraquecer Velocidade Básica,weaken_attribute,FALSE,Basic Speed,1,1,Acessórios,10000,10000,,,Diminui a Velocidade Básica do usuário.
-ENCHANTMENT-024,Fortificar Deslocamento,fortify_attribute,FALSE,Movement,1,1,Acessórios,5000,5000,,,Aumenta o Deslocamento do usuário.
-ENCHANTMENT-025,Enfraquecer Deslocamento,weaken_attribute,FALSE,Movement,1,1,Acessórios,5000,5000,,,Diminui o Deslocamento do usuário.
-ENCHANTMENT-026,Fortificar Esquiva,fortify_attribute,FALSE,Dodge,1,1,Acessórios,2500,2500,,,Aumenta a Esquiva do usuário.
-ENCHANTMENT-027,Enfraquecer Esquiva,weaken_attribute,FALSE,Dodge,1,1,Acessórios,2500,2500,,,Diminui a Esquiva do usuário.
-ENCHANTMENT-028,Adicionar Vantagem,advantage,TRUE,,,,Acessórios,,,2000,,Adiciona uma vantagem ao usuário.
-ENCHANTMENT-029,Adicionar Desvantagem,disadvantage,TRUE,,,,Acessórios,,,2000,,Adiciona uma desvantagem ao usuário.
-ENCHANTMENT-030,Adicionar Perícia,skill,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona uma perícia ao usuário.
-ENCHANTMENT-031,Fortificar Perícia,fortify_skill,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica uma perícia do usuário.
-ENCHANTMENT-032,Enfraquecer Perícia,weaken_skill,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece uma perícia do usuário.
-ENCHANTMENT-033,Adicionar Feitiço,spell,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona um feitiço ao usuário.
-ENCHANTMENT-034,Fortificar Feitiço,fortify_spell,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica um feitiço do usuário.
-ENCHANTMENT-035,Enfraquecer Feitiço,weaken_spell,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece um feitiço do usuário.
+enchantment_id,enchantment_name,enchantment_type,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
+ENCHANTMENT-000,Fortificar ST,Fortificar Atributo,fortify_attribute,FALSE,ST,1,1,Acessórios,5000,5000,,,Aumenta a ST do usuário.
+ENCHANTMENT-001,Enfraquecer ST,Enfraquecer Atributo,weaken_attribute,FALSE,ST,1,1,Acessórios,5000,5000,,,Diminui a ST do usuário.
+ENCHANTMENT-002,Fortificar DX,Fortificar Atributo,fortify_attribute,FALSE,DX,1,1,Acessórios,10000,10000,,,Aumenta a DX do usuário.
+ENCHANTMENT-003,Enfraquecer DX,Enfraquecer Atributo,weaken_attribute,FALSE,DX,1,1,Acessórios,10000,10000,,,Diminui a DX do usuário.
+ENCHANTMENT-004,Fortificar IQ,Fortificar Atributo,fortify_attribute,FALSE,IQ,1,1,Acessórios,10000,10000,,,Aumenta a IQ do usuário.
+ENCHANTMENT-005,Enfraquecer IQ,Enfraquecer Atributo,weaken_attribute,FALSE,IQ,1,1,Acessórios,10000,10000,,,Diminui a IQ do usuário.
+ENCHANTMENT-006,Fortificar HT,Fortificar Atributo,fortify_attribute,FALSE,HT,1,1,Acessórios,5000,5000,,,Aumenta a HT do usuário.
+ENCHANTMENT-007,Enfraquecer HT,Enfraquecer Atributo,weaken_attribute,FALSE,HT,1,1,Acessórios,5000,5000,,,Diminui a HT do usuário.
+ENCHANTMENT-008,Fortificar PV,Fortificar Atributo,fortify_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Aumenta os PV do usuário.
+ENCHANTMENT-009,Enfraquecer PV,Enfraquecer Atributo,weaken_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Diminui os PV do usuário.
+ENCHANTMENT-010,Fortificar Mana,Fortificar Atributo,fortify_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Aumenta a Mana do usuário.
+ENCHANTMENT-011,Enfraquecer Mana,Enfraquecer Atributo,weaken_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Diminui a Mana do usuário.
+ENCHANTMENT-012,Fortificar Toxicidade,Fortificar Atributo,fortify_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Aumenta a Toxicidade do usuário.
+ENCHANTMENT-013,Enfraquecer Toxicidade,Enfraquecer Atributo,weaken_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Diminui a Toxicidade do usuário.
+ENCHANTMENT-014,Fortificar Vontade,Fortificar Atributo,fortify_attribute,FALSE,Will,1,1,Acessórios,10000,10000,,,Aumenta a Vontade do usuário.
+ENCHANTMENT-015,Enfraquecer Vontade,Enfraquecer Atributo,weaken_attribute,FALSE,Will,1,1,Acessórios,10000,10000,,,Diminui a Vontade do usuário.
+ENCHANTMENT-016,Fortificar Visão,Fortificar Atributo,fortify_attribute,FALSE,Vision,1,1,Acessórios,2500,2500,,,Aumenta a Visão do usuário.
+ENCHANTMENT-017,Enfraquecer Visão,Enfraquecer Atributo,weaken_attribute,FALSE,Vision,1,1,Acessórios,2500,2500,,,Diminui a Visão do usuário.
+ENCHANTMENT-018,Fortificar Audição,Fortificar Atributo,fortify_attribute,FALSE,Hearing,1,1,Acessórios,2500,2500,,,Aumenta a Audição do usuário.
+ENCHANTMENT-019,Enfraquecer Audição,Enfraquecer Atributo,weaken_attribute,FALSE,Hearing,1,1,Acessórios,2500,2500,,,Diminui a Audição do usuário.
+ENCHANTMENT-020,Fortificar Olfato,Fortificar Atributo,fortify_attribute,FALSE,Smell,1,1,Acessórios,2500,2500,,,Aumenta o Olfato do usuário.
+ENCHANTMENT-021,Enfraquecer Olfato,Enfraquecer Atributo,weaken_attribute,FALSE,Smell,1,1,Acessórios,2500,2500,,,Diminui o Olfato do usuário.
+ENCHANTMENT-022,Fortificar Velocidade Básica,Fortificar Atributo,fortify_attribute,FALSE,Basic Speed,0.5,0.5,Acessórios,10000,10000,,,Aumenta a Velocidade Básica do usuário.
+ENCHANTMENT-023,Enfraquecer Velocidade Básica,Enfraquecer Atributo,weaken_attribute,FALSE,Basic Speed,0.5,0.5,Acessórios,10000,10000,,,Diminui a Velocidade Básica do usuário.
+ENCHANTMENT-024,Fortificar Deslocamento,Fortificar Atributo,fortify_attribute,FALSE,Movement,1,1,Acessórios,5000,5000,,,Aumenta o Deslocamento do usuário.
+ENCHANTMENT-025,Enfraquecer Deslocamento,Enfraquecer Atributo,weaken_attribute,FALSE,Movement,1,1,Acessórios,5000,5000,,,Diminui o Deslocamento do usuário.
+ENCHANTMENT-026,Fortificar Esquiva,Fortificar Atributo,fortify_attribute,FALSE,Dodge,1,1,Acessórios,2500,2500,,,Aumenta a Esquiva do usuário.
+ENCHANTMENT-027,Enfraquecer Esquiva,Enfraquecer Atributo,weaken_attribute,FALSE,Dodge,1,1,Acessórios,2500,2500,,,Diminui a Esquiva do usuário.
+ENCHANTMENT-028,Adicionar Vantagem,Peculiaridade,advantage,TRUE,,,,Acessórios,,,2000,,Adiciona uma vantagem ao usuário.
+ENCHANTMENT-029,Adicionar Desvantagem,Peculiaridade,disadvantage,TRUE,,,,Acessórios,,,2000,,Adiciona uma desvantagem ao usuário.
+ENCHANTMENT-030,Adicionar Perícia,Perícia,skill,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona uma perícia ao usuário.
+ENCHANTMENT-031,Fortificar Perícia,Perícia,fortify_skill,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica uma perícia do usuário.
+ENCHANTMENT-032,Enfraquecer Perícia,Perícia,weaken_skill,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece uma períciad do usuário.
+ENCHANTMENT-033,Adicionar Feitiço,Feitiço,spell,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona um feitiço ao usuário.
+ENCHANTMENT-034,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica um feitiço do usuário.
+ENCHANTMENT-035,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece um feitiço do usuário.
