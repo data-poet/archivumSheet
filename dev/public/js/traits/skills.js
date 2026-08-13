@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchSkills } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSkillAttributeBase } from "../shared/attributeUtils.js";
@@ -67,19 +67,19 @@ export function addSkill() {
     };
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
 export function removeSkill(id) {
   const before = structuredClone(selected.skills);
   delete selected.skills[id];
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.skills = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }

@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchSpells } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSpellAttributeBase } from "../shared/attributeUtils.js";
@@ -67,19 +67,19 @@ export function addSpell() {
     };
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
 export function removeSpell(name) {
   const before = structuredClone(selected.spells);
   delete selected.spells[name];
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.spells = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }

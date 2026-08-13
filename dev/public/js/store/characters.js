@@ -15,7 +15,7 @@
 
 import { state } from "../state.js";
 import { getPrimaryAttributes } from "../engine/attributes.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../character/races.js";
@@ -229,7 +229,7 @@ function _applyData(data) {
   selected.customInventory = inventory.customInventory ?? [];
   selected.coins           = inventory.coins          ?? [];
 
-  renderLists(selected, state.data);
+  renderListsPreserving(selected, state.data);
   renderCharacterImage();
   renderResumeImage();
   triggerAutoRun();

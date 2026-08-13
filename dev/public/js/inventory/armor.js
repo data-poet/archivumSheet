@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchArmors, fetchMaterials } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
@@ -21,7 +21,7 @@ export async function loadArmors() {
   ]);
 
   loadArmorSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -108,7 +108,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   });
 
   if (!armorId) {
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
     return;
   }
@@ -125,7 +125,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
     armor_custom_effect: null,
   });
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -149,7 +149,7 @@ export function addStoredArmor(armorId, materialId = null, storedAt = "backpack"
     armor_custom_effect: null,
   });
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -161,7 +161,7 @@ export function moveArmor(instanceId, storedAt) {
   armor.is_equipped = false;
   armor.storedAt = storedAt;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -169,12 +169,12 @@ export function moveArmor(instanceId, storedAt) {
 export function removeArmor(instanceId) {
   const before = structuredClone(selected.armors);
   selected.armors = selected.armors.filter((a) => a._instanceId !== instanceId);
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.armors = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -198,7 +198,7 @@ export function saveArmorCustomFields(instanceId, { name, description, effect })
   instance.armor_custom_description = norm(description);
   instance.armor_custom_effect = norm(effect);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

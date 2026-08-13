@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchFirearms, fetchMaterials } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { nextFirearmInstanceId } from "../store/instanceId.js";
@@ -22,7 +22,7 @@ export async function loadFirearms() {
   ]);
 
   loadFirearmSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -122,7 +122,7 @@ export function equipFirearm(instanceId, weaponId, materialId = null) {
   instance.is_equipped = true;
   instance.storedAt = null;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -155,7 +155,7 @@ export function addEquippedFirearm(weaponId, materialId = null) {
 
   selected.firearms.push(_newFirearmInstance(weaponId, materialId, true, null));
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -167,7 +167,7 @@ export function addStoredFirearm(weaponId, materialId = null, storedAt = "backpa
     _newFirearmInstance(weaponId, materialId, false, storedAt),
   );
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -183,7 +183,7 @@ export function moveFirearm(instanceId, storedAt) {
   firearm.is_equipped = false;
   firearm.storedAt = storedAt;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -194,12 +194,12 @@ export function removeFirearm(instanceId) {
   selected.firearms = selected.firearms.filter(
     (w) => w._instanceId !== instanceId,
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.firearms = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -226,7 +226,7 @@ export function setFirearmRoundsLoaded(instanceId, rawValue) {
   const parsed = parseInt(rawValue, 10);
   instance.rounds_loaded = Math.min(Math.max(isNaN(parsed) ? 0 : parsed, 0), max);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -282,7 +282,7 @@ export function reloadFirearm(instanceId) {
     instance.rounds_loaded = current + drained;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -305,7 +305,7 @@ export function saveFirearmCustomFields(instanceId, { name, description, effect 
   instance.weapon_custom_description = norm(description);
   instance.weapon_custom_effect = norm(effect);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

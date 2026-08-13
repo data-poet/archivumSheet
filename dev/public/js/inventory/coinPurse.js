@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 
 const selected = state.selected;
@@ -32,7 +32,7 @@ export function addCoins(coinType, quantity, storedAt = "backpack") {
     selected.coins.push({ coin_type: coinType, quantity, storedAt });
   }
 
-  renderLists(selected, state.data);
+  renderListsPreserving(selected, state.data);
   triggerAutoRun();
 }
 
@@ -54,7 +54,7 @@ export function updateCoinQuantity(coinType, storedAt, quantity) {
     if (entry) entry.quantity = quantity;
   }
 
-  renderLists(selected, state.data);
+  renderListsPreserving(selected, state.data);
   triggerAutoRun();
 }
 
@@ -87,6 +87,6 @@ export function moveCoins(coinType, fromLocation, toLocation) {
     selected.coins.push({ coin_type: coinType, quantity: qty, storedAt: toLocation });
   }
 
-  renderLists(selected, state.data);
+  renderListsPreserving(selected, state.data);
   triggerAutoRun();
 }

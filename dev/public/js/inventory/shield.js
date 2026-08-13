@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchShields, fetchMaterials } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
@@ -21,7 +21,7 @@ export async function loadShields() {
   ]);
 
   loadShieldSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -84,7 +84,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   selected.shields = selected.shields.filter((s) => !s.is_equipped);
 
   if (!shieldId) {
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
     return;
   }
@@ -101,7 +101,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
     shield_custom_effect: null,
   });
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -125,7 +125,7 @@ export function addStoredShield(shieldId, materialId = null, storedAt = "backpac
     shield_custom_effect: null,
   });
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -137,7 +137,7 @@ export function moveShield(instanceId, storedAt) {
   shield.is_equipped = false;
   shield.storedAt = storedAt;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -145,12 +145,12 @@ export function moveShield(instanceId, storedAt) {
 export function removeShield(instanceId) {
   const before = structuredClone(selected.shields);
   selected.shields = selected.shields.filter((s) => s._instanceId !== instanceId);
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.shields = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -174,7 +174,7 @@ export function saveShieldCustomFields(instanceId, { name, description, effect }
   instance.shield_custom_description = norm(description);
   instance.shield_custom_effect = norm(effect);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

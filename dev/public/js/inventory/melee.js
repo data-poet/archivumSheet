@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchMeleeWeapons, fetchMaterials } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
@@ -23,7 +23,7 @@ export async function loadMeleeWeapons() {
   ]);
 
   loadMeleeSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -121,7 +121,7 @@ export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_I
     linked.storedAt = null;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -215,7 +215,7 @@ export function addEquippedMelee(weaponId, materialId = null) {
 
   _syncRangedCounterpart(instanceId, weaponId, materialId, true, null);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -239,7 +239,7 @@ export function addStoredMelee(meleeId, materialId = null, storedAt = "backpack"
 
   _syncRangedCounterpart(instanceId, meleeId, materialId, false, storedAt);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -258,7 +258,7 @@ export function moveMelee(instanceId, storedAt) {
     linked.storedAt = storedAt;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -273,13 +273,13 @@ export function removeMelee(instanceId) {
   selected.melee_weapons = selected.melee_weapons.filter(
     (w) => w._instanceId !== instanceId,
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.melee_weapons = beforeMelee;
     selected.ranged_weapons = beforeRanged;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -314,7 +314,7 @@ export function saveMeleeCustomFields(instanceId, { name, description, effect })
     linked.weapon_custom_effect = instance.weapon_custom_effect;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

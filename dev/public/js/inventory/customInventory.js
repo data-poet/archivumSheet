@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { offerUndo } from "../ui/undo.js";
 
@@ -34,7 +34,7 @@ export function addCustomItem({ name, weight, price, quantity, description, stor
     storedAt:    storedAt,
   });
 
-  renderLists(selected, state.data, state.sheet);
+  renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
 }
 
@@ -50,7 +50,7 @@ export function updateCustomItemQuantity(customItemId, quantity) {
   );
   if (entry) entry.quantity = quantity;
 
-  renderLists(selected, state.data, state.sheet);
+  renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
 }
 
@@ -61,12 +61,12 @@ export function removeCustomItem(customItemId) {
     (e) => e.custom_item_id !== customItemId,
   );
 
-  renderLists(selected, state.data, state.sheet);
+  renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.customInventory = before;
-    renderLists(selected, state.data, state.sheet);
+    renderListsPreserving(selected, state.data, state.sheet);
     triggerAutoRun();
   });
 }
@@ -83,7 +83,7 @@ export function moveCustomItem(customItemId, toLocation) {
 
   entry.storedAt = toLocation;
 
-  renderLists(selected, state.data, state.sheet);
+  renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
 }
 
@@ -116,7 +116,7 @@ export function saveCustomItemFields(customItemId, { name, weight, price, descri
   entry.price        = price;
   entry.description  = description?.trim() || null;
 
-  renderLists(selected, state.data, state.sheet);
+  renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
   return true;
 }

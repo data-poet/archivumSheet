@@ -197,13 +197,19 @@ export async function runEngine() {
     }
 
     // Snapshot open details + scroll positions across all list containers
-    // before renderLists wipes and rebuilds the DOM, then restore in a rAF
-    // so the user's scroll position and open detail rows survive the re-render.
+    // before renderLists wipes and rebuilds the DOM, then restore
+    // immediately after — same task, not a later rAF. Fresh <details>
+    // markup never carries the `open` attribute, so deferring the restore
+    // to a later frame means the browser paints the rebuilt DOM collapsed
+    // first, then open again next frame — a visible flash. Restoring
+    // synchronously right after renderLists means the browser only ever
+    // paints the final, correct state. See openState.js's withOpenState
+    // for the identical fix and full rationale.
     const snapshots = snapshotAll();
 
     renderLists(selected, state.data, state.sheet);
 
-    requestAnimationFrame(() => restoreAll(snapshots));
+    restoreAll(snapshots);
 
     // Persist active character and refresh selector label
     saveActiveCharacter();

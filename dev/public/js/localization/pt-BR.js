@@ -289,6 +289,7 @@ export const LABELS = {
     add: "Adicionar",
     remove: "Remover",
     removed: "Removido",
+    added: "Adicionado",
     undo: "Desfazer",
     edit: "Editar",
     customize: "Personalizar",
@@ -399,6 +400,7 @@ export const LABELS = {
     extraPoints: "Pontos Extras",
     noneAttached: "Nenhum encantamento aplicado.",
     noneAvailable: "Nenhum encantamento disponível para este item.",
+    subtotalLabel: "Total",
   },
 
   // ── Custom (user-defined) inventory ───────────────────────────────────────

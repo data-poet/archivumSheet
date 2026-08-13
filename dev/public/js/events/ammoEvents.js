@@ -6,7 +6,7 @@ import {
   moveLooseAmmo, moveAmmoInContainer,
   updateAmmoOptions, updateLooseAmmoOptions, updateLooseAmmoTypeFilter,
 } from "../inventory/ammo.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { ammoDetailKeyFn } from "../shared/openState.js";
 
 const selected = state.selected;
@@ -81,7 +81,7 @@ function _rest(sel, keyFn, open) {
   });
 }
 function _renderAll() {
-  const snap = _snapshot(); renderLists(selected, data); _restore(snap);
+  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
 }
 
 // ─── Click ────────────────────────────────────────────────────────────────────

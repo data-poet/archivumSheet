@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchAlchemy } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { offerUndo } from "../ui/undo.js";
@@ -16,7 +16,7 @@ export async function loadAlchemy() {
   data.alchemy = await fetchAlchemy();
 
   loadAlchemySelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -114,7 +114,7 @@ export function addAlchemy(consumableId, quantity, storedAt = "backpack") {
     selected.alchemy.push({ consumable_id: consumableId, quantity, storedAt });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -131,7 +131,7 @@ export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
     if (entry) entry.quantity = quantity;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -141,12 +141,12 @@ export function removeAlchemy(consumableId, storedAt) {
   selected.alchemy = selected.alchemy.filter(
     (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.alchemy = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -176,6 +176,6 @@ export function moveAlchemy(consumableId, fromLocation, toLocation) {
     selected.alchemy.push({ consumable_id: consumableId, quantity: qty, storedAt: toLocation });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }

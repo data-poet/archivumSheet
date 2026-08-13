@@ -1,11 +1,12 @@
 import { state } from "../state.js";
 import { fetchAccessories } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { ACCESSORY_ITEM_CATEGORY } from "../shared/constants.js";
 import { nextAccessoryInstanceId } from "../store/instanceId.js";
 import { offerUndo } from "../ui/undo.js";
+import { t } from "../localization/pt-BR.js";
 import {
   addEnchantmentEntry,
   updateEnchantmentEntry,
@@ -24,7 +25,7 @@ export async function loadAccessories() {
   data.accessories = await fetchAccessories();
 
   loadAccessorySelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -125,7 +126,7 @@ export function addEquippedAccessory(accessoryId, price = 0) {
   );
 
   updateAccessoryEquipOptionAvailability();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -137,7 +138,7 @@ export function addStoredAccessory(accessoryId, price = 0, storedAt = "backpack"
     _newAccessoryInstance(accessoryId, price, false, storedAt),
   );
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -155,7 +156,7 @@ export function equipAccessory(instanceId) {
   instance.storedAt = null;
 
   updateAccessoryEquipOptionAvailability();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -177,7 +178,7 @@ export function moveAccessory(instanceId, storedAt) {
   }
 
   updateAccessoryEquipOptionAvailability();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -190,13 +191,13 @@ export function removeAccessory(instanceId) {
   );
   clearEnchantmentAddFormSelection(instanceId);
   updateAccessoryEquipOptionAvailability();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.accessories = before;
     updateAccessoryEquipOptionAvailability();
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -231,7 +232,7 @@ export function saveAccessoryCustomFields(instanceId, { name, description, effec
   instance.accessory_custom_description = norm(description);
   instance.accessory_custom_effect = norm(effect);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -249,6 +250,8 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   if (!instance) return;
   if (!instance.enchantments) instance.enchantments = [];
 
+  const before = structuredClone(instance.enchantments);
+
   const added = addEnchantmentEntry(
     instance.enchantments,
     enchantmentId,
@@ -256,8 +259,14 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   );
   if (!added) return;
 
-  renderLists(selected, data, state.sheet);
+  renderListsPreserving(selected, data, state.sheet);
   triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
 }
 
 /**
@@ -285,12 +294,12 @@ export function updateAccessoryEnchantment(
   );
   if (!updated) return;
 
-  renderLists(selected, data, state.sheet);
+  renderListsPreserving(selected, data, state.sheet);
   triggerAutoRun();
 
   offerUndo(() => {
     instance.enchantments = before;
-    renderLists(selected, data, state.sheet);
+    renderListsPreserving(selected, data, state.sheet);
     triggerAutoRun();
   });
 }
@@ -303,12 +312,12 @@ export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
 
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
-  renderLists(selected, data, state.sheet);
+  renderListsPreserving(selected, data, state.sheet);
   triggerAutoRun();
 
   offerUndo(() => {
     instance.enchantments = before;
-    renderLists(selected, data, state.sheet);
+    renderListsPreserving(selected, data, state.sheet);
     triggerAutoRun();
   });
 }

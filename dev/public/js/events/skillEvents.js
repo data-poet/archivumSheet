@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { triggerAutoRun } from "../engine/autorun.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { removeSkill, updateSkill } from "../traits/skills.js";
 import { removeSpell, updateSpell } from "../traits/spells.js";
 import { withOpenState, tableRowKeyFn } from "../shared/openState.js";
@@ -22,7 +22,7 @@ export function handleSkillChange(e) {
     if (!selected.skills[id]) return true;
     selected.skills[id].isTrainedWithMaster = e.target.checked;
     withOpenState("#skillList", tableRowKeyFn("data-id"), () => {
-      renderLists(state.selected, state.data);
+      renderListsPreserving(state.selected, state.data);
     });
     triggerAutoRun();
     return true;
@@ -37,7 +37,7 @@ export function handleSkillInput(e) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
     _updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
     withOpenState("#skillList", tableRowKeyFn("data-id"), () => {
-      renderLists(state.selected, state.data);
+      renderListsPreserving(state.selected, state.data);
     });
     return true;
   }
@@ -45,7 +45,7 @@ export function handleSkillInput(e) {
   if (e.target.classList.contains("spell-input")) {
     updateSpell(e.target.dataset.name, e.target.dataset.field, e.target.value);
     withOpenState("#spellList", tableRowKeyFn("data-name"), () => {
-      renderLists(state.selected, state.data);
+      renderListsPreserving(state.selected, state.data);
     });
     return true;
   }

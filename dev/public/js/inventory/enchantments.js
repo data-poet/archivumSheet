@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { fetchEnchantments } from "../api.js";
+import { fetchEnchantments, fetchEnchantmentEffectTypes } from "../api.js";
 import { nextEnchantmentInstanceId } from "../store/instanceId.js";
 
 const data = state.data;
@@ -9,37 +9,29 @@ const data = state.data;
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function loadEnchantments() {
-  data.enchantments = await fetchEnchantments();
+  const [enchantments, effectTypes] = await Promise.all([
+    fetchEnchantments(),
+    fetchEnchantmentEffectTypes(),
+  ]);
+
+  data.enchantments = enchantments;
+  data.enchantmentEffectTypes = effectTypes;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EFFECT TYPE GROUPS
 //
-// Mirrors engine/inventory/js/shared/enchantmentsConstants.js — kept in sync
-// by hand since this is the browser side and can't require() the engine file.
+// Read straight from data.enchantmentEffectTypes, fetched from
+// /api/enchantments/effect-types at bootstrap (see loadEnchantments above) —
+// which itself serves engine/inventory/js/shared/enchantmentsConstants.js
+// directly. This is the SAME object the engine prices/validates against,
+// not a hand-copied mirror of it.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ATTRIBUTE_EFFECT_TYPES = ["fortify_attribute", "weaken_attribute"];
-const POINT_EFFECT_TYPES = ["advantage", "disadvantage"];
-const SKILL_EFFECT_TYPES = ["skill", "fortify_skill", "weaken_skill"];
-const SPELL_EFFECT_TYPES = ["spell", "fortify_spell", "weaken_spell"];
-
-// Sign convention: fortify types are always a positive integer, weaken
-// types always negative. Mirrors engine/inventory/js/shared/
-// enchantmentsConstants.js's FORTIFY_EFFECT_TYPES/WEAKEN_EFFECT_TYPES.
-const FORTIFY_EFFECT_TYPES = [
-  "fortify_attribute",
-  "fortify_skill",
-  "fortify_spell",
-];
-const WEAKEN_EFFECT_TYPES = [
-  "weaken_attribute",
-  "weaken_skill",
-  "weaken_spell",
-];
-
 export function isAttributeType(effectType) {
-  return ATTRIBUTE_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.ATTRIBUTE_EFFECT_TYPES.includes(
+    effectType,
+  );
 }
 
 export function isAdvantageType(effectType) {
@@ -51,23 +43,27 @@ export function isDisadvantageType(effectType) {
 }
 
 export function isPointType(effectType) {
-  return POINT_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.POINT_EFFECT_TYPES.includes(effectType);
 }
 
 export function isSkillType(effectType) {
-  return SKILL_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.SKILL_EFFECT_TYPES.includes(effectType);
 }
 
 export function isSpellType(effectType) {
-  return SPELL_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.SPELL_EFFECT_TYPES.includes(effectType);
 }
 
 export function isFortifyType(effectType) {
-  return FORTIFY_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.FORTIFY_EFFECT_TYPES.includes(
+    effectType,
+  );
 }
 
 export function isWeakenType(effectType) {
-  return WEAKEN_EFFECT_TYPES.includes(effectType);
+  return data.enchantmentEffectTypes.WEAKEN_EFFECT_TYPES.includes(
+    effectType,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

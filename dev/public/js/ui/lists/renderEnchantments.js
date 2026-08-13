@@ -28,7 +28,8 @@
 
 import { t } from "../../localization/pt-BR.js";
 import { state } from "../../state.js";
-import { escapeHtml, escapeAttr, numStepper } from "./renderUtils.js";
+import { RACIAL_TRAIT_TYPE } from "../../shared/constants.js";
+import { escapeHtml, escapeAttr, numStepper, formatRichText } from "./renderUtils.js";
 import {
   getAllowedEnchantments,
   getEnchantmentTypeValues,
@@ -48,12 +49,6 @@ import {
 } from "../../inventory/enchantments.js";
 
 const data = state.data;
-
-// Traits of this type only ever exist as race-innate grants and are never
-// player-browsable — matches the RACIAL_TYPE exclusion already established
-// in traits/advantages.js's own "add advantage" picker. A magic item
-// shouldn't be able to grant a race-only trait either.
-const RACIAL_TYPE = "Racial";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TARGET DISPLAY LOOKUPS (for the attached-entry summary line)
@@ -108,6 +103,19 @@ function entryMagnitudeLabel(record, entry) {
   return null;
 }
 
+/**
+ * Rules-text line for the currently-selected enchantment, shown between the
+ * type select and its parameter inputs so a player can see what they're
+ * about to attach without leaving the sheet. Uses enchantment_description
+ * straight from the catalog (already GM-authored Portuguese rules text).
+ */
+function recordDescriptionMarkup(record) {
+  const desc = formatRichText(record.enchantment_description);
+  if (desc === "—") return "";
+
+  return `<div class="item-detail-block"><em>${t("traits.description")}:</em>${desc}</div>`;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // TARGET PICKER (cascading filter + name select)
 //
@@ -121,7 +129,7 @@ function entryMagnitudeLabel(record, entry) {
 
 const TARGET_PICKER_CONFIG = {
   advantage: {
-    rows: () => data.advantages.filter((a) => a.advantage_type !== RACIAL_TYPE),
+    rows: () => data.advantages.filter((a) => a.advantage_type !== RACIAL_TRAIT_TYPE),
     filterField: "advantage_type",
     valueField: "advantage_id",
     labelField: "advantage_box_name",
@@ -129,7 +137,7 @@ const TARGET_PICKER_CONFIG = {
   },
   disadvantage: {
     rows: () =>
-      data.disadvantages.filter((d) => d.disadvantage_type !== RACIAL_TYPE),
+      data.disadvantages.filter((d) => d.disadvantage_type !== RACIAL_TRAIT_TYPE),
     filterField: "disadvantage_type",
     valueField: "disadvantage_id",
     labelField: "disadvantage_box_name",
@@ -335,42 +343,94 @@ function paramsMarkup(record, formKey, currentEntry) {
   return "";
 }
 
-function renderAddForm(instanceId, itemCategory) {
-  const typeFilter = getEnchantmentAddFormTypeFilter(instanceId);
+/**
+ * "Tipo de Encantamento" <select> options — grouped into <optgroup>s by
+ * enchantment_type once more than one type is present in the list (e.g.
+ * before a Categoria filter narrows it down, or for an item category that
+ * simply offers several types with the same allowed_itens value). A single
+ * flat list when there's only one type, since a lone optgroup label would
+ * just repeat the Categoria filter for no benefit.
+ */
+function typeSelectOptionsMarkup(allowed, selectedId) {
+  const optionMarkup = (e) =>
+    `<option value="${e.enchantment_id}" ${e.enchantment_id === selectedId ? "selected" : ""}>${escapeHtml(e.enchantment_name)}</option>`;
+
+  const types = [...new Set(allowed.map((e) => e.enchantment_type))];
+  if (types.length <= 1) {
+    return allowed.map(optionMarkup).join("");
+  }
+
+  return types
+    .map(
+      (type) => `
+        <optgroup label="${escapeAttr(type)}">
+          ${allowed
+            .filter((e) => e.enchantment_type === type)
+            .map(optionMarkup)
+            .join("")}
+        </optgroup>`,
+    )
+    .join("");
+}
+
+/**
+ * Shared form body for both "add a new enchantment" and "edit/swap an
+ * already-attached entry" — same fields (category filter, type select,
+ * description, params), only the formKey, defaulted selection, empty-state
+ * guard, and action buttons differ between the two callers below.
+ */
+function renderEnchantmentForm({
+  formKey,
+  itemCategory,
+  selectedId,
+  currentEntry,
+  guardEmpty,
+  actionsMarkup,
+}) {
+  const typeFilter = getEnchantmentAddFormTypeFilter(formKey);
   const allowed = getAllowedEnchantments(itemCategory, typeFilter);
 
-  if (allowed.length === 0) {
+  if (guardEmpty && allowed.length === 0) {
     return `<p class="custom-fields-empty">${t("enchantments.noneAvailable")}</p>`;
   }
 
-  const selectedId = getEnchantmentAddFormSelection(instanceId, itemCategory);
   const record = selectedId ? getEnchantmentRecord(selectedId) : null;
 
   return `
-    <div class="enchantment-form" data-form-key="${instanceId}">
+    <div class="enchantment-form" data-form-key="${formKey}">
       <div class="item-detail-grid custom-fields-grid">
-        ${renderCategoryFilter(instanceId, itemCategory, typeFilter)}
+        ${renderCategoryFilter(formKey, itemCategory, typeFilter)}
         <label class="item-detail-field item-detail-field--full">
           <em>${t("enchantments.type")}</em>
-          <select class="enchantment-type-select" data-form-key="${instanceId}">
-            ${allowed
-              .map(
-                (e) =>
-                  `<option value="${e.enchantment_id}" ${e.enchantment_id === selectedId ? "selected" : ""}>${escapeHtml(e.enchantment_name)}</option>`,
-              )
-              .join("")}
+          <select class="enchantment-type-select" data-form-key="${formKey}">
+            ${typeSelectOptionsMarkup(allowed, selectedId)}
           </select>
         </label>
-        ${record ? paramsMarkup(record, instanceId, null) : ""}
+        ${record ? recordDescriptionMarkup(record) : ""}
+        ${record ? paramsMarkup(record, formKey, currentEntry) : ""}
       </div>
       <div class="custom-fields-actions">
+        ${actionsMarkup}
+      </div>
+    </div>`;
+}
+
+function renderAddForm(instanceId, itemCategory) {
+  const selectedId = getEnchantmentAddFormSelection(instanceId, itemCategory);
+
+  return renderEnchantmentForm({
+    formKey: instanceId,
+    itemCategory,
+    selectedId,
+    currentEntry: null,
+    guardEmpty: true,
+    actionsMarkup: `
         <button
           type="button"
           class="enchantment-add-btn"
           data-instance-id="${instanceId}"
-        >${t("common.add")}</button>
-      </div>
-    </div>`;
+        >${t("common.add")}</button>`,
+  });
 }
 
 /**
@@ -382,35 +442,20 @@ function renderAddForm(instanceId, itemCategory) {
  */
 function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
   const formKey = entry._instanceId;
-  const typeFilter = getEnchantmentAddFormTypeFilter(formKey);
-  const allowed = getAllowedEnchantments(itemCategory, typeFilter);
-
   const selectedId = getEnchantmentEditFormSelection(
     formKey,
     itemCategory,
     entry.enchantment_id,
   );
-  const record = selectedId ? getEnchantmentRecord(selectedId) : null;
   const swapped = selectedId !== entry.enchantment_id;
 
-  return `
-    <div class="enchantment-form" data-form-key="${formKey}">
-      <div class="item-detail-grid custom-fields-grid">
-        ${renderCategoryFilter(formKey, itemCategory, typeFilter)}
-        <label class="item-detail-field item-detail-field--full">
-          <em>${t("enchantments.type")}</em>
-          <select class="enchantment-type-select" data-form-key="${formKey}">
-            ${allowed
-              .map(
-                (e) =>
-                  `<option value="${e.enchantment_id}" ${e.enchantment_id === selectedId ? "selected" : ""}>${escapeHtml(e.enchantment_name)}</option>`,
-              )
-              .join("")}
-          </select>
-        </label>
-        ${record ? paramsMarkup(record, formKey, swapped ? null : entry) : ""}
-      </div>
-      <div class="custom-fields-actions">
+  return renderEnchantmentForm({
+    formKey,
+    itemCategory,
+    selectedId,
+    currentEntry: swapped ? null : entry,
+    guardEmpty: false,
+    actionsMarkup: `
         <button
           type="button"
           class="enchantment-save-btn"
@@ -422,9 +467,8 @@ function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
           class="btn-remove enchantment-remove-btn"
           data-instance-id="${parentInstanceId}"
           data-entry-instance-id="${formKey}"
-        >${t("common.remove")}</button>
-      </div>
-    </div>`;
+        >${t("common.remove")}</button>`,
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -464,6 +508,30 @@ function renderEnchantmentEntry(
 // BODY + WRAPPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Sum of resolved prices across every attached entry, for the block-level
+ * summary line — null (not 0) when there are no entries yet, or when none
+ * of them have a resolved price yet (e.g. right after an edit, before the
+ * debounced engine run catches up), so the caller can fall back to showing
+ * nothing rather than a misleading "0".
+ */
+function enchantmentsSubtotal(entries, resolvedEntries) {
+  if (entries.length === 0) return null;
+
+  let total = 0;
+  let hasResolvedPrice = false;
+
+  for (const entry of entries) {
+    const price = resolvedPrice(resolvedEntries, entry._instanceId);
+    if (price != null) {
+      total += price;
+      hasResolvedPrice = true;
+    }
+  }
+
+  return hasResolvedPrice ? total : null;
+}
+
 function enchantmentsBody({
   instanceId,
   entries,
@@ -492,33 +560,56 @@ function enchantmentsBody({
 }
 
 /**
+ * The bare "Encantamentos" <details> expander, with no outer wrapper —
+ * for nesting INSIDE another <details> (currently: accessories'
+ * "Personalizar" block, see customFieldsEquippedDetail/customFieldsDetailRow's
+ * extraContent param). A nested <details> needs no .equipped-detail div or
+ * <tr> of its own since it already sits inside its parent's.
+ */
+function enchantmentsExpanderMarkup(params) {
+  const subtotal = enchantmentsSubtotal(params.entries, params.resolvedEntries);
+
+  return `
+    <details data-detail-kind="enchantments">
+      <summary class="enchantments-summary">
+        <span>${t("enchantments.title")}</span>
+        ${subtotal != null ? `<span class="enchantments-subtotal">${t("enchantments.subtotalLabel")}: ${subtotal}</span>` : ""}
+      </summary>
+      ${enchantmentsBody(params)}
+    </details>`;
+}
+
+export function enchantmentsExpander(params) {
+  return enchantmentsExpanderMarkup(params);
+}
+
+/**
  * Own dedicated <details> expander for equipped-slot (div-based) layouts —
  * a sibling to customFieldsEquippedDetail, not nested inside it.
  * data-detail-kind lets openState.js track this block's open/closed state
  * independently of the sibling "customize"/"stats" blocks.
+ *
+ * Kept for equipment types that want enchantments as a standalone block
+ * rather than nested inside "Personalizar" — see enchantmentsExpander for
+ * the nested form accessories now uses.
  */
 export function enchantmentsEquippedDetail(params) {
   return `
     <div class="equipped-detail">
-      <details data-detail-kind="enchantments">
-        <summary>${t("enchantments.title")}</summary>
-        ${enchantmentsBody(params)}
-      </details>
+      ${enchantmentsExpanderMarkup(params)}
     </div>`;
 }
 
 /**
  * Own dedicated <details> expander for stored-table (tr/td-based) layouts —
- * a sibling to customFieldsDetailRow, not nested inside it.
+ * a sibling to customFieldsDetailRow, not nested inside it. See
+ * enchantmentsEquippedDetail's note above.
  */
 export function enchantmentsDetailRow(colspan, params) {
   return `
     <tr class="detail-row">
       <td colspan="${colspan}">
-        <details data-detail-kind="enchantments">
-          <summary>${t("enchantments.title")}</summary>
-          ${enchantmentsBody(params)}
-        </details>
+        ${enchantmentsExpanderMarkup(params)}
       </td>
     </tr>`;
 }

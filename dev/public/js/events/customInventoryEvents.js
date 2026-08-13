@@ -6,7 +6,7 @@ import {
   saveCustomItemFields,
 } from "../inventory/customInventory.js";
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -14,7 +14,7 @@ import {
 } from "../ui/lists/renderUtils.js";
 
 function _renderAll() {
-  renderLists(state.selected, state.data, state.sheet);
+  renderListsPreserving(state.selected, state.data, state.sheet);
 }
 
 // ─── Click ────────────────────────────────────────────────────────────────────

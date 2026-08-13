@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipArmor, addStoredArmor, moveArmor, removeArmor,
@@ -7,7 +6,8 @@ import {
 } from "../inventory/armor.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
-import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import { renderArmorSlots, renderStoredArmors } from "../ui/lists/renderArmor.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -19,46 +19,38 @@ const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function _renderWithState(renderFn) {
-  withOpenState("#armorSlots",       divBlockKeyFn("data-slot"),         renderFn);
-  withOpenState("#armorStorageList", tableRowKeyFn("data-instance-id"),  () => {});
-  // Re-run combined so both containers are covered in one pass
-}
+/**
+ * Re-renders ONLY the armor lists (equipped slots + storage), not a full
+ * renderLists() sweep of all 21 sections — same reasoning as accessories'
+ * _renderAccessoryLists.
+ *
+ * Uses the shared snapshotAll()/restoreAll() pair (all managed containers)
+ * rather than a single-scope helper like withOpenState: several armor
+ * actions move an item BETWEEN #armorSlots and #armorStorageList in one
+ * step (equip/unequip/move), so both need their open/closed state captured
+ * and restored together, not just whichever one the click originated in.
+ * snapshotAll/restoreAll's generic key function already understands both
+ * armor's div-block (data-slot) and table-row (data-instance-id) patterns,
+ * plus scroll-position and nested data-detail-kind handling that this file
+ * previously didn't have at all.
+ *
+ * Deferred by one requestAnimationFrame for the same reason withOpenState
+ * defers its render: several callers below fire from native <select>
+ * "change" handlers, and replacing that select's DOM ancestor before the
+ * browser has finished its own change-event/native-picker cycle causes a
+ * visible flicker (worst on mobile Safari). Restore happens in the SAME
+ * frame as the render — not a later one — to avoid the opposite bug:
+ * painting the freshly-rebuilt DOM in its default-collapsed state before
+ * it reopens. See openState.js's withOpenState doc comment for the full
+ * rationale; this mirrors it exactly.
+ */
+function _renderArmorLists(sheet) {
+  const snapshots = snapshotAll();
 
-function _renderAll() {
-  const snap = _snapshotAll();
-  renderLists(selected, data);
-  _restoreAll(snap);
-}
-
-function _snapshotAll() {
-  return {
-    slots:   _snapshotContainer("#armorSlots",       (d) => divBlockKeyFn("data-slot")(d)),
-    storage: _snapshotContainer("#armorStorageList", tableRowKeyFn("data-instance-id")),
-  };
-}
-
-function _snapshotContainer(sel, keyFn) {
-  const el = document.querySelector(sel);
-  if (!el) return new Set();
-  const open = new Set();
-  el.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
-  });
-  return open;
-}
-
-function _restoreAll(snap) {
-  _restoreContainer("#armorSlots",       (d) => divBlockKeyFn("data-slot")(d),       snap.slots);
-  _restoreContainer("#armorStorageList", tableRowKeyFn("data-instance-id"), snap.storage);
-}
-
-function _restoreContainer(sel, keyFn, open) {
-  if (!open.size) return;
-  const el = document.querySelector(sel);
-  if (!el) return;
-  el.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
+  requestAnimationFrame(() => {
+    renderArmorSlots(selected, data, sheet);
+    renderStoredArmors(selected, data, sheet);
+    restoreAll(snapshots);
   });
 }
 
@@ -89,7 +81,7 @@ export function handleArmorClick(e) {
     });
     armorToEquip.is_equipped = true;
     armorToEquip.storedAt = null;
-    _renderAll();
+    _renderArmorLists();
     triggerAutoRun();
     return true;
   }
@@ -103,7 +95,7 @@ export function handleArmorClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findArmorByInstanceId(instanceId)) return false;
     openCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderArmorLists();
     return true;
   }
 
@@ -111,7 +103,7 @@ export function handleArmorClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findArmorByInstanceId(instanceId)) return false;
     closeCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderArmorLists();
     return true;
   }
 
@@ -121,11 +113,15 @@ export function handleArmorClick(e) {
     const values = readCustomFieldsEditorValues(instanceId);
     closeCustomFieldsEditor(instanceId);
     if (values) {
-      const snap = _snapshotAll();
-      saveArmorCustomFields(instanceId, values); // mutates + renders + runs engine
-      _restoreAll(snap);
+      // saveArmorCustomFields mutates + calls its own renderLists()+
+      // triggerAutoRun() internally (unwrapped) — snapshot right before it
+      // and restore right after it returns (both synchronous) so that
+      // internal render doesn't blow away open state anywhere on the page.
+      const snapshots = snapshotAll();
+      saveArmorCustomFields(instanceId, values);
+      restoreAll(snapshots);
     } else {
-      _renderAll();
+      _renderArmorLists();
     }
     return true;
   }
@@ -200,7 +196,7 @@ export function handleArmorChange(e) {
     const firstArmor = availableArmors[0];
     if (!firstArmor) return true;
     equipArmor(slot, firstArmor.armor_id, "MAT-000");
-    _renderAll();
+    _renderArmorLists();
     return true;
   }
 
@@ -224,7 +220,7 @@ export function handleArmorChange(e) {
     if (!equippedArmor) return true;
     equippedArmor.material_id = e.target.value;
     equippedArmor.hit_points_modifier = 0;
-    _renderAll();
+    _renderArmorLists();
     triggerAutoRun();
     return true;
   }
@@ -241,7 +237,7 @@ export function handleArmorChange(e) {
     if (!equippedArmor) return true;
     if (!destination) { equippedArmor.is_equipped = true; equippedArmor.storedAt = null; }
     else { equippedArmor.is_equipped = false; equippedArmor.storedAt = destination; }
-    _renderAll();
+    _renderArmorLists();
     triggerAutoRun();
     return true;
   }
@@ -268,13 +264,20 @@ export function handleAddArmor() {
 
 // ─── Private helpers ──────────────────────────────────────────────────────────
 
+/**
+ * 300ms-debounced render for HP-modifier inputs (typing shouldn't trigger a
+ * re-render per keystroke). Delegates to the same _renderArmorLists used
+ * everywhere else in this file — single render/snapshot/restore path, no
+ * separate local logic. The open/closed state of <details> panels doesn't
+ * change while someone's mid-typing a number, so snapshotting when the
+ * debounce finally fires (inside _renderArmorLists) rather than at every
+ * keystroke produces the same result with less redundant work.
+ */
 let _deferTimer = null;
 function _deferRender() {
   clearTimeout(_deferTimer);
-  const snap = _snapshotAll();
   _deferTimer = setTimeout(() => {
-    renderLists(selected, data);
-    _restoreAll(snap);
+    _renderArmorLists();
   }, 300);
 }
 

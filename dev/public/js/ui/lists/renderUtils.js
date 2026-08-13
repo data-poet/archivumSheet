@@ -278,13 +278,20 @@ function _customFieldsBody({ instanceId, name, description, effect }) {
  * customFieldsBlock for equipped-slot (div-based) layouts — mirrors
  * equippedDetailBlock's wrapper exactly, so open/closed state survives
  * re-renders via the existing generic openState.js key functions.
+ *
+ * @param {string} [extraContent] - additional markup nested INSIDE the
+ *   "Personalizar" <details>, after the custom-fields body — e.g. the
+ *   accessories "Encantamentos" expander (see enchantmentsExpander in
+ *   renderEnchantments.js). Optional so every other equipment type that
+ *   hasn't adopted enchantments yet renders exactly as before.
  */
-export function customFieldsEquippedDetail(params) {
+export function customFieldsEquippedDetail(params, extraContent = "") {
   return `
     <div class="equipped-detail">
       <details data-detail-kind="customize">
         <summary>${t("common.customize")}</summary>
         ${_customFieldsBody(params)}
+        ${extraContent}
       </details>
     </div>`;
 }
@@ -292,14 +299,17 @@ export function customFieldsEquippedDetail(params) {
 /**
  * customFieldsBlock for stored-table (tr/td-based) layouts — mirrors
  * detailRow's wrapper exactly, for the same open-state-preservation reason.
+ *
+ * @param {string} [extraContent] - see customFieldsEquippedDetail.
  */
-export function customFieldsDetailRow(colspan, params) {
+export function customFieldsDetailRow(colspan, params, extraContent = "") {
   return `
     <tr class="detail-row">
       <td colspan="${colspan}">
         <details data-detail-kind="customize">
           <summary>${t("common.customize")}</summary>
           ${_customFieldsBody(params)}
+          ${extraContent}
         </details>
       </td>
     </tr>`;

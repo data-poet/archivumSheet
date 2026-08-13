@@ -191,6 +191,30 @@ tr.spell-detail-row details[open] summary {
   border-bottom: 1px solid var(--color-border);
 }
 
+/* Nested expander (currently: accessories' "Encantamentos" inside
+   "Personalizar" — see customFieldsEquippedDetail/customFieldsDetailRow's
+   extraContent param). Boxed and inset so it visually reads as a
+   sub-section of its parent <details>, not another top-level block at the
+   same weight. */
+.equipped-detail details[data-detail-kind="customize"] > details,
+tr.detail-row details[data-detail-kind="customize"] > details {
+  margin: 0 10px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.equipped-detail details[data-detail-kind="customize"] > details summary,
+tr.detail-row details[data-detail-kind="customize"] > details summary {
+  padding: 6px 10px;
+  min-height: unset;
+}
+
+.equipped-detail details[data-detail-kind="customize"] > details[open] summary,
+tr.detail-row details[data-detail-kind="customize"] > details[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
 /* ── Detail content grid ─────────────────────────────────────────────────── */
 .item-detail-grid,
 .spell-detail-grid {
@@ -330,6 +354,18 @@ tr.spell-detail-row details[open] summary {
 
 /* ── Enchantments block ──────────────────────────────────────────────────── */
 
+.enchantments-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.enchantments-subtotal {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
 .enchantment-list {
   display: flex;
   flex-direction: column;
@@ -377,6 +413,12 @@ tr.spell-detail-row details[open] summary {
 
 .enchantment-form .item-detail-grid {
   grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 480px) {
+  .enchantment-form .item-detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .scaling-list {

@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchAmmo, fetchAmmoContainers } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import {
@@ -22,7 +22,7 @@ export async function loadAmmo() {
   ]);
 
   loadAmmoSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -118,7 +118,7 @@ export function addContainer(containerId, storedAt = "equipped") {
     contents: [],
   });
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -129,7 +129,7 @@ export function moveContainer(instanceId, storedAt) {
 
   container.storedAt = storedAt;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -139,12 +139,12 @@ export function removeContainer(instanceId) {
   selected.ammo_containers = selected.ammo_containers.filter(
     (c) => c._instanceId !== instanceId,
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.ammo_containers = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -177,7 +177,7 @@ export function addAmmoToContainer(instanceId, ammoId, quantity) {
     container.contents.push({ ammo_id: ammoId, quantity: clamped });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -198,7 +198,7 @@ export function updateContainerAmmoQuantity(instanceId, ammoId, quantity) {
     if (entry) entry.quantity = Math.min(quantity, Math.max(0, maxAllowed));
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -210,12 +210,12 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
   const before = structuredClone(selected.ammo_containers);
   container.contents = container.contents.filter((e) => e.ammo_id !== ammoId);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.ammo_containers = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -238,7 +238,7 @@ export function addLooseAmmo(ammoId, quantity, storedAt = "backpack") {
     selected.loose_ammo.push({ ammo_id: ammoId, quantity, storedAt });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -255,7 +255,7 @@ export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
     if (entry) entry.quantity = quantity;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -265,12 +265,12 @@ export function removeLooseAmmo(ammoId, storedAt) {
   selected.loose_ammo = selected.loose_ammo.filter(
     (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.loose_ammo = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -302,7 +302,7 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
     selected.loose_ammo.push({ ammo_id: ammoId, quantity: qty, storedAt: toLocation });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -341,7 +341,7 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
     to.contents.push({ ammo_id: ammoId, quantity: transferQty });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

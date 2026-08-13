@@ -1,9 +1,10 @@
 import { state } from "../state.js";
 import { fetchAdvantages } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { offerUndo } from "../ui/undo.js";
+import { RACIAL_TRAIT_TYPE } from "../shared/constants.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -12,7 +13,7 @@ const selected = state.selected;
 // engine when a race is selected) and must never be manually browsable or
 // addable by the player. This does not affect data.advantages itself, which
 // must keep every row so renderTraits.js can still display innate entries.
-const RACIAL_TYPE = "Racial";
+const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -73,19 +74,19 @@ export function addAdv() {
 
   selected.advantages[opt.value] = true;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
 export function removeAdv(id) {
   const before = structuredClone(selected.advantages);
   delete selected.advantages[id];
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.advantages = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }

@@ -121,8 +121,27 @@ function _restoreContainer(container, keyFn, { open, scrollPositions }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Snapshot open <details> and .table-wrapper scroll positions inside `scope`,
- * call renderFn, then restore both in a rAF (after browser reflow).
+ * Snapshot open <details>, .table-wrapper scroll positions, and the page's
+ * own vertical scroll inside `scope`, call renderFn, then restore all three
+ * in the SAME frame as the render (not a later one — see below for why).
+ *
+ * renderFn itself is deferred by one frame (rather than called inline)
+ * because it's invoked from native <select>/<input> "change" handlers —
+ * replacing the DOM ancestor of the very element that's still mid-event
+ * (some browsers, notably mobile Safari, haven't finished closing the
+ * native option picker yet) causes a visible flicker and an unrelated
+ * scroll jump. Giving the browser one frame to finish its own event cycle
+ * before we tear down and rebuild that DOM avoids it.
+ *
+ * The restore step, however, must NOT be deferred to a second rAF: fresh
+ * <details> markup never carries the `open` attribute, so if restore waits
+ * for a later frame, the browser paints the rebuilt DOM in its default
+ * COLLAPSED state first, then paints it open again next frame — a visible
+ * collapse-then-reopen flash. setAttribute("open")/scrollTo/scrollLeft all
+ * take effect synchronously and are reflected correctly in the very next
+ * paint, so there's no technical reason to wait an extra frame for them —
+ * restoring in the same task as renderFn ensures the browser only ever
+ * paints the final, correct state.
  *
  * @param {string}   scope    - CSS selector for the container to search
  * @param {Function} keyFn   - (detailsEl) => string|null key
@@ -130,15 +149,18 @@ function _restoreContainer(container, keyFn, { open, scrollPositions }) {
  */
 export function withOpenState(scope, keyFn, renderFn) {
   const container = document.querySelector(scope);
-  if (!container) { renderFn(); return; }
+  if (!container) {
+    requestAnimationFrame(renderFn);
+    return;
+  }
 
   const snapshot = _snapshotContainer(container, keyFn);
+  const scrollY = window.scrollY;
 
-  renderFn();
-
-  // Defer restore to after browser reflow caused by innerHTML replacement.
   requestAnimationFrame(() => {
+    renderFn();
     _restoreContainer(container, keyFn, snapshot);
+    if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
   });
 }
 
@@ -168,7 +190,11 @@ export function snapshotAll() {
 
 /**
  * Restore all managed containers from a snapshot taken by snapshotAll.
- * Must be called inside a requestAnimationFrame (caller's responsibility).
+ * Call synchronously, right after the renderLists() call that rebuilt the
+ * DOM — NOT inside a later requestAnimationFrame. See withOpenState's doc
+ * comment for why: deferring restore to a later frame lets the browser
+ * paint the freshly-rebuilt (default-collapsed) DOM first, causing a
+ * visible flash before it reopens.
  *
  * @param {Map<string, { open: Set<string>, scrollPositions: number[] }>} snapshots
  */

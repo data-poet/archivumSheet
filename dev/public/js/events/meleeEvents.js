@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipMelee, addStoredMelee, addEquippedMelee, moveMelee,
@@ -43,14 +43,14 @@ function _rest(sel, keyFn, open) {
   });
 }
 function _renderAll() {
-  const snap = _snapshot(); renderLists(selected, data); _restore(snap);
+  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
 }
 
 let _deferTimer = null;
 function _deferRender() {
   const snap = _snapshot();
   clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => { renderLists(selected, data); _restore(snap); }, 300);
+  _deferTimer = setTimeout(() => { renderListsPreserving(selected, data); _restore(snap); }, 300);
 }
 
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {

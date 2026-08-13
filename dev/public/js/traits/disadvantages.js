@@ -1,9 +1,10 @@
 import { state } from "../state.js";
 import { fetchDisadvantages } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { offerUndo } from "../ui/undo.js";
+import { RACIAL_TRAIT_TYPE } from "../shared/constants.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -13,7 +14,7 @@ const selected = state.selected;
 // addable by the player. This does not affect data.disadvantages itself,
 // which must keep every row so renderTraits.js can still display innate
 // entries.
-const RACIAL_TYPE = "Racial";
+const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -74,19 +75,19 @@ export function addDis() {
 
   selected.disadvantages[opt.value] = true;
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
 export function removeDis(id) {
   const before = structuredClone(selected.disadvantages);
   delete selected.disadvantages[id];
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.disadvantages = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }

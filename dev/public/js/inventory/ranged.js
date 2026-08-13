@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchRangedWeapons, fetchMaterials } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../shared/constants.js";
@@ -23,7 +23,7 @@ export async function loadRangedWeapons() {
   ]);
 
   loadRangedSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -134,7 +134,7 @@ export function equipRanged(
     linked.storedAt = null;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -230,7 +230,7 @@ export function addEquippedRanged(weaponId, materialId = null) {
 
   _syncMeleeCounterpart(instanceId, weaponId, materialId, true, null);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -258,7 +258,7 @@ export function addStoredRanged(
 
   _syncMeleeCounterpart(instanceId, rangedId, materialId, false, storedAt);
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -277,7 +277,7 @@ export function moveRanged(instanceId, storedAt) {
     linked.storedAt = storedAt;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -292,13 +292,13 @@ export function removeRanged(instanceId) {
   selected.ranged_weapons = selected.ranged_weapons.filter(
     (w) => w._instanceId !== instanceId,
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.ranged_weapons = beforeRanged;
     selected.melee_weapons = beforeMelee;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -332,7 +332,7 @@ export function saveRangedCustomFields(instanceId, { name, description, effect }
     linked.weapon_custom_effect = instance.weapon_custom_effect;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 

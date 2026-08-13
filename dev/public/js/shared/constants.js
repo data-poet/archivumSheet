@@ -28,5 +28,12 @@ export const ARMOR_SLOTS = [
 // their own category since they aren't slotted the same way.
 export const ACCESSORY_ITEM_CATEGORY = "Acessórios";
 
+// ===== TRAIT TYPES =====
+// Traits of this type only ever exist as race-innate grants and are never
+// player-browsable — excluded from every "add advantage/disadvantage"
+// picker (direct trait add, and enchantment target pickers alike), since a
+// player shouldn't be able to grant a race-only trait through either path.
+export const RACIAL_TRAIT_TYPE = "Racial";
+
 // ===== DEFAULT MATERIAL =====
 export const DEFAULT_MATERIAL_ID = "MAT-000";

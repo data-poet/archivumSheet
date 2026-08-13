@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { fetchSurvivalGear } from "../api.js";
-import { renderLists } from "../ui.js";
+import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { el, populateSelect } from "../shared/dom.js";
 import { offerUndo } from "../ui/undo.js";
@@ -16,7 +16,7 @@ export async function loadSurvivalGear() {
   data.survivalGear = await fetchSurvivalGear();
 
   loadSurvivalGearSelectors();
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -86,7 +86,7 @@ export function addSurvivalGear(gearId, quantity, storedAt = "backpack") {
     selected.survivalGear.push({ adventure_gear_id: gearId, quantity, storedAt });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -103,7 +103,7 @@ export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
     if (entry) entry.quantity = quantity;
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
@@ -113,12 +113,12 @@ export function removeSurvivalGear(gearId, storedAt) {
   selected.survivalGear = selected.survivalGear.filter(
     (e) => !(e.adventure_gear_id === gearId && e.storedAt === storedAt),
   );
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 
   offerUndo(() => {
     selected.survivalGear = before;
-    renderLists(selected, data);
+    renderListsPreserving(selected, data);
     triggerAutoRun();
   });
 }
@@ -148,6 +148,6 @@ export function moveSurvivalGear(gearId, fromLocation, toLocation) {
     selected.survivalGear.push({ adventure_gear_id: gearId, quantity: qty, storedAt: toLocation });
   }
 
-  renderLists(selected, data);
+  renderListsPreserving(selected, data);
   triggerAutoRun();
 }

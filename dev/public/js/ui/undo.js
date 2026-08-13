@@ -23,9 +23,13 @@ const UNDO_DURATION_MS = 5000;
 
 /**
  * @param {Function} restoreFn - called if the user taps "Desfazer"
+ * @param {string} [message] - toast text; defaults to "Removido" since most
+ *   callers are removals. Pass e.g. t("common.added") for non-removal
+ *   mutations (like an add the user might want to walk back) so the toast
+ *   doesn't misleadingly say something was removed.
  */
-export function offerUndo(restoreFn) {
-  showToast(t("common.removed"), "info", {
+export function offerUndo(restoreFn, message = t("common.removed")) {
+  showToast(message, "info", {
     actionLabel: t("common.undo"),
     duration: UNDO_DURATION_MS,
     onAction: restoreFn,

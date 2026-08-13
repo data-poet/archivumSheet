@@ -12,10 +12,7 @@ import {
   customFieldsEquippedDetail,
   customFieldsDetailRow,
 } from "./renderUtils.js";
-import {
-  enchantmentsEquippedDetail,
-  enchantmentsDetailRow,
-} from "./renderEnchantments.js";
+import { enchantmentsExpander } from "./renderEnchantments.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -108,18 +105,20 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
         <button class="btn-remove remove-equipped-accessory" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${customFieldsEquippedDetail({
-      instanceId,
-      name: inst.accessory_custom_name,
-      description: inst.accessory_custom_description,
-      effect: inst.accessory_custom_effect,
-    })}
-    ${enchantmentsEquippedDetail({
-      instanceId,
-      entries: inst.enchantments || [],
-      itemCategory: ACCESSORY_ITEM_CATEGORY,
-      resolvedEntries: resolved?.enchantments,
-    })}
+    ${customFieldsEquippedDetail(
+      {
+        instanceId,
+        name: inst.accessory_custom_name,
+        description: inst.accessory_custom_description,
+        effect: inst.accessory_custom_effect,
+      },
+      enchantmentsExpander({
+        instanceId,
+        entries: inst.enchantments || [],
+        itemCategory: ACCESSORY_ITEM_CATEGORY,
+        resolvedEntries: resolved?.enchantments,
+      }),
+    )}
   `;
 }
 
@@ -180,18 +179,21 @@ function renderStorageSection(location, stored, selected, data, sheet) {
             <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${customFieldsDetailRow(4, {
-          instanceId,
-          name: inst.accessory_custom_name,
-          description: inst.accessory_custom_description,
-          effect: inst.accessory_custom_effect,
-        })}
-        ${enchantmentsDetailRow(4, {
-          instanceId,
-          entries: inst.enchantments || [],
-          itemCategory: ACCESSORY_ITEM_CATEGORY,
-          resolvedEntries: resolved?.enchantments,
-        })}
+        ${customFieldsDetailRow(
+          4,
+          {
+            instanceId,
+            name: inst.accessory_custom_name,
+            description: inst.accessory_custom_description,
+            effect: inst.accessory_custom_effect,
+          },
+          enchantmentsExpander({
+            instanceId,
+            entries: inst.enchantments || [],
+            itemCategory: ACCESSORY_ITEM_CATEGORY,
+            resolvedEntries: resolved?.enchantments,
+          }),
+        )}
         `;
       })
       .join("");

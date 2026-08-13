@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderLists } from "../ui.js";
 import {
   addEquippedAccessory,
   addStoredAccessory,
@@ -14,6 +13,10 @@ import {
   updateAccessoryEnchantment,
   removeAccessoryEnchantment,
 } from "../inventory/accessories.js";
+import {
+  renderEquippedAccessories,
+  renderStoredAccessories,
+} from "../ui/lists/renderAccessories.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -33,10 +36,27 @@ const selected = state.selected;
 // Global snapshotAll/restoreAll (wired into runEngine) already preserves the
 // open/closed state of #accessorySlots and #accessoryStorageList across the
 // debounced re-render triggered by triggerAutoRun() — see openState.js's
-// MANAGED_CONTAINER_IDS. For the direct renderLists() calls below (outside
-// that flow), _withPreservedOpenState does the same thing locally so the
-// custom-fields <details> the user is actively working in doesn't collapse
-// out from under them mid-edit.
+// MANAGED_CONTAINER_IDS. For the direct renders below (outside that flow),
+// _withPreservedOpenState does the same thing locally so the custom-fields
+// <details> the user is actively working in doesn't collapse out from under
+// them mid-edit.
+
+/**
+ * Re-renders ONLY the accessory lists (equipped + stored), not the full
+ * renderLists() sweep of all 21 sections on the page. Every direct render
+ * call in this file is triggered by UI-state-only changes scoped to a
+ * single accessory (opening/closing a custom-fields editor, picking a
+ * cascading enchantment filter) — none of them touch other equipment
+ * types' data, so there's no reason for e.g. skills or armor to be torn
+ * down and rebuilt too. That full-page rebuild was the actual cause of the
+ * enchantment-type-select flicker: the fix isn't in the deferred-render
+ * timing (withOpenState's rAF already handles that), it's in how much DOM
+ * gets destroyed and recreated on every change.
+ */
+function _renderAccessoryLists(sheet) {
+  renderEquippedAccessories(selected, data, sheet);
+  renderStoredAccessories(selected, data, sheet);
+}
 
 function _withPreservedOpenState(e, mutateAndRenderFn) {
   if (e.target.closest("#accessorySlots")) {
@@ -115,7 +135,7 @@ export function handleAccessoryClick(e) {
 
     _withPreservedOpenState(e, () => {
       openCustomFieldsEditor(instanceId);
-      renderLists(selected, data);
+      _renderAccessoryLists();
     });
     return true;
   }
@@ -126,7 +146,7 @@ export function handleAccessoryClick(e) {
 
     _withPreservedOpenState(e, () => {
       closeCustomFieldsEditor(instanceId);
-      renderLists(selected, data);
+      _renderAccessoryLists();
     });
     return true;
   }
@@ -144,7 +164,7 @@ export function handleAccessoryClick(e) {
       if (values) {
         saveAccessoryCustomFields(instanceId, values); // mutates + renders + runs engine
       } else {
-        renderLists(selected, data);
+        _renderAccessoryLists();
       }
     });
     return true;
@@ -252,7 +272,7 @@ export function handleAccessoryChange(e) {
     // one level up. Also writes only to a UI-state Map, so no ownership
     // check is needed here either.
     _withPreservedOpenState(e, () => {
-      renderLists(selected, data, state.sheet);
+      _renderAccessoryLists(state.sheet);
     });
     return true;
   }
@@ -271,7 +291,7 @@ export function handleAccessoryChange(e) {
     // edit-form), never touches accessory data, so a stale formKey is
     // harmless.
     _withPreservedOpenState(e, () => {
-      renderLists(selected, data, state.sheet);
+      _renderAccessoryLists(state.sheet);
     });
     return true;
   }
@@ -286,7 +306,7 @@ export function handleAccessoryChange(e) {
     // type/category/school — same cascading-filter pattern used
     // elsewhere in the app for adding advantages/skills/spells directly.
     _withPreservedOpenState(e, () => {
-      renderLists(selected, data, state.sheet);
+      _renderAccessoryLists(state.sheet);
     });
     return true;
   }

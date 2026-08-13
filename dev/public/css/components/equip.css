@@ -62,7 +62,10 @@
 }
 
 .equipped-accessory-name {
-  font-size: var(--fs-sm);
+  flex: 1 1 100%;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  margin-bottom: 2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

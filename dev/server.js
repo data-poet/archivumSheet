@@ -5,6 +5,7 @@ const path = require("path");
 const { loadCSV } = require("../helpers/dataUtils.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
+const enchantmentsConstants = require("../engine/inventory/js/shared/enchantmentsConstants.js");
 
 const app = express();
 
@@ -161,6 +162,10 @@ app.get("/api/enchantments", (req, res) => {
     path.join(__dirname, "../data/db_magic_enchantments.csv"),
   );
   res.json(data);
+});
+
+app.get("/api/enchantments/effect-types", (req, res) => {
+  res.json(enchantmentsConstants);
 });
 
 /* -----------------------

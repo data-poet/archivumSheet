@@ -19,6 +19,19 @@ export const state = {
     accessories: [],
     customInventory: [],
     enchantments: [],
+    // Populated from /api/enchantments/effect-types at bootstrap — see
+    // inventory/enchantments.js's loadEnchantments. Empty-array defaults
+    // below match enchantmentsConstants.js's shape so isAttributeType() and
+    // friends are safe to call (return false) even before load completes.
+    enchantmentEffectTypes: {
+      ATTRIBUTE_EFFECT_TYPES: [],
+      POINT_EFFECT_TYPES: [],
+      SKILL_EFFECT_TYPES: [],
+      SPELL_EFFECT_TYPES: [],
+      DIFFICULTY_EFFECT_TYPES: [],
+      FORTIFY_EFFECT_TYPES: [],
+      WEAKEN_EFFECT_TYPES: [],
+    },
   },
 
   // ===== USER SELECTION =====
