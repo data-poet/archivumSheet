@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipFirearm, moveFirearm, removeFirearm, findFirearmByInstanceId,
@@ -8,7 +7,8 @@ import {
 } from "../inventory/firearms.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
-import { tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import { renderEquippedFirearms, renderStoredFirearms } from "../ui/lists/renderFirearms.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -18,41 +18,30 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Open-state helpers ─────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 // Firearms have their own dedicated tab, with its own containers.
 
-function _snapshot() {
-  return {
-    slots:   _snap("#firearmSlots",       divBlockKeyFn("data-instance-id")),
-    storage: _snap("#firearmStorageList", tableRowKeyFn("data-instance-id")),
-  };
-}
-function _snap(sel, keyFn) {
-  const open = new Set();
-  document.querySelector(sel)?.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
+/**
+ * Re-renders ONLY the firearm lists (equipped slots + storage), not a full
+ * renderLists() sweep of all 21 sections — same reasoning/shape as
+ * shield's _renderShieldLists.
+ */
+function _renderFirearmLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedFirearms(selected, data, sheet);
+    renderStoredFirearms(selected, data, sheet);
+    restoreAll(snapshots);
   });
-  return open;
-}
-function _restore(snap) {
-  _rest("#firearmSlots",       divBlockKeyFn("data-instance-id"), snap.slots);
-  _rest("#firearmStorageList", tableRowKeyFn("data-instance-id"), snap.storage);
-}
-function _rest(sel, keyFn, open) {
-  if (!open.size) return;
-  document.querySelector(sel)?.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
-  });
-}
-function _renderAll() {
-  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
 }
 
 let _deferTimer = null;
 function _deferRender() {
-  const snap = _snapshot();
   clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => { renderListsPreserving(selected, data); _restore(snap); }, 300);
+  _deferTimer = setTimeout(() => {
+    _renderFirearmLists();
+  }, 300);
 }
 
 function _updateActualHpDisplay(inputEl, maxHp, modifier) {
@@ -118,7 +107,7 @@ export function handleFirearmClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findFirearmByInstanceId(instanceId)) return false;
     openCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderFirearmLists();
     return true;
   }
 
@@ -126,7 +115,7 @@ export function handleFirearmClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findFirearmByInstanceId(instanceId)) return false;
     closeCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderFirearmLists();
     return true;
   }
 
@@ -136,11 +125,15 @@ export function handleFirearmClick(e) {
     const values = readCustomFieldsEditorValues(instanceId);
     closeCustomFieldsEditor(instanceId);
     if (values) {
-      const snap = _snapshot();
-      saveFirearmCustomFields(instanceId, values); // mutates + renders + runs engine
-      _restore(snap);
+      // saveFirearmCustomFields mutates + calls its own renderListsPreserving()
+      // internally (unwrapped call site) — snapshot right before it and
+      // restore right after it returns, same pattern as shieldEvents.js's
+      // equivalent branch.
+      const snapshots = snapshotAll();
+      saveFirearmCustomFields(instanceId, values);
+      restoreAll(snapshots);
     } else {
-      _renderAll();
+      _renderFirearmLists();
     }
     return true;
   }
@@ -276,7 +269,7 @@ export function handleFirearmChange(e) {
     if (!firearmInstance) return true;
     firearmInstance.material_id = e.target.value;
     firearmInstance.hit_points_modifier = 0;
-    _renderAll();
+    _renderFirearmLists();
     triggerAutoRun();
     return true;
   }
@@ -292,7 +285,7 @@ export function handleFirearmChange(e) {
     if (!firearmInstance) return true;
     if (!destination) { firearmInstance.is_equipped = true; firearmInstance.storedAt = null; }
     else { firearmInstance.is_equipped = false; firearmInstance.storedAt = destination; }
-    _renderAll();
+    _renderFirearmLists();
     triggerAutoRun();
     return true;
   }

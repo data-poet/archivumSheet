@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { fetchSkills } from "../api.js";
-import { renderListsPreserving } from "../ui.js";
+import { renderSkills } from "../ui/lists/renderSkills.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSkillAttributeBase } from "../shared/attributeUtils.js";
@@ -8,6 +9,19 @@ import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
+
+/**
+ * Re-renders ONLY the skill list, not a full renderLists() sweep of all 21
+ * sections — same reasoning/shape as shield's _renderShieldLists.
+ */
+function _renderSkillList() {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderSkills(selected, data);
+    restoreAll(snapshots);
+  });
+}
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -67,19 +81,19 @@ export function addSkill() {
     };
   }
 
-  renderListsPreserving(selected, data);
+  _renderSkillList();
   triggerAutoRun();
 }
 
 export function removeSkill(id) {
   const before = structuredClone(selected.skills);
   delete selected.skills[id];
-  renderListsPreserving(selected, data);
+  _renderSkillList();
   triggerAutoRun();
 
   offerUndo(() => {
     selected.skills = before;
-    renderListsPreserving(selected, data);
+    _renderSkillList();
     triggerAutoRun();
   });
 }

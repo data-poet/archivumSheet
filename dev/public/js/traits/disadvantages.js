@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { fetchDisadvantages } from "../api.js";
-import { renderListsPreserving } from "../ui.js";
+import { renderDisadvantages } from "../ui/lists/renderTraits.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { offerUndo } from "../ui/undo.js";
@@ -15,6 +16,20 @@ const selected = state.selected;
 // which must keep every row so renderTraits.js can still display innate
 // entries.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
+
+/**
+ * Re-renders ONLY the disadvantages list, not a full renderLists() sweep
+ * of all 21 sections — same reasoning/shape as shield's
+ * _renderShieldLists.
+ */
+function _renderDisadvantagesList() {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderDisadvantages(selected, data);
+    restoreAll(snapshots);
+  });
+}
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -75,19 +90,19 @@ export function addDis() {
 
   selected.disadvantages[opt.value] = true;
 
-  renderListsPreserving(selected, data);
+  _renderDisadvantagesList();
   triggerAutoRun();
 }
 
 export function removeDis(id) {
   const before = structuredClone(selected.disadvantages);
   delete selected.disadvantages[id];
-  renderListsPreserving(selected, data);
+  _renderDisadvantagesList();
   triggerAutoRun();
 
   offerUndo(() => {
     selected.disadvantages = before;
-    renderListsPreserving(selected, data);
+    _renderDisadvantagesList();
     triggerAutoRun();
   });
 }

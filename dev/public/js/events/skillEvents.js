@@ -1,9 +1,31 @@
 import { state } from "../state.js";
 import { triggerAutoRun } from "../engine/autorun.js";
-import { renderListsPreserving } from "../ui.js";
 import { removeSkill, updateSkill } from "../traits/skills.js";
 import { removeSpell, updateSpell } from "../traits/spells.js";
-import { withOpenState, tableRowKeyFn } from "../shared/openState.js";
+import { renderSkills, renderSpells } from "../ui/lists/renderSkills.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+// Re-render ONLY the skill/spell list, not a full renderLists() sweep of all
+// 21 sections — same reasoning/shape as shield's _renderShieldLists.
+
+function _renderSkillList(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderSkills(state.selected, state.data, sheet);
+    restoreAll(snapshots);
+  });
+}
+
+function _renderSpellList(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderSpells(state.selected, state.data, sheet);
+    restoreAll(snapshots);
+  });
+}
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -21,9 +43,7 @@ export function handleSkillChange(e) {
     const selected = state.selected;
     if (!selected.skills[id]) return true;
     selected.skills[id].isTrainedWithMaster = e.target.checked;
-    withOpenState("#skillList", tableRowKeyFn("data-id"), () => {
-      renderListsPreserving(state.selected, state.data);
-    });
+    _renderSkillList();
     triggerAutoRun();
     return true;
   }
@@ -36,17 +56,13 @@ export function handleSkillInput(e) {
   if (e.target.classList.contains("skill-input")) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
     _updateFinalCell(e.target, "skill-input", e.target.dataset.id, "data-id");
-    withOpenState("#skillList", tableRowKeyFn("data-id"), () => {
-      renderListsPreserving(state.selected, state.data);
-    });
+    _renderSkillList();
     return true;
   }
 
   if (e.target.classList.contains("spell-input")) {
     updateSpell(e.target.dataset.name, e.target.dataset.field, e.target.value);
-    withOpenState("#spellList", tableRowKeyFn("data-name"), () => {
-      renderListsPreserving(state.selected, state.data);
-    });
+    _renderSpellList();
     return true;
   }
 

@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { fetchAdvantages } from "../api.js";
-import { renderListsPreserving } from "../ui.js";
+import { renderAdvantages } from "../ui/lists/renderTraits.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { offerUndo } from "../ui/undo.js";
@@ -14,6 +15,19 @@ const selected = state.selected;
 // addable by the player. This does not affect data.advantages itself, which
 // must keep every row so renderTraits.js can still display innate entries.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
+
+/**
+ * Re-renders ONLY the advantages list, not a full renderLists() sweep of
+ * all 21 sections — same reasoning/shape as shield's _renderShieldLists.
+ */
+function _renderAdvantagesList() {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderAdvantages(selected, data);
+    restoreAll(snapshots);
+  });
+}
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -74,19 +88,19 @@ export function addAdv() {
 
   selected.advantages[opt.value] = true;
 
-  renderListsPreserving(selected, data);
+  _renderAdvantagesList();
   triggerAutoRun();
 }
 
 export function removeAdv(id) {
   const before = structuredClone(selected.advantages);
   delete selected.advantages[id];
-  renderListsPreserving(selected, data);
+  _renderAdvantagesList();
   triggerAutoRun();
 
   offerUndo(() => {
     selected.advantages = before;
-    renderListsPreserving(selected, data);
+    _renderAdvantagesList();
     triggerAutoRun();
   });
 }

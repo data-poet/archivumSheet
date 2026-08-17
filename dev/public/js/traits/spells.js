@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { fetchSpells } from "../api.js";
-import { renderListsPreserving } from "../ui.js";
+import { renderSpells } from "../ui/lists/renderSkills.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import { t } from "../localization/pt-BR.js";
 import { getSpellAttributeBase } from "../shared/attributeUtils.js";
@@ -8,6 +9,19 @@ import { offerUndo } from "../ui/undo.js";
 
 const data = state.data;
 const selected = state.selected;
+
+/**
+ * Re-renders ONLY the spell list, not a full renderLists() sweep of all 21
+ * sections — same reasoning/shape as shield's _renderShieldLists.
+ */
+function _renderSpellList() {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderSpells(selected, data);
+    restoreAll(snapshots);
+  });
+}
 
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
@@ -67,19 +81,19 @@ export function addSpell() {
     };
   }
 
-  renderListsPreserving(selected, data);
+  _renderSpellList();
   triggerAutoRun();
 }
 
 export function removeSpell(name) {
   const before = structuredClone(selected.spells);
   delete selected.spells[name];
-  renderListsPreserving(selected, data);
+  _renderSpellList();
   triggerAutoRun();
 
   offerUndo(() => {
     selected.spells = before;
-    renderListsPreserving(selected, data);
+    _renderSpellList();
     triggerAutoRun();
   });
 }

@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipMelee, addStoredMelee, addEquippedMelee, moveMelee,
@@ -7,7 +6,9 @@ import {
 } from "../inventory/melee.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
-import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import { renderEquippedMelee, renderStoredMelee } from "../ui/lists/renderMelee.js";
+import { renderEquippedRanged, renderStoredRanged } from "../ui/lists/renderRanged.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -17,40 +18,61 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Open-state helpers ───────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function _snapshot() {
-  return {
-    slots:   _snap("#meleeSlots",       divBlockKeyFn("data-instance-id")),
-    storage: _snap("#meleeStorageList", tableRowKeyFn("data-instance-id")),
-  };
-}
-function _snap(sel, keyFn) {
-  const open = new Set();
-  document.querySelector(sel)?.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
-  });
-  return open;
-}
-function _restore(snap) {
-  _rest("#meleeSlots",       divBlockKeyFn("data-instance-id"), snap.slots);
-  _rest("#meleeStorageList", tableRowKeyFn("data-instance-id"), snap.storage);
-}
-function _rest(sel, keyFn, open) {
-  if (!open.size) return;
-  document.querySelector(sel)?.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
+/**
+ * Re-renders ONLY the melee lists (equipped slots + storage), not a full
+ * renderLists() sweep of all 21 sections — same reasoning/shape as
+ * shield's _renderShieldLists. Use for melee-only changes (name/tier,
+ * material, custom fields).
+ */
+function _renderMeleeLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedMelee(selected, data, sheet);
+    renderStoredMelee(selected, data, sheet);
+    restoreAll(snapshots);
   });
 }
-function _renderAll() {
-  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
+
+/**
+ * Same as _renderMeleeLists but also re-renders ranged's lists.
+ *
+ * Melee/ranged dual-use weapons are synced via _linkedInstanceId (see
+ * moveMelee/equipMelee's counterparts in inventory/melee.js): mutating a
+ * melee instance's HP modifier or equipped/storedAt location mirrors that
+ * change onto its linked ranged instance, if any. Rendering only melee's
+ * own containers would leave the ranged section showing stale HP/location
+ * for the linked entry. Used by every handler below that touches the
+ * linked-ranged mirror, regardless of whether a link actually exists for
+ * the instance in question (cheap to render ranged even when it's a
+ * no-op — simpler and safer than threading a "was anything linked"
+ * condition through every call site).
+ */
+function _renderMeleeAndRangedLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedMelee(selected, data, sheet);
+    renderStoredMelee(selected, data, sheet);
+    renderEquippedRanged(selected, data, sheet);
+    renderStoredRanged(selected, data, sheet);
+    restoreAll(snapshots);
+  });
 }
 
+/**
+ * 300ms-debounced render for HP-modifier inputs. All three HP-modifier
+ * inputs mirror to the linked ranged counterpart, so this always uses the
+ * melee+ranged variant.
+ */
 let _deferTimer = null;
 function _deferRender() {
-  const snap = _snapshot();
   clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => { renderListsPreserving(selected, data); _restore(snap); }, 300);
+  _deferTimer = setTimeout(() => {
+    _renderMeleeAndRangedLists();
+  }, 300);
 }
 
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
@@ -94,7 +116,7 @@ export function handleMeleeClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findMeleeByInstanceId(instanceId)) return false;
     openCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderMeleeLists();
     return true;
   }
 
@@ -102,7 +124,7 @@ export function handleMeleeClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findMeleeByInstanceId(instanceId)) return false;
     closeCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderMeleeLists();
     return true;
   }
 
@@ -112,11 +134,15 @@ export function handleMeleeClick(e) {
     const values = readCustomFieldsEditorValues(instanceId);
     closeCustomFieldsEditor(instanceId);
     if (values) {
-      const snap = _snapshot();
-      saveMeleeCustomFields(instanceId, values); // mutates + renders + runs engine
-      _restore(snap);
+      // saveMeleeCustomFields mutates + calls its own renderListsPreserving()
+      // internally (unwrapped call site) — snapshot right before it and
+      // restore right after it returns, same pattern as shieldEvents.js's
+      // equivalent branch.
+      const snapshots = snapshotAll();
+      saveMeleeCustomFields(instanceId, values);
+      restoreAll(snapshots);
     } else {
-      _renderAll();
+      _renderMeleeLists();
     }
     return true;
   }
@@ -236,7 +262,7 @@ export function handleMeleeChange(e) {
     if (!meleeInstance) return true;
     meleeInstance.material_id = e.target.value;
     meleeInstance.hit_points_modifier = 0;
-    _renderAll();
+    _renderMeleeLists();
     triggerAutoRun();
     return true;
   }
@@ -262,7 +288,7 @@ export function handleMeleeChange(e) {
       linked.is_equipped = meleeInstance.is_equipped;
       linked.storedAt = meleeInstance.storedAt;
     }
-    _renderAll();
+    _renderMeleeAndRangedLists();
     triggerAutoRun();
     return true;
   }

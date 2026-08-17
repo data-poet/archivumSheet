@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipShield, addStoredShield, moveShield, removeShield, findShieldByInstanceId,
@@ -7,7 +6,8 @@ import {
 } from "../inventory/shield.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
-import { tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import { renderEquippedShield, renderStoredShields } from "../ui/lists/renderShield.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -17,40 +17,49 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Open-state helpers ───────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function _snapshot() {
-  return {
-    slot:    _snap("#shieldSlot",       divBlockKeyFn("data-instance-id")),
-    storage: _snap("#shieldStorageList", tableRowKeyFn("data-instance-id")),
-  };
-}
-function _snap(sel, keyFn) {
-  const open = new Set();
-  document.querySelector(sel)?.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
+/**
+ * Re-renders ONLY the shield lists (equipped slot + storage), not a full
+ * renderLists() sweep of all 21 sections — same reasoning as armor's
+ * _renderArmorLists.
+ *
+ * Uses the shared snapshotAll()/restoreAll() pair (all managed containers)
+ * rather than a single-scope helper: shield actions can move an item
+ * BETWEEN #shieldSlot and #shieldStorageList in one step (equip/unequip/
+ * move), so both need their open/closed state captured and restored
+ * together, not just whichever one the click originated in.
+ *
+ * Deferred by one requestAnimationFrame for the same reason armor's
+ * equivalent defers: several callers below fire from native <select>
+ * "change" handlers, and replacing that select's DOM ancestor before the
+ * browser has finished its own change-event/native-picker cycle causes a
+ * visible flicker (worst on mobile Safari). Restore happens in the SAME
+ * frame as the render — not a later one — to avoid painting the freshly-
+ * rebuilt DOM in its default-collapsed state before it reopens. See
+ * openState.js's withOpenState doc comment for the full rationale.
+ */
+function _renderShieldLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedShield(selected, data, sheet);
+    renderStoredShields(selected, data, sheet);
+    restoreAll(snapshots);
   });
-  return open;
-}
-function _restore(snap) {
-  _rest("#shieldSlot",        divBlockKeyFn("data-instance-id"), snap.slot);
-  _rest("#shieldStorageList", tableRowKeyFn("data-instance-id"), snap.storage);
-}
-function _rest(sel, keyFn, open) {
-  if (!open.size) return;
-  document.querySelector(sel)?.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
-  });
-}
-function _renderAll() {
-  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
 }
 
+/**
+ * 300ms-debounced render for HP-modifier inputs (typing shouldn't trigger a
+ * re-render per keystroke). Delegates to _renderShieldLists — single
+ * render/snapshot/restore path, no separate local logic.
+ */
 let _deferTimer = null;
 function _deferRender() {
-  const snap = _snapshot();
   clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => { renderListsPreserving(selected, data); _restore(snap); }, 300);
+  _deferTimer = setTimeout(() => {
+    _renderShieldLists();
+  }, 300);
 }
 
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
@@ -88,7 +97,7 @@ export function handleShieldClick(e) {
     });
     shieldToEquip.is_equipped = true;
     shieldToEquip.storedAt = null;
-    _renderAll();
+    _renderShieldLists();
     triggerAutoRun();
     return true;
   }
@@ -98,7 +107,7 @@ export function handleShieldClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findShieldByInstanceId(instanceId)) return false;
     openCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderShieldLists();
     return true;
   }
 
@@ -106,7 +115,7 @@ export function handleShieldClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findShieldByInstanceId(instanceId)) return false;
     closeCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderShieldLists();
     return true;
   }
 
@@ -116,11 +125,16 @@ export function handleShieldClick(e) {
     const values = readCustomFieldsEditorValues(instanceId);
     closeCustomFieldsEditor(instanceId);
     if (values) {
-      const snap = _snapshot();
-      saveShieldCustomFields(instanceId, values); // mutates + renders + runs engine
-      _restore(snap);
+      // saveShieldCustomFields mutates + calls its own renderListsPreserving()
+      // internally (unwrapped call site) — snapshot right before it and
+      // restore right after it returns (both synchronous) so that internal
+      // render doesn't blow away open state anywhere on the page, same
+      // pattern as armorEvents.js's equivalent branch.
+      const snapshots = snapshotAll();
+      saveShieldCustomFields(instanceId, values);
+      restoreAll(snapshots);
     } else {
-      _renderAll();
+      _renderShieldLists();
     }
     return true;
   }
@@ -221,7 +235,7 @@ export function handleShieldChange(e) {
     if (!equippedShield) return true;
     equippedShield.material_id = e.target.value;
     equippedShield.hit_points_modifier = 0;
-    _renderAll();
+    _renderShieldLists();
     triggerAutoRun();
     return true;
   }
@@ -236,7 +250,7 @@ export function handleShieldChange(e) {
     if (!equippedShield) return true;
     if (!destination) { equippedShield.is_equipped = true; equippedShield.storedAt = null; }
     else { equippedShield.is_equipped = false; equippedShield.storedAt = destination; }
-    _renderAll();
+    _renderShieldLists();
     triggerAutoRun();
     return true;
   }

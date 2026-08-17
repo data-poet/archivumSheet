@@ -1,5 +1,4 @@
 import { state } from "../state.js";
-import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../engine/autorun.js";
 import {
   equipRanged, addStoredRanged, addEquippedRanged, moveRanged,
@@ -7,7 +6,9 @@ import {
 } from "../inventory/ranged.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
-import { tableRowKeyFn, divBlockKeyFn } from "../shared/openState.js";
+import { renderEquippedRanged, renderStoredRanged } from "../ui/lists/renderRanged.js";
+import { renderEquippedMelee, renderStoredMelee } from "../ui/lists/renderMelee.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
@@ -17,40 +18,53 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Open-state helpers ───────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function _snapshot() {
-  return {
-    slots:   _snap("#rangedSlots",       divBlockKeyFn("data-instance-id")),
-    storage: _snap("#rangedStorageList", tableRowKeyFn("data-instance-id")),
-  };
-}
-function _snap(sel, keyFn) {
-  const open = new Set();
-  document.querySelector(sel)?.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
-  });
-  return open;
-}
-function _restore(snap) {
-  _rest("#rangedSlots",       divBlockKeyFn("data-instance-id"), snap.slots);
-  _rest("#rangedStorageList", tableRowKeyFn("data-instance-id"), snap.storage);
-}
-function _rest(sel, keyFn, open) {
-  if (!open.size) return;
-  document.querySelector(sel)?.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
+/**
+ * Re-renders ONLY the ranged lists (equipped slots + storage), not a full
+ * renderLists() sweep of all 21 sections — same reasoning/shape as
+ * shield's _renderShieldLists.
+ *
+ * NOTE: ranged's HP-modifier inputs do NOT mirror to a linked melee
+ * counterpart (unlike melee's HP-modifier inputs, which do mirror to
+ * ranged — see meleeEvents.js). Only equip/storage moves mirror
+ * bidirectionally, which is what _renderRangedAndMeleeLists below is for.
+ * This asymmetry is pre-existing app behavior, not something introduced
+ * by this narrowing pass.
+ */
+function _renderRangedLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedRanged(selected, data, sheet);
+    renderStoredRanged(selected, data, sheet);
+    restoreAll(snapshots);
   });
 }
-function _renderAll() {
-  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
+
+/**
+ * Same as _renderRangedLists but also re-renders melee's lists, for the
+ * one handler below (equipped-ranged-move) that mirrors equip/storedAt
+ * onto a linked melee instance via _linkedInstanceId.
+ */
+function _renderRangedAndMeleeLists(sheet) {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderEquippedRanged(selected, data, sheet);
+    renderStoredRanged(selected, data, sheet);
+    renderEquippedMelee(selected, data, sheet);
+    renderStoredMelee(selected, data, sheet);
+    restoreAll(snapshots);
+  });
 }
 
 let _deferTimer = null;
 function _deferRender() {
-  const snap = _snapshot();
   clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => { renderListsPreserving(selected, data); _restore(snap); }, 300);
+  _deferTimer = setTimeout(() => {
+    _renderRangedLists();
+  }, 300);
 }
 
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
@@ -90,7 +104,7 @@ export function handleRangedClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findRangedByInstanceId(instanceId)) return false;
     openCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderRangedLists();
     return true;
   }
 
@@ -98,7 +112,7 @@ export function handleRangedClick(e) {
     const instanceId = e.target.dataset.instanceId;
     if (!findRangedByInstanceId(instanceId)) return false;
     closeCustomFieldsEditor(instanceId);
-    _renderAll();
+    _renderRangedLists();
     return true;
   }
 
@@ -108,11 +122,15 @@ export function handleRangedClick(e) {
     const values = readCustomFieldsEditorValues(instanceId);
     closeCustomFieldsEditor(instanceId);
     if (values) {
-      const snap = _snapshot();
-      saveRangedCustomFields(instanceId, values); // mutates + renders + runs engine
-      _restore(snap);
+      // saveRangedCustomFields mutates + calls its own renderListsPreserving()
+      // internally (unwrapped call site) — snapshot right before it and
+      // restore right after it returns, same pattern as shieldEvents.js's
+      // equivalent branch.
+      const snapshots = snapshotAll();
+      saveRangedCustomFields(instanceId, values);
+      restoreAll(snapshots);
     } else {
-      _renderAll();
+      _renderRangedLists();
     }
     return true;
   }
@@ -213,7 +231,7 @@ export function handleRangedChange(e) {
     if (!rangedInstance) return true;
     rangedInstance.material_id = e.target.value;
     rangedInstance.hit_points_modifier = 0;
-    _renderAll();
+    _renderRangedLists();
     triggerAutoRun();
     return true;
   }
@@ -239,7 +257,7 @@ export function handleRangedChange(e) {
       linked.is_equipped = rangedInstance.is_equipped;
       linked.storedAt = rangedInstance.storedAt;
     }
-    _renderAll();
+    _renderRangedAndMeleeLists();
     triggerAutoRun();
     return true;
   }

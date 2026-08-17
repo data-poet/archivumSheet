@@ -6,15 +6,26 @@ import {
   saveCustomItemFields,
 } from "../inventory/customInventory.js";
 import { state } from "../state.js";
-import { renderListsPreserving } from "../ui.js";
+import { renderCustomInventory } from "../ui/lists/renderCustomInventory.js";
+import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,
   readCustomItemEditorValues,
 } from "../ui/lists/renderUtils.js";
 
-function _renderAll() {
-  renderListsPreserving(state.selected, state.data, state.sheet);
+/**
+ * Re-renders ONLY the custom-inventory list, not a full renderLists()
+ * sweep of all 21 sections — same reasoning/shape as shield's
+ * _renderShieldLists.
+ */
+function _renderCustomInventoryLists() {
+  const snapshots = snapshotAll();
+
+  requestAnimationFrame(() => {
+    renderCustomInventory(state.selected, state.data, state.sheet);
+    restoreAll(snapshots);
+  });
 }
 
 // ─── Click ────────────────────────────────────────────────────────────────────
@@ -27,13 +38,13 @@ export function handleCustomInventoryClick(e) {
 
   if (e.target.classList.contains("custom-item-edit-btn")) {
     openCustomFieldsEditor(e.target.dataset.customItemId);
-    _renderAll();
+    _renderCustomInventoryLists();
     return true;
   }
 
   if (e.target.classList.contains("custom-item-cancel-btn")) {
     closeCustomFieldsEditor(e.target.dataset.customItemId);
-    _renderAll();
+    _renderCustomInventoryLists();
     return true;
   }
 
@@ -42,7 +53,7 @@ export function handleCustomInventoryClick(e) {
     const values = readCustomItemEditorValues(customItemId);
     if (!values) {
       closeCustomFieldsEditor(customItemId);
-      _renderAll();
+      _renderCustomInventoryLists();
       return true;
     }
 
