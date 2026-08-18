@@ -62,6 +62,7 @@ function buildSheet({
     alchemyInventory: inventory.alchemy || [],
     survivalGearInventory: inventory.survival_gear || [],
     accessoryInventory: inventory.accessories || [],
+    magicGearInventory: inventory.magic_gear || [],
     customInventory: inventory.custom_inventory || [],
     coinInventory: inventory.coins || [],
   });
@@ -72,17 +73,21 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    *
    * Bridges the inventory layer into the character layer: reads ONLY
-   * equipped items' resolved enchantments (Phase 1 scope: accessories —
-   * armor is Phase 2) and turns them into attribute modifiers,
-   * advantage/disadvantage grants, and skill/spell grants+modifiers. Must
-   * happen after inventory is built (equipped items aren't known before
-   * that) and before the final character build (which needs to consume
-   * this).
+   * equipped items' resolved enchantments (accessories + magic gear so
+   * far — armor is a future phase) and turns them into attribute
+   * modifiers, advantage/disadvantage grants, and skill/spell
+   * grants+modifiers. Must happen after inventory is built (equipped items
+   * aren't known before that) and before the final character build (which
+   * needs to consume this).
    */
 
   const equippedAccessories =
     inventoryResult.inventory.accessories?.equipped || [];
-  const enchantmentEffects = collectEquippedEnchantments(equippedAccessories);
+  const equippedMagicGear = inventoryResult.inventory.magicGear?.equipped || [];
+  const enchantmentEffects = collectEquippedEnchantments([
+    ...equippedAccessories,
+    ...equippedMagicGear,
+  ]);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────

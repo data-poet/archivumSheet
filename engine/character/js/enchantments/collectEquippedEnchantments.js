@@ -42,9 +42,12 @@ function addToGrantMap(map, key, extraPoints) {
 }
 
 /**
- * @param {Array} equippedItems - resolved equipped items (Phase 1: accessories
- *   only), each with a resolved `.enchantments` array (see
- *   enchantmentsResolver.js's resolveEnchantmentEntry shape).
+ * @param {Array} equippedItems - resolved equipped items from any source
+ *   that carries enchantments (accessories, magic gear so far — armor is a
+ *   future phase), each with a resolved `.enchantments` array (see
+ *   enchantmentsResolver.js's resolveEnchantmentEntry shape). Callers merge
+ *   equipped items from multiple item types into a single array before
+ *   calling this.
  */
 function collectEquippedEnchantments(equippedItems = []) {
   const attributeModifiers = {};
