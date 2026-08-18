@@ -77,6 +77,7 @@ export const LABELS = {
     },
     magic: {
       spells: "Magias",
+      gear: "Instrumentos Mágicos",
     },
     equipment: {
       armor: "Armaduras",
@@ -387,6 +388,15 @@ export const LABELS = {
     addAccessory: "Adicionar Acessório",
     accessory: "Acessório",
     limitReached: "Limite de uso equipado atingido para este acessório",
+  },
+
+  // ── Magic Gear (Instrumentos Mágicos) ──────────────────────────────────────
+  magicGear: {
+    title: "Instrumentos Mágicos",
+    addMagicGear: "Adicionar Instrumento",
+    magicGear: "Instrumento Mágico",
+    magicGearWeight: "Instrumentos Mágicos",
+    limitReached: "Limite de 2 instrumentos mágicos equipados atingido",
   },
 
   // ── Enchantments (Phase 1 pilot — accessories only) ───────────────────────

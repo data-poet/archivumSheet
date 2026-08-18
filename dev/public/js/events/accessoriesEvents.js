@@ -75,6 +75,31 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
 }
 
 /**
+ * Whether `formKey` belongs to an accessory — either as an item's own
+ * instanceId (the add-form) or as one of its enchantment entries' own
+ * _instanceId (an entry's edit-form).
+ *
+ * The three enchantment-filter branches below match on CSS classes shared
+ * across every equipment type that carries enchantments (see
+ * renderEnchantments.js — enchantment-category-filter/-type-select/
+ * -target-filter aren't accessory-specific markup). Without this guard,
+ * whichever type's handler runs FIRST in the dispatch chain
+ * (events/index.js) would catch every other type's enchantment-filter
+ * interactions too: it updates the shared UI-state Maps in
+ * inventory/enchantments.js correctly (those writes are harmless
+ * regardless of formKey — they only affect which option is pre-selected
+ * when a form next renders), but then re-renders only ITS OWN list —
+ * leaving the item the user is actually looking at stuck on stale markup,
+ * unable to switch category/type/target at all.
+ */
+function _ownsEnchantmentFormKey(formKey) {
+  if (findAccessoryByInstanceId(formKey)) return true;
+  return selected.accessories.some((a) =>
+    (a.enchantments || []).some((entry) => entry._instanceId === formKey),
+  );
+}
+
+/**
  * Reads a not-yet-committed enchantment form's current values straight out
  * of the DOM (uncontrolled inputs — nothing writes to state until
  * "Adicionar"/"Salvar" is pressed, same spirit as
@@ -263,14 +288,13 @@ export function handleAccessoryChange(e) {
 
   if (e.target.classList.contains("enchantment-category-filter")) {
     const formKey = e.target.dataset.formKey;
-    if (!formKey) return false;
+    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
 
     setEnchantmentAddFormTypeFilter(formKey, e.target.value);
 
     // Re-render so "Tipo de Encantamento" narrows to the chosen category —
     // same cascading-filter pattern as enchantment-target-filter below,
-    // one level up. Also writes only to a UI-state Map, so no ownership
-    // check is needed here either.
+    // one level up.
     _withPreservedOpenState(e, () => {
       _renderAccessoryLists(state.sheet);
     });
@@ -279,17 +303,12 @@ export function handleAccessoryChange(e) {
 
   if (e.target.classList.contains("enchantment-type-select")) {
     const formKey = e.target.dataset.formKey;
-    if (!formKey) return false;
+    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
 
     setEnchantmentAddFormSelection(formKey, e.target.value);
 
     // Re-render so the params markup (value input vs. target select vs.
     // target+extraPoints) switches to match the newly chosen effect_type.
-    // No ownership check here (unlike the mutation handlers below) — this
-    // only writes to a UI-state Map keyed by formKey (either the item's
-    // own instanceId for the add-form, or an entry's _instanceId for an
-    // edit-form), never touches accessory data, so a stale formKey is
-    // harmless.
     _withPreservedOpenState(e, () => {
       _renderAccessoryLists(state.sheet);
     });
@@ -298,7 +317,7 @@ export function handleAccessoryChange(e) {
 
   if (e.target.classList.contains("enchantment-target-filter")) {
     const formKey = e.target.dataset.formKey;
-    if (!formKey) return false;
+    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
 
     setEnchantmentAddFormTargetFilter(formKey, e.target.value);
 

@@ -778,6 +778,11 @@
               id="tab-btn-magic-spells"
             ></button>
             <button
+              class="tab-btn"
+              data-tab="tab-magic-gear"
+              id="tab-btn-magic-gear"
+            ></button>
+            <button
               class="tab-strip-collapse"
               aria-expanded="false"
               aria-label="Expandir seção"
@@ -797,6 +802,30 @@
               <button id="addSpellBtn"></button>
             </div>
             <div id="spellList"></div>
+          </div>
+
+          <!-- Panel: Instrumentos Mágicos -->
+          <div class="tab-panel" id="tab-magic-gear">
+            <div class="controls-row">
+              <select id="magicGearNameSelect"></select>
+              <select id="magicGearStorage">
+                <option value="equipped" id="opt-magic-gear-equipped"></option>
+                <option value="backpack" id="opt-magic-gear-backpack"></option>
+                <option value="stash" id="opt-magic-gear-stash"></option>
+                <option value="camp" id="opt-magic-gear-camp"></option>
+              </select>
+              <button id="addMagicGearBtn"></button>
+            </div>
+            <div class="equip-sub">
+              <details>
+                <summary id="sec-magic-gear-equipped"></summary>
+                <div id="magicGearSlots"></div>
+              </details>
+              <details>
+                <summary id="sec-magic-gear-stored"></summary>
+                <div id="magicGearStorageList"></div>
+              </details>
+            </div>
           </div>
         </div>
       </section>
@@ -1540,6 +1569,7 @@
         setText("tab-btn-skills-list", L.tabs.skills.skills);
         // section-magic
         setText("tab-btn-magic-spells", L.tabs.magic.spells);
+        setText("tab-btn-magic-gear", L.tabs.magic.gear);
         // section-equipment
         setText("tab-btn-equip-armor", L.tabs.equipment.armor);
         setText("tab-btn-equip-shields", L.tabs.equipment.shields);
@@ -1567,6 +1597,8 @@
         setText("sec-firearm-stored", L.sections.stored);
         setText("sec-accessory-equipped", L.sections.equipped);
         setText("sec-accessory-stored", L.sections.stored);
+        setText("sec-magic-gear-equipped", L.sections.equipped);
+        setText("sec-magic-gear-stored", L.sections.stored);
         setText("sec-ammo-containers", L.ammo.containers);
         setText("sec-ammo-loose", L.ammo.looseAmmo);
         setText("sec-output", L.output.title);
@@ -1658,6 +1690,7 @@
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
         btn("addSurvivalGearBtn", L.survivalGear.addSurvivalGear);
         btn("addAccessoryBtn", L.accessories.addAccessory);
+        btn("addMagicGearBtn", L.magicGear.addMagicGear);
         btn("addCustomItemBtn", L.customInventory.addItem);
         setAttr(
           "customItemName",
@@ -1714,6 +1747,10 @@
           ["opt-accessory-backpack", L.storage.backpack],
           ["opt-accessory-stash", L.storage.stash],
           ["opt-accessory-camp", L.storage.camp],
+          ["opt-magic-gear-equipped", L.storage.equipped],
+          ["opt-magic-gear-backpack", L.storage.backpack],
+          ["opt-magic-gear-stash", L.storage.stash],
+          ["opt-magic-gear-camp", L.storage.camp],
           ["opt-custom-backpack", L.storage.backpack],
           ["opt-custom-stash", L.storage.stash],
           ["opt-custom-camp", L.storage.camp],

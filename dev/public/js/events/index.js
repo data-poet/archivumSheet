@@ -98,6 +98,12 @@ import {
   handleAddAccessory,
 } from "./accessoriesEvents.js";
 import {
+  handleMagicGearClick,
+  handleMagicGearInput,
+  handleMagicGearChange,
+  handleAddMagicGear,
+} from "./magicGearEvents.js";
+import {
   updateAlchemyTypeOptions,
   updateAlchemyTierOptions,
 } from "../inventory/alchemy.js";
@@ -166,6 +172,9 @@ export function bindUI() {
   // ── Accessories ───────────────────────────────────────────────────────────
   on("addAccessoryBtn", "click", handleAddAccessory);
 
+  // ── Magic Gear ────────────────────────────────────────────────────────────
+  on("addMagicGearBtn", "click", handleAddMagicGear);
+
   // ── Custom Inventory ──────────────────────────────────────────────────────
   on("addCustomItemBtn", "click", handleAddCustomItem);
 
@@ -188,6 +197,7 @@ export function bindUI() {
     if (handleAlchemyClick(e)) return;
     if (handleSurvivalGearClick(e)) return;
     if (handleAccessoryClick(e)) return;
+    if (handleMagicGearClick(e)) return;
     if (handleCustomInventoryClick(e)) return;
     if (handleCoinPurseClick(e)) return;
     if (handleCharacterImageClick(e)) return;
@@ -207,6 +217,7 @@ export function bindUI() {
     if (handleAlchemyInput(e)) return;
     if (handleSurvivalGearInput(e)) return;
     if (handleAccessoryInput(e)) return;
+    if (handleMagicGearInput(e)) return;
     if (handleCustomInventoryInput(e)) return;
     if (handleCoinPurseInput(e)) return;
     if (handleCharacterImageInput(e)) return;
@@ -225,6 +236,7 @@ export function bindUI() {
     if (handleAlchemyChange(e)) return;
     if (handleSurvivalGearChange(e)) return;
     if (handleAccessoryChange(e)) return;
+    if (handleMagicGearChange(e)) return;
     if (handleCustomInventoryChange(e)) return;
     if (handleCoinPurseChange(e)) return;
     if (handleCharacterImageChange(e)) return;

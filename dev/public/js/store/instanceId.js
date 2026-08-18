@@ -17,6 +17,7 @@ let _ammoContainerCounter = 1;
 let _looseAmmoCounter = 1;
 let _alchemyCounter = 1;
 let _accessoryCounter = 1;
+let _magicGearCounter = 1;
 let _enchantmentCounter = 1;
 
 export function nextArmorInstanceId() {
@@ -55,6 +56,10 @@ export function nextAccessoryInstanceId() {
   return `accessory-inst-${_accessoryCounter++}`;
 }
 
+export function nextMagicGearInstanceId() {
+  return `magic-gear-inst-${_magicGearCounter++}`;
+}
+
 /** Generic across equipment types — an enchantment application entry isn't
  *  its own inventory item, just a sub-entry inside instance.enchantments. */
 export function nextEnchantmentInstanceId() {
@@ -75,5 +80,6 @@ export function resetInstanceCounters() {
   _looseAmmoCounter = 1;
   _alchemyCounter = 1;
   _accessoryCounter = 1;
+  _magicGearCounter = 1;
   _enchantmentCounter = 1;
 }

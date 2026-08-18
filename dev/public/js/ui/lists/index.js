@@ -12,6 +12,7 @@ import { renderAmmoContainers, renderLooseAmmo } from "./renderAmmo.js";
 import { renderAlchemy } from "./renderAlchemy.js";
 import { renderSurvivalGear } from "./renderSurvivalGear.js";
 import { renderEquippedAccessories, renderStoredAccessories } from "./renderAccessories.js";
+import { renderEquippedMagicGear, renderStoredMagicGear } from "./renderMagicGear.js";
 import { renderCustomInventory } from "./renderCustomInventory.js";
 import { renderCoinPurse } from "./renderCoinPurse.js";
 import { snapshotAll, restoreAll } from "../../shared/openState.js";
@@ -44,6 +45,8 @@ export function renderLists(selected, data, sheet) {
   renderSurvivalGear(selected, data, sheet);
   renderEquippedAccessories(selected, data, sheet);
   renderStoredAccessories(selected, data, sheet);
+  renderEquippedMagicGear(selected, data, sheet);
+  renderStoredMagicGear(selected, data, sheet);
   renderCoinPurse(selected, data, sheet);
   renderCustomInventory(selected, data, sheet);
 }

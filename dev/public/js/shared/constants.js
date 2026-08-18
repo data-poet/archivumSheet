@@ -28,6 +28,11 @@ export const ARMOR_SLOTS = [
 // their own category since they aren't slotted the same way.
 export const ACCESSORY_ITEM_CATEGORY = "Acessórios";
 
+// Magic gear (wands, staves, orbs, grimoires...) — only the Mana/spell
+// enchantments allow this category in db_magic_enchantments.csv, a subset
+// of what accessories allow.
+export const MAGIC_GEAR_ITEM_CATEGORY = "Instrumentos Mágicos";
+
 // ===== TRAIT TYPES =====
 // Traits of this type only ever exist as race-innate grants and are never
 // player-browsable — excluded from every "add advantage/disadvantage"

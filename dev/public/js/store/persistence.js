@@ -104,6 +104,7 @@ export function exportSheet() {
       alchemy:        selected.alchemy,
       survivalGear:   selected.survivalGear,
       accessories:    selected.accessories,
+      magicGear:      selected.magicGear,
       customInventory: selected.customInventory,
       coins:          selected.coins,
     },
@@ -276,6 +277,7 @@ function _applyImport(payload) {
   selected.alchemy        = inventory.alchemy        ?? [];
   selected.survivalGear   = inventory.survivalGear   ?? [];
   selected.accessories    = inventory.accessories    ?? [];
+  selected.magicGear      = inventory.magicGear      ?? [];
   selected.customInventory = inventory.customInventory ?? [];
   selected.coins          = inventory.coins          ?? [];
 

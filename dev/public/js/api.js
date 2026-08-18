@@ -88,6 +88,10 @@ export async function fetchAccessories() {
   return getJSON("/api/accessories");
 }
 
+export async function fetchMagicGear() {
+  return getJSON("/api/magic_gear");
+}
+
 export async function fetchEnchantments() {
   return getJSON("/api/enchantments");
 }

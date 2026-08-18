@@ -17,6 +17,7 @@ export const state = {
     alchemy: [],
     survivalGear: [],
     accessories: [],
+    magicGear: [],
     customInventory: [],
     enchantments: [],
     // Populated from /api/enchantments/effect-types at bootstrap — see
@@ -73,6 +74,7 @@ export const state = {
     survivalGear: [],
     customInventory: [],
     accessories: [],
+    magicGear: [],
     coins: [],
   },
 

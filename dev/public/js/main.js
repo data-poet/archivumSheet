@@ -21,6 +21,7 @@ import { loadAmmo } from "./inventory/ammo.js";
 import { loadAlchemy } from "./inventory/alchemy.js";
 import { loadSurvivalGear } from "./inventory/survivalGear.js";
 import { loadAccessories } from "./inventory/accessories.js";
+import { loadMagicGear } from "./inventory/magicGear.js";
 import { loadEnchantments } from "./inventory/enchantments.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./ui/characterSelector.js";
@@ -53,6 +54,7 @@ window.onload = async () => {
     loadAlchemy(),
     loadSurvivalGear(),
     loadAccessories(),
+    loadMagicGear(),
     loadEnchantments(),
   ]);
 

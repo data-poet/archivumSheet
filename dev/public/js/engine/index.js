@@ -140,6 +140,7 @@ export async function runEngine() {
         alchemy: selected.alchemy,
         survival_gear: selected.survivalGear,
         accessories: selected.accessories,
+        magic_gear: selected.magicGear,
         custom_inventory: selected.customInventory,
         coins: selected.coins,
       },

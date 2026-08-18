@@ -67,6 +67,8 @@ const MANAGED_CONTAINER_IDS = [
   "survivalGearList",
   "accessorySlots",
   "accessoryStorageList",
+  "magicGearSlots",
+  "magicGearStorageList",
   "customInventoryList",
   "coinPurseList",
 ];
