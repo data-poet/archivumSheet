@@ -9,8 +9,8 @@ ENCHANTMENT-006,Fortificar HT,Fortificar Atributo,fortify_attribute,FALSE,HT,1,1
 ENCHANTMENT-007,Enfraquecer HT,Enfraquecer Atributo,weaken_attribute,FALSE,HT,1,1,Acessórios,5000,5000,,,Diminui a HT do usuário.
 ENCHANTMENT-008,Fortificar PV,Fortificar Atributo,fortify_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Aumenta os PV do usuário.
 ENCHANTMENT-009,Enfraquecer PV,Enfraquecer Atributo,weaken_attribute,FALSE,HP,1,1,Acessórios,2500,2500,,,Diminui os PV do usuário.
-ENCHANTMENT-010,Fortificar Mana,Fortificar Atributo,fortify_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Aumenta a Mana do usuário.
-ENCHANTMENT-011,Enfraquecer Mana,Enfraquecer Atributo,weaken_attribute,FALSE,Mana,1,1,Acessórios,2500,2500,,,Diminui a Mana do usuário.
+ENCHANTMENT-010,Fortificar Mana,Fortificar Atributo,fortify_attribute,FALSE,Mana,1,1,"Acessórios,Instrumentos Mágicos",2500,2500,,,Aumenta a Mana do usuário.
+ENCHANTMENT-011,Enfraquecer Mana,Enfraquecer Atributo,weaken_attribute,FALSE,Mana,1,1,"Acessórios,Instrumentos Mágicos",2500,2500,,,Diminui a Mana do usuário.
 ENCHANTMENT-012,Fortificar Toxicidade,Fortificar Atributo,fortify_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Aumenta a Toxicidade do usuário.
 ENCHANTMENT-013,Enfraquecer Toxicidade,Enfraquecer Atributo,weaken_attribute,FALSE,Toxicity,1,1,Acessórios,2500,2500,,,Diminui a Toxicidade do usuário.
 ENCHANTMENT-014,Fortificar Vontade,Fortificar Atributo,fortify_attribute,FALSE,Will,1,1,Acessórios,10000,10000,,,Aumenta a Vontade do usuário.
@@ -32,6 +32,6 @@ ENCHANTMENT-029,Adicionar Desvantagem,Peculiaridade,disadvantage,TRUE,,,,Acessó
 ENCHANTMENT-030,Adicionar Perícia,Perícia,skill,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona uma perícia ao usuário.
 ENCHANTMENT-031,Fortificar Perícia,Perícia,fortify_skill,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica uma perícia do usuário.
 ENCHANTMENT-032,Enfraquecer Perícia,Perícia,weaken_skill,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece uma períciad do usuário.
-ENCHANTMENT-033,Adicionar Feitiço,Feitiço,spell,TRUE,,1,1,Acessórios,,2000,,2500,Adiciona um feitiço ao usuário.
-ENCHANTMENT-034,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,1,1,Acessórios,,2000,,2500,Fortifica um feitiço do usuário.
-ENCHANTMENT-035,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,1,1,Acessórios,,2000,,2500,Enfraquece um feitiço do usuário.
+ENCHANTMENT-033,Adicionar Feitiço,Feitiço,spell,TRUE,,1,1,"Acessórios,Instrumentos Mágicos",,2000,,2500,Adiciona um feitiço ao usuário.
+ENCHANTMENT-034,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,1,1,"Acessórios,Instrumentos Mágicos",,2000,,2500,Fortifica um feitiço do usuário.
+ENCHANTMENT-035,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,1,1,"Acessórios,Instrumentos Mágicos",,2000,,2500,Enfraquece um feitiço do usuário.
