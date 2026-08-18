@@ -630,4 +630,121 @@ describe("INVENTORY BUILDER", () => {
     // carry_weight must reflect the ammo weight in its calculation
     expect(result.inventory.carry_weight).toBeDefined();
   });
+
+  // ── MAGIC GEAR INTEGRATION ─────────────────────────────────────────────────
+
+  test("Should include magicGear inventory", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      magicGearInventory: [],
+    });
+
+    expect(result.inventory).toHaveProperty("magicGear");
+  });
+
+  test("Should include equipped magic gear weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      magicGearInventory: [
+        {
+          magic_gear_id: "MAGIC_GEAR-001",
+          is_equipped: true,
+          storedAt: null,
+        },
+      ],
+    });
+
+    expect(
+      result.inventory.magicGear.carried_magic_gear_weight,
+    ).toBeGreaterThan(0);
+  });
+
+  test("Should include backpack magic gear weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      magicGearInventory: [
+        {
+          magic_gear_id: "MAGIC_GEAR-001",
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+    });
+
+    expect(
+      result.inventory.magicGear.carried_magic_gear_weight,
+    ).toBeGreaterThan(0);
+  });
+
+  test("Should ignore stash magic gear weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      magicGearInventory: [
+        {
+          magic_gear_id: "MAGIC_GEAR-001",
+          is_equipped: false,
+          storedAt: "stash",
+        },
+      ],
+    });
+
+    expect(result.inventory.magicGear.carried_magic_gear_weight).toBe(0);
+
+    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+  });
+
+  test("Should ignore camp magic gear weight in carry calculation", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      magicGearInventory: [
+        {
+          magic_gear_id: "MAGIC_GEAR-001",
+          is_equipped: false,
+          storedAt: "camp",
+        },
+      ],
+    });
+
+    expect(result.inventory.magicGear.carried_magic_gear_weight).toBe(0);
+
+    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+  });
+
+  test("Should combine magic gear carried weight with the rest of the inventory", () => {
+    const result = buildInventory({
+      ST: 10,
+      weight: 0,
+      armorInventory: [
+        {
+          armor_id: armorId,
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+      magicGearInventory: [
+        {
+          magic_gear_id: "MAGIC_GEAR-001",
+          is_equipped: false,
+          storedAt: "backpack",
+        },
+      ],
+    });
+
+    expect(result.inventory.armor.carried_armor_weight).toBeGreaterThan(0);
+
+    expect(
+      result.inventory.magicGear.carried_magic_gear_weight,
+    ).toBeGreaterThan(0);
+
+    const totalCarriedWeight =
+      result.inventory.armor.carried_armor_weight +
+      result.inventory.magicGear.carried_magic_gear_weight;
+
+    expect(totalCarriedWeight).toBeGreaterThan(0);
+  });
 });

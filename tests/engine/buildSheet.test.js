@@ -251,5 +251,122 @@ describe("BUILD SHEET", () => {
       expect(result.character.advantages["ADV-000"].is_enchantment).toBe(true);
       expect(result.character.advantages["ADV-000"].points).toBe(0);
     });
+
+    it("Should boost a secondary attribute from an equipped fortify_attribute magic gear item", () => {
+      const enchantedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          magic_gear: [
+            {
+              _instanceId: "mg-1",
+              magic_gear_id: "MAGIC_GEAR-001",
+              is_equipped: true,
+              storedAt: null,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-010",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baseline = buildSheet(mockInput);
+      const enchanted = buildSheet(enchantedInput);
+
+      expect(enchanted.character.secondary_attributes.Mana.value).toBe(
+        baseline.character.secondary_attributes.Mana.value + 2,
+      );
+      expect(
+        enchanted.character.secondary_attributes.Mana.has_enchantment_modifier,
+      ).toBe(true);
+    });
+
+    it("Should NOT apply an enchantment from a magic gear item that isn't equipped", () => {
+      const unequippedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          magic_gear: [
+            {
+              _instanceId: "mg-1",
+              magic_gear_id: "MAGIC_GEAR-001",
+              is_equipped: false,
+              storedAt: "backpack",
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-010",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baseline = buildSheet(mockInput);
+      const result = buildSheet(unequippedInput);
+
+      expect(result.character.secondary_attributes.Mana.value).toBe(
+        baseline.character.secondary_attributes.Mana.value,
+      );
+      expect(
+        result.character.secondary_attributes.Mana.has_enchantment_modifier,
+      ).toBe(false);
+    });
+
+    it("Should combine enchantment effects from equipped accessories and magic gear simultaneously", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: true,
+              storedAt: null,
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-000",
+                  value: 1,
+                },
+              ],
+            },
+          ],
+          magic_gear: [
+            {
+              _instanceId: "mg-1",
+              magic_gear_id: "MAGIC_GEAR-001",
+              is_equipped: true,
+              storedAt: null,
+              enchantments: [
+                {
+                  _instanceId: "ench-2",
+                  enchantment_id: "ENCHANTMENT-010",
+                  value: 1,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      const baseline = buildSheet(mockInput);
+
+      expect(result.character.primary_attributes.ST.value).toBe(
+        baseline.character.primary_attributes.ST.value + 1,
+      );
+      expect(result.character.secondary_attributes.Mana.value).toBe(
+        baseline.character.secondary_attributes.Mana.value + 1,
+      );
+    });
   });
 });
