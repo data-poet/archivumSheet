@@ -8,7 +8,7 @@
  * (`prefers-color-scheme`) instead.
  *
  * Usage:
- *   import { getTheme, setTheme, clearTheme } from "../store/themeState.js";
+ *   import { getTheme, setTheme, clearTheme } from "./themeState.js";
  *   const stored = getTheme(); // "light" | "dark" | null
  *   setTheme("dark");
  *   clearTheme(); // go back to following system preference

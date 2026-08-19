@@ -1,112 +1,123 @@
 import { on } from "../shared/dom.js";
-import { runEngine } from "../engine/index.js";
-import { addAdv, filterAdvByType } from "../traits/advantages.js";
-import { addDis, filterDisByType } from "../traits/disadvantages.js";
-import { addSkill, filterSkillsByCategory } from "../traits/skills.js";
-import { addSpell, filterSpellsBySchool } from "../traits/spells.js";
+import { runEngine } from "../compute/index.js";
+
 import {
-  updateArmorNameOptions,
-  updateArmorTierOptions,
-} from "../inventory/armor.js";
-import { updateShieldTierOptions } from "../inventory/shield.js";
-import { updateMeleeTierOptions, updateMeleeTypeOptions } from "../inventory/melee.js";
-import { updateRangedTierOptions, updateRangedTypeOptions } from "../inventory/ranged.js";
-import { updateFirearmTierOptions, updateFirearmTypeOptions } from "../inventory/firearms.js";
-import { updateLooseAmmoOptions } from "../inventory/ammo.js";
-import {
-  handleCustomInventoryClick,
-  handleCustomInventoryInput,
-  handleCustomInventoryChange,
-  handleAddCustomItem,
-} from "./customInventoryEvents.js";
-import {
-  handleCoinPurseClick,
-  handleCoinPurseInput,
-  handleCoinPurseChange,
-  handleAddCoins,
-} from "./coinPurseEvents.js";
-import { filterSubRacesByName, selectSubRace } from "../character/races.js";
-import {
+  filterSubRacesByName,
+  selectSubRace,
   handleCharacterInput,
   handleCharacterChange,
-} from "./characterEvents.js";
-import {
   handleCharacterImageClick,
   handleCharacterImageChange,
   handleCharacterImageInput,
-} from "./characterImageEvents.js";
+} from "../engine/character/index.js";
 
-import { handleTraitClick, handleTraitInput } from "./traitEvents.js";
 import {
+  addAdv,
+  filterAdvByType,
+  addDis,
+  filterDisByType,
+  addSkill,
+  filterSkillsByCategory,
+  handleTraitClick,
+  handleTraitInput,
   handleSkillClick,
   handleSkillChange,
   handleSkillInput,
-} from "./skillEvents.js";
+} from "../engine/character/index.js";
+
 import {
+  addSpell,
+  filterSpellsBySchool,
+  handleSpellClick,
+  handleSpellInput,
+} from "../engine/magic/index.js";
+
+import {
+  updateArmorNameOptions,
+  updateArmorTierOptions,
   handleArmorClick,
   handleArmorInput,
   handleArmorChange,
   handleAddArmor,
-} from "./armorEvents.js";
+} from "../engine/inventory/armor/index.js";
 import {
+  updateShieldTierOptions,
   handleShieldClick,
   handleShieldInput,
   handleShieldChange,
   handleAddShield,
-} from "./shieldEvents.js";
+} from "../engine/inventory/shield/index.js";
 import {
+  updateMeleeTierOptions,
+  updateMeleeTypeOptions,
   handleMeleeClick,
   handleMeleeInput,
   handleMeleeChange,
   handleAddMelee,
-} from "./meleeEvents.js";
+} from "../engine/inventory/melee/index.js";
 import {
+  updateRangedTierOptions,
+  updateRangedTypeOptions,
   handleRangedClick,
   handleRangedInput,
   handleRangedChange,
   handleAddRanged,
-} from "./rangedEvents.js";
+} from "../engine/inventory/ranged/index.js";
 import {
+  updateFirearmTierOptions,
+  updateFirearmTypeOptions,
   handleFirearmClick,
   handleFirearmInput,
   handleFirearmChange,
   handleAddFirearm,
-} from "./firearmsEvents.js";
+} from "../engine/inventory/firearms/index.js";
 import {
+  updateLooseAmmoOptions,
   handleAmmoClick,
   handleAmmoInput,
   handleAmmoChange,
   handleAddContainer,
   handleAddLooseAmmo,
-} from "./ammoEvents.js";
+} from "../engine/inventory/ammo/index.js";
 import {
+  updateAlchemyTypeOptions,
+  updateAlchemyTierOptions,
   handleAlchemyClick,
   handleAlchemyInput,
   handleAlchemyChange,
   handleAddAlchemy,
-} from "./alchemyEvents.js";
+} from "../engine/inventory/alchemy/index.js";
 import {
   handleSurvivalGearClick,
   handleSurvivalGearInput,
   handleSurvivalGearChange,
   handleAddSurvivalGear,
-} from "./survivalGearEvents.js";
+} from "../engine/inventory/survivalGear/index.js";
 import {
   handleAccessoryClick,
   handleAccessoryInput,
   handleAccessoryChange,
   handleAddAccessory,
-} from "./accessoriesEvents.js";
+} from "../engine/inventory/accessories/index.js";
 import {
   handleMagicGearClick,
   handleMagicGearInput,
   handleMagicGearChange,
   handleAddMagicGear,
-} from "./magicGearEvents.js";
+} from "../engine/inventory/magicGear/index.js";
 import {
-  updateAlchemyTypeOptions,
-  updateAlchemyTierOptions,
-} from "../inventory/alchemy.js";
+  handleCustomInventoryClick,
+  handleCustomInventoryInput,
+  handleCustomInventoryChange,
+  handleAddCustomItem,
+} from "../engine/inventory/customInventory/index.js";
+import {
+  handleCoinPurseClick,
+  handleCoinPurseInput,
+  handleCoinPurseChange,
+  handleAddCoins,
+} from "../engine/inventory/coinPurse/index.js";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // BIND ALL UI LISTENERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -188,6 +199,7 @@ export function bindUI() {
   document.addEventListener("click", (e) => {
     if (handleTraitClick(e)) return;
     if (handleSkillClick(e)) return;
+    if (handleSpellClick(e)) return;
     if (handleArmorClick(e)) return;
     if (handleShieldClick(e)) return;
     if (handleMeleeClick(e)) return;
@@ -208,6 +220,7 @@ export function bindUI() {
     if (handleCharacterInput(e)) return;
     if (handleTraitInput(e)) return;
     if (handleSkillInput(e)) return;
+    if (handleSpellInput(e)) return;
     if (handleArmorInput(e)) return;
     if (handleShieldInput(e)) return;
     if (handleMeleeInput(e)) return;

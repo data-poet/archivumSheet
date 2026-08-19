@@ -6,7 +6,7 @@
  * Tab state is pure view concern; it has no meaning to the engine or persistence layers.
  *
  * Usage:
- *   import { getActiveTab, setActiveTab } from "../store/tabState.js";
+ *   import { getActiveTab, setActiveTab } from "./tabState.js";
  *   const active = getActiveTab("section-traits"); // → "tab-advantages" | null
  *   setActiveTab("section-traits", "tab-disadvantages");
  */

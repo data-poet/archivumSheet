@@ -1,11 +1,11 @@
-export { renderLists, renderListsPreserving } from "./ui/lists/index.js";
-export { getMaterialName, updateInventoryUI } from "./ui/inventory.js";
+export { renderLists, renderListsPreserving } from "./components/renderLists.js";
+export { getMaterialName, updateInventoryUI } from "./components/inventory.js";
 export {
   updateActualValues,
   renderSecondaryAttributes,
   initAttributeTableHeaders,
-} from "./ui/attributes.js";
-export { renderDamage } from "./ui/damage.js";
-export { renderOutput } from "./ui/output.js";
-export { renderResume } from "./ui/resume.js";
-export { syncViewMode } from "./ui/viewMode.js";
+} from "./components/attributes.js";
+export { renderDamage } from "./components/damage.js";
+export { renderOutput } from "./components/output.js";
+export { renderResume } from "./components/resume.js";
+export { syncViewMode } from "./components/viewMode.js";

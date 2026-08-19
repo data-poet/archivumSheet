@@ -5,7 +5,7 @@
  * Stored in localStorage so the chosen mode survives page reloads.
  *
  * Usage:
- *   import { isViewMode, setViewMode } from "../store/viewModeState.js";
+ *   import { isViewMode, setViewMode } from "./viewModeState.js";
  *   if (isViewMode()) { ... }
  *   setViewMode(true);
  */

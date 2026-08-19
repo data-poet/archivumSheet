@@ -6,7 +6,7 @@
  * then preserve their state for the rest of the session.
  *
  * Usage:
- *   import { isCollapsed, setCollapsed } from "../store/sectionCollapseState.js";
+ *   import { isCollapsed, setCollapsed } from "./sectionCollapseState.js";
  *   const collapsed = isCollapsed("section-traits"); // → true | false
  *   setCollapsed("section-traits", true);
  */

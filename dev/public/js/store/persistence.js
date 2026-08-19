@@ -1,10 +1,10 @@
 import { state } from "../state.js";
-import { getPrimaryAttributes } from "../engine/attributes.js";
+import { getPrimaryAttributes } from "../compute/attributes.js";
 import { renderListsPreserving } from "../ui.js";
-import { triggerAutoRun } from "../engine/autorun.js";
+import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
-import { restoreRaceSelection } from "../character/races.js";
-import { renderCharacterImage, renderResumeImage } from "../events/characterImageEvents.js";
+import { restoreRaceSelection } from "../engine/character/races/model.js";
+import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SCHEMA VERSION
