@@ -9,11 +9,7 @@ import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedFirearms, renderStoredFirearms } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -67,6 +63,23 @@ function _updateActualStatDisplay(inputEl, baseValue, modifier) {
   if (strong) strong.textContent = (Number(baseValue) || 0) + (Number(modifier) || 0);
 }
 
+/**
+ * saveFirearmCustomFields mutates + calls its own renderListsPreserving()
+ * internally (unwrapped) — snapshot right before it and restore right
+ * after it returns, matching this file's pre-factory behavior.
+ */
+function _saveFirearmCustomFieldsWrapped(instanceId, values) {
+  const snapshots = snapshotAll();
+  saveFirearmCustomFields(instanceId, values);
+  restoreAll(snapshots);
+}
+
+const _handleFirearmCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findFirearmByInstanceId,
+  saveCustomFields: _saveFirearmCustomFieldsWrapped,
+  render: _renderFirearmLists, // already self-wraps via snapshotAll/restoreAll above
+});
+
 // Maps tuning input CSS classes to instance fields + the weapon DB base field.
 const TUNING_FIELDS = {
   "equipped-firearm-gdp":            { field: "gdp_modifier",            base: "weapon_gdp_modifier" },
@@ -103,40 +116,10 @@ export function handleFirearmClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findFirearmByInstanceId(instanceId)) return false;
-    openCustomFieldsEditor(instanceId);
-    _renderFirearmLists();
-    return true;
-  }
+  // Delegated to the shared factory — see armorEvents.js's usage for the
+  // full rationale.
 
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findFirearmByInstanceId(instanceId)) return false;
-    closeCustomFieldsEditor(instanceId);
-    _renderFirearmLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findFirearmByInstanceId(instanceId)) return false;
-    const values = readCustomFieldsEditorValues(instanceId);
-    closeCustomFieldsEditor(instanceId);
-    if (values) {
-      // saveFirearmCustomFields mutates + calls its own renderListsPreserving()
-      // internally (unwrapped call site) — snapshot right before it and
-      // restore right after it returns, same pattern as shieldEvents.js's
-      // equivalent branch.
-      const snapshots = snapshotAll();
-      saveFirearmCustomFields(instanceId, values);
-      restoreAll(snapshots);
-    } else {
-      _renderFirearmLists();
-    }
-    return true;
-  }
+  if (_handleFirearmCustomFieldsClick(e)) return true;
 
   return false;
 }

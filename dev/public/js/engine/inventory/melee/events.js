@@ -9,11 +9,7 @@ import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedMelee, renderStoredMelee } from "./render.js";
 import { renderEquippedRanged, renderStoredRanged } from "../ranged/render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -89,6 +85,23 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
+/**
+ * saveMeleeCustomFields mutates + calls its own renderListsPreserving()
+ * internally (unwrapped) — snapshot right before it and restore right
+ * after it returns, matching this file's pre-factory behavior.
+ */
+function _saveMeleeCustomFieldsWrapped(instanceId, values) {
+  const snapshots = snapshotAll();
+  saveMeleeCustomFields(instanceId, values);
+  restoreAll(snapshots);
+}
+
+const _handleMeleeCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findMeleeByInstanceId,
+  saveCustomFields: _saveMeleeCustomFieldsWrapped,
+  render: _renderMeleeLists, // already self-wraps via snapshotAll/restoreAll above
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleMeleeClick(e) {
@@ -108,44 +121,10 @@ export function handleMeleeClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Generic buttons rendered by customFieldsBlock; only acted on here if the
-  // instanceId actually belongs to a melee weapon — lets other equipment
-  // types safely reuse the same button classes without collisions.
+  // Delegated to the shared factory — see armorEvents.js's usage for the
+  // full rationale.
 
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMeleeByInstanceId(instanceId)) return false;
-    openCustomFieldsEditor(instanceId);
-    _renderMeleeLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMeleeByInstanceId(instanceId)) return false;
-    closeCustomFieldsEditor(instanceId);
-    _renderMeleeLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMeleeByInstanceId(instanceId)) return false;
-    const values = readCustomFieldsEditorValues(instanceId);
-    closeCustomFieldsEditor(instanceId);
-    if (values) {
-      // saveMeleeCustomFields mutates + calls its own renderListsPreserving()
-      // internally (unwrapped call site) — snapshot right before it and
-      // restore right after it returns, same pattern as shieldEvents.js's
-      // equivalent branch.
-      const snapshots = snapshotAll();
-      saveMeleeCustomFields(instanceId, values);
-      restoreAll(snapshots);
-    } else {
-      _renderMeleeLists();
-    }
-    return true;
-  }
+  if (_handleMeleeCustomFieldsClick(e)) return true;
 
   return false;
 }

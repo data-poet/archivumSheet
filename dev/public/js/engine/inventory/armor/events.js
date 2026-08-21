@@ -8,11 +8,7 @@ import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderArmorSlots, renderStoredArmors } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -54,6 +50,28 @@ function _renderArmorLists(sheet) {
   });
 }
 
+/**
+ * saveArmorCustomFields mutates + calls its own renderLists()+
+ * triggerAutoRun() internally (unwrapped) — snapshot right before it and
+ * restore right after it returns (both synchronous), same as this file's
+ * pre-factory behavior, so that internal render doesn't blow away open
+ * state anywhere on the page. Wrapped here rather than deferred via
+ * runWithOpenState so this stays synchronous exactly as before — see the
+ * Batch 2 write-up for why the save-branch timing wasn't unified with
+ * accessories/magicGear's rAF-deferred equivalent in this pass.
+ */
+function _saveArmorCustomFieldsWrapped(instanceId, values) {
+  const snapshots = snapshotAll();
+  saveArmorCustomFields(instanceId, values);
+  restoreAll(snapshots);
+}
+
+const _handleArmorCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findArmorByInstanceId,
+  saveCustomFields: _saveArmorCustomFieldsWrapped,
+  render: _renderArmorLists, // already self-wraps via snapshotAll/restoreAll above
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleArmorClick(e) {
@@ -87,44 +105,12 @@ export function handleArmorClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Generic buttons rendered by customFieldsBlock; only acted on here if the
-  // instanceId actually belongs to an armor piece — lets other equipment
-  // types safely reuse the same button classes without collisions.
+  // Generic buttons rendered by customFieldsBlock; delegated to the shared
+  // factory, which only acts if the instanceId belongs to an armor piece —
+  // lets other equipment types safely reuse the same button classes
+  // without collisions.
 
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findArmorByInstanceId(instanceId)) return false;
-    openCustomFieldsEditor(instanceId);
-    _renderArmorLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findArmorByInstanceId(instanceId)) return false;
-    closeCustomFieldsEditor(instanceId);
-    _renderArmorLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findArmorByInstanceId(instanceId)) return false;
-    const values = readCustomFieldsEditorValues(instanceId);
-    closeCustomFieldsEditor(instanceId);
-    if (values) {
-      // saveArmorCustomFields mutates + calls its own renderLists()+
-      // triggerAutoRun() internally (unwrapped) — snapshot right before it
-      // and restore right after it returns (both synchronous) so that
-      // internal render doesn't blow away open state anywhere on the page.
-      const snapshots = snapshotAll();
-      saveArmorCustomFields(instanceId, values);
-      restoreAll(snapshots);
-    } else {
-      _renderArmorLists();
-    }
-    return true;
-  }
+  if (_handleArmorCustomFieldsClick(e)) return true;
 
   return false;
 }

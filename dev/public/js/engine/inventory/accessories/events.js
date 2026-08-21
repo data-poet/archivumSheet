@@ -18,17 +18,13 @@ import {
   renderStoredAccessories,
 } from "./render.js";
 import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
-import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,
   setEnchantmentAddFormTypeFilter,
   clearEnchantmentAddFormSelection,
 } from "../shared/enchantments/model.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../../../shared/openState.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -73,6 +69,13 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
     );
   }
 }
+
+const _handleAccessoryCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findAccessoryByInstanceId,
+  saveCustomFields: saveAccessoryCustomFields, // mutates + renders + runs engine
+  render: _renderAccessoryLists,
+  runWithOpenState: _withPreservedOpenState,
+});
 
 /**
  * Whether `formKey` belongs to an accessory — either as an item's own
@@ -149,51 +152,12 @@ export function handleAccessoryClick(e) {
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
   // Generic buttons (not accessory-namespaced) rendered by customFieldsBlock;
-  // only acted on here if the instanceId actually belongs to an accessory —
-  // this is what lets future equipment types safely reuse the same block/
-  // button classes without collisions (each type's click handler no-ops on
-  // an instanceId it doesn't own, per the existing handler-chain pattern).
+  // delegated to the shared factory, which itself only acts if the
+  // instanceId belongs to an accessory (see createCustomFieldsClickHandler) —
+  // this is what lets other equipment types safely reuse the same block/
+  // button classes without collisions.
 
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    _withPreservedOpenState(e, () => {
-      openCustomFieldsEditor(instanceId);
-      _renderAccessoryLists();
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    _withPreservedOpenState(e, () => {
-      closeCustomFieldsEditor(instanceId);
-      _renderAccessoryLists();
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    const values = readCustomFieldsEditorValues(instanceId);
-
-    _withPreservedOpenState(e, () => {
-      // Close first so the single render below (whichever branch fires)
-      // reflects the read-only view with the saved values, not the form.
-      closeCustomFieldsEditor(instanceId);
-      if (values) {
-        saveAccessoryCustomFields(instanceId, values); // mutates + renders + runs engine
-      } else {
-        _renderAccessoryLists();
-      }
-    });
-    return true;
-  }
+  if (_handleAccessoryCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
   // Generic .enchantment-* classes rendered by renderEnchantments.js; same

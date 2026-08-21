@@ -8,11 +8,7 @@ import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedShield, renderStoredShields } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -76,6 +72,23 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
+/**
+ * saveShieldCustomFields mutates + calls its own renderListsPreserving()
+ * internally (unwrapped) — snapshot right before it and restore right
+ * after it returns, matching this file's pre-factory behavior.
+ */
+function _saveShieldCustomFieldsWrapped(instanceId, values) {
+  const snapshots = snapshotAll();
+  saveShieldCustomFields(instanceId, values);
+  restoreAll(snapshots);
+}
+
+const _handleShieldCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findShieldByInstanceId,
+  saveCustomFields: _saveShieldCustomFieldsWrapped,
+  render: _renderShieldLists, // already self-wraps via snapshotAll/restoreAll above
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleShieldClick(e) {
@@ -103,41 +116,10 @@ export function handleShieldClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findShieldByInstanceId(instanceId)) return false;
-    openCustomFieldsEditor(instanceId);
-    _renderShieldLists();
-    return true;
-  }
+  // Delegated to the shared factory — see armorEvents.js's usage for the
+  // full rationale.
 
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findShieldByInstanceId(instanceId)) return false;
-    closeCustomFieldsEditor(instanceId);
-    _renderShieldLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findShieldByInstanceId(instanceId)) return false;
-    const values = readCustomFieldsEditorValues(instanceId);
-    closeCustomFieldsEditor(instanceId);
-    if (values) {
-      // saveShieldCustomFields mutates + calls its own renderListsPreserving()
-      // internally (unwrapped call site) — snapshot right before it and
-      // restore right after it returns (both synchronous) so that internal
-      // render doesn't blow away open state anywhere on the page, same
-      // pattern as armorEvents.js's equivalent branch.
-      const snapshots = snapshotAll();
-      saveShieldCustomFields(instanceId, values);
-      restoreAll(snapshots);
-    } else {
-      _renderShieldLists();
-    }
-    return true;
-  }
+  if (_handleShieldCustomFieldsClick(e)) return true;
 
   return false;
 }
