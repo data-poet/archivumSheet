@@ -17,11 +17,6 @@ import {
   renderStoredMagicGear,
 } from "./render.js";
 import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
-import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,
   setEnchantmentAddFormTypeFilter,
@@ -32,6 +27,7 @@ import {
   tableRowKeyFn,
   divBlockKeyFn,
 } from "../../../shared/openState.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -62,6 +58,13 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
     );
   }
 }
+
+const _handleMagicGearCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findMagicGearByInstanceId,
+  saveCustomFields: saveMagicGearCustomFields, // mutates + renders + runs engine
+  render: _renderMagicGearLists,
+  runWithOpenState: _withPreservedOpenState,
+});
 
 /**
  * Whether `formKey` belongs to a magic gear item — either as an item's own
@@ -134,45 +137,10 @@ export function handleMagicGearClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
+  // Delegated to the shared factory — see accessoriesEvents.js's identical
+  // usage for the full rationale.
 
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    _withPreservedOpenState(e, () => {
-      openCustomFieldsEditor(instanceId);
-      _renderMagicGearLists();
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    _withPreservedOpenState(e, () => {
-      closeCustomFieldsEditor(instanceId);
-      _renderMagicGearLists();
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    const values = readCustomFieldsEditorValues(instanceId);
-
-    _withPreservedOpenState(e, () => {
-      closeCustomFieldsEditor(instanceId);
-      if (values) {
-        saveMagicGearCustomFields(instanceId, values); // mutates + renders + runs engine
-      } else {
-        _renderMagicGearLists();
-      }
-    });
-    return true;
-  }
+  if (_handleMagicGearCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
 

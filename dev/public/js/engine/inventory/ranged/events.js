@@ -9,11 +9,7 @@ import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedRanged, renderStoredRanged } from "./render.js";
 import { renderEquippedMelee, renderStoredMelee } from "../melee/render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomFieldsEditorValues,
-} from "../../../shared/renderUtils.js";
+import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -81,6 +77,23 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
+/**
+ * saveRangedCustomFields mutates + calls its own renderListsPreserving()
+ * internally (unwrapped) — snapshot right before it and restore right
+ * after it returns, matching this file's pre-factory behavior.
+ */
+function _saveRangedCustomFieldsWrapped(instanceId, values) {
+  const snapshots = snapshotAll();
+  saveRangedCustomFields(instanceId, values);
+  restoreAll(snapshots);
+}
+
+const _handleRangedCustomFieldsClick = createCustomFieldsClickHandler({
+  findByInstanceId: findRangedByInstanceId,
+  saveCustomFields: _saveRangedCustomFieldsWrapped,
+  render: _renderRangedLists, // already self-wraps via snapshotAll/restoreAll above
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleRangedClick(e) {
@@ -100,40 +113,10 @@ export function handleRangedClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  if (e.target.classList.contains("custom-fields-edit-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findRangedByInstanceId(instanceId)) return false;
-    openCustomFieldsEditor(instanceId);
-    _renderRangedLists();
-    return true;
-  }
+  // Delegated to the shared factory — see armorEvents.js's usage for the
+  // full rationale.
 
-  if (e.target.classList.contains("custom-fields-cancel-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findRangedByInstanceId(instanceId)) return false;
-    closeCustomFieldsEditor(instanceId);
-    _renderRangedLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-fields-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findRangedByInstanceId(instanceId)) return false;
-    const values = readCustomFieldsEditorValues(instanceId);
-    closeCustomFieldsEditor(instanceId);
-    if (values) {
-      // saveRangedCustomFields mutates + calls its own renderListsPreserving()
-      // internally (unwrapped call site) — snapshot right before it and
-      // restore right after it returns, same pattern as shieldEvents.js's
-      // equivalent branch.
-      const snapshots = snapshotAll();
-      saveRangedCustomFields(instanceId, values);
-      restoreAll(snapshots);
-    } else {
-      _renderRangedLists();
-    }
-    return true;
-  }
+  if (_handleRangedCustomFieldsClick(e)) return true;
 
   return false;
 }
