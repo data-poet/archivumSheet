@@ -16,12 +16,7 @@ import {
   renderEquippedMagicGear,
   renderStoredMagicGear,
 } from "./render.js";
-import {
-  setEnchantmentAddFormSelection,
-  setEnchantmentAddFormTargetFilter,
-  setEnchantmentAddFormTypeFilter,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 import {
   withOpenState,
   tableRowKeyFn,
@@ -66,59 +61,15 @@ const _handleMagicGearCustomFieldsClick = createCustomFieldsClickHandler({
   runWithOpenState: _withPreservedOpenState,
 });
 
-/**
- * Whether `formKey` belongs to a magic gear item — either as an item's own
- * instanceId (the add-form) or as one of its enchantment entries' own
- * _instanceId (an entry's edit-form).
- *
- * The three enchantment-filter branches below match on CSS classes shared
- * across every equipment type that carries enchantments (see
- * renderEnchantments.js — enchantment-category-filter/-type-select/
- * -target-filter aren't magic-gear-specific markup). Without this guard,
- * whichever type's handler runs FIRST in the dispatch chain
- * (events/index.js — accessories, then magic gear) would catch the OTHER
- * type's enchantment-filter interactions too: it updates the shared
- * UI-state Maps in inventory/enchantments.js correctly (those writes
- * really are harmless regardless of formKey), but then re-renders only ITS
- * OWN list — leaving the item the user is actually looking at stuck on
- * stale markup, unable to switch category/type/target at all. See
- * accessoriesEvents.js's own copy of this guard for the full writeup.
- */
-function _ownsEnchantmentFormKey(formKey) {
-  if (findMagicGearByInstanceId(formKey)) return true;
-  return selected.magicGear.some((g) =>
-    (g.enchantments || []).some((entry) => entry._instanceId === formKey),
-  );
-}
-
-/**
- * Reads a not-yet-committed enchantment form's current values straight out
- * of the DOM — identical logic to accessoriesEvents.js's
- * _readEnchantmentFormParams (kept as a local copy rather than shared,
- * matching the existing per-type duplication pattern in this codebase).
- */
-function _readEnchantmentFormParams(formKey) {
-  const form = document.querySelector(
-    `.enchantment-form[data-form-key="${formKey}"]`,
-  );
-  if (!form) return null;
-
-  const enchantmentId = form.querySelector(".enchantment-type-select")?.value;
-  if (!enchantmentId) return null;
-
-  const valueEl = form.querySelector(".enchantment-value-input");
-  const targetEl = form.querySelector(".enchantment-target-select");
-  const extraPointsEl = form.querySelector(".enchantment-extra-points-input");
-
-  return {
-    enchantmentId,
-    value: valueEl ? parseInt(valueEl.value, 10) : undefined,
-    target: targetEl ? targetEl.value : undefined,
-    extraPoints: extraPointsEl
-      ? parseInt(extraPointsEl.value, 10) || 0
-      : undefined,
-  };
-}
+const _magicGearEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findMagicGearByInstanceId,
+  getItems: () => selected.magicGear,
+  addEnchantment: addMagicGearEnchantment,
+  updateEnchantment: updateMagicGearEnchantment,
+  removeEnchantment: removeMagicGearEnchantment,
+  render: () => _renderMagicGearLists(state.sheet),
+  runWithOpenState: _withPreservedOpenState,
+});
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -143,53 +94,10 @@ export function handleMagicGearClick(e) {
   if (_handleMagicGearCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
+  // Delegated to the shared factory — see accessoriesEvents.js's identical
+  // usage for the full rationale.
 
-  if (e.target.classList.contains("enchantment-remove-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    const entryInstanceId = e.target.dataset.entryInstanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    clearEnchantmentAddFormSelection(entryInstanceId);
-
-    _withPreservedOpenState(e, () => {
-      removeMagicGearEnchantment(instanceId, entryInstanceId);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-add-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    const params = _readEnchantmentFormParams(instanceId);
-    if (!params) return true;
-
-    _withPreservedOpenState(e, () => {
-      addMagicGearEnchantment(instanceId, params.enchantmentId, params);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    const entryInstanceId = e.target.dataset.entryInstanceId;
-    if (!findMagicGearByInstanceId(instanceId)) return false;
-
-    const params = _readEnchantmentFormParams(entryInstanceId);
-    if (!params) return true;
-
-    clearEnchantmentAddFormSelection(entryInstanceId);
-
-    _withPreservedOpenState(e, () => {
-      updateMagicGearEnchantment(
-        instanceId,
-        entryInstanceId,
-        params.enchantmentId,
-        params,
-      );
-    });
-    return true;
-  }
+  if (_magicGearEnchantments.handleClick(e)) return true;
 
   return false;
 }
@@ -212,41 +120,11 @@ export function handleMagicGearChange(e) {
     return true;
   }
 
-  if (e.target.classList.contains("enchantment-category-filter")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
+  // ── Enchantments: cascading category/type/target filters ───────────────────
+  // Delegated to the shared factory — see accessoriesEvents.js's click
+  // section for the ownership-guard rationale.
 
-    setEnchantmentAddFormTypeFilter(formKey, e.target.value);
-
-    _withPreservedOpenState(e, () => {
-      _renderMagicGearLists(state.sheet);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-type-select")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
-
-    setEnchantmentAddFormSelection(formKey, e.target.value);
-
-    _withPreservedOpenState(e, () => {
-      _renderMagicGearLists(state.sheet);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-target-filter")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
-
-    setEnchantmentAddFormTargetFilter(formKey, e.target.value);
-
-    _withPreservedOpenState(e, () => {
-      _renderMagicGearLists(state.sheet);
-    });
-    return true;
-  }
+  if (_magicGearEnchantments.handleChange(e)) return true;
 
   return false;
 }
