@@ -21,13 +21,17 @@ const selected = state.selected;
 // ─────────────────────────────────────────────────────────────────────────────
 // runEngine
 //
-// Responsibility: call buildSheet with current state, then update ONLY the
+// Responsibility: call buildSheet with current state, then update the
 // output/stats panels (output JSON, inventory weights, secondary attributes,
-// damage table).
+// damage table) AND the equipment lists.
 //
-// It intentionally does NOT call renderLists(). Equipment list DOM is managed
-// exclusively by explicit inventory mutations (add / remove / move / equip).
-// This is what prevents selects from being destroyed mid-interaction.
+// renderLists() IS called here, but only wrapped in a synchronous
+// snapshotAll() → renderLists() → restoreAll() sequence — see the comment
+// at that call site for why the restore must happen in the same task rather
+// than on a later frame. Equipment list DOM is otherwise managed exclusively
+// by explicit inventory mutations (add / remove / move / equip); this is
+// what prevents selects from being destroyed mid-interaction on every
+// autorun tick.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function runEngine() {
@@ -43,14 +47,14 @@ export async function runEngine() {
       starting_points: info.starting_points ?? null,
       experience_points: info.experience_points ?? null,
       image: info.image ?? {
-        uploaded:    false,
-        data:        "",
-        background:  "",
-        color:       { r: "", g: "", b: "" },
+        uploaded: false,
+        data: "",
+        background: "",
+        color: { r: "", g: "", b: "" },
         orientation: "",
-        position:    { x: "", y: "" },
-        size:        { width: "", height: "" },
-        scale:       "",
+        position: { x: "", y: "" },
+        size: { width: "", height: "" },
+        scale: "",
       },
     };
 
@@ -180,14 +184,14 @@ export async function runEngine() {
     // ── Insufficient points warning ────────────────────────────────────────
     const cp = json.character?.character_points ?? {};
     const totalSpent =
-      (cp.primary_attributes   ?? 0) +
+      (cp.primary_attributes ?? 0) +
       (cp.secondary_attributes ?? 0) +
-      (cp.advantages           ?? 0) +
-      (cp.disadvantages        ?? 0) +
-      (cp.skills               ?? 0) +
-      (cp.spells               ?? 0);
+      (cp.advantages ?? 0) +
+      (cp.disadvantages ?? 0) +
+      (cp.skills ?? 0) +
+      (cp.spells ?? 0);
 
-    const startingPts   = json.pc?.starting_points   ?? null;
+    const startingPts = json.pc?.starting_points ?? null;
     const experiencePts = json.pc?.experience_points ?? null;
 
     if (startingPts !== null || experiencePts !== null) {
