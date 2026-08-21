@@ -10,9 +10,22 @@
  */
 
 // Batch 0: just enough for the smoke test (shared/dom.js's el()).
+// Batch 1: primary-attribute inputs (compute/attributes.js reads these
+// directly via document.getElementById, matching index.html's real
+// <input type="text" id="ST_base" value="10" /> shape).
 // Later batches append their own ids here as they're covered.
 const DEFAULT_SKELETON = `
   <div id="smoke-test-target"></div>
+
+  <input id="ST_base" type="text" value="10" />
+  <input id="ST_mod" type="text" value="0" />
+  <input id="DX_base" type="text" value="10" />
+  <input id="DX_mod" type="text" value="0" />
+  <input id="IQ_base" type="text" value="10" />
+  <input id="IQ_mod" type="text" value="0" />
+  <input id="HT_base" type="text" value="10" />
+  <input id="HT_mod" type="text" value="0" />
+  <input id="weight" type="number" value="0" />
 `;
 
 /**
