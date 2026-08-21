@@ -13,6 +13,10 @@
 // Batch 1: primary-attribute inputs (compute/attributes.js reads these
 // directly via document.getElementById, matching index.html's real
 // <input type="text" id="ST_base" value="10" /> shape).
+// Batch 3: PC-info inputs (store/characters.js and store/persistence.js's
+// setVal() writes to these directly via document.getElementById; shapes
+// mirror index.html — characterSexSelect is a <select>, age/weight are
+// type="number", the rest are type="text").
 // Later batches append their own ids here as they're covered.
 const DEFAULT_SKELETON = `
   <div id="smoke-test-target"></div>
@@ -26,6 +30,18 @@ const DEFAULT_SKELETON = `
   <input id="HT_base" type="text" value="10" />
   <input id="HT_mod" type="text" value="0" />
   <input id="weight" type="number" value="0" />
+
+  <input id="playerNameInput" type="text" />
+  <input id="characterNameInput" type="text" />
+  <select id="characterSexSelect">
+    <option value=""></option>
+    <option value="M"></option>
+    <option value="F"></option>
+  </select>
+  <input id="characterAgeInput" type="number" />
+  <input id="characterWeightInput" type="number" />
+  <input id="startingPointsInput" />
+  <input id="experiencePointsInput" />
 `;
 
 /**
