@@ -1,24 +1,35 @@
 import { state } from "dev/public/js/state.js";
 
 // state.js exports a single mutable object that many modules hold the same
-// reference to and mutate in place. Tests that touch it (store layer,
-// compute/index.js, and beyond) need a way to reset it back to a pristine
-// shape between tests without breaking that shared reference — so this
-// mutates state's own properties in place rather than reassigning `state`
-// itself.
+// reference to and mutate in place — and at least one (compute/index.js)
+// captures `state.selected` itself at MODULE IMPORT time, not per-call.
+// Reassigning state.selected/data/ui to a brand-new object here would
+// silently desync from that captured reference after the first reset. The
+// real app never reassigns these wholesale either — store/characters.js's
+// _applyData() always replaces sub-properties (selected.character = ...,
+// selected.advantages = ..., etc.) on the SAME object. So this helper
+// mirrors that: it mutates state.data/selected/ui in place (clear all own
+// keys, then reassign from a pristine deep clone) rather than replacing the
+// objects themselves.
 const INITIAL_DATA = JSON.parse(JSON.stringify(state.data));
 const INITIAL_SELECTED = JSON.parse(JSON.stringify(state.selected));
 const INITIAL_UI = JSON.parse(JSON.stringify(state.ui));
 
+function resetInPlace(target, pristine) {
+  Object.keys(target).forEach((key) => delete target[key]);
+  Object.assign(target, JSON.parse(JSON.stringify(pristine)));
+}
+
 /**
  * Resets state.data, state.selected, and state.ui back to their pristine
- * startup shape (deep clones, no shared references with any prior test's
- * mutations). Also clears state.sheet, which isn't part of the initial
- * shape but gets set by compute/index.js's runEngine() at runtime.
+ * startup shape, in place — preserving object identity for any module that
+ * captured a reference to state.data/state.selected/state.ui itself (not
+ * just to `state`). Also clears state.sheet, which isn't part of the
+ * initial shape but gets set by compute/index.js's runEngine() at runtime.
  */
 export function resetState() {
-  state.data = JSON.parse(JSON.stringify(INITIAL_DATA));
-  state.selected = JSON.parse(JSON.stringify(INITIAL_SELECTED));
-  state.ui = JSON.parse(JSON.stringify(INITIAL_UI));
+  resetInPlace(state.data, INITIAL_DATA);
+  resetInPlace(state.selected, INITIAL_SELECTED);
+  resetInPlace(state.ui, INITIAL_UI);
   state.sheet = undefined;
 }
