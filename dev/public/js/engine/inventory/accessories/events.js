@@ -17,12 +17,7 @@ import {
   renderEquippedAccessories,
   renderStoredAccessories,
 } from "./render.js";
-import {
-  setEnchantmentAddFormSelection,
-  setEnchantmentAddFormTargetFilter,
-  setEnchantmentAddFormTypeFilter,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
@@ -77,62 +72,15 @@ const _handleAccessoryCustomFieldsClick = createCustomFieldsClickHandler({
   runWithOpenState: _withPreservedOpenState,
 });
 
-/**
- * Whether `formKey` belongs to an accessory — either as an item's own
- * instanceId (the add-form) or as one of its enchantment entries' own
- * _instanceId (an entry's edit-form).
- *
- * The three enchantment-filter branches below match on CSS classes shared
- * across every equipment type that carries enchantments (see
- * renderEnchantments.js — enchantment-category-filter/-type-select/
- * -target-filter aren't accessory-specific markup). Without this guard,
- * whichever type's handler runs FIRST in the dispatch chain
- * (events/index.js) would catch every other type's enchantment-filter
- * interactions too: it updates the shared UI-state Maps in
- * inventory/enchantments.js correctly (those writes are harmless
- * regardless of formKey — they only affect which option is pre-selected
- * when a form next renders), but then re-renders only ITS OWN list —
- * leaving the item the user is actually looking at stuck on stale markup,
- * unable to switch category/type/target at all.
- */
-function _ownsEnchantmentFormKey(formKey) {
-  if (findAccessoryByInstanceId(formKey)) return true;
-  return selected.accessories.some((a) =>
-    (a.enchantments || []).some((entry) => entry._instanceId === formKey),
-  );
-}
-
-/**
- * Reads a not-yet-committed enchantment form's current values straight out
- * of the DOM (uncontrolled inputs — nothing writes to state until
- * "Adicionar"/"Salvar" is pressed, same spirit as
- * readCustomFieldsEditorValues). Works for both the add-form (formKey =
- * parent item instanceId) and an entry's edit-form (formKey = the entry's
- * own _instanceId) — same shared markup, see renderEnchantments.js.
- * Returns null if the form isn't found or has no type selected.
- */
-function _readEnchantmentFormParams(formKey) {
-  const form = document.querySelector(
-    `.enchantment-form[data-form-key="${formKey}"]`,
-  );
-  if (!form) return null;
-
-  const enchantmentId = form.querySelector(".enchantment-type-select")?.value;
-  if (!enchantmentId) return null;
-
-  const valueEl = form.querySelector(".enchantment-value-input");
-  const targetEl = form.querySelector(".enchantment-target-select");
-  const extraPointsEl = form.querySelector(".enchantment-extra-points-input");
-
-  return {
-    enchantmentId,
-    value: valueEl ? parseInt(valueEl.value, 10) : undefined,
-    target: targetEl ? targetEl.value : undefined,
-    extraPoints: extraPointsEl
-      ? parseInt(extraPointsEl.value, 10) || 0
-      : undefined,
-  };
-}
+const _accessoryEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findAccessoryByInstanceId,
+  getItems: () => selected.accessories,
+  addEnchantment: addAccessoryEnchantment,
+  updateEnchantment: updateAccessoryEnchantment,
+  removeEnchantment: removeAccessoryEnchantment,
+  render: () => _renderAccessoryLists(state.sheet),
+  runWithOpenState: _withPreservedOpenState,
+});
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -160,60 +108,12 @@ export function handleAccessoryClick(e) {
   if (_handleAccessoryCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Generic .enchantment-* classes rendered by renderEnchantments.js; same
-  // ownership-check pattern as the custom-fields buttons above, so armor
-  // (Phase 2) can safely reuse the same block/button classes.
+  // Generic .enchantment-* classes rendered by renderEnchantments.js;
+  // delegated to the shared factory, which ownership-checks the instanceId
+  // the same way as the custom-fields factory above, so armor (Phase 2)
+  // can safely reuse the same block/button classes.
 
-  if (e.target.classList.contains("enchantment-remove-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    const entryInstanceId = e.target.dataset.entryInstanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    // Drop any in-progress edit-form selection for this entry — its
-    // _instanceId won't be reused, but there's no reason to keep it around.
-    clearEnchantmentAddFormSelection(entryInstanceId);
-
-    _withPreservedOpenState(e, () => {
-      removeAccessoryEnchantment(instanceId, entryInstanceId);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-add-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    const params = _readEnchantmentFormParams(instanceId);
-    if (!params) return true;
-
-    _withPreservedOpenState(e, () => {
-      addAccessoryEnchantment(instanceId, params.enchantmentId, params);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-save-btn")) {
-    const instanceId = e.target.dataset.instanceId;
-    const entryInstanceId = e.target.dataset.entryInstanceId;
-    if (!findAccessoryByInstanceId(instanceId)) return false;
-
-    const params = _readEnchantmentFormParams(entryInstanceId);
-    if (!params) return true;
-
-    // Reset so the next time this entry is expanded, its type-select
-    // starts fresh from whatever just got saved, not the pre-save choice.
-    clearEnchantmentAddFormSelection(entryInstanceId);
-
-    _withPreservedOpenState(e, () => {
-      updateAccessoryEnchantment(
-        instanceId,
-        entryInstanceId,
-        params.enchantmentId,
-        params,
-      );
-    });
-    return true;
-  }
+  if (_accessoryEnchantments.handleClick(e)) return true;
 
   return false;
 }
@@ -250,49 +150,11 @@ export function handleAccessoryChange(e) {
     return true;
   }
 
-  if (e.target.classList.contains("enchantment-category-filter")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
+  // ── Enchantments: cascading category/type/target filters ───────────────────
+  // Delegated to the shared factory — see accessoriesEvents.js's click
+  // section above for the ownership-guard rationale.
 
-    setEnchantmentAddFormTypeFilter(formKey, e.target.value);
-
-    // Re-render so "Tipo de Encantamento" narrows to the chosen category —
-    // same cascading-filter pattern as enchantment-target-filter below,
-    // one level up.
-    _withPreservedOpenState(e, () => {
-      _renderAccessoryLists(state.sheet);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-type-select")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
-
-    setEnchantmentAddFormSelection(formKey, e.target.value);
-
-    // Re-render so the params markup (value input vs. target select vs.
-    // target+extraPoints) switches to match the newly chosen effect_type.
-    _withPreservedOpenState(e, () => {
-      _renderAccessoryLists(state.sheet);
-    });
-    return true;
-  }
-
-  if (e.target.classList.contains("enchantment-target-filter")) {
-    const formKey = e.target.dataset.formKey;
-    if (!formKey || !_ownsEnchantmentFormKey(formKey)) return false;
-
-    setEnchantmentAddFormTargetFilter(formKey, e.target.value);
-
-    // Re-render so the target select narrows to the chosen
-    // type/category/school — same cascading-filter pattern used
-    // elsewhere in the app for adding advantages/skills/spells directly.
-    _withPreservedOpenState(e, () => {
-      _renderAccessoryLists(state.sheet);
-    });
-    return true;
-  }
+  if (_accessoryEnchantments.handleChange(e)) return true;
 
   return false;
 }
