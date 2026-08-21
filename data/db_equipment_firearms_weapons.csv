@@ -1,6 +1,76 @@
 weapon_id,weapon_name,weapon_type,weapon_skill,weapon_gdp_dice,weapon_gdp_modifier,weapon_reload_speed,weapon_magazine_size,weapon_cdt,weapon_weight,weapon_price,weapon_length,weapon_min_strength,weapon_damage_type,weapon_tr,weapon_prec,weapon_half_distance,weapon_max_distance,weapon_tier,weapon_hit_points,weapon_description
-FIREARM-000,Revolver Artificier,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,2,3 Turnos,6,1,2.5,2000,0.3,10,Perfuração,8,2,75,1000,Comum,10,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
-FIREARM-001,Revolver Artificier,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,3,3 Turnos,6,1,2.4,4000,0.3,10,Perfuração,7,3,90,1000,Boa,20,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
-FIREARM-002,Revolver Artificier,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,4,3 Turnos,6,1,2.3,8000,0.3,10,Perfuração,6,4,105,1000,Superior,30,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
-FIREARM-003,Revolver Artificier,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,5,3 Turnos,6,1,2.2,16000,0.3,10,Perfuração,5,5,120,1000,Excelente,40,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
-FIREARM-004,Revolver Artificier,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,6,3 Turnos,6,1,2.1,32000,0.3,10,Perfuração,4,6,135,1000,Obra-Prima,50,"Neste modelo há um sistema de molas que permite o disparo de pequenas virotes leves em grande quantidade. Pode ser facilmente recarregado durante o combate e dispara até um projétil por segundo. É uma peça delicada, quebra facilmente e exige manutenção cuidadosa."
+FIREARM-000,Pistola Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,2,3 Turnos,1,1,1.2,1500,0.5,10,Perfuração,4,1,6,12,Comum,10,"
+- Arma de tiro único com mecanismo de faísca.
+- Lenta para recarregar, mas oferece um disparo inicial devastador e confiável em curtas distâncias."
+FIREARM-001,Pistola Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,3,3 Turnos,1,1,1.1,3000,0.5,10,Perfuração,5,1,8,14,Boa,20,"
+- Arma de tiro único com mecanismo de faísca.
+- Lenta para recarregar, mas oferece um disparo inicial devastador e confiável em curtas distâncias."
+FIREARM-002,Pistola Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,4,3 Turnos,1,1,1,6000,0.5,10,Perfuração,6,1,10,16,Superior,30,"
+- Arma de tiro único com mecanismo de faísca.
+- Lenta para recarregar, mas oferece um disparo inicial devastador e confiável em curtas distâncias."
+FIREARM-003,Pistola Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,5,3 Turnos,1,1,0.9,12000,0.5,10,Perfuração,7,1,12,18,Excelente,40,"
+- Arma de tiro único com mecanismo de faísca.
+- Lenta para recarregar, mas oferece um disparo inicial devastador e confiável em curtas distâncias."
+FIREARM-004,Pistola Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,6,3 Turnos,1,1,0.8,24000,0.5,10,Perfuração,8,1,14,20,Obra-Prima,50,"
+- Arma de tiro único com mecanismo de faísca.
+- Lenta para recarregar, mas oferece um disparo inicial devastador e confiável em curtas distâncias."
+FIREARM-005,Mosquete Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,2,3 Turnos,1,1,4.4,1800,1.4,12,Perfuração,5,1,12,42,Comum,10,"
+- Arma longa de tiro único com cano de alma lisa.
+- Exige tempo para recarregar, mas entrega alto impacto a média distância com um disparo de grosso calibre."
+FIREARM-006,Mosquete Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,3,3 Turnos,1,1,4.3,3600,1.4,12,Perfuração,6,1,14,44,Boa,20,"
+- Arma longa de tiro único com cano de alma lisa.
+- Exige tempo para recarregar, mas entrega alto impacto a média distância com um disparo de grosso calibre."
+FIREARM-007,Mosquete Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,4,3 Turnos,1,1,4.2,7200,1.4,12,Perfuração,7,1,16,46,Superior,30,"
+- Arma longa de tiro único com cano de alma lisa.
+- Exige tempo para recarregar, mas entrega alto impacto a média distância com um disparo de grosso calibre."
+FIREARM-008,Mosquete Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,5,3 Turnos,1,1,4.1,14400,1.4,12,Perfuração,8,1,18,48,Excelente,40,"
+- Arma longa de tiro único com cano de alma lisa.
+- Exige tempo para recarregar, mas entrega alto impacto a média distância com um disparo de grosso calibre."
+FIREARM-009,Mosquete Flintlock,Arma de Pólvora | Flintlock,ARMAS DE PÓLVORA,2d6,6,3 Turnos,1,1,4,28800,1.4,12,Perfuração,9,1,20,50,Obra-Prima,50,"
+- Arma longa de tiro único com cano de alma lisa.
+- Exige tempo para recarregar, mas entrega alto impacto a média distância com um disparo de grosso calibre."
+FIREARM-010,Revolver,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,2,2 Turnos,6,1,2.5,2000,0.3,10,Perfuração,4,2,75,150,Comum,10,"
+- Arma de teto giratório de ação rápida.
+- Perfeita para combates dinâmicos a curta e média distância, oferecendo cadência de tiro e empunhadura firme."
+FIREARM-011,Revolver,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,3,2 Turnos,6,1,2.4,4000,0.3,10,Perfuração,5,3,90,180,Boa,20,"
+- Arma de teto giratório de ação rápida.
+- Perfeita para combates dinâmicos a curta e média distância, oferecendo cadência de tiro e empunhadura firme."
+FIREARM-012,Revolver,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,4,2 Turnos,6,1,2.3,8000,0.3,10,Perfuração,6,4,105,210,Superior,30,"
+- Arma de teto giratório de ação rápida.
+- Perfeita para combates dinâmicos a curta e média distância, oferecendo cadência de tiro e empunhadura firme."
+FIREARM-013,Revolver,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,5,2 Turnos,6,1,2.2,16000,0.3,10,Perfuração,7,5,120,240,Excelente,40,"
+- Arma de teto giratório de ação rápida.
+- Perfeita para combates dinâmicos a curta e média distância, oferecendo cadência de tiro e empunhadura firme."
+FIREARM-014,Revolver,Arma de Pólvora | Revólver,ARMAS DE PÓLVORA,1d6,6,2 Turnos,6,1,2.1,32000,0.3,10,Perfuração,8,6,135,270,Obra-Prima,50,"
+- Arma de teto giratório de ação rápida.
+- Perfeita para combates dinâmicos a curta e média distância, oferecendo cadência de tiro e empunhadura firme."
+FIREARM-015,Escopeta Curta,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,5d6,0,2 Turnos,2,1,3.4,1800,0.6,13,Perfuração,4,1,2,4,Comum,10,"
+- Arma de cano serrado de altíssimo dano à queima-roupa.
+- Sacrifica o alcance e a capacidade de munição em troca de uma dispersão devastadora."
+FIREARM-016,Escopeta Curta,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,5d6,1,2 Turnos,2,1,3.3,3600,0.6,13,Perfuração,5,1,2,4,Boa,20,"
+- Arma de cano serrado de altíssimo dano à queima-roupa.
+- Sacrifica o alcance e a capacidade de munição em troca de uma dispersão devastadora."
+FIREARM-017,Escopeta Curta,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,5d6,2,2 Turnos,2,1,3.2,7200,0.6,13,Perfuração,6,2,3,5,Superior,30,"
+- Arma de cano serrado de altíssimo dano à queima-roupa.
+- Sacrifica o alcance e a capacidade de munição em troca de uma dispersão devastadora."
+FIREARM-018,Escopeta Curta,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,5d6,3,2 Turnos,2,1,3.1,14400,0.6,13,Perfuração,7,2,3,5,Excelente,40,"
+- Arma de cano serrado de altíssimo dano à queima-roupa.
+- Sacrifica o alcance e a capacidade de munição em troca de uma dispersão devastadora."
+FIREARM-019,Escopeta Curta,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,5d6,4,2 Turnos,2,1,3,28800,0.6,13,Perfuração,8,3,4,6,Obra-Prima,50,"
+- Arma de cano serrado de altíssimo dano à queima-roupa.
+- Sacrifica o alcance e a capacidade de munição em troca de uma dispersão devastadora."
+FIREARM-020,Escopeta de Repetição,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,3d6,2,3 Turnos,4,2,5.9,6000,1.1,12,Perfuração,5,1,3,5,Comum,10,"
+- Escopeta por bombeamento com carregador interno.
+- Mantém o poder de parada massivo em área, mas com maior capacidade de disparos em sequência."
+FIREARM-021,Escopeta de Repetição,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,3d6,2,3 Turnos,4,2,5.8,12000,1.1,12,Perfuração,6,1,3,5,Boa,20,"
+- Escopeta por bombeamento com carregador interno.
+- Mantém o poder de parada massivo em área, mas com maior capacidade de disparos em sequência."
+FIREARM-022,Escopeta de Repetição,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,3d6,2,3 Turnos,4,2,5.7,24000,1.1,12,Perfuração,7,2,4,6,Superior,30,"
+- Escopeta por bombeamento com carregador interno.
+- Mantém o poder de parada massivo em área, mas com maior capacidade de disparos em sequência."
+FIREARM-023,Escopeta de Repetição,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,3d6,2,3 Turnos,4,2,5.6,48000,1.1,12,Perfuração,8,2,4,6,Excelente,40,"
+- Escopeta por bombeamento com carregador interno.
+- Mantém o poder de parada massivo em área, mas com maior capacidade de disparos em sequência."
+FIREARM-024,Escopeta de Repetição,Arma de Pólvora | Escopeta,ARMAS DE PÓLVORA,3d6,2,3 Turnos,4,2,5.5,96000,1.1,12,Perfuração,9,3,5,7,Obra-Prima,50,"
+- Escopeta por bombeamento com carregador interno.
+- Mantém o poder de parada massivo em área, mas com maior capacidade de disparos em sequência."

@@ -717,7 +717,7 @@ ADV-104,RESISTÊNCIA NATURAL A FOGO | 0,RESISTÊNCIA NATURAL A FOGO,0,Racial,"
 - Você tem uma resistência natural a fogo e aos efeitos do calor.
 - Todo dano de fogo é reduzido pela metade (arredondando para baixo).
 ",Autoral,
-ADV-105,RESISTÊNCIA NATURAL A ÁCIDO | 0,RESISTÊNCIA NATURAL A ÁCIDO,0,Racial,"
+ADV-105,RESISTÊNCIA NATURAL A CORROSÃO | 0,RESISTÊNCIA NATURAL A CORROSÃO,0,Racial,"
 - Você tem uma resistência natural a ácido e aos efeitos corrosivos.
 - Todo dano de corrosão é reduzido pela metade (arredondando para baixo).
 ",Autoral,
