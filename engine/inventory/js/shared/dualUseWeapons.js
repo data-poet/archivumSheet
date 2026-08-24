@@ -14,18 +14,18 @@
 // Pairs listed as [meleeId, rangedId] for each tier (Comum → Obra-Prima).
 const _PAIRS = [
   // Lança de Mão
-  ["MELEE-215", "RANGED-055"],
-  ["MELEE-216", "RANGED-056"],
-  ["MELEE-217", "RANGED-057"],
-  ["MELEE-218", "RANGED-058"],
-  ["MELEE-219", "RANGED-059"],
+  ["MELEE-215", "RANGED-050"],
+  ["MELEE-216", "RANGED-051"],
+  ["MELEE-217", "RANGED-052"],
+  ["MELEE-218", "RANGED-053"],
+  ["MELEE-219", "RANGED-054"],
 
   // Lança de Arremesso
-  ["MELEE-220", "RANGED-060"],
-  ["MELEE-221", "RANGED-061"],
-  ["MELEE-222", "RANGED-062"],
-  ["MELEE-223", "RANGED-063"],
-  ["MELEE-224", "RANGED-064"],
+  ["MELEE-220", "RANGED-055"],
+  ["MELEE-221", "RANGED-056"],
+  ["MELEE-222", "RANGED-057"],
+  ["MELEE-223", "RANGED-058"],
+  ["MELEE-224", "RANGED-059"],
 
   // Machadinha
   ["MELEE-280", "RANGED-005"],
