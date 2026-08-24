@@ -44,7 +44,7 @@ GEAR-024,Odre Pequeno (5L),Acampamento,10,0.5,
 GEAR-025,Odre Grande (25L),Acampamento,30,1,
 GEAR-026,"Sacola Pequena (Até 1,5 kg)",Carga,10,0.25,
 GEAR-027,Sacola Grande (Até 5 kg),Carga,30,0.5,
-GEAR-028,Mochila Pequena (Até 20kg),Carga,80,1.5,
+GEAR-028,Mochila Pequena (Até 10kg),Carga,80,1.5,
 GEAR-029,Mochila Grande (Até 20kg),Carga,120,5,
 GEAR-030,Cordão 3/16 pol (10m),Escalada,5,0.25,"
 - Suporta até 40kg."
