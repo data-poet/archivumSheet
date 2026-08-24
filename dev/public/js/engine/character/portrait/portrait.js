@@ -38,9 +38,15 @@ function _averageColor(base64) {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, size, size);
       const data = ctx.getImageData(0, 0, size, size).data;
-      let r = 0, g = 0, b = 0, count = 0;
+      let r = 0,
+        g = 0,
+        b = 0,
+        count = 0;
       for (let i = 0; i < data.length; i += 4) {
-        r += data[i]; g += data[i + 1]; b += data[i + 2]; count++;
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+        count++;
       }
       resolve({
         r: Math.round(r / count),
@@ -55,18 +61,27 @@ function _averageColor(base64) {
 
 /** Return CSS background-color string for a given background setting. */
 function _bgColor(img) {
-  if (img.background === "black")   return "rgb(0,0,0)";
-  if (img.background === "white")   return "rgb(255,255,255)";
-  if (img.background === "average") return `rgb(${img.color.r},${img.color.g},${img.color.b})`;
+  if (img.background === "black") return "rgb(0,0,0)";
+  if (img.background === "white") return "rgb(255,255,255)";
+  if (img.background === "average")
+    return `rgb(${img.color.r},${img.color.g},${img.color.b})`;
   return "";
 }
 
 // ── DOM helpers ───────────────────────────────────────────────────────────────
 
-function _previewEl()   { return document.getElementById("charimg-preview"); }
-function _imageEl()     { return document.getElementById("charimg-img"); }
-function _bgEl()        { return document.getElementById("charimg-bg"); }
-function _scaleInput()  { return document.getElementById("charimg-scale"); }
+function _previewEl() {
+  return document.getElementById("charimg-preview");
+}
+function _imageEl() {
+  return document.getElementById("charimg-img");
+}
+function _bgEl() {
+  return document.getElementById("charimg-bg");
+}
+function _scaleInput() {
+  return document.getElementById("charimg-scale");
+}
 
 // ── Render helpers ────────────────────────────────────────────────────────────
 
@@ -93,13 +108,13 @@ function _applyPosition(imgEl) {
   const img = _img();
   if (!imgEl) return;
   imgEl.style.left = img.position.x + "%";
-  imgEl.style.top  = img.position.y + "%";
+  imgEl.style.top = img.position.y + "%";
 }
 
 /** Sync scale slider from state. */
 function _syncScaleControls() {
   const scaleEl = _scaleInput();
-  const scale   = _img().scale ?? 100;
+  const scale = _img().scale ?? 100;
   if (scaleEl) scaleEl.value = scale;
 }
 
@@ -173,47 +188,66 @@ export function renderCharacterImage() {
   imgEl.src = img.data;
   imgEl.alt = "";
   imgEl.style.width = img.scale + "%";
-  imgEl.style.left  = img.position.x + "%";
-  imgEl.style.top   = img.position.y + "%";
+  imgEl.style.left = img.position.x + "%";
+  imgEl.style.top = img.position.y + "%";
   previewEl.appendChild(imgEl);
 
   _applyBackground();
   _syncScaleControls();
   _syncBgRadios();
-  _bindDrag(previewEl);
+  // Guard against re-binding: this render function runs again after nearly
+  // every portrait interaction (background/preset change, upload, clear),
+  // but previewEl is the same persistent DOM node every time (looked up by
+  // id, never replaced) — without this guard, _bindDrag() would attach a
+  // fresh set of document-level mousemove/mouseup listeners on every call,
+  // stacking duplicates that each independently fire on a single drag
+  // gesture (multiple triggerAutoRun() calls per drag).
+  if (!previewEl._dragBound) {
+    _bindDrag(previewEl);
+    previewEl._dragBound = true;
+  }
 }
 
 // ── Drag-to-reposition ────────────────────────────────────────────────────────
 
-function _clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+function _clamp(val, min, max) {
+  return Math.max(min, Math.min(max, val));
+}
 
 function _bindDrag(previewEl) {
   let dragging = false;
-  let startX = 0, startY = 0;
-  let startLeft = 0, startTop = 0;
+  let startX = 0,
+    startY = 0;
+  let startLeft = 0,
+    startTop = 0;
 
   const onStart = (cx, cy) => {
     const imgEl = _imageEl();
     if (!imgEl) return;
     dragging = true;
-    startX    = cx;
-    startY    = cy;
+    startX = cx;
+    startY = cy;
     startLeft = parseFloat(imgEl.style.left) || 0;
-    startTop  = parseFloat(imgEl.style.top)  || 0;
+    startTop = parseFloat(imgEl.style.top) || 0;
   };
 
   const onMove = (cx, cy) => {
     if (!dragging) return;
     const imgEl = _imageEl();
     if (!imgEl) return;
-    const rect  = previewEl.getBoundingClientRect();
-    const dx    = ((cx - startX) / rect.width)  * 100;
-    const dy    = ((cy - startY) / rect.height) * 100;
-    const newX  = _clamp(startLeft + dx, -100, 200);
-    const newY  = _clamp(startTop  + dy, -100, 200);
+    const rect = previewEl.getBoundingClientRect();
+    const dx = ((cx - startX) / rect.width) * 100;
+    const dy = ((cy - startY) / rect.height) * 100;
+    const newX = _clamp(startLeft + dx, -100, 200);
+    const newY = _clamp(startTop + dy, -100, 200);
     imgEl.style.left = newX + "%";
-    imgEl.style.top  = newY + "%";
-    _setImg({ position: { x: parseFloat(newX.toFixed(2)), y: parseFloat(newY.toFixed(2)) } });
+    imgEl.style.top = newY + "%";
+    _setImg({
+      position: {
+        x: parseFloat(newX.toFixed(2)),
+        y: parseFloat(newY.toFixed(2)),
+      },
+    });
   };
 
   const onEnd = () => {
@@ -223,20 +257,44 @@ function _bindDrag(previewEl) {
   };
 
   // Mouse
-  previewEl.addEventListener("mousedown",  (e) => { e.preventDefault(); onStart(e.clientX, e.clientY); });
-  document.addEventListener("mousemove",   (e) => onMove(e.clientX, e.clientY));
-  document.addEventListener("mouseup",     ()  => onEnd());
+  previewEl.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    onStart(e.clientX, e.clientY);
+  });
+  document.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY));
+  document.addEventListener("mouseup", () => onEnd());
   // Touch
-  previewEl.addEventListener("touchstart", (e) => { onStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-  previewEl.addEventListener("touchmove",  (e) => { e.preventDefault(); onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-  previewEl.addEventListener("touchend",   ()  => onEnd());
+  previewEl.addEventListener(
+    "touchstart",
+    (e) => {
+      onStart(e.touches[0].clientX, e.touches[0].clientY);
+    },
+    { passive: true },
+  );
+  previewEl.addEventListener(
+    "touchmove",
+    (e) => {
+      e.preventDefault();
+      onMove(e.touches[0].clientX, e.touches[0].clientY);
+    },
+    { passive: false },
+  );
+  previewEl.addEventListener("touchend", () => onEnd());
 }
 
 // ── File upload ───────────────────────────────────────────────────────────────
 
 async function _loadFile(file) {
   // Type check
-  if (!["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"].includes(file.type)) {
+  if (
+    ![
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ].includes(file.type)
+  ) {
     showToast(t("characterImage.invalidType"), "error");
     return;
   }
@@ -261,14 +319,14 @@ async function _loadFile(file) {
         const color = await _averageColor(base64);
 
         _setImg({
-          uploaded:    true,
-          data:        base64,
-          background:  "average",
+          uploaded: true,
+          data: base64,
+          background: "average",
           color,
           orientation,
-          size:        { width: w, height: h },
-          scale:       100,
-          position:    { x: 50, y: 50 },
+          size: { width: w, height: h },
+          scale: 100,
+          position: { x: 50, y: 50 },
         });
 
         renderCharacterImage();
@@ -302,15 +360,15 @@ export function handleCharacterImageClick(e) {
   const sizeBtn = e.target.closest(".charimg-preset-btn[data-size]");
   if (sizeBtn) {
     if (!_img().uploaded) return false;
-    const preset  = sizeBtn.dataset.size;
-    const imgEl   = _imageEl();
-    const prevEl  = _previewEl();
+    const preset = sizeBtn.dataset.size;
+    const imgEl = _imageEl();
+    const prevEl = _previewEl();
     if (!imgEl || !prevEl) return false;
 
-    const pr   = prevEl.getBoundingClientRect();
-    const img  = _img();
+    const pr = prevEl.getBoundingClientRect();
+    const img = _img();
     const { width: iw, height: ih } = img.size;
-    let scale  = 100;
+    let scale = 100;
 
     if (preset === "cover") {
       if (img.orientation === "landscape") {
@@ -323,8 +381,8 @@ export function handleCharacterImageClick(e) {
     }
 
     imgEl.style.width = scale + "%";
-    imgEl.style.left  = "50%";
-    imgEl.style.top   = "50%";
+    imgEl.style.left = "50%";
+    imgEl.style.top = "50%";
     _setImg({ scale, position: { x: 50, y: 50 } });
     _syncScaleControls();
     renderResumeImage();
@@ -337,26 +395,33 @@ export function handleCharacterImageClick(e) {
   if (posBtn) {
     if (!_img().uploaded) return false;
     const preset = posBtn.dataset.pos;
-    const imgEl  = _imageEl();
+    const imgEl = _imageEl();
     const prevEl = _previewEl();
     if (!imgEl || !prevEl) return false;
 
     const pr = prevEl.getBoundingClientRect();
     const ir = imgEl.getBoundingClientRect();
     let x = parseFloat(imgEl.style.left) || 50;
-    let y = parseFloat(imgEl.style.top)  || 50;
+    let y = parseFloat(imgEl.style.top) || 50;
 
-    if (preset === "center") { x = 50; y = 50; }
-    else if (preset === "top")    { y = ((ir.height / 2) / pr.height) * 100; }
-    else if (preset === "bottom") { y = ((pr.height - ir.height / 2) / pr.height) * 100; }
-    else if (preset === "left")   { x = ((ir.width  / 2) / pr.width)  * 100; }
-    else if (preset === "right")  { x = ((pr.width  - ir.width  / 2) / pr.width)  * 100; }
+    if (preset === "center") {
+      x = 50;
+      y = 50;
+    } else if (preset === "top") {
+      y = (ir.height / 2 / pr.height) * 100;
+    } else if (preset === "bottom") {
+      y = ((pr.height - ir.height / 2) / pr.height) * 100;
+    } else if (preset === "left") {
+      x = (ir.width / 2 / pr.width) * 100;
+    } else if (preset === "right") {
+      x = ((pr.width - ir.width / 2) / pr.width) * 100;
+    }
 
     x = parseFloat(x.toFixed(2));
     y = parseFloat(y.toFixed(2));
 
     imgEl.style.left = x + "%";
-    imgEl.style.top  = y + "%";
+    imgEl.style.top = y + "%";
     _setImg({ position: { x, y } });
     renderResumeImage();
     triggerAutoRun();
@@ -375,14 +440,14 @@ export function handleCharacterImageClick(e) {
     }).then((confirmed) => {
       if (!confirmed) return;
       _setImg({
-        uploaded:    false,
-        data:        "",
-        background:  "",
-        color:       { r: "", g: "", b: "" },
+        uploaded: false,
+        data: "",
+        background: "",
+        color: { r: "", g: "", b: "" },
         orientation: "",
-        position:    { x: "", y: "" },
-        size:        { width: "", height: "" },
-        scale:       "",
+        position: { x: "", y: "" },
+        size: { width: "", height: "" },
+        scale: "",
       });
       renderCharacterImage();
       renderResumeImage();
@@ -410,8 +475,8 @@ export function handleCharacterImageChange(e) {
 export function handleCharacterImageInput(e) {
   // Scale slider
   if (e.target.id === "charimg-scale") {
-    const scale  = parseInt(e.target.value, 10);
-    const imgEl  = _imageEl();
+    const scale = parseInt(e.target.value, 10);
+    const imgEl = _imageEl();
     if (imgEl) imgEl.style.width = scale + "%";
     _setImg({ scale });
     renderResumeImage();
