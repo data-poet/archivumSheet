@@ -8,6 +8,12 @@ CONTAINER-005,BAINHA DE ANTEBRAÇO | 1,Bainha de Antebraço,Comum,1,0.2,20,Faca,
 CONTAINER-006,BAINHA DE CINTURA | 6,Bainha de Cintura,Comum,6,0.4,50,Faca,TRUE
 CONTAINER-007,BAINHA DE PEITO | 6,Bainha de Peito,Comum,6,0.4,60,Faca,TRUE
 CONTAINER-008,BAINHA DE PERNA | 6,Bainha de Perna,Comum,6,0.4,40,Faca,TRUE
+CONTAINER-009,BAINHA DE ANTEBRAÇO | 1,Bainha de Antebraço,Comum,1,0.2,20,Shuriken,TRUE
+CONTAINER-010,BAINHA DE CINTURA | 6,Bainha de Cintura,Comum,6,0.4,50,Shuriken,TRUE
+CONTAINER-011,BAINHA DE PEITO | 6,Bainha de Peito,Comum,6,0.4,60,Shuriken,TRUE
+CONTAINER-012,BAINHA DE PERNA | 6,Bainha de Perna,Comum,6,0.4,40,Shuriken,TRUE
 CONTAINER-009,ESTOJO DE CINTURA | 36,Estojo de Cintura,Comum,36,0.4,50,Arma de Pólvora | Revólver,TRUE
 CONTAINER-010,ESTOJO DE CINTURA | 18,Estojo de Cintura,Comum,18,0.4,50,Arma de Pólvora | Flintlock,TRUE
 CONTAINER-011,ESTOJO DE CINTURA | 24,Estojo de Cintura,Comum,24,0.4,50,Arma de Pólvora | Escopeta,TRUE
+CONTAINER-012,FAIXA PEITORAL | 6,Faixa Peitoral,Comum,6,0.2,30,Arma de Pólvora | Escopeta,TRUE
+CONTAINER-013,ESTOJO DE CINTURA | 24,Estojo de Cintura,Comum,24,0.4,50,Arma de Pólvora | Rifle,TRUE
