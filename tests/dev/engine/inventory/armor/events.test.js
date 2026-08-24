@@ -331,7 +331,7 @@ describe("handleArmorChange — equipped-armor-name", () => {
     expect(model.equipArmor).toHaveBeenCalledWith("Cabeça", "");
   });
 
-  test("populates the tier <select> with the matching name's tiers and equips the first tier", () => {
+  test("populates the tier <select> with the matching name's tiers", () => {
     resetDOM(`
       <div id="armorSlots">
         <select class="equipped-armor-tier" data-slot="Cabeça"></select>
@@ -345,19 +345,60 @@ describe("handleArmorChange — equipped-armor-name", () => {
     );
 
     handleArmorChange({ target });
-    jest.advanceTimersToNextFrame();
 
     const tierSelect = document.querySelector(".equipped-armor-tier");
     expect(Array.from(tierSelect.options).map((o) => o.value)).toEqual([
       "I",
       "II",
     ]);
+  });
+
+  test("when nothing is equipped in the slot, creates a fresh instance via equipArmor()", () => {
+    model.findEquippedArmorInSlot.mockReturnValue(undefined);
+    const target = selectWithValue(
+      "equipped-armor-name",
+      { slot: "Cabeça" },
+      "Elmo de Ferro",
+    );
+
+    handleArmorChange({ target });
+    jest.advanceTimersToNextFrame();
+
     expect(model.equipArmor).toHaveBeenCalledWith(
       "Cabeça",
       "ARMOR-DB-1",
       "MAT-000",
     );
     expect(render.renderArmorSlots).toHaveBeenCalledTimes(1);
+  });
+
+  test("[fixed] when something is already equipped in the slot, edits it IN PLACE instead of calling equipArmor()", () => {
+    // This is the fix: equipArmor() unequips-and-recreates on every call
+    // (fresh _instanceId, armor_custom_* reset to null) — even for a
+    // same-slot name swap. That silently wiped any custom fields the
+    // player had set. Editing the existing instance's armor_id directly
+    // (matching melee/ranged/firearms/shield's pattern) preserves both
+    // instance identity and customization.
+    const currentEquipped = {
+      instance_id: "EQUIPPED-1",
+      armor_id: "OLD-ARMOR-DB-ID",
+      hit_points_modifier: -5,
+      armor_custom_name: "Elmo do Avô",
+    };
+    model.findEquippedArmorInSlot.mockReturnValue(currentEquipped);
+    const target = selectWithValue(
+      "equipped-armor-name",
+      { slot: "Cabeça" },
+      "Elmo de Ferro",
+    );
+
+    handleArmorChange({ target });
+
+    expect(currentEquipped.armor_id).toBe("ARMOR-DB-1");
+    expect(currentEquipped.hit_points_modifier).toBe(0);
+    expect(currentEquipped.armor_custom_name).toBe("Elmo do Avô"); // preserved
+    expect(model.equipArmor).not.toHaveBeenCalled();
+    expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
 
   test("does nothing further if the chosen name doesn't match any catalog row", () => {
@@ -383,32 +424,7 @@ describe("handleArmorChange — equipped-armor-tier", () => {
     expect(model.equipArmor).not.toHaveBeenCalled();
   });
 
-  test("equips the matching name+tier combination, preserving the current material", () => {
-    resetDOM(`
-      <div id="armorSlots">
-        <select class="equipped-armor-name" data-slot="Cabeça">
-          <option value="Elmo de Ferro" selected>x</option>
-        </select>
-      </div>
-      <div id="armorStorageList"></div>
-    `);
-    model.findEquippedArmorInSlot.mockReturnValue({ material_id: "MAT-001" });
-    const target = selectWithValue(
-      "equipped-armor-tier",
-      { slot: "Cabeça" },
-      "II",
-    );
-
-    handleArmorChange({ target });
-
-    expect(model.equipArmor).toHaveBeenCalledWith(
-      "Cabeça",
-      "ARMOR-DB-2",
-      "MAT-001",
-    );
-  });
-
-  test("falls back to MAT-000 when nothing is currently equipped in the slot", () => {
+  test("when nothing is equipped in the slot, creates a fresh instance via equipArmor()", () => {
     resetDOM(`
       <div id="armorSlots">
         <select class="equipped-armor-name" data-slot="Cabeça">
@@ -431,6 +447,39 @@ describe("handleArmorChange — equipped-armor-tier", () => {
       "ARMOR-DB-1",
       "MAT-000",
     );
+  });
+
+  test("[fixed] when something is already equipped, edits it IN PLACE, preserving identity and custom fields", () => {
+    resetDOM(`
+      <div id="armorSlots">
+        <select class="equipped-armor-name" data-slot="Cabeça">
+          <option value="Elmo de Ferro" selected>x</option>
+        </select>
+      </div>
+      <div id="armorStorageList"></div>
+    `);
+    const currentEquipped = {
+      instance_id: "EQUIPPED-1",
+      armor_id: "ARMOR-DB-1",
+      material_id: "MAT-001",
+      hit_points_modifier: -3,
+      armor_custom_effect: "+1 DEF",
+    };
+    model.findEquippedArmorInSlot.mockReturnValue(currentEquipped);
+    const target = selectWithValue(
+      "equipped-armor-tier",
+      { slot: "Cabeça" },
+      "II",
+    );
+
+    handleArmorChange({ target });
+
+    expect(currentEquipped.armor_id).toBe("ARMOR-DB-2");
+    expect(currentEquipped.hit_points_modifier).toBe(0);
+    expect(currentEquipped.material_id).toBe("MAT-001"); // preserved (never touched)
+    expect(currentEquipped.armor_custom_effect).toBe("+1 DEF"); // preserved
+    expect(model.equipArmor).not.toHaveBeenCalled();
+    expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
 });
 
