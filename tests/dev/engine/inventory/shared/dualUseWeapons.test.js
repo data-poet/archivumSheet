@@ -10,11 +10,11 @@ describe("MELEE_TO_RANGED / RANGED_TO_MELEE", () => {
   });
 
   test("maps a known melee id to its ranged counterpart", () => {
-    expect(MELEE_TO_RANGED["MELEE-215"]).toBe("RANGED-055");
+    expect(MELEE_TO_RANGED["MELEE-215"]).toBe("RANGED-050");
   });
 
   test("maps a known ranged id to its melee counterpart", () => {
-    expect(RANGED_TO_MELEE["RANGED-055"]).toBe("MELEE-215");
+    expect(RANGED_TO_MELEE["RANGED-050"]).toBe("MELEE-215");
   });
 
   test("every melee->ranged mapping has a matching reverse entry", () => {
