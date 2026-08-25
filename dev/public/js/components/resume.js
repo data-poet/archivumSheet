@@ -196,10 +196,20 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
   const container = el(containerId);
   if (!container || !attr) return;
 
-  const total   = attr.final_base_value ?? ((attr.base_value ?? 0) + (attr.bought ?? 0) * 4);
+  // "Final value" = final_base_value (base + bought) PLUS any equipment/
+  // enchantment bonus (e.g. a Fortify Mana ring) — that bonus previously
+  // wasn't folded into the bar's max, so equipped items that boost HP/Mana/
+  // Toxicity didn't show up here even though they were applied everywhere
+  // else on the sheet.
+  const finalBase  = attr.final_base_value ?? ((attr.base_value ?? 0) + (attr.bought ?? 0) * 4);
+  const enchantMod = attr.enchantment_modifier ?? 0;
+  const total       = finalBase + enchantMod;
+
+  // `modifier` here tracks missing/spent points (always ≤ 0 — enforced in
+  // traits/events.js), so current = total + modifier, clamped so the bar
+  // never reads negative even if someone is below 0.
   const rawMod  = attr.modifier ?? 0;
-  const lost    = rawMod < 0 ? Math.abs(rawMod) : 0;
-  const current = Math.max(0, total - lost);
+  const current = Math.max(0, total + rawMod);
   const pct     = total > 0 ? Math.round((current / total) * 100) : 0;
   const label   = getSecondaryAttributeLabel(attrName);
 
@@ -226,6 +236,7 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
           class="secondary-input"
           data-name="${attrName}"
           data-field="modifier"
+          data-max="0"
           value="${rawMod}"
         />
         <div class="stepper-btns">

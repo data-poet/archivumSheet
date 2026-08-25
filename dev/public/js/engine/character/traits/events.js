@@ -52,8 +52,18 @@ export function handleTraitInput(e) {
       selected.secondary[name].bought = Math.max(0, Math.min(max, value));
     }
     if (field === "modifier") {
-      selected.secondary[name].modifier =
-        name === "BasicSpeed" ? Math.round(value * 2) / 2 : value;
+      // HP/Mana/Toxicity modifier tracks missing (spent/lost) points, not a
+      // stat bonus — GURPS gear/enchantment bonuses flow through
+      // enchantment_modifier instead, so this field is capped at 0 in both
+      // edit mode (attributes.js table) and view mode (resume.js bars),
+      // which share this same handler via the "secondary-input" class.
+      const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
+      const normalized = isVital
+        ? Math.min(0, value)
+        : name === "BasicSpeed"
+          ? Math.round(value * 2) / 2
+          : value;
+      selected.secondary[name].modifier = normalized;
     }
     triggerAutoRun();
     return true;

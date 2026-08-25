@@ -85,6 +85,10 @@ export function renderSecondaryAttributes(sheet) {
     .map(([name, data]) => {
       const isBasicSpeed  = name === "BasicSpeed";
       const isMovement    = name === "Movement";
+      // HP/Mana/Toxicity's modifier is a "damage/spent" tracker (≤ 0 only),
+      // not a stat bonus — mirrors the cap enforced in traits/events.js and
+      // the resume-bar steppers, so edit mode and view mode agree.
+      const isVital       = name === "HP" || name === "Mana" || name === "Toxicity";
 
       const baseDisplay  = isBasicSpeed ? Number(data.base_value).toFixed(2) : data.base_value;
       const valueDisplay = isBasicSpeed ? Number(data.value).toFixed(2)      : data.value;
@@ -135,6 +139,7 @@ export function renderSecondaryAttributes(sheet) {
                 data-name="${name}"
                 data-field="modifier"
                 data-step="${modifierStep}"
+                ${isVital ? 'data-max="0"' : ""}
                 value="${data.modifier}"
               />
               <div class="stepper-btns">
