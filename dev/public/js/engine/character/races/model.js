@@ -2,6 +2,7 @@ import { state } from "../../../state.js";
 import { fetchRaces } from "../../../api.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR.js";
+import { escapeHtml } from "../../../shared/renderUtils.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -63,7 +64,7 @@ export function filterSubRacesByName() {
     subRows
       .map(
         (r) =>
-          `<option value="${r.race_id}">${_esc(r.race_sub_name || r.race_name)}</option>`,
+          `<option value="${r.race_id}">${escapeHtml(r.race_sub_name || r.race_name)}</option>`,
       )
       .join("");
 
@@ -141,7 +142,7 @@ export function restoreRaceSelection(raceId) {
     subRows
       .map(
         (r) =>
-          `<option value="${r.race_id}">${_esc(r.race_sub_name || r.race_name)}</option>`,
+          `<option value="${r.race_id}">${escapeHtml(r.race_sub_name || r.race_name)}</option>`,
       )
       .join("");
   subSelect.value = raceId;
@@ -157,8 +158,4 @@ function _showRaceSelects() {
   const nameSelect = document.getElementById("raceNameSelect");
   if (btn) btn.style.display = "none";
   if (nameSelect) nameSelect.style.display = "";
-}
-
-function _esc(str) {
-  return String(str ?? "").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 }
