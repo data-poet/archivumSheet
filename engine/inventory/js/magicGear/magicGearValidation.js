@@ -1,6 +1,6 @@
 const {
   VALID_STORED_AT,
-  MAGIC_GEAR_EQUIP_LIMIT,
+  MAGIC_GEAR_EQUIP_LIMITS,
 } = require("./magicGearConstants");
 
 const {
@@ -118,24 +118,41 @@ function validateMagicGearEnchantments(
 }
 
 /**
- * Ensures the total number of equipped magic gear instances never exceeds
- * MAGIC_GEAR_EQUIP_LIMIT — a single GLOBAL cap shared across every
- * magic_gear_id, unlike accessories' per-id limit.
+ * Ensures the number of equipped instances of each magic_gear_type never
+ * exceeds that type's entry in MAGIC_GEAR_EQUIP_LIMITS. Unlike accessories'
+ * per-accessory_id limit, this is scoped to TYPE (Arcano, Musical, ...),
+ * shared across every magic_gear_id of that type — 2 wands, or 1 wand + 1
+ * staff, both count against the same Arcano limit.
+ *
+ * Requires magicGearDb (magic_gear_id -> DB row) to resolve each instance's
+ * type; callers should run this only after confirming every magic_gear_id
+ * is known (unknownIds check in buildMagicGearSlots runs first).
  *
  * Returns an array of error strings (empty = valid).
  */
-function validateMagicGearGlobalEquipLimit(instances) {
-  const equippedCount = instances.filter(
-    (instance) => instance.is_equipped,
-  ).length;
+function validateMagicGearEquipLimits(instances, magicGearDb) {
+  const equippedCountByType = {};
 
-  if (equippedCount > MAGIC_GEAR_EQUIP_LIMIT) {
-    return [
-      `${equippedCount} magic gear items equipped exceeds the limit of ${MAGIC_GEAR_EQUIP_LIMIT}`,
-    ];
-  }
+  instances
+    .filter((instance) => instance.is_equipped)
+    .forEach((instance) => {
+      const type = magicGearDb[instance.magic_gear_id]?.magic_gear_type;
+      if (!type) return;
+      equippedCountByType[type] = (equippedCountByType[type] || 0) + 1;
+    });
 
-  return [];
+  const errors = [];
+
+  Object.entries(equippedCountByType).forEach(([type, count]) => {
+    const limit = MAGIC_GEAR_EQUIP_LIMITS[type];
+    if (limit != null && count > limit) {
+      errors.push(
+        `${count} "${type}" magic gear items equipped exceeds the limit of ${limit}`,
+      );
+    }
+  });
+
+  return errors;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -144,7 +161,7 @@ function validateMagicGearGlobalEquipLimit(instances) {
 
 module.exports = {
   validateMagicGearInstance,
-  validateMagicGearGlobalEquipLimit,
+  validateMagicGearEquipLimits,
   validateMagicGearEnchantments,
   MAGIC_GEAR_ITEM_CATEGORY,
 };

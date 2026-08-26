@@ -6,7 +6,7 @@ const { VALID_STORED_AT } = require("./magicGearConstants.js");
 
 const {
   validateMagicGearInstance,
-  validateMagicGearGlobalEquipLimit,
+  validateMagicGearEquipLimits,
   validateMagicGearEnchantments,
 } = require("./magicGearValidation.js");
 
@@ -39,6 +39,7 @@ function getMagicGearDB() {
   for (const row of rows) {
     _magicGearDB[row.magic_gear_id] = {
       magic_gear_id: row.magic_gear_id,
+      magic_gear_type: row.magic_gear_type,
       magic_gear_name: row.magic_gear_name,
       magic_gear_price: Number(row.magic_gear_price),
       magic_gear_weight: Number(row.magic_gear_weight),
@@ -66,7 +67,8 @@ function buildStorageBucket() {
  * every magic gear item may carry its own custom name/description/effect.
  *
  * Only equipped + backpack items contribute to carried value and weight.
- * Equip limit is a single GLOBAL cap (2), unlike accessories' per-id limit.
+ * Equip limits are PER magic_gear_type (see MAGIC_GEAR_EQUIP_LIMITS) —
+ * Arcano allows 2 equipped in any combination, Musical allows only 1.
  */
 function buildMagicGearSlots(magicGearInventory = []) {
   const magicGearDb = getMagicGearDB();
@@ -95,10 +97,12 @@ function buildMagicGearSlots(magicGearInventory = []) {
     );
   }
 
-  // ── VALIDATE EQUIP LIMIT (GLOBAL) ────────────────────────────────────────
+  // ── VALIDATE EQUIP LIMITS (PER magic_gear_type) ──────────────────────────
 
-  const equipLimitErrors =
-    validateMagicGearGlobalEquipLimit(magicGearInventory);
+  const equipLimitErrors = validateMagicGearEquipLimits(
+    magicGearInventory,
+    magicGearDb,
+  );
 
   if (equipLimitErrors.length > 0) {
     throw new Error(
