@@ -1,15 +1,19 @@
 jest.mock("dev/public/js/api.js", () => ({
   fetchEnchantments: jest.fn(),
   fetchEnchantmentEffectTypes: jest.fn(),
+  fetchItemCategories: jest.fn(),
 }));
 
 import {
   fetchEnchantments,
   fetchEnchantmentEffectTypes,
+  fetchItemCategories,
 } from "dev/public/js/api.js";
 import { state } from "dev/public/js/state.js";
 import {
   loadEnchantments,
+  getAccessoryItemCategory,
+  getMagicGearItemCategory,
   isAttributeType,
   isAdvantageType,
   isDisadvantageType,
@@ -47,16 +51,38 @@ beforeEach(() => {
 // loadEnchantments
 // ─────────────────────────────────────────────────────────────────────────
 describe("loadEnchantments", () => {
-  test("loads both catalogs in parallel and stores them on state.data", async () => {
+  test("loads all three catalogs in parallel and stores them on state.data", async () => {
     const enchantments = [{ enchantment_id: "ENCH-001" }];
     const effectTypes = { ATTRIBUTE_EFFECT_TYPES: ["attribute"] };
+    const itemCategories = { ACCESSORY: "Acessórios", MAGIC_GEAR: "Instrumentos Mágicos" };
     fetchEnchantments.mockResolvedValue(enchantments);
     fetchEnchantmentEffectTypes.mockResolvedValue(effectTypes);
+    fetchItemCategories.mockResolvedValue(itemCategories);
 
     await loadEnchantments();
 
     expect(state.data.enchantments).toBe(enchantments);
     expect(state.data.enchantmentEffectTypes).toBe(effectTypes);
+    expect(state.data.itemCategories).toBe(itemCategories);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// getAccessoryItemCategory / getMagicGearItemCategory
+// ─────────────────────────────────────────────────────────────────────────
+describe("getAccessoryItemCategory / getMagicGearItemCategory", () => {
+  test("read straight from state.data.itemCategories, fetched from the engine", async () => {
+    fetchEnchantments.mockResolvedValue([]);
+    fetchEnchantmentEffectTypes.mockResolvedValue({});
+    fetchItemCategories.mockResolvedValue({
+      ACCESSORY: "Acessórios",
+      MAGIC_GEAR: "Instrumentos Mágicos",
+    });
+
+    await loadEnchantments();
+
+    expect(getAccessoryItemCategory()).toBe("Acessórios");
+    expect(getMagicGearItemCategory()).toBe("Instrumentos Mágicos");
   });
 });
 

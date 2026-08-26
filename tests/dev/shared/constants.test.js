@@ -1,16 +1,19 @@
 // shared/constants.js has no functions, just exported values — several of
 // which are load-bearing keys that must match strings coming from the CSV
 // data files (e.g. ARMOR_SLOTS' Portuguese names matching
-// db_equipment_armors.csv slot values, ACCESSORY_ITEM_CATEGORY matching
-// enchantment_allowed_itens in db_magic_enchantments.csv). These tests are
-// a regression lock: an accidental edit to any of these strings would break
-// data matching silently rather than throwing, so pin the exact values.
+// db_equipment_armors.csv slot values). These tests are a regression lock:
+// an accidental edit to any of these strings would break data matching
+// silently rather than throwing, so pin the exact values.
+//
+// ACCESSORY_ITEM_CATEGORY / MAGIC_GEAR_ITEM_CATEGORY used to live here as
+// hardcoded copies — they're covered instead by
+// tests/dev/engine/inventory/shared/enchantments/model.test.js's
+// getAccessoryItemCategory()/getMagicGearItemCategory() coverage now that
+// they're fetched from the engine.
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
   ARMOR_SLOTS,
-  ACCESSORY_ITEM_CATEGORY,
-  MAGIC_GEAR_ITEM_CATEGORY,
   RACIAL_TRAIT_TYPE,
   DEFAULT_MATERIAL_ID,
 } from "dev/public/js/shared/constants.js";
@@ -45,16 +48,6 @@ describe("ARMOR_SLOTS", () => {
       "Pernas",
       "Pés",
     ]);
-  });
-});
-
-describe("enchantment allowed_itens categories", () => {
-  test("ACCESSORY_ITEM_CATEGORY matches the CSV category string", () => {
-    expect(ACCESSORY_ITEM_CATEGORY).toBe("Acessórios");
-  });
-
-  test("MAGIC_GEAR_ITEM_CATEGORY matches the CSV category string", () => {
-    expect(MAGIC_GEAR_ITEM_CATEGORY).toBe("Instrumentos Mágicos");
   });
 });
 
