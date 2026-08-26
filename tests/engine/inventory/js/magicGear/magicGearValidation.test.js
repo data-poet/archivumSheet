@@ -1,12 +1,13 @@
 const {
   validateMagicGearInstance,
-  validateMagicGearGlobalEquipLimit,
+  validateMagicGearEquipLimits,
   MAGIC_GEAR_ITEM_CATEGORY,
 } = require("engine/inventory/js/magicGear/magicGearValidation");
 
 const {
   VALID_STORED_AT,
-  MAGIC_GEAR_EQUIP_LIMIT,
+  MAGIC_GEAR_TYPES,
+  MAGIC_GEAR_EQUIP_LIMITS,
 } = require("engine/inventory/js/magicGear/magicGearConstants");
 
 describe("MAGIC GEAR VALIDATION", () => {
@@ -190,45 +191,103 @@ describe("MAGIC GEAR VALIDATION", () => {
     });
   });
 
-  describe("validateMagicGearGlobalEquipLimit", () => {
-    test("Should return empty array when at or under the global limit", () => {
-      const errors = validateMagicGearGlobalEquipLimit([
-        { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
-        { magic_gear_id: "MAGIC_GEAR-002", is_equipped: true },
-      ]);
+  describe("validateMagicGearEquipLimits", () => {
+    const magicGearDb = {
+      "MAGIC_GEAR-001": { magic_gear_type: MAGIC_GEAR_TYPES.ARCANO },
+      "MAGIC_GEAR-002": { magic_gear_type: MAGIC_GEAR_TYPES.ARCANO },
+      "MAGIC_GEAR-003": { magic_gear_type: MAGIC_GEAR_TYPES.ARCANO },
+      "MAGIC_GEAR-008": { magic_gear_type: MAGIC_GEAR_TYPES.MUSICAL },
+      "MAGIC_GEAR-009": { magic_gear_type: MAGIC_GEAR_TYPES.MUSICAL },
+    };
+
+    test("Should return empty array when at or under the Arcano limit", () => {
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-002", is_equipped: true },
+        ],
+        magicGearDb,
+      );
 
       expect(errors).toEqual([]);
     });
 
-    test("Should return empty array when the same type is equipped twice, up to the limit", () => {
-      const errors = validateMagicGearGlobalEquipLimit([
-        { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
-        { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
-      ]);
+    test("Should return empty array when the same Arcano id is equipped twice, up to the limit", () => {
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
+        ],
+        magicGearDb,
+      );
 
       expect(errors).toEqual([]);
     });
 
     test("Should ignore non-equipped instances", () => {
-      const errors = validateMagicGearGlobalEquipLimit([
-        { magic_gear_id: "MAGIC_GEAR-001", is_equipped: false },
-        { magic_gear_id: "MAGIC_GEAR-002", is_equipped: false },
-        { magic_gear_id: "MAGIC_GEAR-003", is_equipped: false },
-      ]);
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: false },
+          { magic_gear_id: "MAGIC_GEAR-002", is_equipped: false },
+          { magic_gear_id: "MAGIC_GEAR-003", is_equipped: false },
+        ],
+        magicGearDb,
+      );
 
       expect(errors).toEqual([]);
     });
 
-    test("Should fail when equipped count exceeds the global limit, regardless of combination", () => {
-      const errors = validateMagicGearGlobalEquipLimit([
-        { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
-        { magic_gear_id: "MAGIC_GEAR-002", is_equipped: true },
-        { magic_gear_id: "MAGIC_GEAR-003", is_equipped: true },
-      ]);
+    test("Should fail when Arcano equipped count exceeds its limit, regardless of combination", () => {
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-002", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-003", is_equipped: true },
+        ],
+        magicGearDb,
+      );
 
+      const arcanoLimit = MAGIC_GEAR_EQUIP_LIMITS[MAGIC_GEAR_TYPES.ARCANO];
       expect(errors).toEqual([
-        `3 magic gear items equipped exceeds the limit of ${MAGIC_GEAR_EQUIP_LIMIT}`,
+        `3 "${MAGIC_GEAR_TYPES.ARCANO}" magic gear items equipped exceeds the limit of ${arcanoLimit}`,
       ]);
+    });
+
+    test("Should allow exactly 1 Musical item equipped", () => {
+      const errors = validateMagicGearEquipLimits(
+        [{ magic_gear_id: "MAGIC_GEAR-008", is_equipped: true }],
+        magicGearDb,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when 2 Musical items are equipped at once", () => {
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-008", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-009", is_equipped: true },
+        ],
+        magicGearDb,
+      );
+
+      const musicalLimit = MAGIC_GEAR_EQUIP_LIMITS[MAGIC_GEAR_TYPES.MUSICAL];
+      expect(errors).toEqual([
+        `2 "${MAGIC_GEAR_TYPES.MUSICAL}" magic gear items equipped exceeds the limit of ${musicalLimit}`,
+      ]);
+    });
+
+    test("Should allow 2 Arcano + 1 Musical equipped at the same time (independent caps)", () => {
+      const errors = validateMagicGearEquipLimits(
+        [
+          { magic_gear_id: "MAGIC_GEAR-001", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-002", is_equipped: true },
+          { magic_gear_id: "MAGIC_GEAR-008", is_equipped: true },
+        ],
+        magicGearDb,
+      );
+
+      expect(errors).toEqual([]);
     });
   });
 });
