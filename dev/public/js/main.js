@@ -24,6 +24,7 @@ import { loadSurvivalGear } from "./engine/inventory/survivalGear/index.js";
 import { loadAccessories } from "./engine/inventory/accessories/index.js";
 import { loadMagicGear } from "./engine/inventory/magicGear/index.js";
 import { loadEnchantments } from "./engine/inventory/shared/enchantments/index.js";
+import { loadDualUseWeapons } from "./engine/inventory/shared/dualUseWeapons.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 
@@ -56,6 +57,7 @@ window.onload = async () => {
     loadAccessories(),
     loadMagicGear(),
     loadEnchantments(),
+    loadDualUseWeapons(),
   ]);
 
   // Init character persistence (loads active character into state)

@@ -6,6 +6,8 @@ const { loadCSV } = require("../helpers/dataUtils.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
 const enchantmentsConstants = require("../engine/inventory/js/shared/enchantmentsConstants.js");
+const dualUseWeapons = require("../engine/inventory/js/shared/dualUseWeapons.js");
+const magicGearConstants = require("../engine/inventory/js/magicGear/magicGearConstants.js");
 
 const app = express();
 
@@ -171,6 +173,28 @@ app.get("/api/enchantments", (req, res) => {
 
 app.get("/api/enchantments/effect-types", (req, res) => {
   res.json(enchantmentsConstants);
+});
+
+/* -----------------------
+   DUAL-USE WEAPONS
+   Serves engine/inventory/js/shared/dualUseWeapons.js's own maps directly —
+   the engine is the sole source of truth for these pairings, the client
+   never hardcodes them.
+------------------------ */
+app.get("/api/inventory/dual-use-weapons", (req, res) => {
+  res.json({
+    MELEE_TO_RANGED: dualUseWeapons.MELEE_TO_RANGED,
+    RANGED_TO_MELEE: dualUseWeapons.RANGED_TO_MELEE,
+  });
+});
+
+/* -----------------------
+   MAGIC GEAR EQUIP LIMITS
+   Serves engine/inventory/js/magicGear/magicGearConstants.js's
+   MAGIC_GEAR_EQUIP_LIMITS directly — same rationale as effect-types above.
+------------------------ */
+app.get("/api/magic-gear/equip-limits", (req, res) => {
+  res.json(magicGearConstants.MAGIC_GEAR_EQUIP_LIMITS);
 });
 
 /* -----------------------

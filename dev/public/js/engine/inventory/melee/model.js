@@ -5,7 +5,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { nextMeleeInstanceId, nextRangedInstanceId } from "../../../store/instanceId.js";
-import { MELEE_TO_RANGED } from "../shared/dualUseWeapons.js";
+import { getRangedCounterpart } from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR.js";
 import { offerUndo } from "../../../components/undo.js";
 
@@ -161,7 +161,7 @@ function _findLinkedRanged(meleeInstance) {
  * and a _linkedInstanceId pointing back to meleeInstanceId.
  */
 function _syncRangedCounterpart(meleeInstanceId, weaponId, materialId, isEquipped, storedAt) {
-  const rangedWeaponId = MELEE_TO_RANGED[weaponId];
+  const rangedWeaponId = getRangedCounterpart(weaponId);
   if (!rangedWeaponId) return;
 
   // Guard: counterpart already exists (prevents loops from ranged-side sync).

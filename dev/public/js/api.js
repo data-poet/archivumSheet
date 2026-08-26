@@ -100,6 +100,14 @@ export async function fetchEnchantmentEffectTypes() {
   return getJSON("/api/enchantments/effect-types");
 }
 
+export async function fetchDualUseWeapons() {
+  return getJSON("/api/inventory/dual-use-weapons");
+}
+
+export async function fetchMagicGearEquipLimits() {
+  return getJSON("/api/magic-gear/equip-limits");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

@@ -1,45 +1,36 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // DUAL-USE WEAPONS  (ES module — dev/public layer)
 //
-// Keep in sync with engine/inventory/js/shared/dualUseWeapons.js
+// MELEE_TO_RANGED / RANGED_TO_MELEE are NOT duplicated here. They're fetched
+// from /api/inventory/dual-use-weapons at bootstrap (see loadDualUseWeapons
+// below), which serves engine/inventory/js/shared/dualUseWeapons.js's own
+// maps directly — the engine remains the single source of truth for these
+// pairings.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const _PAIRS = [
-  // Lança de Mão
-  ["MELEE-215", "RANGED-050"],
-  ["MELEE-216", "RANGED-051"],
-  ["MELEE-217", "RANGED-052"],
-  ["MELEE-218", "RANGED-053"],
-  ["MELEE-219", "RANGED-054"],
+import { state } from "../../../state.js";
+import { fetchDualUseWeapons } from "../../../api.js";
 
-  // Lança de Arremesso
-  ["MELEE-220", "RANGED-055"],
-  ["MELEE-221", "RANGED-056"],
-  ["MELEE-222", "RANGED-057"],
-  ["MELEE-223", "RANGED-058"],
-  ["MELEE-224", "RANGED-059"],
+const data = state.data;
 
-  // Machadinha
-  ["MELEE-280", "RANGED-005"],
-  ["MELEE-281", "RANGED-006"],
-  ["MELEE-282", "RANGED-007"],
-  ["MELEE-283", "RANGED-008"],
-  ["MELEE-284", "RANGED-009"],
+// ─────────────────────────────────────────────────────────────────────────────
+// LOAD
+// ─────────────────────────────────────────────────────────────────────────────
 
-  // Machado de Arremesso
-  ["MELEE-285", "RANGED-010"],
-  ["MELEE-286", "RANGED-011"],
-  ["MELEE-287", "RANGED-012"],
-  ["MELEE-288", "RANGED-013"],
-  ["MELEE-289", "RANGED-014"],
-];
+export async function loadDualUseWeapons() {
+  data.dualUseWeapons = await fetchDualUseWeapons();
+}
 
-/** melee weapon_id → ranged weapon_id */
-export const MELEE_TO_RANGED = Object.fromEntries(
-  _PAIRS.map(([m, r]) => [m, r]),
-);
+// ─────────────────────────────────────────────────────────────────────────────
+// LOOKUPS
+// ─────────────────────────────────────────────────────────────────────────────
 
-/** ranged weapon_id → melee weapon_id */
-export const RANGED_TO_MELEE = Object.fromEntries(
-  _PAIRS.map(([m, r]) => [r, m]),
-);
+/** Given a melee weapon_id, returns the matching ranged weapon_id, or null. */
+export function getRangedCounterpart(meleeWeaponId) {
+  return data.dualUseWeapons.MELEE_TO_RANGED[meleeWeaponId] ?? null;
+}
+
+/** Given a ranged weapon_id, returns the matching melee weapon_id, or null. */
+export function getMeleeCounterpart(rangedWeaponId) {
+  return data.dualUseWeapons.RANGED_TO_MELEE[rangedWeaponId] ?? null;
+}
