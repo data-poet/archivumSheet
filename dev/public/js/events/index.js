@@ -73,6 +73,7 @@ import {
 } from "../engine/inventory/firearms/index.js";
 import {
   updateLooseAmmoOptions,
+  updateContainerTypeOptions,
   handleAmmoClick,
   handleAmmoInput,
   handleAmmoChange,
@@ -100,6 +101,7 @@ import {
   handleAddAccessory,
 } from "../engine/inventory/accessories/index.js";
 import {
+  updateMagicGearTypeOptions,
   handleMagicGearClick,
   handleMagicGearInput,
   handleMagicGearChange,
@@ -167,6 +169,7 @@ export function bindUI() {
   on("addFirearmBtn", "click", handleAddFirearm);
 
   // ── Ammo ──────────────────────────────────────────────────────────────────
+  on("ammoContainerTypeFilter", "change", updateContainerTypeOptions);
   on("looseAmmoTypeFilter", "change", updateLooseAmmoOptions);
   on("addAmmoContainerBtn", "click", handleAddContainer);
   on("addLooseAmmoBtn", "click", handleAddLooseAmmo);
@@ -184,6 +187,7 @@ export function bindUI() {
   on("addAccessoryBtn", "click", handleAddAccessory);
 
   // ── Magic Gear ────────────────────────────────────────────────────────────
+  on("magicGearTypeFilter", "change", updateMagicGearTypeOptions);
   on("addMagicGearBtn", "click", handleAddMagicGear);
 
   // ── Custom Inventory ──────────────────────────────────────────────────────

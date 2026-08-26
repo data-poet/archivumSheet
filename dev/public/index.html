@@ -914,6 +914,9 @@
           <!-- Panel: Instrumentos Mágicos -->
           <div class="tab-panel" id="tab-magic-gear">
             <div class="controls-row">
+              <select id="magicGearTypeFilter">
+                <option value="" id="opt-magic-gear-type"></option>
+              </select>
               <select id="magicGearNameSelect"></select>
               <select id="magicGearStorage">
                 <option value="equipped" id="opt-magic-gear-equipped"></option>
@@ -1126,6 +1129,9 @@
               <details>
                 <summary id="sec-ammo-containers"></summary>
                 <div class="controls-row">
+                  <select id="ammoContainerTypeFilter">
+                    <option value="" id="opt-ammo-container-type"></option>
+                  </select>
                   <select id="ammoContainerSelect"></select>
                   <select id="ammoContainerStorage">
                     <option
@@ -1819,12 +1825,14 @@
         btn("addMeleeBtn", L.melee.addMelee);
         btn("addRangedBtn", L.ranged.addRanged);
         btn("addFirearmBtn", L.firearms.addFirearm);
+        setText("opt-ammo-container-type", L.ammo.containerTypeFilter);
         btn("addAmmoContainerBtn", L.ammo.addContainer);
         btn("addLooseAmmoBtn", L.ammo.addLooseAmmo);
         btn("addAlchemyBtn", L.alchemy.addAlchemy);
         btn("addSurvivalGearBtn", L.survivalGear.addSurvivalGear);
         btn("addAccessoryBtn", L.accessories.addAccessory);
         btn("addMagicGearBtn", L.magicGear.addMagicGear);
+        setText("opt-magic-gear-type", L.magicGear.typeFilter);
         btn("addCustomItemBtn", L.customInventory.addItem);
         setAttr(
           "customItemName",
