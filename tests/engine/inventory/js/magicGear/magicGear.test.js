@@ -16,6 +16,12 @@ describe("MAGIC GEAR", () => {
   const grimoireId = Object.keys(db).find(
     (id) => db[id].magic_gear_name === "Grimório",
   );
+  const luteId = Object.keys(db).find(
+    (id) => db[id].magic_gear_name === "Alaúde",
+  );
+  const drumId = Object.keys(db).find(
+    (id) => db[id].magic_gear_name === "Tambor",
+  );
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -27,7 +33,7 @@ describe("MAGIC GEAR", () => {
     test("Should load magic gear database", () => {
       expect(db).toBeDefined();
       expect(typeof db).toBe("object");
-      expect(Object.keys(db).length).toBe(7);
+      expect(Object.keys(db).length).toBe(12);
     });
 
     test("Should parse magic_gear_price and magic_gear_weight as numbers", () => {
@@ -36,12 +42,23 @@ describe("MAGIC GEAR", () => {
       expect(typeof wand.magic_gear_weight).toBe("number");
     });
 
-    test("Should load known magic gear names with their price/weight", () => {
+    test("Should load known magic gear names with their price/weight/type", () => {
       expect(db[wandId]).toEqual({
         magic_gear_id: wandId,
+        magic_gear_type: "Arcano",
         magic_gear_name: "Varinha",
         magic_gear_price: 150,
         magic_gear_weight: 0.3,
+      });
+    });
+
+    test("Should load Musical-type magic gear correctly", () => {
+      expect(db[luteId]).toEqual({
+        magic_gear_id: luteId,
+        magic_gear_type: "Musical",
+        magic_gear_name: "Alaúde",
+        magic_gear_price: 300,
+        magic_gear_weight: 1.5,
       });
     });
   });
@@ -101,7 +118,7 @@ describe("MAGIC GEAR", () => {
       expect(result.carried_magic_gear_weight).toBe(0);
     });
 
-    test("Should allow equipping up to the global limit across different types", () => {
+    test("Should allow equipping up to the Arcano limit across different Arcano ids", () => {
       const result = buildMagicGearSlots([
         { magic_gear_id: wandId, is_equipped: true, storedAt: null },
         { magic_gear_id: staffId, is_equipped: true, storedAt: null },
@@ -110,7 +127,7 @@ describe("MAGIC GEAR", () => {
       expect(result.equipped.length).toBe(2);
     });
 
-    test("Should allow equipping up to the global limit with the same type twice", () => {
+    test("Should allow equipping up to the Arcano limit with the same id twice", () => {
       const result = buildMagicGearSlots([
         { magic_gear_id: wandId, is_equipped: true, storedAt: null },
         { magic_gear_id: wandId, is_equipped: true, storedAt: null },
@@ -119,7 +136,7 @@ describe("MAGIC GEAR", () => {
       expect(result.equipped.length).toBe(2);
     });
 
-    test("Should throw when equipping a 3rd magic gear item, regardless of combination", () => {
+    test("Should throw when equipping a 3rd Arcano item, regardless of combination", () => {
       const instances = [
         { magic_gear_id: wandId, is_equipped: true, storedAt: null },
         { magic_gear_id: staffId, is_equipped: true, storedAt: null },
@@ -129,6 +146,35 @@ describe("MAGIC GEAR", () => {
       expect(() => buildMagicGearSlots(instances)).toThrow(
         /Equip limit exceeded/,
       );
+    });
+
+    test("Should allow exactly 1 Musical item equipped", () => {
+      const result = buildMagicGearSlots([
+        { magic_gear_id: luteId, is_equipped: true, storedAt: null },
+      ]);
+
+      expect(result.equipped.length).toBe(1);
+    });
+
+    test("Should throw when equipping a 2nd Musical item at once", () => {
+      const instances = [
+        { magic_gear_id: luteId, is_equipped: true, storedAt: null },
+        { magic_gear_id: drumId, is_equipped: true, storedAt: null },
+      ];
+
+      expect(() => buildMagicGearSlots(instances)).toThrow(
+        /Equip limit exceeded/,
+      );
+    });
+
+    test("Should allow 2 Arcano + 1 Musical equipped at once (independent per-type caps)", () => {
+      const result = buildMagicGearSlots([
+        { magic_gear_id: wandId, is_equipped: true, storedAt: null },
+        { magic_gear_id: staffId, is_equipped: true, storedAt: null },
+        { magic_gear_id: luteId, is_equipped: true, storedAt: null },
+      ]);
+
+      expect(result.equipped.length).toBe(3);
     });
 
     test("Should allow more than 2 owned items as long as only 2 are equipped", () => {
