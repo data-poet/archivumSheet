@@ -3,10 +3,9 @@ import { fetchAmmo, fetchAmmoContainers } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import {
-  nextAmmoContainerInstanceId,
-} from "../../../store/instanceId.js";
+import { nextAmmoContainerInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
+import { t } from "../../../localization/pt-BR.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -31,18 +30,49 @@ export async function loadAmmo() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function loadAmmoSelectors() {
-  updateContainerOptions();
+  updateContainerTypeOptions();
   updateLooseAmmoTypeFilter();
   updateLooseAmmoOptions();
 }
 
+/**
+ * Builds the container_ammo_type filter (mirrors melee/ranged/firearms'
+ * updateXTypeOptions pattern), then re-narrows the container select to match.
+ */
+export function updateContainerTypeOptions() {
+  const select = el("ammoContainerTypeFilter");
+  if (!select) return;
+
+  const types = [
+    ...new Set(data.ammo_containers.map((c) => c.container_ammo_type)),
+  ].sort();
+  const current = select.value;
+
+  select.innerHTML =
+    `<option value="">${t("ammo.containerTypeFilter")}</option>` +
+    types
+      .map(
+        (type) =>
+          `<option value="${type}" ${type === current ? "selected" : ""}>${type}</option>`,
+      )
+      .join("");
+
+  updateContainerOptions();
+}
+
 export function updateContainerOptions() {
+  const typeSelect = el("ammoContainerTypeFilter");
   const select = el("ammoContainerSelect");
   if (!select) return;
 
+  const typeFilter = typeSelect?.value || "";
+  const filtered = typeFilter
+    ? data.ammo_containers.filter((c) => c.container_ammo_type === typeFilter)
+    : data.ammo_containers;
+
   populateSelect(
     select,
-    data.ammo_containers.map((c) => ({
+    filtered.map((c) => ({
       value: c.container_id,
       label: c.container_box_name,
     })),
@@ -56,8 +86,14 @@ export function updateAmmoTypeFilter() {
   const types = [...new Set(data.ammo.map((a) => a.ammo_type))];
   const current = select.value;
 
-  select.innerHTML = `<option value="">— Tipo —</option>` +
-    types.map((t) => `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`).join("");
+  select.innerHTML =
+    `<option value="">— Tipo —</option>` +
+    types
+      .map(
+        (t) =>
+          `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`,
+      )
+      .join("");
 }
 
 export function updateLooseAmmoTypeFilter() {
@@ -67,8 +103,14 @@ export function updateLooseAmmoTypeFilter() {
   const types = [...new Set(data.ammo.map((a) => a.ammo_type))];
   const current = select.value;
 
-  select.innerHTML = `<option value="">— Tipo —</option>` +
-    types.map((t) => `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`).join("");
+  select.innerHTML =
+    `<option value="">— Tipo —</option>` +
+    types
+      .map(
+        (t) =>
+          `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`,
+      )
+      .join("");
 }
 
 export function updateAmmoOptions() {
@@ -151,7 +193,9 @@ export function removeContainer(instanceId) {
 
 /** Resolve the numeric capacity for a container_id from data. */
 function getContainerCapacity(containerId) {
-  const record = data.ammo_containers.find((c) => c.container_id === containerId);
+  const record = data.ammo_containers.find(
+    (c) => c.container_id === containerId,
+  );
   return record ? parseInt(record.container_capacity, 10) : Infinity;
 }
 
@@ -165,11 +209,11 @@ export function addAmmoToContainer(instanceId, ammoId, quantity) {
   const container = findContainerByInstanceId(instanceId);
   if (!container || !ammoId || quantity <= 0) return;
 
-  const capacity  = getContainerCapacity(container.container_id);
+  const capacity = getContainerCapacity(container.container_id);
   const remaining = capacity - usedCapacity(container);
   if (remaining <= 0) return;
 
-  const clamped  = Math.min(quantity, remaining);
+  const clamped = Math.min(quantity, remaining);
   const existing = container.contents.find((e) => e.ammo_id === ammoId);
   if (existing) {
     existing.quantity += clamped;
@@ -189,11 +233,11 @@ export function updateContainerAmmoQuantity(instanceId, ammoId, quantity) {
   if (quantity <= 0) {
     container.contents = container.contents.filter((e) => e.ammo_id !== ammoId);
   } else {
-    const capacity    = getContainerCapacity(container.container_id);
-    const otherUsed   = container.contents
+    const capacity = getContainerCapacity(container.container_id);
+    const otherUsed = container.contents
       .filter((e) => e.ammo_id !== ammoId)
       .reduce((s, e) => s + e.quantity, 0);
-    const maxAllowed  = capacity - otherUsed;
+    const maxAllowed = capacity - otherUsed;
     const entry = container.contents.find((e) => e.ammo_id === ammoId);
     if (entry) entry.quantity = Math.min(quantity, Math.max(0, maxAllowed));
   }
@@ -299,7 +343,11 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   if (dest) {
     dest.quantity += qty;
   } else {
-    selected.loose_ammo.push({ ammo_id: ammoId, quantity: qty, storedAt: toLocation });
+    selected.loose_ammo.push({
+      ammo_id: ammoId,
+      quantity: qty,
+      storedAt: toLocation,
+    });
   }
 
   renderListsPreserving(selected, data);
@@ -314,15 +362,15 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
   if (fromInstanceId === toInstanceId) return;
 
   const from = findContainerByInstanceId(fromInstanceId);
-  const to   = findContainerByInstanceId(toInstanceId);
+  const to = findContainerByInstanceId(toInstanceId);
   if (!from || !to) return;
 
   const sourceEntry = from.contents.find((e) => e.ammo_id === ammoId);
   if (!sourceEntry) return;
 
-  const toCapacity  = getContainerCapacity(to.container_id);
-  const toUsed      = usedCapacity(to);
-  const remaining   = toCapacity - toUsed;
+  const toCapacity = getContainerCapacity(to.container_id);
+  const toUsed = usedCapacity(to);
+  const remaining = toCapacity - toUsed;
   if (remaining <= 0) return;
 
   const transferQty = Math.min(sourceEntry.quantity, remaining);

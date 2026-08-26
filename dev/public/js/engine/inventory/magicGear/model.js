@@ -39,16 +39,47 @@ export async function loadMagicGear() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function loadMagicGearSelectors() {
+  updateMagicGearTypeOptions();
+}
+
+/**
+ * Builds the magic_gear_type filter (mirrors melee/ranged/firearms'
+ * updateXTypeOptions pattern), then re-narrows the name select to match.
+ */
+export function updateMagicGearTypeOptions() {
+  const select = el("magicGearTypeFilter");
+  if (!select) return;
+
+  const types = [
+    ...new Set(data.magicGear.map((g) => g.magic_gear_type)),
+  ].sort();
+  const current = select.value;
+
+  select.innerHTML =
+    `<option value="">${t("magicGear.typeFilter")}</option>` +
+    types
+      .map(
+        (type) =>
+          `<option value="${type}" ${type === current ? "selected" : ""}>${type}</option>`,
+      )
+      .join("");
+
   updateMagicGearNameOptions();
 }
 
 export function updateMagicGearNameOptions() {
+  const typeSelect = el("magicGearTypeFilter");
   const select = el("magicGearNameSelect");
   if (!select) return;
 
+  const typeFilter = typeSelect?.value || "";
+  const filtered = typeFilter
+    ? data.magicGear.filter((g) => g.magic_gear_type === typeFilter)
+    : data.magicGear;
+
   populateSelect(
     select,
-    data.magicGear.map((g) => ({
+    filtered.map((g) => ({
       value: g.magic_gear_id,
       label: g.magic_gear_name,
     })),

@@ -396,6 +396,7 @@ export const LABELS = {
     addMagicGear: "Adicionar Instrumento",
     magicGear: "Instrumento Mágico",
     magicGearWeight: "Instrumentos Mágicos",
+    typeFilter: "— Tipo —",
   },
 
   // ── Enchantments (Phase 1 pilot — accessories only) ───────────────────────
@@ -461,6 +462,7 @@ export const LABELS = {
     capacity: "Capacidade",
     qty: "Qtd.",
     ammoType: "— Tipo —",
+    containerTypeFilter: "— Tipo —",
     selectContainer: "— Aljava —",
     selectAmmo: "— Munição —",
     equippedAmmo: "Munição Equipada",
