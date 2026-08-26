@@ -51,21 +51,27 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Abrir referência de regras"
-        ><span class="topbar-btn-icon">📖</span><span id="reference-link-btn-label">Ref</span></a>
+          ><span class="topbar-btn-icon">📖</span
+          ><span id="reference-link-btn-label">Ref</span></a
+        >
         <button
           id="view-mode-btn"
           class="topbar-btn"
           type="button"
           aria-label="Entrar no modo visualização"
           aria-pressed="false"
-        >📃</button>
+        >
+          📃
+        </button>
         <button
           id="theme-toggle-btn"
           class="topbar-btn topbar-btn-icon-only"
           type="button"
           aria-label="Mudar para modo escuro"
           aria-pressed="false"
-        >☀️</button>
+        >
+          ☀️
+        </button>
         <button
           id="char-selector-btn"
           class="char-selector-btn"
@@ -90,7 +96,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: PERSONAGEM — tabs: Personagem · Resumo
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-character" class="l-section" data-section="section-character">
+      <section
+        id="section-character"
+        class="l-section"
+        data-section="section-character"
+      >
         <div class="box box--character">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-character">
@@ -232,7 +242,12 @@
               <table class="character-info-table">
                 <tbody>
                   <tr>
-                    <td><label for="startingPointsInput" id="lbl-startingPoints"></label></td>
+                    <td>
+                      <label
+                        for="startingPointsInput"
+                        id="lbl-startingPoints"
+                      ></label>
+                    </td>
                     <td>
                       <input
                         type="number"
@@ -246,7 +261,12 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><label for="experiencePointsInput" id="lbl-experiencePoints"></label></td>
+                    <td>
+                      <label
+                        for="experiencePointsInput"
+                        id="lbl-experiencePoints"
+                      ></label>
+                    </td>
                     <td>
                       <input
                         type="number"
@@ -267,7 +287,6 @@
           <!-- Panel: Imagem do Personagem -->
           <div class="tab-panel" id="tab-char-image">
             <div class="charimg-editor">
-
               <!-- Left: circular preview (drag-to-reposition) -->
               <div class="charimg-preview-col">
                 <div class="charimg-bg" id="charimg-bg">
@@ -279,20 +298,27 @@
 
               <!-- Right: controls stacked -->
               <div class="charimg-controls-col">
-
                 <!-- Section label "Imagem" (mirrors reference left label) -->
                 <p class="charimg-section-label" id="charimg-section-lbl"></p>
 
                 <!-- Upload + Clear -->
                 <div class="charimg-row">
-                  <label class="charimg-upload-btn" for="charimg-file-input" id="charimg-upload-lbl"></label>
+                  <label
+                    class="charimg-upload-btn"
+                    for="charimg-file-input"
+                    id="charimg-upload-lbl"
+                  ></label>
                   <input
                     id="charimg-file-input"
                     type="file"
                     accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                    style="display:none"
+                    style="display: none"
                   />
-                  <button class="charimg-clear-btn" id="charimg-clear-btn" type="button"></button>
+                  <button
+                    class="charimg-clear-btn"
+                    id="charimg-clear-btn"
+                    type="button"
+                  ></button>
                 </div>
 
                 <!-- Drag hint -->
@@ -311,13 +337,41 @@
                     step="1"
                     value="100"
                   />
-                  <button class="charimg-preset-btn" data-size="cover"   id="charimg-preset-cover"></button>
-                  <button class="charimg-preset-btn" data-size="contain" id="charimg-preset-contain"></button>
-                  <button class="charimg-preset-btn" data-pos="center"   id="charimg-pos-center"></button>
-                  <button class="charimg-preset-btn" data-pos="top"      id="charimg-pos-top"></button>
-                  <button class="charimg-preset-btn" data-pos="bottom"   id="charimg-pos-bottom"></button>
-                  <button class="charimg-preset-btn" data-pos="left"     id="charimg-pos-left"></button>
-                  <button class="charimg-preset-btn" data-pos="right"    id="charimg-pos-right"></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-size="cover"
+                    id="charimg-preset-cover"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-size="contain"
+                    id="charimg-preset-contain"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-pos="center"
+                    id="charimg-pos-center"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-pos="top"
+                    id="charimg-pos-top"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-pos="bottom"
+                    id="charimg-pos-bottom"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-pos="left"
+                    id="charimg-pos-left"
+                  ></button>
+                  <button
+                    class="charimg-preset-btn"
+                    data-pos="right"
+                    id="charimg-pos-right"
+                  ></button>
                 </div>
 
                 <!-- Background label -->
@@ -326,21 +380,46 @@
                 <!-- Background radios -->
                 <div class="charimg-row charimg-row--bg">
                   <label class="charimg-radio-wrap">
-                    <button class="charimg-radio-btn" data-bg="average" id="charimg-bg-average" type="button"></button>
-                    <span class="charimg-radio-label" id="charimg-bg-average-lbl"></span>
+                    <button
+                      class="charimg-radio-btn"
+                      data-bg="average"
+                      id="charimg-bg-average"
+                      type="button"
+                    ></button>
+                    <span
+                      class="charimg-radio-label"
+                      id="charimg-bg-average-lbl"
+                    ></span>
                   </label>
                   <label class="charimg-radio-wrap">
-                    <button class="charimg-radio-btn" data-bg="black" id="charimg-bg-black" type="button"></button>
-                    <span class="charimg-radio-label" id="charimg-bg-black-lbl"></span>
+                    <button
+                      class="charimg-radio-btn"
+                      data-bg="black"
+                      id="charimg-bg-black"
+                      type="button"
+                    ></button>
+                    <span
+                      class="charimg-radio-label"
+                      id="charimg-bg-black-lbl"
+                    ></span>
                   </label>
                   <label class="charimg-radio-wrap">
-                    <button class="charimg-radio-btn" data-bg="white" id="charimg-bg-white" type="button"></button>
-                    <span class="charimg-radio-label" id="charimg-bg-white-lbl"></span>
+                    <button
+                      class="charimg-radio-btn"
+                      data-bg="white"
+                      id="charimg-bg-white"
+                      type="button"
+                    ></button>
+                    <span
+                      class="charimg-radio-label"
+                      id="charimg-bg-white-lbl"
+                    ></span>
                   </label>
                 </div>
-
-              </div><!-- /.charimg-controls-col -->
-            </div><!-- /.charimg-editor -->
+              </div>
+              <!-- /.charimg-controls-col -->
+            </div>
+            <!-- /.charimg-editor -->
           </div>
         </div>
       </section>
@@ -348,7 +427,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: ATRIBUTOS — tabs: Primários · Secundários · Dano Base
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-attributes" class="l-section" data-section="section-attributes">
+      <section
+        id="section-attributes"
+        class="l-section"
+        data-section="section-attributes"
+      >
         <div class="box box--attr">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-attributes">
@@ -449,7 +532,10 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-num enchantment-mod-cell" id="ST_enchantment"></td>
+                    <td
+                      class="col-num enchantment-mod-cell"
+                      id="ST_enchantment"
+                    ></td>
                     <td class="col-num" id="ST_actual">10</td>
                   </tr>
                   <tr>
@@ -509,7 +595,10 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-num enchantment-mod-cell" id="DX_enchantment"></td>
+                    <td
+                      class="col-num enchantment-mod-cell"
+                      id="DX_enchantment"
+                    ></td>
                     <td class="col-num" id="DX_actual">10</td>
                   </tr>
                   <tr>
@@ -569,7 +658,10 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-num enchantment-mod-cell" id="IQ_enchantment"></td>
+                    <td
+                      class="col-num enchantment-mod-cell"
+                      id="IQ_enchantment"
+                    ></td>
                     <td class="col-num" id="IQ_actual">10</td>
                   </tr>
                   <tr>
@@ -629,7 +721,10 @@
                         </div>
                       </div>
                     </td>
-                    <td class="col-num enchantment-mod-cell" id="HT_enchantment"></td>
+                    <td
+                      class="col-num enchantment-mod-cell"
+                      id="HT_enchantment"
+                    ></td>
                     <td class="col-num" id="HT_actual">10</td>
                   </tr>
                 </tbody>
@@ -679,7 +774,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: TRAÇOS — tabs: Vantagens · Desvantagens
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-traits" class="l-section" data-section="section-traits">
+      <section
+        id="section-traits"
+        class="l-section"
+        data-section="section-traits"
+      >
         <div class="box box--trait">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-traits">
@@ -732,7 +831,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: PERÍCIAS — tab: Perícias
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-skills" class="l-section" data-section="section-skills">
+      <section
+        id="section-skills"
+        class="l-section"
+        data-section="section-skills"
+      >
         <div class="box box--trait">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-skills">
@@ -768,7 +871,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: MAGIA — tab: Magias
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-magic" class="l-section" data-section="section-magic">
+      <section
+        id="section-magic"
+        class="l-section"
+        data-section="section-magic"
+      >
         <div class="box box--magic">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-magic">
@@ -833,7 +940,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: EQUIPAMENTO — tabs: Armaduras · Escudos · C-a-C · Distância · Munição
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-equipment" class="l-section" data-section="section-equipment">
+      <section
+        id="section-equipment"
+        class="l-section"
+        data-section="section-equipment"
+      >
         <div class="box box--equip">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-equipment">
@@ -988,7 +1099,6 @@
               <select id="firearmTypeFilter"></select>
               <select id="firearmNameSelect"></select>
               <select id="firearmTierSelect"></select>
-              <select id="firearmMaterialSelect"></select>
               <select id="firearmStorage">
                 <option value="equipped" id="opt-firearm-equipped"></option>
                 <option value="backpack" id="opt-firearm-backpack"></option>
@@ -1064,7 +1174,11 @@
       <!-- ───────────────────────────────────────────────────────────────────
            SECTION: INVENTÁRIO — tabs: Alquimia · Sobrevivência · Itens Livres
            ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-inventory" class="l-section" data-section="section-inventory">
+      <section
+        id="section-inventory"
+        class="l-section"
+        data-section="section-inventory"
+      >
         <div class="box box--inv">
           <!-- Tab strip -->
           <nav class="tab-strip" data-section="section-inventory">
@@ -1292,7 +1406,6 @@
           </details>
         </div>
       </section>
-
     </main>
 
     <!-- ─────────────────────────────────────────────────────────────────────────
@@ -1301,205 +1414,226 @@
          viewMode.js moves #tab-char-resume here via appendChild on enter,
          and back to #resume-panel-host via appendChild on exit.
          ───────────────────────────────────────────────────────────────────── -->
-    <div id="view-mode-resume" class="view-mode-resume" aria-label="Resumo do personagem"></div>
+    <div
+      id="view-mode-resume"
+      class="view-mode-resume"
+      aria-label="Resumo do personagem"
+    ></div>
 
     <!-- Edit-mode anchor: #tab-char-resume lives here when not in view mode.
          viewMode.js moves the panel between this host and #view-mode-resume. -->
-    <div id="resume-panel-host" style="display:none" aria-hidden="true">
-    <div id="tab-char-resume">
-      <!-- ── Row 1: character portrait + name | sub-race ──────────────── -->
-      <div class="resume-row resume-row--name">
-        <!-- Portrait (hidden when no image uploaded) -->
-        <div id="resume-charimg-wrapper" class="resume-charimg-wrapper" hidden>
-          <div class="resume-charimg-frame" id="resume-charimg-bg">
-            <img id="resume-charimg-img" class="resume-charimg-img" src="" alt="" />
+    <div id="resume-panel-host" style="display: none" aria-hidden="true">
+      <div id="tab-char-resume">
+        <!-- ── Row 1: character portrait + name | sub-race ──────────────── -->
+        <div class="resume-row resume-row--name">
+          <!-- Portrait (hidden when no image uploaded) -->
+          <div
+            id="resume-charimg-wrapper"
+            class="resume-charimg-wrapper"
+            hidden
+          >
+            <div class="resume-charimg-frame" id="resume-charimg-bg">
+              <img
+                id="resume-charimg-img"
+                class="resume-charimg-img"
+                src=""
+                alt=""
+              />
+            </div>
+          </div>
+          <p class="resume-char-name" id="resume_header_name"></p>
+        </div>
+
+        <!-- ── Row 2: primary attribute boxes ───────────────────────── -->
+        <div
+          class="resume-row resume-row--primary-attrs"
+          id="resume_primary_attrs"
+        ></div>
+
+        <!-- ── Row 3: bars + secondary snapshot ─────────────────────── -->
+        <div class="resume-row resume-row--bars-secondary">
+          <!-- HP / Mana / Toxicity bars -->
+          <div class="resume-bars-block">
+            <div id="resume_bar_hp"></div>
+            <div id="resume_bar_mana"></div>
+            <div id="resume_bar_toxicity"></div>
+          </div>
+          <!-- Secondary attributes snapshot (collapsible) -->
+          <div id="resume_secondary_snapshot"></div>
+        </div>
+
+        <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
+        <div class="resume-row resume-row--two-col">
+          <div class="resume-col" id="resume_advantages_container"></div>
+          <div class="resume-col" id="resume_disadvantages_container"></div>
+        </div>
+
+        <!-- ── Row 4: skills (full width) ───────────────────────────── -->
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_skills_container"></div>
+        </div>
+
+        <!-- ── Row 5: magic (full width) ────────────────────────────── -->
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_magic_container"></div>
+        </div>
+
+        <!-- ── Row 6: armor | shield ────────────────────────────────── -->
+        <div class="resume-row resume-row--two-col">
+          <div class="resume-col" id="resume_armor_container"></div>
+          <div class="resume-col" id="resume_shield_container"></div>
+        </div>
+
+        <!-- ── Row 7: melee | ranged ────────────────────────────────── -->
+        <div class="resume-row resume-row--two-col">
+          <div class="resume-col" id="resume_melee_container"></div>
+          <div class="resume-col" id="resume_ranged_container"></div>
+        </div>
+
+        <!-- ── Row 7.5: firearms (full width) ──────────────────────── -->
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_firearms_container"></div>
+        </div>
+
+        <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
+        <div class="resume-row resume-row--two-col">
+          <div class="resume-col" id="resume_ammo_container"></div>
+          <div class="resume-col" id="resume_alchemy_container"></div>
+        </div>
+
+        <!-- ── Row 9: weight | value ────────────────────────────────── -->
+        <div class="resume-row resume-row--two-col">
+          <!-- Weight col -->
+          <div class="resume-col">
+            <h3 class="resume-col-title" id="sec-resume-weight"></h3>
+            <table class="resume-table">
+              <tbody>
+                <tr
+                  class="resume-expander-row"
+                  data-tbody-target="resume_weight_tbody"
+                >
+                  <td colspan="2">
+                    <button
+                      class="resume-expander-btn"
+                      aria-expanded="false"
+                      aria-label="Expandir"
+                    >
+                      <span class="resume-expander-arrow">&#8250;</span>
+                      <span id="sec-resume-weight-detail"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody
+                id="resume_weight_tbody"
+                class="resume-collapsible"
+                hidden
+              ></tbody>
+              <tbody>
+                <tr class="resume-total-row">
+                  <td><strong id="lbl-resume-totalWeight"></strong></td>
+                  <td class="col-num" id="resume_total_weight_cell">
+                    <strong>0</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="resume-encumbrance">
+              <strong id="lbl-encumbrance"></strong>
+              <span id="encumbrance">—</span>
+            </p>
+            <div id="carry_limits"></div>
+
+            <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
+            <span id="armor_weight" style="display: none">0</span>
+            <span id="shield_weight" style="display: none">0</span>
+            <span id="melee_weight" style="display: none">0</span>
+            <span id="ranged_weight" style="display: none">0</span>
+            <span id="ammo_weight" style="display: none">0</span>
+            <span id="alchemy_weight" style="display: none">0</span>
+            <span id="survival_gear_weight" style="display: none">0</span>
+            <span id="custom_inventory_weight" style="display: none">0</span>
+            <span id="total_weight" style="display: none">0</span>
+          </div>
+
+          <!-- Value col -->
+          <div class="resume-col">
+            <h3 class="resume-col-title" id="sec-resume-value"></h3>
+            <table class="resume-table">
+              <tbody>
+                <tr
+                  class="resume-expander-row"
+                  data-tbody-target="resume_value_tbody"
+                >
+                  <td colspan="2">
+                    <button
+                      class="resume-expander-btn"
+                      aria-expanded="false"
+                      aria-label="Expandir"
+                    >
+                      <span class="resume-expander-arrow">&#8250;</span>
+                      <span id="sec-resume-value-detail"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody
+                id="resume_value_tbody"
+                class="resume-collapsible"
+                hidden
+              ></tbody>
+              <tbody>
+                <tr class="resume-total-row">
+                  <td><strong id="lbl-resume-totalValue"></strong></td>
+                  <td class="col-num" id="resume_total_value_cell">
+                    <strong>0</strong>
+                  </td>
+                </tr>
+                <tr class="resume-coins-row" id="resume_coins_row" hidden>
+                  <td colspan="2" class="resume-coins-cell">
+                    <span class="resume-coins-value">0</span>
+                    <span id="lbl-resume-coins-carried"></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <p class="resume-char-name" id="resume_header_name"></p>
+
+        <!-- ── Row: points (moved to end of resume) ─────────────────── -->
+        <table class="resume-table">
+          <tbody>
+            <tr
+              class="resume-expander-row"
+              data-tbody-target="resume_points_tbody"
+            >
+              <td colspan="2">
+                <button class="resume-expander-btn" aria-expanded="false">
+                  <span class="resume-expander-arrow">&#8250;</span>
+                  <span id="sec-resume-points-detail"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody
+            id="resume_points_tbody"
+            class="resume-collapsible"
+            hidden
+          ></tbody>
+
+          <tbody>
+            <tr class="resume-total-row">
+              <td><strong id="lbl-resume-totalPoints"></strong></td>
+              <td class="col-num" id="resume_total_points_cell">
+                <strong>0</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- ── Row 2: primary attribute boxes ───────────────────────── -->
-      <div class="resume-row resume-row--primary-attrs" id="resume_primary_attrs"></div>
-
-      <!-- ── Row 3: bars + secondary snapshot ─────────────────────── -->
-      <div class="resume-row resume-row--bars-secondary">
-        <!-- HP / Mana / Toxicity bars -->
-        <div class="resume-bars-block">
-          <div id="resume_bar_hp"></div>
-          <div id="resume_bar_mana"></div>
-          <div id="resume_bar_toxicity"></div>
-        </div>
-        <!-- Secondary attributes snapshot (collapsible) -->
-        <div id="resume_secondary_snapshot"></div>
-      </div>
-
-      <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
-      <div class="resume-row resume-row--two-col">
-        <div class="resume-col" id="resume_advantages_container"></div>
-        <div class="resume-col" id="resume_disadvantages_container"></div>
-      </div>
-
-      <!-- ── Row 4: skills (full width) ───────────────────────────── -->
-      <div class="resume-row">
-        <div class="resume-full-col" id="resume_skills_container"></div>
-      </div>
-
-      <!-- ── Row 5: magic (full width) ────────────────────────────── -->
-      <div class="resume-row">
-        <div class="resume-full-col" id="resume_magic_container"></div>
-      </div>
-
-      <!-- ── Row 6: armor | shield ────────────────────────────────── -->
-      <div class="resume-row resume-row--two-col">
-        <div class="resume-col" id="resume_armor_container"></div>
-        <div class="resume-col" id="resume_shield_container"></div>
-      </div>
-
-      <!-- ── Row 7: melee | ranged ────────────────────────────────── -->
-      <div class="resume-row resume-row--two-col">
-        <div class="resume-col" id="resume_melee_container"></div>
-        <div class="resume-col" id="resume_ranged_container"></div>
-      </div>
-
-      <!-- ── Row 7.5: firearms (full width) ──────────────────────── -->
-      <div class="resume-row">
-        <div class="resume-full-col" id="resume_firearms_container"></div>
-      </div>
-
-      <!-- ── Row 8: ammo | alchemy ────────────────────────────────── -->
-      <div class="resume-row resume-row--two-col">
-        <div class="resume-col" id="resume_ammo_container"></div>
-        <div class="resume-col" id="resume_alchemy_container"></div>
-      </div>
-
-      <!-- ── Row 9: weight | value ────────────────────────────────── -->
-      <div class="resume-row resume-row--two-col">
-        <!-- Weight col -->
-        <div class="resume-col">
-          <h3 class="resume-col-title" id="sec-resume-weight"></h3>
-          <table class="resume-table">
-            <tbody>
-              <tr
-                class="resume-expander-row"
-                data-tbody-target="resume_weight_tbody"
-              >
-                <td colspan="2">
-                  <button
-                    class="resume-expander-btn"
-                    aria-expanded="false"
-                    aria-label="Expandir"
-                  >
-                    <span class="resume-expander-arrow">&#8250;</span>
-                    <span id="sec-resume-weight-detail"></span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-            <tbody id="resume_weight_tbody" class="resume-collapsible" hidden></tbody>
-            <tbody>
-              <tr class="resume-total-row">
-                <td><strong id="lbl-resume-totalWeight"></strong></td>
-                <td class="col-num" id="resume_total_weight_cell">
-                  <strong>0</strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="resume-encumbrance">
-            <strong id="lbl-encumbrance"></strong>
-            <span id="encumbrance">—</span>
-          </p>
-          <div id="carry_limits"></div>
-
-          <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
-          <span id="armor_weight" style="display: none">0</span>
-          <span id="shield_weight" style="display: none">0</span>
-          <span id="melee_weight" style="display: none">0</span>
-          <span id="ranged_weight" style="display: none">0</span>
-          <span id="ammo_weight" style="display: none">0</span>
-          <span id="alchemy_weight" style="display: none">0</span>
-          <span id="survival_gear_weight" style="display: none">0</span>
-          <span id="custom_inventory_weight" style="display: none">0</span>
-          <span id="total_weight" style="display: none">0</span>
-        </div>
-
-        <!-- Value col -->
-        <div class="resume-col">
-          <h3 class="resume-col-title" id="sec-resume-value"></h3>
-          <table class="resume-table">
-            <tbody>
-              <tr
-                class="resume-expander-row"
-                data-tbody-target="resume_value_tbody"
-              >
-                <td colspan="2">
-                  <button
-                    class="resume-expander-btn"
-                    aria-expanded="false"
-                    aria-label="Expandir"
-                  >
-                    <span class="resume-expander-arrow">&#8250;</span>
-                    <span id="sec-resume-value-detail"></span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-            <tbody
-              id="resume_value_tbody"
-              class="resume-collapsible"
-              hidden
-            ></tbody>
-            <tbody>
-              <tr class="resume-total-row">
-                <td><strong id="lbl-resume-totalValue"></strong></td>
-                <td class="col-num" id="resume_total_value_cell">
-                  <strong>0</strong>
-                </td>
-              </tr>
-              <tr class="resume-coins-row" id="resume_coins_row" hidden>
-                <td colspan="2" class="resume-coins-cell">
-                  <span class="resume-coins-value">0</span>
-                  <span id="lbl-resume-coins-carried"></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ── Row: points (moved to end of resume) ─────────────────── -->
-      <table class="resume-table">
-        <tbody>
-          <tr
-            class="resume-expander-row"
-            data-tbody-target="resume_points_tbody"
-          >
-            <td colspan="2">
-              <button class="resume-expander-btn" aria-expanded="false">
-                <span class="resume-expander-arrow">&#8250;</span>
-                <span id="sec-resume-points-detail"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-
-        <tbody
-          id="resume_points_tbody"
-          class="resume-collapsible"
-          hidden
-        ></tbody>
-
-        <tbody>
-          <tr class="resume-total-row">
-            <td><strong id="lbl-resume-totalPoints"></strong></td>
-            <td class="col-num" id="resume_total_points_cell">
-              <strong>0</strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    </div><!-- /#resume-panel-host -->
+    <!-- /#resume-panel-host -->
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MOBILE: Bottom tab navigation
@@ -1757,22 +1891,22 @@
         ];
         storageMap.forEach(([id, text]) => setText(id, text));
         // Character image tab
-        setText("charimg-section-lbl",    L.characterImage.tabLabel);
-        setText("charimg-upload-lbl",     L.characterImage.uploadBtn);
-        setText("charimg-clear-btn",      L.characterImage.clearBtn);
-        setText("charimg-drag-hint",      L.characterImage.dragHint);
-        setText("charimg-size-pos-lbl",   L.characterImage.sizeAndPosition);
-        setText("charimg-bg-lbl",         L.characterImage.background);
+        setText("charimg-section-lbl", L.characterImage.tabLabel);
+        setText("charimg-upload-lbl", L.characterImage.uploadBtn);
+        setText("charimg-clear-btn", L.characterImage.clearBtn);
+        setText("charimg-drag-hint", L.characterImage.dragHint);
+        setText("charimg-size-pos-lbl", L.characterImage.sizeAndPosition);
+        setText("charimg-bg-lbl", L.characterImage.background);
         setText("charimg-bg-average-lbl", L.characterImage.bgAverage);
-        setText("charimg-bg-black-lbl",   L.characterImage.bgBlack);
-        setText("charimg-bg-white-lbl",   L.characterImage.bgWhite);
-        setText("charimg-preset-cover",   L.characterImage.presetCover);
+        setText("charimg-bg-black-lbl", L.characterImage.bgBlack);
+        setText("charimg-bg-white-lbl", L.characterImage.bgWhite);
+        setText("charimg-preset-cover", L.characterImage.presetCover);
         setText("charimg-preset-contain", L.characterImage.presetContain);
-        setText("charimg-pos-center",     L.characterImage.presetCenter);
-        setText("charimg-pos-top",        L.characterImage.presetTop);
-        setText("charimg-pos-bottom",     L.characterImage.presetBottom);
-        setText("charimg-pos-left",       L.characterImage.presetLeft);
-        setText("charimg-pos-right",      L.characterImage.presetRight);
+        setText("charimg-pos-center", L.characterImage.presetCenter);
+        setText("charimg-pos-top", L.characterImage.presetTop);
+        setText("charimg-pos-bottom", L.characterImage.presetBottom);
+        setText("charimg-pos-left", L.characterImage.presetLeft);
+        setText("charimg-pos-right", L.characterImage.presetRight);
       }
 
       initAppShell();

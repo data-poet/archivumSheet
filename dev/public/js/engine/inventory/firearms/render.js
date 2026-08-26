@@ -1,10 +1,11 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LABELS } from "../../../shared/constants.js";
-import { resolveMaterial } from "../shared/durabilityUtils.js";
-import { hpModifierBlock, statModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
-  materialOptions,
+  hpModifierBlock,
+  statModifierBlock,
+} from "../shared/inventoryRenderUtils.js";
+import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
@@ -63,7 +64,8 @@ function firearmDetailFields(resolved, weaponData) {
     },
     {
       label: t("ranged.maxDist"),
-      value: resolved?.weapon_max_distance ?? weaponData?.weapon_max_distance ?? "—",
+      value:
+        resolved?.weapon_max_distance ?? weaponData?.weapon_max_distance ?? "—",
     },
     { label: t("ranged.reload"), value: src.weapon_reload_speed ?? "—" },
     {
@@ -152,7 +154,10 @@ export function renderEquippedFirearms(selected, data, sheet) {
   const names = [...new Set(data.firearms.map((w) => w.weapon_name))];
 
   if (equippedFirearms.length === 0) {
-    setHTML("firearmSlots", `<p class="empty-storage">${t("common.noEquipped")}</p>`);
+    setHTML(
+      "firearmSlots",
+      `<p class="empty-storage">${t("common.noEquipped")}</p>`,
+    );
     return;
   }
 
@@ -172,12 +177,13 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     .filter((w) => w.weapon_name === weaponData.weapon_name)
     .map((w) => w.weapon_tier);
 
-  const material = resolveMaterial(inst, data.materials);
   const resolved = resolvedFirearm(sheet, inst._instanceId);
   const instanceId = inst._instanceId;
 
   const finalMagazineSize =
-    resolved?.weapon_final_magazine_size ?? weaponData.weapon_magazine_size ?? 0;
+    resolved?.weapon_final_magazine_size ??
+    weaponData.weapon_magazine_size ??
+    0;
 
   return `
     <div class="equipped-slot-grid" data-instance-id="${instanceId}">
@@ -199,12 +205,8 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
             )
             .join("")}
         </select>
-        <select class="equipped-firearm-material" data-instance-id="${instanceId}">
-          ${materialOptions(data.materials, inst.material_id)}
-        </select>
         ${hpModifierBlock({
           baseHp: weaponData.weapon_hit_points ?? 0,
-          material,
           hpModifier: inst.hit_points_modifier,
           cssClass: "equipped-firearm-hp",
           dataAttrs: `data-instance-id="${instanceId}"`,
@@ -251,24 +253,25 @@ function renderStorageSection(location, stored, data, sheet) {
   } else {
     bodyRows = firearms
       .map((inst) => {
-        const weaponData = data.firearms.find((w) => w.weapon_id === inst.weapon_id);
+        const weaponData = data.firearms.find(
+          (w) => w.weapon_id === inst.weapon_id,
+        );
         if (!weaponData) return "";
-        const material = resolveMaterial(inst, data.materials);
         const resolved = resolvedFirearm(sheet, inst._instanceId);
         const instanceId = inst._instanceId;
 
         const finalMagazineSize =
-          resolved?.weapon_final_magazine_size ?? weaponData.weapon_magazine_size ?? 0;
+          resolved?.weapon_final_magazine_size ??
+          weaponData.weapon_magazine_size ??
+          0;
 
         return `
         <tr data-instance-id="${instanceId}">
           <td>${weaponData.weapon_name}</td>
           <td>${weaponData.weapon_tier}</td>
-          <td>${material?.material_name ?? "—"}</td>
           <td class="col-num">
             ${hpModifierBlock({
               baseHp: weaponData.weapon_hit_points ?? 0,
-              material,
               hpModifier: inst.hit_points_modifier,
               cssClass: "stored-firearm-hp",
               dataAttrs: `data-instance-id="${instanceId}"`,
@@ -316,7 +319,7 @@ function renderStorageSection(location, stored, data, sheet) {
     <div class="table-wrapper"><table>
       <thead>
         <tr>
-          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th>${t("common.name")}</th><th>${t("common.tier")}</th>
           <th>${t("ranged.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
