@@ -1,10 +1,18 @@
 import { state } from "../../../state.js";
 import {
-  addContainer, moveContainer, removeContainer,
-  addAmmoToContainer, updateContainerAmmoQuantity, removeAmmoFromContainer,
-  addLooseAmmo, updateLooseAmmoQuantity, removeLooseAmmo,
-  moveLooseAmmo, moveAmmoInContainer,
-  updateAmmoOptions, updateLooseAmmoOptions, updateLooseAmmoTypeFilter,
+  addContainer,
+  moveContainer,
+  removeContainer,
+  addAmmoToContainer,
+  updateContainerAmmoQuantity,
+  removeAmmoFromContainer,
+  addLooseAmmo,
+  updateLooseAmmoQuantity,
+  removeLooseAmmo,
+  moveLooseAmmo,
+  moveAmmoInContainer,
+  updateLooseAmmoOptions,
+  updateLooseAmmoTypeFilter,
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { ammoDetailKeyFn } from "../../../shared/openState.js";
@@ -39,7 +47,11 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
     if (!firstContainer) return;
     const entry = firstContainer.contents.find((e) => e.ammo_id === ammoId);
     if (entry) {
-      updateContainerAmmoQuantity(firstInstanceId, ammoId, entry.quantity + delta);
+      updateContainerAmmoQuantity(
+        firstInstanceId,
+        ammoId,
+        entry.quantity + delta,
+      );
     }
   } else {
     // Decrement: drain from first container first, overflow to next
@@ -49,7 +61,11 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
       const entry = cont.contents.find((e) => e.ammo_id === ammoId);
       if (!entry || entry.quantity <= 0) continue;
       const toRemove = Math.min(remaining, entry.quantity);
-      updateContainerAmmoQuantity(cont._instanceId, ammoId, entry.quantity - toRemove);
+      updateContainerAmmoQuantity(
+        cont._instanceId,
+        ammoId,
+        entry.quantity - toRemove,
+      );
       remaining -= toRemove;
     }
   }
@@ -60,43 +76,62 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
 function _snapshot() {
   return {
     containers: _snap("#ammoContainerList", ammoDetailKeyFn),
-    loose:      _snap("#looseAmmoList",     ammoDetailKeyFn),
+    loose: _snap("#looseAmmoList", ammoDetailKeyFn),
   };
 }
 function _snap(sel, keyFn) {
   const open = new Set();
-  document.querySelector(sel)?.querySelectorAll("details[open]").forEach((d) => {
-    const k = keyFn(d); if (k) open.add(k);
-  });
+  document
+    .querySelector(sel)
+    ?.querySelectorAll("details[open]")
+    .forEach((d) => {
+      const k = keyFn(d);
+      if (k) open.add(k);
+    });
   return open;
 }
 function _restore(snap) {
   _rest("#ammoContainerList", ammoDetailKeyFn, snap.containers);
-  _rest("#looseAmmoList",     ammoDetailKeyFn, snap.loose);
+  _rest("#looseAmmoList", ammoDetailKeyFn, snap.loose);
 }
 function _rest(sel, keyFn, open) {
   if (!open.size) return;
-  document.querySelector(sel)?.querySelectorAll("details").forEach((d) => {
-    const k = keyFn(d); if (k && open.has(k)) d.setAttribute("open", "");
-  });
+  document
+    .querySelector(sel)
+    ?.querySelectorAll("details")
+    .forEach((d) => {
+      const k = keyFn(d);
+      if (k && open.has(k)) d.setAttribute("open", "");
+    });
 }
 function _renderAll() {
-  const snap = _snapshot(); renderListsPreserving(selected, data); _restore(snap);
+  const snap = _snapshot();
+  renderListsPreserving(selected, data);
+  _restore(snap);
 }
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleAmmoClick(e) {
   if (e.target.classList.contains("remove-ammo-container")) {
-    removeContainer(e.target.dataset.instanceId); return true;
+    removeContainer(e.target.dataset.instanceId);
+    return true;
   }
   if (e.target.classList.contains("remove-ammo-from-container")) {
-    removeAmmoFromContainer(e.target.dataset.instanceId, e.target.dataset.ammoId); return true;
+    removeAmmoFromContainer(
+      e.target.dataset.instanceId,
+      e.target.dataset.ammoId,
+    );
+    return true;
   }
   if (e.target.classList.contains("add-ammo-to-container-btn")) {
     const instanceId = e.target.dataset.instanceId;
-    const ammoSelect = document.querySelector(`.ammo-select-for-container[data-instance-id="${instanceId}"]`);
-    const qtyInput   = document.querySelector(`.ammo-qty-add-input[data-instance-id="${instanceId}"]`);
+    const ammoSelect = document.querySelector(
+      `.ammo-select-for-container[data-instance-id="${instanceId}"]`,
+    );
+    const qtyInput = document.querySelector(
+      `.ammo-qty-add-input[data-instance-id="${instanceId}"]`,
+    );
     if (!ammoSelect || !qtyInput) return true;
     const ammoId = ammoSelect.value;
     const quantity = parseInt(qtyInput.value, 10);
@@ -105,7 +140,8 @@ export function handleAmmoClick(e) {
     return true;
   }
   if (e.target.classList.contains("remove-loose-ammo")) {
-    removeLooseAmmo(e.target.dataset.ammoId, e.target.dataset.storedAt); return true;
+    removeLooseAmmo(e.target.dataset.ammoId, e.target.dataset.storedAt);
+    return true;
   }
   return false;
 }
@@ -117,15 +153,19 @@ export function handleAmmoClick(e) {
 export function handleAmmoInput(e) {
   if (e.target.classList.contains("ammo-qty-in-container")) {
     const instanceId = e.target.dataset.instanceId;
-    const ammoId     = e.target.dataset.ammoId;
+    const ammoId = e.target.dataset.ammoId;
     if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
     if (!instanceId || !ammoId) return true;
-    updateContainerAmmoQuantity(instanceId, ammoId, isNaN(quantity) ? 0 : quantity);
+    updateContainerAmmoQuantity(
+      instanceId,
+      ammoId,
+      isNaN(quantity) ? 0 : quantity,
+    );
     return true;
   }
   if (e.target.classList.contains("loose-ammo-qty")) {
-    const ammoId   = e.target.dataset.ammoId;
+    const ammoId = e.target.dataset.ammoId;
     const storedAt = e.target.dataset.storedAt;
     if (e.target.value === "-" || e.target.value === "") return true;
     const quantity = parseInt(e.target.value, 10);
@@ -134,7 +174,7 @@ export function handleAmmoInput(e) {
     return true;
   }
   if (e.target.classList.contains("resume-ammo-qty")) {
-    const ammoId     = e.target.dataset.ammoId;
+    const ammoId = e.target.dataset.ammoId;
     const instanceId = e.target.dataset.instanceId;
     if (e.target.value === "-" || e.target.value === "") return true;
     if (!ammoId || !instanceId) return true;
@@ -150,28 +190,28 @@ export function handleAmmoInput(e) {
 
 export function handleAmmoChange(e) {
   if (e.target.classList.contains("ammo-container-storage-select")) {
-    moveContainer(e.target.dataset.instanceId, e.target.value); return true;
+    moveContainer(e.target.dataset.instanceId, e.target.value);
+    return true;
   }
   if (e.target.classList.contains("loose-ammo-location-select")) {
-    const ammoId  = e.target.dataset.ammoId;
+    const ammoId = e.target.dataset.ammoId;
     const fromLoc = e.target.dataset.storedAt;
-    const toLoc   = e.target.value;
+    const toLoc = e.target.value;
     moveLooseAmmo(ammoId, fromLoc, toLoc);
     return true;
   }
   if (e.target.classList.contains("ammo-in-container-move-select")) {
     const fromInstanceId = e.target.dataset.fromInstanceId;
-    const ammoId         = e.target.dataset.ammoId;
-    const toInstanceId   = e.target.value;
+    const ammoId = e.target.dataset.ammoId;
+    const toInstanceId = e.target.value;
     if (!toInstanceId || toInstanceId === fromInstanceId) return true;
     moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId);
     return true;
   }
-  if (e.target.id === "ammoTypeFilter") {
-    updateAmmoOptions(); return true;
-  }
   if (e.target.id === "looseAmmoTypeFilter") {
-    updateLooseAmmoTypeFilter(); updateLooseAmmoOptions(); return true;
+    updateLooseAmmoTypeFilter();
+    updateLooseAmmoOptions();
+    return true;
   }
   return false;
 }
@@ -180,10 +220,10 @@ export function handleAmmoChange(e) {
 
 export function handleAddContainer() {
   const containerSelect = document.getElementById("ammoContainerSelect");
-  const storageSelect   = document.getElementById("ammoContainerStorage");
+  const storageSelect = document.getElementById("ammoContainerStorage");
   if (!containerSelect || !storageSelect) return;
   const containerId = containerSelect.value;
-  const storedAt    = storageSelect.value;
+  const storedAt = storageSelect.value;
   if (!containerId) return;
   addContainer(containerId, storedAt);
 }
@@ -191,11 +231,11 @@ export function handleAddContainer() {
 // ─── Add-form: loose ammo ─────────────────────────────────────────────────────
 
 export function handleAddLooseAmmo() {
-  const ammoSelect    = document.getElementById("looseAmmoSelect");
-  const qtyInput      = document.getElementById("looseAmmoQty");
+  const ammoSelect = document.getElementById("looseAmmoSelect");
+  const qtyInput = document.getElementById("looseAmmoQty");
   const storageSelect = document.getElementById("looseAmmoStorage");
   if (!ammoSelect || !qtyInput || !storageSelect) return;
-  const ammoId   = ammoSelect.value;
+  const ammoId = ammoSelect.value;
   const quantity = parseInt(qtyInput.value, 10);
   const storedAt = storageSelect.value;
   if (!ammoId || isNaN(quantity) || quantity <= 0) return;

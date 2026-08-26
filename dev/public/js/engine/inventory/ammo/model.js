@@ -79,23 +79,6 @@ export function updateContainerOptions() {
   );
 }
 
-export function updateAmmoTypeFilter() {
-  const select = el("ammoTypeFilter");
-  if (!select) return;
-
-  const types = [...new Set(data.ammo.map((a) => a.ammo_type))];
-  const current = select.value;
-
-  select.innerHTML =
-    `<option value="">— Tipo —</option>` +
-    types
-      .map(
-        (t) =>
-          `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`,
-      )
-      .join("");
-}
-
 export function updateLooseAmmoTypeFilter() {
   const select = el("looseAmmoTypeFilter");
   if (!select) return;
@@ -111,22 +94,6 @@ export function updateLooseAmmoTypeFilter() {
           `<option value="${t}" ${t === current ? "selected" : ""}>${t}</option>`,
       )
       .join("");
-}
-
-export function updateAmmoOptions() {
-  const typeSelect = el("ammoTypeFilter");
-  const ammoSelect = el("ammoAmmoSelect");
-  if (!ammoSelect) return;
-
-  const typeFilter = typeSelect?.value || "";
-  const filtered = typeFilter
-    ? data.ammo.filter((a) => a.ammo_type === typeFilter)
-    : data.ammo;
-
-  populateSelect(
-    ammoSelect,
-    filtered.map((a) => ({ value: a.ammo_id, label: a.ammo_name })),
-  );
 }
 
 export function updateLooseAmmoOptions() {
