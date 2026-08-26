@@ -1,8 +1,8 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t, getMagicGearLimitReachedLabel } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
+  STORAGE_LOCATIONS,
   STORAGE_LABELS,
-  MAGIC_GEAR_ITEM_CATEGORY,
 } from "../../../shared/constants.js";
 import {
   equippedMoveSelect,
@@ -13,6 +13,7 @@ import {
   customFieldsDetailRow,
 } from "../../../shared/renderUtils.js";
 import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { getMagicGearItemCategory } from "../shared/enchantments/model.js";
 import { isMagicGearAtEquipLimit } from "./model.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -94,7 +95,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
       enchantmentsExpander({
         instanceId,
         entries: inst.enchantments || [],
-        itemCategory: MAGIC_GEAR_ITEM_CATEGORY,
+        itemCategory: getMagicGearItemCategory(),
         resolvedEntries: resolved?.enchantments,
       }),
     )}
@@ -107,7 +108,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
 
 export function renderStoredMagicGear(selected, data, sheet) {
   const stored = selected.magicGear.filter((g) => !g.is_equipped);
-  const sections = ["backpack", "stash", "camp"]
+  const sections = STORAGE_LOCATIONS
     .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("magicGearStorageList", sections);
@@ -131,6 +132,12 @@ function renderStorageSection(location, stored, data, sheet) {
         // cap (Arcano vs Musical), so whether "Equipar" is disabled depends
         // on THIS item's type, not a single shared limit.
         const atLimit = isMagicGearAtEquipLimit(inst.magic_gear_id);
+        const limitLabel = atLimit
+          ? getMagicGearLimitReachedLabel(
+              record.magic_gear_type,
+              data.magicGearEquipLimits[record.magic_gear_type],
+            )
+          : "";
 
         return `
         <tr data-instance-id="${instanceId}">
@@ -146,7 +153,7 @@ function renderStorageSection(location, stored, data, sheet) {
               class="equip-stored-magic-gear"
               data-instance-id="${instanceId}"
               ${atLimit ? "disabled" : ""}
-              title="${atLimit ? t("magicGear.limitReached") : ""}"
+              title="${limitLabel}"
             >${t("common.equip")}</button>
             <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
           </td>
@@ -162,7 +169,7 @@ function renderStorageSection(location, stored, data, sheet) {
           enchantmentsExpander({
             instanceId,
             entries: inst.enchantments || [],
-            itemCategory: MAGIC_GEAR_ITEM_CATEGORY,
+            itemCategory: getMagicGearItemCategory(),
             resolvedEntries: resolved?.enchantments,
           }),
         )}

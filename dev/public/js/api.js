@@ -108,6 +108,10 @@ export async function fetchMagicGearEquipLimits() {
   return getJSON("/api/magic-gear/equip-limits");
 }
 
+export async function fetchItemCategories() {
+  return getJSON("/api/inventory/item-categories");
+}
+
 // ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);

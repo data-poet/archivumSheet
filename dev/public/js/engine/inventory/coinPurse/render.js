@@ -1,12 +1,12 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
+import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────────────────────
 
 const COIN_TYPES     = ["copper", "silver", "gold"];
-const STORAGE_LOCS   = ["backpack", "stash", "camp"];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -22,7 +22,7 @@ function storageLabel(loc) {
 
 /** Location <select> for moving a coin stack. */
 function locationSelect(coinType, currentLocation) {
-  const options = STORAGE_LOCS.map((loc) => {
+  const options = STORAGE_LOCATIONS.map((loc) => {
     const selected = loc === currentLocation ? "selected" : "";
     return `<option value="${loc}" ${selected}>${storageLabel(loc)}</option>`;
   }).join("");
@@ -116,7 +116,7 @@ function renderAddForm() {
     (ct) => `<option value="${ct}">${coinLabel(ct)}</option>`,
   ).join("");
 
-  const locationOptions = STORAGE_LOCS.map(
+  const locationOptions = STORAGE_LOCATIONS.map(
     (loc) => `<option value="${loc}">${storageLabel(loc)}</option>`,
   ).join("");
 
@@ -147,7 +147,7 @@ function renderAddForm() {
 export function renderCoinPurse(selected, data, sheet) {
   const coins = selected.coins ?? [];
 
-  const sections = STORAGE_LOCS.map((loc) =>
+  const sections = STORAGE_LOCATIONS.map((loc) =>
     renderCoinSection(loc, coins, sheet),
   ).join("");
 

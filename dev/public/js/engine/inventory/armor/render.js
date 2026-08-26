@@ -1,6 +1,6 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
-import { ARMOR_SLOTS, STORAGE_LABELS } from "../../../shared/constants.js";
+import { ARMOR_SLOTS, STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -167,7 +167,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
 
 export function renderStoredArmors(selected, data, sheet) {
   const stored = selected.armors.filter((a) => !a.is_equipped);
-  const sections = ["backpack", "stash", "camp"]
+  const sections = STORAGE_LOCATIONS
     .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("armorStorageList", sections);

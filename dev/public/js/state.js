@@ -45,6 +45,15 @@ export const state = {
     // engine/inventory/js/magicGear/magicGearConstants.js's
     // MAGIC_GEAR_EQUIP_LIMITS directly.
     magicGearEquipLimits: {},
+    // Populated from /api/inventory/item-categories at bootstrap — see
+    // shared/enchantments/model.js's loadEnchantments. Serves the
+    // enchantment_allowed_itens category string each equipment type's
+    // engine validation module owns (ACCESSORY_ITEM_CATEGORY,
+    // MAGIC_GEAR_ITEM_CATEGORY) directly.
+    itemCategories: {
+      ACCESSORY: "",
+      MAGIC_GEAR: "",
+    },
   },
 
   // ===== USER SELECTION =====

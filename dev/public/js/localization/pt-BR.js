@@ -396,7 +396,6 @@ export const LABELS = {
     addMagicGear: "Adicionar Instrumento",
     magicGear: "Instrumento Mágico",
     magicGearWeight: "Instrumentos Mágicos",
-    limitReached: "Limite de 2 instrumentos mágicos equipados atingido",
   },
 
   // ── Enchantments (Phase 1 pilot — accessories only) ───────────────────────
@@ -652,4 +651,15 @@ export function getEncumbranceLabel(key) {
 
 export function getCarryLimitLabel(key) {
   return LABELS.inventory.carryLimits[key] ?? key;
+}
+
+/**
+ * Magic gear's equip-limit message is type-aware (Arcano vs Musical each
+ * have their own cap — see engine/inventory/js/magicGear/magicGearConstants.js's
+ * MAGIC_GEAR_EQUIP_LIMITS), so it can't be a single static string the way
+ * accessories.limitReached is. type/limit are passed in by the caller,
+ * sourced from data.magicGear / data.magicGearEquipLimits.
+ */
+export function getMagicGearLimitReachedLabel(type, limit) {
+  return `Limite de instrumentos do tipo "${type}" equipados atingido (máx. ${limit})`;
 }

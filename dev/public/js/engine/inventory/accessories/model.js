@@ -3,7 +3,6 @@ import { fetchAccessories } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { ACCESSORY_ITEM_CATEGORY } from "../../../shared/constants.js";
 import { nextAccessoryInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR.js";

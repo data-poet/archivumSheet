@@ -1,8 +1,8 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
+  STORAGE_LOCATIONS,
   STORAGE_LABELS,
-  ACCESSORY_ITEM_CATEGORY,
 } from "../../../shared/constants.js";
 import {
   equippedMoveSelect,
@@ -13,6 +13,7 @@ import {
   customFieldsDetailRow,
 } from "../../../shared/renderUtils.js";
 import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { getAccessoryItemCategory } from "../shared/enchantments/model.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -115,7 +116,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
       enchantmentsExpander({
         instanceId,
         entries: inst.enchantments || [],
-        itemCategory: ACCESSORY_ITEM_CATEGORY,
+        itemCategory: getAccessoryItemCategory(),
         resolvedEntries: resolved?.enchantments,
       }),
     )}
@@ -128,7 +129,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
 
 export function renderStoredAccessories(selected, data, sheet) {
   const stored = selected.accessories.filter((a) => !a.is_equipped);
-  const sections = ["backpack", "stash", "camp"]
+  const sections = STORAGE_LOCATIONS
     .map((loc) => renderStorageSection(loc, stored, selected, data, sheet))
     .join("");
   setHTML("accessoryStorageList", sections);
@@ -190,7 +191,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
           enchantmentsExpander({
             instanceId,
             entries: inst.enchantments || [],
-            itemCategory: ACCESSORY_ITEM_CATEGORY,
+            itemCategory: getAccessoryItemCategory(),
             resolvedEntries: resolved?.enchantments,
           }),
         )}
