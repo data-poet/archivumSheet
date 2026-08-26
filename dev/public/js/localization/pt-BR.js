@@ -461,7 +461,6 @@ export const LABELS = {
     notCarriable: "Não carregável",
     capacity: "Capacidade",
     qty: "Qtd.",
-    ammoType: "— Tipo —",
     containerTypeFilter: "— Tipo —",
     selectContainer: "— Aljava —",
     selectAmmo: "— Munição —",
