@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { fetchMagicGear } from "../../../api.js";
+import { fetchMagicGear, fetchMagicGearEquipLimits } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
@@ -16,17 +16,18 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// Global equip cap — must match engine/inventory/js/magicGear/magicGearConstants.js's
-// MAGIC_GEAR_EQUIP_LIMIT. Kept in sync manually since the client bundle
-// doesn't share modules with the server-side engine layer.
-const MAGIC_GEAR_EQUIP_LIMIT = 2;
-
 // ─────────────────────────────────────────────────────────────────────────────
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function loadMagicGear() {
-  data.magicGear = await fetchMagicGear();
+  const [magicGear, equipLimits] = await Promise.all([
+    fetchMagicGear(),
+    fetchMagicGearEquipLimits(),
+  ]);
+
+  data.magicGear = magicGear;
+  data.magicGearEquipLimits = equipLimits;
 
   loadMagicGearSelectors();
   renderListsPreserving(selected, data);
@@ -57,23 +58,24 @@ export function updateMagicGearNameOptions() {
 }
 
 /**
- * Disables the "Equipado" option in the add-form storage select whenever the
- * character is already at the GLOBAL magic gear equip limit — the
- * hard-block half of equip-limit enforcement (paired with the engine-side
- * safety check in buildMagicGearSlots). Unlike accessories, this check
- * doesn't depend on which magic_gear_id is selected — the cap is shared
- * across every type.
+ * Disables the "Equipado" option in the add-form storage select whenever
+ * the currently selected magic_gear_id's TYPE is already at its equip
+ * limit — the hard-block half of equip-limit enforcement (paired with the
+ * engine-side safety check in buildMagicGearSlots). Unlike the old single
+ * global cap, this now depends on which magic_gear_id is selected, since
+ * Arcano and Musical each have their own limit.
  */
 export function updateMagicGearEquipOptionAvailability() {
   const storageSelect = el("magicGearStorage");
-  if (!storageSelect) return;
+  const nameSelect = el("magicGearNameSelect");
+  if (!storageSelect || !nameSelect) return;
 
   const equipOption = Array.from(storageSelect.options).find(
     (o) => o.value === "equipped",
   );
   if (!equipOption) return;
 
-  const atLimit = isMagicGearAtEquipLimit();
+  const atLimit = isMagicGearAtEquipLimit(nameSelect.value);
   equipOption.disabled = atLimit;
 
   if (atLimit && storageSelect.value === "equipped") {
@@ -83,14 +85,37 @@ export function updateMagicGearEquipOptionAvailability() {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EQUIP LIMITS
+//
+// Per-magic_gear_type caps — fetched from /api/magic-gear/equip-limits at
+// bootstrap (see loadMagicGear above), which serves
+// engine/inventory/js/magicGear/magicGearConstants.js's
+// MAGIC_GEAR_EQUIP_LIMITS directly. The engine remains the sole source of
+// truth for these caps; the client never hardcodes them.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function countEquippedMagicGear() {
-  return selected.magicGear.filter((g) => g.is_equipped).length;
+function magicGearType(magicGearId) {
+  return data.magicGear.find((g) => g.magic_gear_id === magicGearId)
+    ?.magic_gear_type;
 }
 
-export function isMagicGearAtEquipLimit() {
-  return countEquippedMagicGear() >= MAGIC_GEAR_EQUIP_LIMIT;
+/** Counts equipped instances of a given magic_gear_type (e.g. "Arcano"). */
+export function countEquippedMagicGearByType(type) {
+  return selected.magicGear.filter(
+    (g) => g.is_equipped && magicGearType(g.magic_gear_id) === type,
+  ).length;
+}
+
+/**
+ * True when equipping (or keeping equipped) the given magic_gear_id would
+ * put its TYPE at or over its equip cap. A magic_gear_id whose type has no
+ * known cap is never considered at limit.
+ */
+export function isMagicGearAtEquipLimit(magicGearId) {
+  const type = magicGearType(magicGearId);
+  const limit = data.magicGearEquipLimits[type];
+  if (limit == null) return false;
+
+  return countEquippedMagicGearByType(type) >= limit;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -110,10 +135,10 @@ function _newMagicGearInstance(magicGearId, isEquipped, storedAt) {
   };
 }
 
-/** Add a magic gear item directly as equipped. Refuses silently if at the global equip limit. */
+/** Add a magic gear item directly as equipped. Refuses silently if its type is at its equip limit. */
 export function addEquippedMagicGear(magicGearId) {
   if (!magicGearId) return;
-  if (isMagicGearAtEquipLimit()) return;
+  if (isMagicGearAtEquipLimit(magicGearId)) return;
 
   selected.magicGear.push(_newMagicGearInstance(magicGearId, true, null));
 
@@ -136,11 +161,11 @@ export function addStoredMagicGear(magicGearId, storedAt = "backpack") {
 // EQUIP / STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Equip a stored magic gear item. Refuses silently if at the global equip limit. */
+/** Equip a stored magic gear item. Refuses silently if its type is at its equip limit. */
 export function equipMagicGear(instanceId) {
   const instance = findMagicGearByInstanceId(instanceId);
   if (!instance) return;
-  if (isMagicGearAtEquipLimit()) return;
+  if (isMagicGearAtEquipLimit(instance.magic_gear_id)) return;
 
   instance.is_equipped = true;
   instance.storedAt = null;
@@ -157,7 +182,10 @@ export function moveMagicGear(instanceId, storedAt) {
   if (!instance) return;
 
   if (!storedAt) {
-    if (isMagicGearAtEquipLimit() && !instance.is_equipped) {
+    if (
+      isMagicGearAtEquipLimit(instance.magic_gear_id) &&
+      !instance.is_equipped
+    ) {
       return;
     }
     instance.is_equipped = true;

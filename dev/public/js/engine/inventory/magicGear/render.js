@@ -115,7 +115,6 @@ export function renderStoredMagicGear(selected, data, sheet) {
 
 function renderStorageSection(location, stored, data, sheet) {
   const items = stored.filter((g) => g.storedAt === location);
-  const atLimit = isMagicGearAtEquipLimit();
 
   let bodyRows;
   if (items.length === 0) {
@@ -128,6 +127,10 @@ function renderStorageSection(location, stored, data, sheet) {
 
         const instanceId = inst._instanceId;
         const resolved = resolvedMagicGear(sheet, instanceId);
+        // Per-item, not per-section: each magic_gear_type has its own equip
+        // cap (Arcano vs Musical), so whether "Equipar" is disabled depends
+        // on THIS item's type, not a single shared limit.
+        const atLimit = isMagicGearAtEquipLimit(inst.magic_gear_id);
 
         return `
         <tr data-instance-id="${instanceId}">

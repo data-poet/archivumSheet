@@ -33,6 +33,18 @@ export const state = {
       FORTIFY_EFFECT_TYPES: [],
       WEAKEN_EFFECT_TYPES: [],
     },
+    // Populated from /api/inventory/dual-use-weapons at bootstrap — see
+    // engine/inventory/shared/dualUseWeapons.js's loadDualUseWeapons. Serves
+    // engine/inventory/js/shared/dualUseWeapons.js's own maps directly.
+    dualUseWeapons: {
+      MELEE_TO_RANGED: {},
+      RANGED_TO_MELEE: {},
+    },
+    // Populated from /api/magic-gear/equip-limits at bootstrap — see
+    // engine/inventory/magicGear/model.js's loadMagicGear. Serves
+    // engine/inventory/js/magicGear/magicGearConstants.js's
+    // MAGIC_GEAR_EQUIP_LIMITS directly.
+    magicGearEquipLimits: {},
   },
 
   // ===== USER SELECTION =====

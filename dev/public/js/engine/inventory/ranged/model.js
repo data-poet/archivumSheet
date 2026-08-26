@@ -5,7 +5,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { nextRangedInstanceId, nextMeleeInstanceId } from "../../../store/instanceId.js";
-import { RANGED_TO_MELEE } from "../shared/dualUseWeapons.js";
+import { getMeleeCounterpart } from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR.js";
 import { offerUndo } from "../../../components/undo.js";
 
@@ -152,7 +152,7 @@ export function equipRanged(
  * and a _linkedInstanceId pointing back to rangedInstanceId.
  */
 function _syncMeleeCounterpart(rangedInstanceId, weaponId, materialId, isEquipped, storedAt) {
-  const meleeWeaponId = RANGED_TO_MELEE[weaponId];
+  const meleeWeaponId = getMeleeCounterpart(weaponId);
   if (!meleeWeaponId) return;
 
   // Guard: counterpart already exists (prevents loops from melee-side sync).
