@@ -11,51 +11,39 @@ describe("DUAL-USE WEAPONS", () => {
   // ── Lança de Mão ─────────────────────────────────────────────────────────
   describe("Lança de Mão", () => {
     const TIERS = [
-      ["MELEE-215", "RANGED-055"],
-      ["MELEE-216", "RANGED-056"],
-      ["MELEE-217", "RANGED-057"],
-      ["MELEE-218", "RANGED-058"],
-      ["MELEE-219", "RANGED-059"],
+      ["MELEE-215", "RANGED-050"],
+      ["MELEE-216", "RANGED-051"],
+      ["MELEE-217", "RANGED-052"],
+      ["MELEE-218", "RANGED-053"],
+      ["MELEE-219", "RANGED-054"],
     ];
 
-    test.each(TIERS)(
-      "melee %s maps to ranged %s",
-      (meleeId, rangedId) => {
-        expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-      },
-    );
+    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
+      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
+    });
 
-    test.each(TIERS)(
-      "ranged %s maps back to melee %s",
-      (meleeId, rangedId) => {
-        expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-      },
-    );
+    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
+      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
+    });
   });
 
   // ── Lança de Arremesso ────────────────────────────────────────────────────
   describe("Lança de Arremesso", () => {
     const TIERS = [
-      ["MELEE-220", "RANGED-060"],
-      ["MELEE-221", "RANGED-061"],
-      ["MELEE-222", "RANGED-062"],
-      ["MELEE-223", "RANGED-063"],
-      ["MELEE-224", "RANGED-064"],
+      ["MELEE-220", "RANGED-055"],
+      ["MELEE-221", "RANGED-056"],
+      ["MELEE-222", "RANGED-057"],
+      ["MELEE-223", "RANGED-058"],
+      ["MELEE-224", "RANGED-059"],
     ];
 
-    test.each(TIERS)(
-      "melee %s maps to ranged %s",
-      (meleeId, rangedId) => {
-        expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-      },
-    );
+    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
+      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
+    });
 
-    test.each(TIERS)(
-      "ranged %s maps back to melee %s",
-      (meleeId, rangedId) => {
-        expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-      },
-    );
+    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
+      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
+    });
   });
 
   // ── Machadinha ────────────────────────────────────────────────────────────
@@ -68,19 +56,13 @@ describe("DUAL-USE WEAPONS", () => {
       ["MELEE-284", "RANGED-009"],
     ];
 
-    test.each(TIERS)(
-      "melee %s maps to ranged %s",
-      (meleeId, rangedId) => {
-        expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-      },
-    );
+    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
+      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
+    });
 
-    test.each(TIERS)(
-      "ranged %s maps back to melee %s",
-      (meleeId, rangedId) => {
-        expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-      },
-    );
+    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
+      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
+    });
   });
 
   // ── Machado de Arremesso ──────────────────────────────────────────────────
@@ -93,19 +75,13 @@ describe("DUAL-USE WEAPONS", () => {
       ["MELEE-289", "RANGED-014"],
     ];
 
-    test.each(TIERS)(
-      "melee %s maps to ranged %s",
-      (meleeId, rangedId) => {
-        expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-      },
-    );
+    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
+      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
+    });
 
-    test.each(TIERS)(
-      "ranged %s maps back to melee %s",
-      (meleeId, rangedId) => {
-        expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-      },
-    );
+    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
+      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
+    });
   });
 
   // ── isMeleeDualUse ────────────────────────────────────────────────────────
@@ -158,7 +134,7 @@ describe("DUAL-USE WEAPONS", () => {
   // ── getMeleeCounterpart ───────────────────────────────────────────────────
   describe("getMeleeCounterpart", () => {
     test("returns melee ID for a dual-use ranged weapon", () => {
-      expect(getMeleeCounterpart("RANGED-055")).toBe("MELEE-215");
+      expect(getMeleeCounterpart("RANGED-050")).toBe("MELEE-215");
     });
 
     test("returns null for a non-dual-use ranged weapon", () => {
