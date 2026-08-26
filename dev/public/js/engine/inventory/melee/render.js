@@ -1,6 +1,6 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LABELS } from "../../../shared/constants.js";
+import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -158,7 +158,7 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
 
 export function renderStoredMelee(selected, data, sheet) {
   const stored = selected.melee_weapons.filter((w) => !w.is_equipped);
-  const sections = ["backpack", "stash", "camp"]
+  const sections = STORAGE_LOCATIONS
     .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("meleeStorageList", sections);

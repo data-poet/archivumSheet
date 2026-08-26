@@ -8,6 +8,12 @@ const { buildSheet } = require("../engine/buildSheet.js");
 const enchantmentsConstants = require("../engine/inventory/js/shared/enchantmentsConstants.js");
 const dualUseWeapons = require("../engine/inventory/js/shared/dualUseWeapons.js");
 const magicGearConstants = require("../engine/inventory/js/magicGear/magicGearConstants.js");
+const {
+  ACCESSORY_ITEM_CATEGORY,
+} = require("../engine/inventory/js/accessories/accessoriesValidation.js");
+const {
+  MAGIC_GEAR_ITEM_CATEGORY,
+} = require("../engine/inventory/js/magicGear/magicGearValidation.js");
 
 const app = express();
 
@@ -195,6 +201,19 @@ app.get("/api/inventory/dual-use-weapons", (req, res) => {
 ------------------------ */
 app.get("/api/magic-gear/equip-limits", (req, res) => {
   res.json(magicGearConstants.MAGIC_GEAR_EQUIP_LIMITS);
+});
+
+/* -----------------------
+   ENCHANTMENT-ALLOWED ITEM CATEGORIES
+   Serves the enchantment_allowed_itens category strings owned by each
+   equipment type's validation module directly — the engine remains the
+   sole source of truth for these, same rationale as the endpoints above.
+------------------------ */
+app.get("/api/inventory/item-categories", (req, res) => {
+  res.json({
+    ACCESSORY: ACCESSORY_ITEM_CATEGORY,
+    MAGIC_GEAR: MAGIC_GEAR_ITEM_CATEGORY,
+  });
 });
 
 /* -----------------------

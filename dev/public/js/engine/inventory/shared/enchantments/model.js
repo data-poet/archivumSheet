@@ -1,5 +1,9 @@
 import { state } from "../../../../state.js";
-import { fetchEnchantments, fetchEnchantmentEffectTypes } from "../../../../api.js";
+import {
+  fetchEnchantments,
+  fetchEnchantmentEffectTypes,
+  fetchItemCategories,
+} from "../../../../api.js";
 import { nextEnchantmentInstanceId } from "../../../../store/instanceId.js";
 
 const data = state.data;
@@ -9,13 +13,33 @@ const data = state.data;
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function loadEnchantments() {
-  const [enchantments, effectTypes] = await Promise.all([
+  const [enchantments, effectTypes, itemCategories] = await Promise.all([
     fetchEnchantments(),
     fetchEnchantmentEffectTypes(),
+    fetchItemCategories(),
   ]);
 
   data.enchantments = enchantments;
   data.enchantmentEffectTypes = effectTypes;
+  data.itemCategories = itemCategories;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ITEM CATEGORIES
+//
+// Read straight from data.itemCategories, fetched from
+// /api/inventory/item-categories at bootstrap (see loadEnchantments above)
+// — which itself serves each equipment type's own
+// ACCESSORY_ITEM_CATEGORY/MAGIC_GEAR_ITEM_CATEGORY validation constant
+// directly, not a hand-copied mirror of it.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function getAccessoryItemCategory() {
+  return data.itemCategories.ACCESSORY;
+}
+
+export function getMagicGearItemCategory() {
+  return data.itemCategories.MAGIC_GEAR;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

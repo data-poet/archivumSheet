@@ -23,15 +23,12 @@ export const ARMOR_SLOTS = [
 ];
 
 // ===== ENCHANTMENT allowed_itens categories =====
-// Matches enchantment_allowed_itens values from db_magic_enchantments.csv —
-// armor pieces reuse ARMOR_SLOTS' Portuguese keys above, accessories get
-// their own category since they aren't slotted the same way.
-export const ACCESSORY_ITEM_CATEGORY = "Acessórios";
-
-// Magic gear (wands, staves, orbs, grimoires...) — only the Mana/spell
-// enchantments allow this category in db_magic_enchantments.csv, a subset
-// of what accessories allow.
-export const MAGIC_GEAR_ITEM_CATEGORY = "Instrumentos Mágicos";
+// ACCESSORY_ITEM_CATEGORY / MAGIC_GEAR_ITEM_CATEGORY used to be hand-copied
+// here from the engine's accessories/magicGear validation modules. They're
+// no longer duplicated — fetched from /api/inventory/item-categories at
+// bootstrap instead (see shared/enchantments/model.js's loadEnchantments
+// and getAccessoryItemCategory()/getMagicGearItemCategory()). Armor pieces
+// still reuse ARMOR_SLOTS' Portuguese keys above as their category.
 
 // ===== TRAIT TYPES =====
 // Traits of this type only ever exist as race-innate grants and are never

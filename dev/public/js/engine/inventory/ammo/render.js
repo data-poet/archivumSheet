@@ -1,12 +1,13 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LABELS } from "../../../shared/constants.js";
+import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
 import { state } from "../../../state.js";
 
-const CONTAINER_STORAGE_LOCATIONS_CARRIABLE     = ["equipped", "backpack", "stash", "camp"];
-const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = ["stash", "camp"];
-const LOOSE_STORAGE_LOCATIONS = ["backpack", "stash", "camp"];
+const CONTAINER_STORAGE_LOCATIONS_CARRIABLE     = ["equipped", ...STORAGE_LOCATIONS];
+const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = STORAGE_LOCATIONS.filter(
+  (loc) => loc !== "backpack",
+);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -101,7 +102,7 @@ function containerMoveOptions(fromInstanceId, allContainers, containerData) {
 // ─── Move select for loose ammo ───────────────────────────────────────────────
 
 function looseAmmoLocationSelect(ammoId, currentLocation) {
-  const options = LOOSE_STORAGE_LOCATIONS
+  const options = STORAGE_LOCATIONS
     .map(
       (loc) =>
         `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
@@ -281,7 +282,7 @@ export function renderLooseAmmo(selected, data, sheet) {
   const looseAmmo = selected.loose_ammo ?? [];
   const ammoData  = data.ammo ?? [];
 
-  const sections = LOOSE_STORAGE_LOCATIONS.map((loc) =>
+  const sections = STORAGE_LOCATIONS.map((loc) =>
     renderLooseSection(loc, looseAmmo, ammoData, sheet),
   ).join("");
 

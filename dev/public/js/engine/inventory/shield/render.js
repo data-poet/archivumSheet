@@ -1,6 +1,6 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LABELS } from "../../../shared/constants.js";
+import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -147,7 +147,7 @@ export function renderEquippedShield(selected, data, sheet) {
 
 export function renderStoredShields(selected, data, sheet) {
   const stored = selected.shields.filter((s) => !s.is_equipped);
-  const sections = ["backpack", "stash", "camp"]
+  const sections = STORAGE_LOCATIONS
     .map((loc) => renderStorageSection(loc, stored, data, sheet))
     .join("");
   setHTML("shieldStorageList", sections);
