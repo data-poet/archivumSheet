@@ -1,4 +1,7 @@
-import { installMockFetch, mockFetchResponse } from "tests/dev/helpers/mockFetch.js";
+import {
+  installMockFetch,
+  mockFetchResponse,
+} from "tests/dev/helpers/mockFetch.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 import { state } from "dev/public/js/state.js";
 import {
