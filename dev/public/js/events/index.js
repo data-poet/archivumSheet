@@ -117,7 +117,6 @@ import {
   handleCoinPurseClick,
   handleCoinPurseInput,
   handleCoinPurseChange,
-  handleAddCoins,
 } from "../engine/inventory/coinPurse/index.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -192,9 +191,6 @@ export function bindUI() {
 
   // ── Custom Inventory ──────────────────────────────────────────────────────
   on("addCustomItemBtn", "click", handleAddCustomItem);
-
-  // ── Coin Purse ────────────────────────────────────────────────────────────
-  on("addCoinBtn", "click", handleAddCoins);
 
   // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
