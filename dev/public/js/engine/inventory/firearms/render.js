@@ -1,11 +1,13 @@
 import { t } from "../../../localization/pt-BR.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   statModifierBlock,
 } from "../shared/inventoryRenderUtils.js";
 import {
+  materialOptions,
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
@@ -177,6 +179,7 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     .filter((w) => w.weapon_name === weaponData.weapon_name)
     .map((w) => w.weapon_tier);
 
+  const material = resolveMaterial(inst, data.materials);
   const resolved = resolvedFirearm(sheet, inst._instanceId);
   const instanceId = inst._instanceId;
 
@@ -205,8 +208,12 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
             )
             .join("")}
         </select>
+        <select class="equipped-firearm-material" data-instance-id="${instanceId}">
+          ${materialOptions(data.materials, inst.material_id)}
+        </select>
         ${hpModifierBlock({
           baseHp: weaponData.weapon_hit_points ?? 0,
+          material,
           hpModifier: inst.hit_points_modifier,
           cssClass: "equipped-firearm-hp",
           dataAttrs: `data-instance-id="${instanceId}"`,
@@ -257,6 +264,7 @@ function renderStorageSection(location, stored, data, sheet) {
           (w) => w.weapon_id === inst.weapon_id,
         );
         if (!weaponData) return "";
+        const material = resolveMaterial(inst, data.materials);
         const resolved = resolvedFirearm(sheet, inst._instanceId);
         const instanceId = inst._instanceId;
 
@@ -269,9 +277,11 @@ function renderStorageSection(location, stored, data, sheet) {
         <tr data-instance-id="${instanceId}">
           <td>${weaponData.weapon_name}</td>
           <td>${weaponData.weapon_tier}</td>
+          <td>${material?.material_name ?? "—"}</td>
           <td class="col-num">
             ${hpModifierBlock({
               baseHp: weaponData.weapon_hit_points ?? 0,
+              material,
               hpModifier: inst.hit_points_modifier,
               cssClass: "stored-firearm-hp",
               dataAttrs: `data-instance-id="${instanceId}"`,
@@ -319,7 +329,7 @@ function renderStorageSection(location, stored, data, sheet) {
     <div class="table-wrapper"><table>
       <thead>
         <tr>
-          <th>${t("common.name")}</th><th>${t("common.tier")}</th>
+          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
           <th>${t("ranged.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>
         </tr>
       </thead>
