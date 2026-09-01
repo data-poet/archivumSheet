@@ -22,6 +22,7 @@ jest.mock("dev/public/js/ui.js", () => ({
   updateInventoryUI: jest.fn(),
   renderSecondaryAttributes: jest.fn(),
   renderDamage: jest.fn(),
+  renderElementalResistances: jest.fn(),
   renderResume: jest.fn(),
   syncViewMode: jest.fn(),
 }));
@@ -36,6 +37,7 @@ import {
   updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
+  renderElementalResistances,
   renderResume,
   syncViewMode,
 } from "dev/public/js/ui.js";
@@ -170,6 +172,44 @@ describe("buildSheet payload — race", () => {
     expect(race.innate_advantage_names).toEqual(["Visão Noturna", "Ágil"]);
     expect(race.innate_disadvantage_ids).toEqual([]);
   });
+
+  test("resolves elemental_modifiers, defaulting blank/missing/non-numeric cells to 1 while preserving a literal 0", async () => {
+    selected.character.race_id = "R1";
+    state.data.races = [
+      {
+        race_id: "R1",
+        race_name: "Elfo",
+        race_fire_damage_multiplier: "0.5",
+        race_water_damage_multiplier: "",
+        race_earth_damage_multiplier: "1",
+        // race_air_damage_multiplier intentionally absent
+        race_electricity_damage_multiplier: "not-a-number",
+        // A literal 0 ("immune") must survive, not collapse to the 1
+        // default — this is the case a naive `Number(x) || 1` gets wrong.
+        race_corrossion_damage_multiplier: "0",
+        race_necrotic_damage_multiplier: "2",
+        race_holy_damage_multiplier: "1",
+        race_void_damage_multiplier: "1",
+        race_arcane_damage_multiplier: "1.5",
+      },
+    ];
+
+    await runEngine();
+
+    const { race } = buildSheet.mock.calls[0][0];
+    expect(race.elemental_modifiers).toEqual({
+      Fire: 0.5,
+      Water: 1,
+      Earth: 1,
+      Air: 1,
+      Electricity: 1,
+      Corrosion: 0,
+      Necrotic: 2,
+      Holy: 1,
+      Void: 1,
+      Arcane: 1.5,
+    });
+  });
 });
 
 describe("buildSheet payload — character", () => {
@@ -206,6 +246,21 @@ describe("buildSheet payload — character", () => {
     expect(character.secondaryAttributes.damage).toEqual({
       swing: { modifier: 2 },
       thrust: { modifier: 0 },
+    });
+  });
+
+  test("secondaryAttributes.elementalResistances coerces modifiers to numbers, defaulting invalid to 0", async () => {
+    selected.resistances = {
+      Fire: { modifier: "-0.5" },
+      Arcane: { modifier: "x" },
+    };
+
+    await runEngine();
+
+    const { character } = buildSheet.mock.calls[0][0];
+    expect(character.secondaryAttributes.elementalResistances).toEqual({
+      Fire: { modifier: -0.5 },
+      Arcane: { modifier: 0 },
     });
   });
 
@@ -353,6 +408,41 @@ describe("syncing engine output back onto state.selected", () => {
 
     expect(selected.damage.swing).toEqual({ modifier: 99 });
   });
+
+  test("adds an elemental resistance entry that wasn't already selected", async () => {
+    buildSheet.mockResolvedValue(
+      makeJson({
+        character: {
+          secondary_attributes: {},
+          base_damage: {},
+          elemental_resistances: { Fire: { modifier: -0.2 } },
+          character_points: {},
+        },
+      }),
+    );
+
+    await runEngine();
+
+    expect(selected.resistances.Fire).toEqual({ modifier: -0.2 });
+  });
+
+  test("does not overwrite an elemental resistance entry that's already selected", async () => {
+    selected.resistances.Fire = { modifier: 99 };
+    buildSheet.mockResolvedValue(
+      makeJson({
+        character: {
+          secondary_attributes: {},
+          base_damage: {},
+          elemental_resistances: { Fire: { modifier: -0.2 } },
+          character_points: {},
+        },
+      }),
+    );
+
+    await runEngine();
+
+    expect(selected.resistances.Fire).toEqual({ modifier: 99 });
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -369,6 +459,7 @@ describe("render orchestration", () => {
     expect(updateInventoryUI).toHaveBeenCalledWith(json);
     expect(renderSecondaryAttributes).toHaveBeenCalledWith(json);
     expect(renderDamage).toHaveBeenCalledWith(json);
+    expect(renderElementalResistances).toHaveBeenCalledWith(json);
     expect(renderResume).toHaveBeenCalledWith(json, state.data, state.selected);
     expect(syncViewMode).toHaveBeenCalledTimes(1);
     expect(state.sheet).toBe(json);

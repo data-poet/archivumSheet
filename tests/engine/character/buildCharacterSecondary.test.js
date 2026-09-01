@@ -37,6 +37,8 @@ describe("BUILD CHARACTER SECONDARY", () => {
 
       assertShape(result, [
         "secondary_attributes",
+        "base_damage",
+        "elemental_resistances",
         "skills",
         "character_points",
       ]);
@@ -293,6 +295,79 @@ describe("BUILD CHARACTER SECONDARY", () => {
       });
 
       expect(r1.character_points.skills).toBe(r2.character_points.skills);
+    });
+  });
+
+  describe("Elemental resistances integration", () => {
+    it("Defaults every element to race_base 1 when no race multipliers are given", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+      });
+
+      expect(Object.keys(elemental_resistances)).toEqual([
+        "Fire",
+        "Water",
+        "Earth",
+        "Air",
+        "Electricity",
+        "Corrosion",
+        "Necrotic",
+        "Holy",
+        "Void",
+        "Arcane",
+      ]);
+      Object.values(elemental_resistances).forEach((entry) => {
+        expect(entry.race_base).toBe(1);
+        expect(entry.final).toBe(1);
+      });
+    });
+
+    it("Threads raceElementalMultipliers through to race_base", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        raceElementalMultipliers: { Fire: 0.5, Arcane: 1.5 },
+      });
+
+      expect(elemental_resistances.Fire.race_base).toBe(0.5);
+      expect(elemental_resistances.Fire.final).toBe(0.5);
+      expect(elemental_resistances.Arcane.race_base).toBe(1.5);
+      expect(elemental_resistances.Water.race_base).toBe(1); // untouched type stays default
+    });
+
+    it("Applies the player-entered modifier from secondaryAttributes.elementalResistances", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        raceElementalMultipliers: { Fire: 1 },
+        secondaryAttributes: {
+          elementalResistances: { Fire: { modifier: 0.3 } },
+        },
+      });
+
+      expect(elemental_resistances.Fire.modifier).toBe(0.3);
+      expect(elemental_resistances.Fire.final).toBeCloseTo(1.3);
+    });
+
+    it("Floors the final value at 0 rather than going negative", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        raceElementalMultipliers: { Fire: 0.2 },
+        secondaryAttributes: {
+          elementalResistances: { Fire: { modifier: -5 } },
+        },
+      });
+
+      expect(elemental_resistances.Fire.final).toBe(0);
+    });
+
+    it("Sets has_enchantment_modifier only for elements present in enchantmentElementalModifiers, mirroring the presence-based pattern used for secondary attributes", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        enchantmentElementalModifiers: { Holy: 0 },
+      });
+
+      expect(elemental_resistances.Holy.has_enchantment_modifier).toBe(true);
+      expect(elemental_resistances.Holy.enchantment_modifier).toBe(0);
+      expect(elemental_resistances.Fire.has_enchantment_modifier).toBe(false);
     });
   });
 });

@@ -142,6 +142,7 @@ describe("state.selected shape", () => {
         "spells",
         "secondary",
         "damage",
+        "resistances",
         "armors",
         "shields",
         "melee_weapons",
@@ -184,6 +185,7 @@ describe("state.selected shape", () => {
     "spells",
     "secondary",
     "damage",
+    "resistances",
   ])("selected.%s defaults to an empty object", (key) => {
     expect(state.selected[key]).toEqual({});
   });

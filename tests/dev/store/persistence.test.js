@@ -58,6 +58,7 @@ function validPayload(overrides = {}) {
       primary: { ST: { base_value: 12, modifier: 1 } },
       secondary: {},
       damage: {},
+      resistances: {},
       advantages: { "ADV-001": { level: 2 } },
       disadvantages: {},
       skills: {},
@@ -224,6 +225,20 @@ describe("exportSheet", () => {
     expect(parsed.inventory.armors).toEqual([{ instance_id: "armor-inst-1" }]);
   });
 
+  test("includes the current elemental resistances", async () => {
+    state.selected.resistances = { Fire: { modifier: -0.5 } };
+
+    exportSheet();
+
+    const blob = URL.createObjectURL.mock.calls[0][0];
+    const text = await readBlobText(blob);
+    const parsed = JSON.parse(text);
+
+    expect(parsed.character.resistances).toEqual({
+      Fire: { modifier: -0.5 },
+    });
+  });
+
   test("shows a success toast naming the exported file", () => {
     state.selected.character.character_name = "Export Test";
     exportSheet();
@@ -289,6 +304,23 @@ describe("importSheet", () => {
     expect(state.selected.advantages).toEqual({ "ADV-001": { level: 2 } });
     expect(renderListsPreserving).toHaveBeenCalledTimes(1);
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
+  });
+
+  test("hydrates elemental resistances from the payload", async () => {
+    await importSheet(
+      jsonFile(
+        validPayload({
+          character: {
+            ...validPayload().character,
+            resistances: { Fire: { modifier: -0.5 } },
+          },
+        }),
+      ),
+    );
+
+    expect(state.selected.resistances).toEqual({
+      Fire: { modifier: -0.5 },
+    });
   });
 
   test("writes primary attributes and weight into their DOM inputs", async () => {

@@ -148,6 +148,67 @@ describe("BUILD SHEET", () => {
     });
   });
 
+  describe("Elemental resistances propagation (race → character, full pipeline)", () => {
+    it("Should default every element to race_base 1 when no race is given", () => {
+      const { character } = buildSheet(mockInput);
+
+      expect(character.elemental_resistances.Fire).toEqual({
+        race_base: 1,
+        modifier: 0,
+        enchantment_modifier: 0,
+        has_enchantment_modifier: false,
+        final: 1,
+      });
+    });
+
+    it("Should thread race.elemental_modifiers through to character.elemental_resistances", () => {
+      const { character } = buildSheet({
+        ...mockInput,
+        race: {
+          elemental_modifiers: { Fire: 0.5, Necrotic: 2 },
+        },
+      });
+
+      expect(character.elemental_resistances.Fire.race_base).toBe(0.5);
+      expect(character.elemental_resistances.Fire.final).toBe(0.5);
+      expect(character.elemental_resistances.Necrotic.race_base).toBe(2);
+      // Untouched types stay at the default
+      expect(character.elemental_resistances.Water.race_base).toBe(1);
+    });
+
+    it("Should combine the race base with a player-entered modifier from character.secondaryAttributes.elementalResistances", () => {
+      const { character } = buildSheet({
+        ...mockInput,
+        race: { elemental_modifiers: { Fire: 1 } },
+        character: {
+          ...mockInput.character,
+          secondaryAttributes: {
+            ...mockInput.character.secondaryAttributes,
+            elementalResistances: { Fire: { modifier: -0.3 } },
+          },
+        },
+      });
+
+      expect(character.elemental_resistances.Fire.final).toBeCloseTo(0.7);
+    });
+
+    it("Should floor the final value at 0 rather than allow it to go negative", () => {
+      const { character } = buildSheet({
+        ...mockInput,
+        race: { elemental_modifiers: { Fire: 0.2 } },
+        character: {
+          ...mockInput.character,
+          secondaryAttributes: {
+            ...mockInput.character.secondaryAttributes,
+            elementalResistances: { Fire: { modifier: -5 } },
+          },
+        },
+      });
+
+      expect(character.elemental_resistances.Fire.final).toBe(0);
+    });
+  });
+
   describe("Equipped enchantment integration (full pipeline: inventory → character)", () => {
     it("Should boost a primary attribute from an equipped fortify_attribute accessory", () => {
       const enchantedInput = {
