@@ -13,6 +13,7 @@ export const COMMON = {
   empty: "Vazio",
   equip: "Equipar",
   material: "Material",
+  materialEffect: "Efeito do Material",
   weight: "Peso",
   price: "Preço",
   description: "Descrição",

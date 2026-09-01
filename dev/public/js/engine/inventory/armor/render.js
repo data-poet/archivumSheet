@@ -70,6 +70,15 @@ function armorDetailFields(resolved, armorData) {
       label: t("armor.hp"),
       value: resolved?.final_hit_points ?? src.armor_hit_points ?? "—",
     },
+    ...(resolved?.material_def_effect
+      ? [
+          {
+            label: t("common.materialEffect"),
+            value: formatRichText(resolved.material_def_effect),
+            rich: true,
+          },
+        ]
+      : []),
     {
       label: t("common.description"),
       value: formatRichText(armorData?.armor_description),

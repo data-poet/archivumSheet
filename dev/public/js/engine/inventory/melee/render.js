@@ -68,6 +68,15 @@ function meleeDetailFields(resolved, weaponData) {
     ...(resolved?.weapon_bal_damage != null
       ? [{ label: t("melee.balDmg"), value: resolved.weapon_bal_damage }]
       : []),
+    ...(resolved?.material_atk_effect
+      ? [
+          {
+            label: t("common.materialEffect"),
+            value: formatRichText(resolved.material_atk_effect),
+            rich: true,
+          },
+        ]
+      : []),
     {
       label: t("common.description"),
       value: formatRichText(weaponData?.weapon_description),

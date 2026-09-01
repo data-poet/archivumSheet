@@ -61,6 +61,15 @@ function shieldDetailFields(resolved, shieldData) {
       label: t("common.price"),
       value: resolved?.shield_final_price ?? src.shield_price ?? "—",
     },
+    ...(resolved?.material_def_effect
+      ? [
+          {
+            label: t("common.materialEffect"),
+            value: formatRichText(resolved.material_def_effect),
+            rich: true,
+          },
+        ]
+      : []),
     {
       label: t("common.description"),
       value: formatRichText(shieldData?.shield_description),

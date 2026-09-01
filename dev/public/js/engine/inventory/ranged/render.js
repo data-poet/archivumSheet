@@ -72,6 +72,15 @@ function rangedDetailFields(resolved, weaponData) {
         resolved?.weapon_max_distance ?? weaponData?.weapon_max_distance ?? "—",
     },
     { label: t("ranged.reload"), value: src.weapon_reload_speed ?? "—" },
+    ...(resolved?.material_atk_effect
+      ? [
+          {
+            label: t("common.materialEffect"),
+            value: formatRichText(resolved.material_atk_effect),
+            rich: true,
+          },
+        ]
+      : []),
     {
       label: t("common.description"),
       value: formatRichText(weaponData?.weapon_description),
