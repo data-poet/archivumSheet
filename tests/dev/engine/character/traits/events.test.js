@@ -231,6 +231,66 @@ describe("handleTraitInput — secondary-input", () => {
   });
 });
 
+describe("handleTraitInput — resistance-input", () => {
+  test("allows partial decimal entry ('-', '0.', etc.) without writing to state", () => {
+    const target = elWithClass(
+      "input",
+      "resistance-input",
+      { type: "Fire" },
+      "-0.",
+    );
+    handleTraitInput({ target });
+    expect(state.selected.resistances.Fire).toBeUndefined();
+    expect(triggerAutoRun).not.toHaveBeenCalled();
+  });
+
+  test("stores the typed whole-percentage value converted to a raw decimal fraction, and triggers autorun", () => {
+    const target = elWithClass(
+      "input",
+      "resistance-input",
+      { type: "Fire" },
+      "-30", // -30%
+    );
+    handleTraitInput({ target });
+    expect(state.selected.resistances.Fire.modifier).toBe(-0.3);
+    expect(triggerAutoRun).toHaveBeenCalledTimes(1);
+  });
+
+  test("allows an uncapped positive percentage through, converted the same way (no upper bound)", () => {
+    const target = elWithClass(
+      "input",
+      "resistance-input",
+      { type: "Arcane" },
+      "5000", // 5000% — deliberately absurd, still uncapped
+    );
+    handleTraitInput({ target });
+    expect(state.selected.resistances.Arcane.modifier).toBe(50);
+  });
+
+  test("converts a fractional percentage (e.g. 12.5%) without floating-point drift", () => {
+    const target = elWithClass(
+      "input",
+      "resistance-input",
+      { type: "Fire" },
+      "12.5",
+    );
+    handleTraitInput({ target });
+    expect(state.selected.resistances.Fire.modifier).toBe(0.125);
+  });
+
+  test("an unparsable value is ignored", () => {
+    const target = elWithClass(
+      "input",
+      "resistance-input",
+      { type: "Fire" },
+      "abc",
+    );
+    handleTraitInput({ target });
+    expect(state.selected.resistances.Fire).toBeUndefined();
+    expect(triggerAutoRun).not.toHaveBeenCalled();
+  });
+});
+
 describe("handleTraitInput — damage-input", () => {
   test("allows a lone '-' as partial entry without writing to state", () => {
     const target = elWithClass(

@@ -284,6 +284,7 @@ describe("replaceActiveCharacter", () => {
       primary: { ST: { base_value: 14, modifier: 0 } },
       secondary: {},
       damage: {},
+      resistances: {},
       advantages: {},
       disadvantages: {},
       skills: {},
@@ -345,6 +346,7 @@ describe("round trip: save → switch away → switch back", () => {
     state.selected.character.character_name = "Round Trip Hero";
     state.selected.advantages = { "ADV-001": { level: 3 } };
     state.selected.skills = { "SK-001": { points: 4 } };
+    state.selected.resistances = { Fire: { modifier: -0.5 } };
     state.selected.armors = [
       { instance_id: "armor-inst-1", armor_id: "ARM-001", enchantments: [] },
     ];
@@ -363,6 +365,9 @@ describe("round trip: save → switch away → switch back", () => {
     expect(state.selected.character.character_name).toBe("Round Trip Hero");
     expect(state.selected.advantages).toEqual({ "ADV-001": { level: 3 } });
     expect(state.selected.skills).toEqual({ "SK-001": { points: 4 } });
+    expect(state.selected.resistances).toEqual({
+      Fire: { modifier: -0.5 },
+    });
     expect(state.selected.armors).toEqual([
       { instance_id: "armor-inst-1", armor_id: "ARM-001", enchantments: [] },
     ]);

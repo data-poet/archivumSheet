@@ -28,6 +28,7 @@ export const RESUME_SKELETON = `
   <div id="resume_bar_mana"></div>
   <div id="resume_bar_toxicity"></div>
   <div id="resume_secondary_snapshot"></div>
+  <div id="resume_elemental_resistances_container"></div>
 
   <div id="resume_advantages_container"></div>
   <div id="resume_disadvantages_container"></div>

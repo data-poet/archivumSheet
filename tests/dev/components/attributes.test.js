@@ -25,6 +25,11 @@ function headerDOM() {
     "th-sec-modifier",
     "th-sec-enchantment",
     "th-sec-final",
+    "th-res-type",
+    "th-res-race",
+    "th-res-modifier",
+    "th-res-enchantment",
+    "th-res-final",
   ];
   // <th>/<td>/<tbody> get silently dropped by jsdom's spec-compliant HTML
   // parser unless they're inside a real <table> context — a bare
@@ -72,6 +77,21 @@ describe("initAttributeTableHeaders", () => {
     );
     expect(document.getElementById("th-sec-final").textContent).toBe(
       t("attributes.final"),
+    );
+    expect(document.getElementById("th-res-type").textContent).toBe(
+      t("attributes.type"),
+    );
+    expect(document.getElementById("th-res-race").textContent).toBe(
+      t("attributes.race"),
+    );
+    expect(document.getElementById("th-res-modifier").textContent).toBe(
+      t("attributes.modifierPercent"),
+    );
+    expect(document.getElementById("th-res-enchantment").textContent).toBe(
+      t("attributes.enchantment"),
+    );
+    expect(document.getElementById("th-res-final").textContent).toBe(
+      t("attributes.finalDamageReceived"),
     );
   });
 

@@ -45,6 +45,7 @@ describe("BUILD CHARACTER", () => {
         "primary_attributes",
         "secondary_attributes",
         "base_damage",
+        "elemental_resistances",
         "advantages",
         "disadvantages",
         "skills",
@@ -215,6 +216,25 @@ describe("BUILD CHARACTER", () => {
 
       expect(character.skills["SKILL-000"].enchantment_modifier).toBe(3);
       expect(character.skills["SKILL-000"].value).toBe(17);
+    });
+  });
+
+  describe("Elemental resistances propagation", () => {
+    it("Should thread raceElementalMultipliers through to character.elemental_resistances", () => {
+      const { character } = buildCharacter({
+        ...mockInput,
+        raceElementalMultipliers: { Fire: 0.5 },
+      });
+
+      expect(character.elemental_resistances.Fire.race_base).toBe(0.5);
+      expect(character.elemental_resistances.Fire.final).toBe(0.5);
+    });
+
+    it("Should default to race_base 1 for every element when no race multipliers are given", () => {
+      const { character } = buildCharacter(mockInput);
+
+      expect(character.elemental_resistances.Water.race_base).toBe(1);
+      expect(character.elemental_resistances.Water.final).toBe(1);
     });
   });
 });
