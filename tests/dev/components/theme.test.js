@@ -5,7 +5,7 @@ jest.mock("dev/public/js/store/themeState.js", () => ({
 
 import { getTheme, setTheme } from "dev/public/js/store/themeState.js";
 import { initTheme } from "dev/public/js/components/theme.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 // jsdom doesn't implement matchMedia at all — stub it with a controllable

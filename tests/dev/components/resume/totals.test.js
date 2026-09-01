@@ -3,7 +3,7 @@ import {
   t,
   getEncumbranceLabel,
   getCarryLimitLabel,
-} from "dev/public/js/localization/pt-BR.js";
+} from "dev/public/js/localization/pt-BR/index.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
 
 function id(x) {

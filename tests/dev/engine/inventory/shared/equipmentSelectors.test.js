@@ -5,7 +5,7 @@ import {
   tierOptions,
 } from "dev/public/js/engine/inventory/shared/equipmentSelectors.js";
 import { STORAGE_LOCATIONS } from "dev/public/js/shared/constants.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 
 // These functions build raw HTML strings meant to be dropped into a
 // <select>'s innerHTML — parsing them back into real <option> elements

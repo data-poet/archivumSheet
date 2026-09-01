@@ -2,7 +2,7 @@ import {
   renderAdvantages,
   renderDisadvantages,
 } from "dev/public/js/engine/character/traits/render.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 function advList() {
