@@ -2,6 +2,7 @@ import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { removeAdv } from "./advantages/model.js";
 import { removeDis } from "./disadvantages/model.js";
+import { percentToDecimal } from "../../../components/resistances.js";
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -80,6 +81,27 @@ export function handleTraitInput(e) {
 
     if (!selected.damage[type]) selected.damage[type] = { modifier: 0 };
     selected.damage[type].modifier = value;
+    triggerAutoRun();
+    return true;
+  }
+
+  // Elemental resistance modifier — displayed and typed/stepped as whole
+  // percentage points (e.g. "-20" for -20%), converted to the raw decimal
+  // fraction the engine expects (-0.2) only when writing to state. Left
+  // uncapped in both directions: the engine floors the *final* value at 0,
+  // but the raw modifier itself can go arbitrarily negative or positive (a
+  // character can become very weak against an element).
+  if (e.target.classList.contains("resistance-input")) {
+    const { type } = e.target.dataset;
+    const raw = e.target.value;
+
+    if (/^-$|^-?0?\.$/.test(raw)) return true; // allow partial entry (e.g. "-", "0.")
+
+    const percent = parseFloat(raw);
+    if (isNaN(percent)) return true;
+
+    if (!selected.resistances[type]) selected.resistances[type] = { modifier: 0 };
+    selected.resistances[type].modifier = percentToDecimal(percent);
     triggerAutoRun();
     return true;
   }

@@ -3,7 +3,9 @@ import {
   getEncumbranceLabel,
   getCarryLimitLabel,
   getSecondaryAttributeLabel,
+  getElementalResistanceLabel,
 } from "../localization/pt-BR.js";
+import { decimalToPercent } from "./resistances.js";
 import { el } from "../shared/dom.js";
 import { calcMaxHp, calcActualHp } from "../engine/inventory/shared/durabilityUtils.js";
 import { renderResumeImage } from "../engine/character/portrait/portrait.js";
@@ -45,6 +47,7 @@ export function renderResume(sheet, data = {}, selected = {}) {
   renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
   renderResumeSecondarySnapshot(sheet);
+  renderResumeElementalResistances(sheet);
   renderResumeTraits(sheet);
   renderResumeSkills(sheet);
   renderResumeMagic(sheet, data);
@@ -246,6 +249,57 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
       </div>
     </div>
   `;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2.5 Elemental Resistances (collapsed table, view-mode only)
+//
+// Read-only — the editable modifier stepper lives in the edit-mode
+// "Resistências" tab (components/resistances.js), not here. Filtered to
+// only the elements that differ from normal damage (final !== 1), since a
+// full 10-row table of "1"s adds noise for the common case of an
+// unmodified race.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderResumeElementalResistances(sheet) {
+  const resistances = sheet?.character?.elemental_resistances || {};
+  const entries = Object.entries(resistances).filter(
+    ([, data]) => data.final !== 1,
+  );
+  const container = el("resume_elemental_resistances_container");
+  if (!container) return;
+
+  if (entries.length === 0) { container.hidden = true; return; }
+  container.hidden = false;
+
+  const rows = entries
+    .map(
+      ([type, data]) => `
+      <tr>
+        <td>${getElementalResistanceLabel(type)}</td>
+        <td class="col-num">${decimalToPercent(data.final)}%</td>
+      </tr>
+    `,
+    )
+    .join("");
+
+  container.innerHTML = `
+    ${_collapsibleHeader(t("resume.elementalResistances"))}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table resume-table--elemental-resistances">
+          <thead>
+            <tr>
+              <th>${t("attributes.type")}</th>
+              <th class="col-num">${t("attributes.finalDamageReceived")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  _bindCollapse(container);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

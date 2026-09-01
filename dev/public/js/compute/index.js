@@ -9,6 +9,7 @@ import {
   updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
+  renderElementalResistances,
   renderResume,
   syncViewMode,
 } from "../ui.js";
@@ -17,6 +18,16 @@ import { showToast } from "../store/persistence.js";
 import { t } from "../localization/pt-BR.js";
 
 const selected = state.selected;
+
+// Blank/missing/non-numeric → 1 ("no special resistance"). A literal 0
+// ("immune to this element") is a real value and must be preserved, which
+// is why this isn't just `Number(x) || 1` (0 is falsy and would collide
+// with the missing-cell fallback).
+function parseRaceMultiplier(raw) {
+  if (raw === undefined || raw === null || raw === "") return 1;
+  const n = Number(raw);
+  return Number.isNaN(n) ? 1 : n;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // runEngine
@@ -77,6 +88,30 @@ export async function runEngine() {
             IQ: Number(raceRow.race_iq_modifier) || 0,
             HT: Number(raceRow.race_ht_modifier) || 0,
           },
+          // Percentage-based elemental damage multipliers (1 = normal
+          // damage). Blank/missing/non-numeric CSV cells default to 1 ("no
+          // special resistance"), but a literal 0 ("immune to this
+          // element") is a real, meaningful value and must survive —
+          // `Number(x) || 1` would wrongly coerce it back to 1, so a
+          // dedicated parser is used instead.
+          elemental_modifiers: {
+            Fire: parseRaceMultiplier(raceRow.race_fire_damage_multiplier),
+            Water: parseRaceMultiplier(raceRow.race_water_damage_multiplier),
+            Earth: parseRaceMultiplier(raceRow.race_earth_damage_multiplier),
+            Air: parseRaceMultiplier(raceRow.race_air_damage_multiplier),
+            Electricity: parseRaceMultiplier(
+              raceRow.race_electricity_damage_multiplier,
+            ),
+            Corrosion: parseRaceMultiplier(
+              raceRow.race_corrossion_damage_multiplier,
+            ),
+            Necrotic: parseRaceMultiplier(
+              raceRow.race_necrotic_damage_multiplier,
+            ),
+            Holy: parseRaceMultiplier(raceRow.race_holy_damage_multiplier),
+            Void: parseRaceMultiplier(raceRow.race_void_damage_multiplier),
+            Arcane: parseRaceMultiplier(raceRow.race_arcane_damage_multiplier),
+          },
           innate_advantage_ids: raceRow.race_innate_advantage_id
             ? raceRow.race_innate_advantage_id
                 .split(",")
@@ -116,6 +151,12 @@ export async function runEngine() {
           ...selected.secondary,
           damage: Object.fromEntries(
             Object.entries(selected.damage).map(([type, data]) => [
+              type,
+              { modifier: Number(data.modifier) || 0 },
+            ]),
+          ),
+          elementalResistances: Object.fromEntries(
+            Object.entries(selected.resistances).map(([type, data]) => [
               type,
               { modifier: Number(data.modifier) || 0 },
             ]),
@@ -171,10 +212,20 @@ export async function runEngine() {
       }
     });
 
+    // ── Sync elemental resistances ─────────────────────────────────────────
+    const resist = json.character?.elemental_resistances || {};
+
+    Object.entries(resist).forEach(([type, data]) => {
+      if (!selected.resistances[type]) {
+        selected.resistances[type] = { modifier: data.modifier || 0 };
+      }
+    });
+
     renderOutput(json);
     updateInventoryUI(json);
     renderSecondaryAttributes(json);
     renderDamage(json);
+    renderElementalResistances(json);
     renderResume(json, state.data, state.selected);
     syncViewMode();
 

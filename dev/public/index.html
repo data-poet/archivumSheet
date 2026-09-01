@@ -451,6 +451,11 @@
               id="tab-btn-attr-damage"
             ></button>
             <button
+              class="tab-btn"
+              data-tab="tab-attr-resistances"
+              id="tab-btn-attr-resistances"
+            ></button>
+            <button
               class="tab-strip-collapse"
               aria-expanded="false"
               aria-label="Expandir seção"
@@ -765,6 +770,24 @@
                   </tr>
                 </thead>
                 <tbody id="damageTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Panel: Resistências -->
+          <div class="tab-panel" id="tab-attr-resistances">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th id="th-res-type"></th>
+                    <th class="col-num" id="th-res-race"></th>
+                    <th class="col-num" id="th-res-modifier"></th>
+                    <th class="col-num" id="th-res-enchantment"></th>
+                    <th class="col-num" id="th-res-final"></th>
+                  </tr>
+                </thead>
+                <tbody id="resistancesTable"></tbody>
               </table>
             </div>
           </div>
@@ -1469,6 +1492,15 @@
           <div id="resume_secondary_snapshot"></div>
         </div>
 
+        <!-- ── Row 3.5: elemental resistances (full width, collapsible,
+             only shown when a resistance differs from normal) ─────────── -->
+        <div class="resume-row">
+          <div
+            class="resume-full-col"
+            id="resume_elemental_resistances_container"
+          ></div>
+        </div>
+
         <!-- ── Row 3: advantages | disadvantages ────────────────────── -->
         <div class="resume-row resume-row--two-col">
           <div class="resume-col" id="resume_advantages_container"></div>
@@ -1705,6 +1737,7 @@
         setText("tab-btn-attr-primary", L.tabs.attributes.primary);
         setText("tab-btn-attr-secondary", L.tabs.attributes.secondary);
         setText("tab-btn-attr-damage", L.tabs.attributes.baseDamage);
+        setText("tab-btn-attr-resistances", L.tabs.attributes.resistances);
         // section-traits
         setText("tab-btn-traits-advantages", L.tabs.traits.advantages);
         setText("tab-btn-traits-disadvantages", L.tabs.traits.disadvantages);

@@ -76,6 +76,7 @@ function _blankData() {
       primary: { ST: { base_value: 10, modifier: 0 }, DX: { base_value: 10, modifier: 0 }, IQ: { base_value: 10, modifier: 0 }, HT: { base_value: 10, modifier: 0 } },
       secondary: {},
       damage: {},
+      resistances: {},
       advantages: {},
       disadvantages: {},
       skills: {},
@@ -129,6 +130,7 @@ function _captureCurrentData() {
       primary: getPrimaryAttributes(),
       secondary: selected.secondary,
       damage: selected.damage,
+      resistances: selected.resistances,
       advantages: selected.advantages,
       disadvantages: selected.disadvantages,
       skills: selected.skills,
@@ -214,6 +216,7 @@ function _applyData(data) {
 
   selected.secondary       = character.secondary      ?? {};
   selected.damage          = character.damage         ?? {};
+  selected.resistances     = character.resistances    ?? {};
   selected.advantages      = character.advantages     ?? {};
   selected.disadvantages   = character.disadvantages  ?? {};
   selected.skills          = character.skills         ?? {};

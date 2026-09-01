@@ -84,6 +84,7 @@ export const state = {
     spells: {},
     secondary: {},
     damage: {},
+    resistances: {},
     armors: [],
     shields: [],
     melee_weapons: [],

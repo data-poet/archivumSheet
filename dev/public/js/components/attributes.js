@@ -26,9 +26,18 @@ export function initAttributeTableHeaders() {
     "th-sec-final": "attributes.final",
   };
 
+  const resistancesHeaders = {
+    "th-res-type": "attributes.type",
+    "th-res-race": "attributes.race",
+    "th-res-modifier": "attributes.modifierPercent",
+    "th-res-enchantment": "attributes.enchantment",
+    "th-res-final": "attributes.finalDamageReceived",
+  };
+
   for (const [id, key] of Object.entries({
     ...primaryHeaders,
     ...secondaryHeaders,
+    ...resistancesHeaders,
   })) {
     const el = document.getElementById(id);
     if (el) el.textContent = t(key);

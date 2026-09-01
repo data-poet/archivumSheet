@@ -87,6 +87,7 @@ export function exportSheet() {
       primary:        getPrimaryAttributes(),
       secondary:      selected.secondary,
       damage:         selected.damage,
+      resistances:    selected.resistances,
       advantages:     selected.advantages,
       disadvantages:  selected.disadvantages,
       skills:         selected.skills,
@@ -263,6 +264,7 @@ function _applyImport(payload) {
   // ── Hydrate selected state ────────────────────────────────────────────────
   selected.secondary      = character.secondary      ?? {};
   selected.damage         = character.damage         ?? {};
+  selected.resistances    = character.resistances    ?? {};
   selected.advantages     = character.advantages     ?? {};
   selected.disadvantages  = character.disadvantages  ?? {};
   selected.skills         = character.skills         ?? {};
