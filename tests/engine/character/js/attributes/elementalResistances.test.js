@@ -13,12 +13,10 @@ describe("Elemental Damage Resistances", () => {
     }
   });
 
-  test("covers all 10 documented elemental types", () => {
+  test("covers all 8 documented elemental types", () => {
     expect(ELEMENTAL_TYPES).toEqual([
       "Fire",
-      "Water",
-      "Earth",
-      "Air",
+      "Ice",
       "Electricity",
       "Corrosion",
       "Necrotic",
