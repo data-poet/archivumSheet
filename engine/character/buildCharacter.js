@@ -10,9 +10,11 @@ function buildCharacter({
   skills = [],
   carry_weight = null,
   raceModifiers = {},
+  raceElementalMultipliers = {},
   innateAdvantageIds = [],
   innateDisadvantageIds = [],
   enchantmentAttributeModifiers = {},
+  enchantmentElementalModifiers = {},
   enchantmentAdvantageIds = [],
   enchantmentDisadvantageIds = [],
   enchantmentSkillGrants = {},
@@ -90,7 +92,10 @@ function buildCharacter({
 
     advantages: primary.advantages,
 
+    raceElementalMultipliers,
+
     enchantmentAttributeModifiers,
+    enchantmentElementalModifiers,
     enchantmentSkillGrants,
     enchantmentSkillModifiers,
   });
@@ -118,6 +123,8 @@ function buildCharacter({
       secondary_attributes: secondary.secondary_attributes,
 
       base_damage: secondary.base_damage,
+
+      elemental_resistances: secondary.elemental_resistances,
 
       skills: secondary.skills,
 

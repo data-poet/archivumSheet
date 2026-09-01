@@ -1,5 +1,9 @@
 const { buildSecondaryAttributes } = require("./js/attributes/secondary");
 const { buildSkills } = require("./js/skills/skills");
+const {
+  ELEMENTAL_TYPES,
+  calculateElementalResistances,
+} = require("./js/attributes/elementalResistances");
 
 const SECONDARY_ATTRS = [
   "HP",
@@ -21,7 +25,9 @@ function buildCharacterSecondary({
   carry_weight = null,
   effects = {},
   advantages = {},
+  raceElementalMultipliers = {},
   enchantmentAttributeModifiers = {},
+  enchantmentElementalModifiers = {},
   enchantmentSkillGrants = {},
   enchantmentSkillModifiers = {},
 }) {
@@ -49,6 +55,31 @@ function buildCharacterSecondary({
     secondaryWithEnchantments,
     carry_weight,
     effects,
+  );
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 1.5 ELEMENTAL DAMAGE RESISTANCES
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Same has_enchantment_modifier presence-flag pattern as above — a target
+   * key present in enchantmentElementalModifiers counts even if its net
+   * value is 0. No equipped enchantment currently produces this map (Phase
+   * 2 territory), so it stays empty until that's wired up.
+   */
+
+  const elementalWithEnchantments = {};
+  for (const type of ELEMENTAL_TYPES) {
+    elementalWithEnchantments[type] = {
+      ...(secondaryAttributes.elementalResistances?.[type] || {}),
+      enchantment_modifier: enchantmentElementalModifiers[type] ?? 0,
+      has_enchantment_modifier: type in enchantmentElementalModifiers,
+    };
+  }
+
+  const elementalResistances = calculateElementalResistances(
+    raceElementalMultipliers,
+    elementalWithEnchantments,
   );
 
   /**
@@ -98,6 +129,8 @@ function buildCharacterSecondary({
     secondary_attributes: secondaryResult.attributes,
 
     base_damage: secondaryResult.damage,
+
+    elemental_resistances: elementalResistances,
 
     skills: skillsResult.skills || {},
 
