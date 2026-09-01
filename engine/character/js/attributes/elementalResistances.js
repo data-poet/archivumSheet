@@ -16,9 +16,7 @@
 
 const ELEMENTAL_TYPES = [
   "Fire",
-  "Water",
-  "Earth",
-  "Air",
+  "Ice",
   "Electricity",
   "Corrosion",
   "Necrotic",
