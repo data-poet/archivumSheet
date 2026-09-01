@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -86,7 +89,10 @@ export function renderEquippedRanged(selected, data, sheet) {
   const names = [...new Set(data.ranged_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML("rangedSlots", `<p class="empty-storage">${t("common.noEquipped")}</p>`);
+    setHTML(
+      "rangedSlots",
+      `<p class="empty-storage">${t("common.noEquipped")}</p>`,
+    );
     return;
   }
 
@@ -162,9 +168,9 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
 
 export function renderStoredRanged(selected, data, sheet) {
   const stored = selected.ranged_weapons.filter((w) => !w.is_equipped);
-  const sections = STORAGE_LOCATIONS
-    .map((loc) => renderStorageSection(loc, stored, data, sheet))
-    .join("");
+  const sections = STORAGE_LOCATIONS.map((loc) =>
+    renderStorageSection(loc, stored, data, sheet),
+  ).join("");
   setHTML("rangedStorageList", sections);
 }
 

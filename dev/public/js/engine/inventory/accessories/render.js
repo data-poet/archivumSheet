@@ -1,4 +1,4 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
   STORAGE_LOCATIONS,
@@ -32,7 +32,9 @@ function countEquipped(accessoryId, selected) {
 function isAtLimit(accessoryId, selected, data) {
   const record = accessoryRecord(accessoryId, data);
   if (!record) return false;
-  return countEquipped(accessoryId, selected) >= Number(record.accessory_equip_limit);
+  return (
+    countEquipped(accessoryId, selected) >= Number(record.accessory_equip_limit)
+  );
 }
 
 /** If the user has set a custom name, that's the display name; otherwise fall
@@ -129,9 +131,9 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
 
 export function renderStoredAccessories(selected, data, sheet) {
   const stored = selected.accessories.filter((a) => !a.is_equipped);
-  const sections = STORAGE_LOCATIONS
-    .map((loc) => renderStorageSection(loc, stored, selected, data, sheet))
-    .join("");
+  const sections = STORAGE_LOCATIONS.map((loc) =>
+    renderStorageSection(loc, stored, selected, data, sheet),
+  ).join("");
   setHTML("accessoryStorageList", sections);
 }
 

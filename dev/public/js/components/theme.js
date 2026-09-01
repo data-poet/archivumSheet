@@ -23,7 +23,7 @@
  */
 
 import { getTheme, setTheme } from "../store/themeState.js";
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants
@@ -56,7 +56,8 @@ function applyTheme(theme) {
 
   const btn = document.getElementById(BTN_ID);
   if (!btn) return;
-  btn.textContent = theme === "dark" ? t("theme.iconDark") : t("theme.iconLight");
+  btn.textContent =
+    theme === "dark" ? t("theme.iconDark") : t("theme.iconLight");
   btn.setAttribute(
     "aria-label",
     theme === "dark" ? t("theme.ariaDark") : t("theme.ariaLight"),

@@ -3,7 +3,7 @@ import { fetchSkills } from "../../../api.js";
 import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { getSkillAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
 

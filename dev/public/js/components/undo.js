@@ -17,7 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { showToast } from "../store/persistence.js";
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 const UNDO_DURATION_MS = 5000;
 
@@ -28,9 +28,9 @@ const UNDO_DURATION_MS = 5000;
  *   mutations (like an add the user might want to walk back) so the toast
  *   doesn't misleadingly say something was removed.
  */
-export function offerUndo(restoreFn, message = t("common.removed")) {
+export function offerUndo(restoreFn, message = t("undo.removedMessage")) {
   showToast(message, "info", {
-    actionLabel: t("common.undo"),
+    actionLabel: t("undo.actionLabel"),
     duration: UNDO_DURATION_MS,
     onAction: restoreFn,
   });

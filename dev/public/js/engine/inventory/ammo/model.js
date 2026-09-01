@@ -5,7 +5,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { nextAmmoContainerInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 
 const data = state.data;
 const selected = state.selected;

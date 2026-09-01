@@ -2,7 +2,7 @@ import { buildReferenceSections, loadReferenceContent } from "./content.js";
 import { initReferenceNav } from "./nav.js";
 import { initReferenceTabs } from "./tabs.js";
 import { initTheme } from "../components/theme.js";
-import { LABELS } from "../localization/pt-BR.js";
+import { LABELS } from "../localization/pt-BR/index.js";
 
 function _hydrateShell() {
   const L = LABELS.reference;

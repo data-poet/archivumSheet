@@ -1,4 +1,4 @@
-import { getSecondaryAttributeLabel, t } from "../localization/pt-BR.js";
+import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
 
 // ===== TABLE HEADERS =====
@@ -48,7 +48,7 @@ export function initAttributeTableHeaders() {
 export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
-    const mod  = Number(document.getElementById(`${attr}_mod`).value)  || 0;
+    const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
 
     const sheetAttr = state.sheet?.character?.primary_attributes?.[attr];
     const raceMod = sheetAttr?.race_modifier ?? 0;
@@ -92,15 +92,19 @@ export function renderSecondaryAttributes(sheet) {
 
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
-      const isBasicSpeed  = name === "BasicSpeed";
-      const isMovement    = name === "Movement";
+      const isBasicSpeed = name === "BasicSpeed";
+      const isMovement = name === "Movement";
       // HP/Mana/Toxicity's modifier is a "damage/spent" tracker (≤ 0 only),
       // not a stat bonus — mirrors the cap enforced in traits/events.js and
       // the resume-bar steppers, so edit mode and view mode agree.
-      const isVital       = name === "HP" || name === "Mana" || name === "Toxicity";
+      const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
 
-      const baseDisplay  = isBasicSpeed ? Number(data.base_value).toFixed(2) : data.base_value;
-      const valueDisplay = isBasicSpeed ? Number(data.value).toFixed(2)      : data.value;
+      const baseDisplay = isBasicSpeed
+        ? Number(data.base_value).toFixed(2)
+        : data.base_value;
+      const valueDisplay = isBasicSpeed
+        ? Number(data.value).toFixed(2)
+        : data.value;
 
       const modifierStep = isBasicSpeed ? 0.5 : 1;
 

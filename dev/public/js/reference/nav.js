@@ -8,7 +8,7 @@
  * different list of sections.
  */
 
-import { LABELS } from "../localization/pt-BR.js";
+import { LABELS } from "../localization/pt-BR/index.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Render helpers

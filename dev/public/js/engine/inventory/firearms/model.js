@@ -6,7 +6,7 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { nextFirearmInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { updateContainerAmmoQuantity } from "../ammo/model.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -160,7 +160,11 @@ export function addEquippedFirearm(weaponId, materialId = null) {
 }
 
 /** Add a firearm directly to storage (not equipped). */
-export function addStoredFirearm(weaponId, materialId = null, storedAt = "backpack") {
+export function addStoredFirearm(
+  weaponId,
+  materialId = null,
+  storedAt = "backpack",
+) {
   if (!weaponId) return;
 
   selected.firearms.push(
@@ -220,11 +224,16 @@ export function setFirearmRoundsLoaded(instanceId, rawValue) {
   const instance = findFirearmByInstanceId(instanceId);
   if (!instance) return;
 
-  const weaponData = data.firearms.find((w) => w.weapon_id === instance.weapon_id);
+  const weaponData = data.firearms.find(
+    (w) => w.weapon_id === instance.weapon_id,
+  );
   const max = computeFinalMagazineSize(instance, weaponData);
 
   const parsed = parseInt(rawValue, 10);
-  instance.rounds_loaded = Math.min(Math.max(isNaN(parsed) ? 0 : parsed, 0), max);
+  instance.rounds_loaded = Math.min(
+    Math.max(isNaN(parsed) ? 0 : parsed, 0),
+    max,
+  );
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
@@ -240,7 +249,9 @@ export function reloadFirearm(instanceId) {
   const instance = findFirearmByInstanceId(instanceId);
   if (!instance) return;
 
-  const weaponData = data.firearms.find((w) => w.weapon_id === instance.weapon_id);
+  const weaponData = data.firearms.find(
+    (w) => w.weapon_id === instance.weapon_id,
+  );
   if (!weaponData) return;
 
   const maxRounds = computeFinalMagazineSize(instance, weaponData);
@@ -295,7 +306,10 @@ export function reloadFirearm(instanceId) {
  * presses "Salvar" in the custom-fields editor, never on individual
  * keystrokes. Blank strings are normalized to null.
  */
-export function saveFirearmCustomFields(instanceId, { name, description, effect }) {
+export function saveFirearmCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findFirearmByInstanceId(instanceId);
   if (!instance) return;
 

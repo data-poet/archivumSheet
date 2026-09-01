@@ -4,9 +4,12 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import { nextRangedInstanceId, nextMeleeInstanceId } from "../../../store/instanceId.js";
+import {
+  nextRangedInstanceId,
+  nextMeleeInstanceId,
+} from "../../../store/instanceId.js";
 import { getMeleeCounterpart } from "../shared/dualUseWeapons.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
 
 const data = state.data;
@@ -40,7 +43,9 @@ export function updateRangedTypeOptions() {
   const select = el("rangedTypeFilter");
   if (!select) return;
 
-  const types = [...new Set(data.ranged_weapons.map((w) => w.weapon_type))].sort();
+  const types = [
+    ...new Set(data.ranged_weapons.map((w) => w.weapon_type)),
+  ].sort();
   const current = select.value;
 
   select.innerHTML =
@@ -151,7 +156,13 @@ export function equipRanged(
  * into selected.melee_weapons with the same storage/equip state, material,
  * and a _linkedInstanceId pointing back to rangedInstanceId.
  */
-function _syncMeleeCounterpart(rangedInstanceId, weaponId, materialId, isEquipped, storedAt) {
+function _syncMeleeCounterpart(
+  rangedInstanceId,
+  weaponId,
+  materialId,
+  isEquipped,
+  storedAt,
+) {
   const meleeWeaponId = getMeleeCounterpart(weaponId);
   if (!meleeWeaponId) return;
 
@@ -315,7 +326,10 @@ export function removeRanged(instanceId) {
  * Mirrors the values to the linked melee counterpart (bidirectional
  * lookup), same as hit_points_modifier/equip/storage state.
  */
-export function saveRangedCustomFields(instanceId, { name, description, effect }) {
+export function saveRangedCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findRangedByInstanceId(instanceId);
   if (!instance) return;
 

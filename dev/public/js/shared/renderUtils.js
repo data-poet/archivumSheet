@@ -7,7 +7,7 @@
  * style.css so existing render files that haven't been touched yet still work.
  */
 
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // formatRichText
@@ -48,29 +48,31 @@ export function formatRichText(raw) {
 
   const parsed = raw
     .split("\n")
-    .map(l => {
-      const match  = l.match(/^(\s*)(.*)$/);
+    .map((l) => {
+      const match = l.match(/^(\s*)(.*)$/);
       const indent = match[1].replace(/\t/g, "    ").length;
       return { indent, text: match[2].trim() };
     })
-    .filter(l => l.text.length > 0);
+    .filter((l) => l.text.length > 0);
 
-  const bulletLines = parsed.filter(l => l.text.startsWith("-"));
+  const bulletLines = parsed.filter((l) => l.text.startsWith("-"));
 
   if (bulletLines.length === 0)
     return `<p class="scaling-note">${raw.trim()}</p>`;
 
-  const uniqueIndents = [...new Set(bulletLines.map(l => l.indent))].sort((a, b) => a - b);
-  const levelOf        = indent => uniqueIndents.indexOf(indent);
+  const uniqueIndents = [...new Set(bulletLines.map((l) => l.indent))].sort(
+    (a, b) => a - b,
+  );
+  const levelOf = (indent) => uniqueIndents.indexOf(indent);
 
-  const items = bulletLines.map(l => ({
-    level:   levelOf(l.indent),
+  const items = bulletLines.map((l) => ({
+    level: levelOf(l.indent),
     content: l.text.slice(1).trim(),
   }));
 
   const note = parsed
-    .filter(l => !l.text.startsWith("-"))
-    .map(l => l.text)
+    .filter((l) => !l.text.startsWith("-"))
+    .map((l) => l.text)
     .join(" ");
 
   const list = _buildNestedList(items);
@@ -85,7 +87,7 @@ export function formatRichText(raw) {
 // step found in the source text.
 // ─────────────────────────────────────────────────────────────────────────────
 function _buildNestedList(items) {
-  const root  = { children: [] };
+  const root = { children: [] };
   const stack = [{ level: -1, node: root }];
 
   for (const item of items) {
@@ -93,15 +95,15 @@ function _buildNestedList(items) {
       stack.pop();
     }
     const parent = stack[stack.length - 1].node;
-    const node   = { content: item.content, children: [] };
+    const node = { content: item.content, children: [] };
     parent.children.push(node);
     stack.push({ level: item.level, node });
   }
 
-  const render = node =>
+  const render = (node) =>
     node.children.length
       ? `<ul class="scaling-list">${node.children
-          .map(child => `<li>${child.content}${render(child)}</li>`)
+          .map((child) => `<li>${child.content}${render(child)}</li>`)
           .join("")}</ul>`
       : "";
 
@@ -121,7 +123,7 @@ function _buildDetailContent(fields) {
     .map(({ label, value, rich }) =>
       rich
         ? `<div class="item-detail-block"><em>${label}:</em>${value}</div>`
-        : `<span class="item-detail"><em>${label}:</em> ${value}</span>`
+        : `<span class="item-detail"><em>${label}:</em> ${value}</span>`,
     )
     .join("");
 }
@@ -222,10 +224,8 @@ export function readCustomFieldsEditorValues(instanceId) {
   return {
     name: container.querySelector(".custom-fields-input-name")?.value ?? "",
     description:
-      container.querySelector(".custom-fields-input-description")?.value ??
-      "",
-    effect:
-      container.querySelector(".custom-fields-input-effect")?.value ?? "",
+      container.querySelector(".custom-fields-input-description")?.value ?? "",
+    effect: container.querySelector(".custom-fields-input-effect")?.value ?? "",
   };
 }
 
@@ -379,7 +379,10 @@ export function readCustomItemEditorValues(customItemId) {
   };
 }
 
-export function customItemEditRow(colspan, { customItemId, name, weight, price, description }) {
+export function customItemEditRow(
+  colspan,
+  { customItemId, name, weight, price, description },
+) {
   const editing = isCustomFieldsEditorOpen(customItemId);
 
   const body = editing

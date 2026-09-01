@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -82,7 +85,10 @@ export function renderEquippedMelee(selected, data, sheet) {
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML("meleeSlots", `<p class="empty-storage">${t("common.noEquipped")}</p>`);
+    setHTML(
+      "meleeSlots",
+      `<p class="empty-storage">${t("common.noEquipped")}</p>`,
+    );
     return;
   }
 
@@ -158,9 +164,9 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
 
 export function renderStoredMelee(selected, data, sheet) {
   const stored = selected.melee_weapons.filter((w) => !w.is_equipped);
-  const sections = STORAGE_LOCATIONS
-    .map((loc) => renderStorageSection(loc, stored, data, sheet))
-    .join("");
+  const sections = STORAGE_LOCATIONS.map((loc) =>
+    renderStorageSection(loc, stored, data, sheet),
+  ).join("");
   setHTML("meleeStorageList", sections);
 }
 

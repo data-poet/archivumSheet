@@ -4,7 +4,7 @@
 // backdrop, matching the app's design tokens (respects dark theme).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 /**
  * Show a themed confirm dialog.

@@ -3,7 +3,7 @@ import {
   t,
   getEncumbranceLabel,
   getCarryLimitLabel,
-} from "../localization/pt-BR.js";
+} from "../localization/pt-BR/index.js";
 
 // ===== HELPERS =====
 export function getMaterialName(materialId, materials = []) {

@@ -1,4 +1,7 @@
-import { t, getMagicGearLimitReachedLabel } from "../../../localization/pt-BR.js";
+import {
+  t,
+  getMagicGearLimitReachedLabel,
+} from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
   STORAGE_LOCATIONS,
@@ -108,9 +111,9 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
 
 export function renderStoredMagicGear(selected, data, sheet) {
   const stored = selected.magicGear.filter((g) => !g.is_equipped);
-  const sections = STORAGE_LOCATIONS
-    .map((loc) => renderStorageSection(loc, stored, data, sheet))
-    .join("");
+  const sections = STORAGE_LOCATIONS.map((loc) =>
+    renderStorageSection(loc, stored, data, sheet),
+  ).join("");
   setHTML("magicGearStorageList", sections);
 }
 

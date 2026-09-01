@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -14,20 +17,34 @@ function getGearRecord(gearId, survivalGearData) {
 function gearDetailFields(record) {
   if (!record) return [];
   return [
-    { label: t("common.type"),    value: record.adventure_gear_type  ?? "—" },
-    { label: t("common.price"),   value: record.adventure_gear_price != null ? String(record.adventure_gear_price) : "—" },
-    { label: t("common.weight"),  value: record.adventure_gear_weight != null ? String(record.adventure_gear_weight) : "—" },
-    { label: t("survivalGear.observation"), value: formatRichText(record.adventure_gear_observation), rich: true },
+    { label: t("common.type"), value: record.adventure_gear_type ?? "—" },
+    {
+      label: t("common.price"),
+      value:
+        record.adventure_gear_price != null
+          ? String(record.adventure_gear_price)
+          : "—",
+    },
+    {
+      label: t("common.weight"),
+      value:
+        record.adventure_gear_weight != null
+          ? String(record.adventure_gear_weight)
+          : "—",
+    },
+    {
+      label: t("survivalGear.observation"),
+      value: formatRichText(record.adventure_gear_observation),
+      rich: true,
+    },
   ];
 }
 
 function survivalGearLocationSelect(gearId, currentLocation) {
-  const options = STORAGE_LOCATIONS
-    .map(
-      (loc) =>
-        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
-    )
-    .join("");
+  const options = STORAGE_LOCATIONS.map(
+    (loc) =>
+      `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+  ).join("");
   return `<select
     class="survival-gear-location-select"
     data-gear-id="${gearId}"
@@ -40,8 +57,8 @@ function survivalGearLocationSelect(gearId, currentLocation) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function renderSurvivalGear(selected, data, sheet) {
-  const entries          = selected.survivalGear   ?? [];
-  const survivalGearData = data.survivalGear        ?? [];
+  const entries = selected.survivalGear ?? [];
+  const survivalGearData = data.survivalGear ?? [];
 
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderSurvivalGearSection(loc, entries, survivalGearData, sheet),
@@ -60,10 +77,10 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
-        const record         = getGearRecord(entry.adventure_gear_id, survivalGearData);
-        const name           = record?.adventure_gear_name ?? entry.adventure_gear_id;
+        const record = getGearRecord(entry.adventure_gear_id, survivalGearData);
+        const name = record?.adventure_gear_name ?? entry.adventure_gear_id;
         const resolvedBucket = sheet?.inventory?.survivalGear?.[location];
-        const resolvedEntry  = resolvedBucket?.find(
+        const resolvedEntry = resolvedBucket?.find(
           (e) => e.adventure_gear_id === entry.adventure_gear_id,
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";

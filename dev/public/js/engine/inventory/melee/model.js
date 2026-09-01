@@ -4,9 +4,12 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import { nextMeleeInstanceId, nextRangedInstanceId } from "../../../store/instanceId.js";
+import {
+  nextMeleeInstanceId,
+  nextRangedInstanceId,
+} from "../../../store/instanceId.js";
 import { getRangedCounterpart } from "../shared/dualUseWeapons.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
 
 const data = state.data;
@@ -40,7 +43,9 @@ export function updateMeleeTypeOptions() {
   const select = el("meleeTypeFilter");
   if (!select) return;
 
-  const types = [...new Set(data.melee_weapons.map((w) => w.weapon_type))].sort();
+  const types = [
+    ...new Set(data.melee_weapons.map((w) => w.weapon_type)),
+  ].sort();
   const current = select.value;
 
   select.innerHTML =
@@ -66,7 +71,10 @@ export function updateMeleeNameOptions() {
     : data.melee_weapons;
 
   const names = [...new Set(filtered.map((w) => w.weapon_name))];
-  populateSelect(nameSelect, names.map((n) => ({ value: n, label: n })));
+  populateSelect(
+    nameSelect,
+    names.map((n) => ({ value: n, label: n })),
+  );
   updateMeleeTierOptions();
 }
 
@@ -84,7 +92,10 @@ export function updateMeleeTierOptions() {
     ),
   ];
 
-  populateSelect(tierSelect, tiers.map((t) => ({ value: t, label: t })));
+  populateSelect(
+    tierSelect,
+    tiers.map((t) => ({ value: t, label: t })),
+  );
 }
 
 export function updateMeleeMaterialOptions() {
@@ -93,7 +104,10 @@ export function updateMeleeMaterialOptions() {
 
   populateSelect(
     materialSelect,
-    data.materials.map((m) => ({ value: m.material_name, label: m.material_name })),
+    data.materials.map((m) => ({
+      value: m.material_name,
+      label: m.material_name,
+    })),
   );
 }
 
@@ -105,7 +119,11 @@ export function updateMeleeMaterialOptions() {
  * Equip or update a melee weapon instance by its instanceId.
  * Multiple melee weapons can be equipped simultaneously.
  */
-export function equipMelee(instanceId, weaponId, materialId = DEFAULT_MATERIAL_ID) {
+export function equipMelee(
+  instanceId,
+  weaponId,
+  materialId = DEFAULT_MATERIAL_ID,
+) {
   const instance = findMeleeByInstanceId(instanceId);
   if (!instance) return;
 
@@ -160,7 +178,13 @@ function _findLinkedRanged(meleeInstance) {
  * into selected.ranged_weapons with the same storage/equip state, material,
  * and a _linkedInstanceId pointing back to meleeInstanceId.
  */
-function _syncRangedCounterpart(meleeInstanceId, weaponId, materialId, isEquipped, storedAt) {
+function _syncRangedCounterpart(
+  meleeInstanceId,
+  weaponId,
+  materialId,
+  isEquipped,
+  storedAt,
+) {
   const rangedWeaponId = getRangedCounterpart(weaponId);
   if (!rangedWeaponId) return;
 
@@ -220,7 +244,11 @@ export function addEquippedMelee(weaponId, materialId = null) {
 }
 
 /** Add a melee weapon directly to storage (not equipped). */
-export function addStoredMelee(meleeId, materialId = null, storedAt = "backpack") {
+export function addStoredMelee(
+  meleeId,
+  materialId = null,
+  storedAt = "backpack",
+) {
   if (!meleeId) return;
 
   const instanceId = nextMeleeInstanceId();
@@ -297,7 +325,10 @@ export function removeMelee(instanceId) {
  * lookup), same as hit_points_modifier/equip/storage state: a dual-use
  * weapon is one physical item, so renaming it applies on both sides.
  */
-export function saveMeleeCustomFields(instanceId, { name, description, effect }) {
+export function saveMeleeCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findMeleeByInstanceId(instanceId);
   if (!instance) return;
 
@@ -323,5 +354,7 @@ export function saveMeleeCustomFields(instanceId, { name, description, effect })
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findMeleeByInstanceId(instanceId) {
-  return selected.melee_weapons.find((w) => w._instanceId === instanceId) || null;
+  return (
+    selected.melee_weapons.find((w) => w._instanceId === instanceId) || null
+  );
 }

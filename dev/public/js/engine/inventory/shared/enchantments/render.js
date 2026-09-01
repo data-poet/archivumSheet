@@ -26,10 +26,15 @@
  * edit, price shows "—" rather than a stale or guessed number.
  */
 
-import { t } from "../../../../localization/pt-BR.js";
+import { t } from "../../../../localization/pt-BR/index.js";
 import { state } from "../../../../state.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
-import { escapeHtml, escapeAttr, numStepper, formatRichText } from "../../../../shared/renderUtils.js";
+import {
+  escapeHtml,
+  escapeAttr,
+  numStepper,
+  formatRichText,
+} from "../../../../shared/renderUtils.js";
 import {
   getAllowedEnchantments,
   getEnchantmentTypeValues,
@@ -129,7 +134,8 @@ function recordDescriptionMarkup(record) {
 
 const TARGET_PICKER_CONFIG = {
   advantage: {
-    rows: () => data.advantages.filter((a) => a.advantage_type !== RACIAL_TRAIT_TYPE),
+    rows: () =>
+      data.advantages.filter((a) => a.advantage_type !== RACIAL_TRAIT_TYPE),
     filterField: "advantage_type",
     valueField: "advantage_id",
     labelField: "advantage_box_name",
@@ -137,7 +143,9 @@ const TARGET_PICKER_CONFIG = {
   },
   disadvantage: {
     rows: () =>
-      data.disadvantages.filter((d) => d.disadvantage_type !== RACIAL_TRAIT_TYPE),
+      data.disadvantages.filter(
+        (d) => d.disadvantage_type !== RACIAL_TRAIT_TYPE,
+      ),
     filterField: "disadvantage_type",
     valueField: "disadvantage_id",
     labelField: "disadvantage_box_name",

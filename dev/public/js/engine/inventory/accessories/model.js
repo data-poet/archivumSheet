@@ -5,7 +5,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { nextAccessoryInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import {
   addEnchantmentEntry,
   updateEnchantmentEntry,
@@ -94,7 +94,9 @@ export function getAccessoryEquipLimit(accessoryId) {
 
 export function isAccessoryAtEquipLimit(accessoryId) {
   if (!accessoryId) return false;
-  return countEquippedAccessories(accessoryId) >= getAccessoryEquipLimit(accessoryId);
+  return (
+    countEquippedAccessories(accessoryId) >= getAccessoryEquipLimit(accessoryId)
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -130,7 +132,11 @@ export function addEquippedAccessory(accessoryId, price = 0) {
 }
 
 /** Add an accessory directly to storage (not equipped). */
-export function addStoredAccessory(accessoryId, price = 0, storedAt = "backpack") {
+export function addStoredAccessory(
+  accessoryId,
+  price = 0,
+  storedAt = "backpack",
+) {
   if (!accessoryId) return;
 
   selected.accessories.push(
@@ -166,7 +172,10 @@ export function moveAccessory(instanceId, storedAt) {
   if (!instance) return;
 
   if (!storedAt) {
-    if (isAccessoryAtEquipLimit(instance.accessory_id) && !instance.is_equipped) {
+    if (
+      isAccessoryAtEquipLimit(instance.accessory_id) &&
+      !instance.is_equipped
+    ) {
       return;
     }
     instance.is_equipped = true;
@@ -221,7 +230,10 @@ export function updateAccessoryPrice(instanceId, rawValue) {
  * accessoriesEvents.js), never on individual keystrokes. Blank strings are
  * normalized to null.
  */
-export function saveAccessoryCustomFields(instanceId, { name, description, effect }) {
+export function saveAccessoryCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findAccessoryByInstanceId(instanceId);
   if (!instance) return;
 
@@ -326,7 +338,5 @@ export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findAccessoryByInstanceId(instanceId) {
-  return (
-    selected.accessories.find((a) => a._instanceId === instanceId) || null
-  );
+  return selected.accessories.find((a) => a._instanceId === instanceId) || null;
 }

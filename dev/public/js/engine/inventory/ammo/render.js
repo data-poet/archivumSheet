@@ -1,10 +1,16 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
 import { state } from "../../../state.js";
 
-const CONTAINER_STORAGE_LOCATIONS_CARRIABLE     = ["equipped", ...STORAGE_LOCATIONS];
+const CONTAINER_STORAGE_LOCATIONS_CARRIABLE = [
+  "equipped",
+  ...STORAGE_LOCATIONS,
+];
 const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = STORAGE_LOCATIONS.filter(
   (loc) => loc !== "backpack",
 );
@@ -37,18 +43,32 @@ function getContainerRecord(containerId, containerData) {
 function ammoDetailFields(ammoRecord) {
   if (!ammoRecord) return [];
   return [
-    { label: t("ammo.category"),    value: ammoRecord.ammo_category    ?? "—" },
-    { label: t("ammo.price"),       value: ammoRecord.ammo_price != null ? String(ammoRecord.ammo_price) : "—" },
-    { label: t("ammo.weight"),      value: ammoRecord.ammo_weight != null ? String(ammoRecord.ammo_weight) : "—" },
-    { label: t("ammo.effect"),      value: ammoRecord.ammo_effect       ?? "—" },
-    { label: t("ammo.description"), value: formatRichText(ammoRecord.ammo_description), rich: true },
+    { label: t("ammo.category"), value: ammoRecord.ammo_category ?? "—" },
+    {
+      label: t("ammo.price"),
+      value:
+        ammoRecord.ammo_price != null ? String(ammoRecord.ammo_price) : "—",
+    },
+    {
+      label: t("ammo.weight"),
+      value:
+        ammoRecord.ammo_weight != null ? String(ammoRecord.ammo_weight) : "—",
+    },
+    { label: t("ammo.effect"), value: ammoRecord.ammo_effect ?? "—" },
+    {
+      label: t("ammo.description"),
+      value: formatRichText(ammoRecord.ammo_description),
+      rich: true,
+    },
   ];
 }
 
 function compatibleAmmoOptions(containerId, containerData, ammoData) {
   const container = getContainerRecord(containerId, containerData);
   if (!container) return "";
-  const compatible = ammoData.filter((a) => a.ammo_type === container.container_ammo_type);
+  const compatible = ammoData.filter(
+    (a) => a.ammo_type === container.container_ammo_type,
+  );
   if (compatible.length === 0) return `<option value="">—</option>`;
   return compatible
     .map((a) => `<option value="${a.ammo_id}">${a.ammo_name}</option>`)
@@ -87,7 +107,7 @@ function containerMoveOptions(fromInstanceId, allContainers, containerData) {
 
   const options = otherContainers
     .map((c) => {
-      const rec  = getContainerRecord(c.container_id, containerData);
+      const rec = getContainerRecord(c.container_id, containerData);
       const name = rec?.container_box_name ?? c.container_id;
       return `<option value="${c._instanceId}">${name}</option>`;
     })
@@ -102,12 +122,10 @@ function containerMoveOptions(fromInstanceId, allContainers, containerData) {
 // ─── Move select for loose ammo ───────────────────────────────────────────────
 
 function looseAmmoLocationSelect(ammoId, currentLocation) {
-  const options = STORAGE_LOCATIONS
-    .map(
-      (loc) =>
-        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
-    )
-    .join("");
+  const options = STORAGE_LOCATIONS.map(
+    (loc) =>
+      `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+  ).join("");
   return `<select
     class="loose-ammo-location-select"
     data-ammo-id="${ammoId}"
@@ -120,8 +138,8 @@ function looseAmmoLocationSelect(ammoId, currentLocation) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function renderAmmoContainers(selected, data, sheet) {
-  const containers    = selected.ammo_containers;
-  const ammoData      = data.ammo ?? [];
+  const containers = selected.ammo_containers;
+  const ammoData = data.ammo ?? [];
   const containerData = data.ammo_containers ?? [];
 
   if (containers.length === 0) {
@@ -135,52 +153,71 @@ export function renderAmmoContainers(selected, data, sheet) {
   setHTML(
     "ammoContainerList",
     containers
-      .map((inst) => renderContainerSlot(inst, ammoData, containerData, sheet, containers))
+      .map((inst) =>
+        renderContainerSlot(inst, ammoData, containerData, sheet, containers),
+      )
       .join(""),
   );
 }
 
-function renderContainerSlot(inst, ammoData, containerData, sheet, allContainers) {
+function renderContainerSlot(
+  inst,
+  ammoData,
+  containerData,
+  sheet,
+  allContainers,
+) {
   const containerRecord = getContainerRecord(inst.container_id, containerData);
-  const resolved        = resolvedContainer(sheet, inst._instanceId);
-  const instanceId      = inst._instanceId;
+  const resolved = resolvedContainer(sheet, inst._instanceId);
+  const instanceId = inst._instanceId;
 
   const displayName = containerRecord?.container_box_name ?? inst.container_id;
-  const capacity    = containerRecord?.container_capacity ? parseInt(containerRecord.container_capacity, 10) : "?";
-  const ammoType    = containerRecord?.container_ammo_type ?? "?";
+  const capacity = containerRecord?.container_capacity
+    ? parseInt(containerRecord.container_capacity, 10)
+    : "?";
+  const ammoType = containerRecord?.container_ammo_type ?? "?";
   const isCarriable = containerRecord?.is_carriable === "TRUE";
 
   const usedCap =
     resolved?.used_capacity ??
     inst.contents.reduce((s, e) => s + e.quantity, 0);
   const remainingCap =
-    resolved?.remaining_capacity ?? (typeof capacity === "number" ? capacity - usedCap : 0);
+    resolved?.remaining_capacity ??
+    (typeof capacity === "number" ? capacity - usedCap : 0);
   const totalWeight = resolved?.total_weight ?? "—";
 
   // Contents rows
   const contentsRows =
     inst.contents.length === 0
       ? `<tr class="empty-row"><td colspan="3">${t("common.empty")}</td></tr>`
-      : inst.contents.map((entry) => {
-          const lineWeight =
-            resolved?.contents?.find((c) => c.ammo_id === entry.ammo_id)?.line_weight ?? "—";
-          const ammoRecord  = getAmmoRecord(entry.ammo_id, ammoData);
-          const maxForEntry = (typeof capacity === "number")
-            ? capacity - inst.contents.filter((e) => e.ammo_id !== entry.ammo_id).reduce((s, e) => s + e.quantity, 0)
-            : undefined;
+      : inst.contents
+          .map((entry) => {
+            const lineWeight =
+              resolved?.contents?.find((c) => c.ammo_id === entry.ammo_id)
+                ?.line_weight ?? "—";
+            const ammoRecord = getAmmoRecord(entry.ammo_id, ammoData);
+            const maxForEntry =
+              typeof capacity === "number"
+                ? capacity -
+                  inst.contents
+                    .filter((e) => e.ammo_id !== entry.ammo_id)
+                    .reduce((s, e) => s + e.quantity, 0)
+                : undefined;
 
-          // Build move-to-container select for this ammo entry
-          const moveSelectHtml = (() => {
-            const other = allContainers.filter((c) => c._instanceId !== instanceId);
-            if (other.length === 0) return "";
-            const opts = other
-              .map((c) => {
-                const rec  = getContainerRecord(c.container_id, containerData);
-                const name = rec?.container_box_name ?? c.container_id;
-                return `<option value="${c._instanceId}">${name}</option>`;
-              })
-              .join("");
-            return `<select
+            // Build move-to-container select for this ammo entry
+            const moveSelectHtml = (() => {
+              const other = allContainers.filter(
+                (c) => c._instanceId !== instanceId,
+              );
+              if (other.length === 0) return "";
+              const opts = other
+                .map((c) => {
+                  const rec = getContainerRecord(c.container_id, containerData);
+                  const name = rec?.container_box_name ?? c.container_id;
+                  return `<option value="${c._instanceId}">${name}</option>`;
+                })
+                .join("");
+              return `<select
                 class="ammo-in-container-move-select"
                 data-from-instance-id="${instanceId}"
                 data-ammo-id="${entry.ammo_id}"
@@ -188,9 +225,9 @@ function renderContainerSlot(inst, ammoData, containerData, sheet, allContainers
                 <option value="">↪ ${t("common.storage")}</option>
                 ${opts}
               </select>`;
-          })();
+            })();
 
-          return `
+            return `
             <tr>
               <td>${getAmmoName(entry.ammo_id, ammoData)}</td>
               <td class="col-num">
@@ -220,9 +257,14 @@ function renderContainerSlot(inst, ammoData, containerData, sheet, allContainers
               </td>
             </tr>
             ${detailRow(3, ammoDetailFields(ammoRecord))}`;
-        }).join("");
+          })
+          .join("");
 
-  const compatOptions = compatibleAmmoOptions(inst.container_id, containerData, ammoData);
+  const compatOptions = compatibleAmmoOptions(
+    inst.container_id,
+    containerData,
+    ammoData,
+  );
 
   return `
     <div class="equipped-slot-grid ammo-container-slot">
@@ -280,7 +322,7 @@ function renderContainerSlot(inst, ammoData, containerData, sheet, allContainers
 
 export function renderLooseAmmo(selected, data, sheet) {
   const looseAmmo = selected.loose_ammo ?? [];
-  const ammoData  = data.ammo ?? [];
+  const ammoData = data.ammo ?? [];
 
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderLooseSection(loc, looseAmmo, ammoData, sheet),
@@ -298,12 +340,14 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
   } else {
     bodyRows = entries
       .map((entry) => {
-        const ammoRecord   = getAmmoRecord(entry.ammo_id, ammoData);
-        const ammoName     = ammoRecord?.ammo_name ?? entry.ammo_id;
-        const ammoType     = ammoRecord?.ammo_type ?? "—";
+        const ammoRecord = getAmmoRecord(entry.ammo_id, ammoData);
+        const ammoName = ammoRecord?.ammo_name ?? entry.ammo_id;
+        const ammoType = ammoRecord?.ammo_type ?? "—";
         const resolvedLoose = sheet?.inventory?.ammo?.loose?.[location];
-        const resolvedEntry = resolvedLoose?.find((e) => e.ammo_id === entry.ammo_id);
-        const totalWeight   = resolvedEntry?.total_weight ?? "—";
+        const resolvedEntry = resolvedLoose?.find(
+          (e) => e.ammo_id === entry.ammo_id,
+        );
+        const totalWeight = resolvedEntry?.total_weight ?? "—";
 
         return `
           <tr>

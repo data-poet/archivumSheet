@@ -1,4 +1,4 @@
-import { getElementalResistanceLabel } from "../localization/pt-BR.js";
+import { getElementalResistanceLabel } from "../localization/pt-BR/index.js";
 
 // The engine works entirely in raw decimal multipliers (1 = normal damage,
 // 2 = double damage, 0.5 = half damage — same unit for race_base, modifier,

@@ -4,7 +4,7 @@
 // Called from main.js (init) and after any character list mutation.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 import {
   listCharacters,
   getActiveCharacterId,

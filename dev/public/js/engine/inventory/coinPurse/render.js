@@ -1,4 +1,4 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 
@@ -6,7 +6,7 @@ import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────────────────────
 
-const COIN_TYPES     = ["copper", "silver", "gold"];
+const COIN_TYPES = ["copper", "silver", "gold"];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -51,10 +51,10 @@ function renderCoinSection(location, coins, sheet) {
   } else {
     bodyRows = entries
       .map((entry) => {
-        const bucket   = sheet?.inventory?.coinPurse?.[location] ?? [];
+        const bucket = sheet?.inventory?.coinPurse?.[location] ?? [];
         const resolved = bucket.find((e) => e.coin_type === entry.coin_type);
         const totalWeight = resolved?.total_weight ?? "—";
-        const totalValue  = resolved?.total_value  ?? "—";
+        const totalValue = resolved?.total_value ?? "—";
 
         return `
           <tr>
@@ -151,8 +151,5 @@ export function renderCoinPurse(selected, data, sheet) {
     renderCoinSection(loc, coins, sheet),
   ).join("");
 
-  setHTML(
-    "coinPurseList",
-    `${renderAddForm()}${sections}`,
-  );
+  setHTML("coinPurseList", `${renderAddForm()}${sections}`);
 }

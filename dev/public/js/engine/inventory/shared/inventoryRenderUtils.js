@@ -1,4 +1,4 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { calcMaxHp, calcActualHp, resolveMaterial } from "./durabilityUtils.js";
 
 /**
@@ -13,7 +13,7 @@ export function hpModifierBlock({
   cssClass,
   dataAttrs = "",
 }) {
-  const maxHp    = calcMaxHp(baseHp, material);
+  const maxHp = calcMaxHp(baseHp, material);
   const actualHp = calcActualHp(maxHp, hpModifier);
 
   return `
@@ -43,7 +43,7 @@ export function hpModifierBlock({
  */
 export function resolveHp(instance, baseHp, materials) {
   const material = resolveMaterial(instance, materials);
-  const maxHp    = calcMaxHp(baseHp, material);
+  const maxHp = calcMaxHp(baseHp, material);
   const actualHp = calcActualHp(maxHp, instance?.hit_points_modifier);
   return { maxHp, actualHp, material };
 }

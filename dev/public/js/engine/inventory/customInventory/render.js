@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { customItemEditRow } from "../../../shared/renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -8,12 +11,10 @@ import { customItemEditRow } from "../../../shared/renderUtils.js";
 // ─────────────────────────────────────────────────────────────────────────────
 
 function customItemLocationSelect(customItemId, currentLocation) {
-  const options = STORAGE_LOCATIONS
-    .map(
-      (loc) =>
-        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
-    )
-    .join("");
+  const options = STORAGE_LOCATIONS.map(
+    (loc) =>
+      `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+  ).join("");
   return `<select
     class="custom-item-location-select"
     data-custom-item-id="${customItemId}"
@@ -49,7 +50,7 @@ function renderCustomInventorySection(location, entries, sheet) {
     bodyRows = sectionEntries
       .map((entry) => {
         const resolvedBucket = sheet?.inventory?.customInventory?.[location];
-        const resolvedEntry  = resolvedBucket?.find(
+        const resolvedEntry = resolvedBucket?.find(
           (e) => e.custom_item_id === entry.custom_item_id,
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";

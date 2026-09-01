@@ -1,7 +1,7 @@
 // constants.js
 // All labels come from the localization file — never hardcoded here.
 
-import { LABELS } from "../localization/pt-BR.js";
+import { LABELS } from "../localization/pt-BR/index.js";
 
 // ===== STORAGE LOCATIONS =====
 export const STORAGE_LOCATIONS = ["backpack", "stash", "camp"];
