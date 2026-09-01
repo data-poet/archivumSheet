@@ -35,6 +35,7 @@ function buildSheet({
     skills: character.skills,
     carry_weight: null,
     raceModifiers: race.modifiers || {},
+    raceElementalMultipliers: race.elemental_modifiers || {},
     innateAdvantageIds: race.innate_advantage_ids || [],
     innateDisadvantageIds: race.innate_disadvantage_ids || [],
   });
@@ -103,6 +104,7 @@ function buildSheet({
     skills: character.skills,
     carry_weight: inventoryResult.inventory.carry_weight,
     raceModifiers: race.modifiers || {},
+    raceElementalMultipliers: race.elemental_modifiers || {},
     innateAdvantageIds: race.innate_advantage_ids || [],
     innateDisadvantageIds: race.innate_disadvantage_ids || [],
     enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
