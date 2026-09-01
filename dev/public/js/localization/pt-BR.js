@@ -67,6 +67,7 @@ export const LABELS = {
       primary: "Primários",
       secondary: "Secundários",
       baseDamage: "Dano Base",
+      resistances: "Resistências",
     },
     traits: {
       advantages: "Vantagens",
@@ -154,6 +155,7 @@ export const LABELS = {
     totalWeight: "Peso Total",
     totalValue: "Valor Total",
     secondarySnapshot: "Atributos Secundários",
+    elementalResistances: "Resistências Elementais",
     baseWeightLabel: "Peso Base (kg):",
     armorWeight: "Armadura",
     shieldWeight: "Escudo",
@@ -180,6 +182,8 @@ export const LABELS = {
     type: "Tipo",
     dice: "Dados",
     baseMod: "Mod. Base",
+    modifierPercent: "Modificador (%)",
+    finalDamageReceived: "Dano Final Recebido",
   },
 
   // ── Character info fields ──────────────────────────────────────────────────
@@ -218,6 +222,20 @@ export const LABELS = {
     BasicSpeed: "Velocidade Básica",
     Movement: "Deslocamento",
     Dodge: "Esquiva",
+  },
+
+  // ── Elemental damage resistance types ──────────────────────────────────────
+  elementalResistances: {
+    Fire: "Fogo",
+    Water: "Água",
+    Earth: "Terra",
+    Air: "Ar",
+    Electricity: "Eletricidade",
+    Corrosion: "Corrosão",
+    Necrotic: "Necrótico",
+    Holy: "Sagrado",
+    Void: "Vazio",
+    Arcane: "Arcano",
   },
 
   // ── Traits (advantages, disadvantages, skills, spells) ────────────────────
@@ -644,6 +662,10 @@ export function t(path, fallback = "") {
 
 export function getSecondaryAttributeLabel(key) {
   return LABELS.secondaryAttributes[key] ?? key;
+}
+
+export function getElementalResistanceLabel(key) {
+  return LABELS.elementalResistances[key] ?? key;
 }
 
 export function getEncumbranceLabel(key) {
