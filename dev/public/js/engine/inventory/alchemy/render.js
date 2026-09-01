@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -14,27 +17,52 @@ function getConsumableRecord(consumableId, alchemyData) {
 function consumableDetailFields(record) {
   if (!record) return [];
   return [
-    { label: t("alchemy.type"),        value: record.consumable_type        ?? "—" },
-    { label: t("alchemy.category"),    value: record.consumable_category    ?? "—" },
-    { label: t("alchemy.duration"),    value: record.consumable_duration    ?? "—" },
-    { label: t("alchemy.effect"),      value: record.consumable_effect      ?? "—" },
-    { label: t("alchemy.toxicity"),    value: record.consumable_toxicity != null ? String(record.consumable_toxicity) : "—" },
-    { label: t("alchemy.method"),      value: record.consumable_method      ?? "—" },
-    { label: t("alchemy.effectArea"),  value: record.consumable_effect_area ?? "—" },
-    { label: t("common.price"),        value: record.consumable_price != null ? String(record.consumable_price) : "—" },
-    { label: t("common.weight"),       value: record.consumable_weight != null ? String(record.consumable_weight) : "—" },
-    { label: t("alchemy.description"), value: formatRichText(record.consumable_description), rich: true },
-    { label: t("alchemy.observation"), value: formatRichText(record.consumable_observation), rich: true },
+    { label: t("alchemy.type"), value: record.consumable_type ?? "—" },
+    { label: t("alchemy.category"), value: record.consumable_category ?? "—" },
+    { label: t("alchemy.duration"), value: record.consumable_duration ?? "—" },
+    { label: t("alchemy.effect"), value: record.consumable_effect ?? "—" },
+    {
+      label: t("alchemy.toxicity"),
+      value:
+        record.consumable_toxicity != null
+          ? String(record.consumable_toxicity)
+          : "—",
+    },
+    { label: t("alchemy.method"), value: record.consumable_method ?? "—" },
+    {
+      label: t("alchemy.effectArea"),
+      value: record.consumable_effect_area ?? "—",
+    },
+    {
+      label: t("common.price"),
+      value:
+        record.consumable_price != null ? String(record.consumable_price) : "—",
+    },
+    {
+      label: t("common.weight"),
+      value:
+        record.consumable_weight != null
+          ? String(record.consumable_weight)
+          : "—",
+    },
+    {
+      label: t("alchemy.description"),
+      value: formatRichText(record.consumable_description),
+      rich: true,
+    },
+    {
+      label: t("alchemy.observation"),
+      value: formatRichText(record.consumable_observation),
+      rich: true,
+    },
   ];
 }
 
 function alchemyLocationSelect(consumableId, currentLocation) {
-  const options = STORAGE_LOCATIONS
-    .map(
-      (loc) =>
-        `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
-    )
-    .join("");
+  const options = STORAGE_LOCATIONS.map(
+    (loc) =>
+      `<option value="${loc}" ${loc === currentLocation ? "selected" : ""}>${t(`storage.${loc}`)}</option>`,
+  ).join("");
   return `<select
     class="alchemy-location-select"
     data-consumable-id="${consumableId}"
@@ -47,8 +75,8 @@ function alchemyLocationSelect(consumableId, currentLocation) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function renderAlchemy(selected, data, sheet) {
-  const entries     = selected.alchemy ?? [];
-  const alchemyData = data.alchemy     ?? [];
+  const entries = selected.alchemy ?? [];
+  const alchemyData = data.alchemy ?? [];
 
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderAlchemySection(loc, entries, alchemyData, sheet),
@@ -67,11 +95,11 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
-        const record         = getConsumableRecord(entry.consumable_id, alchemyData);
-        const name           = record?.consumable_name ?? entry.consumable_id;
-        const tier           = record?.consumable_tier ?? "—";
+        const record = getConsumableRecord(entry.consumable_id, alchemyData);
+        const name = record?.consumable_name ?? entry.consumable_id;
+        const tier = record?.consumable_tier ?? "—";
         const resolvedBucket = sheet?.inventory?.alchemy?.[location];
-        const resolvedEntry  = resolvedBucket?.find(
+        const resolvedEntry = resolvedBucket?.find(
           (e) => e.consumable_id === entry.consumable_id,
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";

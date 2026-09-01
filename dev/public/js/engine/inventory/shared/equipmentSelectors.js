@@ -1,4 +1,4 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 
 /**
@@ -29,8 +29,7 @@ export function equippedMoveSelect(cssClass, dataAttrs = "") {
     <select class="${cssClass}" ${dataAttrs}>
       <option value="">${t("storage.equipped")}</option>
       ${STORAGE_LOCATIONS.map(
-        (loc) =>
-          `<option value="${loc}">${t(`storage.${loc}`)}</option>`,
+        (loc) => `<option value="${loc}">${t(`storage.${loc}`)}</option>`,
       ).join("")}
     </select>
   `;

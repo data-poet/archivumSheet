@@ -8,14 +8,14 @@
  * This is generated (unlike the main sheet, where every section's HTML is
  * hand-written in index.html) because reference sections are uniform:
  * just a title, tabs, and prose. Adding a new reference section is then
- * config-only (see the comment in localization/pt-BR.js) — no HTML edits.
+ * config-only (see the comment in localization/pt-BR/index.js) — no HTML edits.
  *
  * Reuses the exact classes the main sheet uses for its own sections
  * (.l-section, .box, .tab-strip, .tab-btn, .tab-panel) so styling and the
  * [data-section] accent-color mechanism in style.css apply for free.
  */
 
-import { LABELS } from "../localization/pt-BR.js";
+import { LABELS } from "../localization/pt-BR/index.js";
 
 const MAIN_ID = "reference-main";
 

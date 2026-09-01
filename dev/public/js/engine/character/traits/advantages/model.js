@@ -3,7 +3,7 @@ import { fetchAdvantages } from "../../../../api.js";
 import { renderAdvantages } from "../render.js";
 import { snapshotAll, restoreAll } from "../../../../shared/openState.js";
 import { triggerAutoRun } from "../../../../compute/autorun.js";
-import { t } from "../../../../localization/pt-BR.js";
+import { t } from "../../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../../components/undo.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
 

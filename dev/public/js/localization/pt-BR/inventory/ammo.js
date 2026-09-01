@@ -1,0 +1,28 @@
+// localization/pt-BR/inventory/ammo.js
+// ─────────────────────────────────────────────────────────────────────────────
+// Equipment: Ammo — mirrors engine/inventory/ammo.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const AMMO = {
+  loadAmmo: "Carregar Munição",
+  addContainer: "Adicionar Aljava",
+  addLooseAmmo: "Adicionar Solta",
+  addAmmo: "Adicionar",
+  containers: "Aljavas",
+  looseAmmo: "Munição Solta",
+  noContainers: "Nenhuma aljava adicionada",
+  containerFull: "Aljava cheia",
+  notCarriable: "Não carregável",
+  capacity: "Capacidade",
+  qty: "Qtd.",
+  containerTypeFilter: "— Tipo —",
+  selectContainer: "— Aljava —",
+  selectAmmo: "— Munição —",
+  equippedAmmo: "Munição Equipada",
+  ammoWeight: "Munição",
+  category: "Categoria",
+  price: "Preço",
+  weight: "Peso",
+  effect: "Efeito",
+  description: "Descrição",
+};

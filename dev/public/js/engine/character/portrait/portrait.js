@@ -12,7 +12,7 @@
 
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { showToast } from "../../../store/persistence.js";
 import { showConfirm } from "../../../components/dialog.js";
 

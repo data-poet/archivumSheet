@@ -1,5 +1,5 @@
 import { setHTML } from "../../../shared/dom.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { formatRichText, detailRow } from "../../../shared/renderUtils.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -52,13 +52,18 @@ export function renderAdvantages(selected, data, sheet) {
             ${actionCell}
           </tr>
           ${detailRow(4, [
-            { label: t("traits.source"), value: book !== "—" ? `${book} p.${page}` : "—" },
+            {
+              label: t("traits.source"),
+              value: book !== "—" ? `${book} p.${page}` : "—",
+            },
             { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
 
-  setHTML("advList", `
+  setHTML(
+    "advList",
+    `
     <div class="table-wrapper"><table>
       <thead>
         <tr>
@@ -70,7 +75,8 @@ export function renderAdvantages(selected, data, sheet) {
       </thead>
       <tbody>${rows}</tbody>
     </table></div>
-  `);
+  `,
+  );
 }
 
 // ===== DISADVANTAGES =====
@@ -84,7 +90,9 @@ export function renderDisadvantages(selected, data, sheet) {
       ? emptyRow(4)
       : ids
           .map((id) => {
-            const dis = data.disadvantages?.find((d) => d.disadvantage_id === id);
+            const dis = data.disadvantages?.find(
+              (d) => d.disadvantage_id === id,
+            );
             const sheetEntry = disMap[id];
             const name = dis?.disadvantage_box_name ?? sheetEntry?.name ?? id;
             const isInnate = sheetEntry?.is_race_innate ?? false;
@@ -115,13 +123,18 @@ export function renderDisadvantages(selected, data, sheet) {
             ${actionCell}
           </tr>
           ${detailRow(4, [
-            { label: t("traits.source"), value: book !== "—" ? `${book} p.${page}` : "—" },
+            {
+              label: t("traits.source"),
+              value: book !== "—" ? `${book} p.${page}` : "—",
+            },
             { label: t("traits.description"), value: desc, rich: true },
           ])}`;
           })
           .join("");
 
-  setHTML("disList", `
+  setHTML(
+    "disList",
+    `
     <div class="table-wrapper"><table>
       <thead>
         <tr>
@@ -133,5 +146,6 @@ export function renderDisadvantages(selected, data, sheet) {
       </thead>
       <tbody>${rows}</tbody>
     </table></div>
-  `);
+  `,
+  );
 }

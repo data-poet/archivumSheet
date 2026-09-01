@@ -24,17 +24,17 @@
  */
 
 import { isViewMode, setViewMode } from "../store/viewModeState.js";
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BTN_ID      = "view-mode-btn";
-const PANEL_ID    = "tab-char-resume";    // the single resume panel node
-const TARGET_ID   = "view-mode-resume";   // view-mode container
+const BTN_ID = "view-mode-btn";
+const PANEL_ID = "tab-char-resume"; // the single resume panel node
+const TARGET_ID = "view-mode-resume"; // view-mode container
 const EDIT_HOST_ID = "resume-panel-host"; // edit-mode anchor (empty div in HTML)
-const BODY_CLASS  = "is-view-mode";
+const BODY_CLASS = "is-view-mode";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Internal helpers
@@ -48,7 +48,7 @@ const BODY_CLASS  = "is-view-mode";
  * @param {boolean} viewMode
  */
 function _movePanel(viewMode) {
-  const panel  = document.getElementById(PANEL_ID);
+  const panel = document.getElementById(PANEL_ID);
   const target = document.getElementById(viewMode ? TARGET_ID : EDIT_HOST_ID);
   if (!panel || !target) return;
   if (panel.parentElement === target) return; // already in the right place
@@ -65,8 +65,8 @@ function applyMode(viewMode) {
   const btn = document.getElementById(BTN_ID);
   if (btn) {
     btn.textContent = viewMode
-      ? t("viewMode.btnEdit")   // 📝
-      : t("viewMode.btnView");  // 📃
+      ? t("viewMode.btnEdit") // 📝
+      : t("viewMode.btnView"); // 📃
     btn.setAttribute(
       "aria-label",
       viewMode ? t("viewMode.ariaEdit") : t("viewMode.ariaView"),

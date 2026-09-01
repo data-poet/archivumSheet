@@ -4,10 +4,13 @@ import {
   getCarryLimitLabel,
   getSecondaryAttributeLabel,
   getElementalResistanceLabel,
-} from "../localization/pt-BR.js";
+} from "../localization/pt-BR/index.js";
 import { decimalToPercent } from "./resistances.js";
 import { el } from "../shared/dom.js";
-import { calcMaxHp, calcActualHp } from "../engine/inventory/shared/durabilityUtils.js";
+import {
+  calcMaxHp,
+  calcActualHp,
+} from "../engine/inventory/shared/durabilityUtils.js";
 import { renderResumeImage } from "../engine/character/portrait/portrait.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -25,12 +28,12 @@ const _collapseOpen = new Map();
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ARMOR_SLOTS = [
-  { key: "head",  label: "Cabeça" },
+  { key: "head", label: "Cabeça" },
   { key: "torso", label: "Tronco" },
-  { key: "arms",  label: "Braços" },
+  { key: "arms", label: "Braços" },
   { key: "hands", label: "Mãos" },
-  { key: "legs",  label: "Pernas" },
-  { key: "feet",  label: "Pés" },
+  { key: "legs", label: "Pernas" },
+  { key: "feet", label: "Pés" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -72,7 +75,7 @@ function renderResumeHeader(sheet) {
   if (!nameEl) return;
 
   const charName = sheet?.pc?.character_name || "";
-  const subRace  = sheet?.race?.race_sub_name || "";
+  const subRace = sheet?.race?.race_sub_name || "";
   const separator = charName && subRace ? " | " : "";
 
   nameEl.textContent = charName + separator + subRace;
@@ -87,14 +90,17 @@ function renderResumePrimaryAttributes(sheet) {
   if (!container) return;
 
   const primary = sheet?.character?.primary_attributes;
-  if (!primary) { container.innerHTML = ""; return; }
+  if (!primary) {
+    container.innerHTML = "";
+    return;
+  }
 
   const attrs = ["ST", "DX", "IQ", "HT"];
 
   container.innerHTML = attrs
     .map((key) => {
-      const value   = primary[key]?.value ?? "—";
-      const modVal  = primary[key]?.modifier ?? 0;
+      const value = primary[key]?.value ?? "—";
+      const modVal = primary[key]?.modifier ?? 0;
       return `
         <div class="resume-attr-box">
           <span class="resume-attr-acronym">${key}</span>
@@ -123,7 +129,13 @@ function renderResumePrimaryAttributes(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SECONDARY_SNAPSHOT_KEYS = [
-  "Will", "Vision", "Hearing", "Smell", "BasicSpeed", "Movement", "Dodge",
+  "Will",
+  "Vision",
+  "Hearing",
+  "Smell",
+  "BasicSpeed",
+  "Movement",
+  "Dodge",
 ];
 
 function renderResumeSecondarySnapshot(sheet) {
@@ -131,16 +143,18 @@ function renderResumeSecondarySnapshot(sheet) {
   if (!container) return;
 
   const sec = sheet?.character?.secondary_attributes;
-  if (!sec) { container.innerHTML = ""; return; }
+  if (!sec) {
+    container.innerHTML = "";
+    return;
+  }
 
   const rows = SECONDARY_SNAPSHOT_KEYS.map((key) => {
     const attr = sec[key];
     if (!attr) return "";
     const isBasicSpeed = key === "BasicSpeed";
-    const value =
-      isBasicSpeed
-        ? Number(attr.value).toFixed(2)
-        : (attr.value ?? "—");
+    const value = isBasicSpeed
+      ? Number(attr.value).toFixed(2)
+      : (attr.value ?? "—");
     const modifierStep = isBasicSpeed ? 0.5 : 1;
     const rawMod = attr.modifier ?? 0;
 
@@ -190,9 +204,14 @@ function renderResumeBars(sheet) {
   const attrs = sheet?.character?.secondary_attributes;
   if (!attrs) return;
 
-  _renderBar("resume_bar_hp",       attrs.HP,       "resume-bar--hp",       "HP");
-  _renderBar("resume_bar_mana",     attrs.Mana,     "resume-bar--mana",     "Mana");
-  _renderBar("resume_bar_toxicity", attrs.Toxicity, "resume-bar--toxicity", "Toxicity");
+  _renderBar("resume_bar_hp", attrs.HP, "resume-bar--hp", "HP");
+  _renderBar("resume_bar_mana", attrs.Mana, "resume-bar--mana", "Mana");
+  _renderBar(
+    "resume_bar_toxicity",
+    attrs.Toxicity,
+    "resume-bar--toxicity",
+    "Toxicity",
+  );
 }
 
 function _renderBar(containerId, attr, modifierClass, attrName) {
@@ -204,17 +223,18 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
   // wasn't folded into the bar's max, so equipped items that boost HP/Mana/
   // Toxicity didn't show up here even though they were applied everywhere
   // else on the sheet.
-  const finalBase  = attr.final_base_value ?? ((attr.base_value ?? 0) + (attr.bought ?? 0) * 4);
+  const finalBase =
+    attr.final_base_value ?? (attr.base_value ?? 0) + (attr.bought ?? 0) * 4;
   const enchantMod = attr.enchantment_modifier ?? 0;
-  const total       = finalBase + enchantMod;
+  const total = finalBase + enchantMod;
 
   // `modifier` here tracks missing/spent points (always ≤ 0 — enforced in
   // traits/events.js), so current = total + modifier, clamped so the bar
   // never reads negative even if someone is below 0.
-  const rawMod  = attr.modifier ?? 0;
+  const rawMod = attr.modifier ?? 0;
   const current = Math.max(0, total + rawMod);
-  const pct     = total > 0 ? Math.round((current / total) * 100) : 0;
-  const label   = getSecondaryAttributeLabel(attrName);
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  const label = getSecondaryAttributeLabel(attrName);
 
   container.innerHTML = `
     <div class="resume-bar-header">
@@ -269,7 +289,10 @@ function renderResumeElementalResistances(sheet) {
   const container = el("resume_elemental_resistances_container");
   if (!container) return;
 
-  if (entries.length === 0) { container.hidden = true; return; }
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = entries
@@ -307,7 +330,7 @@ function renderResumeElementalResistances(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeTraits(sheet) {
-  const advantages    = sheet?.character?.advantages    || {};
+  const advantages = sheet?.character?.advantages || {};
   const disadvantages = sheet?.character?.disadvantages || {};
 
   _renderCollapsibleNameList(
@@ -327,12 +350,15 @@ function renderResumeTraits(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeSkills(sheet) {
-  const skills  = sheet?.character?.skills || {};
+  const skills = sheet?.character?.skills || {};
   const entries = Object.values(skills);
   const container = el("resume_skills_container");
   if (!container) return;
 
-  if (entries.length === 0) { container.hidden = true; return; }
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = entries
@@ -374,19 +400,22 @@ function renderResumeSkills(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeMagic(sheet, data) {
-  const spells   = sheet?.grimoire || {};
+  const spells = sheet?.grimoire || {};
   const spellsDb = data?.spells ?? [];
-  const entries  = Object.entries(spells);
+  const entries = Object.entries(spells);
   const container = el("resume_magic_container");
   if (!container) return;
 
-  if (entries.length === 0) { container.hidden = true; return; }
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = entries
     .map(([id, s]) => {
       const dbRow = spellsDb.find((r) => r.spell_id === id);
-      const cost  = dbRow?.spell_cost ?? "—";
+      const cost = dbRow?.spell_cost ?? "—";
       return `
         <tr>
           <td>${s.name ?? "—"}</td>
@@ -422,12 +451,15 @@ function renderResumeMagic(sheet, data) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeArmor(sheet) {
-  const equipped  = sheet?.inventory?.armor?.equipped || {};
+  const equipped = sheet?.inventory?.armor?.equipped || {};
   const container = el("resume_armor_container");
   if (!container) return;
 
   const hasAny = ARMOR_SLOTS.some((s) => equipped[s.key] != null);
-  if (!hasAny) { container.hidden = true; return; }
+  if (!hasAny) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = ARMOR_SLOTS.map(({ key, label }) => {
@@ -435,19 +467,20 @@ function renderResumeArmor(sheet) {
     if (!piece) {
       return `<tr><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
     }
-    const dr        = piece.armor_final_damage_resistance ?? "—";
-    const maxHp     = piece.armor_final_hit_points ?? 0;
-    const modifier  = piece.hit_points_modifier ?? 0;
-    const actualHp  = calcActualHp(maxHp, modifier);
-    const hpCell    = maxHp > 0
-      ? _hpStepperCell({
-          cssClass:  "resume-armor-hp",
-          dataAttrs: `data-slot="${label}"`,
-          maxHp,
-          modifier,
-          actualHp,
-        })
-      : `<td></td>`;
+    const dr = piece.armor_final_damage_resistance ?? "—";
+    const maxHp = piece.armor_final_hit_points ?? 0;
+    const modifier = piece.hit_points_modifier ?? 0;
+    const actualHp = calcActualHp(maxHp, modifier);
+    const hpCell =
+      maxHp > 0
+        ? _hpStepperCell({
+            cssClass: "resume-armor-hp",
+            dataAttrs: `data-slot="${label}"`,
+            maxHp,
+            modifier,
+            actualHp,
+          })
+        : `<td></td>`;
 
     return `<tr><td>${label}</td><td class="col-num">${dr}</td>${hpCell}</tr>`;
   }).join("");
@@ -478,27 +511,31 @@ function renderResumeArmor(sheet) {
 
 function renderResumeShield(sheet) {
   const equippedShield = sheet?.inventory?.shield?.equipped;
-  const container      = el("resume_shield_container");
+  const container = el("resume_shield_container");
   if (!container) return;
 
-  if (!equippedShield) { container.hidden = true; return; }
+  if (!equippedShield) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
-  const dr       = equippedShield.shield_final_damage_resistance ?? "—";
-  const block    = equippedShield.block ?? "—";
-  const maxHp    = equippedShield.shield_final_hit_points ?? 0;
+  const dr = equippedShield.shield_final_damage_resistance ?? "—";
+  const block = equippedShield.block ?? "—";
+  const maxHp = equippedShield.shield_final_hit_points ?? 0;
   const modifier = equippedShield.hit_points_modifier ?? 0;
   const actualHp = calcActualHp(maxHp, modifier);
 
-  const hpCell = maxHp > 0
-    ? _hpStepperCell({
-        cssClass:  "resume-shield-hp",
-        dataAttrs: "",
-        maxHp,
-        modifier,
-        actualHp,
-      })
-    : `<td></td>`;
+  const hpCell =
+    maxHp > 0
+      ? _hpStepperCell({
+          cssClass: "resume-shield-hp",
+          dataAttrs: "",
+          maxHp,
+          modifier,
+          actualHp,
+        })
+      : `<td></td>`;
 
   container.innerHTML = `
     ${_collapsibleHeader(t("sections.shields"))}
@@ -533,34 +570,39 @@ function renderResumeShield(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeMelee(sheet) {
-  const equipped  = sheet?.inventory?.melee?.equipped ?? [];
+  const equipped = sheet?.inventory?.melee?.equipped ?? [];
   const container = el("resume_melee_container");
   if (!container) return;
 
-  if (equipped.length === 0) { container.hidden = true; return; }
+  if (equipped.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = equipped
     .map((w) => {
-      const maxHp    = w.final_hit_points != null
-        ? w.final_hit_points - (w.hit_points_modifier ?? 0)
-        : 0;
+      const maxHp =
+        w.final_hit_points != null
+          ? w.final_hit_points - (w.hit_points_modifier ?? 0)
+          : 0;
       // final_hit_points = maxHp + modifier, so maxHp = final - modifier
       // but safer to use weapon_final_hit_points from resolver if available
-      const baseMaxHp  = w.weapon_final_hit_points ?? maxHp;
-      const modifier   = w.hit_points_modifier ?? 0;
-      const actualHp   = calcActualHp(baseMaxHp, modifier);
+      const baseMaxHp = w.weapon_final_hit_points ?? maxHp;
+      const modifier = w.hit_points_modifier ?? 0;
+      const actualHp = calcActualHp(baseMaxHp, modifier);
       const instanceId = w._instanceId ?? "";
 
-      const hpCell = baseMaxHp > 0
-        ? _hpStepperCell({
-            cssClass:  "resume-melee-hp",
-            dataAttrs: `data-instance-id="${instanceId}"`,
-            maxHp:     baseMaxHp,
-            modifier,
-            actualHp,
-          })
-        : `<td></td>`;
+      const hpCell =
+        baseMaxHp > 0
+          ? _hpStepperCell({
+              cssClass: "resume-melee-hp",
+              dataAttrs: `data-instance-id="${instanceId}"`,
+              maxHp: baseMaxHp,
+              modifier,
+              actualHp,
+            })
+          : `<td></td>`;
 
       return `
         <tr>
@@ -601,29 +643,33 @@ function renderResumeMelee(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeRanged(sheet) {
-  const equipped  = sheet?.inventory?.ranged?.equipped ?? [];
+  const equipped = sheet?.inventory?.ranged?.equipped ?? [];
   const container = el("resume_ranged_container");
   if (!container) return;
 
-  if (equipped.length === 0) { container.hidden = true; return; }
+  if (equipped.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = equipped
     .map((w) => {
-      const baseMaxHp  = w.weapon_final_hit_points ?? 0;
-      const modifier   = w.hit_points_modifier ?? 0;
-      const actualHp   = calcActualHp(baseMaxHp, modifier);
+      const baseMaxHp = w.weapon_final_hit_points ?? 0;
+      const modifier = w.hit_points_modifier ?? 0;
+      const actualHp = calcActualHp(baseMaxHp, modifier);
       const instanceId = w._instanceId ?? "";
 
-      const hpCell = baseMaxHp > 0
-        ? _hpStepperCell({
-            cssClass:  "resume-ranged-hp",
-            dataAttrs: `data-instance-id="${instanceId}"`,
-            maxHp:     baseMaxHp,
-            modifier,
-            actualHp,
-          })
-        : `<td></td>`;
+      const hpCell =
+        baseMaxHp > 0
+          ? _hpStepperCell({
+              cssClass: "resume-ranged-hp",
+              dataAttrs: `data-instance-id="${instanceId}"`,
+              maxHp: baseMaxHp,
+              modifier,
+              actualHp,
+            })
+          : `<td></td>`;
 
       return `
         <tr>
@@ -664,35 +710,39 @@ function renderResumeRanged(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeFirearms(sheet) {
-  const equipped  = sheet?.inventory?.firearms?.equipped ?? [];
+  const equipped = sheet?.inventory?.firearms?.equipped ?? [];
   const container = el("resume_firearms_container");
   if (!container) return;
 
-  if (equipped.length === 0) { container.hidden = true; return; }
+  if (equipped.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = equipped
     .map((w) => {
-      const baseMaxHp  = w.weapon_final_hit_points ?? 0;
-      const modifier   = w.hit_points_modifier ?? 0;
-      const actualHp   = calcActualHp(baseMaxHp, modifier);
+      const baseMaxHp = w.weapon_final_hit_points ?? 0;
+      const modifier = w.hit_points_modifier ?? 0;
+      const actualHp = calcActualHp(baseMaxHp, modifier);
       const instanceId = w._instanceId ?? "";
 
-      const hpCell = baseMaxHp > 0
-        ? _hpStepperCell({
-            cssClass:  "resume-firearm-hp",
-            dataAttrs: `data-instance-id="${instanceId}"`,
-            maxHp:     baseMaxHp,
-            modifier,
-            actualHp,
-          })
-        : `<td></td>`;
+      const hpCell =
+        baseMaxHp > 0
+          ? _hpStepperCell({
+              cssClass: "resume-firearm-hp",
+              dataAttrs: `data-instance-id="${instanceId}"`,
+              maxHp: baseMaxHp,
+              modifier,
+              actualHp,
+            })
+          : `<td></td>`;
 
       const magazineSize = w.weapon_final_magazine_size ?? 0;
-      const roundsLoaded  = w.rounds_loaded ?? 0;
+      const roundsLoaded = w.rounds_loaded ?? 0;
 
       const roundsCell = _roundsStepperCell({
-        cssClass:  "resume-firearm-rounds",
+        cssClass: "resume-firearm-rounds",
         dataAttrs: `data-instance-id="${instanceId}"`,
         magazineSize,
         roundsLoaded,
@@ -744,7 +794,7 @@ function renderResumeFirearms(sheet) {
 
 function renderResumeAmmo(sheet, data, selected) {
   const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
-  const ammoDb  = data?.ammo ?? [];
+  const ammoDb = data?.ammo ?? [];
   const container = el("resume_ammo_container");
   if (!container) return;
 
@@ -759,26 +809,29 @@ function renderResumeAmmo(sheet, data, selected) {
   for (const cont of equippedContainers) {
     for (const item of cont.contents ?? []) {
       const dbRow = ammoDb.find((a) => a.ammo_id === item.ammo_id);
-      const name  = dbRow?.ammo_name ?? item.ammo_id;
+      const name = dbRow?.ammo_name ?? item.ammo_id;
       const existing = entries.find((e) => e.ammo_id === item.ammo_id);
       if (existing) {
         existing.quantity += item.quantity;
       } else {
         // Find the first selected equipped container holding this ammo_id
-        const firstInst = equippedSelected.find(
-          (c) => c.contents.some((e) => e.ammo_id === item.ammo_id),
+        const firstInst = equippedSelected.find((c) =>
+          c.contents.some((e) => e.ammo_id === item.ammo_id),
         );
         entries.push({
-          ammo_id:     item.ammo_id,
+          ammo_id: item.ammo_id,
           name,
-          quantity:    item.quantity,
-          instanceId:  firstInst?._instanceId ?? "",
+          quantity: item.quantity,
+          instanceId: firstInst?._instanceId ?? "",
         });
       }
     }
   }
 
-  if (entries.length === 0) { container.hidden = true; return; }
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = entries
@@ -832,11 +885,14 @@ function renderResumeAmmo(sheet, data, selected) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeAlchemy(sheet) {
-  const backpack  = sheet?.inventory?.alchemy?.backpack ?? [];
+  const backpack = sheet?.inventory?.alchemy?.backpack ?? [];
   const container = el("resume_alchemy_container");
   if (!container) return;
 
-  if (backpack.length === 0) { container.hidden = true; return; }
+  if (backpack.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = backpack
@@ -894,20 +950,27 @@ function renderResumeAlchemy(sheet) {
 function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
 
-  const weightEl        = el("weight");
-  const baseWeight      = weightEl ? Number(weightEl.value) || 0 : 0;
+  const weightEl = el("weight");
+  const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
 
-  const armorWeight        = sheet?.inventory?.armor?.carried_armor_weight        || 0;
-  const shieldWeight       = sheet?.inventory?.shield?.carried_shield_weight      || 0;
-  const meleeWeight        = sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
-  const rangedWeight       = sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
-  const firearmsWeight     = sheet?.inventory?.firearms?.carried_firearms_weight || 0;
-  const ammoWeight         = sheet?.inventory?.ammo?.carried_ammo_weight          || 0;
-  const alchemyWeight      = sheet?.inventory?.alchemy?.carried_alchemy_weight    || 0;
-  const survivalGearWeight = sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
-  const magicGearWeight    = sheet?.inventory?.magicGear?.carried_magic_gear_weight || 0;
-  const customWeight       = sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
-  const coinPurseWeight    = sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
+  const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
+  const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
+  const meleeWeight =
+    sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
+  const rangedWeight =
+    sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
+  const firearmsWeight =
+    sheet?.inventory?.firearms?.carried_firearms_weight || 0;
+  const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
+  const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
+  const survivalGearWeight =
+    sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
+  const magicGearWeight =
+    sheet?.inventory?.magicGear?.carried_magic_gear_weight || 0;
+  const customWeight =
+    sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const coinPurseWeight =
+    sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
 
   const totalWeight =
     Math.ceil(
@@ -960,19 +1023,22 @@ function renderResumeWeight(sheet) {
   if (totalWeightCell)
     totalWeightCell.innerHTML = `<strong>${totalWeight}</strong>`;
 
-  const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
-  set("armor_weight",          armorWeight);
-  set("shield_weight",         shieldWeight);
-  set("melee_weight",          meleeWeight);
-  set("ranged_weight",         rangedWeight);
-  set("firearms_weight",       firearmsWeight);
-  set("ammo_weight",           ammoWeight);
-  set("alchemy_weight",        alchemyWeight);
-  set("survival_gear_weight",  survivalGearWeight);
-  set("magic_gear_weight",     magicGearWeight);
+  const set = (id, val) => {
+    const e = el(id);
+    if (e) e.textContent = val;
+  };
+  set("armor_weight", armorWeight);
+  set("shield_weight", shieldWeight);
+  set("melee_weight", meleeWeight);
+  set("ranged_weight", rangedWeight);
+  set("firearms_weight", firearmsWeight);
+  set("ammo_weight", ammoWeight);
+  set("alchemy_weight", alchemyWeight);
+  set("survival_gear_weight", survivalGearWeight);
+  set("magic_gear_weight", magicGearWeight);
   set("custom_inventory_weight", customWeight);
-  set("total_weight",          totalWeight);
-  set("encumbrance",           encumbranceLabel);
+  set("total_weight", totalWeight);
+  set("encumbrance", encumbranceLabel);
 
   const limitsEl = el("carry_limits");
   if (limitsEl && carry) {
@@ -1006,21 +1072,35 @@ function renderResumeWeight(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeValue(sheet) {
-  const armorValue        = sheet?.inventory?.armor?.carried_armor_value        || 0;
-  const shieldValue       = sheet?.inventory?.shield?.carried_shield_value      || 0;
-  const meleeValue        = sheet?.inventory?.melee?.carried_melee_weapons_value || 0;
-  const rangedValue       = sheet?.inventory?.ranged?.carried_ranged_weapons_value || 0;
-  const firearmsValue     = sheet?.inventory?.firearms?.carried_firearms_value || 0;
-  const ammoValue         = sheet?.inventory?.ammo?.carried_ammo_value          || 0;
-  const alchemyValue      = sheet?.inventory?.alchemy?.carried_alchemy_value    || 0;
-  const survivalGearValue = sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
-  const accessoryValue    = sheet?.inventory?.accessories?.carried_accessory_value      || 0;
-  const magicGearValue    = sheet?.inventory?.magicGear?.carried_magic_gear_value || 0;
-  const customValue       = sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
+  const armorValue = sheet?.inventory?.armor?.carried_armor_value || 0;
+  const shieldValue = sheet?.inventory?.shield?.carried_shield_value || 0;
+  const meleeValue = sheet?.inventory?.melee?.carried_melee_weapons_value || 0;
+  const rangedValue =
+    sheet?.inventory?.ranged?.carried_ranged_weapons_value || 0;
+  const firearmsValue = sheet?.inventory?.firearms?.carried_firearms_value || 0;
+  const ammoValue = sheet?.inventory?.ammo?.carried_ammo_value || 0;
+  const alchemyValue = sheet?.inventory?.alchemy?.carried_alchemy_value || 0;
+  const survivalGearValue =
+    sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
+  const accessoryValue =
+    sheet?.inventory?.accessories?.carried_accessory_value || 0;
+  const magicGearValue =
+    sheet?.inventory?.magicGear?.carried_magic_gear_value || 0;
+  const customValue =
+    sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
 
   const totalValue =
-    armorValue + shieldValue + meleeValue + rangedValue + firearmsValue +
-    ammoValue + alchemyValue + survivalGearValue + accessoryValue + magicGearValue + customValue;
+    armorValue +
+    shieldValue +
+    meleeValue +
+    rangedValue +
+    firearmsValue +
+    ammoValue +
+    alchemyValue +
+    survivalGearValue +
+    accessoryValue +
+    magicGearValue +
+    customValue;
 
   const valueTbody = el("resume_value_tbody");
   if (valueTbody) {
@@ -1044,8 +1124,11 @@ function renderResumeValue(sheet) {
     totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
 
   const backpackCoins = sheet?.inventory?.coinPurse?.backpack ?? [];
-  const totalCoins    = backpackCoins.reduce((sum, entry) => sum + (entry.total_value ?? 0), 0);
-  const hasCoins      = backpackCoins.length > 0;
+  const totalCoins = backpackCoins.reduce(
+    (sum, entry) => sum + (entry.total_value ?? 0),
+    0,
+  );
+  const hasCoins = backpackCoins.length > 0;
 
   const coinsRowEl = el("resume_coins_row");
   if (coinsRowEl) coinsRowEl.hidden = !hasCoins;
@@ -1060,17 +1143,23 @@ function renderResumeValue(sheet) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumePoints(sheet) {
-  const primaryAttributesPoints   = sheet?.character?.character_points?.primary_attributes   ?? 0;
-  const secondaryAttributesPoints = sheet?.character?.character_points?.secondary_attributes ?? 0;
-  const advantagesPoints          = sheet?.character?.character_points?.advantages           ?? 0;
-  const disadvantagesPoints       = sheet?.character?.character_points?.disadvantages        ?? 0;
-  const skillsPoints              = sheet?.character?.character_points?.skills               ?? 0;
-  const spellsPoints              = sheet?.character?.character_points?.spells               ?? 0;
+  const primaryAttributesPoints =
+    sheet?.character?.character_points?.primary_attributes ?? 0;
+  const secondaryAttributesPoints =
+    sheet?.character?.character_points?.secondary_attributes ?? 0;
+  const advantagesPoints = sheet?.character?.character_points?.advantages ?? 0;
+  const disadvantagesPoints =
+    sheet?.character?.character_points?.disadvantages ?? 0;
+  const skillsPoints = sheet?.character?.character_points?.skills ?? 0;
+  const spellsPoints = sheet?.character?.character_points?.spells ?? 0;
 
   const totalPoints =
-    primaryAttributesPoints + secondaryAttributesPoints +
-    advantagesPoints + disadvantagesPoints +
-    skillsPoints + spellsPoints;
+    primaryAttributesPoints +
+    secondaryAttributesPoints +
+    advantagesPoints +
+    disadvantagesPoints +
+    skillsPoints +
+    spellsPoints;
 
   const pointsTbody = el("resume_points_tbody");
   if (pointsTbody) {
@@ -1085,7 +1174,8 @@ function renderResumePoints(sheet) {
   }
 
   const totalPointsCell = el("resume_total_points_cell");
-  if (totalPointsCell) totalPointsCell.innerHTML = `<strong>${totalPoints}</strong>`;
+  if (totalPointsCell)
+    totalPointsCell.innerHTML = `<strong>${totalPoints}</strong>`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1120,7 +1210,12 @@ function _hpStepperCell({ cssClass, dataAttrs, maxHp, modifier, actualHp }) {
 }
 
 /** Rounds-loaded stepper + "Recarregar" button, used in the resume firearms row. */
-function _roundsStepperCell({ cssClass, dataAttrs, magazineSize, roundsLoaded }) {
+function _roundsStepperCell({
+  cssClass,
+  dataAttrs,
+  magazineSize,
+  roundsLoaded,
+}) {
   return `
     <td>
       <div class="hp-modifier">
@@ -1174,11 +1269,11 @@ function _collapsibleHeader(title) {
  * @param {Element} container
  */
 function _bindCollapse(container) {
-  const btn  = container.querySelector(".resume-section-toggle");
+  const btn = container.querySelector(".resume-section-toggle");
   const body = container.querySelector(".resume-collapse-body");
   if (!btn || !body) return;
 
-  const title  = btn.querySelector(".resume-section-title")?.textContent ?? "";
+  const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
   const isOpen = _collapseOpen.get(title) ?? false;
 
   body.hidden = !isOpen;
@@ -1191,7 +1286,10 @@ function _renderCollapsibleNameList(containerId, entries, title) {
   const container = el(containerId);
   if (!container) return;
 
-  if (entries.length === 0) { container.hidden = true; return; }
+  if (entries.length === 0) {
+    container.hidden = true;
+    return;
+  }
   container.hidden = false;
 
   const rows = entries
@@ -1225,7 +1323,7 @@ export function initResumeExpanders() {
     if (!body) return;
 
     const isOpen = body.hidden === false;
-    const title  = btn.querySelector(".resume-section-title")?.textContent ?? "";
+    const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
 
     body.hidden = isOpen;
     btn.setAttribute("aria-expanded", String(!isOpen));

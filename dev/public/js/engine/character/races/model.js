@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { fetchRaces } from "../../../api.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { escapeHtml } from "../../../shared/renderUtils.js";
 
 const data = state.data;

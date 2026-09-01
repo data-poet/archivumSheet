@@ -15,7 +15,7 @@ import {
 } from "../ui.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";
 import { showToast } from "../store/persistence.js";
-import { t } from "../localization/pt-BR.js";
+import { t } from "../localization/pt-BR/index.js";
 
 const selected = state.selected;
 

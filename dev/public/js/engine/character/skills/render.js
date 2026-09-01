@@ -1,5 +1,5 @@
 import { setHTML } from "../../../shared/dom.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import {
   formatRichText,
   detailRow,

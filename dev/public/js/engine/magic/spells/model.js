@@ -3,7 +3,7 @@ import { fetchSpells } from "../../../api.js";
 import { renderSpells } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { getSpellAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
 

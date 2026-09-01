@@ -1,6 +1,9 @@
-import { t } from "../../../localization/pt-BR.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../../../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+} from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
@@ -245,9 +248,9 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
 
 export function renderStoredFirearms(selected, data, sheet) {
   const stored = selected.firearms.filter((w) => !w.is_equipped);
-  const sections = STORAGE_LOCATIONS
-    .map((loc) => renderStorageSection(loc, stored, data, sheet))
-    .join("");
+  const sections = STORAGE_LOCATIONS.map((loc) =>
+    renderStorageSection(loc, stored, data, sheet),
+  ).join("");
   setHTML("firearmStorageList", sections);
 }
 
