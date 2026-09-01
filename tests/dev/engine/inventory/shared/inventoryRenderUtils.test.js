@@ -3,7 +3,7 @@ import {
   resolveHp,
   statModifierBlock,
 } from "dev/public/js/engine/inventory/shared/inventoryRenderUtils.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 
 function parseBlock(html) {
   const container = document.createElement("div");

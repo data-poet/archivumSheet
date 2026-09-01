@@ -9,7 +9,7 @@ import {
   setEnchantmentAddFormTargetFilter,
 } from "dev/public/js/engine/inventory/shared/enchantments/model.js";
 import { state } from "dev/public/js/state.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
 function parse(html) {

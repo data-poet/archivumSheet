@@ -17,7 +17,7 @@ import {
   updateSkill,
 } from "dev/public/js/engine/character/skills/model.js";
 import { state } from "dev/public/js/state.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 

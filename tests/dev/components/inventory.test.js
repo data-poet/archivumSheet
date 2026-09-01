@@ -6,7 +6,7 @@ import {
   t,
   getEncumbranceLabel,
   getCarryLimitLabel,
-} from "dev/public/js/localization/pt-BR.js";
+} from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 function inventoryDOM() {

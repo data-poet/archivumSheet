@@ -1,5 +1,5 @@
 import { renderResume } from "dev/public/js/components/resume.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
 
 function id(x) {

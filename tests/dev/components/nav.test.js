@@ -1,5 +1,5 @@
 import { initNav } from "dev/public/js/components/nav.js";
-import { LABELS } from "dev/public/js/localization/pt-BR.js";
+import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 // jsdom implements neither scrollIntoView nor IntersectionObserver.

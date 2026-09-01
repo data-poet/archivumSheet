@@ -4,7 +4,7 @@ jest.mock("dev/public/js/store/persistence.js", () => ({
 
 import { showToast } from "dev/public/js/store/persistence.js";
 import { offerUndo } from "dev/public/js/components/undo.js";
-import { t } from "dev/public/js/localization/pt-BR.js";
+import { t } from "dev/public/js/localization/pt-BR/index.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -16,8 +16,8 @@ describe("offerUndo", () => {
 
     offerUndo(restoreFn);
 
-    expect(showToast).toHaveBeenCalledWith(t("common.removed"), "info", {
-      actionLabel: t("common.undo"),
+    expect(showToast).toHaveBeenCalledWith(t("undo.removedMessage"), "info", {
+      actionLabel: t("undo.actionLabel"),
       duration: 5000,
       onAction: restoreFn,
     });

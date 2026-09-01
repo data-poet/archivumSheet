@@ -17,7 +17,7 @@ import {
   RACIAL_TRAIT_TYPE,
   DEFAULT_MATERIAL_ID,
 } from "dev/public/js/shared/constants.js";
-import { LABELS } from "dev/public/js/localization/pt-BR.js";
+import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 
 describe("STORAGE_LOCATIONS", () => {
   test("is exactly backpack, stash, camp, in that order", () => {
