@@ -233,8 +233,8 @@ describe("BUILD CHARACTER", () => {
     it("Should default to race_base 1 for every element when no race multipliers are given", () => {
       const { character } = buildCharacter(mockInput);
 
-      expect(character.elemental_resistances.Water.race_base).toBe(1);
-      expect(character.elemental_resistances.Water.final).toBe(1);
+      expect(character.elemental_resistances.Ice.race_base).toBe(1);
+      expect(character.elemental_resistances.Ice.final).toBe(1);
     });
   });
 });

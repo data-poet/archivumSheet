@@ -176,12 +176,12 @@ describe("renderElementalResistances", () => {
       character: { elemental_resistances: { Fire: entry } },
     });
     renderElementalResistances({
-      character: { elemental_resistances: { Water: entry } },
+      character: { elemental_resistances: { Ice: entry } },
     });
 
     const rows = document.querySelectorAll("#resistancesTable tr");
     expect(rows).toHaveLength(1);
-    expect(rows[0].textContent).toContain("Água");
+    expect(rows[0].textContent).toContain("Gelo");
   });
 });
 

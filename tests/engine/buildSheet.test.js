@@ -173,7 +173,7 @@ describe("BUILD SHEET", () => {
       expect(character.elemental_resistances.Fire.final).toBe(0.5);
       expect(character.elemental_resistances.Necrotic.race_base).toBe(2);
       // Untouched types stay at the default
-      expect(character.elemental_resistances.Water.race_base).toBe(1);
+      expect(character.elemental_resistances.Ice.race_base).toBe(1);
     });
 
     it("Should combine the race base with a player-entered modifier from character.secondaryAttributes.elementalResistances", () => {

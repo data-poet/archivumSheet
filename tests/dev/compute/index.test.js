@@ -180,9 +180,7 @@ describe("buildSheet payload — race", () => {
         race_id: "R1",
         race_name: "Elfo",
         race_fire_damage_multiplier: "0.5",
-        race_water_damage_multiplier: "",
-        race_earth_damage_multiplier: "1",
-        // race_air_damage_multiplier intentionally absent
+        race_ice_damage_multiplier: "",
         race_electricity_damage_multiplier: "not-a-number",
         // A literal 0 ("immune") must survive, not collapse to the 1
         // default — this is the case a naive `Number(x) || 1` gets wrong.
@@ -199,9 +197,7 @@ describe("buildSheet payload — race", () => {
     const { race } = buildSheet.mock.calls[0][0];
     expect(race.elemental_modifiers).toEqual({
       Fire: 0.5,
-      Water: 1,
-      Earth: 1,
-      Air: 1,
+      Ice: 1,
       Electricity: 1,
       Corrosion: 0,
       Necrotic: 2,
