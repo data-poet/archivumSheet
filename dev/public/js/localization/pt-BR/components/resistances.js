@@ -6,9 +6,7 @@
 
 export const ELEMENTAL_RESISTANCES = {
   Fire: "Fogo",
-  Water: "Água",
-  Earth: "Terra",
-  Air: "Ar",
+  Ice: "Gelo",
   Electricity: "Eletricidade",
   Corrosion: "Corrosão",
   Necrotic: "Necrótico",

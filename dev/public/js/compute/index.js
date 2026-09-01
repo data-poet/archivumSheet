@@ -96,9 +96,7 @@ export async function runEngine() {
           // dedicated parser is used instead.
           elemental_modifiers: {
             Fire: parseRaceMultiplier(raceRow.race_fire_damage_multiplier),
-            Water: parseRaceMultiplier(raceRow.race_water_damage_multiplier),
-            Earth: parseRaceMultiplier(raceRow.race_earth_damage_multiplier),
-            Air: parseRaceMultiplier(raceRow.race_air_damage_multiplier),
+            Ice: parseRaceMultiplier(raceRow.race_ice_damage_multiplier),
             Electricity: parseRaceMultiplier(
               raceRow.race_electricity_damage_multiplier,
             ),
