@@ -76,7 +76,8 @@ archivumSheet/
 │           ├── store/            # Persistence, tab state, view mode state
 │           ├── shared/           # Utilities shared across domains
 │           └── localization/
-│               └── pt-BR.js      # All visible strings
+│               └── pt-BR/        # All visible strings, split by domain
+│                   └── index.js  # Assembles LABELS + exports t() / get*Label helpers
 │
 ├── helpers/
 │   └── dataUtils.js              # CSV loader utility (used by the server)
@@ -207,9 +208,9 @@ The UI layer is organized strictly by responsibility:
 
 ### Localization
 
-Every visible string in the app lives in `dev/public/js/localization/pt-BR.js` as a `LABELS` export. No hardcoded Portuguese (or any other language) strings exist in JS or HTML files. The `t()` helper and `setText()` / `initAppShell()` patterns consume it.
+Every visible string in the app lives under `dev/public/js/localization/pt-BR/`, split into per-domain files (mirroring `engine/`/`components/`/`shared/`) that `pt-BR/index.js` assembles into a single `LABELS` export. No hardcoded Portuguese (or any other language) strings exist in JS or HTML files. The `t()` helper and `setText()` / `initAppShell()` patterns consume it.
 
-To add a new language: duplicate the file (e.g. `en-US.js`) and update the import in `index.html`.
+To add a new language: duplicate the `pt-BR/` folder (e.g. `en-US/`) and update the import in `index.html`.
 
 ---
 
@@ -317,7 +318,7 @@ These are not preferences — they are load-bearing constraints that keep the co
 
 **Follow existing patterns before inventing new ones.** Adding a new inventory type? Read `engine/inventory/js/ammo/` first, then mirror it: `constants` → `validation` → `resolver` → main function → wire into `buildInventory` → dev state → API endpoint → events → render → localization.
 
-**All strings go through `pt-BR.js`.** Zero hardcoded text in JS or HTML.
+**All strings go through `localization/pt-BR/`.** Zero hardcoded text in JS or HTML.
 
 **`Math.floor` rounding** everywhere computed numeric values are produced.
 

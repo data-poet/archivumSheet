@@ -1705,8 +1705,8 @@
     <script type="module">
       // ── Hydrate all static text from the localization file ──────────────────
       // This is the only place static UI strings are set; everything reads from
-      // LABELS so swapping the import in pt-BR.js (or creating en-US.js) is enough.
-      import { LABELS, t } from "/js/localization/pt-BR.js";
+      // LABELS so swapping the import in pt-BR/index.js (or creating en-US/) is enough.
+      import { LABELS, t } from "/js/localization/pt-BR/index.js";
 
       function setText(id, text) {
         const el = document.getElementById(id);
