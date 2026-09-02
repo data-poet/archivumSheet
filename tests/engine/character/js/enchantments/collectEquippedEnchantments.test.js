@@ -22,6 +22,7 @@ describe("collectEquippedEnchantments", () => {
 
     expect(result).toEqual({
       attributeModifiers: {},
+      elementalModifiers: {},
       advantageIds: [],
       disadvantageIds: [],
       skillGrants: {},
@@ -194,6 +195,89 @@ describe("collectEquippedEnchantments", () => {
 
     expect(result.attributeModifiers).toEqual({});
     expect(result.advantageIds).toEqual([]);
+  });
+
+  test("Should sum fortify_resistance value into elementalModifiers under its fixed target", () => {
+    const result = collectEquippedEnchantments([
+      {
+        enchantments: [
+          enchantment({
+            enchantment_effect_type: "fortify_resistance",
+            target: "Fire",
+            value: 0.05,
+          }),
+        ],
+      },
+    ]);
+
+    expect(result.elementalModifiers).toEqual({ Fire: 0.05 });
+  });
+
+  test("Should sum weaken_resistance (negative value) into the same elementalModifiers map", () => {
+    const result = collectEquippedEnchantments([
+      {
+        enchantments: [
+          enchantment({
+            enchantment_effect_type: "fortify_resistance",
+            target: "Fire",
+            value: 0.1,
+          }),
+          enchantment({
+            enchantment_effect_type: "weaken_resistance",
+            target: "Fire",
+            value: -0.05,
+          }),
+        ],
+      },
+    ]);
+
+    expect(result.elementalModifiers).toEqual({ Fire: 0.05 });
+  });
+
+  test("Should keep elementalModifiers keyed independently per element and per item", () => {
+    const result = collectEquippedEnchantments([
+      {
+        enchantments: [
+          enchantment({
+            enchantment_effect_type: "fortify_resistance",
+            target: "Fire",
+            value: 0.05,
+          }),
+        ],
+      },
+      {
+        enchantments: [
+          enchantment({
+            enchantment_effect_type: "fortify_resistance",
+            target: "Ice",
+            value: 0.1,
+          }),
+        ],
+      },
+    ]);
+
+    expect(result.elementalModifiers).toEqual({ Fire: 0.05, Ice: 0.1 });
+  });
+
+  test("Should not let item-intrinsic weight/damage-resistance enchantments produce any character-level effect", () => {
+    // add_weight/remove_weight/fortify_damage_resistance/
+    // weaken_damage_resistance are already applied to the item itself in
+    // armorResolver.js — they must be a no-op here, same as any other
+    // unrecognized type.
+    const result = collectEquippedEnchantments([
+      {
+        enchantments: [
+          enchantment({ enchantment_effect_type: "add_weight", value: 0.1 }),
+          enchantment({
+            enchantment_effect_type: "fortify_damage_resistance",
+            value: 2,
+          }),
+        ],
+      },
+    ]);
+
+    expect(result.attributeModifiers).toEqual({});
+    expect(result.elementalModifiers).toEqual({});
   });
 
   test("Should not add a key for a target that never appears (presence-aware, not defaulted)", () => {
