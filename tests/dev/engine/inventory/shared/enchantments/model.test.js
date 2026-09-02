@@ -15,6 +15,9 @@ import {
   getAccessoryItemCategory,
   getMagicGearItemCategory,
   isAttributeType,
+  isValueType,
+  isElementalResistanceType,
+  isPercentageType,
   isAdvantageType,
   isDisadvantageType,
   isPointType,
@@ -54,7 +57,10 @@ describe("loadEnchantments", () => {
   test("loads all three catalogs in parallel and stores them on state.data", async () => {
     const enchantments = [{ enchantment_id: "ENCH-001" }];
     const effectTypes = { ATTRIBUTE_EFFECT_TYPES: ["attribute"] };
-    const itemCategories = { ACCESSORY: "Acessórios", MAGIC_GEAR: "Instrumentos Mágicos" };
+    const itemCategories = {
+      ACCESSORY: "Acessórios",
+      MAGIC_GEAR: "Instrumentos Mágicos",
+    };
     fetchEnchantments.mockResolvedValue(enchantments);
     fetchEnchantmentEffectTypes.mockResolvedValue(effectTypes);
     fetchItemCategories.mockResolvedValue(itemCategories);
@@ -96,6 +102,24 @@ describe("effect type predicates", () => {
       POINT_EFFECT_TYPES: ["point"],
       SKILL_EFFECT_TYPES: ["skill"],
       SPELL_EFFECT_TYPES: ["spell"],
+      WEIGHT_EFFECT_TYPES: ["add_weight", "remove_weight"],
+      DAMAGE_RESISTANCE_EFFECT_TYPES: [
+        "fortify_damage_resistance",
+        "weaken_damage_resistance",
+      ],
+      ELEMENTAL_RESISTANCE_EFFECT_TYPES: [
+        "fortify_resistance",
+        "weaken_resistance",
+      ],
+      VALUE_EFFECT_TYPES: [
+        "attribute",
+        "add_weight",
+        "remove_weight",
+        "fortify_damage_resistance",
+        "weaken_damage_resistance",
+        "fortify_resistance",
+        "weaken_resistance",
+      ],
       FORTIFY_EFFECT_TYPES: ["fortify_skill", "fortify_attribute"],
       WEAKEN_EFFECT_TYPES: ["weaken_skill", "weaken_attribute"],
     };
@@ -104,6 +128,21 @@ describe("effect type predicates", () => {
   test("isAttributeType checks membership in ATTRIBUTE_EFFECT_TYPES", () => {
     expect(isAttributeType("attribute")).toBe(true);
     expect(isAttributeType("point")).toBe(false);
+  });
+
+  test("isValueType checks membership in VALUE_EFFECT_TYPES (attribute + weight + damage-resistance + elemental-resistance)", () => {
+    expect(isValueType("attribute")).toBe(true);
+    expect(isValueType("add_weight")).toBe(true);
+    expect(isValueType("fortify_damage_resistance")).toBe(true);
+    expect(isValueType("fortify_resistance")).toBe(true);
+    expect(isValueType("point")).toBe(false);
+    expect(isValueType("skill")).toBe(false);
+  });
+
+  test("isElementalResistanceType checks membership in ELEMENTAL_RESISTANCE_EFFECT_TYPES", () => {
+    expect(isElementalResistanceType("fortify_resistance")).toBe(true);
+    expect(isElementalResistanceType("weaken_resistance")).toBe(true);
+    expect(isElementalResistanceType("fortify_damage_resistance")).toBe(false);
   });
 
   test("isAdvantageType / isDisadvantageType are literal string checks, not list-based", () => {
@@ -127,6 +166,22 @@ describe("effect type predicates", () => {
     expect(isFortifyType("fortify_skill")).toBe(true);
     expect(isWeakenType("weaken_attribute")).toBe(true);
     expect(isFortifyType("weaken_attribute")).toBe(false);
+  });
+});
+
+describe("isPercentageType", () => {
+  test("reads the raw CSV's typo'd column name (enenchantment_is_percentage)", () => {
+    expect(isPercentageType({ enenchantment_is_percentage: "TRUE" })).toBe(
+      true,
+    );
+    expect(isPercentageType({ enenchantment_is_percentage: "FALSE" })).toBe(
+      false,
+    );
+  });
+
+  test("defaults to false when the column is missing or the record is null", () => {
+    expect(isPercentageType({})).toBe(false);
+    expect(isPercentageType(null)).toBe(false);
   });
 });
 
@@ -364,8 +419,23 @@ describe("entry mutation", () => {
       POINT_EFFECT_TYPES: ["point"],
       SKILL_EFFECT_TYPES: ["skill", "fortify_skill", "weaken_skill"],
       SPELL_EFFECT_TYPES: ["spell"],
-      FORTIFY_EFFECT_TYPES: ["fortify_skill"],
-      WEAKEN_EFFECT_TYPES: ["weaken_attribute", "weaken_skill"],
+      WEIGHT_EFFECT_TYPES: ["add_weight", "remove_weight"],
+      DAMAGE_RESISTANCE_EFFECT_TYPES: ["fortify_damage_resistance"],
+      ELEMENTAL_RESISTANCE_EFFECT_TYPES: ["fortify_resistance"],
+      VALUE_EFFECT_TYPES: [
+        "attribute",
+        "weaken_attribute",
+        "add_weight",
+        "remove_weight",
+        "fortify_damage_resistance",
+        "fortify_resistance",
+      ],
+      FORTIFY_EFFECT_TYPES: ["fortify_skill", "add_weight"],
+      WEAKEN_EFFECT_TYPES: [
+        "weaken_attribute",
+        "weaken_skill",
+        "remove_weight",
+      ],
     };
     state.data.enchantments = [
       {
@@ -387,6 +457,30 @@ describe("entry mutation", () => {
       {
         enchantment_id: "WEAKEN-SKILL-1",
         enchantment_effect_type: "weaken_skill",
+      },
+      {
+        enchantment_id: "ADD-WEIGHT-1",
+        enchantment_effect_type: "add_weight",
+        enchantment_base_value: 0.1,
+        enenchantment_is_percentage: "TRUE",
+      },
+      {
+        enchantment_id: "REMOVE-WEIGHT-1",
+        enchantment_effect_type: "remove_weight",
+        enchantment_base_value: 0.1,
+        enenchantment_is_percentage: "TRUE",
+      },
+      {
+        enchantment_id: "FORTIFY-DR-1",
+        enchantment_effect_type: "fortify_damage_resistance",
+        enchantment_base_value: 1,
+        enenchantment_is_percentage: "FALSE",
+      },
+      {
+        enchantment_id: "FORTIFY-RESIST-1",
+        enchantment_effect_type: "fortify_resistance",
+        enchantment_base_value: 0.05,
+        enenchantment_is_percentage: "TRUE",
       },
     ];
   });
@@ -413,6 +507,44 @@ describe("entry mutation", () => {
     test("weaken-attribute type: value defaults to the NEGATIVE of base_value", () => {
       const entry = addEnchantmentEntry([], "WEAKEN-ATTR-1");
       expect(entry.value).toBe(-2);
+    });
+
+    test("add_weight (percentage) type: value defaults to the DECIMAL fraction of base_value, from a percent-integer default", () => {
+      // base_value 0.1 -> displayed/defaulted as 10 (percent), converted
+      // back to 0.1 (decimal) for the stored entry — see _buildEntryFields.
+      const entry = addEnchantmentEntry([], "ADD-WEIGHT-1");
+      expect(entry.value).toBe(0.1);
+    });
+
+    test("add_weight (percentage) type: an explicit params.value arrives as a percent-integer and is converted to decimal", () => {
+      // params.value = 20 means "20%" as typed/stepped in the UI
+      const entry = addEnchantmentEntry([], "ADD-WEIGHT-1", { value: 20 });
+      expect(entry.value).toBe(0.2);
+    });
+
+    test("remove_weight (percentage) type: value defaults to the negative decimal fraction", () => {
+      const entry = addEnchantmentEntry([], "REMOVE-WEIGHT-1");
+      expect(entry.value).toBe(-0.1);
+    });
+
+    test("fortify_damage_resistance (flat, not percentage) type: value stays a whole number, unaffected by percent conversion", () => {
+      const entry = addEnchantmentEntry([], "FORTIFY-DR-1");
+      expect(entry.value).toBe(1);
+    });
+
+    test("fortify_resistance (percentage) type: value defaults to the decimal fraction, with no target set on the entry itself", () => {
+      // target is fixed on the DB row (enchantment_target), never chosen
+      // via the form for this type — see collectEquippedEnchantments.js.
+      const entry = addEnchantmentEntry([], "FORTIFY-RESIST-1");
+      expect(entry.value).toBe(0.05);
+      expect(entry.target).toBeUndefined();
+    });
+
+    test("fortify_resistance (percentage) type: an explicit percent-integer params.value converts correctly", () => {
+      const entry = addEnchantmentEntry([], "FORTIFY-RESIST-1", {
+        value: 15,
+      });
+      expect(entry.value).toBe(0.15);
     });
 
     test("point type: only sets target, defaulting to null", () => {

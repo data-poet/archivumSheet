@@ -24,7 +24,17 @@ function seedCatalog() {
     POINT_EFFECT_TYPES: [],
     SKILL_EFFECT_TYPES: ["skill", "fortify_skill"],
     SPELL_EFFECT_TYPES: ["spell"],
-    FORTIFY_EFFECT_TYPES: ["fortify_skill"],
+    WEIGHT_EFFECT_TYPES: ["add_weight"],
+    DAMAGE_RESISTANCE_EFFECT_TYPES: ["fortify_damage_resistance"],
+    ELEMENTAL_RESISTANCE_EFFECT_TYPES: ["fortify_resistance"],
+    VALUE_EFFECT_TYPES: [
+      "attribute",
+      "weaken_attribute",
+      "add_weight",
+      "fortify_damage_resistance",
+      "fortify_resistance",
+    ],
+    FORTIFY_EFFECT_TYPES: ["fortify_skill", "add_weight"],
     WEAKEN_EFFECT_TYPES: ["weaken_attribute"],
   };
   state.data.enchantments = [
@@ -81,6 +91,37 @@ function seedCatalog() {
       enchantment_effect_type: "spell",
       enchantment_allowed_itens: "Cabeça",
       enchantment_type: "Magia",
+    },
+    {
+      enchantment_id: "ENCH-WEIGHT",
+      enchantment_name: "Aumentar Peso",
+      enchantment_effect_type: "add_weight",
+      enchantment_allowed_itens: "Cabeça",
+      enchantment_type: "Peso",
+      enchantment_base_value: 0.1,
+      enchantment_step: 0.1,
+      enenchantment_is_percentage: "TRUE",
+    },
+    {
+      enchantment_id: "ENCH-DR",
+      enchantment_name: "Aumentar Resistência à Dano",
+      enchantment_effect_type: "fortify_damage_resistance",
+      enchantment_allowed_itens: "Cabeça",
+      enchantment_type: "Resistência a Dano",
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enenchantment_is_percentage: "FALSE",
+    },
+    {
+      enchantment_id: "ENCH-RESIST-FIRE",
+      enchantment_name: "Fortificar Resistência à Fogo",
+      enchantment_effect_type: "fortify_resistance",
+      enchantment_target: "Fire",
+      enchantment_allowed_itens: "Cabeça",
+      enchantment_type: "Resistência Elemental",
+      enchantment_base_value: 0.05,
+      enchantment_step: 0.05,
+      enenchantment_is_percentage: "TRUE",
     },
   ];
   state.data.advantages = [
@@ -283,6 +324,56 @@ describe("enchantmentsExpander — entry list", () => {
     );
     expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
       "Força Aprimorada: +3",
+    );
+  });
+
+  test("renders a percentage-flagged entry's magnitude as a signed percent, converted from the stored decimal", () => {
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [
+          { _instanceId: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 },
+        ],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
+      "Aumentar Peso: +20%",
+    );
+  });
+
+  test("renders a non-percentage value entry's magnitude with no % suffix", () => {
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [{ _instanceId: "E1", enchantment_id: "ENCH-DR", value: 2 }],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
+      "Aumentar Resistência à Dano: +2",
+    );
+  });
+
+  test("renders a fixed-target elemental-resistance entry's localized element name, read from the record (not the entry)", () => {
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [
+          {
+            _instanceId: "E1",
+            enchantment_id: "ENCH-RESIST-FIRE",
+            value: 0.05,
+          },
+        ],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
+      "Fortificar Resistência à Fogo: Fogo: +5%",
     );
   });
 
@@ -554,7 +645,7 @@ describe("edit-form", () => {
 // ─────────────────────────────────────────────────────────────────────────
 // Sign-aware number inputs
 // ─────────────────────────────────────────────────────────────────────────
-describe("attributeValueInput bounds", () => {
+describe("valueInput bounds", () => {
   test("a non-weaken attribute type gets a data-min bound at its base value", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR");
     const el = parse(
@@ -584,6 +675,102 @@ describe("attributeValueInput bounds", () => {
     const input = el.querySelector(".enchantment-value-input");
     expect(input.dataset.max).toBe("-2");
     expect(input.getAttribute("value")).toBe("-2"); // default = -base
+  });
+
+  test("shows the plain 'Valor' label for a non-percentage value type", () => {
+    setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR");
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    const label = el.querySelector(".enchantment-value-input").closest("label");
+    expect(label.querySelector("em").textContent).toBe(t("enchantments.value"));
+  });
+
+  test("a percentage-flagged type displays/steps the input in whole percent units, not the raw decimal", () => {
+    setEnchantmentAddFormSelection("ITEM-1", "ENCH-WEIGHT");
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    const input = el.querySelector(".enchantment-value-input");
+    // base_value 0.1 -> displayed as 10 (percent), step 0.1 -> 10
+    expect(input.getAttribute("value")).toBe("10");
+    expect(input.dataset.min).toBe("10");
+    expect(input.dataset.step).toBe("10");
+  });
+
+  test("a percentage-flagged type shows the '(%)' label instead of the plain one", () => {
+    setEnchantmentAddFormSelection("ITEM-1", "ENCH-WEIGHT");
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    const label = el.querySelector(".enchantment-value-input").closest("label");
+    expect(label.querySelector("em").textContent).toBe(
+      t("enchantments.valuePercent"),
+    );
+  });
+
+  test("a percentage-flagged type pre-fills the entry's current decimal value converted to percent", () => {
+    const entry = {
+      _instanceId: "ENTRY-PCT-1",
+      enchantment_id: "ENCH-WEIGHT",
+      value: 0.3,
+    };
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [entry],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    const input = el.querySelector(
+      ".enchantment-entry-edit .enchantment-value-input",
+    );
+    expect(input.getAttribute("value")).toBe("30");
+  });
+
+  test("a non-percentage damage-resistance type displays the whole number as-is", () => {
+    setEnchantmentAddFormSelection("ITEM-1", "ENCH-DR");
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    const input = el.querySelector(".enchantment-value-input");
+    expect(input.getAttribute("value")).toBe("1");
+    expect(input.dataset.min).toBe("1");
+  });
+
+  test("a fixed-target elemental-resistance type renders a value input but no target picker", () => {
+    setEnchantmentAddFormSelection("ITEM-1", "ENCH-RESIST-FIRE");
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [],
+        itemCategory: "Cabeça",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-value-input")).not.toBeNull();
+    expect(el.querySelector(".enchantment-target-select")).toBeNull();
   });
 });
 
