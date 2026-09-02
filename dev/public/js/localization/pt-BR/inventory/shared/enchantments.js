@@ -1,6 +1,6 @@
 // localization/pt-BR/inventory/shared/enchantments.js
 // ─────────────────────────────────────────────────────────────────────────────
-// Enchantments (Phase 1: accessories + magic gear) — mirrors
+// Enchantments (accessories + magic gear, armor) — mirrors
 // engine/inventory/shared/enchantments/.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -11,6 +11,7 @@ export const ENCHANTMENTS = {
   type: "Tipo de Encantamento",
   target: "Alvo",
   value: "Valor",
+  valuePercent: "Valor (%)",
   extraPoints: "Pontos Extras",
   noneAttached: "Nenhum encantamento aplicado.",
   noneAvailable: "Nenhum encantamento disponível para este item.",

@@ -5,6 +5,10 @@ import {
   fetchItemCategories,
 } from "../../../../api.js";
 import { nextEnchantmentInstanceId } from "../../../../store/instanceId.js";
+import {
+  decimalToPercent,
+  percentToDecimal,
+} from "../../../../components/resistances.js";
 
 const data = state.data;
 
@@ -58,6 +62,40 @@ export function isAttributeType(effectType) {
   );
 }
 
+/**
+ * Any effect type whose application entry carries a magnitude `value` —
+ * attribute, weight, damage-resistance, and elemental-resistance (Phase 2/
+ * armor). All four share the same value-stepper UI, gated further by
+ * isPercentageType below for the two that carry decimal fractions instead
+ * of whole numbers. See VALUE_EFFECT_TYPES in enchantmentsConstants.js.
+ */
+export function isValueType(effectType) {
+  return data.enchantmentEffectTypes.VALUE_EFFECT_TYPES.includes(effectType);
+}
+
+export function isElementalResistanceType(effectType) {
+  return data.enchantmentEffectTypes.ELEMENTAL_RESISTANCE_EFFECT_TYPES.includes(
+    effectType,
+  );
+}
+
+/**
+ * Whether an enchantment's `value` is a decimal fraction (0.05 = 5%)
+ * rather than a whole number — true for weight and elemental-resistance
+ * types (see enchantmentsConstants.js's WEIGHT_EFFECT_TYPES/
+ * ELEMENTAL_RESISTANCE_EFFECT_TYPES), false for attribute/
+ * damage-resistance.
+ *
+ * Reads the RAW catalog record (data.enchantments, unparsed CSV — see
+ * getEnchantmentRecord below), so this checks the CSV's own typo'd column
+ * name directly rather than the engine's cleaned-up
+ * enchantment_is_percentage field; contained to this one function so nothing
+ * else needs to know about it.
+ */
+export function isPercentageType(record) {
+  return record?.enenchantment_is_percentage === "TRUE";
+}
+
 export function isAdvantageType(effectType) {
   return effectType === "advantage";
 }
@@ -79,15 +117,11 @@ export function isSpellType(effectType) {
 }
 
 export function isFortifyType(effectType) {
-  return data.enchantmentEffectTypes.FORTIFY_EFFECT_TYPES.includes(
-    effectType,
-  );
+  return data.enchantmentEffectTypes.FORTIFY_EFFECT_TYPES.includes(effectType);
 }
 
 export function isWeakenType(effectType) {
-  return data.enchantmentEffectTypes.WEAKEN_EFFECT_TYPES.includes(
-    effectType,
-  );
+  return data.enchantmentEffectTypes.WEAKEN_EFFECT_TYPES.includes(effectType);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -311,17 +345,31 @@ export function getEnchantmentAddFormTypeFilter(instanceId) {
  * Builds the type-specific fields (value / target / extraPoints) for an
  * enchantment application, shared by both adding a new entry and swapping
  * an existing one so the two can never drift out of sync.
+ *
+ * `params.value` always arrives as a plain integer regardless of type —
+ * the DOM stepper itself displays/steps in PERCENT units for
+ * percentage-flagged enchantments (see valueInput in render.js), so
+ * dispatch.js's parseInt never has to deal with a fraction. Converting
+ * that percent-integer down to the decimal fraction the engine expects
+ * (0.05, not 5) happens right here, the one place both the add-form and
+ * the edit-form funnel through.
  */
 function _buildEntryFields(record, params = {}) {
   const type = record.enchantment_effect_type;
   const weaken = isWeakenType(type);
   const fields = {};
 
-  if (isAttributeType(type)) {
-    const defaultValue = weaken
+  if (isValueType(type)) {
+    const percentage = isPercentageType(record);
+    const rawDefault = weaken
       ? -record.enchantment_base_value
       : record.enchantment_base_value;
-    fields.value = Number(params.value ?? defaultValue);
+    const displayDefault = percentage
+      ? decimalToPercent(rawDefault)
+      : rawDefault;
+    const displayValue = Number(params.value ?? displayDefault);
+
+    fields.value = percentage ? percentToDecimal(displayValue) : displayValue;
   } else if (isPointType(type)) {
     fields.target = params.target ?? null;
   } else if (isSkillType(type) || isSpellType(type)) {

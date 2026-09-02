@@ -5,8 +5,8 @@
  * instance — mirrors customFieldsBlock's structure in renderUtils.js, but
  * lives in its OWN <details> expander rather than sharing "Personalizar",
  * since enchantments are a distinct concern (mechanical, DB-priced) from
- * free-text customization. Intended to be adopted by armor once Phase 2
- * starts — kept generic, not accessory-specific.
+ * free-text customization. Adopted by accessories/magicGear (Phase 1) and
+ * armor (Phase 2) — kept generic, not equipment-type-specific.
  *
  * Each attached enchantment is its own nested <details> — expand it to
  * edit or swap it in place (same underlying form as "add", just pre-filled
@@ -26,7 +26,10 @@
  * edit, price shows "—" rather than a stale or guessed number.
  */
 
-import { t } from "../../../../localization/pt-BR/index.js";
+import {
+  t,
+  getElementalResistanceLabel,
+} from "../../../../localization/pt-BR/index.js";
 import { state } from "../../../../state.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
 import {
@@ -36,6 +39,10 @@ import {
   formatRichText,
 } from "../../../../shared/renderUtils.js";
 import {
+  decimalToPercent,
+  percentToDecimal,
+} from "../../../../components/resistances.js";
+import {
   getAllowedEnchantments,
   getEnchantmentTypeValues,
   getEnchantmentRecord,
@@ -44,7 +51,9 @@ import {
   getEnchantmentAddFormTargetFilter,
   getEnchantmentAddFormTypeFilter,
   getUniqueSpellRows,
-  isAttributeType,
+  isValueType,
+  isPercentageType,
+  isElementalResistanceType,
   isAdvantageType,
   isDisadvantageType,
   isSkillType,
@@ -91,14 +100,30 @@ function entryTargetLabel(record, entry) {
   if (isSkillType(type)) return skillName(entry.target);
   if (isSpellType(type)) return entry.target ?? "—";
 
+  // Fixed on the DB row itself, not picked in the form — see
+  // ELEMENTAL_RESISTANCE_EFFECT_TYPES in enchantmentsConstants.js. Read
+  // from the record, not the entry: unlike advantage/disadvantage/skill/
+  // spell, the client's own unresolved entry object never carries a
+  // target for this type.
+  if (isElementalResistanceType(type)) {
+    return getElementalResistanceLabel(record.enchantment_target);
+  }
+
   return null;
 }
 
 function entryMagnitudeLabel(record, entry) {
   const type = record.enchantment_effect_type;
 
-  if (isAttributeType(type)) {
-    return entry.value > 0 ? `+${entry.value}` : `${entry.value}`;
+  if (isValueType(type)) {
+    const percentage = isPercentageType(record);
+    const displayValue = percentage
+      ? decimalToPercent(entry.value)
+      : entry.value;
+    const suffix = percentage ? "%" : "";
+    return displayValue > 0
+      ? `+${displayValue}${suffix}`
+      : `${displayValue}${suffix}`;
   }
 
   if (isSkillType(type) || isSpellType(type)) {
@@ -267,25 +292,48 @@ function renderTargetPicker(formKey, type, currentEntry) {
 // ─────────────────────────────────────────────────────────────────────────────
 // SIGN-AWARE NUMBER INPUTS
 //
-// Fortify types are always a positive integer, weaken types always
-// negative (enforced server-side too — see enchantmentsValidation.js).
-// Uses the shared numStepper (± buttons, wired globally in events/index.js
-// via data-step/data-min/data-max) rather than a bare number input, same
-// component used for skill/spell/secondary-attribute modifiers elsewhere.
+// Fortify types are always positive, weaken types always negative
+// (enforced server-side too — see enchantmentsValidation.js). For
+// percentage-flagged types (weight, elemental-resistance — Phase 2/armor),
+// the stepper itself displays/steps in whole PERCENT units (5, not 0.05) —
+// see this function's own doc comment and model.js's _buildEntryFields for
+// where that gets converted back to the decimal fraction the engine
+// expects. Uses the shared numStepper (± buttons, wired globally in
+// events/index.js via data-step/data-min/data-max) rather than a bare
+// number input, same component used for skill/spell/secondary-attribute
+// modifiers elsewhere.
 // ─────────────────────────────────────────────────────────────────────────────
 
-function attributeValueInput(record, formKey, currentEntry) {
-  const base = Number(record.enchantment_base_value);
-  const step = Number(record.enchantment_step);
+/**
+ * Value stepper for every VALUE_EFFECT_TYPES type (attribute, weight,
+ * damage-resistance, elemental-resistance). Percentage-flagged types
+ * display/step in whole percent units — currentEntry.value itself is
+ * still the raw decimal fraction (0.05), so it's converted here purely
+ * for display; the round-trip back to decimal happens in model.js's
+ * _buildEntryFields when the form is actually submitted.
+ */
+function valueInput(record, formKey, currentEntry) {
+  const percentage = isPercentageType(record);
   const weaken = isWeakenType(record.enchantment_effect_type);
+
+  const rawBase = Number(record.enchantment_base_value);
+  const rawStep = Number(record.enchantment_step);
+  const base = percentage ? decimalToPercent(rawBase) : rawBase;
+  const step = percentage ? decimalToPercent(rawStep) : rawStep;
 
   const bound = weaken ? `data-max="${-base}"` : `data-min="${base}"`;
   const typeDefault = weaken ? -base : base;
-  const currentValue = currentEntry?.value ?? typeDefault;
+  const rawCurrentValue = currentEntry?.value;
+  const currentValue =
+    rawCurrentValue != null
+      ? percentage
+        ? decimalToPercent(rawCurrentValue)
+        : rawCurrentValue
+      : typeDefault;
 
   return `
     <label class="item-detail-field">
-      <em>${t("enchantments.value")}</em>
+      <em>${percentage ? t("enchantments.valuePercent") : t("enchantments.value")}</em>
       ${numStepper(
         "enchantment-value-input",
         `data-form-key="${formKey}" ${bound}`,
@@ -333,8 +381,8 @@ function extraPointsInput(type, formKey, currentEntry) {
 function paramsMarkup(record, formKey, currentEntry) {
   const type = record.enchantment_effect_type;
 
-  if (isAttributeType(type)) {
-    return attributeValueInput(record, formKey, currentEntry);
+  if (isValueType(type)) {
+    return valueInput(record, formKey, currentEntry);
   }
 
   if (isAdvantageType(type) || isDisadvantageType(type)) {
