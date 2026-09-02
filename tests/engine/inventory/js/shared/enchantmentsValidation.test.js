@@ -69,16 +69,14 @@ describe("enchantmentsValidation", () => {
       );
     });
 
-    test("Should fail when value is present but not an integer", () => {
+    test("Should allow a decimal value (percentage-flagged enchantments carry fractions)", () => {
       const errors = validateEnchantmentEntryShape(
-        { enchantment_id: "ENCHANTMENT-000", value: 1.5 },
+        { enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         0,
         "accessoryInventory[0]",
       );
 
-      expect(errors).toContain(
-        "accessoryInventory[0].enchantments[0]: value must be an integer when present",
-      );
+      expect(errors).toEqual([]);
     });
 
     test("Should fail when value is present but not a number at all", () => {
@@ -89,7 +87,19 @@ describe("enchantmentsValidation", () => {
       );
 
       expect(errors).toContain(
-        "accessoryInventory[0].enchantments[0]: value must be an integer when present",
+        "accessoryInventory[0].enchantments[0]: value must be a number when present",
+      );
+    });
+
+    test("Should fail when value is NaN", () => {
+      const errors = validateEnchantmentEntryShape(
+        { enchantment_id: "ENCHANTMENT-000", value: NaN },
+        0,
+        "accessoryInventory[0]",
+      );
+
+      expect(errors).toContain(
+        "accessoryInventory[0].enchantments[0]: value must be a number when present",
       );
     });
 
@@ -248,7 +258,7 @@ describe("enchantmentsValidation", () => {
       );
 
       expect(errors).toContain(
-        "accessoryInventory[0].enchantments[0]: value must be a positive integer for fortify_attribute",
+        "accessoryInventory[0].enchantments[0]: value must be positive for fortify_attribute",
       );
     });
 
@@ -263,7 +273,7 @@ describe("enchantmentsValidation", () => {
       );
 
       expect(errors).toContain(
-        "accessoryInventory[0].enchantments[0]: value must be a positive integer for fortify_attribute",
+        "accessoryInventory[0].enchantments[0]: value must be positive for fortify_attribute",
       );
     });
 
@@ -278,7 +288,7 @@ describe("enchantmentsValidation", () => {
       );
 
       expect(errors).toContain(
-        "accessoryInventory[0].enchantments[0]: value must be a negative integer for weaken_attribute",
+        "accessoryInventory[0].enchantments[0]: value must be negative for weaken_attribute",
       );
     });
 
@@ -522,6 +532,176 @@ describe("enchantmentsValidation", () => {
 
       expect(errors).toContain(
         "accessoryInventory[0].enchantments[0]: extraPoints must be a negative integer for weaken_skill",
+      );
+    });
+  });
+
+  describe("validateEnchantmentEntryApplication — Phase 2 (armor) value types", () => {
+    const enchantmentsDb = {
+      "ENCHANTMENT-036": {
+        enchantment_id: "ENCHANTMENT-036",
+        enchantment_name: "Aumentar Peso",
+        enchantment_effect_type: "add_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_allowed_itens: ["Cabeça", "Tronco"],
+      },
+      "ENCHANTMENT-037": {
+        enchantment_id: "ENCHANTMENT-037",
+        enchantment_name: "Reduzir Peso",
+        enchantment_effect_type: "remove_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_allowed_itens: ["Cabeça", "Tronco"],
+      },
+      "ENCHANTMENT-038": {
+        enchantment_id: "ENCHANTMENT-038",
+        enchantment_name: "Aumentar Resistência à Dano",
+        enchantment_effect_type: "fortify_damage_resistance",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Cabeça", "Tronco"],
+      },
+      "ENCHANTMENT-040": {
+        enchantment_id: "ENCHANTMENT-040",
+        enchantment_name: "Fortificar Resistência à Fogo",
+        enchantment_effect_type: "fortify_resistance",
+        enchantment_target: "Fire",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.05,
+        enchantment_step: 0.05,
+        enchantment_allowed_itens: [
+          "Cabeça",
+          "Tronco",
+          "Braços",
+          "Mãos",
+          "Pernas",
+          "Pés",
+        ],
+      },
+    };
+
+    const targetsDb = {
+      advantages: {},
+      disadvantages: {},
+      skills: {},
+      spells: {},
+    };
+
+    test("Should return empty array for a valid add_weight application (decimal value)", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+        enchantmentsDb,
+        targetsDb,
+        "Cabeça",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should return empty array for a valid remove_weight application (negative decimal value)", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-037", value: -0.2 },
+        enchantmentsDb,
+        targetsDb,
+        "Tronco",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when an add_weight value is negative", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-036", value: -0.1 },
+        enchantmentsDb,
+        targetsDb,
+        "Cabeça",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toContain(
+        "armorInventory[0].enchantments[0]: value must be positive for add_weight",
+      );
+    });
+
+    test("Should fail when |value| doesn't align to decimal step increments", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-036", value: 0.15 },
+        enchantmentsDb,
+        targetsDb,
+        "Cabeça",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toContain(
+        "armorInventory[0].enchantments[0]: |value| must align to steps of 0.1 from base 0.1",
+      );
+    });
+
+    test("Should fail when a weight enchantment is applied to an item category not in its allowed list", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+        enchantmentsDb,
+        targetsDb,
+        "Pés",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toContain(
+        'armorInventory[0].enchantments[0]: enchantment "Aumentar Peso" is not allowed on Pés',
+      );
+    });
+
+    test("Should return empty array for a valid fortify_damage_resistance application (flat integer)", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-038", value: 2 },
+        enchantmentsDb,
+        targetsDb,
+        "Tronco",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should return empty array for a valid fortify_resistance application with no player-supplied target", () => {
+      // enchantment_target is fixed on the DB row (Fire) — the entry itself
+      // carries no target, unlike advantage/disadvantage/skill/spell.
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-040", value: 0.05 },
+        enchantmentsDb,
+        targetsDb,
+        "Mãos",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when a fortify_resistance value is missing", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-040" },
+        enchantmentsDb,
+        targetsDb,
+        "Mãos",
+        0,
+        "armorInventory[0]",
+      );
+
+      expect(errors).toContain(
+        "armorInventory[0].enchantments[0]: value is required for fortify_resistance",
       );
     });
   });

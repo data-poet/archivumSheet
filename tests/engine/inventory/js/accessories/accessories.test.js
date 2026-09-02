@@ -7,9 +7,7 @@ const {
 describe("EQUIPMENT ACCESSORIES", () => {
   const db = _getAccessoriesDB();
 
-  const ringId = Object.keys(db).find(
-    (id) => db[id].accessory_name === "Anel",
-  );
+  const ringId = Object.keys(db).find((id) => db[id].accessory_name === "Anel");
   const crownId = Object.keys(db).find(
     (id) => db[id].accessory_name === "Coroa",
   );
@@ -271,7 +269,12 @@ describe("EQUIPMENT ACCESSORIES", () => {
       ).toThrow(/Invalid enchantments/);
     });
 
-    test("Should throw when an attribute enchantment's value is not an integer", () => {
+    test("Should throw when an attribute enchantment's value doesn't align to whole-number steps", () => {
+      // value must be a number at the shape level now (percentage types
+      // carry decimal fractions), so a non-integer value on a whole-number
+      // type like fortify_attribute is caught one layer later, by the
+      // DB-aware step-alignment check — still rejected, just under the
+      // "Invalid enchantments" wrapper instead of "Invalid accessoryInventory".
       expect(() =>
         buildAccessorySlots([
           {
@@ -282,7 +285,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
             enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1.5 }],
           },
         ]),
-      ).toThrow(/Invalid accessoryInventory/);
+      ).toThrow(/Invalid enchantments/);
     });
 
     test("Should throw when a fortify_attribute enchantment's value is negative", () => {

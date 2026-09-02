@@ -1,8 +1,8 @@
 const {
-  ATTRIBUTE_EFFECT_TYPES,
   POINT_EFFECT_TYPES,
   SPELL_EFFECT_TYPES,
   DIFFICULTY_EFFECT_TYPES,
+  VALUE_EFFECT_TYPES,
   DIFFICULTY_TIER,
 } = require("./enchantmentsConstants.js");
 
@@ -19,11 +19,15 @@ function round2(value) {
  *
  * Three formulas, chosen by enchantment_effect_type:
  *
- * - attribute (fortify/weaken): base_price + extraSteps × price_per_extra_value
+ * - attribute/weight/damage-resistance/elemental-resistance (fortify/
+ *   weaken): base_price + extraSteps × price_per_extra_value
  *     extraSteps = (|value| - base_value) / step
  *     value is signed (positive fortify, negative weaken) but price only
  *     cares about magnitude — a weaken enchantment costs the same as the
- *     equivalent-strength fortify, not a negative price.
+ *     equivalent-strength fortify, not a negative price. Percentage-
+ *     flagged types (weight, elemental-resistance) carry decimal
+ *     base_value/step/value (e.g. 0.05 for 5%) — the formula itself is
+ *     unit-agnostic, so no special-casing needed here.
  *
  * - advantage/disadvantage: |target_cost| × price_per_point
  *     target_cost comes from the target's own DB row (advantage_cost /
@@ -42,7 +46,7 @@ function round2(value) {
 function resolveEnchantmentPrice(entry, enchantment, targetsDb) {
   const type = enchantment.enchantment_effect_type;
 
-  if (ATTRIBUTE_EFFECT_TYPES.includes(type)) {
+  if (VALUE_EFFECT_TYPES.includes(type)) {
     const base = enchantment.enchantment_base_value || 0;
     const step = enchantment.enchantment_step || 0;
     const magnitude = Math.abs(Number(entry.value ?? base));

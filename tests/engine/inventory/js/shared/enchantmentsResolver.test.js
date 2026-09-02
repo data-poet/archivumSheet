@@ -208,6 +208,101 @@ describe("enchantmentsResolver", () => {
     });
   });
 
+  describe("resolveEnchantmentPrice — weight type (percentage)", () => {
+    const addWeight = {
+      enchantment_id: "ENCHANTMENT-036",
+      enchantment_name: "Aumentar Peso",
+      enchantment_effect_type: "add_weight",
+      enchantment_is_percentage: true,
+      enchantment_base_value: 0.1,
+      enchantment_step: 0.1,
+      enchantment_base_price: 500,
+      enchantment_price_per_extra_value: 500,
+    };
+
+    test("Should charge only base_price at base_value (decimal fraction)", () => {
+      const price = resolveEnchantmentPrice({ value: 0.1 }, addWeight, {});
+      expect(price).toBe(500);
+    });
+
+    test("Should add price_per_extra_value per extra step above base, with decimal steps", () => {
+      const price = resolveEnchantmentPrice({ value: 0.3 }, addWeight, {});
+      // base 500 + 2 extra steps (0.1 each) × 500
+      expect(price).toBe(1500);
+    });
+
+    test("Should price remove_weight (negative decimal value) same as equivalent add_weight", () => {
+      const removeWeight = {
+        ...addWeight,
+        enchantment_effect_type: "remove_weight",
+      };
+
+      const addPrice = resolveEnchantmentPrice({ value: 0.2 }, addWeight, {});
+      const removePrice = resolveEnchantmentPrice(
+        { value: -0.2 },
+        removeWeight,
+        {},
+      );
+
+      expect(removePrice).toBe(addPrice);
+      expect(removePrice).toBeGreaterThan(0);
+    });
+  });
+
+  describe("resolveEnchantmentPrice — damage-resistance type (flat, not percentage)", () => {
+    const fortifyDR = {
+      enchantment_id: "ENCHANTMENT-038",
+      enchantment_name: "Aumentar Resistência à Dano",
+      enchantment_effect_type: "fortify_damage_resistance",
+      enchantment_is_percentage: false,
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enchantment_base_price: 1500,
+      enchantment_price_per_extra_value: 1500,
+    };
+
+    test("Should price like any other whole-number value type", () => {
+      const price = resolveEnchantmentPrice({ value: 2 }, fortifyDR, {});
+      // base 1500 + 1 extra step × 1500
+      expect(price).toBe(3000);
+    });
+  });
+
+  describe("resolveEnchantmentPrice — elemental-resistance type (percentage, fixed target)", () => {
+    const fortifyFireResistance = {
+      enchantment_id: "ENCHANTMENT-040",
+      enchantment_name: "Fortificar Resistência à Fogo",
+      enchantment_effect_type: "fortify_resistance",
+      enchantment_target: "Fire",
+      enchantment_is_percentage: true,
+      enchantment_base_value: 0.05,
+      enchantment_step: 0.05,
+      enchantment_base_price: 1000,
+      enchantment_price_per_extra_value: 1000,
+    };
+
+    test("Should charge only base_price at base_value", () => {
+      const price = resolveEnchantmentPrice(
+        { value: 0.05 },
+        fortifyFireResistance,
+        {},
+      );
+
+      expect(price).toBe(1000);
+    });
+
+    test("Should add price_per_extra_value per extra step above base", () => {
+      const price = resolveEnchantmentPrice(
+        { value: 0.15 },
+        fortifyFireResistance,
+        {},
+      );
+
+      // base 1000 + 2 extra steps (0.05 each) × 1000
+      expect(price).toBe(3000);
+    });
+  });
+
   describe("resolveEnchantmentEntry", () => {
     test("Should merge entry + enchantment into a display-ready application", () => {
       const enchantment = {
@@ -258,6 +353,32 @@ describe("enchantmentsResolver", () => {
 
       expect(result.target).toBe("ADV-000");
       expect(result.price).toBe(250);
+    });
+
+    test("Should fall back to the DB row's fixed target for a non-parametric elemental-resistance entry", () => {
+      const enchantment = {
+        enchantment_id: "ENCHANTMENT-040",
+        enchantment_name: "Fortificar Resistência à Fogo",
+        enchantment_effect_type: "fortify_resistance",
+        enchantment_target: "Fire",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.05,
+        enchantment_step: 0.05,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      };
+
+      const entry = {
+        _instanceId: "ench-1",
+        enchantment_id: "ENCHANTMENT-040",
+        value: 0.05,
+      };
+
+      const result = resolveEnchantmentEntry(entry, enchantment, {});
+
+      expect(result.target).toBe("Fire");
+      expect(result.value).toBe(0.05);
+      expect(result.price).toBe(1000);
     });
   });
 

@@ -241,10 +241,10 @@ describe("MAGIC GEAR", () => {
         },
       ]);
 
-      // ENCHANTMENT-010 (Fortificar Mana) at base value: base_price 2500
-      expect(result.equipped[0].enchantments_total_price).toBe(2500);
-      expect(result.equipped[0].total_value).toBe(2650); // 150 (wand) + 2500
-      expect(result.carried_magic_gear_value).toBe(2650);
+      // ENCHANTMENT-010 (Fortificar Mana) at base value: base_price 1000
+      expect(result.equipped[0].enchantments_total_price).toBe(1000);
+      expect(result.equipped[0].total_value).toBe(1150); // 150 (wand) + 1000
+      expect(result.carried_magic_gear_value).toBe(1150);
     });
 
     test("Should throw when applying an enchantment not allowed on magic gear", () => {
