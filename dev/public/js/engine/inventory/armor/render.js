@@ -7,6 +7,7 @@ import {
 } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
+import { decimalToPercent } from "../../../components/resistances.js";
 import {
   materialOptions,
   tierOptions,
@@ -20,6 +21,7 @@ import {
   customFieldsEquippedDetail,
   customFieldsDetailRow,
 } from "../../../shared/renderUtils.js";
+import { enchantmentsExpander } from "../shared/enchantments/render.js";
 
 // Look up a resolved armor piece from the engine output by instanceId
 function resolvedArmor(sheet, instanceId) {
@@ -45,6 +47,23 @@ function resolvedArmor(sheet, instanceId) {
   return null;
 }
 
+/**
+ * Appends a small inline badge to a final value when it includes a
+ * nonzero enchantment contribution — e.g. "1.74" + a "+10%" badge for
+ * weight, "5" + a "+2" badge for damage resistance. Deliberately NOT a
+ * hover-only tooltip: this is a mobile-first app, so the delta itself is
+ * always visible rather than hidden behind a hover interaction most users
+ * can't trigger. The badge still carries a native `title` as a harmless
+ * bonus for anyone on a mouse.
+ */
+function withEnchantmentBadge(finalValue, delta, suffix = "") {
+  if (finalValue == null) return "—";
+  if (!delta) return `${finalValue}`;
+
+  const sign = delta > 0 ? "+" : "";
+  return `${finalValue}<span class="detail-enchantment-badge" title="${t("armor.enchantmentContribution")}">${sign}${delta}${suffix}</span>`;
+}
+
 function armorDetailFields(resolved, armorData) {
   const src = resolved ?? armorData;
   if (!src) return [];
@@ -52,19 +71,31 @@ function armorDetailFields(resolved, armorData) {
     { label: t("common.type"), value: src.armor_type ?? "—" },
     {
       label: t("armor.dr"),
-      value:
-        resolved?.armor_final_damage_resistance ??
-        src.armor_damage_resistance ??
-        src.armor_damage_resistance ??
-        "—",
+      value: resolved
+        ? withEnchantmentBadge(
+            resolved.final_damage_resistance,
+            resolved.enchantment_damage_resistance_modifier,
+          )
+        : (src.armor_damage_resistance ?? "—"),
     },
     {
       label: t("common.weight"),
-      value: resolved?.armor_final_weight ?? src.armor_weight ?? "—",
+      value: resolved
+        ? withEnchantmentBadge(
+            resolved.final_weight,
+            decimalToPercent(resolved.enchantment_weight_modifier),
+            "%",
+          )
+        : (src.armor_weight ?? "—"),
     },
     {
       label: t("common.price"),
-      value: resolved?.armor_final_price ?? src.armor_price ?? "—",
+      value: resolved
+        ? withEnchantmentBadge(
+            resolved.total_value,
+            resolved.enchantments_total_price,
+          )
+        : (src.armor_price ?? "—"),
     },
     {
       label: t("armor.hp"),
@@ -163,12 +194,20 @@ function renderArmorSlot(slot, selected, data, sheet) {
     ${equippedDetailBlock(fields)}
     ${
       equippedInstance
-        ? customFieldsEquippedDetail({
-            instanceId: equippedInstance._instanceId,
-            name: equippedInstance.armor_custom_name,
-            description: equippedInstance.armor_custom_description,
-            effect: equippedInstance.armor_custom_effect,
-          })
+        ? customFieldsEquippedDetail(
+            {
+              instanceId: equippedInstance._instanceId,
+              name: equippedInstance.armor_custom_name,
+              description: equippedInstance.armor_custom_description,
+              effect: equippedInstance.armor_custom_effect,
+            },
+            enchantmentsExpander({
+              instanceId: equippedInstance._instanceId,
+              entries: equippedInstance.enchantments || [],
+              itemCategory: slot,
+              resolvedEntries: resolved?.enchantments,
+            }),
+          )
         : ""
     }
   `;
@@ -227,12 +266,21 @@ function renderStorageSection(location, storedArmors, data, sheet) {
           </td>
         </tr>
         ${detailRow(7, armorDetailFields(resolved, armorData))}
-        ${customFieldsDetailRow(7, {
-          instanceId,
-          name: inst.armor_custom_name,
-          description: inst.armor_custom_description,
-          effect: inst.armor_custom_effect,
-        })}`;
+        ${customFieldsDetailRow(
+          7,
+          {
+            instanceId,
+            name: inst.armor_custom_name,
+            description: inst.armor_custom_description,
+            effect: inst.armor_custom_effect,
+          },
+          enchantmentsExpander({
+            instanceId,
+            entries: inst.enchantments || [],
+            itemCategory: armorData.armor_piece_location,
+            resolvedEntries: resolved?.enchantments,
+          }),
+        )}`;
       })
       .join("");
   }
