@@ -1,5 +1,10 @@
 const { VALID_STORED_AT } = require("./armorConstants");
 
+const {
+  validateEnchantmentEntryShape,
+  validateEnchantmentEntryApplication,
+} = require("../shared/enchantmentsValidation.js");
+
 // Validation
 
 /**
@@ -35,6 +40,64 @@ function validateArmorInstance(instance, index) {
       `${prefix}: storedAt must be one of [${VALID_STORED_AT.join(", ")}] when not equipped`,
     );
   }
+
+  // enchantments — optional; unlimited count, no slot system (same
+  // shape-only pass as accessories/magicGear — see accessoriesValidation.js)
+  if (instance.enchantments !== undefined) {
+    if (!Array.isArray(instance.enchantments)) {
+      errors.push(`${prefix}: enchantments must be an array when present`);
+    } else {
+      instance.enchantments.forEach((entry, entryIndex) => {
+        errors.push(
+          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
+        );
+      });
+    }
+  }
+
+  return errors;
+}
+
+/**
+ * DB-dependent enchantment checks (unknown ids, allowed_itens, target
+ * existence, value/step alignment) — separate pass from the shape-only
+ * checks above, same split accessories/magicGear use.
+ *
+ * Unlike accessories' single fixed ACCESSORY_ITEM_CATEGORY, armor's
+ * itemCategory is per-instance: each piece's own armor_piece_location
+ * (the raw Portuguese SLOT_MAP key, e.g. "Cabeça") — a helmet enchantment
+ * isn't necessarily allowed on boots. Instances with an unknown armor_id
+ * are skipped here; that's caught separately in armor.js.
+ */
+function validateArmorEnchantments(
+  armorInventory,
+  armorDb,
+  enchantmentsDb,
+  targetsDb,
+) {
+  const errors = [];
+
+  armorInventory.forEach((instance, index) => {
+    const armor = armorDb[instance.armor_id];
+    if (!armor) return;
+
+    const prefix = `armorInventory[${index}]`;
+    const entries = instance.enchantments || [];
+    const itemCategory = armor.armor_piece_location;
+
+    entries.forEach((entry, entryIndex) => {
+      errors.push(
+        ...validateEnchantmentEntryApplication(
+          entry,
+          enchantmentsDb,
+          targetsDb,
+          itemCategory,
+          entryIndex,
+          prefix,
+        ),
+      );
+    });
+  });
 
   return errors;
 }
@@ -82,4 +145,5 @@ function validateSingleEquippedPerSlot(instances, db) {
 module.exports = {
   validateArmorInstance,
   validateSingleEquippedPerSlot,
+  validateArmorEnchantments,
 };

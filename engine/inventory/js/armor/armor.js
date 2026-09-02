@@ -7,6 +7,7 @@ const { SLOTS, SLOT_MAP, VALID_STORED_AT } = require("./armorConstants.js");
 const {
   validateArmorInstance,
   validateSingleEquippedPerSlot,
+  validateArmorEnchantments,
 } = require("./armorValidation.js");
 
 const {
@@ -17,6 +18,10 @@ const {
 } = require("./armorResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
+const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
+const {
+  getEnchantmentTargetsDB,
+} = require("../shared/enchantmentTargetsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARMOR DB
@@ -70,6 +75,8 @@ function buildArmorSlots(armorInventory = []) {
   const armorDb = getArmorDB();
 
   const materialDb = getMaterialsDB();
+  const enchantmentsDb = getEnchantmentsDB();
+  const targetsDb = getEnchantmentTargetsDB();
 
   // VALIDATE INSTANCES
 
@@ -119,6 +126,21 @@ function buildArmorSlots(armorInventory = []) {
     );
   }
 
+  // VALIDATE ENCHANTMENTS
+
+  const enchantmentErrors = validateArmorEnchantments(
+    armorInventory,
+    armorDb,
+    enchantmentsDb,
+    targetsDb,
+  );
+
+  if (enchantmentErrors.length > 0) {
+    throw new Error(
+      `[buildArmorSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
+    );
+  }
+
   // BUILD INVENTORY
 
   // ONLY ONE PER SLOT
@@ -141,7 +163,13 @@ function buildArmorSlots(armorInventory = []) {
       ? materialDb[instance.material_id]
       : null;
 
-    const resolvedArmor = resolveArmorPiece(instance, armor, material);
+    const resolvedArmor = resolveArmorPiece(
+      instance,
+      armor,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
     const slot = SLOT_MAP[armor.armor_piece_location];
 
@@ -150,7 +178,7 @@ function buildArmorSlots(armorInventory = []) {
     if (instance.is_equipped) {
       equipped[slot] = resolvedArmor;
 
-      carried_armor_weight += resolvedArmor.armor_final_weight;
+      carried_armor_weight += resolvedArmor.final_weight;
       carried_armor_value += resolvedArmor.total_value;
 
       continue;
@@ -177,7 +205,7 @@ function buildArmorSlots(armorInventory = []) {
     if (instance.storedAt === "backpack") {
       backpack[slot].push(resolvedArmor);
 
-      carried_armor_weight += resolvedArmor.armor_final_weight;
+      carried_armor_weight += resolvedArmor.final_weight;
       carried_armor_value += resolvedArmor.total_value;
     }
   }
@@ -188,12 +216,16 @@ function buildArmorSlots(armorInventory = []) {
     armorInventory,
     armorDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   const total_armor_value = calculateTotalArmorValue(
     armorInventory,
     armorDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   return {
