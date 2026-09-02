@@ -1,8 +1,8 @@
 const {
-  ATTRIBUTE_EFFECT_TYPES,
   POINT_EFFECT_TYPES,
   SPELL_EFFECT_TYPES,
   DIFFICULTY_EFFECT_TYPES,
+  VALUE_EFFECT_TYPES,
   FORTIFY_EFFECT_TYPES,
   WEAKEN_EFFECT_TYPES,
 } = require("./enchantmentsConstants.js");
@@ -17,9 +17,13 @@ const {
  * enchantment's effect_type, looked up from the DB), so this only rejects
  * entries with the wrong type for a field that IS present.
  *
- * Both `value` and `extraPoints` must always be integers — enforced here
- * regardless of effect_type. Sign (fortify > 0, weaken < 0) depends on
- * effect_type, so that's checked in the application pass below, not here.
+ * Both `value` and `extraPoints` are checked here — types only. `value`
+ * must be a number (not necessarily an integer: percentage-flagged
+ * enchantments carry decimal fractions, e.g. 0.05 for +5% — see
+ * enchantment_is_percentage in enchantmentsDB.js). `extraPoints` (skill/
+ * spell only) stays integer-only, since points are never fractional. Sign
+ * (fortify > 0, weaken < 0) depends on effect_type, so that's checked in
+ * the application pass below, not here.
  */
 function validateEnchantmentEntryShape(entry, index, parentPrefix) {
   const prefix = `${parentPrefix}.enchantments[${index}]`;
@@ -34,8 +38,11 @@ function validateEnchantmentEntryShape(entry, index, parentPrefix) {
     errors.push(`${prefix}: enchantment_id is required`);
   }
 
-  if (entry.value !== undefined && !Number.isInteger(entry.value)) {
-    errors.push(`${prefix}: value must be an integer when present`);
+  if (
+    entry.value !== undefined &&
+    (typeof entry.value !== "number" || Number.isNaN(entry.value))
+  ) {
+    errors.push(`${prefix}: value must be a number when present`);
   }
 
   if (
@@ -92,13 +99,18 @@ function validateEnchantmentEntryApplication(
   const isFortify = FORTIFY_EFFECT_TYPES.includes(type);
   const isWeaken = WEAKEN_EFFECT_TYPES.includes(type);
 
-  if (ATTRIBUTE_EFFECT_TYPES.includes(type)) {
+  if (VALUE_EFFECT_TYPES.includes(type)) {
+    // Covers attribute, weight, damage-resistance, and elemental-resistance
+    // types — same base_value/step-aligned magnitude shape for all four.
+    // Percentage-flagged types (weight, elemental-resistance) carry decimal
+    // fractions here (e.g. 0.05), everything else whole numbers — the
+    // step-alignment math below is unit-agnostic either way.
     if (typeof entry.value !== "number") {
       errors.push(`${prefix}: value is required for ${type}`);
     } else if (isFortify && entry.value <= 0) {
-      errors.push(`${prefix}: value must be a positive integer for ${type}`);
+      errors.push(`${prefix}: value must be positive for ${type}`);
     } else if (isWeaken && entry.value >= 0) {
-      errors.push(`${prefix}: value must be a negative integer for ${type}`);
+      errors.push(`${prefix}: value must be negative for ${type}`);
     } else {
       const base = enchantment.enchantment_base_value;
       const step = enchantment.enchantment_step;
