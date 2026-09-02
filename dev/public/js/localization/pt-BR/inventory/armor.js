@@ -10,4 +10,5 @@ export const ARMOR = {
   dr: "RD",
   hp: "PV",
   slotFilter: "— Local —",
+  enchantmentContribution: "Contribuição de encantamentos",
 };

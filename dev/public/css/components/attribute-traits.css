@@ -82,3 +82,23 @@ tr.trait-enchantment td {
   opacity: 0.7;
 }
 
+/*
+ * Small inline marker for a final value (weight, damage resistance, price)
+ * that includes a nonzero enchantment contribution — shown next to the
+ * value itself rather than as a hover-only tooltip, since this is a
+ * mobile-first app and most users can't hover. A native `title` is added
+ * alongside it as a harmless bonus for desktop/mouse users, not the
+ * primary mechanism.
+ */
+.detail-enchantment-badge {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-enchantment-tag);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 3px;
+  vertical-align: middle;
+  opacity: 0.85;
+}
