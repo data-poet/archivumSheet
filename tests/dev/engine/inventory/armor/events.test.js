@@ -6,6 +6,9 @@ jest.mock("dev/public/js/engine/inventory/armor/model.js", () => ({
   findEquippedArmorInSlot: jest.fn(),
   findArmorByInstanceId: jest.fn(),
   saveArmorCustomFields: jest.fn(),
+  addArmorEnchantment: jest.fn(),
+  updateArmorEnchantment: jest.fn(),
+  removeArmorEnchantment: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/armor/render.js", () => ({
   renderArmorSlots: jest.fn(),
@@ -200,6 +203,52 @@ describe("handleArmorClick — custom fields (real shared dispatch, sync flavor)
       instanceId: "ARMOR-1",
     });
     expect(handleArmorClick({ target })).toBe(false);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// handleArmorClick — enchantments (real shared dispatch)
+// ─────────────────────────────────────────────────────────────────────────
+describe("handleArmorClick — enchantments delegation", () => {
+  test("remove button removes the enchantment entry via the shared dispatch factory", () => {
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "ARMOR-1",
+      entryInstanceId: "ENTRY-1",
+    });
+
+    const result = handleArmorClick({ target });
+
+    expect(result).toBe(true);
+    expect(model.removeArmorEnchantment).toHaveBeenCalledWith(
+      "ARMOR-1",
+      "ENTRY-1",
+    );
+  });
+
+  test("an enchantment click for an instanceId ownership rejects is not handled", () => {
+    model.findArmorByInstanceId.mockReturnValue(undefined);
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "ARMOR-1",
+      entryInstanceId: "ENTRY-1",
+    });
+    expect(handleArmorClick({ target })).toBe(false);
+    expect(model.removeArmorEnchantment).not.toHaveBeenCalled();
+  });
+
+  test("removing an enchantment does NOT go through the rAF-deferred render — model.js's own renderListsPreserving already ran synchronously", () => {
+    // Unlike accessories (which needs _withPreservedOpenState to render),
+    // armor's addArmorEnchantment/updateArmorEnchantment/
+    // removeArmorEnchantment call the global renderListsPreserving()
+    // themselves — model.js is mocked here, so this test only proves the
+    // dispatch reaches removeArmorEnchantment without also asserting on
+    // render.renderArmorSlots, which would only fire from a REAL
+    // (unmocked) model.js.
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "ARMOR-1",
+      entryInstanceId: "ENTRY-1",
+    });
+    handleArmorClick({ target });
+    expect(render.renderArmorSlots).not.toHaveBeenCalled();
   });
 });
 
@@ -538,6 +587,30 @@ describe("handleArmorChange — material / storage / move", () => {
 
     expect(equipped.is_equipped).toBe(true);
     expect(equipped.storedAt).toBeNull();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// handleArmorChange — enchantments (real shared dispatch)
+// ─────────────────────────────────────────────────────────────────────────
+describe("handleArmorChange — enchantments delegation", () => {
+  test("an enchantment filter change delegates to the shared dispatch factory", () => {
+    const target = elWithClass("select", "enchantment-type-select", {
+      formKey: "ARMOR-1",
+    });
+    target.value = "SOME-ENCH";
+    // findArmorByInstanceId (mocked truthy) confirms ownership; the
+    // actual Map-mutation is model.js internals covered in Batch 5 — this
+    // just proves the wiring reaches it without throwing.
+    expect(() => handleArmorChange({ target })).not.toThrow();
+  });
+
+  test("an enchantment filter change for a rejected ownership is not handled", () => {
+    model.findArmorByInstanceId.mockReturnValue(undefined);
+    const target = elWithClass("select", "enchantment-type-select", {
+      formKey: "ARMOR-1",
+    });
+    expect(handleArmorChange({ target })).toBe(false);
   });
 });
 

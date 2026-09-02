@@ -8,12 +8,16 @@ import {
   findEquippedArmorInSlot,
   findArmorByInstanceId,
   saveArmorCustomFields,
+  addArmorEnchantment,
+  updateArmorEnchantment,
+  removeArmorEnchantment,
 } from "./model.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderArmorSlots, renderStoredArmors } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -77,6 +81,28 @@ const _handleArmorCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderArmorLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
+/**
+ * Unlike accessories/magicGear's _withPreservedOpenState (needed because
+ * their local render helper does NOT self-snapshot), armor's own
+ * addArmorEnchantment/updateArmorEnchantment/removeArmorEnchantment
+ * (model.js) call the global renderListsPreserving() directly, which
+ * already snapshots+restores synchronously — same relationship
+ * _saveArmorCustomFieldsWrapped above has with saveArmorCustomFields. So
+ * no runWithOpenState override is needed for the click path here; the
+ * default no-op (fn() with no wrapping) is correct. The change-path
+ * (cascading category/type/target filters) uses _renderArmorLists
+ * directly, which self-wraps via snapshotAll/restoreAll + rAF, same as
+ * the custom-fields render above.
+ */
+const _armorEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findArmorByInstanceId,
+  getItems: () => selected.armors,
+  addEnchantment: addArmorEnchantment,
+  updateEnchantment: updateArmorEnchantment,
+  removeEnchantment: removeArmorEnchantment,
+  render: () => _renderArmorLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleArmorClick(e) {
@@ -121,6 +147,13 @@ export function handleArmorClick(e) {
   // without collisions.
 
   if (_handleArmorCustomFieldsClick(e)) return true;
+
+  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
+  // Generic .enchantment-* classes rendered by renderEnchantments.js;
+  // delegated to the shared factory, which ownership-checks the instanceId
+  // the same way as the custom-fields factory above.
+
+  if (_armorEnchantments.handleClick(e)) return true;
 
   return false;
 }
@@ -297,6 +330,12 @@ export function handleArmorChange(e) {
     triggerAutoRun();
     return true;
   }
+
+  // ── Enchantments: cascading category/type/target filters ───────────────────
+  // Delegated to the shared factory — see the click section above for the
+  // ownership-guard rationale.
+
+  if (_armorEnchantments.handleChange(e)) return true;
 
   return false;
 }
