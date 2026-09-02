@@ -41,6 +41,40 @@ describe("getEnchantmentsDB", () => {
       enchantment_price_per_difficulty: "",
       enchantment_description: "Concede uma vantagem existente.",
     },
+    {
+      enchantment_id: "ENCHANTMENT-036",
+      enchantment_name: "Aumentar Peso",
+      enchantment_type: "Peso",
+      enchantment_effect_type: "add_weight",
+      enchantment_is_parametric: "FALSE",
+      enchantment_target: "",
+      enchantment_base_value: "0.1",
+      enchantment_step: "0.1",
+      enenchantment_is_percentage: "TRUE",
+      enchantment_allowed_itens: "Cabeça, Tronco",
+      enchantment_base_price: "500",
+      enchantment_price_per_extra_value: "500",
+      enchantment_price_per_point: "",
+      enchantment_price_per_difficulty: "",
+      enchantment_description: "Aumenta o peso do item.",
+    },
+    {
+      enchantment_id: "ENCHANTMENT-040",
+      enchantment_name: "Fortificar Resistência à Fogo",
+      enchantment_type: "Resistência Elemental",
+      enchantment_effect_type: "fortify_resistance",
+      enchantment_is_parametric: "FALSE",
+      enchantment_target: "Fire",
+      enchantment_base_value: "0.05",
+      enchantment_step: "0.05",
+      enenchantment_is_percentage: "TRUE",
+      enchantment_allowed_itens: "Cabeça, Tronco, Braços, Mãos, Pernas, Pés",
+      enchantment_base_price: "1000",
+      enchantment_price_per_extra_value: "1000",
+      enchantment_price_per_point: "",
+      enchantment_price_per_difficulty: "",
+      enchantment_description: "Aumenta a resistência a fogo.",
+    },
   ];
 
   beforeEach(() => {
@@ -73,6 +107,7 @@ describe("getEnchantmentsDB", () => {
       enchantment_target: "ST",
       enchantment_base_value: 1,
       enchantment_step: 1,
+      enchantment_is_percentage: false,
       enchantment_allowed_itens: ["Acessórios", "Cabeça"],
       enchantment_base_price: 5000,
       enchantment_price_per_extra_value: 5000,
@@ -118,6 +153,43 @@ describe("getEnchantmentsDB", () => {
       "Fortificar Atributo",
     );
     expect(result["ENCHANTMENT-026"].enchantment_type).toBe("Peculiaridade");
+  });
+
+  test("Should parse enenchantment_is_percentage TRUE/FALSE as booleans on enchantment_is_percentage", () => {
+    const result = getEnchantmentsDB();
+
+    expect(result["ENCHANTMENT-000"].enchantment_is_percentage).toBe(false);
+    expect(result["ENCHANTMENT-036"].enchantment_is_percentage).toBe(true);
+    expect(result["ENCHANTMENT-040"].enchantment_is_percentage).toBe(true);
+  });
+
+  test("Should default enchantment_is_percentage to false when the CSV column is missing", () => {
+    const result = getEnchantmentsDB();
+
+    // ENCHANTMENT-026 has no enenchantment_is_percentage key at all in
+    // mockRows — confirms toBoolean() degrades safely rather than throwing.
+    expect(result["ENCHANTMENT-026"].enchantment_is_percentage).toBe(false);
+  });
+
+  test("Should keep enchantment_base_value/enchantment_step as decimal fractions for percentage enchantments", () => {
+    const result = getEnchantmentsDB();
+
+    expect(result["ENCHANTMENT-036"].enchantment_base_value).toBe(0.1);
+    expect(result["ENCHANTMENT-036"].enchantment_step).toBe(0.1);
+    expect(result["ENCHANTMENT-040"].enchantment_base_value).toBe(0.05);
+    expect(result["ENCHANTMENT-040"].enchantment_step).toBe(0.05);
+  });
+
+  test("Should parse a fixed elemental-resistance enchantment_target the same way as a fixed attribute target", () => {
+    const result = getEnchantmentsDB();
+
+    expect(result["ENCHANTMENT-040"].enchantment_target).toBe("Fire");
+  });
+
+  test("Should return null enchantment_target for item-stat types with no target column value", () => {
+    const result = getEnchantmentsDB();
+
+    expect(result["ENCHANTMENT-036"].enchantment_target).toBeNull();
   });
 
   test("Should cache database after first load", () => {
