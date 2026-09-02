@@ -6,6 +6,13 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { nextArmorInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
+import { t } from "../../../localization/pt-BR/index.js";
+import {
+  addEnchantmentEntry,
+  updateEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "../shared/enchantments/model.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -34,7 +41,10 @@ export function loadArmorSelectors() {
   if (!slotSelect) return;
 
   const slots = [...new Set(data.armors.map((a) => a.armor_piece_location))];
-  populateSelect(slotSelect, slots.map((s) => ({ value: s, label: s })));
+  populateSelect(
+    slotSelect,
+    slots.map((s) => ({ value: s, label: s })),
+  );
 
   updateArmorNameOptions();
   updateArmorTierOptions();
@@ -55,7 +65,10 @@ export function updateArmorNameOptions() {
     ),
   ];
 
-  populateSelect(nameSelect, names.map((n) => ({ value: n, label: n })));
+  populateSelect(
+    nameSelect,
+    names.map((n) => ({ value: n, label: n })),
+  );
   updateArmorTierOptions();
 }
 
@@ -75,7 +88,10 @@ export function updateArmorTierOptions() {
     ),
   ];
 
-  populateSelect(tierSelect, tiers.map((t) => ({ value: t, label: t })));
+  populateSelect(
+    tierSelect,
+    tiers.map((t) => ({ value: t, label: t })),
+  );
 }
 
 export function updateArmorMaterialOptions() {
@@ -84,7 +100,10 @@ export function updateArmorMaterialOptions() {
 
   populateSelect(
     materialSelect,
-    data.materials.map((m) => ({ value: m.material_name, label: m.material_name })),
+    data.materials.map((m) => ({
+      value: m.material_name,
+      label: m.material_name,
+    })),
   );
 }
 
@@ -123,6 +142,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
     armor_custom_name: null,
     armor_custom_description: null,
     armor_custom_effect: null,
+    enchantments: [],
   });
 
   renderListsPreserving(selected, data);
@@ -134,7 +154,11 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Add armor directly to storage (not equipped). */
-export function addStoredArmor(armorId, materialId = null, storedAt = "backpack") {
+export function addStoredArmor(
+  armorId,
+  materialId = null,
+  storedAt = "backpack",
+) {
   if (!armorId) return;
 
   selected.armors.push({
@@ -147,6 +171,7 @@ export function addStoredArmor(armorId, materialId = null, storedAt = "backpack"
     armor_custom_name: null,
     armor_custom_description: null,
     armor_custom_effect: null,
+    enchantments: [],
   });
 
   renderListsPreserving(selected, data);
@@ -169,6 +194,7 @@ export function moveArmor(instanceId, storedAt) {
 export function removeArmor(instanceId) {
   const before = structuredClone(selected.armors);
   selected.armors = selected.armors.filter((a) => a._instanceId !== instanceId);
+  clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
 
@@ -188,7 +214,10 @@ export function removeArmor(instanceId) {
  * presses "Salvar" in the custom-fields editor, never on individual
  * keystrokes. Blank strings are normalized to null.
  */
-export function saveArmorCustomFields(instanceId, { name, description, effect }) {
+export function saveArmorCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findArmorByInstanceId(instanceId);
   if (!instance) return;
 
@@ -200,6 +229,94 @@ export function saveArmorCustomFields(instanceId, { name, description, effect })
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+//
+// Thin armor-specific wrappers around the generic entry helpers in
+// enchantments.js — same relationship saveArmorCustomFields has with
+// customFieldsBlock, and identical shape to accessories'/magicGear's own
+// wrappers (see accessories/model.js). instance.enchantments defaults to
+// [] defensively since armor saved before this feature existed won't have
+// the field.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addArmorEnchantment(instanceId, enchantmentId, params) {
+  const instance = findArmorByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const before = structuredClone(instance.enchantments);
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
+}
+
+/**
+ * Edits an already-attached entry in place — swapping it for a different
+ * enchantment entirely, or just changing its target/value/extraPoints.
+ * Keeps the entry's own _instanceId so its position in the list and its
+ * price-lookup identity survive the edit.
+ */
+export function updateArmorEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findArmorByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
+}
+
+export function removeArmorEnchantment(instanceId, entryInstanceId) {
+  const instance = findArmorByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
