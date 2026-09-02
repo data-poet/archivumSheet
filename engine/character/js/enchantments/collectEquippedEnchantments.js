@@ -43,14 +43,14 @@ function addToGrantMap(map, key, extraPoints) {
 
 /**
  * @param {Array} equippedItems - resolved equipped items from any source
- *   that carries enchantments (accessories, magic gear so far — armor is a
- *   future phase), each with a resolved `.enchantments` array (see
- *   enchantmentsResolver.js's resolveEnchantmentEntry shape). Callers merge
- *   equipped items from multiple item types into a single array before
- *   calling this.
+ *   that carries enchantments (accessories, magic gear, armor), each with
+ *   a resolved `.enchantments` array (see enchantmentsResolver.js's
+ *   resolveEnchantmentEntry shape). Callers merge equipped items from
+ *   multiple item types into a single array before calling this.
  */
 function collectEquippedEnchantments(equippedItems = []) {
   const attributeModifiers = {};
+  const elementalModifiers = {};
   const advantageIds = [];
   const disadvantageIds = [];
   const skillGrants = {};
@@ -70,6 +70,16 @@ function collectEquippedEnchantments(equippedItems = []) {
           addToSumMap(attributeModifiers, key, enchantment.value);
           break;
         }
+
+        case "fortify_resistance":
+        case "weaken_resistance":
+          // target is a fixed element name (Fire/Ice/...) baked into the
+          // enchantment's own DB row — see enchantmentsConstants.js's
+          // ELEMENTAL_RESISTANCE_EFFECT_TYPES. No target-map translation
+          // needed, unlike ATTRIBUTE_TARGET_MAP: elemental keys already
+          // match 1:1 between the CSV and elementalResistances.js.
+          addToSumMap(elementalModifiers, target, enchantment.value);
+          break;
 
         case "advantage":
           if (target) advantageIds.push(target);
@@ -98,14 +108,17 @@ function collectEquippedEnchantments(equippedItems = []) {
           break;
 
         default:
-        // "custom" / "weight" / unrecognized — no character effect to
-        // collect (Phase 1 pilot CSV doesn't include these types yet).
+        // "add_weight"/"remove_weight"/"fortify_damage_resistance"/
+        // "weaken_damage_resistance" (item-intrinsic — already applied in
+        // armorResolver.js, no character-level effect) / "custom" /
+        // unrecognized — no character effect to collect.
       }
     }
   }
 
   return {
     attributeModifiers,
+    elementalModifiers,
     advantageIds,
     disadvantageIds,
     skillGrants,

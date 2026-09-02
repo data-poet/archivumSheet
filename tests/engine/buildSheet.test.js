@@ -429,5 +429,107 @@ describe("BUILD SHEET", () => {
         baseline.character.secondary_attributes.Mana.value + 1,
       );
     });
+
+    it("Should boost an elemental resistance from an equipped armor's fortify_resistance enchantment", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          armor: [
+            {
+              _instanceId: "arm-1",
+              armor_id: "ARMOR-000",
+              is_equipped: true,
+              storedAt: null,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-040",
+                  value: 0.05,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      const baseline = buildSheet(mockInput);
+
+      expect(result.character.elemental_resistances.Fire.final).toBeCloseTo(
+        baseline.character.elemental_resistances.Fire.final + 0.05,
+      );
+      expect(
+        result.character.elemental_resistances.Fire.has_enchantment_modifier,
+      ).toBe(true);
+      // No spillover into an unrelated element
+      expect(result.character.elemental_resistances.Ice.final).toBe(
+        baseline.character.elemental_resistances.Ice.final,
+      );
+    });
+
+    it("Should NOT apply an elemental-resistance enchantment from an armor piece that isn't equipped", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          armor: [
+            {
+              _instanceId: "arm-1",
+              armor_id: "ARMOR-000",
+              is_equipped: false,
+              storedAt: "backpack",
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-040",
+                  value: 0.05,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      const baseline = buildSheet(mockInput);
+
+      expect(result.character.elemental_resistances.Fire.final).toBe(
+        baseline.character.elemental_resistances.Fire.final,
+      );
+      expect(
+        result.character.elemental_resistances.Fire.has_enchantment_modifier,
+      ).toBe(false);
+    });
+
+    it("Should leave the armor item's own final_weight/final_damage_resistance visible on the resolved inventory alongside the character-level effect", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          armor: [
+            {
+              _instanceId: "arm-1",
+              armor_id: "ARMOR-000",
+              is_equipped: true,
+              storedAt: null,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-038",
+                  value: 1,
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      const equippedHead = result.inventory.armor.equipped.head;
+
+      expect(equippedHead.armor_final_damage_resistance).toBe(2);
+      expect(equippedHead.enchantment_damage_resistance_modifier).toBe(1);
+      expect(equippedHead.final_damage_resistance).toBe(3);
+      // fortify_damage_resistance has no character-level effect
+      expect(result.character.elemental_resistances.Fire.final).toBe(1);
+    });
   });
 });

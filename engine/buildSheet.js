@@ -74,20 +74,28 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    *
    * Bridges the inventory layer into the character layer: reads ONLY
-   * equipped items' resolved enchantments (accessories + magic gear so
-   * far — armor is a future phase) and turns them into attribute
+   * equipped items' resolved enchantments (accessories, magic gear, armor)
+   * and turns them into attribute modifiers, elemental-resistance
    * modifiers, advantage/disadvantage grants, and skill/spell
    * grants+modifiers. Must happen after inventory is built (equipped items
    * aren't known before that) and before the final character build (which
    * needs to consume this).
+   *
+   * Armor's `equipped` is slot-keyed (one piece per slot, some slots
+   * null), unlike accessories/magicGear's flat equipped array — flatten
+   * it here before merging.
    */
 
   const equippedAccessories =
     inventoryResult.inventory.accessories?.equipped || [];
   const equippedMagicGear = inventoryResult.inventory.magicGear?.equipped || [];
+  const equippedArmor = Object.values(
+    inventoryResult.inventory.armor?.equipped || {},
+  ).filter(Boolean);
   const enchantmentEffects = collectEquippedEnchantments([
     ...equippedAccessories,
     ...equippedMagicGear,
+    ...equippedArmor,
   ]);
 
   /**
@@ -108,6 +116,7 @@ function buildSheet({
     innateAdvantageIds: race.innate_advantage_ids || [],
     innateDisadvantageIds: race.innate_disadvantage_ids || [],
     enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
+    enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
     enchantmentAdvantageIds: enchantmentEffects.advantageIds,
     enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
     enchantmentSkillGrants: enchantmentEffects.skillGrants,
