@@ -62,12 +62,21 @@ function getEnchantmentsDB() {
       enchantment_effect_type: row.enchantment_effect_type,
       enchantment_is_parametric: toBoolean(row.enchantment_is_parametric),
 
-      // Fixed target (attribute types only) — null for player-picked targets
+      // Fixed target (attribute + elemental-resistance types) — null for
+      // player-picked targets (advantage/disadvantage/skill/spell) and for
+      // item-stat types (weight/damage-resistance) which have no target at
+      // all
       enchantment_target: row.enchantment_target || null,
 
-      // Attribute magnitude pricing
+      // Magnitude pricing (attribute/weight/damage-resistance/elemental-
+      // resistance types). Whole numbers unless enchantment_is_percentage
+      // is true, in which case these are decimal fractions (0.05 = 5%).
       enchantment_base_value: toNumberOrNull(row.enchantment_base_value),
       enchantment_step: toNumberOrNull(row.enchantment_step),
+      // CSV header is "enenchantment_is_percentage" (source typo, kept
+      // as-is in the file so this loader stays a 1:1 mirror of the sheet —
+      // the field below is the clean name everything else should use).
+      enchantment_is_percentage: toBoolean(row.enenchantment_is_percentage),
 
       enchantment_allowed_itens: toItemList(row.enchantment_allowed_itens),
 
