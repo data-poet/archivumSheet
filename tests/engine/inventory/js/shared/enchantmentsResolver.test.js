@@ -303,6 +303,109 @@ describe("enchantmentsResolver", () => {
     });
   });
 
+  describe("resolveEnchantmentPrice — damage type (weapon BAL/GDP, flat)", () => {
+    const fortifyBAL = {
+      enchantment_id: "ENCHANTMENT-056",
+      enchantment_name: "Fortificar BAL",
+      enchantment_effect_type: "fortify_damage",
+      enchantment_is_percentage: false,
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enchantment_base_price: 1000,
+      enchantment_price_per_extra_value: 1000,
+    };
+
+    test("Should price like any other whole-number value type", () => {
+      const price = resolveEnchantmentPrice({ value: 2 }, fortifyBAL, {});
+      // base 1000 + 1 extra step × 1000
+      expect(price).toBe(2000);
+    });
+
+    test("Should price weaken_damage (negative value) same as equivalent fortify_damage", () => {
+      const weakenGDP = {
+        ...fortifyBAL,
+        enchantment_effect_type: "weaken_damage",
+      };
+
+      const fortifyPrice = resolveEnchantmentPrice(
+        { value: 2 },
+        fortifyBAL,
+        {},
+      );
+      const weakenPrice = resolveEnchantmentPrice({ value: -2 }, weakenGDP, {});
+
+      expect(weakenPrice).toBe(fortifyPrice);
+    });
+  });
+
+  describe("resolveEnchantmentPrice — requisite type (weapon Min Strength/PREC/TR, flat)", () => {
+    const addRequisite = {
+      enchantment_id: "ENCHANTMENT-060",
+      enchantment_name: "Aumentar ST Mín",
+      enchantment_effect_type: "add_requisite",
+      enchantment_is_percentage: false,
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enchantment_base_price: 500,
+      enchantment_price_per_extra_value: 500,
+    };
+
+    test("Should price like any other whole-number value type", () => {
+      const price = resolveEnchantmentPrice({ value: 1 }, addRequisite, {});
+      expect(price).toBe(500);
+    });
+
+    test("Should price remove_requisite (negative value) same as equivalent add_requisite", () => {
+      const removeRequisite = {
+        ...addRequisite,
+        enchantment_effect_type: "remove_requisite",
+      };
+
+      const addPrice = resolveEnchantmentPrice({ value: 1 }, addRequisite, {});
+      const removePrice = resolveEnchantmentPrice(
+        { value: -1 },
+        removeRequisite,
+        {},
+      );
+
+      expect(removePrice).toBe(addPrice);
+    });
+  });
+
+  describe("resolveEnchantmentPrice — flat type (special_effect, no magnitude)", () => {
+    const specialEffect = {
+      enchantment_id: "ENCHANTMENT-066",
+      enchantment_name: "Retorno Mágico",
+      enchantment_effect_type: "special_effect",
+      enchantment_base_price: 5000,
+    };
+
+    test("Should charge a flat enchantment_base_price regardless of entry contents", () => {
+      const price = resolveEnchantmentPrice({}, specialEffect, {});
+      expect(price).toBe(5000);
+    });
+
+    test("Should ignore any value/target/extraPoints present on the entry", () => {
+      const price = resolveEnchantmentPrice(
+        { value: 99, target: "whatever", extraPoints: 5 },
+        specialEffect,
+        {},
+      );
+
+      expect(price).toBe(5000);
+    });
+
+    test("Should default to 0 when enchantment_base_price is missing", () => {
+      const price = resolveEnchantmentPrice(
+        {},
+        { enchantment_effect_type: "special_effect" },
+        {},
+      );
+
+      expect(price).toBe(0);
+    });
+  });
+
   describe("resolveEnchantmentEntry", () => {
     test("Should merge entry + enchantment into a display-ready application", () => {
       const enchantment = {

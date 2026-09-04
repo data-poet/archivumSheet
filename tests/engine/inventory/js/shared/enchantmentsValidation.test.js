@@ -705,4 +705,86 @@ describe("enchantmentsValidation", () => {
       );
     });
   });
+
+  describe("validateEnchantmentEntryApplication — itemCategory as string[] (dual-use)", () => {
+    const enchantmentsDb = {
+      "ENCHANTMENT-062": {
+        enchantment_id: "ENCHANTMENT-062",
+        enchantment_name: "Aumentar Precisão (PREC)",
+        enchantment_effect_type: "add_requisite",
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Armas de Longo Alcance", "Armas de Fogo"],
+      },
+      "ENCHANTMENT-056": {
+        enchantment_id: "ENCHANTMENT-056",
+        enchantment_name: "Fortificar BAL",
+        enchantment_effect_type: "fortify_damage",
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Armas Corpo a Corpo"],
+      },
+    };
+
+    const targetsDb = {
+      advantages: {},
+      disadvantages: {},
+      skills: {},
+      spells: {},
+    };
+
+    test("Should pass when only the counterpart category (2nd array entry) is allowed", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-062", value: 1 },
+        enchantmentsDb,
+        targetsDb,
+        ["Armas Corpo a Corpo", "Armas de Longo Alcance"],
+        0,
+        "meleeInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should pass when only the own category (1st array entry) is allowed", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-056", value: 1 },
+        enchantmentsDb,
+        targetsDb,
+        ["Armas Corpo a Corpo", "Armas de Longo Alcance"],
+        0,
+        "meleeInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when neither category in the array is allowed", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-056", value: 1 },
+        enchantmentsDb,
+        targetsDb,
+        ["Armas de Longo Alcance", "Armas de Fogo"],
+        0,
+        "rangedInventory[0]",
+      );
+
+      expect(errors).toContain(
+        'rangedInventory[0].enchantments[0]: enchantment "Fortificar BAL" is not allowed on Armas de Longo Alcance or Armas de Fogo',
+      );
+    });
+
+    test("Should still behave like a single string when the array has one entry", () => {
+      const errors = validateEnchantmentEntryApplication(
+        { enchantment_id: "ENCHANTMENT-056", value: 1 },
+        enchantmentsDb,
+        targetsDb,
+        ["Armas Corpo a Corpo"],
+        0,
+        "meleeInventory[0]",
+      );
+
+      expect(errors).toEqual([]);
+    });
+  });
 });
