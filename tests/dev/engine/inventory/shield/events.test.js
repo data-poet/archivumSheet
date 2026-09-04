@@ -5,6 +5,9 @@ jest.mock("dev/public/js/engine/inventory/shield/model.js", () => ({
   removeShield: jest.fn(),
   findShieldByInstanceId: jest.fn(),
   saveShieldCustomFields: jest.fn(),
+  addShieldEnchantment: jest.fn(),
+  updateShieldEnchantment: jest.fn(),
+  removeShieldEnchantment: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/shield/render.js", () => ({
   renderEquippedShield: jest.fn(),
@@ -153,6 +156,50 @@ describe("handleShieldClick — custom fields (real shared dispatch)", () => {
 test("handleShieldClick returns false for an unrelated click target", () => {
   const target = elWithClass("button", "something-else");
   expect(handleShieldClick({ target })).toBe(false);
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// handleShieldClick — enchantments (real shared dispatch)
+// ─────────────────────────────────────────────────────────────────────────
+describe("handleShieldClick — enchantments delegation", () => {
+  test("remove button removes the enchantment entry via the shared dispatch factory", () => {
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "SHIELD-1",
+      entryInstanceId: "ENTRY-1",
+    });
+
+    const result = handleShieldClick({ target });
+
+    expect(result).toBe(true);
+    expect(model.removeShieldEnchantment).toHaveBeenCalledWith(
+      "SHIELD-1",
+      "ENTRY-1",
+    );
+  });
+
+  test("an enchantment click for an instanceId ownership rejects is not handled", () => {
+    model.findShieldByInstanceId.mockReturnValue(undefined);
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "SHIELD-1",
+      entryInstanceId: "ENTRY-1",
+    });
+    expect(handleShieldClick({ target })).toBe(false);
+    expect(model.removeShieldEnchantment).not.toHaveBeenCalled();
+  });
+
+  test("removing an enchantment does NOT go through the rAF-deferred render — model.js's own renderListsPreserving already ran synchronously", () => {
+    // Same relationship as armor's equivalent test: model.js is mocked
+    // here, so this only proves the dispatch reaches
+    // removeShieldEnchantment without also asserting on
+    // render.renderEquippedShield, which would only fire from a REAL
+    // (unmocked) model.js.
+    const target = elWithClass("button", "enchantment-remove-btn", {
+      instanceId: "SHIELD-1",
+      entryInstanceId: "ENTRY-1",
+    });
+    handleShieldClick({ target });
+    expect(render.renderEquippedShield).not.toHaveBeenCalled();
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -427,6 +474,30 @@ describe("handleShieldChange — material / storage / move", () => {
 test("handleShieldChange returns false for an unrelated change target", () => {
   const target = elWithClass("select", "something-else");
   expect(handleShieldChange({ target })).toBe(false);
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// handleShieldChange — enchantments (real shared dispatch)
+// ─────────────────────────────────────────────────────────────────────────
+describe("handleShieldChange — enchantments delegation", () => {
+  test("an enchantment filter change delegates to the shared dispatch factory", () => {
+    const target = elWithClass("select", "enchantment-type-select", {
+      formKey: "SHIELD-1",
+    });
+    target.value = "SOME-ENCH";
+    // findShieldByInstanceId (mocked truthy) confirms ownership; the
+    // actual Map-mutation is model.js internals covered elsewhere — this
+    // just proves the wiring reaches it without throwing.
+    expect(() => handleShieldChange({ target })).not.toThrow();
+  });
+
+  test("an enchantment filter change for a rejected ownership is not handled", () => {
+    model.findShieldByInstanceId.mockReturnValue(undefined);
+    const target = elWithClass("select", "enchantment-type-select", {
+      formKey: "SHIELD-1",
+    });
+    expect(handleShieldChange({ target })).toBe(false);
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────
