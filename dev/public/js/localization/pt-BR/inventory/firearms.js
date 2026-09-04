@@ -13,4 +13,5 @@ export const FIREARMS = {
   magazineMod: "Capacidade",
   reloadAction: "Recarregar",
   tuning: "Ajustes do Artificer",
+  enchantmentContribution: "Contribuição de encantamentos",
 };

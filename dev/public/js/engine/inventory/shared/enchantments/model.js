@@ -58,6 +58,10 @@ export function getRangedItemCategory() {
   return data.itemCategories.RANGED;
 }
 
+export function getFirearmsItemCategory() {
+  return data.itemCategories.FIREARMS;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EFFECT TYPE GROUPS
 //

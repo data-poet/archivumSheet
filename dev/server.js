@@ -23,6 +23,9 @@ const {
 const {
   RANGED_ITEM_CATEGORY,
 } = require("../engine/inventory/js/ranged/rangedConstants.js");
+const {
+  FIREARMS_ITEM_CATEGORY,
+} = require("../engine/inventory/js/firearms/firearmsConstants.js");
 
 const app = express();
 
@@ -225,6 +228,7 @@ app.get("/api/inventory/item-categories", (req, res) => {
     SHIELD: SHIELD_ITEM_CATEGORY,
     MELEE: MELEE_ITEM_CATEGORY,
     RANGED: RANGED_ITEM_CATEGORY,
+    FIREARMS: FIREARMS_ITEM_CATEGORY,
   });
 });
 
