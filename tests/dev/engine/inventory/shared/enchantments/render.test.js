@@ -104,7 +104,7 @@ function seedCatalog() {
       enchantment_type: "Peso",
       enchantment_base_value: 0.1,
       enchantment_step: 0.1,
-      enenchantment_is_percentage: "TRUE",
+      enchantment_is_percentage: "TRUE",
     },
     {
       enchantment_id: "ENCH-DR",
@@ -114,7 +114,7 @@ function seedCatalog() {
       enchantment_type: "Resistência a Dano",
       enchantment_base_value: 1,
       enchantment_step: 1,
-      enenchantment_is_percentage: "FALSE",
+      enchantment_is_percentage: "FALSE",
     },
     {
       enchantment_id: "ENCH-RESIST-FIRE",
@@ -125,7 +125,7 @@ function seedCatalog() {
       enchantment_type: "Resistência Elemental",
       enchantment_base_value: 0.05,
       enchantment_step: 0.05,
-      enenchantment_is_percentage: "TRUE",
+      enchantment_is_percentage: "TRUE",
     },
     {
       enchantment_id: "ENCH-BAL",
@@ -136,7 +136,7 @@ function seedCatalog() {
       enchantment_type: "Fortificar Dano",
       enchantment_base_value: 1,
       enchantment_step: 1,
-      enenchantment_is_percentage: "FALSE",
+      enchantment_is_percentage: "FALSE",
     },
     {
       enchantment_id: "ENCH-MIN-STRENGTH",
@@ -147,7 +147,7 @@ function seedCatalog() {
       enchantment_type: "Aumentar Requisito",
       enchantment_base_value: 1,
       enchantment_step: 1,
-      enenchantment_is_percentage: "FALSE",
+      enchantment_is_percentage: "FALSE",
     },
   ];
   state.data.advantages = [

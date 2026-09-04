@@ -190,11 +190,9 @@ describe("effect type predicates", () => {
 });
 
 describe("isPercentageType", () => {
-  test("reads the raw CSV's typo'd column name (enenchantment_is_percentage)", () => {
-    expect(isPercentageType({ enenchantment_is_percentage: "TRUE" })).toBe(
-      true,
-    );
-    expect(isPercentageType({ enenchantment_is_percentage: "FALSE" })).toBe(
+  test("reads the raw CSV's enchantment_is_percentage column", () => {
+    expect(isPercentageType({ enchantment_is_percentage: "TRUE" })).toBe(true);
+    expect(isPercentageType({ enchantment_is_percentage: "FALSE" })).toBe(
       false,
     );
   });
@@ -482,25 +480,25 @@ describe("entry mutation", () => {
         enchantment_id: "ADD-WEIGHT-1",
         enchantment_effect_type: "add_weight",
         enchantment_base_value: 0.1,
-        enenchantment_is_percentage: "TRUE",
+        enchantment_is_percentage: "TRUE",
       },
       {
         enchantment_id: "REMOVE-WEIGHT-1",
         enchantment_effect_type: "remove_weight",
         enchantment_base_value: 0.1,
-        enenchantment_is_percentage: "TRUE",
+        enchantment_is_percentage: "TRUE",
       },
       {
         enchantment_id: "FORTIFY-DR-1",
         enchantment_effect_type: "fortify_damage_resistance",
         enchantment_base_value: 1,
-        enenchantment_is_percentage: "FALSE",
+        enchantment_is_percentage: "FALSE",
       },
       {
         enchantment_id: "FORTIFY-RESIST-1",
         enchantment_effect_type: "fortify_resistance",
         enchantment_base_value: 0.05,
-        enenchantment_is_percentage: "TRUE",
+        enchantment_is_percentage: "TRUE",
       },
     ];
   });

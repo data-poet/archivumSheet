@@ -4,12 +4,14 @@
 
 const {
   resolveItemEnchantments,
+  hasEnchantment,
 } = require("../shared/enchantmentsResolver.js");
 const {
   WEIGHT_EFFECT_TYPES,
   DAMAGE_EFFECT_TYPES,
   REQUISITE_EFFECT_TYPES,
 } = require("../shared/enchantmentsConstants.js");
+const { MAGIC_RETURN_ENCHANTMENT_ID } = require("./rangedConstants.js");
 
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
@@ -136,7 +138,8 @@ function sumEnchantmentValues(enchantments, types) {
  * `special_effect` (Retorno Mágico, row 066) has no magnitude at all — its
  * presence/absence on the resolved enchantments list IS the effect, so it
  * surfaces as a boolean `has_magic_return` flag rather than a numeric
- * delta.
+ * delta. Keyed by enchantment_id (MAGIC_RETURN_ENCHANTMENT_ID), not
+ * effect_type — a future special_effect row must not also flip this flag.
  *
  * Enchantment price (enchantments_total_price) is intrinsic to the item
  * and counts toward total_value regardless of equip state, same as every
@@ -193,8 +196,9 @@ function resolveRangedWeapons(
     "TR",
   );
 
-  const has_magic_return = enchantments.some(
-    (entry) => entry.enchantment_effect_type === "special_effect",
+  const has_magic_return = hasEnchantment(
+    enchantments,
+    MAGIC_RETURN_ENCHANTMENT_ID,
   );
 
   return {
