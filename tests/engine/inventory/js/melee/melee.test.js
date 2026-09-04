@@ -202,5 +202,50 @@ describe("EQUIPMENT MELEE", () => {
         ]);
       }).toThrow("storedAt must be one of");
     });
+
+    test("Should resolve a valid enchantment and reflect it in final_weight/total_melee_weight", () => {
+      const result = buildMeleeSlots([
+        {
+          weapon_id: weaponId,
+          material_id: materialId,
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas Corpo a Corpo
+              value: 0.1,
+            },
+          ],
+        },
+      ]);
+
+      expect(result.equipped[0].enchantments).toHaveLength(1);
+      expect(result.equipped[0].enchantment_weight_modifier).toBe(0.1);
+      expect(result.equipped[0].final_weight).toBeGreaterThan(
+        result.equipped[0].weapon_final_weight,
+      );
+      // carried_melee_weapons_weight/total_melee_weight should reflect the
+      // enchanted final_weight, not the material-only weapon_final_weight
+      expect(result.carried_melee_weapons_weight).toBe(
+        result.equipped[0].final_weight,
+      );
+      expect(result.total_melee_weight).toBe(result.equipped[0].final_weight);
+    });
+
+    test("Should throw for an enchantment not allowed on melee weapons (e.g. an accessories-only enchantment)", () => {
+      expect(() => {
+        buildMeleeSlots([
+          {
+            weapon_id: weaponId,
+            is_equipped: true,
+            storedAt: null,
+            enchantments: [
+              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-000" },
+            ],
+          },
+        ]);
+      }).toThrow("Invalid enchantments");
+    });
   });
 });
