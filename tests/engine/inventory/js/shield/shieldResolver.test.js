@@ -92,9 +92,19 @@ describe("shieldResolver", () => {
         shield_final_price: 110,
         shield_final_hit_points: 20,
 
+        // ENCHANTMENTS
+        enchantments: [],
+        enchantments_total_price: 0,
+        enchantment_weight_modifier: 0,
+        enchantment_damage_resistance_modifier: 0,
+
         // RUNTIME MODIFIERS
         hit_points_modifier: -5,
         final_hit_points: 15,
+
+        // TRULY-FINAL VALUES
+        final_weight: 3.15,
+        final_damage_resistance: 3,
 
         shield_custom_name: "Escudo do Guardião",
         shield_custom_description: "Um escudo com brasão apagado pelo tempo.",
@@ -157,9 +167,19 @@ describe("shieldResolver", () => {
         shield_final_price: 100,
         shield_final_hit_points: 10,
 
+        // ENCHANTMENTS
+        enchantments: [],
+        enchantments_total_price: 0,
+        enchantment_weight_modifier: 0,
+        enchantment_damage_resistance_modifier: 0,
+
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 8,
+
+        // TRULY-FINAL VALUES
+        final_weight: 3,
+        final_damage_resistance: 2,
 
         shield_custom_name: null,
         shield_custom_description: null,
