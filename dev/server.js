@@ -20,6 +20,9 @@ const {
 const {
   MELEE_ITEM_CATEGORY,
 } = require("../engine/inventory/js/melee/meleeConstants.js");
+const {
+  RANGED_ITEM_CATEGORY,
+} = require("../engine/inventory/js/ranged/rangedConstants.js");
 
 const app = express();
 
@@ -221,6 +224,7 @@ app.get("/api/inventory/item-categories", (req, res) => {
     MAGIC_GEAR: MAGIC_GEAR_ITEM_CATEGORY,
     SHIELD: SHIELD_ITEM_CATEGORY,
     MELEE: MELEE_ITEM_CATEGORY,
+    RANGED: RANGED_ITEM_CATEGORY,
   });
 });
 

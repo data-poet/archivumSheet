@@ -54,6 +54,10 @@ export function getMeleeItemCategory() {
   return data.itemCategories.MELEE;
 }
 
+export function getRangedItemCategory() {
+  return data.itemCategories.RANGED;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EFFECT TYPE GROUPS
 //
