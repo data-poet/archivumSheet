@@ -4,7 +4,10 @@ const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
 const { VALID_STORED_AT } = require("./firearmsConstants.js");
 
-const { validateFirearmInstance } = require("./firearmsValidation.js");
+const {
+  validateFirearmInstance,
+  validateFirearmEnchantments,
+} = require("./firearmsValidation.js");
 
 const {
   resolveFirearmWeapon,
@@ -13,6 +16,10 @@ const {
 } = require("./firearmsResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
+const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
+const {
+  getEnchantmentTargetsDB,
+} = require("../shared/enchantmentTargetsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FIREARMS DB
@@ -82,6 +89,9 @@ function buildFirearmSlots(firearmsInventory = []) {
 
   const materialDb = getMaterialsDB();
 
+  const enchantmentsDb = getEnchantmentsDB();
+  const targetsDb = getEnchantmentTargetsDB();
+
   // VALIDATE INSTANCES
 
   const instanceErrors = firearmsInventory.flatMap((instance, index) =>
@@ -120,6 +130,20 @@ function buildFirearmSlots(firearmsInventory = []) {
     );
   }
 
+  // VALIDATE ENCHANTMENTS
+
+  const enchantmentErrors = validateFirearmEnchantments(
+    firearmsInventory,
+    enchantmentsDb,
+    targetsDb,
+  );
+
+  if (enchantmentErrors.length > 0) {
+    throw new Error(
+      `[buildFirearmSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
+    );
+  }
+
   // BUILD INVENTORY
 
   // Storage buckets are flat arrays — no slot keying.
@@ -138,14 +162,20 @@ function buildFirearmSlots(firearmsInventory = []) {
       ? materialDb[instance.material_id]
       : null;
 
-    const resolvedFirearm = resolveFirearmWeapon(instance, firearm, material);
+    const resolvedFirearm = resolveFirearmWeapon(
+      instance,
+      firearm,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
     // EQUIPPED
 
     if (instance.is_equipped) {
       equipped.push(resolvedFirearm);
 
-      carried_firearms_weight += resolvedFirearm.weapon_final_weight;
+      carried_firearms_weight += resolvedFirearm.final_weight;
       carried_firearms_value += resolvedFirearm.total_value;
 
       continue;
@@ -172,7 +202,7 @@ function buildFirearmSlots(firearmsInventory = []) {
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedFirearm);
 
-      carried_firearms_weight += resolvedFirearm.weapon_final_weight;
+      carried_firearms_weight += resolvedFirearm.final_weight;
       carried_firearms_value += resolvedFirearm.total_value;
     }
   }
@@ -183,12 +213,16 @@ function buildFirearmSlots(firearmsInventory = []) {
     firearmsInventory,
     firearmsDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   const total_firearms_value = calculateTotalFirearmsValue(
     firearmsInventory,
     firearmsDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   return {

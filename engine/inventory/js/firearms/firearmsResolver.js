@@ -1,4 +1,12 @@
 const { formatDamageString } = require("../shared/weaponDamage.js");
+const {
+  resolveItemEnchantments,
+} = require("../shared/enchantmentsResolver.js");
+const {
+  WEIGHT_EFFECT_TYPES,
+  DAMAGE_EFFECT_TYPES,
+  REQUISITE_EFFECT_TYPES,
+} = require("../shared/enchantmentsConstants.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FIREARMS RESOLVER
@@ -6,6 +14,35 @@ const { formatDamageString } = require("../shared/weaponDamage.js");
 
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+/**
+ * Sums the `value` of every resolved enchantment entry whose
+ * enchantment_effect_type is in `types` AND whose (resolved) `target`
+ * matches — used to isolate GDP, Min Strength, PREC, and TR. Both groups
+ * are signed at the validation layer (fortify/add positive, weaken/remove
+ * negative), so a plain sum is the net modifier — same convention as
+ * meleeResolver.js/rangedResolver.js's sumEnchantmentValuesByTarget.
+ */
+function sumEnchantmentValuesByTarget(enchantments, types, target) {
+  return enchantments
+    .filter(
+      (entry) =>
+        types.includes(entry.enchantment_effect_type) &&
+        entry.target === target,
+    )
+    .reduce((sum, entry) => sum + Number(entry.value || 0), 0);
+}
+
+/**
+ * Sums the `value` of every resolved enchantment entry whose
+ * enchantment_effect_type is in `types`, regardless of target — used for
+ * weight, which has no target at all.
+ */
+function sumEnchantmentValues(enchantments, types) {
+  return enchantments
+    .filter((entry) => types.includes(entry.enchantment_effect_type))
+    .reduce((sum, entry) => sum + Number(entry.value || 0), 0);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,6 +86,7 @@ function applyMaterialToFirearm(weapon, material) {
  * - firearm db record
  * - material db record
  * - runtime instance state
+ * - enchantments (Phase 3) applied to this instance
  *
  * into a fully resolved firearm piece.
  *
@@ -57,8 +95,25 @@ function applyMaterialToFirearm(weapon, material) {
  * expressed in meters, and combat stats (GDP modifier, TR, PREC, magazine
  * size) are each a base value from the CSV plus a player-editable runtime
  * modifier — giving artificer builds room to tinker with their firearms.
+ *
+ * Enchantment deltas for GDP/TR/PREC stack on top of that existing
+ * player-runtime modifier (both are just additive terms onto the same
+ * base), same "no separate truly-final tier for terminal combat-math
+ * fields" reasoning as melee/ranged — these ARE the values consumed
+ * downstream. Min Strength has no player-runtime modifier field, so its
+ * enchantment delta is applied directly onto `weapon_min_strength`,
+ * mirroring rangedResolver.js. No BAL or special_effect here — neither is
+ * offered to firearms per the CSV's allowed_itens. Weight keeps the
+ * two-tier material-only (`weapon_final_weight`) vs. truly-final
+ * (`final_weight`) split, mirroring melee/ranged/armor/shield.
  */
-function resolveFirearmWeapon(instance, weapon, material = null) {
+function resolveFirearmWeapon(
+  instance,
+  weapon,
+  material = null,
+  enchantmentsDb = {},
+  targetsDb = {},
+) {
   const finalStats = applyMaterialToFirearm(weapon, material);
 
   const hitPointsModifier = Number(instance.hit_points_modifier || 0);
@@ -68,9 +123,49 @@ function resolveFirearmWeapon(instance, weapon, material = null) {
   const precModifier = Number(instance.prec_modifier || 0);
   const magazineSizeModifier = Number(instance.magazine_size_modifier || 0);
 
-  const finalGdpModifier = Number(weapon.weapon_gdp_modifier || 0) + gdpModifier;
-  const finalTr = Number(weapon.weapon_tr || 0) + trModifier;
-  const finalPrec = Number(weapon.weapon_prec || 0) + precModifier;
+  const { resolved: enchantments, total_price: enchantments_total_price } =
+    resolveItemEnchantments(
+      instance.enchantments || [],
+      enchantmentsDb,
+      targetsDb,
+    );
+
+  const enchantment_weight_modifier = round2(
+    sumEnchantmentValues(enchantments, WEIGHT_EFFECT_TYPES),
+  );
+
+  const enchantment_gdp_modifier = sumEnchantmentValuesByTarget(
+    enchantments,
+    DAMAGE_EFFECT_TYPES,
+    "GDP",
+  );
+
+  const enchantment_min_strength_modifier = sumEnchantmentValuesByTarget(
+    enchantments,
+    REQUISITE_EFFECT_TYPES,
+    "Min Strength",
+  );
+
+  const enchantment_prec_modifier = sumEnchantmentValuesByTarget(
+    enchantments,
+    REQUISITE_EFFECT_TYPES,
+    "PREC",
+  );
+
+  const enchantment_tr_modifier = sumEnchantmentValuesByTarget(
+    enchantments,
+    REQUISITE_EFFECT_TYPES,
+    "TR",
+  );
+
+  const finalGdpModifier =
+    Number(weapon.weapon_gdp_modifier || 0) +
+    gdpModifier +
+    enchantment_gdp_modifier;
+  const finalTr =
+    Number(weapon.weapon_tr || 0) + trModifier + enchantment_tr_modifier;
+  const finalPrec =
+    Number(weapon.weapon_prec || 0) + precModifier + enchantment_prec_modifier;
   const finalMagazineSize = Math.max(
     0,
     Number(weapon.weapon_magazine_size || 0) + magazineSizeModifier,
@@ -88,7 +183,6 @@ function resolveFirearmWeapon(instance, weapon, material = null) {
     weapon_type: weapon.weapon_type,
     weapon_skill: weapon.weapon_skill,
     weapon_tier: weapon.weapon_tier,
-    weapon_min_strength: weapon.weapon_min_strength,
     weapon_damage_type: weapon.weapon_damage_type,
     weapon_length: weapon.weapon_length,
     weapon_reload_speed: weapon.weapon_reload_speed,
@@ -108,8 +202,13 @@ function resolveFirearmWeapon(instance, weapon, material = null) {
     material_tier: material?.material_tier || null,
     material_atk_effect: material?.material_atk_effect || null,
 
-    // FINAL VALUES (material-adjusted weight/price/HP + base+runtime combat stats)
+    // FINAL VALUES (material-adjusted weight/price/HP + base+runtime+
+    // enchantment combat stats — GDP/TR/PREC include the enchantment delta,
+    // see doc comment above; weight stays material-derived only)
     ...finalStats,
+    weapon_min_strength: round2(
+      weapon.weapon_min_strength + enchantment_min_strength_modifier,
+    ),
     weapon_final_gdp_modifier: finalGdpModifier,
     weapon_final_tr: finalTr,
     weapon_final_prec: finalPrec,
@@ -118,6 +217,11 @@ function resolveFirearmWeapon(instance, weapon, material = null) {
       weapon.weapon_gdp_dice,
       finalGdpModifier,
     ),
+
+    // ENCHANTMENTS
+    enchantments,
+    enchantments_total_price,
+    enchantment_weight_modifier,
 
     // RUNTIME MODIFIERS
     hit_points_modifier: hitPointsModifier,
@@ -130,12 +234,20 @@ function resolveFirearmWeapon(instance, weapon, material = null) {
     magazine_size_modifier: magazineSizeModifier,
     rounds_loaded: roundsLoaded,
 
+    // TRULY-FINAL VALUES (material + enchantments)
+    final_weight: round2(
+      finalStats.weapon_final_weight * (1 + enchantment_weight_modifier),
+    ),
+
     // VALUE — one instance = one piece
-    total_value: round2(finalStats.weapon_final_price),
+    total_value: round2(
+      finalStats.weapon_final_price + enchantments_total_price,
+    ),
 
     // CUSTOM FIELDS
     weapon_custom_name: instance.weapon_custom_name?.trim() || null,
-    weapon_custom_description: instance.weapon_custom_description?.trim() || null,
+    weapon_custom_description:
+      instance.weapon_custom_description?.trim() || null,
     weapon_custom_effect: instance.weapon_custom_effect?.trim() || null,
 
     // RUNTIME
@@ -158,6 +270,8 @@ function calculateTotalFirearmsWeight(
   firearmsInventory,
   firearmsDb,
   materialDb = {},
+  enchantmentsDb = {},
+  targetsDb = {},
 ) {
   return firearmsInventory.reduce((sum, instance) => {
     if (instance.storedAt === "stash" || instance.storedAt === "camp") {
@@ -171,9 +285,15 @@ function calculateTotalFirearmsWeight(
       ? materialDb[instance.material_id]
       : null;
 
-    const resolved = resolveFirearmWeapon(instance, weapon, material);
+    const resolved = resolveFirearmWeapon(
+      instance,
+      weapon,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
-    return sum + resolved.weapon_final_weight;
+    return sum + resolved.final_weight;
   }, 0);
 }
 
@@ -185,6 +305,8 @@ function calculateTotalFirearmsValue(
   firearmsInventory,
   firearmsDb,
   materialDb = {},
+  enchantmentsDb = {},
+  targetsDb = {},
 ) {
   return round2(
     firearmsInventory.reduce((sum, instance) => {
@@ -199,7 +321,13 @@ function calculateTotalFirearmsValue(
         ? materialDb[instance.material_id]
         : null;
 
-      const resolved = resolveFirearmWeapon(instance, weapon, material);
+      const resolved = resolveFirearmWeapon(
+        instance,
+        weapon,
+        material,
+        enchantmentsDb,
+        targetsDb,
+      );
 
       return sum + resolved.total_value;
     }, 0),
