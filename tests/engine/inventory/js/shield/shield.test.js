@@ -188,5 +188,48 @@ describe("EQUIPMENT SHIELD", () => {
 
       expect(result.carried_shield_weight).toBe(0);
     });
+
+    test("Should resolve a valid enchantment and reflect it in final_weight/total_shield_value", () => {
+      const result = buildShieldSlots([
+        {
+          shield_id: shieldId,
+          material_id: materialId,
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Escudos
+              value: 0.1,
+            },
+          ],
+        },
+      ]);
+
+      expect(result.equipped.enchantments).toHaveLength(1);
+      expect(result.equipped.enchantment_weight_modifier).toBe(0.1);
+      expect(result.equipped.final_weight).toBeGreaterThan(
+        result.equipped.shield_final_weight,
+      );
+      // carried_shield_weight/total_shield_weight should reflect the
+      // enchanted final_weight, not the material-only shield_final_weight
+      expect(result.carried_shield_weight).toBe(result.equipped.final_weight);
+      expect(result.total_shield_weight).toBe(result.equipped.final_weight);
+    });
+
+    test("Should throw for an enchantment not allowed on shields (e.g. an accessories-only enchantment)", () => {
+      expect(() => {
+        buildShieldSlots([
+          {
+            shield_id: shieldId,
+            is_equipped: true,
+            storedAt: null,
+            enchantments: [
+              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-000" },
+            ],
+          },
+        ]);
+      }).toThrow("Invalid enchantments");
+    });
   });
 });
