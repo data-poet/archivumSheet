@@ -17,7 +17,7 @@ describe("renderResumeArmor", () => {
         armor: {
           equipped: {
             torso: {
-              armor_final_damage_resistance: 4,
+              final_damage_resistance: 4,
               armor_final_hit_points: 20,
             },
           },
@@ -71,7 +71,7 @@ describe("renderResumeArmor", () => {
   test("omits the HP stepper when the piece has no hit points (e.g. cloth)", () => {
     renderResume({
       inventory: {
-        armor: { equipped: { torso: { armor_final_damage_resistance: 1 } } },
+        armor: { equipped: { torso: { final_damage_resistance: 1 } } },
       },
     });
     const torsoRow = Array.from(
@@ -94,7 +94,7 @@ describe("renderResumeShield", () => {
         shield: {
           equipped: {
             shield_name: "Broquel",
-            shield_final_damage_resistance: 2,
+            final_damage_resistance: 2,
             block: 8,
             shield_final_hit_points: 15,
             hit_points_modifier: 0,
