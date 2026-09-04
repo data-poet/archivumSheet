@@ -1,10 +1,3 @@
-// characters.js pulls in a wide dependency tree. state.js, compute/attributes.js
-// (via the DOM fixture), and store/instanceId.js are used FOR REAL here —
-// they're already covered by their own batches and characters.js's contract
-// genuinely depends on how they behave. ui.js, compute/autorun.js, and the
-// race/portrait render modules are mocked: they're side-effecting render
-// calls whose job is just "did characters.js call you", not logic this
-// module owns.
 jest.mock("dev/public/js/ui.js", () => ({
   renderListsPreserving: jest.fn(),
 }));
@@ -186,10 +179,8 @@ describe("loadCharacter", () => {
   test("restores race selection when the character has a race_id and races are loaded", () => {
     state.data.races = [{ race_id: "R1", race_name: "Elfo" }];
     state.selected.character.race_id = "R1";
-    // race_id only round-trips through state.sheet.race — saveActiveCharacter
-    // is documented as running "at the end of every runEngine()", and it's
-    // runEngine that populates state.sheet. Without it, _captureCurrentData
-    // falls back to an empty race object and race_id is lost, by design.
+    // race_id round-trips only through state.sheet.race, populated by runEngine();
+    // without it, _captureCurrentData falls back to an empty race object and loses race_id.
     state.sheet = { race: { race_id: "R1" } };
     saveActiveCharacter();
 

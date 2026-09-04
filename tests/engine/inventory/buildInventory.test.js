@@ -8,12 +8,7 @@ const { _getFirearmsDB } = require("engine/inventory/js/firearms/firearms");
 
 const assertShape = require("tests/helpers/assertShape");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// AMMO MOCK
-// Mirrors the mock in ammo.test.js so buildInventory integration tests don't
-// need real CSVs to run.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// mirrors the mock in ammo.test.js so these integration tests don't need real CSVs
 jest.mock("engine/inventory/js/ammo/ammo", () => {
   const original = jest.requireActual("engine/inventory/js/ammo/ammo");
 
@@ -157,10 +152,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
   };
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TESTS
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe("INVENTORY BUILDER", () => {
   const armorDb = _getArmorDB();
 
@@ -184,7 +175,6 @@ describe("INVENTORY BUILDER", () => {
 
     const carry = result.inventory.carry_weight;
 
-    // limits
     expect(carry.limits.none).toBe(10);
 
     expect(carry.limits.light).toBe(20);
@@ -195,7 +185,6 @@ describe("INVENTORY BUILDER", () => {
 
     expect(carry.limits.veryHeavy).toBe(100);
 
-    // modifier
     // 35 → heavy range (ST*3 < weight <= ST*6) → -2
     expect(carry.weight_modifier).toBe(-2);
   });
@@ -408,8 +397,6 @@ describe("INVENTORY BUILDER", () => {
     expect(totalCarriedWeight).toBeGreaterThan(0);
   });
 
-  // ── FIREARMS INTEGRATION ────────────────────────────────────────────────────
-
   test("Should include firearms inventory", () => {
     const result = buildInventory({
       ST: 10,
@@ -525,8 +512,6 @@ describe("INVENTORY BUILDER", () => {
     expect(totalCarriedWeight).toBeGreaterThan(0);
   });
 
-  // ── AMMO INTEGRATION ───────────────────────────────────────────────────────
-
   test("Should include equipped container weight in carry calculation", () => {
     const result = buildInventory({
       ST: 10,
@@ -627,11 +612,8 @@ describe("INVENTORY BUILDER", () => {
     // container 0.5 + 20 × 0.05 = 1.5 → above none limit (10) but still 0 modifier
     expect(result.inventory.ammo.carried_ammo_weight).toBe(1.5);
 
-    // carry_weight must reflect the ammo weight in its calculation
     expect(result.inventory.carry_weight).toBeDefined();
   });
-
-  // ── MAGIC GEAR INTEGRATION ─────────────────────────────────────────────────
 
   test("Should include magicGear inventory", () => {
     const result = buildInventory({

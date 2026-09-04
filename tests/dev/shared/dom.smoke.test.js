@@ -1,8 +1,5 @@
-// Batch 0 smoke test. Purpose is narrow and deliberate: prove the pipeline
-// (ESM import syntax -> babel-jest transform -> jsdom environment ->
-// assertion) works end to end before any batch writes real coverage.
-// Deleting this file must not affect the "engine" project (see acceptance
-// criteria in frontend-testing-plan.md, Batch 0).
+// Proves the ESM -> babel-jest -> jsdom pipeline works end to end; deleting this file
+// must not affect the "engine" project.
 import { el } from "dev/public/js/shared/dom.js";
 import { resetDOM, silenceConsoleWarn } from "tests/dev/helpers/domFixture.js";
 

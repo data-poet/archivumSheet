@@ -31,8 +31,7 @@ const DIS_ROWS = [
     disadvantage_type: "Mental",
     disadvantage_box_name: "Ganância",
   },
-  // Race-only traits are never browsable/addable — must be filtered out of
-  // both the type filter and the name select.
+  // Race-only traits are never browsable/addable — filtered out of both the type filter and the name select.
   {
     disadvantage_id: "DIS-RACIAL",
     disadvantage_type: "Racial",

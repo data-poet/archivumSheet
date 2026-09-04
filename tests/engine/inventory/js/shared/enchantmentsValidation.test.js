@@ -676,8 +676,7 @@ describe("enchantmentsValidation", () => {
     });
 
     test("Should return empty array for a valid fortify_resistance application with no player-supplied target", () => {
-      // enchantment_target is fixed on the DB row (Fire) — the entry itself
-      // carries no target, unlike advantage/disadvantage/skill/spell.
+      // enchantment_target is fixed on the DB row (Fire) — the entry itself carries no target, unlike advantage/disadvantage/skill/spell.
       const errors = validateEnchantmentEntryApplication(
         { enchantment_id: "ENCHANTMENT-040", value: 0.05 },
         enchantmentsDb,

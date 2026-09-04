@@ -270,11 +270,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
     });
 
     test("Should throw when an attribute enchantment's value doesn't align to whole-number steps", () => {
-      // value must be a number at the shape level now (percentage types
-      // carry decimal fractions), so a non-integer value on a whole-number
-      // type like fortify_attribute is caught one layer later, by the
-      // DB-aware step-alignment check — still rejected, just under the
-      // "Invalid enchantments" wrapper instead of "Invalid accessoryInventory".
+      // non-integer values are valid at the shape level (percentage types use fractions), so this is caught later by the DB-aware step-alignment check, under "Invalid enchantments" not "Invalid accessoryInventory"
       expect(() =>
         buildAccessorySlots([
           {

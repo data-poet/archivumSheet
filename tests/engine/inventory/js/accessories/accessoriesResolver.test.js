@@ -243,8 +243,7 @@ describe("accessoriesResolver", () => {
         targetsDb,
       );
 
-      // price is intrinsic to the item, independent of equip state —
-      // whether it MECHANICALLY applies while unequipped is Phase 3's concern
+      // price is intrinsic to the item, independent of equip state
       expect(result.total_value).toBe(5000);
     });
   });

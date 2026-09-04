@@ -16,10 +16,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// withOpenState
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("withOpenState", () => {
   test("renderFn is deferred by one animation frame, not called synchronously", () => {
     document.body.innerHTML = `<div id="scope"></div>`;
@@ -41,8 +37,6 @@ describe("withOpenState", () => {
     const keyFn = (el) => el.getAttribute("data-instance-id");
 
     const renderFn = jest.fn(() => {
-      // Simulate a real re-render: fresh markup, always collapsed by
-      // default (no `open` attribute), same instance id.
       document.querySelector("#scope").innerHTML = `
         <details data-instance-id="ITEM-1"></details>
       `;
@@ -87,7 +81,6 @@ describe("withOpenState", () => {
     `;
     const keyFn = (el) => el.getAttribute("data-instance-id");
     const renderFn = jest.fn(() => {
-      // ITEM-1 is gone after the render; only ITEM-2 remains.
       document.querySelector("#scope").innerHTML = `
         <details data-instance-id="ITEM-2"></details>
       `;
@@ -132,7 +125,6 @@ describe("withOpenState", () => {
     Object.defineProperty(window, "scrollY", { value: 250, writable: true });
 
     const renderFn = jest.fn(() => {
-      // Simulate the render itself causing the page to jump.
       window.scrollY = 0;
     });
     const scrollToSpy = jest
@@ -162,7 +154,6 @@ describe("withOpenState", () => {
   });
 
   test("when the scope selector matches nothing, renderFn still runs (deferred one frame) and nothing throws", () => {
-    // No #missing element in the DOM at all.
     const renderFn = jest.fn();
 
     expect(() => withOpenState("#missing", () => null, renderFn)).not.toThrow();
@@ -173,13 +164,8 @@ describe("withOpenState", () => {
   });
 
   test("two sibling <details> for the same instance stay independently scoped when keyFn differentiates them (data-detail-kind)", () => {
-    // Regression guard for the exact scenario openState.js's own docstring
-    // calls out: without composing data-detail-kind into the key, opening
-    // one panel for an instance would force every sibling panel for that
-    // same instance open too. The kind-composition itself lives in the
-    // internal (unexported) _withDetailKind helper, so this test drives it
-    // through the real exported tableRowKeyFn rather than a hand-rolled
-    // keyFn that wouldn't exercise that composition at all.
+    // Drives the real tableRowKeyFn (not a hand-rolled keyFn) so it exercises the
+    // internal _withDetailKind composition that keeps sibling panels independent.
     document.body.innerHTML = `
       <table><tbody id="scope">
         <tr data-instance-id="ITEM-1"></tr>
@@ -205,10 +191,6 @@ describe("withOpenState", () => {
     expect(customize.hasAttribute("open")).toBe(false);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// snapshotAll / restoreAll
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("snapshotAll / restoreAll", () => {
   test("captures open state independently per managed container and restores each correctly", () => {
@@ -243,7 +225,6 @@ describe("snapshotAll / restoreAll", () => {
   });
 
   test("a container id from MANAGED_CONTAINER_IDS that isn't present in the DOM is skipped without throwing", () => {
-    // Only one of the many managed containers exists in this fixture.
     document.body.innerHTML = `<table id="advList"><tbody></tbody></table>`;
 
     expect(() => snapshotAll()).not.toThrow();
@@ -258,7 +239,6 @@ describe("snapshotAll / restoreAll", () => {
     `;
     const snapshot = snapshotAll();
 
-    // advList is gone entirely by restore time (e.g. tab switched away).
     document.body.innerHTML = "";
 
     expect(() => restoreAll(snapshot)).not.toThrow();
@@ -279,8 +259,7 @@ describe("snapshotAll / restoreAll", () => {
 
     restoreAll(snapshot);
 
-    // No jest.advanceTimersToNextFrame() call at all — if restoreAll were
-    // (incorrectly) deferred, this assertion would fail immediately.
+    // No advanceTimersToNextFrame call — a deferred restoreAll would fail this immediately.
     const details = document.querySelector("#advList details");
     expect(details.hasAttribute("open")).toBe(true);
   });
@@ -307,10 +286,6 @@ describe("snapshotAll / restoreAll", () => {
     expect(rebuilt.scrollLeft).toBe(77);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// tableRowKeyFn
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("tableRowKeyFn", () => {
   test("reads the key attribute off the immediately preceding data row", () => {
@@ -377,10 +352,6 @@ describe("tableRowKeyFn", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// divBlockKeyFn
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("divBlockKeyFn", () => {
   test("reads the key attribute off the immediately preceding sibling block", () => {
     document.body.innerHTML = `
@@ -431,10 +402,6 @@ describe("divBlockKeyFn", () => {
     expect(keyFn(details)).toBeNull();
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// ammoDetailKeyFn
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("ammoDetailKeyFn", () => {
   test("composes containerInstanceId:ammoId from the preceding data row", () => {

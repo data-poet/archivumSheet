@@ -47,7 +47,7 @@ describe("renderDamage", () => {
     const stepperInput = thrustRow.querySelector(".damage-input");
     expect(stepperInput.dataset.type).toBe("thrust");
     expect(stepperInput.value).toBe("1");
-    expect(thrustRow.textContent).toContain("1"); // final_modifier
+    expect(thrustRow.textContent).toContain("1");
   });
 
   test("re-rendering replaces the previous rows rather than appending", () => {

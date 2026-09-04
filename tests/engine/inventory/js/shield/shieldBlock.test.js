@@ -5,7 +5,6 @@ const {
   BROQUEL_SHIELD_IDS,
 } = require("engine/inventory/js/shield/shieldConstants");
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
 
 const DX = 12;
 
@@ -28,7 +27,6 @@ function skillsOnlyEscudo(value) {
   return { [ESCUDO_SKILL_ID]: { value } };
 }
 
-// ─── BROQUEL_SHIELD_IDS sanity ────────────────────────────────────────────────
 
 describe("BROQUEL_SHIELD_IDS", () => {
   test("should contain exactly SHIELD-000 through SHIELD-004", () => {
@@ -44,7 +42,6 @@ describe("BROQUEL_SHIELD_IDS", () => {
   });
 });
 
-// ─── Both skills present ──────────────────────────────────────────────────────
 
 describe("computeShieldBlock — both skills present", () => {
   test("broquel shield uses SKILL-045 → floor(value/2)+3", () => {
@@ -66,7 +63,6 @@ describe("computeShieldBlock — both skills present", () => {
   });
 });
 
-// ─── Only the cross-skill present ────────────────────────────────────────────
 
 describe("computeShieldBlock — cross-skill penalty", () => {
   test("broquel shield with only SKILL-082 → floor(value/2)+1", () => {
@@ -88,7 +84,6 @@ describe("computeShieldBlock — cross-skill penalty", () => {
   });
 });
 
-// ─── No shield skill ─────────────────────────────────────────────────────────
 
 describe("computeShieldBlock — no shield skill", () => {
   test("broquel shield with no skill → DX - 4", () => {
@@ -112,7 +107,6 @@ describe("computeShieldBlock — no shield skill", () => {
   });
 });
 
-// ─── Edge cases ───────────────────────────────────────────────────────────────
 
 describe("computeShieldBlock — edge cases", () => {
   test("skill value 0 with matching skill → floor(0)+3 = 3", () => {

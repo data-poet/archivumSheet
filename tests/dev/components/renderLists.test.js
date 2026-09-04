@@ -105,10 +105,7 @@ import {
   renderListsPreserving,
 } from "dev/public/js/components/renderLists.js";
 
-// Every render function renderLists() is responsible for calling, in the
-// exact order the source lists them — this list IS the acceptance
-// criterion from the testing plan ("each of the 7 [equipment] types" plus
-// the character/magic layer, all wired through this single fan-out point).
+// Order matters: this list mirrors the exact call order in renderLists()'s source.
 const ALL_RENDER_FNS = [
   renderAdvantages,
   renderDisadvantages,

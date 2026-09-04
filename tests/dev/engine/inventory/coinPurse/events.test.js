@@ -37,9 +37,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCoinPurseClick
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCoinPurseClick", () => {
   test("clicking .remove-coin sets that coin's quantity to 0 and returns true", () => {
@@ -78,9 +75,6 @@ describe("handleCoinPurseClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCoinPurseInput
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCoinPurseInput", () => {
   test("typing a valid quantity into .coin-qty updates it and returns true", () => {
@@ -151,9 +145,6 @@ describe("handleCoinPurseInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCoinPurseChange
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCoinPurseChange", () => {
   test("changing .coin-location-select moves the coin stack and returns true", () => {
@@ -175,9 +166,6 @@ describe("handleCoinPurseChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddCoins
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddCoins", () => {
   test("adds coins with the selected type/quantity/location and resets the form", () => {

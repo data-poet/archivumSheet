@@ -49,7 +49,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       character: {
         elemental_resistances: {
           Fire: entry(0.5),
-          Ice: entry(1), // normal — filtered out
+          Ice: entry(1),
           Arcane: entry(1.5),
         },
       },
@@ -86,15 +86,15 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       "tbody td",
     );
     expect(cells[0].textContent).toBe(getElementalResistanceLabel("Fire"));
-    expect(cells[1].textContent).toBe("0%"); // immune — displayed as a percentage now
+    expect(cells[1].textContent).toBe("0%");
   });
 
   test("displays double and half damage as 200% and 50%", () => {
     renderResume({
       character: {
         elemental_resistances: {
-          Necrotic: entry(2), // double damage
-          Ice: entry(0.5), // half damage
+          Necrotic: entry(2),
+          Ice: entry(0.5),
         },
       },
     });

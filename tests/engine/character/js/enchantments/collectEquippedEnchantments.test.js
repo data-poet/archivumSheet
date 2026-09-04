@@ -260,10 +260,7 @@ describe("collectEquippedEnchantments", () => {
   });
 
   test("Should not let item-intrinsic weight/damage-resistance enchantments produce any character-level effect", () => {
-    // add_weight/remove_weight/fortify_damage_resistance/
-    // weaken_damage_resistance are already applied to the item itself in
-    // armorResolver.js — they must be a no-op here, same as any other
-    // unrecognized type.
+    // these item-intrinsic types are already applied in armorResolver.js, so they must no-op here
     const result = collectEquippedEnchantments([
       {
         enchantments: [

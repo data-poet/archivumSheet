@@ -49,7 +49,7 @@ describe("renderResumeFirearms", () => {
     const hpInput = container.querySelector(".resume-firearm-hp");
     expect(hpInput.value).toBe("-1");
     expect(hpInput.dataset.instanceId).toBe("inst-1");
-    expect(container.textContent).toContain("7/8"); // actualHp = 8-1
+    expect(container.textContent).toContain("7/8");
 
     const roundsInput = container.querySelector(".resume-firearm-rounds");
     expect(roundsInput.value).toBe("9");
@@ -68,7 +68,7 @@ describe("renderResumeFirearms", () => {
     });
     const container = id("resume_firearms_container");
     expect(container.querySelector(".resume-firearm-hp")).toBeNull();
-    // Unlike the HP stepper, _roundsStepperCell is called unconditionally
+    // Unlike the HP stepper, _roundsStepperCell is called unconditionally.
     const roundsInput = container.querySelector(".resume-firearm-rounds");
     expect(roundsInput).not.toBeNull();
     expect(roundsInput.value).toBe("0"); // rounds_loaded defaults to 0
@@ -94,7 +94,7 @@ describe("renderResumeAmmo", () => {
             containers: {
               equipped: [
                 { contents: [{ ammo_id: "AMMO-1", quantity: 10 }] },
-                { contents: [{ ammo_id: "AMMO-1", quantity: 5 }] }, // same ammo, second container
+                { contents: [{ ammo_id: "AMMO-1", quantity: 5 }] },
               ],
             },
           },
@@ -107,10 +107,10 @@ describe("renderResumeAmmo", () => {
     expect(container.hidden).toBe(false);
     expect(container.textContent).toContain(t("sections.munition"));
     const rows = container.querySelectorAll("tbody tr");
-    expect(rows).toHaveLength(1); // aggregated into a single row
+    expect(rows).toHaveLength(1);
     expect(rows[0].textContent).toContain("Flecha");
     const qtyInput = rows[0].querySelector(".resume-ammo-qty");
-    expect(qtyInput.value).toBe("15"); // 10 + 5
+    expect(qtyInput.value).toBe("15");
   });
 
   test("falls back to the raw ammo_id as the display name when the catalog has no match", () => {

@@ -4,23 +4,8 @@ import {
   _resetForTests,
 } from "dev/public/js/shared/eventDispatch.js";
 
-// ─────────────────────────────────────────────────────────────────────────
-// Setup notes
-// ─────────────────────────────────────────────────────────────────────────
-// initGlobalDispatch() attaches real document.addEventListener(...)
-// listeners. jsdom gives one `document` per test FILE, not per test, so
-// those listeners persist across every test below regardless of module
-// state. Calling initGlobalDispatch() in every test would silently stack
-// listeners and make later tests see handlers fire N times instead of
-// once. Production only ever calls it once at bootstrap, so this suite
-// mirrors that: attach once here, then rely on _resetForTests() in
-// beforeEach to clear the *registries* between tests (the listeners stay
-// attached but dispatch into empty registries, which is exactly the
-// no-op path being tested).
-//
-// The one test that needs a second initGlobalDispatch() call (to prove
-// double-init double-fires) is deliberately placed last in the file, since
-// it permanently adds one extra listener for the remainder of the run.
+// jsdom gives one `document` per test file, so listeners stack across tests; _resetForTests() clears the registries instead of re-calling initGlobalDispatch().
+// The double-init test runs last — it permanently adds an extra listener for the rest of the file.
 
 beforeAll(() => {
   initGlobalDispatch();
@@ -30,20 +15,11 @@ beforeEach(() => {
   _resetForTests();
 });
 
-/**
- * Dispatches a real DOM event of `kind` on `document` and returns it, so
- * tests exercise the same document.addEventListener(...) path production
- * code uses, not a hand-rolled call into the module's internal dispatch.
- */
 function fireDocumentEvent(kind) {
   const event = new Event(kind, { bubbles: true });
   document.dispatchEvent(event);
   return event;
 }
-
-// ─────────────────────────────────────────────────────────────────────────
-// registerDelegatedHandlers
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("registerDelegatedHandlers", () => {
   test("a handler registered for one kind is never invoked for another kind", () => {
@@ -74,7 +50,6 @@ describe("registerDelegatedHandlers", () => {
   });
 
   test("omitting a kind registers nothing for it (no crash on dispatch)", () => {
-    // Only a click handler provided — input/change registries stay empty.
     registerDelegatedHandlers({ click: jest.fn(() => true) });
 
     expect(() => fireDocumentEvent("input")).not.toThrow();
@@ -85,10 +60,6 @@ describe("registerDelegatedHandlers", () => {
     expect(() => registerDelegatedHandlers()).not.toThrow();
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// Dispatch order + chain-of-responsibility semantics
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("dispatch order and chain-of-responsibility", () => {
   test("handlers are tried in registration order", () => {
@@ -151,8 +122,6 @@ describe("dispatch order and chain-of-responsibility", () => {
   });
 
   test("an event kind with no registered handlers at all no-ops safely", () => {
-    // Nothing registered for any kind — dispatch must not throw against an
-    // empty registry.
     expect(() => fireDocumentEvent("click")).not.toThrow();
     expect(() => fireDocumentEvent("input")).not.toThrow();
     expect(() => fireDocumentEvent("change")).not.toThrow();
@@ -167,10 +136,6 @@ describe("dispatch order and chain-of-responsibility", () => {
     expect(handler).toHaveBeenCalledWith(fired);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// _resetForTests
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("_resetForTests", () => {
   test("clears all three registries so previously registered handlers no longer fire", () => {
@@ -189,18 +154,6 @@ describe("_resetForTests", () => {
     expect(change).not.toHaveBeenCalled();
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// initGlobalDispatch — MUST stay last in this file.
-//
-// This test intentionally calls initGlobalDispatch() a second time to
-// document real (if surprising) behavior: the function has no guard
-// against being invoked more than once, since production code only ever
-// calls it once at bootstrap. It's placed last because the extra
-// document-level listener it attaches is permanent for the rest of the
-// jsdom document's lifetime (one document per test file) and would inflate
-// call counts in every test below it.
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("initGlobalDispatch (double-init — keep last in file)", () => {
   test("calling initGlobalDispatch() a second time attaches a second listener, so one event invokes each registered handler twice", () => {

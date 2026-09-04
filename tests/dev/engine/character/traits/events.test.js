@@ -142,8 +142,7 @@ describe("handleTraitInput — secondary-input", () => {
       "4",
     );
     handleTraitInput({ target });
-    // The entry gets lazily initialized to its default shape, but "bought"
-    // is never actually written for Movement — it's derived elsewhere.
+    // Movement's "bought" is derived elsewhere, never written here.
     expect(state.selected.secondary.Movement).toEqual({
       bought: 0,
       modifier: 0,
@@ -249,7 +248,7 @@ describe("handleTraitInput — resistance-input", () => {
       "input",
       "resistance-input",
       { type: "Fire" },
-      "-30", // -30%
+      "-30",
     );
     handleTraitInput({ target });
     expect(state.selected.resistances.Fire.modifier).toBe(-0.3);
@@ -261,7 +260,7 @@ describe("handleTraitInput — resistance-input", () => {
       "input",
       "resistance-input",
       { type: "Arcane" },
-      "5000", // 5000% — deliberately absurd, still uncapped
+      "5000",
     );
     handleTraitInput({ target });
     expect(state.selected.resistances.Arcane.modifier).toBe(50);

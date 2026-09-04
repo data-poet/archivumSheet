@@ -166,8 +166,7 @@ describe("getEnchantmentsDB", () => {
   test("Should default enchantment_is_percentage to false when the CSV column is missing", () => {
     const result = getEnchantmentsDB();
 
-    // ENCHANTMENT-026 has no enchantment_is_percentage key at all in
-    // mockRows — confirms toBoolean() degrades safely rather than throwing.
+    // ENCHANTMENT-026 has no enchantment_is_percentage key in mockRows — confirms toBoolean() degrades safely rather than throwing.
     expect(result["ENCHANTMENT-026"].enchantment_is_percentage).toBe(false);
   });
 

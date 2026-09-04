@@ -80,7 +80,6 @@ describe("meleeResolver", () => {
       const result = resolveMeleeWeapons(instance, mockWeapon, mockMaterial);
 
       expect(result).toEqual({
-        // WEAPON BASE
         weapon_id: "MELEE-001",
         weapon_name: "Espada Longa",
         weapon_box_name: "Espada Longa | Comum",
@@ -91,14 +90,12 @@ describe("meleeResolver", () => {
         weapon_damage_type: "Corte",
         weapon_reach: 3,
 
-        // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
         material_atk_effect: null,
 
-        // FINAL VALUES
         weapon_final_bal_modifier: 3,
         weapon_final_gdp_modifier: 6,
         weapon_final_weight: 5.25,
@@ -106,23 +103,19 @@ describe("meleeResolver", () => {
         weapon_final_hit_points: 40,
         weapon_min_strength: 5,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -5,
         final_hit_points: 35,
 
-        // TRULY-FINAL VALUES
         final_weight: 5.25,
 
         weapon_custom_name: "Lâmina do Juramento",
         weapon_custom_description: "Uma espada gasta pelo tempo.",
         weapon_custom_effect: "+1 em testes de intimidação ao desembainhar.",
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
@@ -159,7 +152,6 @@ describe("meleeResolver", () => {
       const result = resolveMeleeWeapons(instance, mockWeapon);
 
       expect(result).toEqual({
-        // WEAPON BASE
         weapon_id: "MELEE-001",
         weapon_name: "Espada Longa",
         weapon_box_name: "Espada Longa | Comum",
@@ -170,14 +162,12 @@ describe("meleeResolver", () => {
         weapon_damage_type: "Corte",
         weapon_reach: 3,
 
-        // MATERIAL
         material_id: null,
         material_name: null,
         material_type: null,
         material_tier: null,
         material_atk_effect: null,
 
-        // FINAL VALUES
         weapon_final_bal_modifier: 2,
         weapon_final_gdp_modifier: 4,
         weapon_final_weight: 5,
@@ -185,23 +175,19 @@ describe("meleeResolver", () => {
         weapon_final_hit_points: 20,
         weapon_min_strength: 5,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 18,
 
-        // TRULY-FINAL VALUES
         final_weight: 5,
 
         weapon_custom_name: null,
         weapon_custom_description: null,
         weapon_custom_effect: null,
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
@@ -211,12 +197,7 @@ describe("meleeResolver", () => {
   });
 
   describe("resolveMeleeWeapons — enchantments", () => {
-    // Same fixture shape as shieldResolver.test.js's "resolveShieldPiece —
-    // enchantments" describe block — melee reuses the identical shared
-    // enchantments engine, applied to weapon_final_bal_modifier/
-    // weapon_final_gdp_modifier/weapon_min_strength (mutated directly, no
-    // separate "truly final" tier — see meleeResolver.js doc comment) plus
-    // the two-tier weight split (weapon_final_weight vs final_weight).
+    // Same shared enchantments engine as shieldResolver.test.js: mutates weapon_final_* fields directly (no separate "truly final" tier) plus the two-tier weight split.
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",

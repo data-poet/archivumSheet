@@ -74,9 +74,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleShieldClick
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleShieldClick — remove", () => {
   test("remove-shield and remove-equipped-shield both remove by instanceId", () => {
     const a = elWithClass("button", "remove-shield", {
@@ -158,9 +155,6 @@ test("handleShieldClick returns false for an unrelated click target", () => {
   expect(handleShieldClick({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleShieldClick — enchantments (real shared dispatch)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleShieldClick — enchantments delegation", () => {
   test("remove button removes the enchantment entry via the shared dispatch factory", () => {
     const target = elWithClass("button", "enchantment-remove-btn", {
@@ -188,11 +182,7 @@ describe("handleShieldClick — enchantments delegation", () => {
   });
 
   test("removing an enchantment does NOT go through the rAF-deferred render — model.js's own renderListsPreserving already ran synchronously", () => {
-    // Same relationship as armor's equivalent test: model.js is mocked
-    // here, so this only proves the dispatch reaches
-    // removeShieldEnchantment without also asserting on
-    // render.renderEquippedShield, which would only fire from a REAL
-    // (unmocked) model.js.
+    // model.js is mocked, so this only proves the dispatch reaches removeShieldEnchantment — render.renderEquippedShield only fires from a real (unmocked) model.js.
     const target = elWithClass("button", "enchantment-remove-btn", {
       instanceId: "SHIELD-1",
       entryInstanceId: "ENTRY-1",
@@ -202,9 +192,6 @@ describe("handleShieldClick — enchantments delegation", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleShieldInput
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleShieldInput", () => {
   test("no-ops (but handled) when nothing is equipped", () => {
     state.selected.shields = [];
@@ -314,9 +301,6 @@ describe("handleShieldInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleShieldChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleShieldChange — equipped-shield-name", () => {
   test("an empty selection unequips via equipShield('')", () => {
     const target = selectWithValue("equipped-shield-name", {}, "");
@@ -325,14 +309,7 @@ describe("handleShieldChange — equipped-shield-name", () => {
   });
 
   test("[asymmetry vs armor] when something is already equipped, mutates it IN PLACE and does NOT call _renderShieldLists", () => {
-    // Unlike armor's equipped-armor-name handler (which always calls
-    // model.equipArmor() through a re-render), shield's handler mutates the
-    // already-equipped instance directly when one exists, calling neither
-    // equipShield() nor _renderShieldLists() — only triggerAutoRun(). The
-    // tier <select> is still repopulated via direct DOM manipulation. This
-    // looks like it could be an intentional single-slot shortcut, but it's
-    // a real behavioral difference from armor worth having locked in by a
-    // test rather than only discoverable by reading both files side by side.
+    // Unlike armor's handler (always re-renders via model.equipArmor()), shield's mutates the already-equipped instance in place, calling only triggerAutoRun() — a real behavioral difference worth locking in.
     resetDOM(`
       <div id="shieldSlot">
         <select class="equipped-shield-tier"></select>
@@ -362,10 +339,7 @@ describe("handleShieldChange — equipped-shield-name", () => {
   });
 
   test("when nothing is equipped, calls equipShield() with the first tier and returns WITHOUT triggerAutoRun", () => {
-    // Another asymmetry: this branch returns immediately after
-    // equipShield(), skipping the triggerAutoRun() call the other branches
-    // reach — presumably because equipShield() is expected to trigger its
-    // own downstream update. Locked in as observed behavior.
+    // Asymmetry: this branch returns right after equipShield(), skipping the triggerAutoRun() other branches reach — equipShield() presumably triggers its own update.
     state.selected.shields = [];
     const target = selectWithValue("equipped-shield-name", {}, "Broquel");
 
@@ -457,9 +431,7 @@ describe("handleShieldChange — material / storage / move", () => {
   });
 
   test("equipped-shield-move with an empty destination confirms it stays equipped", () => {
-    // The handler always operates on whichever shield is CURRENTLY
-    // is_equipped: true (that's how it's found) — an empty destination
-    // just re-affirms that, it doesn't "restore" a previously-unequipped one.
+    // The handler always operates on whichever shield is currently is_equipped: true — an empty destination re-affirms that, it doesn't restore a previously-unequipped one.
     const equipped = { is_equipped: true, storedAt: null };
     state.selected.shields = [equipped];
     const target = selectWithValue("equipped-shield-move", {}, "");
@@ -476,18 +448,13 @@ test("handleShieldChange returns false for an unrelated change target", () => {
   expect(handleShieldChange({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleShieldChange — enchantments (real shared dispatch)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleShieldChange — enchantments delegation", () => {
   test("an enchantment filter change delegates to the shared dispatch factory", () => {
     const target = elWithClass("select", "enchantment-type-select", {
       formKey: "SHIELD-1",
     });
     target.value = "SOME-ENCH";
-    // findShieldByInstanceId (mocked truthy) confirms ownership; the
-    // actual Map-mutation is model.js internals covered elsewhere — this
-    // just proves the wiring reaches it without throwing.
+    // findShieldByInstanceId (mocked truthy) confirms ownership; the actual Map-mutation is model.js internals covered elsewhere.
     expect(() => handleShieldChange({ target })).not.toThrow();
   });
 
@@ -500,9 +467,6 @@ describe("handleShieldChange — enchantments delegation", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddShield
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddShield", () => {
   function buildAddForm({
     name = "Broquel",

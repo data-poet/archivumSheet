@@ -24,13 +24,7 @@ function parseInto(html) {
   return container;
 }
 
-/**
- * Same as parseInto, but for markup whose root is a <tr> (detailRow,
- * emptyRow, customFieldsDetailRow, customItemEditRow). Per jsdom's
- * fragment-parsing rules, <tr>/<td>/<tbody> inserted via innerHTML outside
- * a real <table> context are silently dropped rather than parsed — this
- * wraps the fragment in an actual <table><tbody> first so the row survives.
- */
+// jsdom silently drops <tr>/<td> inserted via innerHTML outside a real <table>.
 function parseRowInto(html) {
   const table = document.createElement("table");
   table.innerHTML = `<tbody>${html}</tbody>`;
@@ -39,16 +33,10 @@ function parseRowInto(html) {
 
 beforeEach(() => {
   resetDOM("<div></div>");
-  // The custom-fields editor tracking Set is module-level and shared by
-  // every test in this file (and, in production, by every equipment type
-  // using it) — start each test from a known-closed state.
+  // The editor-open tracking Set is module-level, shared across tests and equipment types.
   closeCustomFieldsEditor("ITEM-1");
   closeCustomFieldsEditor("ITEM-2");
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// numStepper
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("numStepper", () => {
   test("renders an input carrying the given class, data attributes, and value", () => {
@@ -77,10 +65,6 @@ describe("numStepper", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// formatRichText
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("formatRichText", () => {
   test.each([null, undefined, "", "   "])(
     "returns the em-dash placeholder for %p",
@@ -106,7 +90,6 @@ describe("formatRichText", () => {
     expect(items.length).toBe(2);
     expect(items[0].childNodes[0].textContent).toBe("Primeiro item");
     expect(items[1].childNodes[0].textContent).toBe("Segundo item");
-    // Flat list — no nested <ul> inside either <li>.
     expect(items[0].querySelector("ul")).toBeNull();
   });
 
@@ -129,9 +112,7 @@ describe("formatRichText", () => {
   });
 
   test("tabs are normalized to a consistent indent step alongside spaces", () => {
-    // One line indented with a literal tab, the other with 4 spaces — both
-    // should land at the same nesting depth per the module's own
-    // tab-to-4-spaces normalization.
+    // A tab and 4 spaces must land at the same depth per the module's tab-to-4-spaces rule.
     const html = formatRichText("- Topo\n\t- Filho A\n    - Filho B");
     const dom = parseInto(html);
 
@@ -150,7 +131,6 @@ describe("formatRichText", () => {
     const note = dom.querySelector("p.scaling-note");
     expect(note).not.toBeNull();
     expect(note.textContent).toBe("Uma observação final.");
-    // The note paragraph comes after the list in document order.
     expect(dom.children[0].tagName).toBe("UL");
     expect(dom.children[1].tagName).toBe("P");
   });
@@ -162,10 +142,6 @@ describe("formatRichText", () => {
     expect(dom.querySelectorAll("li").length).toBe(2);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// detailRow
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("detailRow", () => {
   test("renders a <tr class='detail-row'> with the given colspan", () => {
@@ -225,10 +201,6 @@ describe("detailRow", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// emptyRow
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("emptyRow", () => {
   test("renders a placeholder row spanning the given colspan", () => {
     const html = emptyRow(6);
@@ -239,10 +211,6 @@ describe("emptyRow", () => {
     expect(row.textContent).toBe("—");
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// escapeHtml / escapeAttr
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("escapeHtml", () => {
   test("escapes &, <, and > but leaves quotes untouched", () => {
@@ -271,10 +239,6 @@ describe("escapeAttr", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// openCustomFieldsEditor / closeCustomFieldsEditor / isCustomFieldsEditorOpen
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("custom-fields editor open/close tracking", () => {
   test("an id is closed by default", () => {
     expect(isCustomFieldsEditorOpen("ITEM-1")).toBe(false);
@@ -302,10 +266,7 @@ describe("custom-fields editor open/close tracking", () => {
   });
 
   test("the tracking Set is shared across equipment types — the same id being open affects both customFieldsEquippedDetail AND customItemEditRow rendering for that id", () => {
-    // This documents real (if easy to overlook) shared-state behavior: the
-    // Set is keyed generically by id, not scoped per equipment type. If
-    // two different features ever reused the exact same id value, opening
-    // one editor would open the other's rendering too.
+    // The Set is keyed generically by id, not scoped per equipment type.
     openCustomFieldsEditor("SHARED-ID");
 
     const equippedHtml = customFieldsEquippedDetail({
@@ -332,10 +293,6 @@ describe("custom-fields editor open/close tracking", () => {
     closeCustomFieldsEditor("SHARED-ID");
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// readCustomFieldsEditorValues
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("readCustomFieldsEditorValues", () => {
   test("reads name/description/effect out of the matching open editor block", () => {
@@ -372,10 +329,6 @@ describe("readCustomFieldsEditorValues", () => {
     });
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// customFieldsEquippedDetail
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("customFieldsEquippedDetail", () => {
   test("read-only mode shows an empty-state message when no custom fields are set", () => {
@@ -458,10 +411,6 @@ describe("customFieldsEquippedDetail", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// customFieldsDetailRow
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("customFieldsDetailRow", () => {
   test("uses a tr/td-based wrapper (mirrors detailRow) instead of a div", () => {
     const html = customFieldsDetailRow(5, {
@@ -479,10 +428,6 @@ describe("customFieldsDetailRow", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// equippedDetailBlock
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("equippedDetailBlock", () => {
   test("renders a div-based .equipped-detail wrapper with data-detail-kind='stats'", () => {
     const html = equippedDetailBlock([{ label: "Peso", value: "2 kg" }]);
@@ -499,10 +444,6 @@ describe("equippedDetailBlock", () => {
     expect(equippedDetailBlock([{ label: "Vazio", value: "" }])).toBe("");
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// readCustomItemEditorValues
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("readCustomItemEditorValues", () => {
   test("reads name/weight/price/description as their parsed types", () => {
@@ -541,10 +482,6 @@ describe("readCustomItemEditorValues", () => {
     expect(Number.isNaN(values.price)).toBe(true);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// customItemEditRow
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("customItemEditRow", () => {
   const baseParams = {

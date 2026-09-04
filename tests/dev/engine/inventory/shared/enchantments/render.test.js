@@ -201,9 +201,6 @@ beforeEach(() => {
   seedCatalog();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// enchantmentsExpander — structure and empty state
-// ─────────────────────────────────────────────────────────────────────────
 describe("enchantmentsExpander — structure", () => {
   test("renders a <details data-detail-kind='enchantments'> with the title", () => {
     const el = parse(
@@ -248,9 +245,6 @@ describe("enchantmentsExpander — structure", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// enchantmentsExpander — subtotal computation
-// ─────────────────────────────────────────────────────────────────────────
 describe("enchantmentsExpander — subtotal", () => {
   const entries = [
     { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
@@ -301,9 +295,6 @@ describe("enchantmentsExpander — subtotal", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// enchantmentsExpander — entry list rendering
-// ─────────────────────────────────────────────────────────────────────────
 describe("enchantmentsExpander — entry list", () => {
   test("renders an advantage entry's target name and price", () => {
     const el = parse(
@@ -487,9 +478,6 @@ describe("enchantmentsExpander — entry list", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Wrapper variants
-// ─────────────────────────────────────────────────────────────────────────
 describe("enchantmentsEquippedDetail / enchantmentsDetailRow", () => {
   const params = {
     instanceId: "ITEM-1",
@@ -520,9 +508,6 @@ describe("enchantmentsEquippedDetail / enchantmentsDetailRow", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Add-form specifics
-// ─────────────────────────────────────────────────────────────────────────
 describe("add-form", () => {
   test("category filter is present when the category offers more than one enchantment_type", () => {
     const el = parse(
@@ -591,10 +576,7 @@ describe("add-form", () => {
         resolvedEntries: [],
       }),
     );
-    // Two ".custom-fields-empty" messages can legitimately coexist: the
-    // entries-list's "nothing attached yet" (since entries=[] here too) and
-    // the add-form's "nothing available" guard — so check among all of
-    // them rather than assuming the guard is the only/first match.
+    // Two ".custom-fields-empty" messages can legitimately coexist (entries-list's "nothing attached" and the add-form's "nothing available") — check among all of them, not just the first.
     const messages = Array.from(
       el.querySelectorAll(".custom-fields-empty"),
     ).map((p) => p.textContent);
@@ -617,9 +599,6 @@ describe("add-form", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Edit-form specifics
-// ─────────────────────────────────────────────────────────────────────────
 describe("edit-form", () => {
   const entry = {
     _instanceId: "ENTRY-1",
@@ -691,9 +670,7 @@ describe("edit-form", () => {
       }),
     );
     const forms = el.querySelectorAll(".enchantment-form");
-    // The entries list renders BEFORE the add-form in the source
-    // (enchantmentsBody: `${list}${renderAddForm(...)}`), so entry forms
-    // come first, then the add-form last.
+    // The entries list renders before the add-form in the source (`${list}${renderAddForm(...)}`), so entry forms come first, add-form last.
     expect(Array.from(forms).map((f) => f.dataset.formKey)).toEqual([
       "ENTRY-1",
       "ENTRY-2",
@@ -702,9 +679,6 @@ describe("edit-form", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Sign-aware number inputs
-// ─────────────────────────────────────────────────────────────────────────
 describe("valueInput bounds", () => {
   test("a non-weaken attribute type gets a data-min bound at its base value", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR");
@@ -866,9 +840,6 @@ describe("extraPointsInput bounds", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Target picker
-// ─────────────────────────────────────────────────────────────────────────
 describe("target picker", () => {
   test("excludes racial-type traits from the advantage target list", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ADV");
@@ -922,9 +893,6 @@ describe("target picker", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// HTML escaping
-// ─────────────────────────────────────────────────────────────────────────
 describe("HTML escaping", () => {
   test("escapes a target label's special characters", () => {
     state.data.advantages.push({
@@ -949,17 +917,7 @@ describe("HTML escaping", () => {
     );
   });
 
-  // NOTE: unlike the target label (escaped above) and every other dynamic
-  // string in this file (recordDescriptionMarkup, filter/type option
-  // labels, etc.), the enchantment's own NAME is pushed into the entry
-  // summary unescaped: `const parts = [record.enchantment_name];` has no
-  // escapeHtml() wrapper, while the very next line does wrap targetLabel.
-  // In practice enchantment_name comes from admin-authored CSV data, not
-  // end-user input, so this isn't an active injection risk today — but
-  // it's a real inconsistency with the escaping discipline used everywhere
-  // else in this file. Flagged to r4ven rather than "fixed" here. This test
-  // locks in the CURRENT (unescaped) behavior so a future fix is a visible,
-  // intentional test change rather than a silent one.
+  // Unlike every other dynamic string here, enchantment_name is pushed into the entry summary unescaped — not an injection risk (admin-authored CSV, not user input), but locks in current behavior.
   test("[KNOWN GAP] enchantment_name itself is NOT escaped in the entry summary", () => {
     state.data.enchantments.push({
       enchantment_id: "ENCH-XSS",

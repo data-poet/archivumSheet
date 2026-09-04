@@ -1,31 +1,7 @@
-/**
- * mockFetch.js
- *
- * api.js's getJSON/postJSON both call the global fetch() with a relative
- * URL (e.g. "/api/advantages") and expect a Response-shaped object back
- * ({ ok, status, json() }). This stub lets tests control that response
- * per-URL without ever touching a real server.
- *
- * Usage:
- *   import { installMockFetch, mockFetchResponse } from ".../mockFetch.js";
- *
- *   beforeEach(() => installMockFetch());
- *
- *   test("fetches advantages", async () => {
- *     mockFetchResponse("/api/advantages", [{ id: 1 }]);
- *     const result = await fetchAdvantages();
- *     expect(result).toEqual([{ id: 1 }]);
- *   });
- */
-
+// api.js's getJSON/postJSON call global fetch() expecting a Response-shaped object ({ ok, status, json() }); this stubs it per-URL.
 let routes;
 
-/**
- * Installs global.fetch as a jest mock. Call in beforeEach so routes reset
- * between tests. Any URL not registered via mockFetchResponse/mockFetchError
- * rejects loudly instead of silently returning undefined — a test relying
- * on an unregistered route is a test with a gap, not a passing test.
- */
+// An unregistered URL rejects loudly rather than resolving undefined, so a missing stub shows up as a failing test, not a false pass.
 export function installMockFetch() {
   routes = new Map();
   global.fetch = jest.fn((url) => {
@@ -44,17 +20,10 @@ export function installMockFetch() {
   return global.fetch;
 }
 
-/**
- * Registers a successful (200, ok:true) JSON response for a given URL.
- */
 export function mockFetchResponse(url, body) {
   routes.set(url, { body, status: 200, ok: true });
 }
 
-/**
- * Registers a failing response for a given URL, so tests can exercise
- * getJSON/postJSON's `if (!res.ok) throw` path.
- */
 export function mockFetchError(url, status = 500, body = null) {
   routes.set(url, { body, status, ok: false });
 }

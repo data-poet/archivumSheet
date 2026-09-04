@@ -31,8 +31,7 @@ const ADV_ROWS = [
     advantage_type: "Mental",
     advantage_box_name: "Vontade de Ferro",
   },
-  // Race-only traits are never browsable/addable — must be filtered out of
-  // both the type filter and the name select.
+  // Race-only traits are never browsable/addable — filtered out of both the type filter and the name select.
   {
     advantage_id: "ADV-RACIAL",
     advantage_type: "Racial",
@@ -137,6 +136,6 @@ describe("removeAdv", () => {
       "ADV-1": true,
       "ADV-2": true,
     });
-    expect(triggerAutoRun).toHaveBeenCalledTimes(2); // once for remove, once for undo
+    expect(triggerAutoRun).toHaveBeenCalledTimes(2);
   });
 });

@@ -71,7 +71,7 @@ describe("initNav — building the nav bars", () => {
   });
 
   test("does not throw when #sidebar or #bottomnav is missing", () => {
-    resetDOM(); // neither container present
+    resetDOM();
     expect(() => initNav()).not.toThrow();
   });
 
@@ -124,7 +124,7 @@ describe("initNav — click highlighting", () => {
   });
 
   test("does not throw when the clicked link's target section isn't in the DOM", () => {
-    initNav(); // no matching sectionDOM() call
+    initNav();
     const link = document.querySelectorAll("#sidebar .sidebar-link")[1];
     expect(() =>
       link.dispatchEvent(new MouseEvent("click", { bubbles: true })),
@@ -145,9 +145,7 @@ describe("initNav — scroll-driven highlighting", () => {
   test("observes every .l-section with a 0.25 threshold", () => {
     initNav();
     sectionDOM(LABELS.nav[0].key, LABELS.nav[1].key);
-    // Sections created after initNav() ran aren't retroactively observed —
-    // the observer is set up once, over whatever .l-section elements exist
-    // at call time. Re-init to pick up the newly added sections.
+    // Re-init: the observer is set up once over whatever .l-section elements exist at call time.
     initNav();
 
     const observer = MockIntersectionObserver.instances.at(-1);

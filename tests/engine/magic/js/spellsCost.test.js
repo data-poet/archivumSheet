@@ -15,9 +15,9 @@ describe("SPELL COST SYSTEM", () => {
 
   describe("Cost Table - IQ / Easy (F)", () => {
     test("Should return correct cost for valid relative levels", () => {
-      expect(getSpellCost({ base: 10, level: 10, difficulty: "F" })).toBe(1); // 0
-      expect(getSpellCost({ base: 10, level: 11, difficulty: "F" })).toBe(2); // +1
-      expect(getSpellCost({ base: 10, level: 12, difficulty: "F" })).toBe(4); // +2
+      expect(getSpellCost({ base: 10, level: 10, difficulty: "F" })).toBe(1);
+      expect(getSpellCost({ base: 10, level: 11, difficulty: "F" })).toBe(2);
+      expect(getSpellCost({ base: 10, level: 12, difficulty: "F" })).toBe(4);
     });
 
     test("Should clamp below minimum (-4)", () => {
@@ -31,25 +31,25 @@ describe("SPELL COST SYSTEM", () => {
 
   describe("Cost Table - IQ / Medium (M)", () => {
     test("Should return correct cost values", () => {
-      expect(getSpellCost({ base: 10, level: 10, difficulty: "M" })).toBe(2); // 0
-      expect(getSpellCost({ base: 10, level: 11, difficulty: "M" })).toBe(4); // +1
-      expect(getSpellCost({ base: 10, level: 9, difficulty: "M" })).toBe(2); // -1
+      expect(getSpellCost({ base: 10, level: 10, difficulty: "M" })).toBe(2);
+      expect(getSpellCost({ base: 10, level: 11, difficulty: "M" })).toBe(4);
+      expect(getSpellCost({ base: 10, level: 9, difficulty: "M" })).toBe(2);
     });
   });
 
   describe("Cost Table - IQ / Hard (D)", () => {
     test("Should return correct cost values", () => {
-      expect(getSpellCost({ base: 10, level: 10, difficulty: "D" })).toBe(4); // 0
-      expect(getSpellCost({ base: 10, level: 11, difficulty: "D" })).toBe(6); // +1
-      expect(getSpellCost({ base: 10, level: 9, difficulty: "D" })).toBe(2); // -1
+      expect(getSpellCost({ base: 10, level: 10, difficulty: "D" })).toBe(4);
+      expect(getSpellCost({ base: 10, level: 11, difficulty: "D" })).toBe(6);
+      expect(getSpellCost({ base: 10, level: 9, difficulty: "D" })).toBe(2);
     });
   });
 
   describe("Cost Table - IQ / Very Hard (MD)", () => {
     test("Should return correct cost values", () => {
-      expect(getSpellCost({ base: 10, level: 10, difficulty: "MD" })).toBe(6); // 0
-      expect(getSpellCost({ base: 10, level: 11, difficulty: "MD" })).toBe(8); // +1
-      expect(getSpellCost({ base: 10, level: 9, difficulty: "MD" })).toBe(4); // -1
+      expect(getSpellCost({ base: 10, level: 10, difficulty: "MD" })).toBe(6);
+      expect(getSpellCost({ base: 10, level: 11, difficulty: "MD" })).toBe(8);
+      expect(getSpellCost({ base: 10, level: 9, difficulty: "MD" })).toBe(4);
     });
   });
 

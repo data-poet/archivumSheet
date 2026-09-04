@@ -101,7 +101,6 @@ describe("getEnchantmentTargetsDB", () => {
       difficulty: "F",
     });
 
-    // only one entry despite two tier-rows sharing the same name
     expect(Object.keys(result.spells)).toEqual(["Moldar Mana"]);
   });
 

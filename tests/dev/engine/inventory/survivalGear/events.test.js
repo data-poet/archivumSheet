@@ -49,9 +49,6 @@ beforeEach(() => {
   ];
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleSurvivalGearClick
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleSurvivalGearClick", () => {
   test("clicking .remove-survival-gear removes that entry and returns true", () => {
@@ -72,9 +69,6 @@ describe("handleSurvivalGearClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleSurvivalGearInput
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleSurvivalGearInput", () => {
   test("typing a valid quantity into .survival-gear-qty updates it and returns true", () => {
@@ -145,9 +139,6 @@ describe("handleSurvivalGearInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleSurvivalGearChange
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleSurvivalGearChange", () => {
   test("changing .survival-gear-location-select moves the entry and returns true", () => {
@@ -180,9 +171,6 @@ describe("handleSurvivalGearChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddSurvivalGear
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddSurvivalGear", () => {
   function setUpForm({

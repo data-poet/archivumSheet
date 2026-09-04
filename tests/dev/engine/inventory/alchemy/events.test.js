@@ -51,9 +51,6 @@ beforeEach(() => {
   ];
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAlchemyClick
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAlchemyClick", () => {
   test("clicking .remove-alchemy removes that entry and returns true", () => {
@@ -74,9 +71,6 @@ describe("handleAlchemyClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAlchemyInput
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAlchemyInput", () => {
   test("typing a valid quantity into .alchemy-qty updates it and returns true", () => {
@@ -147,9 +141,6 @@ describe("handleAlchemyInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAlchemyChange
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAlchemyChange", () => {
   test("changing .alchemy-location-select moves the entry and returns true", () => {
@@ -192,9 +183,6 @@ describe("handleAlchemyChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddAlchemy
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddAlchemy", () => {
   function setUpForm({

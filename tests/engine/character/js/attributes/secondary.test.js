@@ -275,7 +275,6 @@ describe("SECONDARY ATTRIBUTES", () => {
         mockCarryWeight,
       );
       const hpFinalBase = attrsFull.HP.final_base_value;
-      // drive HP below 1/3 threshold
       const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
 
       const { attributes } = buildSecondaryAttributes(

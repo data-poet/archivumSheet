@@ -77,9 +77,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleMeleeClick
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleMeleeClick", () => {
   test("remove-melee and remove-equipped-melee both remove by instanceId", () => {
     const a = elWithClass("button", "remove-melee", { instanceId: "MELEE-1" });
@@ -159,9 +156,6 @@ describe("handleMeleeClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleMeleeInput — HP modifiers + dual-use mirroring to ranged
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleMeleeInput", () => {
   test("no-ops (but handled) when the instance can't be found", () => {
     model.findMeleeByInstanceId.mockReturnValue(undefined);
@@ -299,9 +293,6 @@ describe("handleMeleeInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleMeleeChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleMeleeChange — equipped-melee-name / tier", () => {
   test("edits the instance in place (no equipMelee() call, no local render, no ranged mirror)", () => {
     const instance = { weapon_id: "OLD-ID", hit_points_modifier: -5 };
@@ -323,9 +314,7 @@ describe("handleMeleeChange — equipped-melee-name / tier", () => {
     expect(instance.hit_points_modifier).toBe(0);
     expect(model.equipMelee).not.toHaveBeenCalled();
     expect(meleeRender.renderEquippedMelee).not.toHaveBeenCalled();
-    // Name/tier changes are explicitly NOT part of the dual-use sync scope
-    // (only HP and equip/storage location are mirrored) — the linked
-    // ranged instance's weapon_id must be untouched.
+    // Name/tier changes are explicitly not part of dual-use sync scope (only HP and equip/storage location mirror) — the linked ranged instance's weapon_id must stay untouched.
     expect(linkedRanged.weapon_id).toBe("UNTOUCHED");
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
@@ -466,9 +455,6 @@ test("handleMeleeChange returns false for an unrelated change target", () => {
   expect(handleMeleeChange({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddMelee
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddMelee", () => {
   function buildAddForm({
     name = "Espada Longa",

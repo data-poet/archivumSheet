@@ -1,6 +1,3 @@
-// Same dependency-mocking approach as characters.test.js: state.js and
-// compute/attributes.js (via the DOM fixture) are real, the render/autorun
-// side effects are mocked since their job here is just "were you called".
 jest.mock("dev/public/js/ui.js", () => ({
   renderListsPreserving: jest.fn(),
 }));
@@ -26,17 +23,12 @@ import {
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
-// jsdom doesn't implement the Blob object-URL APIs at all — exportSheet's
-// try/catch would otherwise silently route every export test into its
-// error branch. Polyfilling with jest.fn() lets tests assert on what
-// exportSheet actually passed in.
+// jsdom doesn't implement the Blob object-URL APIs; without this, exportSheet's
+// try/catch would route every export test into its error branch.
 beforeEach(() => {
   URL.createObjectURL = jest.fn(() => "blob:mock-url");
   URL.revokeObjectURL = jest.fn();
-  // jsdom attempts (and fails, noisily logging "Not implemented: navigation")
-  // to actually navigate when an <a> with an href is clicked. exportSheet
-  // only cares that .click() was invoked to trigger the download, not that
-  // navigation happens, so stub it out.
+  // jsdom noisily fails ("Not implemented: navigation") on a real <a> click.
   jest.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
   resetDOM();
   resetState();
@@ -84,9 +76,6 @@ function validPayload(overrides = {}) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// showToast
-// ─────────────────────────────────────────────────────────────────────────
 describe("showToast", () => {
   test("renders the message and the matching icon per type", () => {
     showToast("Saved!", "success");
@@ -123,10 +112,7 @@ describe("showToast", () => {
   });
 
   test("renders the action button even without onAction, but it's inert (no listener)", () => {
-    // The button's markup is gated on actionLabel alone; only the click
-    // listener is gated on actionLabel && onAction. So the button appears
-    // but clicking it does nothing — worth locking in explicitly since
-    // it's a real (if minor) asymmetry in the source.
+    // Markup is gated on actionLabel alone; the click listener needs actionLabel && onAction.
     showToast("No handler", "info", { actionLabel: "Desfazer" });
     const button = document.querySelector(".toast-action");
     expect(button.textContent).toBe("Desfazer");
@@ -152,10 +138,8 @@ describe("showToast", () => {
     const toast = document.getElementById("_archivum-toast");
     expect(toast.classList.contains("is-visible")).toBe(false);
 
-    // advanceTimersToNextFrame() flushes only the rAF-scheduled fade-in,
-    // leaving the separately-scheduled 3000ms auto-dismiss timer untouched.
-    // runOnlyPendingTimers() would fire BOTH at once here (verified via a
-    // scratch probe) and defeat the point of this test.
+    // advanceTimersToNextFrame() flushes only the fade-in rAF, not the 3000ms
+    // dismiss timer; runOnlyPendingTimers() would fire both and defeat this test.
     jest.advanceTimersToNextFrame();
 
     expect(toast.classList.contains("is-visible")).toBe(true);
@@ -194,8 +178,7 @@ describe("showToast", () => {
   });
 });
 
-// jsdom's Blob polyfill doesn't implement .text()/.arrayBuffer() — read
-// content back out via FileReader instead, which jsdom does support.
+// jsdom's Blob polyfill lacks .text()/.arrayBuffer(); FileReader still works.
 function readBlobText(blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -205,9 +188,6 @@ function readBlobText(blob) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// exportSheet
-// ─────────────────────────────────────────────────────────────────────────
 describe("exportSheet", () => {
   test("builds a JSON blob containing the current sheet state", async () => {
     document.getElementById("ST_base").value = "14";
@@ -270,9 +250,6 @@ describe("exportSheet", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// importSheet
-// ─────────────────────────────────────────────────────────────────────────
 describe("importSheet", () => {
   function jsonFile(payload, name = "character.json") {
     return new File([JSON.stringify(payload)], name, {
@@ -350,7 +327,6 @@ describe("importSheet", () => {
     expect(document.getElementById("_archivum-toast").className).toBe(
       "toast toast--error",
     );
-    // Nothing should have been applied to state on a rejected import.
     expect(renderListsPreserving).not.toHaveBeenCalled();
   });
 

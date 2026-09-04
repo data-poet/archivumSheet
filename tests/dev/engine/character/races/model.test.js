@@ -44,9 +44,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// loadRaces
-// ─────────────────────────────────────────────────────────────────────────
 describe("loadRaces", () => {
   test("when races are already loaded, just reveals the selects without refetching", async () => {
     state.data.races = RACE_ROWS;
@@ -90,9 +87,6 @@ describe("loadRaces", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// filterSubRacesByName
-// ─────────────────────────────────────────────────────────────────────────
 describe("filterSubRacesByName", () => {
   beforeEach(() => {
     state.data.races = RACE_ROWS;
@@ -153,9 +147,6 @@ describe("filterSubRacesByName", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// selectSubRace
-// ─────────────────────────────────────────────────────────────────────────
 describe("selectSubRace", () => {
   test("sets race_id from the sub-select's current value", () => {
     document.getElementById("raceSubSelect").innerHTML =
@@ -173,9 +164,6 @@ describe("selectSubRace", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// updateRaceModifiers
-// ─────────────────────────────────────────────────────────────────────────
 describe("updateRaceModifiers", () => {
   beforeEach(() => {
     state.data.races = RACE_ROWS;
@@ -220,9 +208,6 @@ describe("updateRaceModifiers", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// restoreRaceSelection
-// ─────────────────────────────────────────────────────────────────────────
 describe("restoreRaceSelection", () => {
   beforeEach(() => {
     state.data.races = RACE_ROWS;
@@ -241,10 +226,7 @@ describe("restoreRaceSelection", () => {
   test("sets both selects and renders modifiers for the restored race", () => {
     document.getElementById("raceNameSelect").innerHTML =
       `<option value="Elfo">Elfo</option>`;
-    // restoreRaceSelection only syncs the DOM/modifiers display to a
-    // race_id that's ALREADY in state — its real caller (store/characters.js)
-    // sets selected.character.race_id before calling this, since the
-    // function's job is "restore selection UI", not "select a race".
+    // restoreRaceSelection only syncs the DOM/modifiers display to a race_id already in state — its caller (store/characters.js) sets that field first.
     state.selected.character.race_id = "R1";
 
     restoreRaceSelection("R1");

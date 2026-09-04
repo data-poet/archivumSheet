@@ -146,11 +146,7 @@ describe("FIREARM VALIDATION", () => {
   });
 
   describe("validateFirearmEnchantments", () => {
-    // Unlike armor's validateArmorEnchantments, this takes no firearmsDb —
-    // itemCategory is the fixed FIREARMS_ITEM_CATEGORY constant ("Armas de
-    // Fogo"), not looked up per-instance. Firearms aren't part of any
-    // dual-use pairing, so there's no union-category logic here (unlike
-    // meleeValidation.js/rangedValidation.js).
+    // Unlike armor, itemCategory here is the fixed FIREARMS_ITEM_CATEGORY constant, not looked up per-instance — firearms have no dual-use pairing.
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",

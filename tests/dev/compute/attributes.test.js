@@ -1,13 +1,7 @@
-// compute/attributes.js touches the DOM directly (document.getElementById)
-// with NO null-checks — unlike shared/dom.js's el()/on() helpers, a missing
-// element throws here rather than warning-and-returning-null. That's a real
-// behavioral difference worth locking in explicitly, not just testing the
-// happy path.
+// Unlike shared/dom.js's el()/on() helpers, compute/attributes.js reads the
+// DOM with no null-checks — a missing element throws rather than warning.
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
-// autorun.js pulls in state.js and ui.js transitively; mocking it isolates
-// this file's own logic (does it read the right ids? does it wire the
-// right handler?) from what triggerAutoRun actually does once fired.
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));

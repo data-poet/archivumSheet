@@ -79,9 +79,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleArmorClick
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleArmorClick — remove", () => {
   test("remove-armor and remove-equipped-armor both remove by instanceId", () => {
     const a = elWithClass("button", "remove-armor", { instanceId: "ARMOR-1" });
@@ -206,9 +203,6 @@ describe("handleArmorClick — custom fields (real shared dispatch, sync flavor)
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleArmorClick — enchantments (real shared dispatch)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleArmorClick — enchantments delegation", () => {
   test("remove button removes the enchantment entry via the shared dispatch factory", () => {
     const target = elWithClass("button", "enchantment-remove-btn", {
@@ -236,13 +230,7 @@ describe("handleArmorClick — enchantments delegation", () => {
   });
 
   test("removing an enchantment does NOT go through the rAF-deferred render — model.js's own renderListsPreserving already ran synchronously", () => {
-    // Unlike accessories (which needs _withPreservedOpenState to render),
-    // armor's addArmorEnchantment/updateArmorEnchantment/
-    // removeArmorEnchantment call the global renderListsPreserving()
-    // themselves — model.js is mocked here, so this test only proves the
-    // dispatch reaches removeArmorEnchantment without also asserting on
-    // render.renderArmorSlots, which would only fire from a REAL
-    // (unmocked) model.js.
+    // Unlike accessories, armor's own model.js calls renderListsPreserving() itself; model.js is mocked here, so this only proves the dispatch reaches removeArmorEnchantment, not render.renderArmorSlots.
     const target = elWithClass("button", "enchantment-remove-btn", {
       instanceId: "ARMOR-1",
       entryInstanceId: "ENTRY-1",
@@ -257,9 +245,6 @@ test("handleArmorClick returns false for an unrelated click target", () => {
   expect(handleArmorClick({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleArmorInput
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleArmorInput", () => {
   function hpInput(className, dataset, value) {
     const el = elWithClass("input", className, dataset);
@@ -366,9 +351,6 @@ describe("handleArmorInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleArmorChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleArmorChange — equipped-armor-name", () => {
   test("an empty selection unequips the slot", () => {
     const target = selectWithValue(
@@ -422,12 +404,7 @@ describe("handleArmorChange — equipped-armor-name", () => {
   });
 
   test("[fixed] when something is already equipped in the slot, edits it IN PLACE instead of calling equipArmor()", () => {
-    // This is the fix: equipArmor() unequips-and-recreates on every call
-    // (fresh _instanceId, armor_custom_* reset to null) — even for a
-    // same-slot name swap. That silently wiped any custom fields the
-    // player had set. Editing the existing instance's armor_id directly
-    // (matching melee/ranged/firearms/shield's pattern) preserves both
-    // instance identity and customization.
+    // equipArmor() unequips-and-recreates on every call, silently wiping custom fields even on a same-slot name swap; editing armor_id on the existing instance (matching other equipment types) preserves both.
     const currentEquipped = {
       instance_id: "EQUIPPED-1",
       armor_id: "OLD-ARMOR-DB-ID",
@@ -590,18 +567,13 @@ describe("handleArmorChange — material / storage / move", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleArmorChange — enchantments (real shared dispatch)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleArmorChange — enchantments delegation", () => {
   test("an enchantment filter change delegates to the shared dispatch factory", () => {
     const target = elWithClass("select", "enchantment-type-select", {
       formKey: "ARMOR-1",
     });
     target.value = "SOME-ENCH";
-    // findArmorByInstanceId (mocked truthy) confirms ownership; the
-    // actual Map-mutation is model.js internals covered in Batch 5 — this
-    // just proves the wiring reaches it without throwing.
+    // findArmorByInstanceId (mocked truthy) confirms ownership; the actual Map-mutation is model.js internals covered elsewhere.
     expect(() => handleArmorChange({ target })).not.toThrow();
   });
 
@@ -619,9 +591,6 @@ test("handleArmorChange returns false for an unrelated change target", () => {
   expect(handleArmorChange({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddArmor
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddArmor", () => {
   function buildAddForm({
     slot = "Cabeça",

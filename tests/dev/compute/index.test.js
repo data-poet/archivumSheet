@@ -1,11 +1,3 @@
-// runEngine() orchestrates a wide dependency tree. api.js, store/characters.js,
-// components/characterSelector.js, store/persistence.js, and ui.js's render
-// functions are all mocked — their job here is "were you called with the
-// right thing", not logic this module owns. state.js and
-// compute/attributes.js (via the DOM fixture) are real, since
-// runEngine()'s own contract is defined in terms of what it reads from them.
-// shared/openState.js is also real (spied-but-passthrough) specifically to
-// verify the snapshot → renderLists → restore call ORDER for real.
 jest.mock("dev/public/js/api.js", () => ({ buildSheet: jest.fn() }));
 jest.mock("dev/public/js/store/characters.js", () => ({
   saveActiveCharacter: jest.fn(),
@@ -88,9 +80,6 @@ function makeJson(overrides = {}) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// Payload construction
-// ─────────────────────────────────────────────────────────────────────────
 describe("buildSheet payload — pc", () => {
   test("defaults every pc field when selected.character is blank", async () => {
     await runEngine();
@@ -182,8 +171,7 @@ describe("buildSheet payload — race", () => {
         race_fire_damage_multiplier: "0.5",
         race_ice_damage_multiplier: "",
         race_electricity_damage_multiplier: "not-a-number",
-        // A literal 0 ("immune") must survive, not collapse to the 1
-        // default — this is the case a naive `Number(x) || 1` gets wrong.
+        // A literal 0 ("immune") must survive, not collapse to the 1 default a naive `Number(x) || 1` would give.
         race_corrossion_damage_multiplier: "0",
         race_necrotic_damage_multiplier: "2",
         race_holy_damage_multiplier: "1",
@@ -335,9 +323,6 @@ describe("buildSheet payload — inventory", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Syncing secondary attributes / damage back onto state.selected
-// ─────────────────────────────────────────────────────────────────────────
 describe("syncing engine output back onto state.selected", () => {
   test("adds a secondary attribute entry that wasn't already selected", async () => {
     buildSheet.mockResolvedValue(
@@ -441,9 +426,6 @@ describe("syncing engine output back onto state.selected", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Render orchestration
-// ─────────────────────────────────────────────────────────────────────────
 describe("render orchestration", () => {
   test("calls every render function with the engine's output", async () => {
     const json = makeJson();
@@ -461,12 +443,7 @@ describe("render orchestration", () => {
     expect(state.sheet).toBe(json);
   });
 
-  // NOTE: the file's top-of-module comment says runEngine "intentionally
-  // does NOT call renderLists()". That comment is stale — the code below it
-  // calls renderLists() directly, wrapped in snapshotAll()/restoreAll() with
-  // its own (accurate) explanation of why the restore happens synchronously
-  // rather than on a later frame. This test locks in the ACTUAL behavior;
-  // flagged to r4ven separately rather than "fixed" here.
+  // The module's top comment claims renderLists() is never called; that's stale — it is, wrapped in a synchronous snapshotAll()/restoreAll() pair.
   test("calls renderLists once, wrapped by a synchronous snapshotAll → restoreAll pair", async () => {
     await runEngine();
 
@@ -481,9 +458,6 @@ describe("render orchestration", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Insufficient points warning
-// ─────────────────────────────────────────────────────────────────────────
 describe("insufficient points warning", () => {
   function jsonWithPoints(cp, pc) {
     return makeJson({
@@ -532,13 +506,10 @@ describe("insufficient points warning", () => {
       ),
     );
     await runEngine();
-    expect(showToast).not.toHaveBeenCalled(); // 120 <= 100 + 30
+    expect(showToast).not.toHaveBeenCalled();
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Error handling
-// ─────────────────────────────────────────────────────────────────────────
 describe("error handling", () => {
   test("renders the error and skips every other render/persist step when buildSheet rejects", async () => {
     buildSheet.mockRejectedValue(new Error("network exploded"));

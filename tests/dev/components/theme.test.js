@@ -8,9 +8,7 @@ import { initTheme } from "dev/public/js/components/theme.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
-// jsdom doesn't implement matchMedia at all — stub it with a controllable
-// fake that lets tests both set the initial system preference and fire a
-// live "change" event, mirroring how the OS would notify a real listener.
+// jsdom doesn't implement matchMedia; stub it so tests can set the system preference and fire "change".
 function mockMatchMedia(initialMatches) {
   const listeners = [];
   const mql = {
@@ -42,7 +40,7 @@ beforeEach(() => {
 describe("initTheme — initial resolution", () => {
   test("follows the system preference when the user has no manual choice", () => {
     getTheme.mockReturnValue(null);
-    mockMatchMedia(true); // system prefers dark
+    mockMatchMedia(true);
     btnDOM();
 
     initTheme();
@@ -69,7 +67,7 @@ describe("initTheme — initial resolution", () => {
 
   test("a manual choice wins over the system preference", () => {
     getTheme.mockReturnValue("light");
-    mockMatchMedia(true); // system prefers dark, but manual choice wins
+    mockMatchMedia(true);
     btnDOM();
 
     initTheme();
@@ -88,7 +86,7 @@ describe("initTheme — initial resolution", () => {
 describe("initTheme — toggle button", () => {
   test("clicking the button flips the resolved theme and persists the choice", () => {
     getTheme.mockReturnValue(null);
-    mockMatchMedia(false); // resolves light initially
+    mockMatchMedia(false);
     btnDOM();
     initTheme();
 
@@ -124,15 +122,14 @@ describe("initTheme — live system-preference following", () => {
   });
 
   test("ignores OS preference changes once the user has manually pinned a theme", () => {
-    getTheme.mockReturnValue("light"); // manual override in effect
+    getTheme.mockReturnValue("light");
     const { fireSystemChange } = mockMatchMedia(false);
     btnDOM();
     initTheme();
 
     fireSystemChange(true);
 
-    // Still light — the manual pin (getTheme() truthy) short-circuits the
-    // system-change handler before applyTheme is ever called.
+    // Manual pin (getTheme() truthy) short-circuits the system-change handler before applyTheme runs.
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
   });
 });

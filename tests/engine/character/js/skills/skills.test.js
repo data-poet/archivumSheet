@@ -2,8 +2,6 @@ const { buildSkills, computeActions, MASTER_ELIGIBLE_CATEGORIES } = require("eng
 
 const assertShape = require("tests/helpers/assertShape");
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
-
 const character = {
   primary_attributes: {
     DX: { base_value: 12 },
@@ -11,14 +9,10 @@ const character = {
   },
 };
 
-// SKILL-068 = ESPADAS LONGAS (parry_modifier 0.5, category Armas e Combate)
-// SKILL-000 = ADESTRAMENTO DE ANIMAIS (no parry, category Animais)
 const selectedSkills = {
-  "SKILL-000": { base_value: 14, modifier: 0, isTrainedWithMaster: false },
+  "SKILL-000": { base_value: 14, modifier: 0, isTrainedWithMaster: false }, // ADESTRAMENTO DE ANIMAIS
   "SKILL-001": { base_value: 12, modifier: 1, isTrainedWithMaster: false },
 };
-
-// ─── Existing shape / cost tests ──────────────────────────────────────────────
 
 describe("BUILD SKILLS (ENGINE)", () => {
   test("Should build selected skills only", () => {
@@ -67,11 +61,7 @@ describe("BUILD SKILLS (ENGINE)", () => {
   });
 });
 
-// ─── skill_parry tests ────────────────────────────────────────────────────────
-
 describe("SKILL PARRY", () => {
-  // ESPADAS LONGAS is SKILL-068 based on the CSV; find any parry skill at runtime
-  // We test via a known parry skill: ESPADAS LONGAS (parry_modifier = 0.5)
   const parrySkillId = "SKILL-044"; // ESPADAS LONGAS
   const nonParrySkillId = "SKILL-000"; // ADESTRAMENTO DE ANIMAIS
 
@@ -112,7 +102,6 @@ describe("SKILL PARRY", () => {
 
   test("parry uses floored result (no decimal)", () => {
     // BRIGA parry_modifier = 0.6666…, level = 10 → floor(6.666…) = 6
-    // Find BRIGA in the CSV to confirm, but test the floor behavior generally
     const skills = {
       [parrySkillId]: { base_value: 11, modifier: 0, isTrainedWithMaster: false },
     };
@@ -129,8 +118,6 @@ describe("SKILL PARRY", () => {
     expect(result.skills[parrySkillId].parry).toBe(8);
   });
 });
-
-// ─── isTrainedWithMaster tests ────────────────────────────────────────────────
 
 describe("IS TRAINED WITH MASTER", () => {
   const eligibleSkillId  = "SKILL-044"; // Armas e Combate
@@ -166,8 +153,6 @@ describe("IS TRAINED WITH MASTER", () => {
     expect(MASTER_ELIGIBLE_CATEGORIES.has("Animais")).toBe(false);
   });
 });
-
-// ─── computeActions unit tests ────────────────────────────────────────────────
 
 describe("COMPUTE ACTIONS", () => {
   describe("Non-eligible category always returns 1", () => {
@@ -221,8 +206,6 @@ describe("COMPUTE ACTIONS", () => {
   });
 });
 
-// ─── Integration: actions in buildSkills output ───────────────────────────────
-
 describe("ACTIONS in buildSkills output", () => {
   const eligibleId = "SKILL-044"; // ESPADAS LONGAS
 
@@ -266,10 +249,6 @@ describe("ACTIONS in buildSkills output", () => {
     expect(result.skills[eligibleId].actions).toBe(3);
   });
 });
-
-// ─── Equipped enchantment integration ─────────────────────────────────────────
-// SKILL-000 = ADESTRAMENTO DE ANIMAIS, IQ-based, no parry.
-// character fixture above sets IQ.base_value = 10.
 
 describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
   test("Should create a skill purely from a grant when the player doesn't have it", () => {

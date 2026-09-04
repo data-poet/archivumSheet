@@ -17,8 +17,7 @@ describe("renderResume — orchestration", () => {
   test("touches every managed container, even with a bare-minimum sheet", () => {
     renderResume({}, {}, {});
 
-    // Spot-check one container per section family — full per-section
-    // behavior is covered by the later 7f sub-batches; this just locks in
+    // Spot-check one container per section family — this just locks in
     // that renderResume() reaches every part of the panel on every call.
     expect(id("resume_header_name").textContent).toBe("");
     expect(id("resume_primary_attrs").innerHTML).toBe("");
@@ -194,11 +193,7 @@ describe("collapsible sections — shared infrastructure (first exercised here v
     character: { secondary_attributes: { Will: { value: 10, modifier: 0 } } },
   };
 
-  // _collapseOpen (in resume.js) is a module-level singleton keyed by the
-  // section's translated title, so a click in one test persists into every
-  // later test in this file that touches the same title. Each test below
-  // normalizes to a known starting state before asserting, rather than
-  // assuming "collapsed by default" holds by the time it runs.
+  // _collapseOpen (resume.js) is a module-level singleton keyed by title, so a click in one test persists into later tests — each test below normalizes state first.
   function toggleBtn(container) {
     return container.querySelector(".resume-section-toggle");
   }
@@ -213,9 +208,7 @@ describe("collapsible sections — shared infrastructure (first exercised here v
   }
 
   test("renders collapsed (hidden body) by default the first time a title is ever seen", () => {
-    // Only meaningful in isolation (a fresh module instance, e.g. running
-    // this file alone) — documents the intended default without asserting
-    // on shared state that later tests in this file intentionally flip.
+    // Only meaningful in isolation (fresh module instance) — later tests intentionally flip this shared state.
     renderResume(sheetWithSnapshot);
     const container = id("resume_secondary_snapshot");
     ensureCollapsed(container);

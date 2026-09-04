@@ -329,7 +329,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
       expect(elemental_resistances.Fire.race_base).toBe(0.5);
       expect(elemental_resistances.Fire.final).toBe(0.5);
       expect(elemental_resistances.Arcane.race_base).toBe(1.5);
-      expect(elemental_resistances.Ice.race_base).toBe(1); // untouched type stays default
+      expect(elemental_resistances.Ice.race_base).toBe(1);
     });
 
     it("Applies the player-entered modifier from secondaryAttributes.elementalResistances", () => {

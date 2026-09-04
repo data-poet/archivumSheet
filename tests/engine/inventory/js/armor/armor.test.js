@@ -10,7 +10,7 @@ describe("EQUIPMENT ARMOR", () => {
 
   const armorId = Object.keys(db)[0];
 
-  const materialId = "MAT-003"; // assuming exists in your CSV DB
+  const materialId = "MAT-003"; // must exist in the CSV materials DB
 
   const slotMap = {
     Cabeça: "head",

@@ -58,9 +58,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAccessoryClick — accessory-specific buttons
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAccessoryClick — remove/equip", () => {
   test("remove-accessory removes by instanceId and reports handled", () => {
     const target = elWithClass("button", "remove-accessory", {
@@ -92,9 +89,6 @@ describe("handleAccessoryClick — remove/equip", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAccessoryClick — custom fields (real shared dispatch + renderUtils)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAccessoryClick — custom fields delegation", () => {
   test("edit button opens the editor (real integration, not just a mock check)", () => {
     resetDOM(`
@@ -143,9 +137,6 @@ describe("handleAccessoryClick — custom fields delegation", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAccessoryClick — enchantments (real shared dispatch)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAccessoryClick — enchantments delegation", () => {
   test("remove button removes the enchantment entry via the shared dispatch factory", () => {
     const target = elWithClass("button", "enchantment-remove-btn", {
@@ -174,9 +165,6 @@ describe("handleAccessoryClick — enchantments delegation", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// _withPreservedOpenState branching (per-file logic, not covered elsewhere)
-// ─────────────────────────────────────────────────────────────────────────
 describe("open-state preservation scoping", () => {
   test("a click inside #accessorySlots preserves state scoped to #accessorySlots", () => {
     resetDOM(`
@@ -189,9 +177,7 @@ describe("open-state preservation scoping", () => {
     `);
     const target = document.querySelector(".custom-fields-edit-btn");
 
-    // No throw + correct render calls is enough to prove withOpenState ran
-    // against the right container — its own snapshot/restore contract is
-    // already covered in Batch 2's openState tests.
+    // No throw + correct render calls is enough to prove withOpenState ran against the right container; its snapshot/restore contract is tested separately.
     expect(() => handleAccessoryClick({ target })).not.toThrow();
     jest.advanceTimersToNextFrame();
     expect(render.renderEquippedAccessories).toHaveBeenCalledTimes(1);
@@ -214,9 +200,6 @@ describe("open-state preservation scoping", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAccessoryInput
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAccessoryInput", () => {
   test("allows an empty price value mid-typing without calling updateAccessoryPrice", () => {
     const target = elWithClass("input", "equipped-accessory-price", {
@@ -249,9 +232,6 @@ describe("handleAccessoryInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAccessoryChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAccessoryChange", () => {
   test("accessoryNameSelect refreshes equip-option availability", () => {
     const target = document.createElement("select");
@@ -285,9 +265,7 @@ describe("handleAccessoryChange", () => {
       formKey: "ACC-1",
     });
     target.value = "SOME-ENCH";
-    // findAccessoryByInstanceId (mocked truthy) confirms ownership; the
-    // actual Map-mutation is model.js internals already covered in 5b —
-    // this just proves the wiring reaches it without throwing.
+    // findAccessoryByInstanceId (mocked truthy) confirms ownership; the actual Map-mutation is model.js internals covered elsewhere.
     expect(() => handleAccessoryChange({ target })).not.toThrow();
   });
 
@@ -297,9 +275,6 @@ describe("handleAccessoryChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddAccessory
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddAccessory", () => {
   function buildAddForm({
     name = "ACC-CATALOG-1",

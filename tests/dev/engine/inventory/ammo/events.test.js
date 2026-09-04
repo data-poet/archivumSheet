@@ -30,11 +30,7 @@ import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
-// NOTE: shared/openState.js is intentionally NOT mocked. events.js uses its
-// real ammoDetailKeyFn directly to compose the local open-panel snapshot
-// used around the renderListsPreserving() call, and that composition logic
-// is exactly what's worth exercising for real here (it's already unit
-// tested in isolation in tests/dev/shared/openState.test.js).
+// shared/openState.js is intentionally not mocked — events.js's real ammoDetailKeyFn composes the open-panel snapshot around renderListsPreserving(), which is worth exercising for real here.
 
 function elWithClass(tag, className, dataset = {}) {
   const el = document.createElement(tag);
@@ -58,9 +54,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAmmoClick
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAmmoClick", () => {
   test("clicking .remove-ammo-container removes the container and returns true", () => {
@@ -159,9 +152,6 @@ describe("handleAmmoClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAmmoInput — direct quantity edits
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAmmoInput — .ammo-qty-in-container", () => {
   test("a valid quantity updates the container entry and returns true", () => {
@@ -258,15 +248,10 @@ describe("handleAmmoInput — an unrelated input target", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAmmoInput — .resume-ammo-qty (the aggregate resume-view stepper)
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAmmoInput — .resume-ammo-qty aggregate stepper", () => {
   beforeEach(() => {
-    // Two equipped containers holding ARROW-1 (5 + 3 = 8 total), plus one
-    // backpack (non-equipped) container that must be excluded from the
-    // aggregate entirely.
+    // Two equipped containers holding ARROW-1 (5 + 3 = 8 total), plus one backpack (non-equipped) container excluded from the aggregate.
     state.selected.ammo_containers = [
       {
         _instanceId: "C1",
@@ -393,9 +378,6 @@ describe("handleAmmoInput — .resume-ammo-qty aggregate stepper", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAmmoChange
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAmmoChange", () => {
   test("changing .ammo-container-storage-select moves the container and returns true", () => {
@@ -479,9 +461,6 @@ describe("handleAmmoChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddContainer
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddContainer", () => {
   test("adds a container with the selected id and storage location", () => {
@@ -514,9 +493,6 @@ describe("handleAddContainer", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddLooseAmmo
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddLooseAmmo", () => {
   test("adds loose ammo with the selected id/quantity/location and resets the quantity field", () => {

@@ -116,8 +116,7 @@ describe("addSkill", () => {
   test("adds a new skill using its base attribute's current value", () => {
     document.getElementById("skillSelect").innerHTML =
       `<option value="SK-1" selected>x</option>`;
-    // getSkillAttributeBase() reads from state.sheet (engine output), not
-    // the raw DOM inputs — those only matter to compute/attributes.js.
+    // getSkillAttributeBase() reads state.sheet, not the raw DOM inputs.
     state.sheet = {
       character: { primary_attributes: { DX: { base_value: 14 } } },
     };
@@ -179,7 +178,6 @@ describe("removeSkill", () => {
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
     expect(offerUndo).toHaveBeenCalledWith(expect.any(Function));
 
-    // Invoking the undo callback restores the original full set.
     const undoFn = offerUndo.mock.calls[0][0];
     undoFn();
     expect(state.selected.skills).toEqual({

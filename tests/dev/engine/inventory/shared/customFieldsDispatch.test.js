@@ -136,7 +136,7 @@ describe("createCustomFieldsClickHandler", () => {
         note: "hello",
       });
       expect(render).not.toHaveBeenCalled(); // saveCustomFields owns re-rendering
-      expect(calls).toEqual(["close", "save"]); // close happens before save
+      expect(calls).toEqual(["close", "save"]);
     });
 
     test("closes the editor and falls back to render() when values are invalid (falsy)", () => {
@@ -170,7 +170,7 @@ describe("createCustomFieldsClickHandler", () => {
 
       handler(clickEvent("custom-fields-edit-btn", "INST-1"));
 
-      expect(render).toHaveBeenCalledTimes(1); // ran without an explicit wrapper
+      expect(render).toHaveBeenCalledTimes(1);
     });
 
     test("is invoked with the triggering event and the unit of work, when provided", () => {
@@ -199,7 +199,7 @@ describe("createCustomFieldsClickHandler", () => {
         findByInstanceId: jest.fn(() => ({ instance_id: "INST-1" })),
         saveCustomFields: jest.fn(),
         render,
-        runWithOpenState: jest.fn(), // deliberately never invokes fn
+        runWithOpenState: jest.fn(),
       });
 
       handler(clickEvent("custom-fields-edit-btn", "INST-1"));

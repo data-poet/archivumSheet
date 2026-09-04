@@ -42,9 +42,7 @@ describe("enchantmentsConstants — Phase 2 (armor) groups", () => {
       ...ELEMENTAL_RESISTANCE_EFFECT_TYPES,
     ];
 
-    // Phase 3 (weapons) groups are folded in too — see the Phase 3
-    // describe block below — so this only asserts the Phase 1/2 subset,
-    // not exact equality.
+    // Phase 3 (weapons) groups are folded in too, so this only asserts the Phase 1/2 subset, not exact equality.
     expect(VALUE_EFFECT_TYPES).toEqual(expect.arrayContaining(phase1and2));
     expect(new Set(VALUE_EFFECT_TYPES).size).toBe(VALUE_EFFECT_TYPES.length);
   });

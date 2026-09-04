@@ -72,9 +72,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCustomInventoryClick
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCustomInventoryClick", () => {
   test("clicking .remove-custom-item removes the item and returns true", () => {
@@ -184,9 +181,6 @@ describe("handleCustomInventoryClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCustomInventoryInput
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCustomInventoryInput", () => {
   test("typing a valid quantity into .custom-item-qty updates it and returns true", () => {
@@ -245,9 +239,6 @@ describe("handleCustomInventoryInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCustomInventoryChange
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleCustomInventoryChange", () => {
   test("changing .custom-item-location-select moves the item and returns true", () => {
@@ -269,9 +260,6 @@ describe("handleCustomInventoryChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddCustomItem
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("handleAddCustomItem", () => {
   function setUpForm({

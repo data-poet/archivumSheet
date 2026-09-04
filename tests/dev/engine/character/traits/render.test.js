@@ -162,8 +162,6 @@ describe("renderAdvantages — detail row", () => {
   });
 });
 
-// ── Disadvantages: same shape as advantages, mirror-tested for parity ──────
-
 describe("renderDisadvantages — empty state", () => {
   test("shows an empty row when there are no disadvantages at all", () => {
     renderDisadvantages({ disadvantages: {} }, {}, undefined);

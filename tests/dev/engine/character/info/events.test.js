@@ -46,7 +46,7 @@ describe("handleCharacterInput", () => {
     const before = state.selected.character.character_sex;
     const result = handleCharacterInput(inputEvent("character_sex", "M"));
     expect(result).toBe(true);
-    expect(state.selected.character.character_sex).toBe(before); // untouched
+    expect(state.selected.character.character_sex).toBe(before);
     expect(triggerAutoRun).not.toHaveBeenCalled();
   });
 
@@ -62,7 +62,7 @@ describe("handleCharacterInput", () => {
       const event = inputEvent("character_age", "abc");
       handleCharacterInput(event);
       expect(state.selected.character.character_age).toBeNull();
-      expect(event.target.value).toBe("abc"); // left as-is mid-typing
+      expect(event.target.value).toBe("abc");
     });
   });
 

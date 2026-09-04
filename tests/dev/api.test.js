@@ -33,11 +33,6 @@ beforeEach(() => {
   installMockFetch();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// GET loaders — every fetchX() hits the correct fixed URL and resolves
-// with the parsed JSON body, no transformation.
-// ─────────────────────────────────────────────────────────────────────────
-
 describe.each([
   ["fetchAdvantages", fetchAdvantages, "/api/advantages"],
   ["fetchDisadvantages", fetchDisadvantages, "/api/disadvantages"],
@@ -94,10 +89,6 @@ describe.each([
     await expect(fn()).rejects.toThrow(`GET ${url} failed: 404`);
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// buildSheet — the one POST endpoint
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("buildSheet", () => {
   test("POSTs the payload as JSON with the correct headers and URL", async () => {
