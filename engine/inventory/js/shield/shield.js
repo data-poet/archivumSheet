@@ -16,6 +16,10 @@ const {
 } = require("./shieldResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
+const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
+const {
+  getEnchantmentTargetsDB,
+} = require("../shared/enchantmentTargetsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SHIELD DB
@@ -69,6 +73,13 @@ function buildShieldSlots(shieldInventory = []) {
   const shieldDb = getShieldDB();
 
   const materialDb = getMaterialsDB();
+
+  // Fetched here (not yet threaded through validation/resolver calls below —
+  // that lands in later enchantments batches) so buildShieldSlots already
+  // owns both DBs by the time Batch 2 (validation) and Batch 3/4 (resolver +
+  // wiring) need them, same DB-acquisition point armor.js uses.
+  const enchantmentsDb = getEnchantmentsDB();
+  const targetsDb = getEnchantmentTargetsDB();
 
   // VALIDATE INSTANCES
 
