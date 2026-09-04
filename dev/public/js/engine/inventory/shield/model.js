@@ -6,6 +6,13 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { nextShieldInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
+import { t } from "../../../localization/pt-BR/index.js";
+import {
+  addEnchantmentEntry,
+  updateEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "../shared/enchantments/model.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -40,7 +47,10 @@ export function updateShieldNameOptions() {
   if (!nameSelect) return;
 
   const names = [...new Set(data.shields.map((s) => s.shield_name))];
-  populateSelect(nameSelect, names.map((n) => ({ value: n, label: n })));
+  populateSelect(
+    nameSelect,
+    names.map((n) => ({ value: n, label: n })),
+  );
   updateShieldTierOptions();
 }
 
@@ -52,11 +62,16 @@ export function updateShieldTierOptions() {
   const name = nameSelect.value;
   const tiers = [
     ...new Set(
-      data.shields.filter((s) => s.shield_name === name).map((s) => s.shield_tier),
+      data.shields
+        .filter((s) => s.shield_name === name)
+        .map((s) => s.shield_tier),
     ),
   ];
 
-  populateSelect(tierSelect, tiers.map((t) => ({ value: t, label: t })));
+  populateSelect(
+    tierSelect,
+    tiers.map((t) => ({ value: t, label: t })),
+  );
 }
 
 export function updateShieldMaterialOptions() {
@@ -65,7 +80,10 @@ export function updateShieldMaterialOptions() {
 
   populateSelect(
     materialSelect,
-    data.materials.map((m) => ({ value: m.material_name, label: m.material_name })),
+    data.materials.map((m) => ({
+      value: m.material_name,
+      label: m.material_name,
+    })),
   );
 }
 
@@ -99,6 +117,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
     shield_custom_name: null,
     shield_custom_description: null,
     shield_custom_effect: null,
+    enchantments: [],
   });
 
   renderListsPreserving(selected, data);
@@ -110,7 +129,11 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Add a shield directly to storage (not equipped). */
-export function addStoredShield(shieldId, materialId = null, storedAt = "backpack") {
+export function addStoredShield(
+  shieldId,
+  materialId = null,
+  storedAt = "backpack",
+) {
   if (!shieldId) return;
 
   selected.shields.push({
@@ -123,6 +146,7 @@ export function addStoredShield(shieldId, materialId = null, storedAt = "backpac
     shield_custom_name: null,
     shield_custom_description: null,
     shield_custom_effect: null,
+    enchantments: [],
   });
 
   renderListsPreserving(selected, data);
@@ -144,7 +168,10 @@ export function moveShield(instanceId, storedAt) {
 /** Remove a shield instance by instanceId. */
 export function removeShield(instanceId) {
   const before = structuredClone(selected.shields);
-  selected.shields = selected.shields.filter((s) => s._instanceId !== instanceId);
+  selected.shields = selected.shields.filter(
+    (s) => s._instanceId !== instanceId,
+  );
+  clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
 
@@ -164,7 +191,10 @@ export function removeShield(instanceId) {
  * presses "Salvar" in the custom-fields editor, never on individual
  * keystrokes. Blank strings are normalized to null.
  */
-export function saveShieldCustomFields(instanceId, { name, description, effect }) {
+export function saveShieldCustomFields(
+  instanceId,
+  { name, description, effect },
+) {
   const instance = findShieldByInstanceId(instanceId);
   if (!instance) return;
 
@@ -176,6 +206,93 @@ export function saveShieldCustomFields(instanceId, { name, description, effect }
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+//
+// Thin shield-specific wrappers around the generic entry helpers in
+// enchantments.js — same relationship saveShieldCustomFields has with
+// customFieldsBlock, and identical shape to armor's own wrappers (see
+// armor/model.js). instance.enchantments defaults to [] defensively since
+// shields saved before this feature existed won't have the field.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addShieldEnchantment(instanceId, enchantmentId, params) {
+  const instance = findShieldByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const before = structuredClone(instance.enchantments);
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
+}
+
+/**
+ * Edits an already-attached entry in place — swapping it for a different
+ * enchantment entirely, or just changing its target/value/extraPoints.
+ * Keeps the entry's own _instanceId so its position in the list and its
+ * price-lookup identity survive the edit.
+ */
+export function updateShieldEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findShieldByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
+}
+
+export function removeShieldEnchantment(instanceId, entryInstanceId) {
+  const instance = findShieldByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
