@@ -50,6 +50,10 @@ export function getShieldItemCategory() {
   return data.itemCategories.SHIELD;
 }
 
+export function getMeleeItemCategory() {
+  return data.itemCategories.MELEE;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EFFECT TYPE GROUPS
 //

@@ -17,6 +17,9 @@ const {
 const {
   SHIELD_ITEM_CATEGORY,
 } = require("../engine/inventory/js/shield/shieldValidation.js");
+const {
+  MELEE_ITEM_CATEGORY,
+} = require("../engine/inventory/js/melee/meleeConstants.js");
 
 const app = express();
 
@@ -217,6 +220,7 @@ app.get("/api/inventory/item-categories", (req, res) => {
     ACCESSORY: ACCESSORY_ITEM_CATEGORY,
     MAGIC_GEAR: MAGIC_GEAR_ITEM_CATEGORY,
     SHIELD: SHIELD_ITEM_CATEGORY,
+    MELEE: MELEE_ITEM_CATEGORY,
   });
 });
 

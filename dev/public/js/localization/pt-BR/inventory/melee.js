@@ -15,4 +15,5 @@ export const MELEE = {
   balMod: "Mod. BAL",
   gdpMod: "Mod. GDP",
   hp: "PV",
+  enchantmentContribution: "Contribuição de encantamentos",
 };
