@@ -21,10 +21,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAGIC GEAR DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _magicGearDB = null;
 
 function getMagicGearDB() {
@@ -49,17 +45,9 @@ function getMagicGearDB() {
   return _magicGearDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Builds the resolved magic gear inventory, distributed across storage
@@ -73,8 +61,6 @@ function buildStorageBucket() {
 function buildMagicGearSlots(magicGearInventory = []) {
   const magicGearDb = getMagicGearDB();
 
-  // ── VALIDATE INSTANCES (shape) ────────────────────────────────────────────
-
   const instanceErrors = magicGearInventory.flatMap((instance, index) =>
     validateMagicGearInstance(instance, index),
   );
@@ -84,8 +70,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
       `[buildMagicGearSlots] Invalid magicGearInventory:\n${instanceErrors.join("\n")}`,
     );
   }
-
-  // ── VALIDATE UNKNOWN IDS ──────────────────────────────────────────────────
 
   const unknownIds = magicGearInventory
     .filter((instance) => !magicGearDb[instance.magic_gear_id])
@@ -97,8 +81,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
     );
   }
 
-  // ── VALIDATE EQUIP LIMITS (PER magic_gear_type) ──────────────────────────
-
   const equipLimitErrors = validateMagicGearEquipLimits(
     magicGearInventory,
     magicGearDb,
@@ -109,8 +91,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
       `[buildMagicGearSlots] Equip limit exceeded:\n${equipLimitErrors.join("\n")}`,
     );
   }
-
-  // ── VALIDATE ENCHANTMENTS ────────────────────────────────────────────────
 
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
@@ -126,8 +106,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
       `[buildMagicGearSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const equipped = buildStorageBucket();
   const stash = buildStorageBucket();
@@ -163,8 +141,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_magic_gear_value = calculateCarriedMagicGearValue(
     equipped,
     backpack,
@@ -184,10 +160,6 @@ function buildMagicGearSlots(magicGearInventory = []) {
     carried_magic_gear_weight,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildMagicGearSlots,

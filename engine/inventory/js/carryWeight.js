@@ -18,7 +18,6 @@ function calculateCarryWeight(ST, weight) {
   } else if (weight <= veryHeavy) {
     weight_modifier = -3;
   } else {
-    // weight > ST*10
     weight_modifier = -4;
   }
 

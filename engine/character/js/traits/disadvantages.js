@@ -1,15 +1,6 @@
 const path = require("path");
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
-/**
- * Build disadvantages + total cost from selected IDs
- *
- * EXPECTS:
- * selectedIds = ["DIS-001", "DIS-002"]
- * innateIds = ["DIS-001"]  — these get is_race_innate: true and cost 0
- * enchantmentIds = ["DIS-002"]  — these get is_enchantment: true and cost 0,
- *   from equipped item enchantments (see collectEquippedEnchantments.js).
- */
 function buildDisadvantages(
   selectedIds = [],
   innateIds = [],

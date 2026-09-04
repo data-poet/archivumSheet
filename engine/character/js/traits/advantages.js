@@ -1,17 +1,7 @@
 const path = require("path");
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
 
-/**
- * Build advantages + total cost
- *
- * EXPECTS:
- * selectedAdvantages = ["ADV-001", "ADV-002"]
- * innateIds = ["ADV-001"]  — these get is_race_innate: true and cost 0
- * enchantmentIds = ["ADV-003"]  — these get is_enchantment: true and cost 0,
- *   from equipped item enchantments (see collectEquippedEnchantments.js).
- *   If an id is somehow in both innateIds and enchantmentIds, innate wins
- *   (is_race_innate takes priority; either way cost is 0).
- */
+// If an id is in both innateIds and enchantmentIds, innate wins (either way cost is 0).
 function buildAdvantages(
   selectedIds = [],
   innateIds = [],

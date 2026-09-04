@@ -21,10 +21,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIREARMS DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _firearmsDB = null;
 
 function getFirearmsDB() {
@@ -71,18 +67,9 @@ function getFirearmsDB() {
   return _firearmsDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Firearms have no slots — storage buckets are flat arrays.
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildFirearmSlots(firearmsInventory = []) {
   const firearmsDb = getFirearmsDB();
@@ -91,8 +78,6 @@ function buildFirearmSlots(firearmsInventory = []) {
 
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
-
-  // VALIDATE INSTANCES
 
   const instanceErrors = firearmsInventory.flatMap((instance, index) =>
     validateFirearmInstance(instance, index),
@@ -104,8 +89,6 @@ function buildFirearmSlots(firearmsInventory = []) {
     );
   }
 
-  // VALIDATE FIREARM IDS
-
   const unknownFirearmIds = firearmsInventory
     .filter((instance) => !firearmsDb[instance.weapon_id])
     .map((instance) => instance.weapon_id);
@@ -115,8 +98,6 @@ function buildFirearmSlots(firearmsInventory = []) {
       `[buildFirearmSlots] Unknown weapon_id(s): ${unknownFirearmIds.join(", ")}`,
     );
   }
-
-  // VALIDATE MATERIAL IDS
 
   const unknownMaterialIds = firearmsInventory
     .filter(
@@ -130,8 +111,6 @@ function buildFirearmSlots(firearmsInventory = []) {
     );
   }
 
-  // VALIDATE ENCHANTMENTS
-
   const enchantmentErrors = validateFirearmEnchantments(
     firearmsInventory,
     enchantmentsDb,
@@ -144,9 +123,6 @@ function buildFirearmSlots(firearmsInventory = []) {
     );
   }
 
-  // BUILD INVENTORY
-
-  // Storage buckets are flat arrays — no slot keying.
   const equipped = buildStorageBucket();
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
@@ -170,8 +146,6 @@ function buildFirearmSlots(firearmsInventory = []) {
       targetsDb,
     );
 
-    // EQUIPPED
-
     if (instance.is_equipped) {
       equipped.push(resolvedFirearm);
 
@@ -181,23 +155,17 @@ function buildFirearmSlots(firearmsInventory = []) {
       continue;
     }
 
-    // STASH
-
     if (instance.storedAt === "stash") {
       stash.push(resolvedFirearm);
 
       continue;
     }
 
-    // CAMP
-
     if (instance.storedAt === "camp") {
       camp.push(resolvedFirearm);
 
       continue;
     }
-
-    // BACKPACK
 
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedFirearm);
@@ -206,8 +174,6 @@ function buildFirearmSlots(firearmsInventory = []) {
       carried_firearms_value += resolvedFirearm.total_value;
     }
   }
-
-  // TOTALS
 
   const total_firearms_weight = calculateTotalFirearmsWeight(
     firearmsInventory,
@@ -236,10 +202,6 @@ function buildFirearmSlots(firearmsInventory = []) {
     carried_firearms_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildFirearmSlots,

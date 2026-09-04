@@ -5,18 +5,8 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// enchantment_allowed_itens category for this item type — matches
-// SLOT_MAP's Portuguese keys convention used by armor
 const ACCESSORY_ITEM_CATEGORY = "Acessórios";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single accessory instance object (shape only, no DB lookups).
- * Returns an array of error strings (empty = valid).
- */
 function validateAccessoryInstance(instance, index) {
   const errors = [];
   const prefix = `accessoryInventory[${index}]`;
@@ -46,7 +36,6 @@ function validateAccessoryInstance(instance, index) {
     );
   }
 
-  // price — user-input, required, finite number >= 0
   if (
     typeof instance.price !== "number" ||
     !isFinite(instance.price) ||
@@ -55,7 +44,6 @@ function validateAccessoryInstance(instance, index) {
     errors.push(`${prefix}: price must be a number >= 0`);
   }
 
-  // custom fields — optional; if present must be a string or null
   for (const field of [
     "accessory_custom_name",
     "accessory_custom_description",
@@ -70,7 +58,6 @@ function validateAccessoryInstance(instance, index) {
     }
   }
 
-  // enchantments — optional; unlimited count, no slot system
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -86,11 +73,6 @@ function validateAccessoryInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split armor/materials would need.
- */
 function validateAccessoryEnchantments(
   accessoryInventory,
   enchantmentsDb,
@@ -119,15 +101,7 @@ function validateAccessoryEnchantments(
   return errors;
 }
 
-/**
- * Ensures the number of equipped instances per accessory_id never exceeds
- * that accessory's accessory_equip_limit.
- *
- * Unlike armor's single-slot check, multiple *different* accessory types can
- * be equipped simultaneously — the cap is a per-type count, not a shared slot.
- *
- * Returns an array of error strings (empty = valid).
- */
+// Unlike armor's single-slot check, multiple different accessory types can be equipped simultaneously — the cap is a per-type count, not a shared slot.
 function validateAccessoryEquipLimits(instances, db) {
   const errors = [];
 
@@ -140,7 +114,6 @@ function validateAccessoryEquipLimits(instances, db) {
 
     const accessory = db[instance.accessory_id];
 
-    // Unknown ids are validated elsewhere
     if (!accessory) {
       continue;
     }
@@ -163,10 +136,6 @@ function validateAccessoryEquipLimits(instances, db) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateAccessoryInstance,

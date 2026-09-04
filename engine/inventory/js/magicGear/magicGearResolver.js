@@ -6,19 +6,7 @@ function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RESOLVE
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Merges a magic gear DB record + instance runtime state into a fully
- * resolved entry.
- *
- * Unlike accessories, price and weight are entirely DB-driven (catalog
- * values from db_magic_gear.csv) — no user-input price field. Enchantment
- * price is intrinsic to the item and counts toward total_value regardless
- * of equip state, same convention as accessories.
- */
+// Unlike accessories, price/weight are entirely DB-driven — no user-input price field.
 function resolveMagicGearItem(
   instance,
   magicGear,
@@ -36,13 +24,11 @@ function resolveMagicGearItem(
     );
 
   return {
-    // DB BASE
     magic_gear_id: magicGear.magic_gear_id,
     magic_gear_name: magicGear.magic_gear_name,
     magic_gear_price: price,
     magic_gear_weight: weight,
 
-    // RUNTIME
     enchantments,
     enchantments_total_price,
     total_value: round2(price + enchantments_total_price),
@@ -59,14 +45,6 @@ function resolveMagicGearItem(
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALUE / WEIGHT
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Sums total_value for equipped + backpack entries only.
- * Stash and camp are excluded — mirrors the armor/accessories convention.
- */
 function calculateCarriedMagicGearValue(equipped, backpackItems) {
   return round2(
     [...equipped, ...backpackItems].reduce(
@@ -76,10 +54,6 @@ function calculateCarriedMagicGearValue(equipped, backpackItems) {
   );
 }
 
-/**
- * Sums total_weight for equipped + backpack entries only.
- * Stash and camp are excluded — mirrors the armor/accessories convention.
- */
 function calculateCarriedMagicGearWeight(equipped, backpackItems) {
   return round2(
     [...equipped, ...backpackItems].reduce(
@@ -88,10 +62,6 @@ function calculateCarriedMagicGearWeight(equipped, backpackItems) {
     ),
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   resolveMagicGearItem,

@@ -3,10 +3,6 @@ const {
   VALID_STORED_AT,
 } = require("./coinPurseConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Validates a single coin instance object (shape only).
  * Returns an array of error strings (empty = valid).
@@ -41,10 +37,6 @@ function validateCoinInstance(instance, index) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateCoinInstance,

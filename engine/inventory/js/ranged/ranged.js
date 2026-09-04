@@ -26,10 +26,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RANGED DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _rangedDB = null;
 
 function getRangedDB() {
@@ -72,32 +68,17 @@ function getRangedDB() {
   return _rangedDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Shields have no slots — storage buckets are flat arrays.
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildRangedSlots(rangedInventory = [], ST = 0) {
   const rangedDb = getRangedDB();
 
   const materialDb = getMaterialsDB();
 
-  // Fetched here so buildRangedSlots owns both DBs — used by
-  // validateRangedEnchantments below and threaded through every
-  // resolveRangedWeapons/total-calc call, same DB-acquisition point
-  // melee.js/shield.js/armor.js use.
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
-
-  // VALIDATE INSTANCES
 
   const instanceErrors = rangedInventory.flatMap((instance, index) =>
     validateRangedInstance(instance, index),
@@ -109,8 +90,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     );
   }
 
-  // VALIDATE RANGED IDS
-
   const unknownRangedIds = rangedInventory
     .filter((instance) => !rangedDb[instance.weapon_id])
     .map((instance) => instance.weapon_id);
@@ -120,8 +99,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       `[buildMeleeSlots] Unknown weapon_id(s): ${unknownRangedIds.join(", ")}`,
     );
   }
-
-  // VALIDATE MATERIAL IDS
 
   const unknownMaterialIds = rangedInventory
     .filter(
@@ -135,8 +112,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     );
   }
 
-  // VALIDATE ENCHANTMENTS
-
   const enchantmentErrors = validateRangedEnchantments(
     rangedInventory,
     enchantmentsDb,
@@ -149,9 +124,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     );
   }
 
-  // BUILD INVENTORY
-
-  // Storage buckets are flat arrays — no slot keying.
   const equipped = buildStorageBucket();
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
@@ -176,8 +148,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       targetsDb,
     );
 
-    // EQUIPPED
-
     if (instance.is_equipped) {
       equipped.push(resolvedRanged);
 
@@ -187,23 +157,17 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       continue;
     }
 
-    // STASH
-
     if (instance.storedAt === "stash") {
       stash.push(resolvedRanged);
 
       continue;
     }
 
-    // CAMP
-
     if (instance.storedAt === "camp") {
       camp.push(resolvedRanged);
 
       continue;
     }
-
-    // BACKPACK
 
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedRanged);
@@ -212,8 +176,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
       carried_ranged_weapons_value += resolvedRanged.total_value;
     }
   }
-
-  // TOTALS
 
   const total_ranged_weight = calculateTotalRangedWeight(
     rangedInventory,
@@ -244,10 +206,6 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     carried_ranged_weapons_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildRangedSlots,

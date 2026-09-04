@@ -3,9 +3,6 @@ const { loadCSV } = require("../../../helpers/dataUtils.js");
 
 let _skillsCache = null;
 
-/**
- * Load skills directly from CSV (single source of truth)
- */
 function getAllSpells() {
   if (_skillsCache) return _skillsCache;
 
@@ -15,9 +12,6 @@ function getAllSpells() {
   return _skillsCache;
 }
 
-/**
- * Cost tables
- */
 const COST_TABLES = {
   IQ: {
     F: {
@@ -86,16 +80,10 @@ const COST_TABLES = {
   },
 };
 
-/**
- * Relative level
- */
 function getRelativeLevel(base, level) {
   return level - base;
 }
 
-/**
- * Unified cost function
- */
 function getSpellCost({ attribute = "IQ", base = 0, level = 0, difficulty }) {
   const relative = getRelativeLevel(base, level);
 
@@ -108,7 +96,7 @@ function getSpellCost({ attribute = "IQ", base = 0, level = 0, difficulty }) {
 }
 
 module.exports = {
-  getAllSpells, // now lives here
+  getAllSpells,
   getSpellCost,
   getRelativeLevel,
   COST_TABLES,

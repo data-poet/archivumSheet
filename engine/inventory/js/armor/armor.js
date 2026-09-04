@@ -23,10 +23,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ARMOR DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _armorDB = null;
 
 function getArmorDB() {
@@ -59,17 +55,9 @@ function getArmorDB() {
   return _armorDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageSlots() {
   return Object.fromEntries(Object.values(SLOT_MAP).map((slot) => [slot, []]));
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildArmorSlots(armorInventory = []) {
   const armorDb = getArmorDB();
@@ -77,8 +65,6 @@ function buildArmorSlots(armorInventory = []) {
   const materialDb = getMaterialsDB();
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
-
-  // VALIDATE INSTANCES
 
   const instanceErrors = armorInventory.flatMap((instance, index) =>
     validateArmorInstance(instance, index),
@@ -90,8 +76,6 @@ function buildArmorSlots(armorInventory = []) {
     );
   }
 
-  // VALIDATE ARMOR IDS
-
   const unknownArmorIds = armorInventory
     .filter((instance) => !armorDb[instance.armor_id])
     .map((instance) => instance.armor_id);
@@ -101,8 +85,6 @@ function buildArmorSlots(armorInventory = []) {
       `[buildArmorSlots] Unknown armor_id(s): ${unknownArmorIds.join(", ")}`,
     );
   }
-
-  // VALIDATE MATERIAL IDS
 
   const unknownMaterialIds = armorInventory
     .filter(
@@ -116,8 +98,6 @@ function buildArmorSlots(armorInventory = []) {
     );
   }
 
-  // VALIDATE EQUIPPED SLOTS
-
   const slotErrors = validateSingleEquippedPerSlot(armorInventory, armorDb);
 
   if (slotErrors.length > 0) {
@@ -125,8 +105,6 @@ function buildArmorSlots(armorInventory = []) {
       `[buildArmorSlots] Slot conflict:\n${slotErrors.join("\n")}`,
     );
   }
-
-  // VALIDATE ENCHANTMENTS
 
   const enchantmentErrors = validateArmorEnchantments(
     armorInventory,
@@ -141,12 +119,8 @@ function buildArmorSlots(armorInventory = []) {
     );
   }
 
-  // BUILD INVENTORY
-
-  // ONLY ONE PER SLOT
   const equipped = buildEquippedSlots();
 
-  // MULTIPLE PER SLOT
   const stash = buildStorageSlots();
 
   const camp = buildStorageSlots();
@@ -173,8 +147,6 @@ function buildArmorSlots(armorInventory = []) {
 
     const slot = SLOT_MAP[armor.armor_piece_location];
 
-    // EQUIPPED
-
     if (instance.is_equipped) {
       equipped[slot] = resolvedArmor;
 
@@ -184,23 +156,17 @@ function buildArmorSlots(armorInventory = []) {
       continue;
     }
 
-    // STASH
-
     if (instance.storedAt === "stash") {
       stash[slot].push(resolvedArmor);
 
       continue;
     }
 
-    // CAMP
-
     if (instance.storedAt === "camp") {
       camp[slot].push(resolvedArmor);
 
       continue;
     }
-
-    // BACKPACK
 
     if (instance.storedAt === "backpack") {
       backpack[slot].push(resolvedArmor);
@@ -209,8 +175,6 @@ function buildArmorSlots(armorInventory = []) {
       carried_armor_value += resolvedArmor.total_value;
     }
   }
-
-  // TOTALS
 
   const total_armor_weight = calculateTotalArmorWeight(
     armorInventory,
@@ -239,10 +203,6 @@ function buildArmorSlots(armorInventory = []) {
     carried_armor_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildArmorSlots,

@@ -1,23 +1,5 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENT TARGETS DB
-//
-// Enchantments with a player-picked target (advantage, disadvantage, skill,
-// spell) need to validate that target exists and read the cost/difficulty
-// used for pricing. None of the character-layer builders (advantages.js,
-// disadvantages.js, skills.js, spellsResolver.js) export a full, unfiltered,
-// id-keyed lookup — they each load their CSV filtered to *selected* ids only.
-// This loader is scoped specifically to enchantment target resolution.
-//
-// SPELLS: db_magic_grimoire.csv stores one row PER TIER per spell (Aprendiz,
-// Experiente, Veterano, Especialista, Mestre), each with its own spell_id.
-// The engine's own spell resolver looks spells up by name + a tier computed
-// from level, not by spell_id. So a spell target must be keyed by
-// spell_name, not spell_id — indexing by spell_id would pin an enchantment
-// to one specific tier row instead of following the spell as level changes.
-// Difficulty is identical across all five tier-rows of the same spell, so
-// the first occurrence is kept and the rest skipped.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Character-layer builders only export lookups filtered to *selected* ids, so enchantment target validation needs its own full, unfiltered, id-keyed loader.
+// Spells are keyed by spell_name, not spell_id, since db_magic_grimoire.csv has one row per tier per spell and the resolver looks spells up by name + computed tier — indexing by spell_id would pin an enchantment to one tier.
 const path = require("path");
 
 const { loadCSV } = require("../../../../helpers/dataUtils.js");

@@ -10,14 +10,6 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single melee instance object.
- * Returns an array of error strings (empty = valid).
- */
 function validateMeleeInstance(instance, index) {
   const errors = [];
   const prefix = `meleeInventory[${index}]`;
@@ -47,9 +39,6 @@ function validateMeleeInstance(instance, index) {
     );
   }
 
-  // enchantments — optional; unlimited count, no slot system (same
-  // shape-only pass as shield/accessories/magicGear/armor — see
-  // shieldValidation.js)
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -65,17 +54,7 @@ function validateMeleeInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split shield/accessories/magicGear/armor use.
- *
- * itemCategory is MELEE_ITEM_CATEGORY, OR — for a dual-use instance (decision
- * #4/#5 of the weapons enchantments plan) — `[MELEE_ITEM_CATEGORY,
- * RANGED_ITEM_CATEGORY]`. Enchantments sync across a dual-use pair, so an
- * entry added via the ranged side (e.g. PREC) ends up on this melee mirror
- * too; validating against melee's category alone would wrongly reject it.
- */
+// For a dual-use weapon, itemCategory is [MELEE_ITEM_CATEGORY, RANGED_ITEM_CATEGORY] — an entry added via the ranged side (e.g. PREC) ends up on this melee mirror too, so validating against melee's category alone would wrongly reject it.
 function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
   const errors = [];
 
@@ -106,10 +85,6 @@ function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateMeleeInstance,

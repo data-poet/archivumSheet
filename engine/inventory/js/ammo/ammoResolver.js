@@ -1,18 +1,8 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// AMMO RESOLVER
-// ─────────────────────────────────────────────────────────────────────────────
 
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONTAINER RESOLVER
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Merges a container DB record + instance state into a fully resolved container.
- */
 function resolveContainer(instance, container, ammoDb) {
   const resolvedContents = instance.contents.map((entry) => {
     const ammo = ammoDb[entry.ammo_id];
@@ -42,7 +32,6 @@ function resolveContainer(instance, container, ammoDb) {
   const total_value = round2(container.container_price + contents_value);
 
   return {
-    // CONTAINER BASE
     _instanceId: instance._instanceId,
     container_id: container.container_id,
     container_name: container.container_name,
@@ -54,10 +43,8 @@ function resolveContainer(instance, container, ammoDb) {
     container_price: container.container_price,
     is_carriable: container.is_carriable,
 
-    // RUNTIME
     storedAt: instance.storedAt,
 
-    // CONTENTS
     contents: resolvedContents,
     used_capacity,
     remaining_capacity: container.container_capacity - used_capacity,
@@ -67,19 +54,11 @@ function resolveContainer(instance, container, ammoDb) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOOSE AMMO RESOLVER
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Merges an ammo DB record + loose instance state into a fully resolved loose entry.
- */
 function resolveLooseAmmo(instance, ammo) {
   const total_weight = round2(ammo.ammo_weight * instance.quantity);
   const total_value  = round2(ammo.ammo_price  * instance.quantity);
 
   return {
-    // AMMO BASE
     ammo_id: ammo.ammo_id,
     ammo_name: ammo.ammo_name,
     ammo_type: ammo.ammo_type,
@@ -89,7 +68,6 @@ function resolveLooseAmmo(instance, ammo) {
     ammo_effect: ammo.ammo_effect,
     ammo_description: ammo.ammo_description,
 
-    // RUNTIME
     quantity: instance.quantity,
     storedAt: instance.storedAt,
     total_weight,
@@ -97,13 +75,6 @@ function resolveLooseAmmo(instance, ammo) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TOTAL EQUIPPED AMMO
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Aggregates total ammo quantities by ammo_type across all equipped containers.
- */
 function calculateTotalEquippedAmmo(equippedContainers, ammoDb) {
   const totals = {};
 
@@ -120,18 +91,7 @@ function calculateTotalEquippedAmmo(equippedContainers, ammoDb) {
   return totals;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CARRIED AMMO WEIGHT
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Sums the total weight that counts toward carry:
- * - equipped containers (container + contents)
- * - backpack containers (container + contents)
- * - backpack loose ammo
- *
- * Stash and camp are excluded.
- */
+// Equipped/backpack containers + backpack loose ammo count toward carry; stash and camp are excluded.
 function calculateCarriedAmmoWeight(
   equippedContainers,
   backpackContainers,
@@ -149,18 +109,6 @@ function calculateCarriedAmmoWeight(
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CARRIED AMMO VALUE
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Sums the total value that counts toward carried inventory:
- * - equipped containers (container + contents)
- * - backpack containers (container + contents)
- * - backpack loose ammo
- *
- * Stash and camp are excluded — mirrors the weight convention.
- */
 function calculateCarriedAmmoValue(
   equippedContainers,
   backpackContainers,
@@ -177,10 +125,6 @@ function calculateCarriedAmmoValue(
     Math.round((containerValue + looseValue + Number.EPSILON) * 100) / 100
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   resolveContainer,

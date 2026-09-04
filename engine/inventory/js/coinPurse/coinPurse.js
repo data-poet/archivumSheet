@@ -8,10 +8,6 @@ const {
   sumCoinValue,
 } = require("./coinPurseResolver");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Builds the resolved coin purse, distributed across storage locations.
  *
@@ -23,7 +19,6 @@ const {
  * carried_coin_purse_value: backpack coins only (copper equivalent).
  */
 function buildCoinPurseSlots(coinInventory = []) {
-  // ── VALIDATE ──────────────────────────────────────────────────────────────
 
   const instanceErrors = coinInventory.flatMap((instance, index) =>
     validateCoinInstance(instance, index),
@@ -34,8 +29,6 @@ function buildCoinPurseSlots(coinInventory = []) {
       `[buildCoinPurseSlots] Invalid coinInventory:\n${instanceErrors.join("\n")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const stash    = [];
   const camp     = [];
@@ -59,8 +52,6 @@ function buildCoinPurseSlots(coinInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_coin_purse_weight = calculateCarriedCoinPurseWeight(backpack);
 
   const total_coin_purse_value = sumCoinValue([
@@ -80,10 +71,6 @@ function buildCoinPurseSlots(coinInventory = []) {
     carried_coin_purse_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildCoinPurseSlots,

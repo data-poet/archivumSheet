@@ -1,12 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS DB
-//
-// Single shared loader for db_magic_enchantments.csv. Mirrors materialsDB.js:
-// one cache, one place to update if the enchantment schema changes. Shared
-// (not accessories-specific) since armor will consume it too once Phase 2
-// starts.
-// ─────────────────────────────────────────────────────────────────────────────
-
 const path = require("path");
 
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
@@ -54,30 +45,21 @@ function getEnchantmentsDB() {
       enchantment_id: row.enchantment_id,
 
       enchantment_name: row.enchantment_name,
-      // Player-facing category ("Fortificar Atributo", "Peculiaridade",
-      // "Perícia", "Feitiço", ...) — used only to group/filter the catalog
-      // in the UI, never branched on for computation (that's still driven
-      // entirely by enchantment_effect_type below).
+      // UI grouping/filtering only — computation branches on enchantment_effect_type below, never this.
       enchantment_type: row.enchantment_type,
       enchantment_effect_type: row.enchantment_effect_type,
       enchantment_is_parametric: toBoolean(row.enchantment_is_parametric),
 
-      // Fixed target (attribute + elemental-resistance types) — null for
-      // player-picked targets (advantage/disadvantage/skill/spell) and for
-      // item-stat types (weight/damage-resistance) which have no target at
-      // all
+      // null for player-picked targets and for item-stat types with no target at all.
       enchantment_target: row.enchantment_target || null,
 
-      // Magnitude pricing (attribute/weight/damage-resistance/elemental-
-      // resistance types). Whole numbers unless enchantment_is_percentage
-      // is true, in which case these are decimal fractions (0.05 = 5%).
+      // Whole numbers unless enchantment_is_percentage, in which case decimal fractions (0.05 = 5%).
       enchantment_base_value: toNumberOrNull(row.enchantment_base_value),
       enchantment_step: toNumberOrNull(row.enchantment_step),
       enchantment_is_percentage: toBoolean(row.enchantment_is_percentage),
 
       enchantment_allowed_itens: toItemList(row.enchantment_allowed_itens),
 
-      // Pricing
       enchantment_base_price: toNumberOrNull(row.enchantment_base_price),
       enchantment_price_per_extra_value: toNumberOrNull(
         row.enchantment_price_per_extra_value,

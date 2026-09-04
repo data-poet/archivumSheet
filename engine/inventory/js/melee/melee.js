@@ -26,10 +26,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MELEE DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _meleeDB = null;
 
 function getMeleeDB() {
@@ -70,32 +66,17 @@ function getMeleeDB() {
   return _meleeDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Shields have no slots — storage buckets are flat arrays.
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildMeleeSlots(meleeInventory = []) {
   const meleeDb = getMeleeDB();
 
   const materialDb = getMaterialsDB();
 
-  // Fetched here so buildMeleeSlots owns both DBs — used by
-  // validateMeleeEnchantments below and threaded through every
-  // resolveMeleeWeapons/total-calc call, same DB-acquisition point
-  // shield.js/armor.js use.
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
-
-  // VALIDATE INSTANCES
 
   const instanceErrors = meleeInventory.flatMap((instance, index) =>
     validateMeleeInstance(instance, index),
@@ -107,8 +88,6 @@ function buildMeleeSlots(meleeInventory = []) {
     );
   }
 
-  // VALIDATE MELEE IDS
-
   const unknownMeleeIds = meleeInventory
     .filter((instance) => !meleeDb[instance.weapon_id])
     .map((instance) => instance.weapon_id);
@@ -118,8 +97,6 @@ function buildMeleeSlots(meleeInventory = []) {
       `[buildMeleeSlots] Unknown weapon_id(s): ${unknownMeleeIds.join(", ")}`,
     );
   }
-
-  // VALIDATE MATERIAL IDS
 
   const unknownMaterialIds = meleeInventory
     .filter(
@@ -133,8 +110,6 @@ function buildMeleeSlots(meleeInventory = []) {
     );
   }
 
-  // VALIDATE ENCHANTMENTS
-
   const enchantmentErrors = validateMeleeEnchantments(
     meleeInventory,
     enchantmentsDb,
@@ -147,9 +122,6 @@ function buildMeleeSlots(meleeInventory = []) {
     );
   }
 
-  // BUILD INVENTORY
-
-  // Storage buckets are flat arrays — no slot keying.
   const equipped = buildStorageBucket();
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
@@ -173,8 +145,6 @@ function buildMeleeSlots(meleeInventory = []) {
       targetsDb,
     );
 
-    // EQUIPPED
-
     if (instance.is_equipped) {
       equipped.push(resolvedMelee);
 
@@ -184,23 +154,17 @@ function buildMeleeSlots(meleeInventory = []) {
       continue;
     }
 
-    // STASH
-
     if (instance.storedAt === "stash") {
       stash.push(resolvedMelee);
 
       continue;
     }
 
-    // CAMP
-
     if (instance.storedAt === "camp") {
       camp.push(resolvedMelee);
 
       continue;
     }
-
-    // BACKPACK
 
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedMelee);
@@ -209,8 +173,6 @@ function buildMeleeSlots(meleeInventory = []) {
       carried_melee_weapons_value += resolvedMelee.total_value;
     }
   }
-
-  // TOTALS
 
   const total_melee_weight = calculateTotalMeleeWeight(
     meleeInventory,
@@ -239,10 +201,6 @@ function buildMeleeSlots(meleeInventory = []) {
     carried_melee_weapons_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildMeleeSlots,

@@ -1,7 +1,3 @@
-/**
- * Dice Rules
- */
-
 function getGDPDice(ST) {
   if (ST > 26) return "3d6";
   if (ST > 18 && ST <= 26) return "2d6";
@@ -18,10 +14,6 @@ function getBALDice(ST) {
   if (ST > 4 && ST <= 12) return "1d6";
   return "0d6";
 }
-
-/**
- * Base Modifiers tables
- */
 
 const GDP_MOD_TABLE = {
   1: 0,
@@ -97,9 +89,6 @@ function getBALModifier(ST) {
   return BAL_MOD_TABLE[ST] ?? 0;
 }
 
-/**
- * Player base damage calculation
- */
 function calculateDamage(ST, context = {}) {
   const gdpModifier = context.GDP?.modifier ?? 0;
   const balModifier = context.BAL?.modifier ?? 0;

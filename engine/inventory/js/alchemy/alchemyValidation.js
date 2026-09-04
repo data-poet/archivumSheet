@@ -1,9 +1,5 @@
 const { VALID_STORED_AT } = require("./alchemyConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Validates a single alchemy consumable instance object (shape only, no DB lookups).
  * Returns an array of error strings (empty = valid).
@@ -36,10 +32,6 @@ function validateAlchemyInstance(instance, index) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateAlchemyInstance,

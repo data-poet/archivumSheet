@@ -7,9 +7,6 @@ const ATTRIBUTE_COST = {
 
 const DEFAULT_VALUE = 10;
 
-/**
- * Calculates a single attribute
- */
 function buildAttribute(input = {}, costPerLevel) {
   const base_value = input.base_value ?? input.value ?? DEFAULT_VALUE;
   const race_modifier = input.race_modifier ?? 0;
@@ -35,9 +32,6 @@ function buildAttribute(input = {}, costPerLevel) {
   };
 }
 
-/**
- * Builds all primary attributes
- */
 function buildPrimaryAttributes({ ST = {}, DX = {}, IQ = {}, HT = {} }) {
   const st = buildAttribute(ST, ATTRIBUTE_COST.ST);
   const dx = buildAttribute(DX, ATTRIBUTE_COST.DX);

@@ -1,10 +1,3 @@
-/**
- * Traits Effects Builder
- *
- * Produces a normalized "effects" object based on selected traits.
- * This does NOT mutate attributes directly.
- */
-
 const willAdvGroup = {
   "ADV-088": 1,
   "ADV-089": 2,
@@ -53,9 +46,6 @@ const fullSenseGroup = {
   "ADV-035": 5,
 };
 
-/**
- * Helpers
- */
 function pickHighest(ids, map) {
   let max = 0;
 
@@ -78,9 +68,6 @@ function addEffect(effects, path, value) {
   effects.secondary[path].base = (effects.secondary[path].base ?? 0) + value;
 }
 
-/**
- * Main builder
- */
 function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
   const effects = {
     secondary: {},
@@ -91,32 +78,22 @@ function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
   const advantageIds = Object.keys(advantages);
   const disadvantageIds = Object.keys(disadvantages);
 
-  /**
-   * ADVANTAGES
-   */
-
-  // DODGE (ADV-055)
   if (advantageIds.includes("ADV-055")) {
     addEffect(effects, "Dodge", 1);
   }
 
-  // WILL (ADV-088 → ADV-092)
   const willBonus = pickHighest(advantageIds, willAdvGroup);
   addEffect(effects, "Will", willBonus);
 
-  // HEARING (ADV-021 → ADV-025)
   const hearingBonus = pickHighest(advantageIds, hearingSingleGroup);
   addEffect(effects, "Hearing", hearingBonus);
 
-  // SMELL (ADV-026 → ADV-030)
   const smellBonus = pickHighest(advantageIds, smellSingleGroup);
   addEffect(effects, "Smell", smellBonus);
 
-  // VISION (ADV-037 → ADV-041)
   const visionBonus = pickHighest(advantageIds, visionSingleGroup);
   addEffect(effects, "Vision", visionBonus);
 
-  // FULL SENSE GROUP (ADV-031 → ADV-035)
   const fullSenseBonus = pickHighest(advantageIds, fullSenseGroup);
 
   if (fullSenseBonus > 0) {
@@ -125,11 +102,6 @@ function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
     addEffect(effects, "Smell", fullSenseBonus);
   }
 
-  /**
-   * DISADVANTAGES
-   */
-
-  // WILL penalties (DIS-100 → DIS-104)
   const willPenalty = pickHighest(disadvantageIds, willDisGroup);
   addEffect(effects, "Will", -willPenalty);
 

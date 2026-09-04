@@ -10,14 +10,6 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single ranged instance object.
- * Returns an array of error strings (empty = valid).
- */
 function validateRangedInstance(instance, index) {
   const errors = [];
   const prefix = `rangedInventory[${index}]`;
@@ -47,9 +39,6 @@ function validateRangedInstance(instance, index) {
     );
   }
 
-  // enchantments — optional; unlimited count, no slot system (same
-  // shape-only pass as melee/shield/accessories/magicGear/armor — see
-  // meleeValidation.js)
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -65,17 +54,7 @@ function validateRangedInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split melee/shield/accessories/magicGear/armor use.
- *
- * itemCategory is RANGED_ITEM_CATEGORY, OR — for a dual-use instance
- * (decision #4/#5 of the weapons enchantments plan) — `[RANGED_ITEM_CATEGORY,
- * MELEE_ITEM_CATEGORY]`. Enchantments sync across a dual-use pair, so an
- * entry added via the melee side (e.g. BAL) ends up on this ranged mirror
- * too; validating against ranged's category alone would wrongly reject it.
- */
+// For a dual-use weapon, itemCategory is [RANGED_ITEM_CATEGORY, MELEE_ITEM_CATEGORY] — an entry added via the melee side (e.g. BAL) ends up on this ranged mirror too, so validating against ranged's category alone would wrongly reject it.
 function validateRangedEnchantments(
   rangedInventory,
   enchantmentsDb,
@@ -110,10 +89,6 @@ function validateRangedEnchantments(
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateRangedInstance,

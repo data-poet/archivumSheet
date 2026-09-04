@@ -12,10 +12,6 @@ const {
   calculateCarriedAlchemyValue,
 } = require("./alchemyResolver.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ALCHEMY DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _alchemyDB = null;
 
 function getAlchemyDB() {
@@ -55,17 +51,9 @@ function getAlchemyDB() {
   return _alchemyDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Builds the resolved alchemy inventory, distributed across storage locations.
@@ -74,8 +62,6 @@ function buildStorageBucket() {
  */
 function buildAlchemySlots(alchemyInventory = []) {
   const alchemyDb = getAlchemyDB();
-
-  // ── VALIDATE INSTANCES (shape) ────────────────────────────────────────────
 
   const instanceErrors = alchemyInventory.flatMap((instance, index) =>
     validateAlchemyInstance(instance, index),
@@ -87,8 +73,6 @@ function buildAlchemySlots(alchemyInventory = []) {
     );
   }
 
-  // ── VALIDATE UNKNOWN IDS ──────────────────────────────────────────────────
-
   const unknownIds = alchemyInventory
     .filter((instance) => !alchemyDb[instance.consumable_id])
     .map((instance) => instance.consumable_id);
@@ -98,8 +82,6 @@ function buildAlchemySlots(alchemyInventory = []) {
       `[buildAlchemySlots] Unknown consumable_id(s): ${unknownIds.join(", ")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
@@ -124,8 +106,6 @@ function buildAlchemySlots(alchemyInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_alchemy_weight = calculateCarriedAlchemyWeight(backpack);
   const carried_alchemy_value = calculateCarriedAlchemyValue(backpack);
 
@@ -137,10 +117,6 @@ function buildAlchemySlots(alchemyInventory = []) {
     carried_alchemy_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildAlchemySlots,

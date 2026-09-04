@@ -1,9 +1,5 @@
 const { VALID_STORED_AT } = require("./survivalGearConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Validates a single survival gear instance object (shape only, no DB lookups).
  * Returns an array of error strings (empty = valid).
@@ -39,10 +35,6 @@ function validateSurvivalGearInstance(instance, index) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateSurvivalGearInstance,

@@ -10,10 +10,6 @@ const {
   calculateCarriedCustomInventoryValue,
 } = require("./customInventoryResolver.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Builds the resolved custom inventory, distributed across storage locations.
  *
@@ -21,7 +17,6 @@ const {
  * instance object. Only backpack items contribute to carried weight.
  */
 function buildCustomInventorySlots(customInventory = []) {
-  // ── VALIDATE ──────────────────────────────────────────────────────────────
 
   const instanceErrors = customInventory.flatMap((instance, index) =>
     validateCustomInventoryInstance(instance, index),
@@ -32,8 +27,6 @@ function buildCustomInventorySlots(customInventory = []) {
       `[buildCustomInventorySlots] Invalid customInventory:\n${instanceErrors.join("\n")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const stash = [];
   const camp = [];
@@ -57,8 +50,6 @@ function buildCustomInventorySlots(customInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_custom_inventory_weight =
     calculateCarriedCustomInventoryWeight(backpack);
   const carried_custom_inventory_value =
@@ -72,10 +63,6 @@ function buildCustomInventorySlots(customInventory = []) {
     carried_custom_inventory_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildCustomInventorySlots,

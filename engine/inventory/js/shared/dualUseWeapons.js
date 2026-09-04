@@ -1,15 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// DUAL-USE WEAPONS
-//
-// Some weapons appear in both the melee and ranged tables. When a player
-// adds one of these to either table, the engine automatically mirrors the
-// entry in the other table. Weight and price are canonical on the MELEE
-// side; the ranged counterpart carries weight = 0 and price = 0 in the CSV
-// so it contributes nothing to totals.
-//
-// MELEE_TO_RANGED / RANGED_TO_MELEE map each tier-specific weapon_id on one
-// side to its counterpart on the other side.
-// ─────────────────────────────────────────────────────────────────────────────
+// Some weapons appear in both melee and ranged tables and are auto-mirrored across them. Weight/price are canonical on the melee side; the ranged counterpart is 0/0 in the CSV so it doesn't double-count totals.
 
 // Pairs listed as [meleeId, rangedId] for each tier (Comum → Obra-Prima).
 const _PAIRS = [
@@ -42,47 +31,27 @@ const _PAIRS = [
   ["MELEE-289", "RANGED-014"],
 ];
 
-/** melee weapon_id → ranged weapon_id */
 const MELEE_TO_RANGED = Object.fromEntries(_PAIRS.map(([m, r]) => [m, r]));
 
-/** ranged weapon_id → melee weapon_id */
 const RANGED_TO_MELEE = Object.fromEntries(_PAIRS.map(([m, r]) => [r, m]));
 
-/** Returns true when a melee weapon_id has a ranged counterpart. */
 function isMeleeDualUse(weaponId) {
   return Object.prototype.hasOwnProperty.call(MELEE_TO_RANGED, weaponId);
 }
 
-/** Returns true when a ranged weapon_id has a melee counterpart. */
 function isRangedDualUse(weaponId) {
   return Object.prototype.hasOwnProperty.call(RANGED_TO_MELEE, weaponId);
 }
 
-/**
- * Given a melee weapon_id, returns the matching ranged weapon_id, or null.
- */
 function getRangedCounterpart(meleeWeaponId) {
   return MELEE_TO_RANGED[meleeWeaponId] ?? null;
 }
 
-/**
- * Given a ranged weapon_id, returns the matching melee weapon_id, or null.
- */
 function getMeleeCounterpart(rangedWeaponId) {
   return RANGED_TO_MELEE[rangedWeaponId] ?? null;
 }
 
-/**
- * Resolves the `itemCategory` argument for validateEnchantmentEntryApplication:
- * an instance's own category alone, or `[ownCategory, counterpartCategory]`
- * when its weapon_id is part of a dual-use pair — enchantments sync across a
- * dual-use pair (weapons enchantments plan decisions #4/#5), so an entry
- * added via one side must validate against either side's allowed list, not
- * just this instance's own category.
- *
- * `isDualUse` is the caller's own predicate (isMeleeDualUse/isRangedDualUse)
- * so this stays symmetric for both sides rather than baking in a direction.
- */
+// Enchantments sync across a dual-use pair, so an entry added via one side must validate against either side's allowed category list.
 function resolveDualUseEnchantmentCategory(
   weaponId,
   ownCategory,
@@ -91,10 +60,6 @@ function resolveDualUseEnchantmentCategory(
 ) {
   return isDualUse(weaponId) ? [ownCategory, counterpartCategory] : ownCategory;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   MELEE_TO_RANGED,

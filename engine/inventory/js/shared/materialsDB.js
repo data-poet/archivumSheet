@@ -1,13 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// MATERIALS DB
-//
-// Single shared loader for db_crafting_materials.csv, used by every
-// inventory category that supports material overrides (armor, shield,
-// melee, ranged). Previously each of those files kept its own private,
-// near-identical copy of this loader — consolidated here so there is one
-// cache and one place to update if the material schema changes.
-// ─────────────────────────────────────────────────────────────────────────────
-
 const path = require("path");
 
 const { loadCSV } = require("../../../../helpers/dataUtils.js");

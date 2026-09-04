@@ -8,14 +8,6 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single firearm instance object.
- * Returns an array of error strings (empty = valid).
- */
 function validateFirearmInstance(instance, index) {
   const errors = [];
   const prefix = `firearmsInventory[${index}]`;
@@ -45,9 +37,6 @@ function validateFirearmInstance(instance, index) {
     );
   }
 
-  // enchantments — optional; unlimited count, no slot system (same
-  // shape-only pass as melee/ranged/shield/accessories/magicGear/armor —
-  // see meleeValidation.js)
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -63,17 +52,7 @@ function validateFirearmInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split melee/ranged/shield/accessories/magicGear/armor
- * use.
- *
- * itemCategory is the fixed FIREARMS_ITEM_CATEGORY constant — firearms
- * aren't part of any dual-use pairing, so no union-category resolution is
- * needed here (unlike melee/ranged — see meleeValidation.js/
- * rangedValidation.js).
- */
+// Firearms aren't part of any dual-use pairing, so itemCategory is a fixed constant — no union-category resolution needed here (unlike melee/ranged).
 function validateFirearmEnchantments(
   firearmsInventory,
   enchantmentsDb,
@@ -101,10 +80,6 @@ function validateFirearmEnchantments(
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateFirearmInstance,
