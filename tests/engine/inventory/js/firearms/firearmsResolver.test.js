@@ -121,6 +121,11 @@ describe("firearmsResolver", () => {
         weapon_final_magazine_size: 8, // base 6 + instance 2
         weapon_gdp_damage: "1d6+3",
 
+        // ENCHANTMENTS
+        enchantments: [],
+        enchantments_total_price: 0,
+        enchantment_weight_modifier: 0,
+
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 18,
@@ -129,6 +134,9 @@ describe("firearmsResolver", () => {
         prec_modifier: 1,
         magazine_size_modifier: 2,
         rounds_loaded: 4,
+
+        // TRULY-FINAL VALUES
+        final_weight: 2.63,
 
         weapon_custom_name: "Revólver do Artificier Renegado",
         weapon_custom_description: "Um revólver com o cano gravado à mão.",
@@ -256,6 +264,300 @@ describe("firearmsResolver", () => {
     });
   });
 
+  describe("resolveFirearmWeapon — enchantments", () => {
+    // Same fixture shape as rangedResolver.test.js's "resolveRangedWeapons —
+    // enchantments" describe block. Firearms have no BAL/special_effect
+    // support (neither is offered per the CSV's allowed_itens), but DO
+    // support weight enchantments. GDP/TR/PREC deltas are the interesting
+    // case here — firearms already have pre-existing player-runtime
+    // modifiers (gdp_modifier/tr_modifier/prec_modifier) on the instance,
+    // so the enchantment delta must stack on top of those, not replace or
+    // ignore them (see firearmsResolver.js doc comment). Min Strength has
+    // no player-runtime modifier, so its enchantment delta applies directly
+    // onto weapon_min_strength, mirroring rangedResolver.js.
+    const enchantmentsDb = {
+      "ENCHANTMENT-036": {
+        enchantment_id: "ENCHANTMENT-036",
+        enchantment_name: "Aumentar Peso",
+        enchantment_effect_type: "add_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-037": {
+        enchantment_id: "ENCHANTMENT-037",
+        enchantment_name: "Reduzir Peso",
+        enchantment_effect_type: "remove_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-058": {
+        enchantment_id: "ENCHANTMENT-058",
+        enchantment_name: "Fortificar GDP",
+        enchantment_effect_type: "fortify_damage",
+        enchantment_target: "GDP",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 2000,
+        enchantment_price_per_extra_value: 2000,
+      },
+      "ENCHANTMENT-059": {
+        enchantment_id: "ENCHANTMENT-059",
+        enchantment_name: "Enfraquecer GDP",
+        enchantment_effect_type: "weaken_damage",
+        enchantment_target: "GDP",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 2000,
+        enchantment_price_per_extra_value: 2000,
+      },
+      "ENCHANTMENT-060": {
+        enchantment_id: "ENCHANTMENT-060",
+        enchantment_name: "Aumentar ST Mín",
+        enchantment_effect_type: "add_requisite",
+        enchantment_target: "Min Strength",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 500,
+        enchantment_price_per_extra_value: 500,
+      },
+      "ENCHANTMENT-062": {
+        enchantment_id: "ENCHANTMENT-062",
+        enchantment_name: "Aumentar Precisão (PREC)",
+        enchantment_effect_type: "add_requisite",
+        enchantment_target: "PREC",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-064": {
+        enchantment_id: "ENCHANTMENT-064",
+        enchantment_name: "Aumentar Tiro Rápido (TR)",
+        enchantment_effect_type: "add_requisite",
+        enchantment_target: "TR",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+    };
+
+    const baseInstance = {
+      weapon_id: "FIREARM-000",
+      material_id: "MAT-003",
+      hit_points_modifier: 0,
+      is_equipped: true,
+      storedAt: null,
+    };
+
+    test("Should apply a weight-percentage enchantment on top of the post-material weight", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // material weight is 2.63; +10% -> 2.893
+      expect(result.weapon_final_weight).toBe(2.63);
+      expect(result.enchantment_weight_modifier).toBe(0.1);
+      expect(result.final_weight).toBe(2.89);
+    });
+
+    test("Should net multiple weight enchantments before applying once", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-037", value: -0.1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.enchantment_weight_modifier).toBe(0.1);
+      expect(result.final_weight).toBe(2.89);
+    });
+
+    test("Should stack a GDP enchantment on top of the pre-existing player-runtime gdp_modifier", () => {
+      const instance = {
+        ...baseInstance,
+        gdp_modifier: 1,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base 2 + runtime 1 + enchantment 1 -> 4
+      expect(result.weapon_final_gdp_modifier).toBe(4);
+    });
+
+    test("Should net multiple GDP enchantments (fortify + weaken) on top of the runtime modifier", () => {
+      const instance = {
+        ...baseInstance,
+        gdp_modifier: 1,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 2 },
+          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-059", value: -1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base 2 + runtime 1 + net (2 - 1 = 1) -> 4
+      expect(result.weapon_final_gdp_modifier).toBe(4);
+    });
+
+    test("Should apply a Min Strength requisite delta directly onto weapon_min_strength (no runtime modifier exists for it)", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base weapon_min_strength (10) + enchantment 2 -> 12
+      expect(result.weapon_min_strength).toBe(12);
+    });
+
+    test("Should stack a PREC enchantment on top of the pre-existing player-runtime prec_modifier", () => {
+      const instance = {
+        ...baseInstance,
+        prec_modifier: 1,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-062", value: 1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base 2 + runtime 1 + enchantment 1 -> 4
+      expect(result.weapon_final_prec).toBe(4);
+    });
+
+    test("Should stack a TR enchantment on top of the pre-existing player-runtime tr_modifier", () => {
+      const instance = {
+        ...baseInstance,
+        tr_modifier: -1,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-064", value: 1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base 8 + runtime -1 + enchantment 1 -> 8
+      expect(result.weapon_final_tr).toBe(8);
+    });
+
+    test("Should not let weight/GDP/Min-Strength/PREC/TR enchantments affect each other", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { _instanceId: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
+          { _instanceId: "e4", enchantment_id: "ENCHANTMENT-062", value: 1 },
+          { _instanceId: "e5", enchantment_id: "ENCHANTMENT-064", value: 1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.final_weight).toBe(2.89);
+      expect(result.weapon_final_gdp_modifier).toBe(3);
+      expect(result.weapon_min_strength).toBe(11);
+      expect(result.weapon_final_prec).toBe(3);
+      expect(result.weapon_final_tr).toBe(9);
+    });
+
+    test("Should add enchantments_total_price on top of weapon_final_price for total_value", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+        ],
+      };
+
+      const result = resolveFirearmWeapon(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.weapon_final_price).toBe(2200);
+      expect(result.enchantments_total_price).toBe(2000);
+      expect(result.total_value).toBe(4200);
+    });
+  });
+
   describe("calculateTotalFirearmsWeight", () => {
     test("Should calculate equipped and backpack firearm weight only", () => {
       const firearmsInventory = [
@@ -332,6 +634,47 @@ describe("firearmsResolver", () => {
 
       expect(result).toBe(2.5);
     });
+
+    test("Should include enchantment weight in the total", () => {
+      const enchantmentsDb = {
+        "ENCHANTMENT-036": {
+          enchantment_id: "ENCHANTMENT-036",
+          enchantment_effect_type: "add_weight",
+          enchantment_is_percentage: true,
+          enchantment_base_value: 0.1,
+          enchantment_step: 0.1,
+          enchantment_base_price: 1000,
+          enchantment_price_per_extra_value: 1000,
+        },
+      };
+
+      const firearmsInventory = [
+        {
+          weapon_id: "FIREARM-000",
+          storedAt: "backpack",
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036",
+              value: 0.1,
+            },
+          ],
+        },
+      ];
+
+      const firearmsDb = { "FIREARM-000": mockWeapon };
+
+      const result = calculateTotalFirearmsWeight(
+        firearmsInventory,
+        firearmsDb,
+        {},
+        enchantmentsDb,
+        {},
+      );
+
+      // weapon_final_weight is 2.5 (no material); +10% -> 2.75
+      expect(result).toBe(2.75);
+    });
   });
 
   describe("calculateTotalFirearmsValue", () => {
@@ -347,6 +690,44 @@ describe("firearmsResolver", () => {
       const result = calculateTotalFirearmsValue(
         firearmsInventory,
         firearmsDb,
+        {},
+      );
+
+      expect(result).toBe(4000);
+    });
+
+    test("Should include enchantment price in the total", () => {
+      const enchantmentsDb = {
+        "ENCHANTMENT-058": {
+          enchantment_id: "ENCHANTMENT-058",
+          enchantment_effect_type: "fortify_damage",
+          enchantment_target: "GDP",
+          enchantment_is_percentage: false,
+          enchantment_base_value: 1,
+          enchantment_step: 1,
+          enchantment_base_price: 2000,
+          enchantment_price_per_extra_value: 2000,
+        },
+      };
+
+      const firearmsInventory = [
+        {
+          weapon_id: "FIREARM-000",
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          ],
+        },
+      ];
+
+      const firearmsDb = { "FIREARM-000": mockWeapon };
+
+      const result = calculateTotalFirearmsValue(
+        firearmsInventory,
+        firearmsDb,
+        {},
+        enchantmentsDb,
         {},
       );
 

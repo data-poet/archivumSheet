@@ -135,9 +135,7 @@ describe("EQUIPMENT FIREARMS", () => {
         },
       ]);
 
-      expect(result.total_firearms_weight).toBe(
-        result.carried_firearms_weight,
-      );
+      expect(result.total_firearms_weight).toBe(result.carried_firearms_weight);
     });
 
     test("Should throw for invalid weapon_id", () => {
@@ -234,9 +232,7 @@ describe("EQUIPMENT FIREARMS", () => {
         },
       ]);
 
-      expect(result.equipped[0].weapon_gdp_damage).toMatch(
-        /^\d+d\d+[+-]\d+$/,
-      );
+      expect(result.equipped[0].weapon_gdp_damage).toMatch(/^\d+d\d+[+-]\d+$/);
     });
 
     test("Should let the player tune combat stats via runtime modifiers", () => {
@@ -291,7 +287,9 @@ describe("EQUIPMENT FIREARMS", () => {
       expect(withMaterial.weapon_final_gdp_modifier).toBe(
         withoutMaterial.weapon_final_gdp_modifier,
       );
-      expect(withMaterial.weapon_final_tr).toBe(withoutMaterial.weapon_final_tr);
+      expect(withMaterial.weapon_final_tr).toBe(
+        withoutMaterial.weapon_final_tr,
+      );
       expect(withMaterial.weapon_final_prec).toBe(
         withoutMaterial.weapon_final_prec,
       );
@@ -306,6 +304,51 @@ describe("EQUIPMENT FIREARMS", () => {
       expect(withMaterial.weapon_final_weight).not.toBe(
         withoutMaterial.weapon_final_weight,
       );
+    });
+
+    test("Should resolve a valid enchantment and reflect it in final_weight/total_firearms_weight", () => {
+      const result = buildFirearmSlots([
+        {
+          weapon_id: weaponId,
+          material_id: materialId,
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas de Fogo
+              value: 0.1,
+            },
+          ],
+        },
+      ]);
+
+      expect(result.equipped[0].enchantments).toHaveLength(1);
+      expect(result.equipped[0].enchantment_weight_modifier).toBe(0.1);
+      expect(result.equipped[0].final_weight).toBeGreaterThan(
+        result.equipped[0].weapon_final_weight,
+      );
+      expect(result.carried_firearms_weight).toBe(
+        result.equipped[0].final_weight,
+      );
+      expect(result.total_firearms_weight).toBe(
+        result.equipped[0].final_weight,
+      );
+    });
+
+    test("Should throw for an enchantment not allowed on firearms (e.g. a melee-only BAL enchantment)", () => {
+      expect(() => {
+        buildFirearmSlots([
+          {
+            weapon_id: weaponId,
+            is_equipped: true,
+            storedAt: null,
+            enchantments: [
+              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056" },
+            ],
+          },
+        ]);
+      }).toThrow("Invalid enchantments");
     });
   });
 });
