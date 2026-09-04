@@ -1,14 +1,22 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
-  equipShield, addStoredShield, moveShield, removeShield, findShieldByInstanceId,
+  equipShield,
+  addStoredShield,
+  moveShield,
+  removeShield,
+  findShieldByInstanceId,
   saveShieldCustomFields,
+  addShieldEnchantment,
+  updateShieldEnchantment,
+  removeShieldEnchantment,
 } from "./model.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedShield, renderStoredShields } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -89,15 +97,36 @@ const _handleShieldCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderShieldLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
+/**
+ * Same relationship as armor's _armorEnchantments: shield's own
+ * addShieldEnchantment/updateShieldEnchantment/removeShieldEnchantment
+ * (model.js) call the global renderListsPreserving() directly, which
+ * already snapshots+restores synchronously, so no runWithOpenState
+ * override is needed for the click path — the default no-op is correct.
+ * The change-path (cascading category/type/target filters) uses
+ * _renderShieldLists directly, which self-wraps via snapshotAll/
+ * restoreAll + rAF, same as the custom-fields render above.
+ */
+const _shieldEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findShieldByInstanceId,
+  getItems: () => selected.shields,
+  addEnchantment: addShieldEnchantment,
+  updateEnchantment: updateShieldEnchantment,
+  removeEnchantment: removeShieldEnchantment,
+  render: () => _renderShieldLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleShieldClick(e) {
   if (e.target.classList.contains("remove-shield")) {
-    removeShield(e.target.dataset.instanceId); return true;
+    removeShield(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("remove-equipped-shield")) {
-    removeShield(e.target.dataset.instanceId); return true;
+    removeShield(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("equip-stored-shield")) {
@@ -106,7 +135,8 @@ export function handleShieldClick(e) {
     if (!shieldToEquip) return true;
     selected.shields.forEach((inst) => {
       if (!inst.is_equipped) return;
-      inst.is_equipped = false; inst.storedAt = "backpack";
+      inst.is_equipped = false;
+      inst.storedAt = "backpack";
     });
     shieldToEquip.is_equipped = true;
     shieldToEquip.storedAt = null;
@@ -121,6 +151,13 @@ export function handleShieldClick(e) {
 
   if (_handleShieldCustomFieldsClick(e)) return true;
 
+  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
+  // Generic .enchantment-* classes rendered by renderEnchantments.js;
+  // delegated to the shared factory, which ownership-checks the instanceId
+  // the same way as the custom-fields factory above.
+
+  if (_shieldEnchantments.handleClick(e)) return true;
+
   return false;
 }
 
@@ -131,8 +168,14 @@ export function handleShieldInput(e) {
     const equippedShield = selected.shields.find((s) => s.is_equipped);
     if (!equippedShield) return true;
     if (/^-$/.test(e.target.value)) return true;
-    const shieldData = data.shields.find((s) => s.shield_id === equippedShield.shield_id);
-    const { maxHp }  = resolveHp(equippedShield, shieldData?.shield_hit_points ?? 0, data.materials);
+    const shieldData = data.shields.find(
+      (s) => s.shield_id === equippedShield.shield_id,
+    );
+    const { maxHp } = resolveHp(
+      equippedShield,
+      shieldData?.shield_hit_points ?? 0,
+      data.materials,
+    );
     equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateResumeHpDisplay(e.target, maxHp, equippedShield.hit_points_modifier);
     _deferRender();
@@ -144,8 +187,14 @@ export function handleShieldInput(e) {
     const equippedShield = selected.shields.find((s) => s.is_equipped);
     if (!equippedShield) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const shieldData = data.shields.find((s) => s.shield_id === equippedShield.shield_id);
-    const { maxHp } = resolveHp(equippedShield, shieldData?.shield_hit_points ?? 0, data.materials);
+    const shieldData = data.shields.find(
+      (s) => s.shield_id === equippedShield.shield_id,
+    );
+    const { maxHp } = resolveHp(
+      equippedShield,
+      shieldData?.shield_hit_points ?? 0,
+      data.materials,
+    );
     equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, equippedShield.hit_points_modifier);
     _deferRender();
@@ -158,8 +207,14 @@ export function handleShieldInput(e) {
     const shieldInstance = findShieldByInstanceId(instanceId);
     if (!shieldInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const shieldData = data.shields.find((s) => s.shield_id === shieldInstance.shield_id);
-    const { maxHp } = resolveHp(shieldInstance, shieldData?.shield_hit_points ?? 0, data.materials);
+    const shieldData = data.shields.find(
+      (s) => s.shield_id === shieldInstance.shield_id,
+    );
+    const { maxHp } = resolveHp(
+      shieldInstance,
+      shieldData?.shield_hit_points ?? 0,
+      data.materials,
+    );
     shieldInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, shieldInstance.hit_points_modifier);
     _deferRender();
@@ -175,21 +230,28 @@ export function handleShieldInput(e) {
 export function handleShieldChange(e) {
   if (e.target.classList.contains("equipped-shield-name")) {
     const name = e.target.value;
-    if (!name) { equipShield(""); return true; }
+    if (!name) {
+      equipShield("");
+      return true;
+    }
     const availableShields = data.shields.filter((s) => s.shield_name === name);
     const firstShield = availableShields[0];
     if (!firstShield) return true;
     const tierSelect = document.querySelector(".equipped-shield-tier");
     if (tierSelect) {
       tierSelect.innerHTML = availableShields
-        .map((s) => `<option value="${s.shield_tier}">${s.shield_tier}</option>`).join("");
+        .map(
+          (s) => `<option value="${s.shield_tier}">${s.shield_tier}</option>`,
+        )
+        .join("");
     }
     const equippedInstance = selected.shields.find((s) => s.is_equipped);
     if (equippedInstance) {
       equippedInstance.shield_id = firstShield.shield_id;
       equippedInstance.hit_points_modifier = 0;
     } else {
-      equipShield(firstShield.shield_id, "MAT-000"); return true;
+      equipShield(firstShield.shield_id, "MAT-000");
+      return true;
     }
     triggerAutoRun();
     return true;
@@ -199,14 +261,17 @@ export function handleShieldChange(e) {
     const tier = e.target.value;
     const nameEl = document.querySelector(".equipped-shield-name");
     if (!nameEl) return true;
-    const shield = data.shields.find((s) => s.shield_name === nameEl.value && s.shield_tier === tier);
+    const shield = data.shields.find(
+      (s) => s.shield_name === nameEl.value && s.shield_tier === tier,
+    );
     if (!shield) return true;
     const equippedInstance = selected.shields.find((s) => s.is_equipped);
     if (equippedInstance) {
       equippedInstance.shield_id = shield.shield_id;
       equippedInstance.hit_points_modifier = 0;
     } else {
-      equipShield(shield.shield_id, "MAT-000"); return true;
+      equipShield(shield.shield_id, "MAT-000");
+      return true;
     }
     triggerAutoRun();
     return true;
@@ -223,19 +288,31 @@ export function handleShieldChange(e) {
   }
 
   if (e.target.classList.contains("shield-storage-select")) {
-    moveShield(e.target.dataset.instanceId, e.target.value); return true;
+    moveShield(e.target.dataset.instanceId, e.target.value);
+    return true;
   }
 
   if (e.target.classList.contains("equipped-shield-move")) {
     const destination = e.target.value;
     const equippedShield = selected.shields.find((s) => s.is_equipped);
     if (!equippedShield) return true;
-    if (!destination) { equippedShield.is_equipped = true; equippedShield.storedAt = null; }
-    else { equippedShield.is_equipped = false; equippedShield.storedAt = destination; }
+    if (!destination) {
+      equippedShield.is_equipped = true;
+      equippedShield.storedAt = null;
+    } else {
+      equippedShield.is_equipped = false;
+      equippedShield.storedAt = destination;
+    }
     _renderShieldLists();
     triggerAutoRun();
     return true;
   }
+
+  // ── Enchantments: cascading category/type/target filters ───────────────────
+  // Delegated to the shared factory — see the click section above for the
+  // ownership-guard rationale.
+
+  if (_shieldEnchantments.handleChange(e)) return true;
 
   return false;
 }
@@ -243,15 +320,21 @@ export function handleShieldChange(e) {
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddShield() {
-  const nameEl     = document.getElementById("shieldNameSelect");
-  const tierEl     = document.getElementById("shieldTierSelect");
+  const nameEl = document.getElementById("shieldNameSelect");
+  const tierEl = document.getElementById("shieldTierSelect");
   const materialEl = document.getElementById("shieldMaterialSelect");
-  const storageEl  = document.getElementById("shieldStorage");
+  const storageEl = document.getElementById("shieldStorage");
   if (!nameEl || !tierEl || !materialEl || !storageEl) return;
   const shield = data.shields.find(
     (s) => s.shield_name === nameEl.value && s.shield_tier === tierEl.value,
   );
   if (!shield) return;
-  const material = data.materials.find((m) => m.material_name === materialEl.value);
-  addStoredShield(shield.shield_id, material?.material_id ?? null, storageEl.value);
+  const material = data.materials.find(
+    (m) => m.material_name === materialEl.value,
+  );
+  addStoredShield(
+    shield.shield_id,
+    material?.material_id ?? null,
+    storageEl.value,
+  );
 }
