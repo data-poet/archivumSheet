@@ -69,7 +69,11 @@ function validateEnchantmentEntryShape(entry, index, parentPrefix) {
  * and the target reference DBs (advantages/disadvantages/skills/spells).
  *
  * itemCategory must match one of enchantment_allowed_itens' values
- * ("Acessórios", "Cabeça", "Pés", etc — SLOT_MAP's Portuguese keys).
+ * ("Acessórios", "Cabeça", "Pés", etc — SLOT_MAP's Portuguese keys), OR be
+ * an array of such values — used as `[ownCategory, counterpartCategory]`
+ * for dual-use weapon pairs, where an entry synced from the counterpart
+ * side must validate against either side's allowed list, not just this
+ * instance's own category.
  */
 function validateEnchantmentEntryApplication(
   entry,
@@ -89,9 +93,17 @@ function validateEnchantmentEntryApplication(
 
   const errors = [];
 
-  if (!enchantment.enchantment_allowed_itens.includes(itemCategory)) {
+  const categories = Array.isArray(itemCategory)
+    ? itemCategory
+    : [itemCategory];
+
+  if (
+    !categories.some((category) =>
+      enchantment.enchantment_allowed_itens.includes(category),
+    )
+  ) {
     errors.push(
-      `${prefix}: enchantment "${enchantment.enchantment_name}" is not allowed on ${itemCategory}`,
+      `${prefix}: enchantment "${enchantment.enchantment_name}" is not allowed on ${categories.join(" or ")}`,
     );
   }
 

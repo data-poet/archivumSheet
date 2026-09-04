@@ -51,27 +51,54 @@ const ELEMENTAL_RESISTANCE_EFFECT_TYPES = [
   "weaken_resistance",
 ];
 
+// Phase 3 (weapons). Same "modifies the item itself" shape as
+// WEIGHT_EFFECT_TYPES/DAMAGE_RESISTANCE_EFFECT_TYPES, but targets a fixed
+// weapon damage stat (BAL/GDP) instead of armor's DR — see
+// enchantment_target on rows 056–059. Flat (enchantment_is_percentage is
+// FALSE), whole-number base_value/step, same as damage-resistance.
+const DAMAGE_EFFECT_TYPES = ["fortify_damage", "weaken_damage"];
+
+// Phase 3 (weapons). Modifies a fixed weapon requisite stat (Min Strength/
+// PREC/TR — see enchantment_target on rows 060–065), not a character
+// attribute. "add"/"remove" naming instead of "fortify"/"weaken", but same
+// signed-magnitude shape: add_requisite must be positive, remove_requisite
+// negative — folded into FORTIFY_EFFECT_TYPES/WEAKEN_EFFECT_TYPES below on
+// that basis.
+const REQUISITE_EFFECT_TYPES = ["add_requisite", "remove_requisite"];
+
+// Phase 3 (weapons). Row 066 (Retorno Mágico) only — presence/absence on
+// the item IS the effect, no magnitude at all (no value, no target, no
+// extraPoints). Deliberately separate from VALUE_EFFECT_TYPES: the
+// base_price + extraSteps × price_per_extra_value formula doesn't apply
+// here since there's no base_value/step to align against — see
+// resolveEnchantmentPrice's 4th branch.
+const FLAT_EFFECT_TYPES = ["special_effect"];
+
 // Every effect type whose application entry carries a magnitude `value`
 // (as opposed to POINT_EFFECT_TYPES' `target` or DIFFICULTY_EFFECT_TYPES'
 // `target` + `extraPoints`). Shared by resolveEnchantmentPrice's
 // base_price + extraSteps × price_per_extra_value formula, which is
-// identical across all five of these groups — only the DB-defined
+// identical across all seven of these groups — only the DB-defined
 // base_value/step magnitudes differ (whole numbers for
-// attribute/damage-resistance, decimal fractions for
+// attribute/damage-resistance/damage/requisite, decimal fractions for
 // weight/elemental-resistance).
 const VALUE_EFFECT_TYPES = [
   ...ATTRIBUTE_EFFECT_TYPES,
   ...WEIGHT_EFFECT_TYPES,
   ...DAMAGE_RESISTANCE_EFFECT_TYPES,
   ...ELEMENTAL_RESISTANCE_EFFECT_TYPES,
+  ...DAMAGE_EFFECT_TYPES,
+  ...REQUISITE_EFFECT_TYPES,
 ];
 
 // Sign convention (applies to attribute/weight/damage-resistance/
-// elemental-resistance `value` AND skill/spell `extraPoints`): fortify
-// types must be positive, weaken types negative. "skill"/"spell" (the
-// ADD/grant type, no fortify/weaken prefix) are NOT in either group —
-// their extraPoints stays unsigned ≥ 0, since granting isn't a direction,
-// just an investment above the granted base level.
+// elemental-resistance/damage/requisite `value` AND skill/spell
+// `extraPoints`): fortify/add types must be positive, weaken/remove types
+// negative. "skill"/"spell" (the ADD/grant type, no fortify/weaken prefix)
+// are NOT in either group — their extraPoints stays unsigned ≥ 0, since
+// granting isn't a direction, just an investment above the granted base
+// level. FLAT_EFFECT_TYPES ("special_effect") is also NOT in either group —
+// it carries no signed magnitude at all.
 const FORTIFY_EFFECT_TYPES = [
   "fortify_attribute",
   "fortify_skill",
@@ -79,6 +106,8 @@ const FORTIFY_EFFECT_TYPES = [
   "add_weight",
   "fortify_damage_resistance",
   "fortify_resistance",
+  "fortify_damage",
+  "add_requisite",
 ];
 const WEAKEN_EFFECT_TYPES = [
   "weaken_attribute",
@@ -87,6 +116,8 @@ const WEAKEN_EFFECT_TYPES = [
   "remove_weight",
   "weaken_damage_resistance",
   "weaken_resistance",
+  "weaken_damage",
+  "remove_requisite",
 ];
 
 const DIFFICULTY_TIER = {
@@ -105,6 +136,9 @@ module.exports = {
   WEIGHT_EFFECT_TYPES,
   DAMAGE_RESISTANCE_EFFECT_TYPES,
   ELEMENTAL_RESISTANCE_EFFECT_TYPES,
+  DAMAGE_EFFECT_TYPES,
+  REQUISITE_EFFECT_TYPES,
+  FLAT_EFFECT_TYPES,
   VALUE_EFFECT_TYPES,
   FORTIFY_EFFECT_TYPES,
   WEAKEN_EFFECT_TYPES,

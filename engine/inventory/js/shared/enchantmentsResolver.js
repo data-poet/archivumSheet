@@ -3,6 +3,7 @@ const {
   SPELL_EFFECT_TYPES,
   DIFFICULTY_EFFECT_TYPES,
   VALUE_EFFECT_TYPES,
+  FLAT_EFFECT_TYPES,
   DIFFICULTY_TIER,
 } = require("./enchantmentsConstants.js");
 
@@ -38,6 +39,11 @@ function round2(value) {
  *     + |extraPoints| × price_per_extra_value
  *     extraPoints is signed for fortify/weaken (same reasoning as value
  *     above), unsigned for the plain add/grant type.
+ *
+ * - special_effect (Phase 3, flat): enchantment_base_price, flat. No
+ *   value/target/extraPoints involved at all — presence/absence on the
+ *   item is the effect (e.g. Retorno Mágico), so there's no magnitude to
+ *   scale a price by.
  *
  * Phase 1 scope: this only prices the application. It does not check
  * whether the character already knows the target skill/spell — that's a
@@ -82,6 +88,10 @@ function resolveEnchantmentPrice(entry, enchantment, targetsDb) {
       tierIndex * (enchantment.enchantment_price_per_difficulty || 0) +
         extraPoints * (enchantment.enchantment_price_per_extra_value || 0),
     );
+  }
+
+  if (FLAT_EFFECT_TYPES.includes(type)) {
+    return round2(enchantment.enchantment_base_price || 0);
   }
 
   return 0;
