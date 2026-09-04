@@ -43,6 +43,32 @@ export function numStepper(cls, dataAttrs, value, stepAttr = "") {
     </div>`;
 }
 
+/**
+ * Appends a small inline badge to a final value when it includes a
+ * nonzero enchantment contribution — e.g. "1.74" + a "+10%" badge for
+ * weight, "5" + a "+2" badge for damage resistance. Deliberately NOT a
+ * hover-only tooltip: this is a mobile-first app, so the delta itself is
+ * always visible rather than hidden behind a hover interaction most users
+ * can't trigger. The badge still carries a native `title` as a harmless
+ * bonus for anyone on a mouse.
+ *
+ * Shared across every equipment type with an enchantable weight/DR/price
+ * stat (armor, shield, ...) — `title` is caller-supplied since each type
+ * localizes its own "enchantmentContribution" string (e.g.
+ * `t("armor.enchantmentContribution")`, `t("shield.enchantmentContribution")`).
+ */
+export function withEnchantmentBadge(
+  finalValue,
+  delta,
+  { suffix = "", title = "" } = {},
+) {
+  if (finalValue == null) return "—";
+  if (!delta) return `${finalValue}`;
+
+  const sign = delta > 0 ? "+" : "";
+  return `${finalValue}<span class="detail-enchantment-badge" title="${title}">${sign}${delta}${suffix}</span>`;
+}
+
 export function formatRichText(raw) {
   if (!raw || raw.trim() === "") return "—";
 
