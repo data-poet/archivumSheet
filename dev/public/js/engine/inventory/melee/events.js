@@ -1,8 +1,16 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
-  equipMelee, addStoredMelee, addEquippedMelee, moveMelee,
-  removeMelee, findMeleeByInstanceId, saveMeleeCustomFields,
+  equipMelee,
+  addStoredMelee,
+  addEquippedMelee,
+  moveMelee,
+  removeMelee,
+  findMeleeByInstanceId,
+  saveMeleeCustomFields,
+  addMeleeEnchantment,
+  updateMeleeEnchantment,
+  removeMeleeEnchantment,
 } from "./model.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
@@ -10,6 +18,7 @@ import { renderEquippedMelee, renderStoredMelee } from "./render.js";
 import { renderEquippedRanged, renderStoredRanged } from "../ranged/render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -102,21 +111,47 @@ const _handleMeleeCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderMeleeLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
+/**
+ * addMeleeEnchantment/updateMeleeEnchantment/removeMeleeEnchantment
+ * (model.js) call the global renderListsPreserving() directly, which
+ * already snapshots+restores synchronously, so no runWithOpenState
+ * override is needed for the click path — the default no-op is correct.
+ * The change-path (cascading category/type/target filters) uses
+ * _renderMeleeAndRangedLists — not the melee-only variant — because a
+ * dual-use pair's ranged mirror needs its enchantments list refreshed too
+ * whenever melee's cascading filters trigger a re-render, same reasoning
+ * as every other dual-use-syncing handler in this file.
+ */
+const _meleeEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findMeleeByInstanceId,
+  getItems: () => selected.melee_weapons,
+  addEnchantment: addMeleeEnchantment,
+  updateEnchantment: updateMeleeEnchantment,
+  removeEnchantment: removeMeleeEnchantment,
+  render: () => _renderMeleeAndRangedLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleMeleeClick(e) {
   if (e.target.classList.contains("remove-melee")) {
-    removeMelee(e.target.dataset.instanceId); return true;
+    removeMelee(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("remove-equipped-melee")) {
-    removeMelee(e.target.dataset.instanceId); return true;
+    removeMelee(e.target.dataset.instanceId);
+    return true;
   }
   if (e.target.classList.contains("equip-stored-melee")) {
     const instanceId = e.target.dataset.instanceId;
     const meleeToEquip = findMeleeByInstanceId(instanceId);
     if (!meleeToEquip) return true;
-    equipMelee(instanceId, meleeToEquip.weapon_id, meleeToEquip.material_id || "MAT-000");
+    equipMelee(
+      instanceId,
+      meleeToEquip.weapon_id,
+      meleeToEquip.material_id || "MAT-000",
+    );
     return true;
   }
 
@@ -126,6 +161,13 @@ export function handleMeleeClick(e) {
 
   if (_handleMeleeCustomFieldsClick(e)) return true;
 
+  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
+  // Generic .enchantment-* classes rendered by the shared enchantments
+  // render.js; delegated to the shared factory, which ownership-checks the
+  // instanceId the same way as the custom-fields factory above.
+
+  if (_meleeEnchantments.handleClick(e)) return true;
+
   return false;
 }
 
@@ -133,21 +175,32 @@ export function handleMeleeClick(e) {
 
 export function handleMeleeInput(e) {
   if (e.target.classList.contains("resume-melee-hp")) {
-    const instanceId    = e.target.dataset.instanceId;
+    const instanceId = e.target.dataset.instanceId;
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
     if (/^-$/.test(e.target.value)) return true;
-    const weaponData = data.melee_weapons.find((w) => w.weapon_id === meleeInstance.weapon_id);
-    const { maxHp }  = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.melee_weapons.find(
+      (w) => w.weapon_id === meleeInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      meleeInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateResumeHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
     // Mirror HP modifier to ranged counterpart (bidirectional lookup).
     const linkedRanged =
-      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      state.selected.ranged_weapons?.find(
+        (r) => r._linkedInstanceId === instanceId,
+      ) ??
       (meleeInstance._linkedInstanceId
-        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        ? state.selected.ranged_weapons?.find(
+            (r) => r._instanceId === meleeInstance._linkedInstanceId,
+          )
         : null);
-    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
+    if (linkedRanged)
+      linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -158,17 +211,28 @@ export function handleMeleeInput(e) {
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.melee_weapons.find((w) => w.weapon_id === meleeInstance.weapon_id);
-    const { maxHp } = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.melee_weapons.find(
+      (w) => w.weapon_id === meleeInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      meleeInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
     // Mirror HP modifier to ranged counterpart (bidirectional lookup).
     const linkedRanged =
-      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      state.selected.ranged_weapons?.find(
+        (r) => r._linkedInstanceId === instanceId,
+      ) ??
       (meleeInstance._linkedInstanceId
-        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        ? state.selected.ranged_weapons?.find(
+            (r) => r._instanceId === meleeInstance._linkedInstanceId,
+          )
         : null);
-    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
+    if (linkedRanged)
+      linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -179,17 +243,28 @@ export function handleMeleeInput(e) {
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.melee_weapons.find((w) => w.weapon_id === meleeInstance.weapon_id);
-    const { maxHp } = resolveHp(meleeInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.melee_weapons.find(
+      (w) => w.weapon_id === meleeInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      meleeInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     meleeInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, meleeInstance.hit_points_modifier);
     // Mirror HP modifier to ranged counterpart (bidirectional lookup).
     const linkedRanged =
-      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      state.selected.ranged_weapons?.find(
+        (r) => r._linkedInstanceId === instanceId,
+      ) ??
       (meleeInstance._linkedInstanceId
-        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        ? state.selected.ranged_weapons?.find(
+            (r) => r._instanceId === meleeInstance._linkedInstanceId,
+          )
         : null);
-    if (linkedRanged) linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
+    if (linkedRanged)
+      linkedRanged.hit_points_modifier = meleeInstance.hit_points_modifier;
     _deferRender();
     triggerAutoRun();
     return true;
@@ -206,13 +281,20 @@ export function handleMeleeChange(e) {
     const name = e.target.value;
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
-    const availableWeapons = data.melee_weapons.filter((w) => w.weapon_name === name);
+    const availableWeapons = data.melee_weapons.filter(
+      (w) => w.weapon_name === name,
+    );
     const firstWeapon = availableWeapons[0];
     if (!firstWeapon) return true;
-    const tierSelect = document.querySelector(`.equipped-melee-tier[data-instance-id="${instanceId}"]`);
+    const tierSelect = document.querySelector(
+      `.equipped-melee-tier[data-instance-id="${instanceId}"]`,
+    );
     if (tierSelect) {
       tierSelect.innerHTML = availableWeapons
-        .map((w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`).join("");
+        .map(
+          (w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`,
+        )
+        .join("");
     }
     meleeInstance.weapon_id = firstWeapon.weapon_id;
     meleeInstance.hit_points_modifier = 0;
@@ -225,9 +307,13 @@ export function handleMeleeChange(e) {
     const tier = e.target.value;
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
-    const nameEl = document.querySelector(`.equipped-melee-name[data-instance-id="${instanceId}"]`);
+    const nameEl = document.querySelector(
+      `.equipped-melee-name[data-instance-id="${instanceId}"]`,
+    );
     if (!nameEl) return true;
-    const weapon = data.melee_weapons.find((w) => w.weapon_name === nameEl.value && w.weapon_tier === tier);
+    const weapon = data.melee_weapons.find(
+      (w) => w.weapon_name === nameEl.value && w.weapon_tier === tier,
+    );
     if (!weapon) return true;
     meleeInstance.weapon_id = weapon.weapon_id;
     meleeInstance.hit_points_modifier = 0;
@@ -247,7 +333,8 @@ export function handleMeleeChange(e) {
   }
 
   if (e.target.classList.contains("melee-storage-select")) {
-    moveMelee(e.target.dataset.instanceId, e.target.value); return true;
+    moveMelee(e.target.dataset.instanceId, e.target.value);
+    return true;
   }
 
   if (e.target.classList.contains("equipped-melee-move")) {
@@ -255,13 +342,22 @@ export function handleMeleeChange(e) {
     const destination = e.target.value;
     const meleeInstance = findMeleeByInstanceId(instanceId);
     if (!meleeInstance) return true;
-    if (!destination) { meleeInstance.is_equipped = true; meleeInstance.storedAt = null; }
-    else { meleeInstance.is_equipped = false; meleeInstance.storedAt = destination; }
+    if (!destination) {
+      meleeInstance.is_equipped = true;
+      meleeInstance.storedAt = null;
+    } else {
+      meleeInstance.is_equipped = false;
+      meleeInstance.storedAt = destination;
+    }
     // Mirror to ranged counterpart (bidirectional: ranged may point at us, or we may point at ranged).
     const linked =
-      state.selected.ranged_weapons?.find((r) => r._linkedInstanceId === instanceId) ??
+      state.selected.ranged_weapons?.find(
+        (r) => r._linkedInstanceId === instanceId,
+      ) ??
       (meleeInstance._linkedInstanceId
-        ? state.selected.ranged_weapons?.find((r) => r._instanceId === meleeInstance._linkedInstanceId)
+        ? state.selected.ranged_weapons?.find(
+            (r) => r._instanceId === meleeInstance._linkedInstanceId,
+          )
         : null);
     if (linked) {
       linked.is_equipped = meleeInstance.is_equipped;
@@ -272,23 +368,32 @@ export function handleMeleeChange(e) {
     return true;
   }
 
+  // ── Enchantments: cascading category/type/target filters ───────────────────
+  // Delegated to the shared factory — see the click section above for the
+  // ownership-guard rationale.
+
+  if (_meleeEnchantments.handleChange(e)) return true;
+
   return false;
 }
 
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddMelee() {
-  const nameEl     = document.getElementById("meleeNameSelect");
-  const tierEl     = document.getElementById("meleeTierSelect");
+  const nameEl = document.getElementById("meleeNameSelect");
+  const tierEl = document.getElementById("meleeTierSelect");
   const materialEl = document.getElementById("meleeMaterialSelect");
-  const storageEl  = document.getElementById("meleeStorage");
+  const storageEl = document.getElementById("meleeStorage");
   if (!nameEl || !tierEl || !materialEl || !storageEl) return;
   const melee = data.melee_weapons.find(
     (w) => w.weapon_name === nameEl.value && w.weapon_tier === tierEl.value,
   );
   if (!melee) return;
-  const material = data.materials.find((m) => m.material_name === materialEl.value);
+  const material = data.materials.find(
+    (m) => m.material_name === materialEl.value,
+  );
   const materialId = material?.material_id ?? null;
-  if (storageEl.value === "equipped") addEquippedMelee(melee.weapon_id, materialId);
+  if (storageEl.value === "equipped")
+    addEquippedMelee(melee.weapon_id, materialId);
   else addStoredMelee(melee.weapon_id, materialId, storageEl.value);
 }

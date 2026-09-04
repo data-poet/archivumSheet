@@ -66,13 +66,36 @@ jest.mock("dev/public/js/engine/inventory/shield/render.js", () => ({
   renderEquippedShield: jest.fn(),
   renderStoredShields: jest.fn(),
 }));
+jest.mock("dev/public/js/engine/inventory/melee/model.js", () => ({
+  removeMeleeEnchantment: jest.fn(),
+  findMeleeByInstanceId: jest.fn(),
+  // Unused by this test but required since events.js imports them.
+  equipMelee: jest.fn(),
+  addStoredMelee: jest.fn(),
+  addEquippedMelee: jest.fn(),
+  moveMelee: jest.fn(),
+  removeMelee: jest.fn(),
+  saveMeleeCustomFields: jest.fn(),
+  addMeleeEnchantment: jest.fn(),
+  updateMeleeEnchantment: jest.fn(),
+}));
+jest.mock("dev/public/js/engine/inventory/melee/render.js", () => ({
+  renderEquippedMelee: jest.fn(),
+  renderStoredMelee: jest.fn(),
+}));
+jest.mock("dev/public/js/engine/inventory/ranged/render.js", () => ({
+  renderEquippedRanged: jest.fn(),
+  renderStoredRanged: jest.fn(),
+}));
 
 import * as accessoryModel from "dev/public/js/engine/inventory/accessories/model.js";
 import * as magicGearModel from "dev/public/js/engine/inventory/magicGear/model.js";
 import * as shieldModel from "dev/public/js/engine/inventory/shield/model.js";
+import * as meleeModel from "dev/public/js/engine/inventory/melee/model.js";
 import { handleAccessoryClick } from "dev/public/js/engine/inventory/accessories/events.js";
 import { handleMagicGearClick } from "dev/public/js/engine/inventory/magicGear/events.js";
 import { handleShieldClick } from "dev/public/js/engine/inventory/shield/events.js";
+import { handleMeleeClick } from "dev/public/js/engine/inventory/melee/events.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
@@ -101,6 +124,9 @@ beforeEach(() => {
   );
   shieldModel.findShieldByInstanceId.mockImplementation((id) =>
     id === "SHIELD-1" ? { instance_id: "SHIELD-1" } : undefined,
+  );
+  meleeModel.findMeleeByInstanceId.mockImplementation((id) =>
+    id === "MELEE-1" ? { instance_id: "MELEE-1" } : undefined,
   );
 });
 
@@ -182,6 +208,57 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
     expect(shieldModel.removeShieldEnchantment).not.toHaveBeenCalled();
   });
 
+  test("melee's handler acts on its own enchantment entry", () => {
+    const result = handleMeleeClick(
+      enchantmentRemoveButton("MELEE-1", "ENTRY-4"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(result).toBe(true);
+    expect(meleeModel.removeMeleeEnchantment).toHaveBeenCalledWith(
+      "MELEE-1",
+      "ENTRY-4",
+    );
+  });
+
+  test("melee's handler refuses an accessory, magicGear, or shield instanceId — no cross-type mutation", () => {
+    const accResult = handleMeleeClick(
+      enchantmentRemoveButton("ACC-1", "ENTRY-1"),
+    );
+    const mgResult = handleMeleeClick(
+      enchantmentRemoveButton("MG-1", "ENTRY-2"),
+    );
+    const shieldResult = handleMeleeClick(
+      enchantmentRemoveButton("SHIELD-1", "ENTRY-3"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(accResult).toBe(false);
+    expect(mgResult).toBe(false);
+    expect(shieldResult).toBe(false);
+    expect(meleeModel.removeMeleeEnchantment).not.toHaveBeenCalled();
+  });
+
+  test("other handlers refuse a melee instanceId — no cross-type mutation", () => {
+    const accResult = handleAccessoryClick(
+      enchantmentRemoveButton("MELEE-1", "ENTRY-4"),
+    );
+    const mgResult = handleMagicGearClick(
+      enchantmentRemoveButton("MELEE-1", "ENTRY-4"),
+    );
+    const shieldResult = handleShieldClick(
+      enchantmentRemoveButton("MELEE-1", "ENTRY-4"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(accResult).toBe(false);
+    expect(mgResult).toBe(false);
+    expect(shieldResult).toBe(false);
+    expect(accessoryModel.removeAccessoryEnchantment).not.toHaveBeenCalled();
+    expect(magicGearModel.removeMagicGearEnchantment).not.toHaveBeenCalled();
+    expect(shieldModel.removeShieldEnchantment).not.toHaveBeenCalled();
+  });
+
   test("accessories' and magicGear's handlers refuse a shield instanceId — no cross-type mutation", () => {
     const accResult = handleAccessoryClick(
       enchantmentRemoveButton("SHIELD-1", "ENTRY-3"),
@@ -210,13 +287,18 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
     const shieldResult = handleShieldClick(
       enchantmentRemoveButton("GHOST", "SAME-ENTRY-ID"),
     );
+    const meleeResult = handleMeleeClick(
+      enchantmentRemoveButton("GHOST", "SAME-ENTRY-ID"),
+    );
     jest.advanceTimersToNextFrame();
 
     expect(accessoryResult).toBe(false);
     expect(magicGearResult).toBe(false);
     expect(shieldResult).toBe(false);
+    expect(meleeResult).toBe(false);
     expect(accessoryModel.removeAccessoryEnchantment).not.toHaveBeenCalled();
     expect(magicGearModel.removeMagicGearEnchantment).not.toHaveBeenCalled();
     expect(shieldModel.removeShieldEnchantment).not.toHaveBeenCalled();
+    expect(meleeModel.removeMeleeEnchantment).not.toHaveBeenCalled();
   });
 });

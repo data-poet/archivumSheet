@@ -11,6 +11,12 @@ import {
 import { getRangedCounterpart } from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
+import {
+  addEnchantmentEntry,
+  updateEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "../shared/enchantments/model.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -236,6 +242,7 @@ export function addEquippedMelee(weaponId, materialId = null) {
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 
   _syncRangedCounterpart(instanceId, weaponId, materialId, true, null);
@@ -264,6 +271,7 @@ export function addStoredMelee(
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 
   _syncRangedCounterpart(instanceId, meleeId, materialId, false, storedAt);
@@ -302,6 +310,7 @@ export function removeMelee(instanceId) {
   selected.melee_weapons = selected.melee_weapons.filter(
     (w) => w._instanceId !== instanceId,
   );
+  clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
 
@@ -348,6 +357,112 @@ export function saveMeleeCustomFields(
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+//
+// Thin melee-specific wrappers around the generic entry helpers in
+// shared/enchantments/model.js — same relationship saveMeleeCustomFields
+// has with customFieldsBlock, and identical shape to shield's own wrappers
+// (see shield/model.js). instance.enchantments defaults to [] defensively
+// since melee weapons saved before this feature existed won't have the
+// field.
+//
+// Dual-use sync: a melee/ranged pair is one physical weapon, so its
+// enchantments must stay identical on both sides — same bidirectional-
+// lookup shape as saveMeleeCustomFields/equipMelee/moveMelee's counterpart
+// mirroring above. The ranged side's own add/update/remove wrappers
+// (Batch 6) mirror back onto melee the same way.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addMeleeEnchantment(instanceId, enchantmentId, params) {
+  const instance = findMeleeByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const before = structuredClone(instance.enchantments);
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  const linked = _findLinkedRanged(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
+}
+
+/**
+ * Edits an already-attached entry in place — swapping it for a different
+ * enchantment entirely, or just changing its target/value/extraPoints.
+ * Keeps the entry's own _instanceId so its position in the list and its
+ * price-lookup identity survive the edit.
+ */
+export function updateMeleeEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findMeleeByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  const linked = _findLinkedRanged(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
+}
+
+export function removeMeleeEnchantment(instanceId, entryInstanceId) {
+  const instance = findMeleeByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  const linked = _findLinkedRanged(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

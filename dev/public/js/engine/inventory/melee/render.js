@@ -17,7 +17,11 @@ import {
   equippedDetailBlock,
   customFieldsEquippedDetail,
   customFieldsDetailRow,
+  withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
+import { decimalToPercent } from "../../../components/resistances.js";
+import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { getMeleeItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedMelee(sheet, instanceId) {
   if (!sheet?.inventory?.melee) return null;
@@ -31,6 +35,19 @@ function resolvedMelee(sheet, instanceId) {
     if (bucket && bucket._instanceId === instanceId) return bucket;
   }
   return null;
+}
+
+/**
+ * Melee-local wrapper around the shared withEnchantmentBadge, pre-filled
+ * with melee's own localized contribution string — same relationship
+ * shield/render.js's withShieldEnchantmentBadge has with the shared
+ * helper.
+ */
+function withMeleeEnchantmentBadge(finalValue, delta, suffix = "") {
+  return withEnchantmentBadge(finalValue, delta, {
+    suffix,
+    title: t("melee.enchantmentContribution"),
+  });
 }
 
 function meleeDetailFields(resolved, weaponData) {
@@ -53,11 +70,22 @@ function meleeDetailFields(resolved, weaponData) {
     },
     {
       label: t("common.weight"),
-      value: resolved?.weapon_final_weight ?? src.weapon_weight ?? "—",
+      value: resolved
+        ? withMeleeEnchantmentBadge(
+            resolved.final_weight,
+            decimalToPercent(resolved.enchantment_weight_modifier),
+            "%",
+          )
+        : (src.weapon_weight ?? "—"),
     },
     {
       label: t("common.price"),
-      value: resolved?.weapon_final_price ?? src.weapon_price ?? "—",
+      value: resolved
+        ? withMeleeEnchantmentBadge(
+            resolved.total_value,
+            resolved.enchantments_total_price,
+          )
+        : (src.weapon_price ?? "—"),
     },
     { label: t("melee.reach"), value: resolved?.weapon_reach ?? reach },
     { label: t("melee.minST"), value: src.weapon_min_strength ?? "—" },
@@ -158,12 +186,20 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
       </div>
     </div>
     ${equippedDetailBlock(meleeDetailFields(resolved, weaponData))}
-    ${customFieldsEquippedDetail({
-      instanceId,
-      name: inst.weapon_custom_name,
-      description: inst.weapon_custom_description,
-      effect: inst.weapon_custom_effect,
-    })}
+    ${customFieldsEquippedDetail(
+      {
+        instanceId,
+        name: inst.weapon_custom_name,
+        description: inst.weapon_custom_description,
+        effect: inst.weapon_custom_effect,
+      },
+      enchantmentsExpander({
+        instanceId,
+        entries: inst.enchantments || [],
+        itemCategory: getMeleeItemCategory(),
+        resolvedEntries: resolved?.enchantments,
+      }),
+    )}
   `;
 }
 
@@ -221,12 +257,21 @@ function renderStorageSection(location, stored, data, sheet) {
           </td>
         </tr>
         ${detailRow(6, meleeDetailFields(resolved, weaponData))}
-        ${customFieldsDetailRow(6, {
-          instanceId,
-          name: inst.weapon_custom_name,
-          description: inst.weapon_custom_description,
-          effect: inst.weapon_custom_effect,
-        })}`;
+        ${customFieldsDetailRow(
+          6,
+          {
+            instanceId,
+            name: inst.weapon_custom_name,
+            description: inst.weapon_custom_description,
+            effect: inst.weapon_custom_effect,
+          },
+          enchantmentsExpander({
+            instanceId,
+            entries: inst.enchantments || [],
+            itemCategory: getMeleeItemCategory(),
+            resolvedEntries: resolved?.enchantments,
+          }),
+        )}`;
       })
       .join("");
   }
