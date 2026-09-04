@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/coinPurse.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Coin purse — mirrors engine/inventory/coinPurse.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const COIN_PURSE = {
   title: "Bolsa de Moedas",
   copper: "Cobre",

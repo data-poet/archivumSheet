@@ -20,7 +20,7 @@ export async function loadRaces() {
   _populateRaceNameSelect();
   _showRaceSelects();
 
-  // Restore selection if state already has a race_id (e.g. after import)
+  // Handles restoring a race_id already present in state, e.g. after import
   if (selected.character.race_id) {
     restoreRaceSelection(selected.character.race_id);
   }
@@ -70,7 +70,6 @@ export function filterSubRacesByName() {
 
   subSelect.style.display = "";
 
-  // Auto-select if only one sub-race
   if (subRows.length === 1) {
     subSelect.value = subRows[0].race_id;
     selectSubRace();

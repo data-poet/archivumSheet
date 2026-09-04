@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/accessories.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Accessories — mirrors engine/inventory/accessories.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const ACCESSORIES = {
   title: "Acessórios",
   addAccessory: "Adicionar Acessório",

@@ -39,11 +39,6 @@ function resolvedShield(sheet, instanceId) {
   return null;
 }
 
-/**
- * Shield-local wrapper around the shared withEnchantmentBadge, pre-filled
- * with shield's own localized contribution string — same relationship
- * armor/render.js's withArmorEnchantmentBadge has with the shared helper.
- */
 function withShieldEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
     suffix,

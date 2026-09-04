@@ -12,10 +12,6 @@ import {
 
 const data = state.data;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function loadEnchantments() {
   const [enchantments, effectTypes, itemCategories] = await Promise.all([
     fetchEnchantments(),
@@ -28,16 +24,7 @@ export async function loadEnchantments() {
   data.itemCategories = itemCategories;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ITEM CATEGORIES
-//
-// Read straight from data.itemCategories, fetched from
-// /api/inventory/item-categories at bootstrap (see loadEnchantments above)
-// — which itself serves each equipment type's own
-// ACCESSORY_ITEM_CATEGORY/MAGIC_GEAR_ITEM_CATEGORY validation constant
-// directly, not a hand-copied mirror of it.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// data.itemCategories serves each equipment type's own *_ITEM_CATEGORY validation constant directly, not a hand-copied mirror.
 export function getAccessoryItemCategory() {
   return data.itemCategories.ACCESSORY;
 }
@@ -62,29 +49,14 @@ export function getFirearmsItemCategory() {
   return data.itemCategories.FIREARMS;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EFFECT TYPE GROUPS
-//
-// Read straight from data.enchantmentEffectTypes, fetched from
-// /api/enchantments/effect-types at bootstrap (see loadEnchantments above) —
-// which itself serves engine/inventory/js/shared/enchantmentsConstants.js
-// directly. This is the SAME object the engine prices/validates against,
-// not a hand-copied mirror of it.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// data.enchantmentEffectTypes is the same object the engine prices/validates against, not a hand-copied mirror.
 export function isAttributeType(effectType) {
   return data.enchantmentEffectTypes.ATTRIBUTE_EFFECT_TYPES.includes(
     effectType,
   );
 }
 
-/**
- * Any effect type whose application entry carries a magnitude `value` —
- * attribute, weight, damage-resistance, and elemental-resistance (Phase 2/
- * armor). All four share the same value-stepper UI, gated further by
- * isPercentageType below for the two that carry decimal fractions instead
- * of whole numbers. See VALUE_EFFECT_TYPES in enchantmentsConstants.js.
- */
+// Types with a magnitude `value` (attribute/weight/damage-resistance/elemental-resistance); share one value-stepper UI, gated by isPercentageType below.
 export function isValueType(effectType) {
   return data.enchantmentEffectTypes.VALUE_EFFECT_TYPES.includes(effectType);
 }
@@ -95,37 +67,19 @@ export function isElementalResistanceType(effectType) {
   );
 }
 
-/**
- * Phase 3 (weapons). Fixed target (BAL/GDP), same "baked into the DB row,
- * not player-picked" shape as ELEMENTAL_RESISTANCE_EFFECT_TYPES — see
- * DAMAGE_EFFECT_TYPES in enchantmentsConstants.js.
- */
+// Fixed target (BAL/GDP), baked into the DB row rather than player-picked.
 export function isDamageType(effectType) {
   return data.enchantmentEffectTypes.DAMAGE_EFFECT_TYPES.includes(effectType);
 }
 
-/**
- * Phase 3 (weapons). Fixed target (Min Strength/PREC/TR), same shape as
- * isDamageType above — see REQUISITE_EFFECT_TYPES in
- * enchantmentsConstants.js.
- */
+// Fixed target (Min Strength/PREC/TR), same shape as isDamageType above.
 export function isRequisiteType(effectType) {
   return data.enchantmentEffectTypes.REQUISITE_EFFECT_TYPES.includes(
     effectType,
   );
 }
 
-/**
- * Whether an enchantment's `value` is a decimal fraction (0.05 = 5%)
- * rather than a whole number — true for weight and elemental-resistance
- * types (see enchantmentsConstants.js's WEIGHT_EFFECT_TYPES/
- * ELEMENTAL_RESISTANCE_EFFECT_TYPES), false for attribute/
- * damage-resistance.
- *
- * Reads the RAW catalog record (data.enchantments, unparsed CSV — see
- * getEnchantmentRecord below), so this checks the CSV column's raw string
- * value ("TRUE") rather than the engine's parsed boolean.
- */
+// Reads the raw catalog record (unparsed CSV), so checks the string "TRUE" rather than a parsed boolean.
 export function isPercentageType(record) {
   return record?.enchantment_is_percentage === "TRUE";
 }
@@ -158,26 +112,13 @@ export function isWeakenType(effectType) {
   return data.enchantmentEffectTypes.WEAKEN_EFFECT_TYPES.includes(effectType);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CATALOG LOOKUPS
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function getEnchantmentRecord(enchantmentId) {
   return (
     data.enchantments.find((e) => e.enchantment_id === enchantmentId) || null
   );
 }
 
-/**
- * Enchantments allowed on a given item category ("Acessórios", "Cabeça",
- * "Pés", ... — matches SLOT_MAP's Portuguese keys). This is the raw
- * /api/enchantments row (unparsed CSV), so enchantment_allowed_itens is
- * still a comma string here, unlike the engine's own parsed DB.
- *
- * @param {string} [typeFilter] - optional enchantment_type ("Fortificar
- *   Atributo", "Peculiaridade", "Perícia", "Feitiço", ...) to narrow the
- *   result further. Omitted/empty means no narrowing.
- */
+// enchantment_allowed_itens is still a raw comma string here (unparsed CSV row), unlike the engine's own parsed DB.
 export function getAllowedEnchantments(itemCategory, typeFilter) {
   const allowed = data.enchantments.filter((e) =>
     (e.enchantment_allowed_itens || "")
@@ -191,13 +132,7 @@ export function getAllowedEnchantments(itemCategory, typeFilter) {
     : allowed;
 }
 
-/**
- * Unique enchantment_type values among the enchantments allowed on a given
- * item category — powers the "Categoria" filter that narrows the
- * "Tipo de Encantamento" select before it lists individual enchantments.
- * Same alphabetical-sort convention as the target picker's own filter
- * value lists (advantage_type, skill_category, spell_school).
- */
+// Powers the "Categoria" filter that narrows "Tipo de Encantamento" before individual enchantments are listed.
 export function getEnchantmentTypeValues(itemCategory) {
   const allowed = getAllowedEnchantments(itemCategory);
   return [
@@ -205,11 +140,7 @@ export function getEnchantmentTypeValues(itemCategory) {
   ].sort();
 }
 
-/**
- * Unique spell names, deduplicated across the 5 tier-rows every spell has
- * in data.spells — see engine/inventory/js/shared/enchantmentTargetsDB.js
- * for why spells are targeted by name, not spell_id.
- */
+// Deduplicated across the 5 tier-rows every spell has in data.spells.
 export function getUniqueSpellNames() {
   const seen = new Set();
   const names = [];
@@ -224,12 +155,7 @@ export function getUniqueSpellNames() {
   return names;
 }
 
-/**
- * Same dedup as getUniqueSpellNames, but keeps the full row (first
- * tier-row seen) — needed for the target picker's school filter and
- * spell_box_name display, which are identical across every tier of the
- * same spell.
- */
+// Same dedup as getUniqueSpellNames, but keeps the full row for the target picker's school filter and display name.
 export function getUniqueSpellRows() {
   const seen = new Set();
   const rows = [];
@@ -244,63 +170,25 @@ export function getUniqueSpellRows() {
   return rows;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTION
-//
-// Which enchantment_id (and, for target-typed enchantments, which target)
-// is currently chosen in an item's not-yet-committed "add enchantment"
-// mini-form. Tracked here (module-level, keyed by the item instance's
-// _instanceId) rather than in each equipment type's own state, mirroring
-// customFieldsBlock's open/close tracking in renderUtils.js — same reason:
-// survives re-renders triggered by unrelated actions, stays generic for
-// reuse by future equipment types.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Tracked module-level, keyed by item instance _instanceId, so selections survive re-renders triggered by unrelated actions elsewhere on the sheet.
 const _addFormSelection = new Map();
 
-/**
- * Which type/category/school filter value is currently chosen in the
- * cascading target picker (advantage/disadvantage type, skill category,
- * spell school) — same per-instance tracking pattern as the enchantment_id
- * selection below, so it survives re-renders triggered by unrelated
- * actions elsewhere on the sheet.
- */
 const _addFormTargetFilter = new Map();
 
-/**
- * Which enchantment_type ("Categoria") is currently chosen to narrow the
- * "Tipo de Encantamento" select itself — one level upstream of
- * _addFormSelection. Same per-instance tracking pattern.
- */
 const _addFormTypeFilter = new Map();
 
 export function setEnchantmentAddFormSelection(instanceId, enchantmentId) {
   _addFormSelection.set(instanceId, enchantmentId);
-  // A different enchantment type means a different target domain entirely
-  // (e.g. switching from "Adicionar Vantagem" to "Fortificar Perícia") —
-  // any category/type/school filter chosen for the previous domain no
-  // longer applies.
+  // A different enchantment type is a different target domain; any target filter chosen for the previous one no longer applies.
   _addFormTargetFilter.delete(instanceId);
 }
 
-/**
- * Generic getter behind getEnchantmentAddFormSelection — takes an explicit
- * fallback instead of assuming "first allowed enchantment", since an edit
- * form (swapping an existing entry) should default to that entry's OWN
- * current enchantment_id, not the first one in the catalog.
- */
+// Takes an explicit fallback since an edit form should default to the entry's own current enchantment_id, not the first in the catalog.
 export function getEnchantmentFormSelection(formKey, fallbackId) {
   return _addFormSelection.get(formKey) || fallbackId;
 }
 
-/**
- * Resolves the enchantment_id to show as selected in a "Tipo de
- * Encantamento" select — shared by the add-form (no preferred id) and the
- * edit-form (preferred id = the entry's current enchantment_id). Falls
- * back to the first enchantment in the (possibly category-filtered) list
- * whenever the preferred id isn't in it — e.g. right after the Categoria
- * filter changes and excludes the previously chosen enchantment.
- */
+// Falls back to the first enchantment in the filtered list when preferredId isn't in it (e.g. after a Categoria change excludes it).
 function _resolveFormSelectionId(formKey, itemCategory, preferredId) {
   const typeFilter = getEnchantmentAddFormTypeFilter(formKey);
   const allowed = getAllowedEnchantments(itemCategory, typeFilter);
@@ -317,11 +205,6 @@ export function getEnchantmentAddFormSelection(instanceId, itemCategory) {
   return _resolveFormSelectionId(instanceId, itemCategory, null);
 }
 
-/**
- * Same resolution as getEnchantmentAddFormSelection, but for an existing
- * entry's edit/swap form, preferring the entry's own current
- * enchantment_id over "first in list".
- */
 export function getEnchantmentEditFormSelection(
   formKey,
   itemCategory,
@@ -349,11 +232,7 @@ export function getEnchantmentAddFormTargetFilter(instanceId) {
 }
 
 export function setEnchantmentAddFormTypeFilter(instanceId, filterValue) {
-  // A different category changes which enchantments are even selectable —
-  // any enchantment_id (and its own downstream target filter) chosen under
-  // the previous category no longer applies. Clear BEFORE setting the new
-  // filter value below, since clearEnchantmentAddFormSelection also wipes
-  // _addFormTypeFilter.
+  // Must clear before setting below — clearEnchantmentAddFormSelection also wipes _addFormTypeFilter.
   clearEnchantmentAddFormSelection(instanceId);
 
   if (filterValue) {
@@ -365,29 +244,8 @@ export function getEnchantmentAddFormTypeFilter(instanceId) {
   return _addFormTypeFilter.get(instanceId) || "";
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENTRY MUTATION
-//
-// Operates directly on an item instance's `enchantments` array — generic
-// across equipment types. Each equipment type's own state module (e.g.
-// inventory/accessories.js) wraps these with its own findByInstanceId +
-// renderLists + triggerAutoRun, the same relationship customFieldsBlock has
-// with saveAccessoryCustomFields.
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Builds the type-specific fields (value / target / extraPoints) for an
- * enchantment application, shared by both adding a new entry and swapping
- * an existing one so the two can never drift out of sync.
- *
- * `params.value` always arrives as a plain integer regardless of type —
- * the DOM stepper itself displays/steps in PERCENT units for
- * percentage-flagged enchantments (see valueInput in render.js), so
- * dispatch.js's parseInt never has to deal with a fraction. Converting
- * that percent-integer down to the decimal fraction the engine expects
- * (0.05, not 5) happens right here, the one place both the add-form and
- * the edit-form funnel through.
- */
+// Shared by add and swap so the two field-shaping paths can never drift out of sync.
+// params.value always arrives as a plain integer (the DOM stepper steps in percent units); converted to the engine's decimal fraction (0.05, not 5) here.
 function _buildEntryFields(record, params = {}) {
   const type = record.enchantment_effect_type;
   const weaken = isWeakenType(type);
@@ -416,11 +274,6 @@ function _buildEntryFields(record, params = {}) {
   return fields;
 }
 
-/**
- * Appends a new enchantment application entry, shaped according to the
- * enchantment's effect_type. Returns the new entry, or null if the
- * enchantment_id is unknown.
- */
 export function addEnchantmentEntry(entries, enchantmentId, params = {}) {
   const record = getEnchantmentRecord(enchantmentId);
   if (!record) return null;
@@ -435,14 +288,7 @@ export function addEnchantmentEntry(entries, enchantmentId, params = {}) {
   return entry;
 }
 
-/**
- * Replaces an existing entry's enchantment_id + fields in place, keeping
- * its own _instanceId — used to "swap" an attached enchantment for a
- * different one (or just change its target/value/extraPoints) without
- * losing its position in the list or its price-lookup identity mid-render.
- * Returns the updated entry, or null if the entry or enchantment_id isn't
- * found.
- */
+// Keeps the entry's own _instanceId so its position and price-lookup identity survive a swap mid-render.
 export function updateEnchantmentEntry(
   entries,
   entryInstanceId,

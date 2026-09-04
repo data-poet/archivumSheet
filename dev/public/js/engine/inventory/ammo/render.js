@@ -186,7 +186,6 @@ function renderContainerSlot(
     (typeof capacity === "number" ? capacity - usedCap : 0);
   const totalWeight = resolved?.total_weight ?? "—";
 
-  // Contents rows
   const contentsRows =
     inst.contents.length === 0
       ? `<tr class="empty-row"><td colspan="3">${t("common.empty")}</td></tr>`
@@ -204,7 +203,6 @@ function renderContainerSlot(
                     .reduce((s, e) => s + e.quantity, 0)
                 : undefined;
 
-            // Build move-to-container select for this ammo entry
             const moveSelectHtml = (() => {
               const other = allContainers.filter(
                 (c) => c._instanceId !== instanceId,

@@ -1,8 +1,3 @@
-// localization/pt-BR/components/characterSelector.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Multi-character selector.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const CHARACTERS = {
   add: "Adicionar Personagem",
   remove: "Remover Personagem",

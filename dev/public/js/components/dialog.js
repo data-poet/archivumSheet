@@ -1,22 +1,6 @@
-// ui/dialog.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Themed replacement for window.confirm(). Renders a centered card over a
-// backdrop, matching the app's design tokens (respects dark theme).
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Themed replacement for window.confirm() so the dialog respects dark theme.
 import { t } from "../localization/pt-BR/index.js";
 
-/**
- * Show a themed confirm dialog.
- *
- * @param {Object} params
- * @param {string} params.message                  - body text
- * @param {string} [params.title]                   - optional heading
- * @param {string} [params.confirmLabel]             - defaults to "Confirmar"
- * @param {string} [params.cancelLabel]              - defaults to "Cancelar"
- * @param {boolean} [params.danger]                   - style the confirm button as destructive
- * @returns {Promise<boolean>} resolves true if confirmed, false if cancelled
- */
 export function showConfirm({
   message,
   title = "",
@@ -25,7 +9,6 @@ export function showConfirm({
   danger = false,
 } = {}) {
   return new Promise((resolve) => {
-    // Remove any existing dialog first
     document.getElementById("_archivum-dialog")?.remove();
 
     const overlay = document.createElement("div");

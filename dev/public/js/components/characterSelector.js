@@ -1,9 +1,3 @@
-// ui/characterSelector.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Builds and manages the character selector popover.
-// Called from main.js (init) and after any character list mutation.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { t } from "../localization/pt-BR/index.js";
 import {
   listCharacters,
@@ -16,10 +10,6 @@ import {
 import { exportSheet, importSheet, showToast } from "../store/persistence.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TOPBAR BUTTON — shows active character name + race, opens popover on click
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
@@ -38,10 +28,6 @@ export function updateSelectorButton() {
     <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// POPOVER
-// ─────────────────────────────────────────────────────────────────────────────
 
 function getPopover() {
   return document.getElementById("char-selector-popover");
@@ -65,10 +51,6 @@ export function toggleSelector() {
   if (isOpen()) closeSelector();
   else openSelector();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER POPOVER CONTENTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderPopover() {
   const popover = getPopover();
@@ -128,15 +110,10 @@ export function renderPopover() {
   `;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EVENT WIRING — delegated on the popover itself
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function initCharacterSelector() {
   updateSelectorButton();
   renderPopover();
 
-  // Toggle popover when topbar button is clicked
   const btn = document.getElementById("char-selector-btn");
   if (btn) {
     btn.addEventListener("click", (e) => {
@@ -145,7 +122,6 @@ export function initCharacterSelector() {
     });
   }
 
-  // Close when clicking outside
   document.addEventListener("click", (e) => {
     if (!isOpen()) return;
     const popover = getPopover();
@@ -155,7 +131,6 @@ export function initCharacterSelector() {
     }
   });
 
-  // Delegated click inside popover
   const popover = getPopover();
   if (!popover) return;
 
@@ -184,7 +159,7 @@ export function initCharacterSelector() {
           t("characters.namePrompt"),
           t("characters.newCharacter"),
         );
-        if (name === null) return; // cancelled
+        if (name === null) return;
         addCharacter(name.trim() || t("characters.newCharacter"));
         closeSelector();
         updateSelectorButton();
@@ -194,7 +169,6 @@ export function initCharacterSelector() {
       case "remove-char": {
         const chars = listCharacters();
         if (chars.length <= 1) {
-          // Don't remove the last character, just reset it
           showToast(t("characters.cannotRemoveLast"), "error");
           return;
         }
@@ -241,7 +215,6 @@ export function initCharacterSelector() {
     }
   });
 
-  // File input handler (import vs replace)
   const fileInput = document.getElementById("importFileInput");
   if (fileInput) {
     fileInput.addEventListener("change", async (e) => {
@@ -258,7 +231,6 @@ export function initCharacterSelector() {
           replaceActiveCharacter(payload);
           updateSelectorButton();
         } else {
-          // import = new character slot
           const text = await file.text();
           const payload = JSON.parse(text);
           if (!payload?.version || !payload?.character || !payload?.inventory) {
@@ -267,7 +239,7 @@ export function initCharacterSelector() {
           const name =
             payload?.pc?.character_name?.trim() || t("characters.unnamed");
           addCharacter(name);
-          // addCharacter already loads blank; now replace its data with the import
+          // addCharacter loads a blank character; overwrite it with the imported data.
           replaceActiveCharacter(payload);
           updateSelectorButton();
         }

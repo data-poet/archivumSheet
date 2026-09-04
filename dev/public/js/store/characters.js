@@ -1,17 +1,4 @@
-// store/characters.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Multi-character persistence via localStorage.
-//
-// Schema (key: "archivum_characters"):
-// {
-//   activeId: "c-<timestamp>",
-//   list: [
-//     { id: "c-<timestamp>", name: "Personagem 1", race: "", data: <payload> }
-//   ]
-// }
-//
-// "data" mirrors the exportSheet() payload shape so import/export is compatible.
-// ─────────────────────────────────────────────────────────────────────────────
+// "data" below mirrors the exportSheet() payload shape so import/export stays compatible.
 
 import { state } from "../state.js";
 import { getPrimaryAttributes } from "../compute/attributes.js";
@@ -23,10 +10,6 @@ import { renderCharacterImage, renderResumeImage } from "../engine/character/por
 
 const STORAGE_KEY = "archivum_characters";
 const SCHEMA_VERSION = 1;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// INTERNAL HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _generateId() {
   return "c-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7);
@@ -106,10 +89,6 @@ function _blankCharacter(name) {
   return { id, name, race: "", data: _blankData() };
 }
 
-/**
- * Initialize store on first run (no existing data).
- * Creates one blank character and returns the store.
- */
 function _initStore(firstCharName) {
   const first = _blankCharacter(firstCharName);
   const store = { activeId: first.id, list: [first] };
@@ -117,9 +96,6 @@ function _initStore(firstCharName) {
   return store;
 }
 
-/**
- * Capture current state into a data payload (same shape as exportSheet).
- */
 function _captureCurrentData() {
   const { selected, sheet } = state;
   return {
@@ -155,9 +131,7 @@ function _captureCurrentData() {
   };
 }
 
-/**
- * Apply a data payload to state + DOM (mirrors _applyImport in persistence.js).
- */
+// Mirrors _applyImport in persistence.js.
 function _applyData(data) {
   if (!data) return;
   const { selected } = state;
@@ -241,32 +215,18 @@ function _applyData(data) {
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PUBLIC API
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Returns the current store, initializing it on first run.
- * @returns {{ activeId: string, list: Array }}
- */
 export function getStore() {
   return _load() ?? _initStore("Personagem 1");
 }
 
-/** @returns {Array<{ id: string, name: string, race: string }>} */
 export function listCharacters() {
   return getStore().list.map(({ id, name, race }) => ({ id, name, race }));
 }
 
-/** @returns {string} */
 export function getActiveCharacterId() {
   return getStore().activeId;
 }
 
-/**
- * Save current state into the active character slot.
- * Called automatically at the end of every runEngine().
- */
 export function saveActiveCharacter() {
   const store = getStore();
   const idx = store.list.findIndex((c) => c.id === store.activeId);
@@ -275,7 +235,6 @@ export function saveActiveCharacter() {
   const data = _captureCurrentData();
   store.list[idx].data = data;
 
-  // Update display name and race from live state
   const charName = state.selected.character?.character_name?.trim();
   if (charName) store.list[idx].name = charName;
 
@@ -290,10 +249,6 @@ export function saveActiveCharacter() {
   _save(store);
 }
 
-/**
- * Load a character by id into state and re-run the engine.
- * @param {string} id
- */
 export function loadCharacter(id) {
   const store = getStore();
   const entry = store.list.find((c) => c.id === id);
@@ -305,11 +260,6 @@ export function loadCharacter(id) {
   _applyData(entry.data);
 }
 
-/**
- * Create a blank character, set as active.
- * @param {string} name
- * @returns {string} new character id
- */
 export function addCharacter(name) {
   const store = getStore();
   const entry = _blankCharacter(name || "Novo Personagem");
@@ -320,11 +270,8 @@ export function addCharacter(name) {
   return entry.id;
 }
 
-/**
- * Delete a character by id. Activates the next (or previous) in the list.
- * If it was the last one, creates a fresh blank character.
- * @param {string} id
- */
+// Activates the next (or previous) character in the list; if it was the last one,
+// creates a fresh blank character instead of leaving the list empty.
 export function removeCharacter(id) {
   const store = getStore();
   const idx = store.list.findIndex((c) => c.id === id);
@@ -345,11 +292,6 @@ export function removeCharacter(id) {
   loadCharacter(store.activeId);
 }
 
-/**
- * Replace the active character's data with an imported payload.
- * Used by the "Replace" action in the selector.
- * @param {object} payload — same shape as importSheet payload
- */
 export function replaceActiveCharacter(payload) {
   const store = getStore();
   const idx = store.list.findIndex((c) => c.id === store.activeId);
@@ -372,11 +314,7 @@ export function replaceActiveCharacter(payload) {
   _applyData(payload);
 }
 
-/**
- * Initialize the store on app startup.
- * Ensures at least one character exists and loads the active one.
- */
 export function initCharacters() {
-  const store = getStore(); // creates if missing
+  const store = getStore();
   loadCharacter(store.activeId);
 }

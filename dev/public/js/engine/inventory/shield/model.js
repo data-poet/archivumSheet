@@ -91,10 +91,7 @@ export function updateShieldMaterialOptions() {
 // EQUIP
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Equip a shield. Only one shield can be equipped at a time.
- * Pass an empty shieldId to clear.
- */
+// Only one shield can be equipped at a time; pass an empty shieldId to clear.
 export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   const currentEquipped = selected.shields.find((s) => s.is_equipped);
   const preservedMaterialId = currentEquipped?.material_id || materialId;
@@ -128,7 +125,6 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Add a shield directly to storage (not equipped). */
 export function addStoredShield(
   shieldId,
   materialId = null,
@@ -153,7 +149,6 @@ export function addStoredShield(
   triggerAutoRun();
 }
 
-/** Move a stored shield to a different storage location. Uses instanceId. */
 export function moveShield(instanceId, storedAt) {
   const shield = findShieldByInstanceId(instanceId);
   if (!shield) return;
@@ -165,7 +160,6 @@ export function moveShield(instanceId, storedAt) {
   triggerAutoRun();
 }
 
-/** Remove a shield instance by instanceId. */
 export function removeShield(instanceId) {
   const before = structuredClone(selected.shields);
   selected.shields = selected.shields.filter(
@@ -186,11 +180,7 @@ export function removeShield(instanceId) {
 // FIELD UPDATES (custom fields)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Commits all three custom fields at once — called only when the user
- * presses "Salvar" in the custom-fields editor, never on individual
- * keystrokes. Blank strings are normalized to null.
- */
+// Blank strings are normalized to null.
 export function saveShieldCustomFields(
   instanceId,
   { name, description, effect },
@@ -210,12 +200,6 @@ export function saveShieldCustomFields(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENCHANTMENTS
-//
-// Thin shield-specific wrappers around the generic entry helpers in
-// enchantments.js — same relationship saveShieldCustomFields has with
-// customFieldsBlock, and identical shape to armor's own wrappers (see
-// armor/model.js). instance.enchantments defaults to [] defensively since
-// shields saved before this feature existed won't have the field.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function addShieldEnchantment(instanceId, enchantmentId, params) {
@@ -242,12 +226,6 @@ export function addShieldEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-/**
- * Edits an already-attached entry in place — swapping it for a different
- * enchantment entirely, or just changing its target/value/extraPoints.
- * Keeps the entry's own _instanceId so its position in the list and its
- * price-lookup identity survive the edit.
- */
 export function updateShieldEnchantment(
   instanceId,
   entryInstanceId,

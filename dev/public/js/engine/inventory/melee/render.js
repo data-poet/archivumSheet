@@ -37,12 +37,7 @@ function resolvedMelee(sheet, instanceId) {
   return null;
 }
 
-/**
- * Melee-local wrapper around the shared withEnchantmentBadge, pre-filled
- * with melee's own localized contribution string — same relationship
- * shield/render.js's withShieldEnchantmentBadge has with the shared
- * helper.
- */
+// Melee-local wrapper around withEnchantmentBadge — same relationship shield/render.js's withShieldEnchantmentBadge has with it.
 function withMeleeEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
     suffix,

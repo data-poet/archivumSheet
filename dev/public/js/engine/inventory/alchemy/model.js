@@ -118,7 +118,6 @@ export function addAlchemy(consumableId, quantity, storedAt = "backpack") {
   triggerAutoRun();
 }
 
-/** Update quantity of an entry (identified by consumable_id + storedAt). */
 export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
   if (quantity <= 0) {
     selected.alchemy = selected.alchemy.filter(
@@ -135,7 +134,6 @@ export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
   triggerAutoRun();
 }
 
-/** Remove an entry entirely. */
 export function removeAlchemy(consumableId, storedAt) {
   const before = structuredClone(selected.alchemy);
   selected.alchemy = selected.alchemy.filter(
@@ -151,10 +149,7 @@ export function removeAlchemy(consumableId, storedAt) {
   });
 }
 
-/**
- * Move an alchemy entry from one location to another, merging quantities
- * if the destination already has the same consumable_id.
- */
+/** Moves an entry between locations, merging quantities if the destination already has the same consumable_id. */
 export function moveAlchemy(consumableId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 

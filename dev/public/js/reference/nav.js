@@ -1,18 +1,6 @@
-/**
- * reference/nav.js
- *
- * Builds the desktop sidebar + mobile bottom nav for the reference page,
- * from LABELS.reference.sections. Mirrors ../ui/nav.js (same markup, same
- * classes, same active-highlight behavior) so the reference page's nav
- * looks and behaves exactly like the main sheet's — just fed by a
- * different list of sections.
- */
-
+// Mirrors ../ui/nav.js (same markup/classes/active-highlight) but fed by
+// LABELS.reference.sections instead of the main sheet's sections.
 import { LABELS } from "../localization/pt-BR/index.js";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Render helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _buildSidebar(items) {
   const nav = document.getElementById("sidebar");
@@ -59,10 +47,6 @@ function _buildBottomNav(items) {
     .join("");
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Active highlight (identical logic to ../ui/nav.js)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function _initActiveHighlight() {
   function setActiveNav(sectionId) {
     document
@@ -93,15 +77,7 @@ function _initActiveHighlight() {
   sections.forEach((s) => observer.observe(s));
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Public
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Build sidebar + bottomnav from LABELS.reference.sections, then wire
- * active-link logic. Call once from reference/main.js, after the section
- * DOM has been built by content.js.
- */
+// Call once from reference/main.js, after the section DOM has been built by content.js.
 export function initReferenceNav() {
   const items = LABELS.reference.sections;
   _buildSidebar(items);

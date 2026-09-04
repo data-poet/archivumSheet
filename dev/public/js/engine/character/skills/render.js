@@ -15,9 +15,7 @@ const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
 export function renderSkills(selected, data, sheet) {
   const sheetSkills = sheet?.character?.skills ?? {};
 
-  // Union of the player's own selection and engine-granted ids — a purely
-  // item-granted skill (is_enchantment: true) never appears in
-  // selected.skills at all, only in the engine's computed output.
+  // Item-granted skills (is_enchantment: true) never appear in selected.skills, only in sheetSkills.
   const ids = [
     ...new Set([...Object.keys(selected.skills), ...Object.keys(sheetSkills)]),
   ];
@@ -43,10 +41,7 @@ export function renderSkills(selected, data, sheet) {
 
             const isEnchantment = sheetSkill?.is_enchantment ?? false;
 
-            // Show the WINNING source's base/mod — if the engine picked the
-            // grant over the player's own purchase (is_enchantment: true,
-            // "whichever is higher" collision), display the grant's values,
-            // not the player's losing selection sitting unused in state.
+            // On a grant/purchase collision, the engine picks whichever is higher; display that winning value, not the player's unused selection.
             const base = isEnchantment
               ? (sheetSkill?.base_value ?? 0)
               : (skillState?.base_value ?? skillState?.base ?? 0);
@@ -63,15 +58,12 @@ export function renderSkills(selected, data, sheet) {
                 : `${enchantmentMod}`
               : "—";
 
-            // Final value: read straight from the engine (source of truth).
-            // Falls back to a local base+mod estimate only for the brief
-            // window before the debounced engine call first completes.
+            // base+mod is only a placeholder until the debounced engine call first completes.
             const final = sheetSkill?.value ?? base + mod;
 
             const parry = sheetSkill?.parry ?? null;
             const actions = sheetSkill?.actions ?? 1;
 
-            // isTrainedWithMaster — driven by selected state, constrained to eligible categories
             const category = skill?.skill_category ?? "";
             const isEligible = MASTER_ELIGIBLE_CATEGORIES.has(category);
             const isMaster = isEligible
@@ -136,8 +128,7 @@ export function renderSkills(selected, data, sheet) {
                   ${numStepper("skill-input", `data-id="${id}" data-field="modifier"`, mod)}
                 </td>`;
 
-            // Item-granted rows have nothing in the player's own selection
-            // to remove — same treatment as innate advantages.
+            // Item-granted rows have nothing to remove, same as innate advantages.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
               : `<td class="col-action"><button class="btn-remove remove-skill" data-id="${id}">✕</button></td>`;

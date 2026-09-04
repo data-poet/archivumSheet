@@ -1,30 +1,5 @@
-/**
- * renderEnchantments.js
- *
- * PILOT: reusable "attached enchantments" block for a single equipment
- * instance — mirrors customFieldsBlock's structure in renderUtils.js, but
- * lives in its OWN <details> expander rather than sharing "Personalizar",
- * since enchantments are a distinct concern (mechanical, DB-priced) from
- * free-text customization. Adopted by accessories/magicGear (Phase 1) and
- * armor (Phase 2) — kept generic, not equipment-type-specific.
- *
- * Each attached enchantment is its own nested <details> — expand it to
- * edit or swap it in place (same underlying form as "add", just pre-filled
- * with the entry's current values and keyed by the entry's own
- * _instanceId instead of the parent item's). Both the add-form and every
- * entry's edit-form share the same rendering + a `formKey` that scopes
- * their in-progress (uncommitted) category/type/target/filter selections —
- * see inventory/enchantments.js's _resolveFormSelectionId.
- *
- * Reads catalog/target data (data.enchantments, data.advantages,
- * data.disadvantages, data.skills, data.spells) directly — all loaded at
- * bootstrap alongside the equipment types that consume them.
- *
- * Computed price display comes from the engine's resolved output (sheet),
- * not recomputed here — the engine is the sole source of truth for
- * anything derived. Until the debounced engine run catches up after an
- * edit, price shows "—" rather than a stale or guessed number.
- */
+// Own <details> rather than sharing "Personalizar" — enchantments are a distinct (mechanical, DB-priced) concern from free-text customization.
+// Price comes from the engine's resolved output only; shows "—" until the debounced engine run catches up, rather than a stale or guessed number.
 
 import {
   t,
@@ -66,10 +41,6 @@ import {
 
 const data = state.data;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TARGET DISPLAY LOOKUPS (for the attached-entry summary line)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function advantageName(id) {
   return (
     data.advantages.find((a) => a.advantage_id === id)?.advantage_name ?? id
@@ -102,20 +73,12 @@ function entryTargetLabel(record, entry) {
   if (isSkillType(type)) return skillName(entry.target);
   if (isSpellType(type)) return entry.target ?? "—";
 
-  // Fixed on the DB row itself, not picked in the form — see
-  // ELEMENTAL_RESISTANCE_EFFECT_TYPES in enchantmentsConstants.js. Read
-  // from the record, not the entry: unlike advantage/disadvantage/skill/
-  // spell, the client's own unresolved entry object never carries a
-  // target for this type.
+  // Fixed on the DB row, not picked in the form, so read from record — the entry itself never carries a target for this type.
   if (isElementalResistanceType(type)) {
     return getElementalResistanceLabel(record.enchantment_target);
   }
 
-  // Fixed on the DB row itself, same "not player-picked" shape as
-  // elemental-resistance above — BAL/GDP/Min Strength/PREC/TR (Phase 3
-  // weapon rows) are already baked into enchantment_name too (e.g.
-  // "Fortificar BAL"), so this is a consistency/defensive label rather
-  // than something today's rows are ambiguous without.
+  // Same "not player-picked, fixed on the DB row" shape as elemental-resistance above.
   if (isDamageType(type) || isRequisiteType(type)) {
     return record.enchantment_target ?? null;
   }
@@ -144,12 +107,7 @@ function entryMagnitudeLabel(record, entry) {
   return null;
 }
 
-/**
- * Rules-text line for the currently-selected enchantment, shown between the
- * type select and its parameter inputs so a player can see what they're
- * about to attach without leaving the sheet. Uses enchantment_description
- * straight from the catalog (already GM-authored Portuguese rules text).
- */
+// Shown between the type select and its param inputs so a player can preview it before attaching, without leaving the sheet.
 function recordDescriptionMarkup(record) {
   const desc = formatRichText(record.enchantment_description);
   if (desc === "—") return "";
@@ -157,17 +115,7 @@ function recordDescriptionMarkup(record) {
   return `<div class="item-detail-block"><em>${t("traits.description")}:</em>${desc}</div>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TARGET PICKER (cascading filter + name select)
-//
-// Matches the pattern already established elsewhere in the app for adding
-// advantages/disadvantages/skills/spells directly (advTypeSelect+advSelect,
-// skillCategorySelect, spell school filter) — a filter dropdown narrows a
-// second dropdown of actual targets, both showing each row's *_box_name
-// (which encodes cost/difficulty, e.g. "ATRAENTE | 5") rather than the bare
-// name, same as those existing pickers.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Matches the existing advantage/disadvantage/skill/spell pickers elsewhere in the app: a filter narrows a second select of *_box_name targets (which encode cost/difficulty, e.g. "ATRAENTE | 5").
 const TARGET_PICKER_CONFIG = {
   advantage: {
     rows: () =>
@@ -195,11 +143,7 @@ const TARGET_PICKER_CONFIG = {
     filterPlaceholder: () => t("traits.categoryFilter"),
   },
   spell: {
-    // Deduplicated one row per spell name — target is the spell's NAME,
-    // not spell_id, since data.spells has 5 tier-rows per spell and the
-    // engine resolves granted/fortified spells by name (see
-    // engine/inventory/js/shared/enchantmentTargetsDB.js). School and
-    // box_name are identical across every tier of the same spell.
+    // Target is the spell's NAME, not spell_id — the engine resolves granted/fortified spells by name.
     rows: () => getUniqueSpellRows(),
     filterField: "spell_school",
     valueField: "spell_name",
@@ -208,21 +152,8 @@ const TARGET_PICKER_CONFIG = {
   },
 };
 
-/**
- * "Categoria" filter — narrows the "Tipo de Encantamento" select itself,
- * one level upstream of the target picker above. Carries the same
- * <em>Filtro</em> label as the target picker's own filter select (see
- * renderTargetPicker below) purely so the label row's height lines up
- * with labeled fields ("Alvo", "Tipo de Encantamento", ...) it sits
- * beside or above — an empty/no-label field looks visually "cut off"
- * next to one that has a bold label pushing its input down.
- *
- * Own full-width row so it reads as a distinct step before
- * "Tipo de Encantamento", not a paired field.
- *
- * Omitted entirely when the item category only ever offers one
- * enchantment_type — a single-option filter narrows nothing.
- */
+// Shares the target picker's <em>Filtro</em> label purely so row heights line up with neighboring labeled fields.
+// Omitted when the item category only ever offers one enchantment_type — a single-option filter narrows nothing.
 function renderCategoryFilter(formKey, itemCategory, typeFilter) {
   const typeValues = getEnchantmentTypeValues(itemCategory);
   if (typeValues.length <= 1) return "";
@@ -250,13 +181,7 @@ function targetPickerKind(type) {
   return null;
 }
 
-/**
- * @param {string} formKey - the add-form's parent instanceId, OR an
- *   existing entry's own _instanceId when editing/swapping it.
- * @param {object|null} currentEntry - the entry being edited, so its
- *   current target can be pre-selected. null for the add-form (nothing to
- *   pre-select yet).
- */
+// formKey: add-form's parent instanceId, or an existing entry's own _instanceId when editing/swapping.
 function renderTargetPicker(formKey, type, currentEntry) {
   const kind = targetPickerKind(type);
   const config = TARGET_PICKER_CONFIG[kind];
@@ -300,29 +225,8 @@ function renderTargetPicker(formKey, type, currentEntry) {
     </label>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SIGN-AWARE NUMBER INPUTS
-//
-// Fortify types are always positive, weaken types always negative
-// (enforced server-side too — see enchantmentsValidation.js). For
-// percentage-flagged types (weight, elemental-resistance — Phase 2/armor),
-// the stepper itself displays/steps in whole PERCENT units (5, not 0.05) —
-// see this function's own doc comment and model.js's _buildEntryFields for
-// where that gets converted back to the decimal fraction the engine
-// expects. Uses the shared numStepper (± buttons, wired globally in
-// events/index.js via data-step/data-min/data-max) rather than a bare
-// number input, same component used for skill/spell/secondary-attribute
-// modifiers elsewhere.
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Value stepper for every VALUE_EFFECT_TYPES type (attribute, weight,
- * damage-resistance, elemental-resistance). Percentage-flagged types
- * display/step in whole percent units — currentEntry.value itself is
- * still the raw decimal fraction (0.05), so it's converted here purely
- * for display; the round-trip back to decimal happens in model.js's
- * _buildEntryFields when the form is actually submitted.
- */
+// Fortify types are always positive, weaken types always negative (enforced server-side too).
+// Percentage-flagged types display/step in whole percent units; currentEntry.value stays the raw decimal fraction and is converted here for display only — model.js's _buildEntryFields converts back on submit.
 function valueInput(record, formKey, currentEntry) {
   const percentage = isPercentageType(record);
   const weaken = isWeakenType(record.enchantment_effect_type);
@@ -378,17 +282,7 @@ function extraPointsInput(type, formKey, currentEntry) {
     </label>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED FORM (used for both "add" and "edit an existing entry")
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * @param {object|null} currentEntry - non-null only when editing an
- *   existing entry AND the type hasn't been swapped away from it yet, so
- *   its own value/target/extraPoints can pre-fill the inputs. null means
- *   "use fresh defaults for this enchantment type" (add-form, or an
- *   in-progress swap to a different type).
- */
+// currentEntry is null to mean "use fresh defaults for this type" (add-form, or an in-progress swap to a different type).
 function paramsMarkup(record, formKey, currentEntry) {
   const type = record.enchantment_effect_type;
 
@@ -410,14 +304,7 @@ function paramsMarkup(record, formKey, currentEntry) {
   return "";
 }
 
-/**
- * "Tipo de Encantamento" <select> options — grouped into <optgroup>s by
- * enchantment_type once more than one type is present in the list (e.g.
- * before a Categoria filter narrows it down, or for an item category that
- * simply offers several types with the same allowed_itens value). A single
- * flat list when there's only one type, since a lone optgroup label would
- * just repeat the Categoria filter for no benefit.
- */
+// Flat list (no optgroup) when there's only one type — a lone optgroup label would just repeat the Categoria filter for no benefit.
 function typeSelectOptionsMarkup(allowed, selectedId) {
   const optionMarkup = (e) =>
     `<option value="${e.enchantment_id}" ${e.enchantment_id === selectedId ? "selected" : ""}>${escapeHtml(e.enchantment_name)}</option>`;
@@ -440,12 +327,6 @@ function typeSelectOptionsMarkup(allowed, selectedId) {
     .join("");
 }
 
-/**
- * Shared form body for both "add a new enchantment" and "edit/swap an
- * already-attached entry" — same fields (category filter, type select,
- * description, params), only the formKey, defaulted selection, empty-state
- * guard, and action buttons differ between the two callers below.
- */
 function renderEnchantmentForm({
   formKey,
   itemCategory,
@@ -500,13 +381,7 @@ function renderAddForm(instanceId, itemCategory) {
   });
 }
 
-/**
- * Edit/swap form for one already-attached entry. Same shape as the
- * add-form, but formKey is the entry's own _instanceId (so its in-progress
- * type/target selection is tracked independently of the item's add-form
- * and of every other entry on the same item), and defaults to the entry's
- * CURRENT enchantment_id rather than the first allowed one.
- */
+// formKey is the entry's own _instanceId, so its in-progress selection is tracked independently of the item's add-form and other entries.
 function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
   const formKey = entry._instanceId;
   const selectedId = getEnchantmentEditFormSelection(
@@ -538,10 +413,6 @@ function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ATTACHED ENCHANTMENTS LIST — each entry is its own <details>
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderEnchantmentEntry(
   instanceId,
   entry,
@@ -571,17 +442,7 @@ function renderEnchantmentEntry(
     </details>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// BODY + WRAPPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Sum of resolved prices across every attached entry, for the block-level
- * summary line — null (not 0) when there are no entries yet, or when none
- * of them have a resolved price yet (e.g. right after an edit, before the
- * debounced engine run catches up), so the caller can fall back to showing
- * nothing rather than a misleading "0".
- */
+// Returns null (not 0) when nothing has a resolved price yet, so the caller can show nothing rather than a misleading "0".
 function enchantmentsSubtotal(entries, resolvedEntries) {
   if (entries.length === 0) return null;
 
@@ -626,13 +487,7 @@ function enchantmentsBody({
     </div>`;
 }
 
-/**
- * The bare "Encantamentos" <details> expander, with no outer wrapper —
- * for nesting INSIDE another <details> (currently: accessories'
- * "Personalizar" block, see customFieldsEquippedDetail/customFieldsDetailRow's
- * extraContent param). A nested <details> needs no .equipped-detail div or
- * <tr> of its own since it already sits inside its parent's.
- */
+// No outer wrapper — for nesting inside another <details> (e.g. accessories' "Personalizar" block), which already provides its own .equipped-detail/<tr>.
 function enchantmentsExpanderMarkup(params) {
   const subtotal = enchantmentsSubtotal(params.entries, params.resolvedEntries);
 
@@ -650,16 +505,7 @@ export function enchantmentsExpander(params) {
   return enchantmentsExpanderMarkup(params);
 }
 
-/**
- * Own dedicated <details> expander for equipped-slot (div-based) layouts —
- * a sibling to customFieldsEquippedDetail, not nested inside it.
- * data-detail-kind lets openState.js track this block's open/closed state
- * independently of the sibling "customize"/"stats" blocks.
- *
- * Kept for equipment types that want enchantments as a standalone block
- * rather than nested inside "Personalizar" — see enchantmentsExpander for
- * the nested form accessories now uses.
- */
+// Sibling to customFieldsEquippedDetail, not nested inside it — for equipment types that want enchantments as a standalone block.
 export function enchantmentsEquippedDetail(params) {
   return `
     <div class="equipped-detail">
@@ -667,11 +513,7 @@ export function enchantmentsEquippedDetail(params) {
     </div>`;
 }
 
-/**
- * Own dedicated <details> expander for stored-table (tr/td-based) layouts —
- * a sibling to customFieldsDetailRow, not nested inside it. See
- * enchantmentsEquippedDetail's note above.
- */
+// Sibling to customFieldsDetailRow, not nested inside it — see enchantmentsEquippedDetail above.
 export function enchantmentsDetailRow(colspan, params) {
   return `
     <tr class="detail-row">

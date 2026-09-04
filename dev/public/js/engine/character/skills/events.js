@@ -5,8 +5,7 @@ import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-// Re-render ONLY the skill list, not a full renderLists() sweep of all
-// 21 sections — same reasoning/shape as shield's _renderShieldLists.
+// Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 
 function _renderSkillList(sheet) {
   const snapshots = snapshotAll();

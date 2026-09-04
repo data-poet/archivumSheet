@@ -10,10 +10,7 @@ import { offerUndo } from "../../../components/undo.js";
 const data = state.data;
 const selected = state.selected;
 
-/**
- * Re-renders ONLY the spell list, not a full renderLists() sweep of all 21
- * sections — same reasoning/shape as shield's _renderShieldLists.
- */
+// Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
 function _renderSpellList() {
   const snapshots = snapshotAll();
 

@@ -14,11 +14,7 @@ import {
   readCustomItemEditorValues,
 } from "../../../shared/renderUtils.js";
 
-/**
- * Re-renders ONLY the custom-inventory list, not a full renderLists()
- * sweep of all 21 sections — same reasoning/shape as shield's
- * _renderShieldLists.
- */
+// Re-renders only the custom-inventory list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderCustomInventoryLists() {
   const snapshots = snapshotAll();
 
@@ -57,14 +53,12 @@ export function handleCustomInventoryClick(e) {
       return true;
     }
 
-    const ok = saveCustomItemFields(customItemId, values); // mutates + renders + runs engine if valid
+    const ok = saveCustomItemFields(customItemId, values);
     if (ok) {
       closeCustomFieldsEditor(customItemId);
     }
-    // If invalid (blank name, negative weight/price, etc.), deliberately do
-    // NOT close the editor or re-render — a re-render would pull fresh markup
-    // from committed state and silently revert what the user just typed.
-    // Leaving the DOM untouched keeps their input in place so they can fix it.
+    // If invalid, deliberately leave the editor open and skip re-rendering — a re-render would pull
+    // fresh markup from committed state and revert what the user just typed.
     return true;
   }
 
@@ -120,7 +114,6 @@ export function handleAddCustomItem() {
 
   addCustomItem({ name, weight, price, quantity, description, storedAt });
 
-  // Reset form
   nameEl.value   = "";
   weightEl.value = "0";
   priceEl.value  = "0";

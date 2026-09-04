@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/ranged.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Equipment: Ranged — mirrors engine/inventory/ranged.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const RANGED = {
   loadRanged: "Carregar Armas de Longo Alcance",
   addRanged: "Adicionar Arma de Longo Alcance",

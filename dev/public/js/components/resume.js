@@ -13,19 +13,10 @@ import {
 } from "../engine/inventory/shared/durabilityUtils.js";
 import { renderResumeImage } from "../engine/character/portrait/portrait.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Collapse state — module-level Map keyed by section title text.
-// Bodies stay in the DOM (element.hidden); state survives re-renders because
-// renderResume() writes into existing containers, not via innerHTML on the
-// root panel. _bindCollapse() is only called on newly created containers.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// State survives re-renders because renderResume() writes into existing containers
+// rather than innerHTML-ing the root panel.
 /** @type {Map<string, boolean>} title → true when open */
 const _collapseOpen = new Map();
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Constants
-// ─────────────────────────────────────────────────────────────────────────────
 
 const ARMOR_SLOTS = [
   { key: "head", label: "Cabeça" },
@@ -36,14 +27,8 @@ const ARMOR_SLOTS = [
   { key: "feet", label: "Pés" },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// renderResume(sheet, data)
-//   sheet  — engine output (state.sheet)
-//   data   — raw DB arrays (state.data) — used for ammo name lookup
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderResume(sheet, data = {}, selected = {}) {
-  initResumeExpanders(); // no-op after first call
+  initResumeExpanders();
 
   renderResumeHeader(sheet);
   renderResumeImage();
@@ -66,10 +51,6 @@ export function renderResume(sheet, data = {}, selected = {}) {
   renderResumePoints(sheet);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 1. Header — character name | sub-race
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeHeader(sheet) {
   const nameEl = el("resume_header_name");
   if (!nameEl) return;
@@ -80,10 +61,6 @@ function renderResumeHeader(sheet) {
 
   nameEl.textContent = charName + separator + subRace;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 1b. Primary attribute boxes (ST / DX / IQ / HT)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumePrimaryAttributes(sheet) {
   const container = el("resume_primary_attrs");
@@ -123,10 +100,6 @@ function renderResumePrimaryAttributes(sheet) {
     })
     .join("");
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 1c. Secondary attributes snapshot
-// ─────────────────────────────────────────────────────────────────────────────
 
 const SECONDARY_SNAPSHOT_KEYS = [
   "Will",
@@ -196,10 +169,6 @@ function renderResumeSecondarySnapshot(sheet) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2. HP / Mana / Toxicity bars — with stepper for modifier
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeBars(sheet) {
   const attrs = sheet?.character?.secondary_attributes;
   if (!attrs) return;
@@ -218,19 +187,13 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
   const container = el(containerId);
   if (!container || !attr) return;
 
-  // "Final value" = final_base_value (base + bought) PLUS any equipment/
-  // enchantment bonus (e.g. a Fortify Mana ring) — that bonus previously
-  // wasn't folded into the bar's max, so equipped items that boost HP/Mana/
-  // Toxicity didn't show up here even though they were applied everywhere
-  // else on the sheet.
+  // Bar max includes equipment/enchantment bonuses (e.g. a Fortify Mana ring), not just base+bought.
   const finalBase =
     attr.final_base_value ?? (attr.base_value ?? 0) + (attr.bought ?? 0) * 4;
   const enchantMod = attr.enchantment_modifier ?? 0;
   const total = finalBase + enchantMod;
 
-  // `modifier` here tracks missing/spent points (always ≤ 0 — enforced in
-  // traits/events.js), so current = total + modifier, clamped so the bar
-  // never reads negative even if someone is below 0.
+  // modifier tracks missing/spent points (always ≤ 0, enforced in traits/events.js).
   const rawMod = attr.modifier ?? 0;
   const current = Math.max(0, total + rawMod);
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
@@ -271,16 +234,8 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
   `;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2.5 Elemental Resistances (collapsed table, view-mode only)
-//
-// Read-only — the editable modifier stepper lives in the edit-mode
-// "Resistências" tab (components/resistances.js), not here. Filtered to
-// only the elements that differ from normal damage (final !== 1), since a
-// full 10-row table of "1"s adds noise for the common case of an
-// unmodified race.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Read-only here — the editable modifier stepper lives in components/resistances.js.
+// Filtered to elements that differ from normal damage, to avoid noise from a full "1" row per element.
 function renderResumeElementalResistances(sheet) {
   const resistances = sheet?.character?.elemental_resistances || {};
   const entries = Object.entries(resistances).filter(
@@ -325,10 +280,6 @@ function renderResumeElementalResistances(sheet) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 3. Advantages & Disadvantages (collapsed tables)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeTraits(sheet) {
   const advantages = sheet?.character?.advantages || {};
   const disadvantages = sheet?.character?.disadvantages || {};
@@ -344,10 +295,6 @@ function renderResumeTraits(sheet) {
     t("resume.disadvantages"),
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. Skills (collapsed table — name | value | parry | actions)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeSkills(sheet) {
   const skills = sheet?.character?.skills || {};
@@ -394,10 +341,6 @@ function renderResumeSkills(sheet) {
   `;
   _bindCollapse(container);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 5. Magic (collapsed table — spell name, cost, value)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeMagic(sheet, data) {
   const spells = sheet?.grimoire || {};
@@ -446,10 +389,6 @@ function renderResumeMagic(sheet, data) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 6. Equipped Armor (collapsed — slot | DR | HP stepper)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeArmor(sheet) {
   const equipped = sheet?.inventory?.armor?.equipped || {};
   const container = el("resume_armor_container");
@@ -467,11 +406,7 @@ function renderResumeArmor(sheet) {
     if (!piece) {
       return `<tr><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
     }
-    // final_damage_resistance is material + enchantments (the truly-final
-    // number); armor_final_damage_resistance is material-only. Resume was
-    // showing the material-only value, silently hiding equipped armor
-    // enchantment DR bonuses — fixed to match the full inventory detail
-    // panel, which already used the final_* fields.
+    // final_damage_resistance includes enchantments; armor_final_damage_resistance is material-only.
     const dr = piece.final_damage_resistance ?? "—";
     const maxHp = piece.armor_final_hit_points ?? 0;
     const modifier = piece.hit_points_modifier ?? 0;
@@ -510,10 +445,6 @@ function renderResumeArmor(sheet) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 7. Equipped Shield (collapsed — name | DR | block | HP stepper)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeShield(sheet) {
   const equippedShield = sheet?.inventory?.shield?.equipped;
   const container = el("resume_shield_container");
@@ -525,8 +456,7 @@ function renderResumeShield(sheet) {
   }
   container.hidden = false;
 
-  // final_damage_resistance is material + enchantments — same fix as
-  // renderResumeArmor above.
+  // final_damage_resistance includes enchantments, same as renderResumeArmor.
   const dr = equippedShield.final_damage_resistance ?? "—";
   const block = equippedShield.block ?? "—";
   const maxHp = equippedShield.shield_final_hit_points ?? 0;
@@ -572,10 +502,6 @@ function renderResumeShield(sheet) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 8. Equipped Melee (collapsed — name | reach | BAL dmg | GDP dmg | HP stepper)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeMelee(sheet) {
   const equipped = sheet?.inventory?.melee?.equipped ?? [];
   const container = el("resume_melee_container");
@@ -593,8 +519,7 @@ function renderResumeMelee(sheet) {
         w.final_hit_points != null
           ? w.final_hit_points - (w.hit_points_modifier ?? 0)
           : 0;
-      // final_hit_points = maxHp + modifier, so maxHp = final - modifier
-      // but safer to use weapon_final_hit_points from resolver if available
+      // Prefer weapon_final_hit_points from the resolver over the derived maxHp when available.
       const baseMaxHp = w.weapon_final_hit_points ?? maxHp;
       const modifier = w.hit_points_modifier ?? 0;
       const actualHp = calcActualHp(baseMaxHp, modifier);
@@ -644,10 +569,6 @@ function renderResumeMelee(sheet) {
   `;
   _bindCollapse(container);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 9. Equipped Ranged (collapsed — name | TR | PREC | HP stepper)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeRanged(sheet) {
   const equipped = sheet?.inventory?.ranged?.equipped ?? [];
@@ -711,10 +632,6 @@ function renderResumeRanged(sheet) {
   `;
   _bindCollapse(container);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 9.5 Equipped Firearms (collapsed — name | TR | PREC | GDP dmg | HP | munição)
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeFirearms(sheet) {
   const equipped = sheet?.inventory?.firearms?.equipped ?? [];
@@ -791,24 +708,15 @@ function renderResumeFirearms(sheet) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 10. Ammo — equipped containers only (collapsed — name | qty stepper)
-//
-// Quantities are aggregated across all equipped containers per ammo_id.
-// The stepper writes to the first equipped container (by insertion order)
-// that holds the given ammo_id via class "resume-ammo-qty".
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Quantities are aggregated across all equipped containers per ammo_id; the stepper
+// writes back to the first equipped container (by insertion order) holding that ammo_id.
 function renderResumeAmmo(sheet, data, selected) {
   const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
   const ammoDb = data?.ammo ?? [];
   const container = el("resume_ammo_container");
   if (!container) return;
 
-  // Build aggregated entries, tracking the first instanceId per ammo_id
-  // (used as the decrement target).
   const entries = [];
-  // selected.ammo_containers preserves insertion order — filter to equipped only
   const equippedSelected = (selected?.ammo_containers ?? []).filter(
     (c) => c.storedAt === "equipped",
   );
@@ -821,7 +729,6 @@ function renderResumeAmmo(sheet, data, selected) {
       if (existing) {
         existing.quantity += item.quantity;
       } else {
-        // Find the first selected equipped container holding this ammo_id
         const firstInst = equippedSelected.find((c) =>
           c.contents.some((e) => e.ammo_id === item.ammo_id),
         );
@@ -887,10 +794,6 @@ function renderResumeAmmo(sheet, data, selected) {
   _bindCollapse(container);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 11. Alchemy (collapsed — name | tier | qty)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeAlchemy(sheet) {
   const backpack = sheet?.inventory?.alchemy?.backpack ?? [];
   const container = el("resume_alchemy_container");
@@ -949,10 +852,6 @@ function renderResumeAlchemy(sheet) {
   `;
   _bindCollapse(container);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Weight
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
@@ -1074,10 +973,6 @@ function renderResumeWeight(sheet) {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Value resume
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumeValue(sheet) {
   const armorValue = sheet?.inventory?.armor?.carried_armor_value || 0;
   const shieldValue = sheet?.inventory?.shield?.carried_shield_value || 0;
@@ -1145,10 +1040,6 @@ function renderResumeValue(sheet) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Character Points
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderResumePoints(sheet) {
   const primaryAttributesPoints =
     sheet?.character?.character_points?.primary_attributes ?? 0;
@@ -1185,14 +1076,6 @@ function renderResumePoints(sheet) {
     totalPointsCell.innerHTML = `<strong>${totalPoints}</strong>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Build a <td> containing the HP stepper + max/current display.
- * Reuses .hp-modifier + .num-stepper pattern from edit-mode equipment renders.
- */
 function _hpStepperCell({ cssClass, dataAttrs, maxHp, modifier, actualHp }) {
   return `
     <td>
@@ -1216,7 +1099,6 @@ function _hpStepperCell({ cssClass, dataAttrs, maxHp, modifier, actualHp }) {
   `;
 }
 
-/** Rounds-loaded stepper + "Recarregar" button, used in the resume firearms row. */
 function _roundsStepperCell({
   cssClass,
   dataAttrs,
@@ -1248,18 +1130,6 @@ function _roundsStepperCell({
   `;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Collapsible section helpers
-//
-// State lives in the module-level _collapseOpen Map (keyed by title text).
-// Bodies stay permanently in the DOM with `hidden` toggled — no snapshot or
-// restore is needed across re-renders because each _bindCollapse call reads
-// the Map and applies the current state immediately after innerHTML is set.
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Build the toggle button HTML string.
- */
 function _collapsibleHeader(title) {
   return `
     <button class="resume-section-toggle" type="button" aria-expanded="false">
@@ -1269,12 +1139,6 @@ function _collapsibleHeader(title) {
   `;
 }
 
-/**
- * Apply persisted open/closed state from _collapseOpen to a freshly
- * rendered container. Called immediately after setting container.innerHTML.
- *
- * @param {Element} container
- */
 function _bindCollapse(container) {
   const btn = container.querySelector(".resume-section-toggle");
   const body = container.querySelector(".resume-collapse-body");
@@ -1337,7 +1201,6 @@ export function initResumeExpanders() {
     const arrow = btn.querySelector(".resume-expander-arrow");
     if (arrow) arrow.classList.toggle("resume-expander-arrow--open", !isOpen);
 
-    // Persist new state into module Map
     _collapseOpen.set(title, !isOpen);
   });
 }

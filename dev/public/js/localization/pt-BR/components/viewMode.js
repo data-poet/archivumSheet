@@ -1,8 +1,3 @@
-// localization/pt-BR/components/viewMode.js
-// ─────────────────────────────────────────────────────────────────────────────
-// View/edit mode toggle.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const VIEW_MODE = {
   btnView: "📃 Visualizar",
   btnEdit: "📝 Editar",

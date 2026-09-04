@@ -19,35 +19,17 @@ import { t } from "../localization/pt-BR/index.js";
 
 const selected = state.selected;
 
-// Blank/missing/non-numeric → 1 ("no special resistance"). A literal 0
-// ("immune to this element") is a real value and must be preserved, which
-// is why this isn't just `Number(x) || 1` (0 is falsy and would collide
-// with the missing-cell fallback).
+// Not `Number(x) || 1` — a literal 0 (immune to this element) is a real value that `||` would erase.
 function parseRaceMultiplier(raw) {
   if (raw === undefined || raw === null || raw === "") return 1;
   const n = Number(raw);
   return Number.isNaN(n) ? 1 : n;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// runEngine
-//
-// Responsibility: call buildSheet with current state, then update the
-// output/stats panels (output JSON, inventory weights, secondary attributes,
-// damage table) AND the equipment lists.
-//
-// renderLists() IS called here, but only wrapped in a synchronous
-// snapshotAll() → renderLists() → restoreAll() sequence — see the comment
-// at that call site for why the restore must happen in the same task rather
-// than on a later frame. Equipment list DOM is otherwise managed exclusively
-// by explicit inventory mutations (add / remove / move / equip); this is
-// what prevents selects from being destroyed mid-interaction on every
-// autorun tick.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// renderLists() here is wrapped in a synchronous snapshot/restore (see call site below)
+// so equipment selects aren't destroyed mid-interaction on every autorun tick.
 export async function runEngine() {
   try {
-    // ── Build pc object ────────────────────────────────────────────────────
     const info = selected.character ?? {};
     const pc = {
       player_name: info.player_name || "",
@@ -69,7 +51,6 @@ export async function runEngine() {
       },
     };
 
-    // ── Build race object ──────────────────────────────────────────────────
     const raceRow = info.race_id
       ? state.data.races.find((r) => r.race_id === info.race_id)
       : null;
@@ -88,12 +69,6 @@ export async function runEngine() {
             IQ: Number(raceRow.race_iq_modifier) || 0,
             HT: Number(raceRow.race_ht_modifier) || 0,
           },
-          // Percentage-based elemental damage multipliers (1 = normal
-          // damage). Blank/missing/non-numeric CSV cells default to 1 ("no
-          // special resistance"), but a literal 0 ("immune to this
-          // element") is a real, meaningful value and must survive —
-          // `Number(x) || 1` would wrongly coerce it back to 1, so a
-          // dedicated parser is used instead.
           elemental_modifiers: {
             Fire: parseRaceMultiplier(raceRow.race_fire_damage_multiplier),
             Ice: parseRaceMultiplier(raceRow.race_ice_damage_multiplier),
@@ -189,7 +164,6 @@ export async function runEngine() {
       },
     });
 
-    // ── Sync secondary attributes ──────────────────────────────────────────
     const sec = json.character?.secondary_attributes || {};
 
     Object.entries(sec).forEach(([name, data]) => {
@@ -201,7 +175,6 @@ export async function runEngine() {
       }
     });
 
-    // ── Sync damage ────────────────────────────────────────────────────────
     const dmg = json.character?.base_damage || {};
 
     Object.entries(dmg).forEach(([type, data]) => {
@@ -210,7 +183,6 @@ export async function runEngine() {
       }
     });
 
-    // ── Sync elemental resistances ─────────────────────────────────────────
     const resist = json.character?.elemental_resistances || {};
 
     Object.entries(resist).forEach(([type, data]) => {
@@ -227,10 +199,8 @@ export async function runEngine() {
     renderResume(json, state.data, state.selected);
     syncViewMode();
 
-    // Store resolved sheet so render files can use final computed values
     state.sheet = json;
 
-    // ── Insufficient points warning ────────────────────────────────────────
     const cp = json.character?.character_points ?? {};
     const totalSpent =
       (cp.primary_attributes ?? 0) +
@@ -250,22 +220,15 @@ export async function runEngine() {
       }
     }
 
-    // Snapshot open details + scroll positions across all list containers
-    // before renderLists wipes and rebuilds the DOM, then restore
-    // immediately after — same task, not a later rAF. Fresh <details>
-    // markup never carries the `open` attribute, so deferring the restore
-    // to a later frame means the browser paints the rebuilt DOM collapsed
-    // first, then open again next frame — a visible flash. Restoring
-    // synchronously right after renderLists means the browser only ever
-    // paints the final, correct state. See openState.js's withOpenState
-    // for the identical fix and full rationale.
+    // Restore must happen synchronously in the same task, not a later rAF — fresh <details>
+    // markup never carries `open`, so a deferred restore paints collapsed then flashes open.
+    // See openState.js's withOpenState for the identical fix.
     const snapshots = snapshotAll();
 
     renderLists(selected, state.data, state.sheet);
 
     restoreAll(snapshots);
 
-    // Persist active character and refresh selector label
     saveActiveCharacter();
     updateSelectorButton();
   } catch (err) {

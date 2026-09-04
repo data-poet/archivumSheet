@@ -1,4 +1,3 @@
-// ===== RAW DATA (from API) =====
 export const state = {
   data: {
     advantages: [],
@@ -20,10 +19,7 @@ export const state = {
     magicGear: [],
     customInventory: [],
     enchantments: [],
-    // Populated from /api/enchantments/effect-types at bootstrap — see
-    // inventory/enchantments.js's loadEnchantments. Empty-array defaults
-    // below match enchantmentsConstants.js's shape so isAttributeType() and
-    // friends are safe to call (return false) even before load completes.
+    // Empty defaults mirror enchantmentsConstants.js's shape so isAttributeType() and friends are safe pre-bootstrap.
     enchantmentEffectTypes: {
       ATTRIBUTE_EFFECT_TYPES: [],
       POINT_EFFECT_TYPES: [],
@@ -33,30 +29,20 @@ export const state = {
       FORTIFY_EFFECT_TYPES: [],
       WEAKEN_EFFECT_TYPES: [],
     },
-    // Populated from /api/inventory/dual-use-weapons at bootstrap — see
-    // engine/inventory/shared/dualUseWeapons.js's loadDualUseWeapons. Serves
-    // engine/inventory/js/shared/dualUseWeapons.js's own maps directly.
+    // Feeds engine/inventory/js/shared/dualUseWeapons.js's maps directly.
     dualUseWeapons: {
       MELEE_TO_RANGED: {},
       RANGED_TO_MELEE: {},
     },
-    // Populated from /api/magic-gear/equip-limits at bootstrap — see
-    // engine/inventory/magicGear/model.js's loadMagicGear. Serves
-    // engine/inventory/js/magicGear/magicGearConstants.js's
-    // MAGIC_GEAR_EQUIP_LIMITS directly.
+    // Feeds engine/inventory/js/magicGear/magicGearConstants.js's MAGIC_GEAR_EQUIP_LIMITS directly.
     magicGearEquipLimits: {},
-    // Populated from /api/inventory/item-categories at bootstrap — see
-    // shared/enchantments/model.js's loadEnchantments. Serves the
-    // enchantment_allowed_itens category string each equipment type's
-    // engine validation module owns (ACCESSORY_ITEM_CATEGORY,
-    // MAGIC_GEAR_ITEM_CATEGORY) directly.
+    // Feeds each equipment type's enchantment_allowed_itens category (ACCESSORY_ITEM_CATEGORY, MAGIC_GEAR_ITEM_CATEGORY) directly.
     itemCategories: {
       ACCESSORY: "",
       MAGIC_GEAR: "",
     },
   },
 
-  // ===== USER SELECTION =====
   selected: {
     character: {
       player_name: "",
@@ -100,7 +86,6 @@ export const state = {
     coins: [],
   },
 
-  // ===== UI STATE =====
   ui: {
     debounceTimer: null,
   },

@@ -1,9 +1,3 @@
-// localization/pt-BR/inventory/shared/enchantments.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Enchantments (accessories + magic gear, armor) — mirrors
-// engine/inventory/shared/enchantments/.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const ENCHANTMENTS = {
   title: "Encantamentos",
   categoryFilter: "— Categoria —",

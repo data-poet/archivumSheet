@@ -30,10 +30,7 @@ import { getFirearmsItemCategory } from "../shared/enchantments/model.js";
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Firearms-local wrapper around the shared withEnchantmentBadge, same
- * relationship melee/ranged's local wrappers have with the shared helper.
- */
+// Firearms-local wrapper around withEnchantmentBadge, same relationship melee/ranged's wrappers have with it.
 function withFirearmEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
     suffix,
@@ -116,7 +113,6 @@ function firearmDetailFields(resolved, weaponData) {
   ];
 }
 
-/** Ammo counter + "Recarregar" button. */
 function magazineBlock({ roundsLoaded, magazineSize, cssClass, instanceId }) {
   return `
     <div class="hp-modifier">
@@ -142,7 +138,6 @@ function magazineBlock({ roundsLoaded, magazineSize, cssClass, instanceId }) {
   `;
 }
 
-/** Collapsible "Ajustes do Artificer" block: GDP / TR / PREC / magazine size runtime modifiers. */
 function tuningBlock({ weaponData, inst, instanceId, prefix }) {
   const content = [
     statModifierBlock({

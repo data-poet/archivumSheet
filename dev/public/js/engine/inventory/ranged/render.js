@@ -23,11 +23,7 @@ import {
 import { enchantmentsExpander } from "../shared/enchantments/render.js";
 import { getRangedItemCategory } from "../shared/enchantments/model.js";
 
-/**
- * Ranged-local wrapper around the shared withEnchantmentBadge, same
- * relationship melee/render.js's withMeleeEnchantmentBadge has with the
- * shared helper.
- */
+// Ranged-local wrapper around withEnchantmentBadge — same relationship melee/render.js's withMeleeEnchantmentBadge has with it.
 function withRangedEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
     suffix,

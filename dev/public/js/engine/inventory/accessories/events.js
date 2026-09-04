@@ -24,26 +24,12 @@ import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.j
 const data = state.data;
 const selected = state.selected;
 
-// Global snapshotAll/restoreAll (wired into runEngine) already preserves the
-// open/closed state of #accessorySlots and #accessoryStorageList across the
-// debounced re-render triggered by triggerAutoRun() — see openState.js's
-// MANAGED_CONTAINER_IDS. For the direct renders below (outside that flow),
-// _withPreservedOpenState does the same thing locally so the custom-fields
-// <details> the user is actively working in doesn't collapse out from under
-// them mid-edit.
+// _withPreservedOpenState mirrors, for the direct renders below, what global
+// snapshotAll/restoreAll already does for the debounced triggerAutoRun() path
+// (see openState.js's MANAGED_CONTAINER_IDS) — so an open custom-fields
+// <details> doesn't collapse mid-edit.
 
-/**
- * Re-renders ONLY the accessory lists (equipped + stored), not the full
- * renderLists() sweep of all 21 sections on the page. Every direct render
- * call in this file is triggered by UI-state-only changes scoped to a
- * single accessory (opening/closing a custom-fields editor, picking a
- * cascading enchantment filter) — none of them touch other equipment
- * types' data, so there's no reason for e.g. skills or armor to be torn
- * down and rebuilt too. That full-page rebuild was the actual cause of the
- * enchantment-type-select flicker: the fix isn't in the deferred-render
- * timing (withOpenState's rAF already handles that), it's in how much DOM
- * gets destroyed and recreated on every change.
- */
+// Re-renders only the accessory lists, not the full renderLists() sweep — a full sweep was the actual cause of the enchantment-type-select flicker.
 function _renderAccessoryLists(sheet) {
   renderEquippedAccessories(selected, data, sheet);
   renderStoredAccessories(selected, data, sheet);
@@ -99,19 +85,12 @@ export function handleAccessoryClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Generic buttons (not accessory-namespaced) rendered by customFieldsBlock;
-  // delegated to the shared factory, which itself only acts if the
-  // instanceId belongs to an accessory (see createCustomFieldsClickHandler) —
-  // this is what lets other equipment types safely reuse the same block/
-  // button classes without collisions.
+  // Delegated to the shared factory, which ownership-checks the instanceId so other equipment types can reuse the same block/button classes.
 
   if (_handleAccessoryCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Generic .enchantment-* classes rendered by renderEnchantments.js;
-  // delegated to the shared factory, which ownership-checks the instanceId
-  // the same way as the custom-fields factory above, so armor (Phase 2)
-  // can safely reuse the same block/button classes.
+  // Delegated to the shared factory, same ownership-check as custom fields above.
 
   if (_accessoryEnchantments.handleClick(e)) return true;
 
@@ -151,9 +130,6 @@ export function handleAccessoryChange(e) {
   }
 
   // ── Enchantments: cascading category/type/target filters ───────────────────
-  // Delegated to the shared factory — see accessoriesEvents.js's click
-  // section above for the ownership-guard rationale.
-
   if (_accessoryEnchantments.handleChange(e)) return true;
 
   return false;

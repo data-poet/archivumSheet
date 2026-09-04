@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   TOAST — lightweight non-blocking notification (bottom-center)
-   Types: success / error / info. Info can carry an action button (undo).
-   ═══════════════════════════════════════════════════════════════════════════ */
 .toast {
   position: fixed;
   bottom: 76px; /* above mobile bottom nav */
@@ -67,9 +63,6 @@
   background: rgba(255, 255, 255, 0.32);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   CONFIRM DIALOG — themed replacement for window.confirm()
-   ═══════════════════════════════════════════════════════════════════════════ */
 .dialog-overlay {
   position: fixed;
   inset: 0;
@@ -140,7 +133,7 @@
   background: var(--color-remove-hover);
 }
 
-/* ── Hide native number spinners globally — we use .num-stepper instead ─── */
+/* native number spinners are hidden globally — .num-stepper provides the increment/decrement UI instead */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

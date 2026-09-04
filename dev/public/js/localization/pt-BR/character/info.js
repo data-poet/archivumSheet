@@ -1,12 +1,4 @@
-// localization/pt-BR/character/info.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Character info fields — mirrors engine/character/info. Also backs
-// engine/character/races/model.js and engine/character/skills/model.js,
-// which read character.selectRace / character.selectSubRace /
-// character.raceModifiers rather than a namespace of their own (there's no
-// dedicated "races"/"skills" LABELS key to split out).
-// ─────────────────────────────────────────────────────────────────────────────
-
+// engine/character/races and engine/character/skills have no LABELS key of their own — they read character.selectRace / .selectSubRace / .raceModifiers from here.
 export const CHARACTER = {
   playerName: "Nome do Jogador",
   characterName: "Nome do Personagem",

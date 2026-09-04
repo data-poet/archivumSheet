@@ -1,21 +1,5 @@
-/**
- * nav.js
- *
- * Generates and initialises both navigation bars (sidebar + bottomnav)
- * from the single `nav` array in the localization file.
- *
- * Call initNav() once from main.js, before initTabs().
- *
- * The active-link highlight logic (scroll + click) that was previously
- * inlined in index.html is moved here so it works for both dynamically
- * generated nav elements.
- */
-
+// initNav() must run before initTabs().
 import { LABELS } from "../localization/pt-BR/index.js";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Render helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _buildSidebar(items) {
   const nav = document.getElementById("sidebar");
@@ -64,10 +48,6 @@ function _buildBottomNav(items) {
     .join("");
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Active highlight (replaces inline script in index.html)
-// ─────────────────────────────────────────────────────────────────────────────
-
 function _initActiveHighlight() {
   function setActiveNav(sectionId) {
     document
@@ -77,7 +57,6 @@ function _initActiveHighlight() {
       );
   }
 
-  // Click: smooth scroll + instant highlight
   document.addEventListener("click", (e) => {
     const link = e.target.closest(".sidebar-link, .bottomnav-link");
     if (!link) return;
@@ -87,7 +66,6 @@ function _initActiveHighlight() {
     setActiveNav(link.dataset.section);
   });
 
-  // Scroll: IntersectionObserver highlights nav as sections enter view
   const sections = document.querySelectorAll(".l-section");
   const observer = new IntersectionObserver(
     (entries) => {
@@ -100,14 +78,6 @@ function _initActiveHighlight() {
   sections.forEach((s) => observer.observe(s));
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Public
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Build sidebar + bottomnav from LABELS.nav, then wire active-link logic.
- * Call once from main.js before initTabs().
- */
 export function initNav() {
   const items = LABELS.nav;
   _buildSidebar(items);

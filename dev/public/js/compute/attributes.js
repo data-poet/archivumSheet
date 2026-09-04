@@ -1,6 +1,5 @@
 import { triggerAutoRun } from "./autorun.js";
 
-// ===== PRIMARY ATTRIBUTES =====
 export function getPrimaryAttributes() {
   return {
     ST: {
@@ -22,7 +21,6 @@ export function getPrimaryAttributes() {
   };
 }
 
-// ===== AUTO-RUN SETUP =====
 export function setupAutoRun() {
   [
     "ST_base",

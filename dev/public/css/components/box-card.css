@@ -1,6 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   BOX / CARD
-   ═══════════════════════════════════════════════════════════════════════════ */
 .box {
   margin-bottom: 10px;
   background: var(--color-surface);
@@ -10,7 +7,6 @@
   overflow: hidden;
 }
 
-/* ── Collapsible details/summary ────────────────────────────────────────── */
 details summary {
   cursor: pointer;
   font-weight: 700;
@@ -51,7 +47,6 @@ details > *:not(summary) {
   padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
 }
 
-/* ── Section accent colors ──────────────────────────────────────────────── */
 .box--attr details summary {
   border-left: 3px solid var(--accent-attributes);
 }
@@ -78,7 +73,6 @@ details > *:not(summary) {
   border-left: 3px solid var(--_section-accent, var(--accent-combat));
 }
 
-/* Thicker border on top-level (parent) expanders */
 .box--attr > details > summary,
 .box--trait > details > summary,
 .box--equip > details > summary,
@@ -87,9 +81,6 @@ details > *:not(summary) {
   border-left-width: 4px;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   CONTROLS ROW
-   ═══════════════════════════════════════════════════════════════════════════ */
 .controls-row {
   display: flex;
   flex-wrap: wrap;

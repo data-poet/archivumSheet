@@ -1,4 +1,3 @@
-// ===== GENERIC HELPER =====
 async function getJSON(url) {
   const res = await fetch(url);
 
@@ -23,7 +22,6 @@ async function postJSON(url, body) {
   return res.json();
 }
 
-// ===== LOADERS =====
 export async function fetchAdvantages() {
   return getJSON("/api/advantages");
 }
@@ -112,7 +110,6 @@ export async function fetchItemCategories() {
   return getJSON("/api/inventory/item-categories");
 }
 
-// ===== ENGINE =====
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);
 }

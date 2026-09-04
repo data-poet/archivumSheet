@@ -25,10 +25,8 @@ function normalize(str) {
     .toLowerCase();
 }
 
-// Magic Aptitude (ADV-063 → ADV-065): whether the column is shown, and each
-// spell's bonus, are read straight from engine output (state.sheet) — the
-// engine is the single source of truth for this value, it is never
-// recomputed here.
+// Magic Aptitude (ADV-063 → ADV-065): column visibility and each spell's bonus are
+// read straight from engine output — never recomputed client-side.
 const MAGIC_APTITUDE_ADVANTAGE_IDS = ["ADV-063", "ADV-064", "ADV-065"];
 
 function hasMagicAptitude(sheet) {
@@ -39,16 +37,14 @@ function hasMagicAptitude(sheet) {
 export function renderSpells(selected, data, sheet) {
   const grimoire = sheet?.grimoire ?? {};
 
-  // Grimoire is keyed by spell_id (tier-specific), but spells are targeted
-  // and selected by name — build a name → entry lookup.
+  // Grimoire is keyed by spell_id (tier-specific), but spells are selected by name.
   const grimoireByName = {};
   for (const entry of Object.values(grimoire)) {
     grimoireByName[normalize(entry.name)] = entry;
   }
 
-  // Union of the player's own selection and engine-granted names — a purely
-  // item-granted spell (is_enchantment: true) never appears in
-  // selected.spells at all, only in the engine's computed output.
+  // A purely item-granted spell (is_enchantment: true) never appears in
+  // selected.spells, only in the engine's computed output.
   const grantedNames = Object.values(grimoire)
     .filter((entry) => entry.is_enchantment)
     .map((entry) => entry.name);
@@ -69,9 +65,8 @@ export function renderSpells(selected, data, sheet) {
 
             const isEnchantment = grimoireEntry?.is_enchantment ?? false;
 
-            // Show the WINNING source's base/mod — same fix as skills:
-            // if the grant won the collision, display its values, not the
-            // player's losing selection sitting unused in state.
+            // Show the winning source's base/mod if the grant won the collision,
+            // not the player's losing selection sitting unused in state.
             const base = isEnchantment
               ? (grimoireEntry?.base_value ?? 0)
               : (spellState?.base_value ?? 0);
@@ -91,10 +86,8 @@ export function renderSpells(selected, data, sheet) {
                 : `${enchantmentMod}`
               : "—";
 
-            // Final value + tier: read straight from the engine (grimoire
-            // is the source of truth). Falls back to a local estimate only
-            // for the brief window before the debounced engine call first
-            // completes.
+            // Final value + tier read from the engine; local estimate is only a fallback
+            // for the brief window before the debounced engine call first completes.
             const final = grimoireEntry?.value ?? base + mod + aptitude;
             const tier = grimoireEntry?.tier ?? getSpellTier(final);
 
@@ -133,9 +126,7 @@ export function renderSpells(selected, data, sheet) {
                   ${numStepper("spell-input", `data-name="${name}" data-field="modifier"`, mod)}
                 </td>`;
 
-            // Item-granted rows have nothing in the player's own selection
-            // to remove — same treatment as innate advantages and granted
-            // skills.
+            // Item-granted rows have nothing in the player's own selection to remove.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
               : `<td class="col-action"><button class="btn-remove remove-spell" data-name="${name}">✕</button></td>`;

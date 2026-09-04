@@ -1,8 +1,3 @@
-// localization/pt-BR/app.js
-// ─────────────────────────────────────────────────────────────────────────────
-// App-shell chrome: title, menu, export/import dialog triggers.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const APP = {
   title: "Archivum Sheet",
   menuOpen: "Abrir menu",

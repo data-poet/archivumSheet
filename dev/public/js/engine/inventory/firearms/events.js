@@ -27,11 +27,7 @@ const selected = state.selected;
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 // Firearms have their own dedicated tab, with its own containers.
 
-/**
- * Re-renders ONLY the firearm lists (equipped slots + storage), not a full
- * renderLists() sweep of all 21 sections — same reasoning/shape as
- * shield's _renderShieldLists.
- */
+// Re-renders only firearm lists, not the full renderLists() sweep — same shape as shield's _renderShieldLists.
 function _renderFirearmLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -57,7 +53,7 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
-/** Resume page HP cell: the "actual" value sits in a dedicated <strong> in the <td>. */
+// Resume page HP cell: the "actual" value sits in a dedicated <strong> in the <td>.
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
   const cell = inputEl.closest("td");
   if (!cell) return;
@@ -65,7 +61,7 @@ function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
   if (actual) actual.textContent = maxHp + (modifier || 0);
 }
 
-/** Same idea as _updateActualHpDisplay but for the single-value statModifierBlock. */
+// Same idea as _updateActualHpDisplay but for the single-value statModifierBlock.
 function _updateActualStatDisplay(inputEl, baseValue, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
@@ -74,11 +70,7 @@ function _updateActualStatDisplay(inputEl, baseValue, modifier) {
     strong.textContent = (Number(baseValue) || 0) + (Number(modifier) || 0);
 }
 
-/**
- * saveFirearmCustomFields mutates + calls its own renderListsPreserving()
- * internally (unwrapped) — snapshot right before it and restore right
- * after it returns, matching this file's pre-factory behavior.
- */
+// saveFirearmCustomFields renders internally (unwrapped); snapshot/restore around it here.
 function _saveFirearmCustomFieldsWrapped(instanceId, values) {
   const snapshots = snapshotAll();
   saveFirearmCustomFields(instanceId, values);
@@ -91,14 +83,8 @@ const _handleFirearmCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderFirearmLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
-/**
- * Click-path mutators (addFirearmEnchantment/update/remove) already
- * self-wrap render+snapshot/restore synchronously, so runWithOpenState is
- * left at its no-op default — same reasoning as melee/ranged. No dual-use
- * counterpart to also refresh, so the change-path render is the
- * firearm-only _renderFirearmLists (unlike melee/ranged's combined
- * re-render).
- */
+// Enchantment mutators self-wrap render+snapshot/restore, so runWithOpenState stays at its no-op default (same as melee/ranged).
+// No dual-use counterpart for firearms, so the render here is firearm-only, unlike melee/ranged's combined re-render.
 const _firearmEnchantments = createEnchantmentsHandlers({
   findByInstanceId: findFirearmByInstanceId,
   getItems: () => selected.firearms,
@@ -108,7 +94,6 @@ const _firearmEnchantments = createEnchantmentsHandlers({
   render: () => _renderFirearmLists(state.sheet),
 });
 
-// Maps tuning input CSS classes to instance fields + the weapon DB base field.
 const TUNING_FIELDS = {
   "equipped-firearm-gdp": {
     field: "gdp_modifier",
@@ -162,10 +147,7 @@ export function handleFirearmClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Delegated to the shared factory — see armorEvents.js's usage for the
-  // full rationale.
-
+  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleFirearmCustomFieldsClick(e)) return true;
 
   if (_firearmEnchantments.handleClick(e)) return true;

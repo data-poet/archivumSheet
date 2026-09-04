@@ -27,14 +27,11 @@ function magicGearRecord(magicGearId, data) {
   return data.magicGear.find((g) => g.magic_gear_id === magicGearId) ?? null;
 }
 
-/** If the user has set a custom name, that's the display name; otherwise fall
- *  back to the magic gear's catalog name. */
 function displayName(inst, record) {
   return inst.magic_gear_custom_name || record.magic_gear_name;
 }
 
-// Look up a resolved magic gear item from the engine output by instanceId —
-// mirrors resolvedAccessory in renderAccessories.js.
+// Mirrors resolvedAccessory in renderAccessories.js.
 function resolvedMagicGear(sheet, instanceId) {
   const inv = sheet?.inventory?.magicGear;
   if (!inv) return null;
@@ -131,9 +128,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
         const instanceId = inst._instanceId;
         const resolved = resolvedMagicGear(sheet, instanceId);
-        // Per-item, not per-section: each magic_gear_type has its own equip
-        // cap (Arcano vs Musical), so whether "Equipar" is disabled depends
-        // on THIS item's type, not a single shared limit.
+        // Per-item, not per-section: each magic_gear_type has its own equip cap.
         const atLimit = isMagicGearAtEquipLimit(inst.magic_gear_id);
         const limitLabel = atLimit
           ? getMagicGearLimitReachedLabel(

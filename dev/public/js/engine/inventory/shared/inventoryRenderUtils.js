@@ -38,9 +38,6 @@ export function hpModifierBlock({
   `;
 }
 
-/**
- * Derive maxHp, actualHp and material for an equipment instance.
- */
 export function resolveHp(instance, baseHp, materials) {
   const material = resolveMaterial(instance, materials);
   const maxHp = calcMaxHp(baseHp, material);

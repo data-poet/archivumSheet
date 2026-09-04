@@ -21,13 +21,9 @@ const selected = state.selected;
 const data = state.data;
 
 // ─── Resume ammo stepper helper ───────────────────────────────────────────────
-// The resume view shows an aggregated quantity for each ammo_id across all
-// equipped containers. When the player adjusts the stepper, we translate the
-// new aggregate into a delta and apply it to the first equipped container
-// (by insertion order) that holds the given ammo_id.
+// The resume view aggregates quantity for an ammo_id across all equipped containers; adjusting the stepper translates the new total into a delta applied to the first equipped container (by insertion order) holding that ammo_id.
 
 function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
-  // Calculate current total across all equipped containers
   const equippedContainers = selected.ammo_containers.filter(
     (c) => c.storedAt === "equipped",
   );
@@ -40,7 +36,6 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
   if (delta === 0) return;
 
   if (delta > 0) {
-    // Increment: add to the first container
     const firstContainer = selected.ammo_containers.find(
       (c) => c._instanceId === firstInstanceId,
     );
@@ -147,8 +142,7 @@ export function handleAmmoClick(e) {
 }
 
 // ─── Input ────────────────────────────────────────────────────────────────────
-// The global stepper handler (events/index.js) fires input events on ± clicks;
-// these handlers receive them and enforce capacity clamping via the inventory layer.
+// The global stepper handler (events/index.js) fires input events on ± clicks; these enforce capacity clamping via the inventory layer.
 
 export function handleAmmoInput(e) {
   if (e.target.classList.contains("ammo-qty-in-container")) {

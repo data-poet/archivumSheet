@@ -1,4 +1,3 @@
-// ===== BASE DAMAGE UI =====
 export function renderDamage(sheet) {
   const dmg = sheet?.character?.base_damage;
   if (!dmg) return;

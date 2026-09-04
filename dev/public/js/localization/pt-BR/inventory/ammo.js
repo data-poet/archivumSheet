@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/ammo.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Equipment: Ammo — mirrors engine/inventory/ammo.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const AMMO = {
   loadAmmo: "Carregar Munição",
   addContainer: "Adicionar Aljava",
