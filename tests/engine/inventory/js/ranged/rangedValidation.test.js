@@ -236,5 +236,42 @@ describe("RANGED WEAPON VALIDATION", () => {
 
       expect(errors).toEqual([]);
     });
+
+    // RANGED-050 is a dual-use weapon (paired with MELEE-215 — see
+    // dualUseWeapons.js). Enchantments sync across the pair (decision #4),
+    // so a melee-only entry (e.g. BAL) can legitimately end up on this
+    // ranged mirror — decision #5 requires validating against the union of
+    // both sides' categories, not ranged's alone.
+    test("Should allow a melee-only enchantment on a dual-use ranged instance (union category)", () => {
+      const errors = validateRangedEnchantments(
+        [
+          {
+            weapon_id: "RANGED-050",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should NOT extend the union to a non-dual-use ranged instance", () => {
+      const errors = validateRangedEnchantments(
+        [
+          {
+            weapon_id: "RANGED-001",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toContain(
+        'rangedInventory[0].enchantments[0]: enchantment "Fortificar BAL" is not allowed on Armas de Longo Alcance',
+      );
+    });
   });
 });

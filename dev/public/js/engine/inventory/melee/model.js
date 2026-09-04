@@ -205,6 +205,7 @@ function _syncRangedCounterpart(
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 }
 
