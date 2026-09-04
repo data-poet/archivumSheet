@@ -1,12 +1,6 @@
 import { t } from "../../../localization/pt-BR/index.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 
-/**
- * Build an HTML <option> string for each storage location.
- *
- * @param {string|null} currentLocation - The currently selected storedAt value.
- * @returns {string} HTML string of <option> elements.
- */
 export function storageOptions(currentLocation) {
   return STORAGE_LOCATIONS.map(
     (loc) =>
@@ -16,14 +10,7 @@ export function storageOptions(currentLocation) {
   ).join("");
 }
 
-/**
- * Build a "move equipped item" <select> HTML.
- * The "Equipped" option has value="" and represents the equipped state.
- *
- * @param {string} cssClass  - CSS class for the select element.
- * @param {string} dataAttrs - Extra data-* attribute string, e.g. data-slot="Tronco".
- * @returns {string}
- */
+// The "Equipped" option has value="" and represents the equipped state.
 export function equippedMoveSelect(cssClass, dataAttrs = "") {
   return `
     <select class="${cssClass}" ${dataAttrs}>
@@ -35,13 +22,6 @@ export function equippedMoveSelect(cssClass, dataAttrs = "") {
   `;
 }
 
-/**
- * Build material <option> elements for a <select>.
- *
- * @param {Array}       materials        - Full materials array from state.data.
- * @param {string|null} selectedMaterialId
- * @returns {string}
- */
 export function materialOptions(materials, selectedMaterialId) {
   return materials
     .map(
@@ -53,13 +33,6 @@ export function materialOptions(materials, selectedMaterialId) {
     .join("");
 }
 
-/**
- * Build tier <option> elements for a <select>.
- *
- * @param {string[]} tiers
- * @param {string|null} selectedTier
- * @returns {string}
- */
 export function tierOptions(tiers, selectedTier) {
   if (!tiers.length) return `<option value="">-</option>`;
   return tiers

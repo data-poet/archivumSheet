@@ -6,29 +6,12 @@ import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCHEMA VERSION
 // Bump this if the shape of the export JSON ever changes in a breaking way.
-// ─────────────────────────────────────────────────────────────────────────────
 const SCHEMA_VERSION = 1;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TOAST NOTIFICATION
-// A lightweight in-app notification — no alert() blocking the UI.
-// ─────────────────────────────────────────────────────────────────────────────
 
 const TOAST_ICONS = { success: "✓", error: "✕", info: "ℹ" };
 
-/**
- * @param {string} message
- * @param {"success"|"error"|"info"} [type]
- * @param {Object} [options]
- * @param {string} [options.actionLabel]  - if set, renders a tappable action button
- * @param {Function} [options.onAction]   - called when the action button is tapped
- * @param {number} [options.duration]     - ms before auto-dismiss (default 3000)
- */
 export function showToast(message, type = "success", options = {}) {
-  // Remove any existing toast (and let it fully replace, no orphaned actions)
   document.getElementById("_archivum-toast")?.remove();
 
   const { actionLabel, onAction, duration = 3000 } = options;
@@ -60,21 +43,10 @@ export function showToast(message, type = "success", options = {}) {
     });
   }
 
-  // Fade in
   requestAnimationFrame(() => toast.classList.add("is-visible"));
-
-  // Auto-dismiss
   setTimeout(dismiss, duration);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORT
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Serialize current sheet state to JSON and trigger a browser download.
- * Filename: archivum_<CharacterName>_<date>.json  (spaces → underscores)
- */
 export function exportSheet() {
   const { selected, sheet } = state;
 
@@ -116,7 +88,6 @@ export function exportSheet() {
       type: "application/json",
     });
 
-    // Build a descriptive filename
     const characterName = (
       sheet?.pc?.character_name ||
       selected.character?.character_name ||
@@ -142,22 +113,10 @@ export function exportSheet() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// IMPORT
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Read a JSON file chosen by the user and hydrate the sheet state from it.
- * Shows a toast on success or failure — no alert() calls.
- *
- * @param {File} file
- * @returns {Promise<void>}
- */
 export function importSheet(file) {
   return new Promise((resolve, reject) => {
     if (!file) { reject(new Error("Nenhum arquivo selecionado.")); return; }
 
-    // Validate file type before reading
     if (!file.name.endsWith(".json") && file.type !== "application/json") {
       const err = new Error("O arquivo deve ser um .json exportado pelo Archivum.");
       showToast(err.message, "error");
@@ -194,10 +153,6 @@ export function importSheet(file) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INTERNAL — apply a validated payload to state + DOM
-// ─────────────────────────────────────────────────────────────────────────────
-
 function _applyImport(payload) {
   if (!payload?.version || !payload?.character || !payload?.inventory) {
     throw new Error("Arquivo inválido — campos obrigatórios ausentes.");
@@ -206,7 +161,6 @@ function _applyImport(payload) {
   const { selected, data } = state;
   const { pc, race, character, inventory } = payload;
 
-  // ── PC info ───────────────────────────────────────────────────────────────
   selected.character = {
     player_name:       pc?.player_name       ?? "",
     character_name:    pc?.character_name    ?? "",
@@ -228,7 +182,6 @@ function _applyImport(payload) {
     },
   };
 
-  // ── PC info → DOM inputs ──────────────────────────────────────────────────
   const setVal = (id, v) => {
     const el = document.getElementById(id);
     if (el) el.value = v ?? "";
@@ -254,14 +207,11 @@ function _applyImport(payload) {
     if (mod)  mod.value  = src.modifier   ?? 0;
   });
 
-  // ── Weight → DOM input ────────────────────────────────────────────────────
   const weightEl = document.getElementById("weight");
   if (weightEl) weightEl.value = inventory.weight ?? 0;
 
-  // ── Reset instance ID counters so imported IDs don't clash ────────────────
   resetInstanceCounters();
 
-  // ── Hydrate selected state ────────────────────────────────────────────────
   selected.secondary      = character.secondary      ?? {};
   selected.damage         = character.damage         ?? {};
   selected.resistances    = character.resistances    ?? {};
@@ -283,7 +233,6 @@ function _applyImport(payload) {
   selected.customInventory = inventory.customInventory ?? [];
   selected.coins          = inventory.coins          ?? [];
 
-  // ── Re-render lists and recalculate ───────────────────────────────────────
   renderListsPreserving(selected, data);
   renderCharacterImage();
   renderResumeImage();

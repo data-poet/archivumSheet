@@ -5,10 +5,7 @@ const ui = state.ui;
 
 let _runEngine = null;
 
-/**
- * Call once at startup to inject the engine function.
- * This avoids a circular import between autorun ↔ engine.
- */
+// Injected at startup to avoid a circular import between autorun and engine.
 export function initAutoRun(runEngineFn) {
   _runEngine = runEngineFn;
 }

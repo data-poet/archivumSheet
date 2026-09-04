@@ -37,14 +37,11 @@ function isAtLimit(accessoryId, selected, data) {
   );
 }
 
-/** If the user has set a custom name, that's the display name; otherwise fall
- *  back to the accessory's catalog name. */
 function displayName(inst, record) {
   return inst.accessory_custom_name || record.accessory_name;
 }
 
-// Look up a resolved accessory from the engine output by instanceId —
-// mirrors resolvedArmor/resolvedMelee in their respective render files.
+// Mirrors resolvedArmor/resolvedMelee in their respective render files.
 function resolvedAccessory(sheet, instanceId) {
   const inv = sheet?.inventory?.accessories;
   if (!inv) return null;

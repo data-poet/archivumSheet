@@ -24,7 +24,6 @@ import {
 } from "../../../shared/renderUtils.js";
 import { enchantmentsExpander } from "../shared/enchantments/render.js";
 
-// Look up a resolved armor piece from the engine output by instanceId
 function resolvedArmor(sheet, instanceId) {
   if (!sheet?.inventory?.armor) return null;
   const inv = sheet.inventory.armor;
@@ -38,7 +37,6 @@ function resolvedArmor(sheet, instanceId) {
     const found = items.find((p) => p && p._instanceId === instanceId);
     if (found) return found;
   }
-  // Also check equipped slots (object keyed by slot name, value = resolved piece or null)
   if (inv.equipped) {
     const piece = Object.values(inv.equipped).find(
       (p) => p && p._instanceId === instanceId,
@@ -48,16 +46,7 @@ function resolvedArmor(sheet, instanceId) {
   return null;
 }
 
-/**
- * Appends a small inline badge to a final value when it includes a
- * nonzero enchantment contribution — e.g. "1.74" + a "+10%" badge for
- * weight, "5" + a "+2" badge for damage resistance. Now shared via
- * shared/renderUtils.js (imported above) — see that doc comment for the
- * full rationale. This armor-local wrapper just pre-fills the title with
- * armor's own localized string, since armor's call sites below pass
- * suffix as a positional 3rd arg rather than the shared function's
- * options object.
- */
+// Pre-fills the shared withEnchantmentBadge's title with armor's own localized string.
 function withArmorEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
     suffix,

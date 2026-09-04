@@ -1,11 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   TAB STRIP — horizontal scrollable tabs inside each section
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/*
- * .tab-strip sits at the top of a .box, replacing the old <details><summary>.
- * It scrolls horizontally on mobile so any number of tabs fit without wrapping.
- */
+/* scrolls horizontally on mobile so any number of tabs fit without wrapping */
 .tab-strip {
   display: flex;
   overflow-x: auto;
@@ -24,7 +17,6 @@
   display: none; /* Safari / Chrome */
 }
 
-/* Tab buttons */
 .tab-btn {
   flex-shrink: 0;
   background: none;
@@ -56,7 +48,6 @@
   transform: none; /* override global button:active scale */
 }
 
-/* Collapse chevron — pinned to the right end of the strip */
 .tab-strip-collapse {
   flex-shrink: 0;
   margin-left: auto;
@@ -83,28 +74,24 @@
   color: var(--color-text);
 }
 
-/* Chevron rotates 90° when expanded */
 .tab-strip-collapse[aria-expanded="true"] {
   transform: rotate(90deg);
 }
 
-/* ── Section collapse — hides all tab panels ─────────────────────────────── */
 .box.is-collapsed .tab-panel {
   display: none !important;
 }
 
-/* Collapsed box: strip still visible but bottom border softened */
 .box.is-collapsed .tab-strip {
   border-bottom-color: transparent;
 }
 
-/* Active tab uses the section accent inherited from the parent <section data-section> */
+/* accent color falls back through --_section-accent, inherited from the parent <section data-section> */
 .tab-btn.is-active {
   color: var(--_section-accent, var(--accent-character));
   border-bottom-color: var(--_section-accent, var(--accent-character));
 }
 
-/* Tab panels */
 .tab-panel {
   display: none;
   padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
@@ -114,12 +101,12 @@
   display: block;
 }
 
-/* Section accent top-border on boxes — inherited from parent <section data-section> */
+/* inherited from the parent <section data-section> via --_section-accent */
 [data-section] .box {
   border-top: 3px solid var(--_section-accent, var(--accent-character));
 }
 
-/* Nested <details> inside tab panels keep accent styling */
+/* keeps accent styling on nested <details> inside tab panels */
 [data-section] .tab-panel details summary {
   border-left: 3px solid
     color-mix(

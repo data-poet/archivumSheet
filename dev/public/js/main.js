@@ -28,7 +28,6 @@ import { loadDualUseWeapons } from "./engine/inventory/shared/dualUseWeapons.js"
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 
-// ===== INIT =====
 window.onload = async () => {
   initAutoRun(runEngine);
   bindUI();
@@ -60,12 +59,7 @@ window.onload = async () => {
     loadDualUseWeapons(),
   ]);
 
-  // Init character persistence (loads active character into state)
   initCharacters();
-
-  // Wire character selector UI
   initCharacterSelector();
-
-  // Init character portrait
   initCharacterImage();
 };

@@ -1,10 +1,4 @@
-// localization/pt-BR/inventory/firearms.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Firearms (artificer builds) — mirrors engine/inventory/firearms.
-// Shares the "ranged" tab UI; damage/distance/tr/prec/reload-speed labels
-// in inventory/ranged.js are reused as-is since the concepts are identical.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Shares the "ranged" tab UI; damage/distance/tr/prec/reload-speed labels come from inventory/ranged.js, not duplicated here.
 export const FIREARMS = {
   firearm: "Arma de Fogo",
   addFirearm: "Adicionar Arma de Fogo",

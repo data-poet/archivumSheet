@@ -25,12 +25,10 @@ export async function loadDualUseWeapons() {
 // LOOKUPS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Given a melee weapon_id, returns the matching ranged weapon_id, or null. */
 export function getRangedCounterpart(meleeWeaponId) {
   return data.dualUseWeapons.MELEE_TO_RANGED[meleeWeaponId] ?? null;
 }
 
-/** Given a ranged weapon_id, returns the matching melee weapon_id, or null. */
 export function getMeleeCounterpart(rangedWeaponId) {
   return data.dualUseWeapons.RANGED_TO_MELEE[rangedWeaponId] ?? null;
 }

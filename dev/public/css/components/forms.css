@@ -1,6 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   FORM ELEMENTS
-   ═══════════════════════════════════════════════════════════════════════════ */
 select,
 button,
 input[type="number"],
@@ -22,13 +19,7 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-/* ── Mobile: prevent iOS Safari auto-zoom on input focus ─────────────────
-   Any focused text-entry field under 16px font-size makes Safari zoom the
-   whole page in. --fs-sm/--fs-base only reach 16px on very wide viewports,
-   so every text/number field (including table cells) is fixed at 16px
-   below 768px. <select> is deliberately excluded — it opens a native
-   picker with no inline text cursor, so it isn't affected by the bug and
-   can stay on the normal fluid text scale. */
+/* iOS Safari auto-zooms the page when a focused text field is under 16px, so text/number inputs are pinned to 16px here; <select> is excluded since its native picker isn't affected. */
 @media (max-width: 767px) {
   input[type="number"],
   input[type="text"] {

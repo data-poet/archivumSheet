@@ -1,19 +1,9 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   REFERENCE PAGE — static rules/consultation page (reference.html)
-   Reuses .l-topbar/.l-sidebar/.l-bottomnav/.l-main/.l-section/.box/.tab-strip/
-   .tab-panel as-is. This block only adds what's specific to the reference
-   page: the topbar link button, and markdown-rendered prose typography.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* .topbar-btn is used as a <button> everywhere else in the app; here it also
-   doubles as an <a> (reference link, back-to-sheet link), so strip the
-   default anchor underline. Harmless no-op on <button> elements. */
+/* .topbar-btn also doubles as an <a> here (reference link, back-to-sheet link); the underline reset is a no-op on <button> elements */
 .topbar-btn {
   text-decoration: none;
 }
 
-/* Tab panels get a minimum height so short markdown files don't leave the
-   box looking oddly cramped while content is still loading. */
+/* min-height keeps short markdown files from looking cramped while content is still loading */
 .box--reference .tab-panel {
   min-height: 80px;
 }
@@ -29,7 +19,6 @@
   color: var(--color-remove);
 }
 
-/* ── Markdown prose ──────────────────────────────────────────────────────── */
 .reference-prose {
   font-size: var(--fs-sm);
   line-height: 1.55;
@@ -148,14 +137,7 @@
   font-weight: 700;
 }
 
-/* ==========================================================================
-   INVERTED NESTING:
-   - Outer groups get the boxed container treatment.
-   - Innermost (most nested) items become plain, uppercase, unboxed headers.
-   ========================================================================== */
-
-/* 1. THE CONTAINERS (Outer/Group Details)
-   Applies to any <details> that contains another <details> */
+/* inverted nesting: outer groups get the boxed container treatment, innermost items become plain uppercase unboxed headers */
 .reference-prose details:has(details) {
   margin-bottom: 8px;
   border: 1px solid var(--color-border);
@@ -163,25 +145,20 @@
   overflow: hidden;
 }
 
-/* Remove default padding adjustments for outer containers */
 .reference-prose details:has(details) > *:not(summary) {
   padding: 4px 10px;
 }
 
-/* Handle open state for boxed outer groups if needed */
 .reference-prose details:has(details)[open] > summary {
   border-bottom: 1px solid var(--color-border);
 }
 
-/* 2. THE INNERMOST ITEMS (Most Nested Details)
-   Applies to a <details> that does NOT contain any further <details> */
 .reference-prose details:not(:has(details)) {
   margin-bottom: 4px;
   border: none;
   border-radius: 0;
 }
 
-/* The innermost text/summary styling: plain, uppercase, no box */
 .reference-prose details:not(:has(details)) > summary {
   border-left: none !important;
   background: none;
@@ -194,7 +171,6 @@
   min-height: 36px;
 }
 
-/* Reset inner content padding since it no longer has a box */
 .reference-prose details:not(:has(details)) > *:not(summary) {
   padding: 4px 0 4px 10px;
 }

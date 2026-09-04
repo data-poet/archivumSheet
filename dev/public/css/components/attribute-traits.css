@@ -1,6 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   ATTRIBUTE CELLS
-   ═══════════════════════════════════════════════════════════════════════════ */
 .race-mod-cell {
   color: var(--color-text-muted);
   font-size: var(--fs-xs);
@@ -19,7 +16,6 @@
   font-weight: 700;
 }
 
-/* ── HP modifier block ─────────────────────────────────────────────────────── */
 .hp-modifier {
   display: inline-flex;
   align-items: center;
@@ -33,15 +29,11 @@
   width: 52px;
 }
 
-/* Wider inputs for player name and character name */
 #playerNameInput,
 #characterNameInput {
   min-width: clamp(160px, 40vw, 280px);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   INNATE TRAITS
-   ═══════════════════════════════════════════════════════════════════════════ */
 tr.trait-innate td {
   background: var(--color-innate-bg);
   color: var(--color-text-muted);
@@ -82,14 +74,7 @@ tr.trait-enchantment td {
   opacity: 0.7;
 }
 
-/*
- * Small inline marker for a final value (weight, damage resistance, price)
- * that includes a nonzero enchantment contribution — shown next to the
- * value itself rather than as a hover-only tooltip, since this is a
- * mobile-first app and most users can't hover. A native `title` is added
- * alongside it as a harmless bonus for desktop/mouse users, not the
- * primary mechanism.
- */
+/* Shown inline rather than as a hover-only tooltip since this is mobile-first and most users can't hover; the native `title` attribute is a bonus for desktop/mouse users only. */
 .detail-enchantment-badge {
   display: inline-block;
   margin-left: 4px;

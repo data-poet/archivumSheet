@@ -25,18 +25,9 @@ const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Re-renders ONLY the ranged lists (equipped slots + storage), not a full
- * renderLists() sweep of all 21 sections — same reasoning/shape as
- * shield's _renderShieldLists.
- *
- * NOTE: ranged's HP-modifier inputs do NOT mirror to a linked melee
- * counterpart (unlike melee's HP-modifier inputs, which do mirror to
- * ranged — see meleeEvents.js). Only equip/storage moves mirror
- * bidirectionally, which is what _renderRangedAndMeleeLists below is for.
- * This asymmetry is pre-existing app behavior, not something introduced
- * by this narrowing pass.
- */
+// Re-renders only ranged lists, not the full renderLists() sweep — same shape as shield's _renderShieldLists.
+// Note: unlike melee's HP-modifier inputs (which do mirror to ranged, see meleeEvents.js), ranged's HP-modifier
+// inputs do NOT mirror to a linked melee counterpart — only equip/storage moves do, pre-existing app behavior.
 function _renderRangedLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -47,11 +38,8 @@ function _renderRangedLists(sheet) {
   });
 }
 
-/**
- * Same as _renderRangedLists but also re-renders melee's lists, for the
- * one handler below (equipped-ranged-move) that mirrors equip/storedAt
- * onto a linked melee instance via _linkedInstanceId.
- */
+// Same as _renderRangedLists but also re-renders melee's lists, for the equipped-ranged-move handler
+// that mirrors equip/storedAt onto a linked melee instance via _linkedInstanceId.
 function _renderRangedAndMeleeLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -86,11 +74,7 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
-/**
- * saveRangedCustomFields mutates + calls its own renderListsPreserving()
- * internally (unwrapped) — snapshot right before it and restore right
- * after it returns, matching this file's pre-factory behavior.
- */
+// saveRangedCustomFields renders internally (unwrapped); snapshot/restore around it here.
 function _saveRangedCustomFieldsWrapped(instanceId, values) {
   const snapshots = snapshotAll();
   saveRangedCustomFields(instanceId, values);
@@ -100,18 +84,11 @@ function _saveRangedCustomFieldsWrapped(instanceId, values) {
 const _handleRangedCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findRangedByInstanceId,
   saveCustomFields: _saveRangedCustomFieldsWrapped,
-  render: _renderRangedLists, // already self-wraps via snapshotAll/restoreAll above
+  render: _renderRangedLists,
 });
 
-/**
- * Click-path mutators (addRangedEnchantment/update/remove) already
- * self-wrap render+snapshot/restore synchronously, so runWithOpenState is
- * left at its no-op default. The change-path render is explicit and uses
- * _renderRangedAndMeleeLists (not the ranged-only _renderRangedLists) so a
- * dual-use pair's linked melee enchantments list also refreshes on
- * cascading-filter changes — same reasoning as melee/events.js's
- * _meleeEnchantments wiring.
- */
+// The enchantment mutators already snapshot+restore synchronously, so runWithOpenState stays at its no-op default.
+// The change-path render uses _renderRangedAndMeleeLists so a dual-use pair's linked melee enchantments list also refreshes.
 const _rangedEnchantments = createEnchantmentsHandlers({
   findByInstanceId: findRangedByInstanceId,
   getItems: () => selected.ranged_weapons,
@@ -145,10 +122,7 @@ export function handleRangedClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Delegated to the shared factory — see armorEvents.js's usage for the
-  // full rationale.
-
+  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleRangedCustomFieldsClick(e)) return true;
 
   if (_rangedEnchantments.handleClick(e)) return true;

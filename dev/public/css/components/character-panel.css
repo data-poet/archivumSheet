@@ -1,6 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   CHARACTER PANEL
-   ═══════════════════════════════════════════════════════════════════════════ */
 .character-panel-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -41,7 +38,6 @@
   box-sizing: border-box;
 }
 
-/* Race selects */
 .race-selects {
   display: flex;
   flex-direction: column;
@@ -52,7 +48,6 @@
   width: 100%;
 }
 
-/* Race modifier tags */
 .race-modifiers {
   margin-top: 0.5rem;
   font-size: var(--fs-xs);
@@ -73,7 +68,6 @@
   color: var(--color-text-muted);
 }
 
-/* Character points block */
 .character-points-block {
   margin-top: 1rem;
 }

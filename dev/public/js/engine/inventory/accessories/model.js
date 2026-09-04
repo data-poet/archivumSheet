@@ -51,12 +51,7 @@ export function updateAccessoryNameOptions() {
   updateAccessoryEquipOptionAvailability();
 }
 
-/**
- * Disables the "Equipado" option in the add-form storage select whenever the
- * currently selected accessory type is already at its equip limit — the
- * hard-block half of equip-limit enforcement (paired with the engine-side
- * safety check in buildAccessorySlots).
- */
+// Disables "Equipado" when at the equip limit — paired with the engine-side check in buildAccessorySlots.
 export function updateAccessoryEquipOptionAvailability() {
   const nameSelect = el("accessoryNameSelect");
   const storageSelect = el("accessoryStorage");
@@ -165,8 +160,7 @@ export function equipAccessory(instanceId) {
   triggerAutoRun();
 }
 
-/** Move an equipped/stored accessory to a different storage location, or
- *  back to equipped if destination is empty (used by the equipped-move select). */
+/** Moves to storedAt, or back to equipped if storedAt is empty (used by the equipped-move select). */
 export function moveAccessory(instanceId, storedAt) {
   const instance = findAccessoryByInstanceId(instanceId);
   if (!instance) return;
@@ -224,12 +218,7 @@ export function updateAccessoryPrice(instanceId, rawValue) {
   triggerAutoRun();
 }
 
-/**
- * Commits all three custom fields at once — called only when the user
- * presses "Salvar" in the custom-fields editor (see renderUtils.js /
- * accessoriesEvents.js), never on individual keystrokes. Blank strings are
- * normalized to null.
- */
+// Commits all three custom fields at once, only on "Salvar", never per keystroke. Blank strings normalize to null.
 export function saveAccessoryCustomFields(
   instanceId,
   { name, description, effect },
@@ -249,11 +238,7 @@ export function saveAccessoryCustomFields(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENCHANTMENTS
-//
-// Thin accessory-specific wrappers around the generic entry helpers in
-// enchantments.js — same relationship saveAccessoryCustomFields has with
-// customFieldsBlock. instance.enchantments defaults to [] defensively since
-// accessories saved before this feature existed won't have the field.
+// instance.enchantments defaults to [] since accessories saved before this feature existed won't have the field.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
@@ -280,12 +265,7 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-/**
- * Edits an already-attached entry in place — swapping it for a different
- * enchantment entirely, or just changing its target/value/extraPoints.
- * Keeps the entry's own _instanceId so its position in the list and its
- * price-lookup identity survive the edit.
- */
+// Edits an entry in place, keeping its own _instanceId so list position and price-lookup identity survive the edit.
 export function updateAccessoryEnchantment(
   instanceId,
   entryInstanceId,

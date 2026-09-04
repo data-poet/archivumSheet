@@ -24,31 +24,15 @@ const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Re-renders ONLY the armor lists (equipped slots + storage), not a full
- * renderLists() sweep of all 21 sections — same reasoning as accessories'
- * _renderAccessoryLists.
- *
- * Uses the shared snapshotAll()/restoreAll() pair (all managed containers)
- * rather than a single-scope helper like withOpenState: several armor
- * actions move an item BETWEEN #armorSlots and #armorStorageList in one
- * step (equip/unequip/move), so both need their open/closed state captured
- * and restored together, not just whichever one the click originated in.
- * snapshotAll/restoreAll's generic key function already understands both
- * armor's div-block (data-slot) and table-row (data-instance-id) patterns,
- * plus scroll-position and nested data-detail-kind handling that this file
- * previously didn't have at all.
- *
- * Deferred by one requestAnimationFrame for the same reason withOpenState
- * defers its render: several callers below fire from native <select>
- * "change" handlers, and replacing that select's DOM ancestor before the
- * browser has finished its own change-event/native-picker cycle causes a
- * visible flicker (worst on mobile Safari). Restore happens in the SAME
- * frame as the render — not a later one — to avoid the opposite bug:
- * painting the freshly-rebuilt DOM in its default-collapsed state before
- * it reopens. See openState.js's withOpenState doc comment for the full
- * rationale; this mirrors it exactly.
- */
+// Re-renders only the armor lists, not a full renderLists() sweep — same reasoning as accessories' _renderAccessoryLists.
+//
+// Uses snapshotAll()/restoreAll() rather than a single-scope helper because armor actions can move an item BETWEEN
+// #armorSlots and #armorStorageList in one step (equip/unequip/move), so both need their state captured together.
+//
+// Deferred by one rAF because several callers fire from native <select> "change" handlers, and replacing the
+// select's DOM ancestor before the browser finishes its own change/native-picker cycle causes a visible flicker
+// (worst on mobile Safari). Restore happens in the same frame as the render to avoid painting the rebuilt DOM
+// in its default-collapsed state first. Mirrors openState.js's withOpenState.
 function _renderArmorLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -59,16 +43,8 @@ function _renderArmorLists(sheet) {
   });
 }
 
-/**
- * saveArmorCustomFields mutates + calls its own renderLists()+
- * triggerAutoRun() internally (unwrapped) — snapshot right before it and
- * restore right after it returns (both synchronous), same as this file's
- * pre-factory behavior, so that internal render doesn't blow away open
- * state anywhere on the page. Wrapped here rather than deferred via
- * runWithOpenState so this stays synchronous exactly as before — see the
- * Batch 2 write-up for why the save-branch timing wasn't unified with
- * accessories/magicGear's rAF-deferred equivalent in this pass.
- */
+// saveArmorCustomFields calls its own renderLists()+triggerAutoRun() internally (unwrapped); snapshot/restore
+// synchronously around it here so that internal render doesn't blow away open state elsewhere on the page.
 function _saveArmorCustomFieldsWrapped(instanceId, values) {
   const snapshots = snapshotAll();
   saveArmorCustomFields(instanceId, values);
@@ -78,22 +54,11 @@ function _saveArmorCustomFieldsWrapped(instanceId, values) {
 const _handleArmorCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findArmorByInstanceId,
   saveCustomFields: _saveArmorCustomFieldsWrapped,
-  render: _renderArmorLists, // already self-wraps via snapshotAll/restoreAll above
+  render: _renderArmorLists,
 });
 
-/**
- * Unlike accessories/magicGear's _withPreservedOpenState (needed because
- * their local render helper does NOT self-snapshot), armor's own
- * addArmorEnchantment/updateArmorEnchantment/removeArmorEnchantment
- * (model.js) call the global renderListsPreserving() directly, which
- * already snapshots+restores synchronously — same relationship
- * _saveArmorCustomFieldsWrapped above has with saveArmorCustomFields. So
- * no runWithOpenState override is needed for the click path here; the
- * default no-op (fn() with no wrapping) is correct. The change-path
- * (cascading category/type/target filters) uses _renderArmorLists
- * directly, which self-wraps via snapshotAll/restoreAll + rAF, same as
- * the custom-fields render above.
- */
+// No runWithOpenState override needed here: armor's own enchantment model functions call the global
+// renderListsPreserving() directly, which already snapshots+restores synchronously on its own.
 const _armorEnchantments = createEnchantmentsHandlers({
   findByInstanceId: findArmorByInstanceId,
   getItems: () => selected.armors,
@@ -141,18 +106,9 @@ export function handleArmorClick(e) {
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Generic buttons rendered by customFieldsBlock; delegated to the shared
-  // factory, which only acts if the instanceId belongs to an armor piece —
-  // lets other equipment types safely reuse the same button classes
-  // without collisions.
-
   if (_handleArmorCustomFieldsClick(e)) return true;
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Generic .enchantment-* classes rendered by renderEnchantments.js;
-  // delegated to the shared factory, which ownership-checks the instanceId
-  // the same way as the custom-fields factory above.
-
   if (_armorEnchantments.handleClick(e)) return true;
 
   return false;
@@ -195,7 +151,6 @@ export function handleArmorInput(e) {
       data.materials,
     );
     equippedArmor.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    // Update displayed actual HP cheaply without full re-render
     _updateActualHpDisplay(e.target, maxHp, equippedArmor.hit_points_modifier);
     _deferRender();
     triggerAutoRun();
@@ -249,14 +204,8 @@ export function handleArmorChange(e) {
     const firstArmor = availableArmors[0];
     if (!firstArmor) return true;
 
-    // If something's already equipped in this slot, edit it in place —
-    // preserves _instanceId and any armor_custom_* fields, matching
-    // melee/ranged/firearms/shield's pattern for swapping an
-    // already-equipped item's catalog reference. equipArmor() would
-    // otherwise unequip-and-recreate: a fresh _instanceId and
-    // armor_custom_name/description/effect reset to null, even for a
-    // same-slot tier/name swap that a player would expect to just relabel
-    // the piece they already customized.
+    // Edit in place to preserve _instanceId and armor_custom_* fields (matches melee/ranged/firearms/shield) —
+    // equipArmor() would otherwise unequip-and-recreate, resetting customizations on a same-slot tier/name swap.
     const currentEquipped = findEquippedArmorInSlot(slot);
     if (currentEquipped) {
       currentEquipped.armor_id = firstArmor.armor_id;
@@ -332,9 +281,6 @@ export function handleArmorChange(e) {
   }
 
   // ── Enchantments: cascading category/type/target filters ───────────────────
-  // Delegated to the shared factory — see the click section above for the
-  // ownership-guard rationale.
-
   if (_armorEnchantments.handleChange(e)) return true;
 
   return false;
@@ -368,15 +314,7 @@ export function handleAddArmor() {
 
 // ─── Private helpers ──────────────────────────────────────────────────────────
 
-/**
- * 300ms-debounced render for HP-modifier inputs (typing shouldn't trigger a
- * re-render per keystroke). Delegates to the same _renderArmorLists used
- * everywhere else in this file — single render/snapshot/restore path, no
- * separate local logic. The open/closed state of <details> panels doesn't
- * change while someone's mid-typing a number, so snapshotting when the
- * debounce finally fires (inside _renderArmorLists) rather than at every
- * keystroke produces the same result with less redundant work.
- */
+// 300ms-debounced render for HP-modifier inputs so typing doesn't trigger a re-render per keystroke.
 let _deferTimer = null;
 function _deferRender() {
   clearTimeout(_deferTimer);
@@ -385,7 +323,6 @@ function _deferRender() {
   }, 300);
 }
 
-/** Patch the "atual" strong inside a resume HP cell without re-rendering. */
 function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
   const cell = inputEl.closest("td");
   if (!cell) return;
@@ -393,7 +330,6 @@ function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
   if (actual) actual.textContent = maxHp + (modifier || 0);
 }
 
-/** Patch just the "atual" strong next to the HP modifier input without re-rendering. */
 function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;

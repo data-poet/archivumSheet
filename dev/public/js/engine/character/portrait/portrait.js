@@ -1,22 +1,8 @@
-// events/characterImageEvents.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Character portrait feature.
-//
-// State stored in state.selected.character.image:
-//   { uploaded, data, background, color: {r,g,b},
-//     orientation, position: {x,y}, size: {width,height}, scale }
-//
-// Edit UI:  #tab-char-image  (new tab in section-character)
-// Resume:   #resume-char-image  (injected into .resume-row--name alongside name)
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { showToast } from "../../../store/persistence.js";
 import { showConfirm } from "../../../components/dialog.js";
-
-// ── Internal helpers ──────────────────────────────────────────────────────────
 
 function _img() {
   return state.selected.character.image;
@@ -26,13 +12,12 @@ function _setImg(patch) {
   Object.assign(state.selected.character.image, patch);
 }
 
-/** Compute average RGB of an image given its base64 data URL. */
 function _averageColor(base64) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement("canvas");
-      const size = 50; // sample at reduced size for speed
+      const size = 50; // reduced size for speed
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext("2d");
@@ -59,7 +44,6 @@ function _averageColor(base64) {
   });
 }
 
-/** Return CSS background-color string for a given background setting. */
 function _bgColor(img) {
   if (img.background === "black") return "rgb(0,0,0)";
   if (img.background === "white") return "rgb(255,255,255)";
@@ -67,8 +51,6 @@ function _bgColor(img) {
     return `rgb(${img.color.r},${img.color.g},${img.color.b})`;
   return "";
 }
-
-// ── DOM helpers ───────────────────────────────────────────────────────────────
 
 function _previewEl() {
   return document.getElementById("charimg-preview");
@@ -83,9 +65,6 @@ function _scaleInput() {
   return document.getElementById("charimg-scale");
 }
 
-// ── Render helpers ────────────────────────────────────────────────────────────
-
-/** Apply background color to both the edit preview and the resume portrait. */
 function _applyBackground() {
   const img = _img();
   const color = _bgColor(img);
@@ -96,14 +75,12 @@ function _applyBackground() {
   if (resumeBg) resumeBg.style.backgroundColor = color;
 }
 
-/** Apply scale (width %) to the draggable image element. */
 function _applyScale(imgEl) {
   const img = _img();
   if (!imgEl) return;
   imgEl.style.width = img.scale + "%";
 }
 
-/** Apply left/top position to the draggable image element. */
 function _applyPosition(imgEl) {
   const img = _img();
   if (!imgEl) return;
@@ -111,14 +88,12 @@ function _applyPosition(imgEl) {
   imgEl.style.top = img.position.y + "%";
 }
 
-/** Sync scale slider from state. */
 function _syncScaleControls() {
   const scaleEl = _scaleInput();
   const scale = _img().scale ?? 100;
   if (scaleEl) scaleEl.value = scale;
 }
 
-/** Update the radio button visual selection for background. */
 function _syncBgRadios() {
   const bg = _img().background || "average";
   document.querySelectorAll(".charimg-radio-btn").forEach((r) => {
@@ -126,12 +101,7 @@ function _syncBgRadios() {
   });
 }
 
-// ── Resume image render ───────────────────────────────────────────────────────
-
-/**
- * Render (or clear) the portrait in the resume name row.
- * Called from resume.js after renderResumeHeader().
- */
+// Called from resume.js after renderResumeHeader().
 export function renderResumeImage() {
   const container = document.getElementById("resume-charimg-wrapper");
   if (!container) return;
@@ -144,7 +114,6 @@ export function renderResumeImage() {
 
   container.hidden = false;
 
-  // Build inner HTML only once (avoid re-creating drag listeners)
   container.innerHTML = `
     <div class="resume-charimg-frame" id="resume-charimg-bg" style="background-color:${_bgColor(img)}">
       <img
@@ -158,19 +127,12 @@ export function renderResumeImage() {
   `;
 }
 
-// ── Full editor render ────────────────────────────────────────────────────────
-
-/**
- * Render the image tab panel content.
- * Called once from initCharacterImage() after the DOM is ready.
- * The panel HTML lives in index.html; this function wires the preview image.
- */
+// Panel HTML lives in index.html; this function only wires the preview image.
 export function renderCharacterImage() {
   const img = _img();
   const previewEl = _previewEl();
   if (!previewEl) return;
 
-  // Remove stale image element if any
   const old = _imageEl();
   if (old) old.remove();
 
@@ -181,7 +143,6 @@ export function renderCharacterImage() {
     return;
   }
 
-  // Create image element
   const imgEl = document.createElement("img");
   imgEl.id = "charimg-img";
   imgEl.className = "charimg-img";
@@ -195,20 +156,12 @@ export function renderCharacterImage() {
   _applyBackground();
   _syncScaleControls();
   _syncBgRadios();
-  // Guard against re-binding: this render function runs again after nearly
-  // every portrait interaction (background/preset change, upload, clear),
-  // but previewEl is the same persistent DOM node every time (looked up by
-  // id, never replaced) — without this guard, _bindDrag() would attach a
-  // fresh set of document-level mousemove/mouseup listeners on every call,
-  // stacking duplicates that each independently fire on a single drag
-  // gesture (multiple triggerAutoRun() calls per drag).
+  // previewEl persists across re-renders; without this guard _bindDrag would stack duplicate document-level listeners on every render.
   if (!previewEl._dragBound) {
     _bindDrag(previewEl);
     previewEl._dragBound = true;
   }
 }
-
-// ── Drag-to-reposition ────────────────────────────────────────────────────────
 
 function _clamp(val, min, max) {
   return Math.max(min, Math.min(max, val));
@@ -256,14 +209,12 @@ function _bindDrag(previewEl) {
     triggerAutoRun();
   };
 
-  // Mouse
   previewEl.addEventListener("mousedown", (e) => {
     e.preventDefault();
     onStart(e.clientX, e.clientY);
   });
   document.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY));
   document.addEventListener("mouseup", () => onEnd());
-  // Touch
   previewEl.addEventListener(
     "touchstart",
     (e) => {
@@ -282,10 +233,7 @@ function _bindDrag(previewEl) {
   previewEl.addEventListener("touchend", () => onEnd());
 }
 
-// ── File upload ───────────────────────────────────────────────────────────────
-
 async function _loadFile(file) {
-  // Type check
   if (
     ![
       "image/jpeg",

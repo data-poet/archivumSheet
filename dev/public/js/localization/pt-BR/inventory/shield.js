@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/shield.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Equipment: Shield — mirrors engine/inventory/shield.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const SHIELD = {
   loadShields: "Carregar Escudos",
   addShield: "Adicionar Escudo",

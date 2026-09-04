@@ -1,13 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// Centralized instance ID generators
-//
-// Each inventory type has its own counter so IDs are always unique and
-// domain-prefixed (armor-inst-1, shield-inst-1, melee-inst-1).
-// Counters are module-level so they persist across the session.
-//
-// Used by: inventory/armor.js, inventory/shield.js, inventory/melee.js
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _armorCounter = 1;
 let _shieldCounter = 1;
 let _meleeCounter = 1;
@@ -60,16 +50,13 @@ export function nextMagicGearInstanceId() {
   return `magic-gear-inst-${_magicGearCounter++}`;
 }
 
-/** Generic across equipment types — an enchantment application entry isn't
- *  its own inventory item, just a sub-entry inside instance.enchantments. */
+// An enchantment application isn't its own inventory item, just a sub-entry inside
+// instance.enchantments — so this counter is generic across equipment types.
 export function nextEnchantmentInstanceId() {
   return `enchantment-inst-${_enchantmentCounter++}`;
 }
 
-/**
- * Reset all counters — used only during sheet import so imported
- * instance IDs don't collide with freshly generated ones.
- */
+// Used only during sheet import so imported instance IDs don't collide with freshly generated ones.
 export function resetInstanceCounters() {
   _armorCounter = 1;
   _shieldCounter = 1;

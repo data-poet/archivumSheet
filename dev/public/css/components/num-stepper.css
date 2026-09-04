@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   NUM-STEPPER  — wraps every modifier / hp / quantity input
-   Layout: [input] with [−][+] stacked to its right
-   Stepper buttons are hidden on desktop (≥ 481px), shown on mobile (≤ 480px)
-   ═══════════════════════════════════════════════════════════════════════════ */
 .num-stepper {
   display: inline-flex;
   align-items: stretch;
@@ -63,7 +58,6 @@
   background: var(--color-border);
 }
 
-/* ── Mobile: wider input, full-width stepper in table cells ─────────────── */
 @media (max-width: 480px) {
   .num-stepper input {
     min-width: 44px;
@@ -77,8 +71,7 @@
     width: 0;
   }
 
-  /* Tap target: 32px was under the 44px touch guideline. Applies to every
-     table input, stepper-wrapped or plain. */
+  /* 32px was under the 44px touch-target guideline; applies to every table input */
   table input[type="number"],
   table input[type="text"] {
     min-height: 44px;

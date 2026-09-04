@@ -72,7 +72,7 @@ export function updateSurvivalGearNameOptions() {
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Add a gear item to storage, merging quantity when same id+location exists. */
+// Merges quantity when the same id+location entry already exists.
 export function addSurvivalGear(gearId, quantity, storedAt = "backpack") {
   if (!gearId || quantity <= 0) return;
 
@@ -90,7 +90,6 @@ export function addSurvivalGear(gearId, quantity, storedAt = "backpack") {
   triggerAutoRun();
 }
 
-/** Update quantity of an entry (identified by adventure_gear_id + storedAt). */
 export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
   if (quantity <= 0) {
     selected.survivalGear = selected.survivalGear.filter(
@@ -107,7 +106,6 @@ export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
   triggerAutoRun();
 }
 
-/** Remove an entry entirely. */
 export function removeSurvivalGear(gearId, storedAt) {
   const before = structuredClone(selected.survivalGear);
   selected.survivalGear = selected.survivalGear.filter(
@@ -123,10 +121,7 @@ export function removeSurvivalGear(gearId, storedAt) {
   });
 }
 
-/**
- * Move a survival gear entry from one location to another, merging quantities
- * if the destination already has the same adventure_gear_id.
- */
+// Merges quantities if the destination already has the same adventure_gear_id.
 export function moveSurvivalGear(gearId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 

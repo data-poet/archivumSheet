@@ -4,8 +4,7 @@ import { renderSpells } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-// Re-render ONLY the spell list, not a full renderLists() sweep of all
-// 21 sections — same reasoning/shape as shield's _renderShieldLists.
+// Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
 
 function _renderSpellList(sheet) {
   const snapshots = snapshotAll();

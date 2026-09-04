@@ -1,9 +1,3 @@
-// localization/pt-BR/components/attributes.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Attributes table headers + secondary attribute name translations.
-// Backs getSecondaryAttributeLabel() (see pt-BR/index.js).
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const ATTRIBUTES = {
   attribute: "Atributo",
   base: "Base",

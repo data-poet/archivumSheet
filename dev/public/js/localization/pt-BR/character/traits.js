@@ -1,11 +1,4 @@
-// localization/pt-BR/character/traits.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Traits (advantages, disadvantages) — mirrors engine/character/traits. Also
-// backs engine/character/skills (skills/model.js, skills/render.js), which
-// reads traits.* / character.* rather than a namespace of its own — there's
-// no dedicated "skills" LABELS key to split out.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// engine/character/skills has no LABELS key of its own — it reads traits.* / character.* from here and character/info.js.
 export const TRAITS = {
   loadAdvantages: "Carregar Vantagens",
   loadDisadvantages: "Carregar Desvantagens",

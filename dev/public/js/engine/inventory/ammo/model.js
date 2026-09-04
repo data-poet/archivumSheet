@@ -35,10 +35,7 @@ export function loadAmmoSelectors() {
   updateLooseAmmoOptions();
 }
 
-/**
- * Builds the container_ammo_type filter (mirrors melee/ranged/firearms'
- * updateXTypeOptions pattern), then re-narrows the container select to match.
- */
+// Mirrors melee/ranged/firearms' updateXTypeOptions pattern.
 export function updateContainerTypeOptions() {
   const select = el("ammoContainerTypeFilter");
   if (!select) return;
@@ -116,7 +113,6 @@ export function updateLooseAmmoOptions() {
 // CONTAINER OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Add a container to the inventory at the given storedAt location. */
 export function addContainer(containerId, storedAt = "equipped") {
   if (!containerId) return;
 
@@ -131,7 +127,6 @@ export function addContainer(containerId, storedAt = "equipped") {
   triggerAutoRun();
 }
 
-/** Move a container to a different location. */
 export function moveContainer(instanceId, storedAt) {
   const container = findContainerByInstanceId(instanceId);
   if (!container) return;
@@ -142,7 +137,6 @@ export function moveContainer(instanceId, storedAt) {
   triggerAutoRun();
 }
 
-/** Remove a container (and all its contents) by instanceId. */
 export function removeContainer(instanceId) {
   const before = structuredClone(selected.ammo_containers);
   selected.ammo_containers = selected.ammo_containers.filter(
@@ -158,7 +152,6 @@ export function removeContainer(instanceId) {
   });
 }
 
-/** Resolve the numeric capacity for a container_id from data. */
 function getContainerCapacity(containerId) {
   const record = data.ammo_containers.find(
     (c) => c.container_id === containerId,
@@ -166,7 +159,6 @@ function getContainerCapacity(containerId) {
   return record ? parseInt(record.container_capacity, 10) : Infinity;
 }
 
-/** Sum all quantities currently in a container's contents. */
 function usedCapacity(container) {
   return container.contents.reduce((s, e) => s + e.quantity, 0);
 }
@@ -213,7 +205,6 @@ export function updateContainerAmmoQuantity(instanceId, ammoId, quantity) {
   triggerAutoRun();
 }
 
-/** Remove a specific ammo entry from a container. */
 export function removeAmmoFromContainer(instanceId, ammoId) {
   const container = findContainerByInstanceId(instanceId);
   if (!container) return;
@@ -235,11 +226,9 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
 // LOOSE AMMO OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Add loose ammo (no container) to a storage location. */
 export function addLooseAmmo(ammoId, quantity, storedAt = "backpack") {
   if (!ammoId || quantity <= 0) return;
 
-  // Merge with existing entry at same location
   const existing = selected.loose_ammo.find(
     (a) => a.ammo_id === ammoId && a.storedAt === storedAt,
   );
@@ -253,7 +242,6 @@ export function addLooseAmmo(ammoId, quantity, storedAt = "backpack") {
   triggerAutoRun();
 }
 
-/** Update quantity of a loose ammo entry (identified by ammo_id + storedAt). */
 export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
   if (quantity <= 0) {
     selected.loose_ammo = selected.loose_ammo.filter(
@@ -270,7 +258,6 @@ export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
   triggerAutoRun();
 }
 
-/** Remove a loose ammo entry. */
 export function removeLooseAmmo(ammoId, storedAt) {
   const before = structuredClone(selected.loose_ammo);
   selected.loose_ammo = selected.loose_ammo.filter(
@@ -286,10 +273,7 @@ export function removeLooseAmmo(ammoId, storedAt) {
   });
 }
 
-/**
- * Move loose ammo from one location to another, merging if target already has
- * an entry for the same ammo_id.
- */
+/** Merges into an existing entry at the destination for the same ammo_id, if any. */
 export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 
@@ -299,11 +283,9 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   if (!source) return;
 
   const qty = source.quantity;
-  // Remove source
   selected.loose_ammo = selected.loose_ammo.filter(
     (a) => !(a.ammo_id === ammoId && a.storedAt === fromLocation),
   );
-  // Merge into destination
   const dest = selected.loose_ammo.find(
     (a) => a.ammo_id === ammoId && a.storedAt === toLocation,
   );
@@ -321,10 +303,7 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   triggerAutoRun();
 }
 
-/**
- * Move an ammo entry from one container to another, clamped to destination
- * capacity and merging if the destination already has that ammo_id.
- */
+/** Clamped to destination capacity; merges if the destination already has that ammo_id. */
 export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
   if (fromInstanceId === toInstanceId) return;
 
@@ -342,13 +321,11 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
 
   const transferQty = Math.min(sourceEntry.quantity, remaining);
 
-  // Subtract from source
   sourceEntry.quantity -= transferQty;
   if (sourceEntry.quantity <= 0) {
     from.contents = from.contents.filter((e) => e.ammo_id !== ammoId);
   }
 
-  // Merge into destination
   const destEntry = to.contents.find((e) => e.ammo_id === ammoId);
   if (destEntry) {
     destEntry.quantity += transferQty;

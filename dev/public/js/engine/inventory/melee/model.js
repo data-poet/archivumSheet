@@ -121,10 +121,7 @@ export function updateMeleeMaterialOptions() {
 // EQUIP
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Equip or update a melee weapon instance by its instanceId.
- * Multiple melee weapons can be equipped simultaneously.
- */
+// Multiple melee weapons can be equipped simultaneously.
 export function equipMelee(
   instanceId,
   weaponId,
@@ -157,12 +154,7 @@ export function equipMelee(
 // DUAL-USE SYNC HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Find the ranged counterpart for a melee instance, regardless of which side
- * created the pair. Two cases:
- *   • Melee was created first  → ranged has _linkedInstanceId === melee._instanceId
- *   • Ranged was created first → melee has _linkedInstanceId === ranged._instanceId
- */
+// Handles both link directions: melee created first (ranged points at melee) or ranged created first (melee points at ranged).
 function _findLinkedRanged(meleeInstance) {
   if (!meleeInstance) return null;
   const byRangedLink = selected.ranged_weapons.find(
@@ -179,11 +171,7 @@ function _findLinkedRanged(meleeInstance) {
   return null;
 }
 
-/**
- * If weaponId is a dual-use melee weapon, push a mirrored ranged instance
- * into selected.ranged_weapons with the same storage/equip state, material,
- * and a _linkedInstanceId pointing back to meleeInstanceId.
- */
+// If weaponId is dual-use, pushes a mirrored ranged instance linked back via _linkedInstanceId.
 function _syncRangedCounterpart(
   meleeInstanceId,
   weaponId,
@@ -215,9 +203,6 @@ function _syncRangedCounterpart(
   });
 }
 
-/**
- * Remove the ranged counterpart linked to a given melee instance.
- */
 function _removeRangedCounterpart(meleeInstance) {
   const linked = _findLinkedRanged(meleeInstance);
   if (!linked) return;
@@ -226,7 +211,6 @@ function _removeRangedCounterpart(meleeInstance) {
   );
 }
 
-/** Add a melee weapon directly as equipped. */
 export function addEquippedMelee(weaponId, materialId = null) {
   if (!weaponId) return;
 
@@ -251,7 +235,6 @@ export function addEquippedMelee(weaponId, materialId = null) {
   triggerAutoRun();
 }
 
-/** Add a melee weapon directly to storage (not equipped). */
 export function addStoredMelee(
   meleeId,
   materialId = null,
@@ -280,7 +263,6 @@ export function addStoredMelee(
   triggerAutoRun();
 }
 
-/** Move a stored melee weapon to a different storage location. Uses instanceId. */
 export function moveMelee(instanceId, storedAt) {
   const melee = findMeleeByInstanceId(instanceId);
   if (!melee) return;
@@ -299,7 +281,6 @@ export function moveMelee(instanceId, storedAt) {
   triggerAutoRun();
 }
 
-/** Remove a melee weapon instance by instanceId. */
 export function removeMelee(instanceId) {
   const beforeMelee = structuredClone(selected.melee_weapons);
   const beforeRanged = structuredClone(selected.ranged_weapons);
@@ -326,15 +307,8 @@ export function removeMelee(instanceId) {
 // FIELD UPDATES (custom fields)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Commits all three custom fields at once — called only when the user
- * presses "Salvar" in the custom-fields editor, never on individual
- * keystrokes. Blank strings are normalized to null.
- *
- * Mirrors the values to the linked ranged counterpart (bidirectional
- * lookup), same as hit_points_modifier/equip/storage state: a dual-use
- * weapon is one physical item, so renaming it applies on both sides.
- */
+// Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
+// Mirrors to the linked ranged counterpart — a dual-use weapon is one physical item, so renaming applies to both sides.
 export function saveMeleeCustomFields(
   instanceId,
   { name, description, effect },
@@ -362,18 +336,12 @@ export function saveMeleeCustomFields(
 // ─────────────────────────────────────────────────────────────────────────────
 // ENCHANTMENTS
 //
-// Thin melee-specific wrappers around the generic entry helpers in
-// shared/enchantments/model.js — same relationship saveMeleeCustomFields
-// has with customFieldsBlock, and identical shape to shield's own wrappers
-// (see shield/model.js). instance.enchantments defaults to [] defensively
-// since melee weapons saved before this feature existed won't have the
-// field.
+// Thin wrappers around the generic entry helpers in shared/enchantments/model.js. instance.enchantments
+// defaults to [] defensively since melee weapons saved before this feature existed won't have the field.
 //
-// Dual-use sync: a melee/ranged pair is one physical weapon, so its
-// enchantments must stay identical on both sides — same bidirectional-
-// lookup shape as saveMeleeCustomFields/equipMelee/moveMelee's counterpart
-// mirroring above. The ranged side's own add/update/remove wrappers
-// (Batch 6) mirror back onto melee the same way.
+// A melee/ranged pair is one physical weapon, so enchantments stay identical on both sides via the same
+// bidirectional-lookup mirroring used by saveMeleeCustomFields/equipMelee/moveMelee. Ranged's own
+// add/update/remove wrappers mirror back onto melee the same way.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function addMeleeEnchantment(instanceId, enchantmentId, params) {
@@ -404,12 +372,7 @@ export function addMeleeEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-/**
- * Edits an already-attached entry in place — swapping it for a different
- * enchantment entirely, or just changing its target/value/extraPoints.
- * Keeps the entry's own _instanceId so its position in the list and its
- * price-lookup identity survive the edit.
- */
+// Keeps the entry's own _instanceId so its list position and price-lookup identity survive the edit.
 export function updateMeleeEnchantment(
   instanceId,
   entryInstanceId,

@@ -23,26 +23,10 @@ const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Re-renders ONLY the shield lists (equipped slot + storage), not a full
- * renderLists() sweep of all 21 sections — same reasoning as armor's
- * _renderArmorLists.
- *
- * Uses the shared snapshotAll()/restoreAll() pair (all managed containers)
- * rather than a single-scope helper: shield actions can move an item
- * BETWEEN #shieldSlot and #shieldStorageList in one step (equip/unequip/
- * move), so both need their open/closed state captured and restored
- * together, not just whichever one the click originated in.
- *
- * Deferred by one requestAnimationFrame for the same reason armor's
- * equivalent defers: several callers below fire from native <select>
- * "change" handlers, and replacing that select's DOM ancestor before the
- * browser has finished its own change-event/native-picker cycle causes a
- * visible flicker (worst on mobile Safari). Restore happens in the SAME
- * frame as the render — not a later one — to avoid painting the freshly-
- * rebuilt DOM in its default-collapsed state before it reopens. See
- * openState.js's withOpenState doc comment for the full rationale.
- */
+// Uses snapshotAll()/restoreAll() (all containers) rather than a single-scope helper: shield
+// actions can move an item BETWEEN #shieldSlot and #shieldStorageList in one step, so both need
+// open/closed state captured together. Deferred by one rAF so replacing a <select>'s DOM ancestor
+// doesn't race the browser's own change-event/native-picker cycle (visible flicker on mobile Safari).
 function _renderShieldLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -53,11 +37,6 @@ function _renderShieldLists(sheet) {
   });
 }
 
-/**
- * 300ms-debounced render for HP-modifier inputs (typing shouldn't trigger a
- * re-render per keystroke). Delegates to _renderShieldLists — single
- * render/snapshot/restore path, no separate local logic.
- */
 let _deferTimer = null;
 function _deferRender() {
   clearTimeout(_deferTimer);
@@ -80,11 +59,7 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
-/**
- * saveShieldCustomFields mutates + calls its own renderListsPreserving()
- * internally (unwrapped) — snapshot right before it and restore right
- * after it returns, matching this file's pre-factory behavior.
- */
+// saveShieldCustomFields renders internally (unwrapped); snapshot/restore around it here.
 function _saveShieldCustomFieldsWrapped(instanceId, values) {
   const snapshots = snapshotAll();
   saveShieldCustomFields(instanceId, values);
@@ -94,19 +69,11 @@ function _saveShieldCustomFieldsWrapped(instanceId, values) {
 const _handleShieldCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findShieldByInstanceId,
   saveCustomFields: _saveShieldCustomFieldsWrapped,
-  render: _renderShieldLists, // already self-wraps via snapshotAll/restoreAll above
+  render: _renderShieldLists,
 });
 
-/**
- * Same relationship as armor's _armorEnchantments: shield's own
- * addShieldEnchantment/updateShieldEnchantment/removeShieldEnchantment
- * (model.js) call the global renderListsPreserving() directly, which
- * already snapshots+restores synchronously, so no runWithOpenState
- * override is needed for the click path — the default no-op is correct.
- * The change-path (cascading category/type/target filters) uses
- * _renderShieldLists directly, which self-wraps via snapshotAll/
- * restoreAll + rAF, same as the custom-fields render above.
- */
+// The enchantment mutators already snapshot+restore synchronously, so runWithOpenState stays
+// at its no-op default. The change-path uses _renderShieldLists, which self-wraps via rAF.
 const _shieldEnchantments = createEnchantmentsHandlers({
   findByInstanceId: findShieldByInstanceId,
   getItems: () => selected.shields,
@@ -145,16 +112,8 @@ export function handleShieldClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Delegated to the shared factory — see armorEvents.js's usage for the
-  // full rationale.
-
+  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleShieldCustomFieldsClick(e)) return true;
-
-  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Generic .enchantment-* classes rendered by renderEnchantments.js;
-  // delegated to the shared factory, which ownership-checks the instanceId
-  // the same way as the custom-fields factory above.
 
   if (_shieldEnchantments.handleClick(e)) return true;
 
@@ -307,10 +266,6 @@ export function handleShieldChange(e) {
     triggerAutoRun();
     return true;
   }
-
-  // ── Enchantments: cascading category/type/target filters ───────────────────
-  // Delegated to the shared factory — see the click section above for the
-  // ownership-guard rationale.
 
   if (_shieldEnchantments.handleChange(e)) return true;
 

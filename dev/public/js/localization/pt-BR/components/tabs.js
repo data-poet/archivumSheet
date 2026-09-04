@@ -1,8 +1,3 @@
-// localization/pt-BR/components/tabs.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Tab labels, per section.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const TABS = {
   character: {
     info: "Personagem",

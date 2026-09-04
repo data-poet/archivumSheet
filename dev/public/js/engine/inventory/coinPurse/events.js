@@ -73,7 +73,6 @@ export function handleAddCoins() {
 
   addCoins(coinType, quantity, storedAt);
 
-  // Reset form
   coinTypeSelect.value = "";
   coinQtyInput.value   = "";
 }

@@ -37,8 +37,7 @@ export function renderAdvantages(selected, data, sheet) {
             const enchantmentTag = isEnchantment
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
               : "";
-            // Item-granted entries have nothing in the player's own
-            // selection to remove — same treatment as innate.
+            // Item-granted entries have nothing to remove, same as innate.
             const actionCell =
               isInnate || isEnchantment
                 ? `<td class="col-action"></td>`

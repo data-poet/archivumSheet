@@ -119,16 +119,10 @@ import {
   handleCoinPurseChange,
 } from "../engine/inventory/coinPurse/index.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// BIND ALL UI LISTENERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function bindUI() {
-  // ── Character Info & Race ────────────────────────────────────────────────
   on("raceNameSelect", "change", filterSubRacesByName);
   on("raceSubSelect", "change", selectSubRace);
 
-  // ── Traits ────────────────────────────────────────────────────────────────
   on("advTypeSelect", "change", filterAdvByType);
   on("advSelect", "change", () => {}); // keeps select reactive
   on("addAdvBtn", "click", addAdv);
@@ -143,59 +137,46 @@ export function bindUI() {
   on("spellSchoolSelect", "change", filterSpellsBySchool);
   on("addSpellBtn", "click", addSpell);
 
-  // ── Armor ─────────────────────────────────────────────────────────────────
   on("armorSlotSelect", "change", updateArmorNameOptions);
   on("armorNameSelect", "change", updateArmorTierOptions);
   on("addArmorBtn", "click", handleAddArmor);
 
-  // ── Shields ───────────────────────────────────────────────────────────────
   on("shieldNameSelect", "change", updateShieldTierOptions);
   on("addShieldBtn", "click", handleAddShield);
 
-  // ── Melee ─────────────────────────────────────────────────────────────────
   on("meleeTypeFilter", "change", updateMeleeTypeOptions);
   on("meleeNameSelect", "change", updateMeleeTierOptions);
   on("addMeleeBtn", "click", handleAddMelee);
 
-  // ── Ranged ─────────────────────────────────────────────────────────────────
   on("rangedTypeFilter", "change", updateRangedTypeOptions);
   on("rangedNameSelect", "change", updateRangedTierOptions);
   on("addRangedBtn", "click", handleAddRanged);
 
-  // ── Firearms ──────────────────────────────────────────────────────────────
   on("firearmTypeFilter", "change", updateFirearmTypeOptions);
   on("firearmNameSelect", "change", updateFirearmTierOptions);
   on("addFirearmBtn", "click", handleAddFirearm);
 
-  // ── Ammo ──────────────────────────────────────────────────────────────────
   on("ammoContainerTypeFilter", "change", updateContainerTypeOptions);
   on("looseAmmoTypeFilter", "change", updateLooseAmmoOptions);
   on("addAmmoContainerBtn", "click", handleAddContainer);
   on("addLooseAmmoBtn", "click", handleAddLooseAmmo);
 
-  // ── Alchemy ───────────────────────────────────────────────────────────────
   on("alchemyTypeFilter", "change", updateAlchemyTypeOptions);
   on("alchemyNameSelect", "change", updateAlchemyTierOptions);
   on("addAlchemyBtn", "click", handleAddAlchemy);
 
-  // ── Survival Gear ─────────────────────────────────────────────────────────
   on("survivalGearTypeFilter", "change", handleSurvivalGearChange);
   on("addSurvivalGearBtn", "click", handleAddSurvivalGear);
 
-  // ── Accessories ───────────────────────────────────────────────────────────
   on("addAccessoryBtn", "click", handleAddAccessory);
 
-  // ── Magic Gear ────────────────────────────────────────────────────────────
   on("magicGearTypeFilter", "change", updateMagicGearTypeOptions);
   on("addMagicGearBtn", "click", handleAddMagicGear);
 
-  // ── Custom Inventory ──────────────────────────────────────────────────────
   on("addCustomItemBtn", "click", handleAddCustomItem);
 
-  // ── Engine ────────────────────────────────────────────────────────────────
   on("runEngineBtn", "click", runEngine);
 
-  // ── Global delegated click ────────────────────────────────────────────────
   document.addEventListener("click", (e) => {
     if (handleTraitClick(e)) return;
     if (handleSkillClick(e)) return;
@@ -215,7 +196,6 @@ export function bindUI() {
     if (handleCharacterImageClick(e)) return;
   });
 
-  // ── Global delegated input ────────────────────────────────────────────────
   document.addEventListener("input", (e) => {
     if (handleCharacterInput(e)) return;
     if (handleTraitInput(e)) return;
@@ -236,7 +216,6 @@ export function bindUI() {
     if (handleCharacterImageInput(e)) return;
   });
 
-  // ── Global delegated change ───────────────────────────────────────────────
   document.addEventListener("change", (e) => {
     if (handleSkillChange(e)) return;
     if (handleCharacterChange(e)) return;
@@ -255,7 +234,6 @@ export function bindUI() {
     if (handleCharacterImageChange(e)) return;
   });
 
-  // ── Stepper buttons (mobile ± on num-stepper inputs) ──────────────────────
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".stepper-btn");
     if (!btn) return;

@@ -1,30 +1,10 @@
-/**
- * renderUtils.js
- *
- * Shared rendering utilities for detail rows across ALL list renders.
- * Class names use the unified .item-detail / .item-detail-grid / .item-detail-block
- * naming convention. The old .spell-detail* names are kept as CSS aliases in
- * style.css so existing render files that haven't been touched yet still work.
- */
+// The old .spell-detail* class names are kept as CSS aliases in style.css so render files
+// that haven't migrated to .item-detail* yet still work.
 
 import { t } from "../localization/pt-BR/index.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// formatRichText
-// Converts raw text (possibly containing bullet lines starting with "-")
-// into an HTML list + optional note paragraph. Bullet lines may be indented
-// (spaces or tabs) to express nested sub-bullets; indentation depth is
-// normalized into list-nesting levels, so any consistent indent step works.
-// ─────────────────────────────────────────────────────────────────────────────
-/**
- * Shared "text input + increment/decrement buttons" control, used
- * anywhere a numeric field needs mobile-friendly ± buttons rather than
- * relying on the native (tiny, easy-to-mistap) number spinner. The ±
- * buttons themselves are wired globally in events/index.js — it reads
- * data-step/data-min/data-max off the input, so any caller that needs
- * bounds should pass them as data-* attributes via dataAttrs, not native
- * min/max/step (the input is type="text", not type="number").
- */
+// ± buttons are wired globally in events/index.js, which reads data-step/data-min/data-max
+// off the input — pass bounds via dataAttrs, not native min/max/step (input is type="text").
 export function numStepper(cls, dataAttrs, value, stepAttr = "") {
   return `
     <div class="num-stepper">
@@ -43,20 +23,9 @@ export function numStepper(cls, dataAttrs, value, stepAttr = "") {
     </div>`;
 }
 
-/**
- * Appends a small inline badge to a final value when it includes a
- * nonzero enchantment contribution — e.g. "1.74" + a "+10%" badge for
- * weight, "5" + a "+2" badge for damage resistance. Deliberately NOT a
- * hover-only tooltip: this is a mobile-first app, so the delta itself is
- * always visible rather than hidden behind a hover interaction most users
- * can't trigger. The badge still carries a native `title` as a harmless
- * bonus for anyone on a mouse.
- *
- * Shared across every equipment type with an enchantable weight/DR/price
- * stat (armor, shield, ...) — `title` is caller-supplied since each type
- * localizes its own "enchantmentContribution" string (e.g.
- * `t("armor.enchantmentContribution")`, `t("shield.enchantmentContribution")`).
- */
+// Deliberately not a hover-only tooltip: mobile-first app, so the delta is always visible
+// rather than hidden behind a hover most users can't trigger. `title` is still set as a bonus
+// for mouse users, caller-supplied since each equipment type localizes its own string.
 export function withEnchantmentBadge(
   finalValue,
   delta,
@@ -106,12 +75,6 @@ export function formatRichText(raw) {
   return `${list}${note ? `<p class="scaling-note">${note}</p>` : ""}`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// _buildNestedList
-// Internal helper: turns a flat array of { level, content } bullet items into
-// nested <ul class="scaling-list"> markup, one level of nesting per indent
-// step found in the source text.
-// ─────────────────────────────────────────────────────────────────────────────
 function _buildNestedList(items) {
   const root = { children: [] };
   const stack = [{ level: -1, node: root }];
@@ -136,13 +99,6 @@ function _buildNestedList(items) {
   return render(root);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// _buildDetailContent
-// Internal helper: maps an array of field descriptors to HTML spans/divs.
-// Each field: { label: string, value: string, rich?: boolean }
-// Rich fields (description, scaling) span the full grid width.
-// Empty or "—" values are filtered out to keep the panel clean.
-// ─────────────────────────────────────────────────────────────────────────────
 function _buildDetailContent(fields) {
   return fields
     .filter(({ value }) => value && value !== "—")
@@ -154,11 +110,6 @@ function _buildDetailContent(fields) {
     .join("");
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// detailRow
-// Renders a collapsible <tr> detail row for use inside <tbody> tables.
-// colspan should match the number of columns in the parent table.
-// ─────────────────────────────────────────────────────────────────────────────
 export function detailRow(colspan, fields) {
   const content = _buildDetailContent(fields);
   if (!content) return "";
@@ -174,17 +125,6 @@ export function detailRow(colspan, fields) {
     </tr>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// escapeHtml / escapeAttr
-// Minimal escaping for user-typed text dropped into innerHTML — used by
-// customFieldsBlock (and anywhere else user free-text ends up in markup).
-// ─────────────────────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────────────────────
-// emptyRow
-// Standard "—" placeholder row shown when a list section has no entries.
-// Shared across skills/spells render (and available to any other render
-// module that needs the same empty-state row) so the markup stays consistent.
-// ─────────────────────────────────────────────────────────────────────────────
 export function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
 }
@@ -201,27 +141,10 @@ export function escapeAttr(raw) {
   return escapeHtml(raw).replace(/"/g, "&quot;");
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// customFieldsBlock (pilot)
-//
-// PILOT: reusable "custom name / description / effect" editable block for a
-// single equipment instance. Intended to be adopted by other equipment types
-// (armor, melee, ranged, firearms, shields...) once they gain the same
-// custom_* fields — keep this generic, not accessory-specific.
-//
-// Lives in its own dedicated <details> expander (closed by default), mirroring
-// detailRow / equippedDetailBlock below — so it's out of the way until opened.
-//
-// Inside: read-only text until "Personalizar" is pressed, then a detached,
-// uncontrolled edit form (nothing writes to state on keystroke — only
-// "Salvar" commits, "Cancelar" discards). See openCustomFieldsEditor et al.
-//
-// Which instance's editor is open is tracked here (module-level, keyed by
-// the globally-unique _instanceId) rather than in each equipment type's own
-// state, so it survives re-renders triggered by unrelated actions and stays
-// generic for reuse by future equipment types.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Kept generic (not accessory-specific) for adoption by other equipment types once they gain
+// the same custom_* fields. Edit form is detached/uncontrolled — nothing writes to state on
+// keystroke, only "Salvar"/"Cancelar" — and open/closed editor state is tracked module-level
+// (keyed by _instanceId) so it survives re-renders triggered by unrelated actions.
 const _openCustomFieldEditors = new Set();
 
 export function openCustomFieldsEditor(instanceId) {
@@ -236,11 +159,6 @@ export function isCustomFieldsEditorOpen(instanceId) {
   return _openCustomFieldEditors.has(instanceId);
 }
 
-/**
- * Reads the current (uncommitted) values out of an open editor's DOM, scoped
- * to the .custom-fields-block matching instanceId. Returns null if that
- * editor isn't open/found.
- */
 export function readCustomFieldsEditorValues(instanceId) {
   const container = document.querySelector(
     `.custom-fields-block[data-instance-id="${instanceId}"]`,
@@ -310,17 +228,8 @@ function _customFieldsBody({ instanceId, name, description, effect }) {
     </div>`;
 }
 
-/**
- * customFieldsBlock for equipped-slot (div-based) layouts — mirrors
- * equippedDetailBlock's wrapper exactly, so open/closed state survives
- * re-renders via the existing generic openState.js key functions.
- *
- * @param {string} [extraContent] - additional markup nested INSIDE the
- *   "Personalizar" <details>, after the custom-fields body — e.g. the
- *   accessories "Encantamentos" expander (see enchantmentsExpander in
- *   renderEnchantments.js). Optional so every other equipment type that
- *   hasn't adopted enchantments yet renders exactly as before.
- */
+// Mirrors equippedDetailBlock's wrapper exactly, so open/closed state survives re-renders via
+// the existing generic openState.js key functions.
 export function customFieldsEquippedDetail(params, extraContent = "") {
   return `
     <div class="equipped-detail">
@@ -332,12 +241,6 @@ export function customFieldsEquippedDetail(params, extraContent = "") {
     </div>`;
 }
 
-/**
- * customFieldsBlock for stored-table (tr/td-based) layouts — mirrors
- * detailRow's wrapper exactly, for the same open-state-preservation reason.
- *
- * @param {string} [extraContent] - see customFieldsEquippedDetail.
- */
 export function customFieldsDetailRow(colspan, params, extraContent = "") {
   return `
     <tr class="detail-row">
@@ -351,11 +254,6 @@ export function customFieldsDetailRow(colspan, params, extraContent = "") {
     </tr>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// equippedDetailBlock
-// Renders a collapsible <div> detail block for equipped items.
-// Attaches visually below the .equipped-slot-grid.
-// ─────────────────────────────────────────────────────────────────────────────
 export function equippedDetailBlock(fields) {
   const content = _buildDetailContent(fields);
   if (!content) return "";
@@ -369,23 +267,11 @@ export function equippedDetailBlock(fields) {
     </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// customItemEditRow
-//
-// Fully user-defined custom-inventory entries have no catalog record behind
-// them — name/weight/price/description ARE the item, not an overlay on top
-// of one. So unlike customFieldsBlock (which only ever adds optional flavor
-// on top of catalog data), this block lets the person edit the entry's real
-// fields directly. Reuses the same open/close editor-state Set as
-// customFieldsBlock (keyed generically by id) so the interaction pattern
-// stays identical: closed read-only summary → "Editar" → detached uncontrolled
-// form → "Salvar"/"Cancelar".
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Reads the current (uncommitted) values out of an open custom-item editor's
- * DOM. Returns null if that editor isn't open/found.
- */
+// Unlike customFieldsBlock (optional flavor on top of catalog data), a custom-inventory entry
+// has no catalog record behind it — name/weight/price/description ARE the item — so this lets
+// the person edit those fields directly. Reuses customFieldsBlock's editor-state Set (keyed
+// generically by id) so the interaction pattern (read-only → "Editar" → uncontrolled form →
+// "Salvar"/"Cancelar") stays identical.
 export function readCustomItemEditorValues(customItemId) {
   const container = document.querySelector(
     `.custom-item-edit-block[data-custom-item-id="${customItemId}"]`,

@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/melee.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Equipment: Melee — mirrors engine/inventory/melee.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const MELEE = {
   loadMelee: "Carregar Armas Corpo a Corpo",
   addMelee: "Adicionar Arma Corpo a Corpo",

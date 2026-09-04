@@ -12,7 +12,7 @@ export function handleCharacterInput(e) {
   const field = el.dataset.field;
   if (!field) return false;
 
-  // Sex is a select — handled by handleCharacterChange on change event
+  // Sex uses the change event, not input
   if (field === "character_sex") return true;
 
   let value = el.value;

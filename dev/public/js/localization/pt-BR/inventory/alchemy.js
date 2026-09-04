@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/alchemy.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Alchemy consumables — mirrors engine/inventory/alchemy.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const ALCHEMY = {
   loadAlchemy: "Carregar Alquimia",
   addAlchemy: "Adicionar",

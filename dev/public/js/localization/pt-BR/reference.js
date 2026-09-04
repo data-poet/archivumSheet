@@ -1,12 +1,4 @@
-// localization/pt-BR/reference.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Reference page (static rules/consultation page) — mirrors dev/public/js/reference/.
-// Structural config (key/icon/file) is mixed with labels here on purpose,
-// following the same pattern already used by `nav` (components/nav.js). To add
-// a new reference section: add an entry below + its .md files under
-// /reference-content/<section-key-without-prefix>/. No HTML/JS changes needed.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// Structural config (key/icon/file) is mixed with labels on purpose, as with `nav` — add a section here plus its .md files under /reference-content/<key>/, no HTML/JS changes needed.
 export const REFERENCE = {
   pageTitle: "Referência de Regras",
   topbarTitle: "Archivum — Referência",

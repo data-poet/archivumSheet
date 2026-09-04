@@ -1,12 +1,7 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   RESUME ROWS — layout system
-   ═══════════════════════════════════════════════════════════════════════════ */
-
 .resume-row {
   margin-bottom: 1rem;
 }
 
-/* Two-column side-by-side on desktop, stacked on mobile */
 .resume-row--two-col {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -19,7 +14,6 @@
   }
 }
 
-/* Points row always full-width */
 .resume-row--points {
   margin-bottom: 1rem;
 }
@@ -36,7 +30,6 @@
   letter-spacing: 0.01em;
 }
 
-/* ── Bars block ────────────────────────────────────────────────────────── */
 .resume-bars-block {
   display: flex;
   flex-direction: column;
@@ -88,7 +81,6 @@
   background: var(--color-bar-toxicity);
 }
 
-/* Stepper row below each HP/Mana/Toxicity bar */
 .resume-bar-stepper {
   display: flex;
   justify-content: flex-end;
@@ -99,12 +91,10 @@
   width: 52px;
 }
 
-/* ── Name row ──────────────────────────────────────────────────────────── */
 .resume-row--name {
   margin-bottom: 0.5rem;
 }
 
-/* ── Primary attribute boxes ───────────────────────────────────────────── */
 .resume-row--primary-attrs {
   display: flex;
   gap: 0.5rem;
@@ -140,7 +130,6 @@
   color: var(--color-text);
 }
 
-/* Modifier stepper inside primary attr box */
 .resume-attr-mod-stepper {
   width: 100%;
   margin-top: 2px;
@@ -163,7 +152,6 @@
   line-height: 1.4;
 }
 
-/* Modifier stepper inside secondary snapshot table */
 .resume-secondary-mod-stepper {
   min-width: 70px;
 }
@@ -174,13 +162,11 @@
   padding: 1px 2px;
 }
 
-/* Ensure modifier column doesn't overflow */
 .resume-table--secondary-snapshot td:last-child {
   width: 90px;
   padding-right: 0;
 }
 
-/* ── Bars + secondary snapshot row ────────────────────────────────────── */
 .resume-row--bars-secondary {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -195,7 +181,6 @@
   }
 }
 
-/* ── Secondary snapshot table ──────────────────────────────────────────── */
 .resume-table--secondary-snapshot td:last-child {
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -276,7 +261,6 @@
   color: var(--color-text);
 }
 
-/* Coins row — always right-aligned, below the carried total */
 .resume-coins-cell {
   font-size: var(--fs-xs);
   font-variant-numeric: tabular-nums;
@@ -296,7 +280,7 @@
   text-align: center;
 }
 
-/* ── Expander row (legacy weight/value tables) ─────────────────────────── */
+/* legacy weight/value tables */
 .resume-expander-row td {
   padding: 4px 6px;
   border-bottom: 1px solid var(--color-border);

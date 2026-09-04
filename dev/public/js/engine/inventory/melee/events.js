@@ -25,12 +25,7 @@ const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Re-renders ONLY the melee lists (equipped slots + storage), not a full
- * renderLists() sweep of all 21 sections — same reasoning/shape as
- * shield's _renderShieldLists. Use for melee-only changes (name/tier,
- * material, custom fields).
- */
+// Re-renders only melee lists, not the full renderLists() sweep — same shape as shield's _renderShieldLists.
 function _renderMeleeLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -41,20 +36,9 @@ function _renderMeleeLists(sheet) {
   });
 }
 
-/**
- * Same as _renderMeleeLists but also re-renders ranged's lists.
- *
- * Melee/ranged dual-use weapons are synced via _linkedInstanceId (see
- * moveMelee/equipMelee's counterparts in inventory/melee.js): mutating a
- * melee instance's HP modifier or equipped/storedAt location mirrors that
- * change onto its linked ranged instance, if any. Rendering only melee's
- * own containers would leave the ranged section showing stale HP/location
- * for the linked entry. Used by every handler below that touches the
- * linked-ranged mirror, regardless of whether a link actually exists for
- * the instance in question (cheap to render ranged even when it's a
- * no-op — simpler and safer than threading a "was anything linked"
- * condition through every call site).
- */
+// Same as _renderMeleeLists but also re-renders ranged's lists, since dual-use pairs mirror HP/equip/storage
+// via _linkedInstanceId and a melee-only render would leave the linked ranged entry showing stale data.
+// Always renders ranged too, even with no link — cheaper than threading a "was anything linked" check everywhere.
 function _renderMeleeAndRangedLists(sheet) {
   const snapshots = snapshotAll();
 
@@ -67,11 +51,7 @@ function _renderMeleeAndRangedLists(sheet) {
   });
 }
 
-/**
- * 300ms-debounced render for HP-modifier inputs. All three HP-modifier
- * inputs mirror to the linked ranged counterpart, so this always uses the
- * melee+ranged variant.
- */
+// HP-modifier inputs mirror to the linked ranged counterpart, so this always uses the melee+ranged variant.
 let _deferTimer = null;
 function _deferRender() {
   clearTimeout(_deferTimer);
@@ -94,11 +74,7 @@ function _updateActualHpDisplay(inputEl, maxHp, modifier) {
   if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
 }
 
-/**
- * saveMeleeCustomFields mutates + calls its own renderListsPreserving()
- * internally (unwrapped) — snapshot right before it and restore right
- * after it returns, matching this file's pre-factory behavior.
- */
+// saveMeleeCustomFields renders internally (unwrapped); snapshot/restore around it here.
 function _saveMeleeCustomFieldsWrapped(instanceId, values) {
   const snapshots = snapshotAll();
   saveMeleeCustomFields(instanceId, values);
@@ -108,20 +84,11 @@ function _saveMeleeCustomFieldsWrapped(instanceId, values) {
 const _handleMeleeCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findMeleeByInstanceId,
   saveCustomFields: _saveMeleeCustomFieldsWrapped,
-  render: _renderMeleeLists, // already self-wraps via snapshotAll/restoreAll above
+  render: _renderMeleeLists,
 });
 
-/**
- * addMeleeEnchantment/updateMeleeEnchantment/removeMeleeEnchantment
- * (model.js) call the global renderListsPreserving() directly, which
- * already snapshots+restores synchronously, so no runWithOpenState
- * override is needed for the click path — the default no-op is correct.
- * The change-path (cascading category/type/target filters) uses
- * _renderMeleeAndRangedLists — not the melee-only variant — because a
- * dual-use pair's ranged mirror needs its enchantments list refreshed too
- * whenever melee's cascading filters trigger a re-render, same reasoning
- * as every other dual-use-syncing handler in this file.
- */
+// The enchantment mutators already snapshot+restore synchronously, so runWithOpenState stays at its no-op default.
+// The change-path render uses _renderMeleeAndRangedLists since a dual-use pair's ranged mirror also needs refreshing.
 const _meleeEnchantments = createEnchantmentsHandlers({
   findByInstanceId: findMeleeByInstanceId,
   getItems: () => selected.melee_weapons,
@@ -155,17 +122,10 @@ export function handleMeleeClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Delegated to the shared factory — see armorEvents.js's usage for the
-  // full rationale.
-
+  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleMeleeCustomFieldsClick(e)) return true;
 
-  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Generic .enchantment-* classes rendered by the shared enchantments
-  // render.js; delegated to the shared factory, which ownership-checks the
-  // instanceId the same way as the custom-fields factory above.
-
+  // Delegated to the shared factory, which ownership-checks the instanceId the same way as the custom-fields factory above.
   if (_meleeEnchantments.handleClick(e)) return true;
 
   return false;
@@ -368,10 +328,7 @@ export function handleMeleeChange(e) {
     return true;
   }
 
-  // ── Enchantments: cascading category/type/target filters ───────────────────
-  // Delegated to the shared factory — see the click section above for the
-  // ownership-guard rationale.
-
+  // Delegated to the shared factory — see the click section above for the ownership-guard rationale.
   if (_meleeEnchantments.handleChange(e)) return true;
 
   return false;

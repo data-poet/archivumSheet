@@ -121,10 +121,7 @@ export function updateRangedMaterialOptions() {
 // EQUIP
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Equip or update a ranged weapon instance by its instanceId.
- * Multiple ranged weapons can be equipped simultaneously.
- */
+// Multiple ranged weapons can be equipped simultaneously.
 export function equipRanged(
   instanceId,
   weaponId,
@@ -157,11 +154,7 @@ export function equipRanged(
 // DUAL-USE SYNC HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * If weaponId is a dual-use ranged weapon, push a mirrored melee instance
- * into selected.melee_weapons with the same storage/equip state, material,
- * and a _linkedInstanceId pointing back to rangedInstanceId.
- */
+// If weaponId is dual-use, pushes a mirrored melee instance linked back via _linkedInstanceId.
 function _syncMeleeCounterpart(
   rangedInstanceId,
   weaponId,
@@ -193,20 +186,13 @@ function _syncMeleeCounterpart(
   });
 }
 
-/**
- * Find the melee counterpart for a ranged instance, regardless of which side
- * created the pair. Two cases:
- *   • Ranged was created first → melee has _linkedInstanceId === ranged._instanceId
- *   • Melee was created first  → ranged has _linkedInstanceId === melee._instanceId
- */
+// Handles both link directions: ranged created first (melee points at ranged) or melee created first (ranged points at melee).
 function _findLinkedMelee(rangedInstance) {
   if (!rangedInstance) return null;
-  // Case 1: melee points at us.
   const byMeleeLink = selected.melee_weapons.find(
     (m) => m._linkedInstanceId === rangedInstance._instanceId,
   );
   if (byMeleeLink) return byMeleeLink;
-  // Case 2: we point at melee.
   if (rangedInstance._linkedInstanceId) {
     return (
       selected.melee_weapons.find(
@@ -217,9 +203,6 @@ function _findLinkedMelee(rangedInstance) {
   return null;
 }
 
-/**
- * Remove the melee counterpart linked to a given ranged instance.
- */
 function _removeMeleeCounterpart(rangedInstance) {
   const linked = _findLinkedMelee(rangedInstance);
   if (!linked) return;
@@ -228,7 +211,6 @@ function _removeMeleeCounterpart(rangedInstance) {
   );
 }
 
-/** Add a ranged weapon directly as equipped. */
 export function addEquippedRanged(weaponId, materialId = null) {
   if (!weaponId) return;
 
@@ -253,7 +235,6 @@ export function addEquippedRanged(weaponId, materialId = null) {
   triggerAutoRun();
 }
 
-/** Add a ranged weapon directly to storage (not equipped). */
 export function addStoredRanged(
   rangedId,
   materialId = null,
@@ -282,7 +263,6 @@ export function addStoredRanged(
   triggerAutoRun();
 }
 
-/** Move a stored ranged weapon to a different storage location. Uses instanceId. */
 export function moveRanged(instanceId, storedAt) {
   const ranged = findRangedByInstanceId(instanceId);
   if (!ranged) return;
@@ -301,7 +281,6 @@ export function moveRanged(instanceId, storedAt) {
   triggerAutoRun();
 }
 
-/** Remove a ranged instance by instanceId. */
 export function removeRanged(instanceId) {
   const beforeRanged = structuredClone(selected.ranged_weapons);
   const beforeMelee = structuredClone(selected.melee_weapons);
@@ -328,14 +307,8 @@ export function removeRanged(instanceId) {
 // FIELD UPDATES (custom fields)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Commits all three custom fields at once — called only when the user
- * presses "Salvar" in the custom-fields editor, never on individual
- * keystrokes. Blank strings are normalized to null.
- *
- * Mirrors the values to the linked melee counterpart (bidirectional
- * lookup), same as hit_points_modifier/equip/storage state.
- */
+// Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
+// Mirrors to the linked melee counterpart, same as hit_points_modifier/equip/storage state.
 export function saveRangedCustomFields(
   instanceId,
   { name, description, effect },

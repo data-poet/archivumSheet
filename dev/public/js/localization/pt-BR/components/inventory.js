@@ -1,9 +1,3 @@
-// localization/pt-BR/components/inventory.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Encumbrance / carry-limit labels for the inventory summary panel.
-// Backs getEncumbranceLabel() / getCarryLimitLabel() (see pt-BR/index.js).
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const INVENTORY = {
   encumbrance: {
     none: "Insignificante",

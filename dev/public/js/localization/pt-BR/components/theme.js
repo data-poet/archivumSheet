@@ -1,8 +1,3 @@
-// localization/pt-BR/components/theme.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Light/dark theme toggle.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const THEME = {
   iconLight: "☀️",
   iconDark: "🌙",

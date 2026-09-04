@@ -20,7 +20,6 @@ function storageLabel(loc) {
   return t(`storage.${loc}`);
 }
 
-/** Location <select> for moving a coin stack. */
 function locationSelect(coinType, currentLocation) {
   const options = STORAGE_LOCATIONS.map((loc) => {
     const selected = loc === currentLocation ? "selected" : "";

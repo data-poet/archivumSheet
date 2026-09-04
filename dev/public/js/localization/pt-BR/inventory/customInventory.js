@@ -1,8 +1,3 @@
-// localization/pt-BR/inventory/customInventory.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Custom (user-defined) inventory — mirrors engine/inventory/customInventory.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const CUSTOM_INVENTORY = {
   title: "Inventário Personalizado",
   addItem: "Adicionar Item",

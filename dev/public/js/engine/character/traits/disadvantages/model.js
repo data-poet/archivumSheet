@@ -10,18 +10,10 @@ import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
 const data = state.data;
 const selected = state.selected;
 
-// Traits of this type only ever exist as race-innate grants (added by the
-// engine when a race is selected) and must never be manually browsable or
-// addable by the player. This does not affect data.disadvantages itself,
-// which must keep every row so renderTraits.js can still display innate
-// entries.
+// Race-innate grants only; excluded from filters below but data.disadvantages keeps every row so renderTraits.js can still display them.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
-/**
- * Re-renders ONLY the disadvantages list, not a full renderLists() sweep
- * of all 21 sections — same reasoning/shape as shield's
- * _renderShieldLists.
- */
+// Re-renders only the disadvantages list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderDisadvantagesList() {
   const snapshots = snapshotAll();
 
@@ -36,7 +28,6 @@ function _renderDisadvantagesList() {
 export async function loadDisadvantages() {
   data.disadvantages = await fetchDisadvantages();
 
-  // Populate type filter with sorted unique types, excluding race-only traits
   const types = [
     ...new Set(
       data.disadvantages
@@ -53,7 +44,6 @@ export async function loadDisadvantages() {
     typeEl.appendChild(opt);
   });
 
-  // Populate name select with all entries initially
   populateDisSelect("");
 }
 

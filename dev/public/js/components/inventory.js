@@ -5,14 +5,12 @@ import {
   getCarryLimitLabel,
 } from "../localization/pt-BR/index.js";
 
-// ===== HELPERS =====
 export function getMaterialName(materialId, materials = []) {
   if (!materialId) return t("common.common");
   const material = materials.find((m) => m.material_id === materialId);
   return material?.material_name || t("common.unknown");
 }
 
-// ===== INVENTORY UI =====
 export function updateInventoryUI(sheet) {
   const carry = sheet?.inventory?.carry_weight;
   if (!carry) return;
@@ -46,7 +44,6 @@ export function updateInventoryUI(sheet) {
     survivalGearWeight +
     customInventoryWeight;
 
-  // Update weight detail spans
   const set = (id, val) => {
     const e = el(id);
     if (e) e.textContent = val;
@@ -62,7 +59,6 @@ export function updateInventoryUI(sheet) {
   set("custom_inventory_weight", customInventoryWeight);
   set("total_weight", weight);
 
-  // Encumbrance state
   let stateKey = "none";
 
   if (weight >= carry.limits.veryHeavy) stateKey = "overloaded";
@@ -76,7 +72,6 @@ export function updateInventoryUI(sheet) {
     `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`,
   );
 
-  // Carry limits table
   const limitsEl = el("carry_limits");
   if (limitsEl) {
     limitsEl.innerHTML = `

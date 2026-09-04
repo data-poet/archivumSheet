@@ -1,8 +1,3 @@
-// localization/pt-BR/components/resume.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Resume / Summary panel, plus the section headings it renders.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const RESUME = {
   title: "Resumo do Personagem",
   weightTitle: "Peso Carregado",

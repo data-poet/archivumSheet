@@ -1,12 +1,7 @@
 import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
 
-// ===== TABLE HEADERS =====
-// th-attr-*/th-sec-* ids existed in the HTML but were never populated —
-// pre-existing gap predating the enchantment column, not something new.
-// Fixing both tables' full header sets here rather than just the new
-// enchantment column, since attributes.base/race/modifier/etc. already
-// exist in the localization file, just unused until now.
+// th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
 export function initAttributeTableHeaders() {
   const primaryHeaders = {
     "th-attr-attribute": "attributes.attribute",
@@ -44,7 +39,6 @@ export function initAttributeTableHeaders() {
   }
 }
 
-// ===== PRIMARY ATTRIBUTES UI =====
 export function updateActualValues() {
   ["ST", "DX", "IQ", "HT"].forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
@@ -61,10 +55,7 @@ export function updateActualValues() {
       raceCell.className = `col-num race-mod-cell${raceMod !== 0 ? " race-mod-active" : ""}`;
     }
 
-    // Only shown when an equipped enchanted item actually touches this
-    // attribute — presence-based (has_enchantment_modifier), not just
-    // "nonzero", since the engine already distinguishes the two (a +2/-2
-    // pair from two different items still counts as present).
+    // Presence-based (has_enchantment_modifier), not "nonzero" — a +2/-2 pair still counts as present.
     const enchantmentCell = document.getElementById(`${attr}_enchantment`);
     if (enchantmentCell) {
       enchantmentCell.textContent = hasEnchantment
@@ -75,15 +66,12 @@ export function updateActualValues() {
       enchantmentCell.className = `col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}`;
     }
 
-    // Reads enchantment_modifier from the engine (state.sheet) — there's no
-    // DOM input for it, unlike modifier/base, since it's entirely
-    // equipment-driven. The engine is the source of truth for this term.
+    // enchantment_modifier has no DOM input — it's purely engine-derived.
     document.getElementById(`${attr}_actual`).textContent =
       base + raceMod + mod + enchantmentMod;
   });
 }
 
-// ===== SECONDARY ATTRIBUTES UI =====
 export function renderSecondaryAttributes(sheet) {
   const sec = sheet?.character?.secondary_attributes;
   if (!sec) return;
@@ -94,9 +82,7 @@ export function renderSecondaryAttributes(sheet) {
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
       const isMovement = name === "Movement";
-      // HP/Mana/Toxicity's modifier is a "damage/spent" tracker (≤ 0 only),
-      // not a stat bonus — mirrors the cap enforced in traits/events.js and
-      // the resume-bar steppers, so edit mode and view mode agree.
+      // HP/Mana/Toxicity's modifier is a damage tracker (≤ 0 only), not a stat bonus.
       const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
 
       const baseDisplay = isBasicSpeed

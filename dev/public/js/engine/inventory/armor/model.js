@@ -111,15 +111,11 @@ export function updateArmorMaterialOptions() {
 // EQUIP
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Equip an armor into a slot. Only one per slot allowed.
- * Passing an empty armorId clears the slot.
- */
+/** Only one armor per slot; passing an empty armorId clears the slot. */
 export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   const currentEquipped = findEquippedArmorInSlot(slot);
   const preservedMaterialId = currentEquipped?.material_id || materialId;
 
-  // Unequip whatever is in this slot
   selected.armors = selected.armors.filter((inst) => {
     if (!inst.is_equipped) return true;
     const db = data.armors.find((a) => a.armor_id === inst.armor_id);
@@ -153,7 +149,6 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Add armor directly to storage (not equipped). */
 export function addStoredArmor(
   armorId,
   materialId = null,
@@ -178,7 +173,6 @@ export function addStoredArmor(
   triggerAutoRun();
 }
 
-/** Move a stored armor to a different storage location. Uses instanceId. */
 export function moveArmor(instanceId, storedAt) {
   const armor = findArmorByInstanceId(instanceId);
   if (!armor) return;
@@ -190,7 +184,6 @@ export function moveArmor(instanceId, storedAt) {
   triggerAutoRun();
 }
 
-/** Remove an armor instance by instanceId. */
 export function removeArmor(instanceId) {
   const before = structuredClone(selected.armors);
   selected.armors = selected.armors.filter((a) => a._instanceId !== instanceId);
@@ -209,11 +202,7 @@ export function removeArmor(instanceId) {
 // FIELD UPDATES (custom fields)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Commits all three custom fields at once — called only when the user
- * presses "Salvar" in the custom-fields editor, never on individual
- * keystrokes. Blank strings are normalized to null.
- */
+// Commits all three custom fields at once, only on "Salvar", never per keystroke. Blank strings normalize to null.
 export function saveArmorCustomFields(
   instanceId,
   { name, description, effect },
@@ -233,13 +222,8 @@ export function saveArmorCustomFields(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENCHANTMENTS
-//
-// Thin armor-specific wrappers around the generic entry helpers in
-// enchantments.js — same relationship saveArmorCustomFields has with
-// customFieldsBlock, and identical shape to accessories'/magicGear's own
-// wrappers (see accessories/model.js). instance.enchantments defaults to
-// [] defensively since armor saved before this feature existed won't have
-// the field.
+// Same shape as accessories'/magicGear's wrappers. instance.enchantments defaults to [] since armor saved
+// before this feature existed won't have the field.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function addArmorEnchantment(instanceId, enchantmentId, params) {
@@ -266,12 +250,7 @@ export function addArmorEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-/**
- * Edits an already-attached entry in place — swapping it for a different
- * enchantment entirely, or just changing its target/value/extraPoints.
- * Keeps the entry's own _instanceId so its position in the list and its
- * price-lookup identity survive the edit.
- */
+// Edits an entry in place, keeping its own _instanceId so list position and price-lookup identity survive the edit.
 export function updateArmorEnchantment(
   instanceId,
   entryInstanceId,

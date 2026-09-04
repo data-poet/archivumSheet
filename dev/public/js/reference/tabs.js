@@ -1,18 +1,4 @@
-/**
- * reference/tabs.js
- *
- * Tab switching + section collapse for the reference page's
- * .tab-strip / .tab-panel pairs. Mirrors ../ui/tabs.js's collapse
- * mechanics (same .box.is-collapsed class, same CSS). Sections start
- * COLLAPSED on load, same as edit mode — the chevron (or clicking a tab)
- * expands a section on demand.
- */
-
-/**
- * Wire every .tab-strip in the document: tab switching + collapse chevron.
- * The first .tab-btn in each strip starts active. Call once after the
- * section/tab DOM has been built.
- */
+// Mirrors ../ui/tabs.js's collapse mechanics (same .box.is-collapsed class/CSS).
 export function initReferenceTabs() {
   document.querySelectorAll(".tab-strip").forEach((strip) => {
     const sectionId = strip.dataset.section;
@@ -21,7 +7,6 @@ export function initReferenceTabs() {
     const section = document.getElementById(sectionId);
     const box = section?.querySelector(".box");
 
-    // ── Tabs ────────────────────────────────────────────────────────────
     const buttons = Array.from(strip.querySelectorAll(".tab-btn"));
 
     const activateTab = (tabId) => {
@@ -38,7 +23,6 @@ export function initReferenceTabs() {
       activateTab(buttons[0].dataset.tab);
     }
 
-    // ── Collapse ────────────────────────────────────────────────────────
     const collapseBtn = strip.querySelector(".tab-strip-collapse");
 
     const applyCollapse = (collapsed) => {
@@ -53,7 +37,6 @@ export function initReferenceTabs() {
       }
     };
 
-    // Force the section to start collapsed on page load
     applyCollapse(true);
 
     if (collapseBtn) {
@@ -64,7 +47,6 @@ export function initReferenceTabs() {
       });
     }
 
-    // ── Combined click handler ─────────────────────────────────────────
     strip.addEventListener("click", (e) => {
       const btn = e.target.closest(".tab-btn");
       if (!btn) return;

@@ -27,12 +27,7 @@ import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.j
 const data = state.data;
 const selected = state.selected;
 
-// Same rationale as accessoriesEvents.js's _renderAccessoryLists — re-render
-// ONLY the magic gear lists (equipped + stored), not the full renderLists()
-// sweep of all managed sections. See that file's comment block for the full
-// explanation of why this scoping matters for the enchantment-type-select
-// flicker fix.
-
+// Re-renders only the magic gear lists, not the full renderLists() sweep — same rationale as accessoriesEvents.js's _renderAccessoryLists (enchantment-type-select flicker fix).
 function _renderMagicGearLists(sheet) {
   renderEquippedMagicGear(selected, data, sheet);
   renderStoredMagicGear(selected, data, sheet);
@@ -56,7 +51,7 @@ function _withPreservedOpenState(e, mutateAndRenderFn) {
 
 const _handleMagicGearCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findMagicGearByInstanceId,
-  saveCustomFields: saveMagicGearCustomFields, // mutates + renders + runs engine
+  saveCustomFields: saveMagicGearCustomFields,
   render: _renderMagicGearLists,
   runWithOpenState: _withPreservedOpenState,
 });
@@ -87,16 +82,10 @@ export function handleMagicGearClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
-  // Delegated to the shared factory — see accessoriesEvents.js's identical
-  // usage for the full rationale.
-
+  // Delegated to the shared factory — see accessoriesEvents.js for the full rationale.
   if (_handleMagicGearCustomFieldsClick(e)) return true;
 
-  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
-  // Delegated to the shared factory — see accessoriesEvents.js's identical
-  // usage for the full rationale.
-
+  // Delegated to the shared factory — see accessoriesEvents.js for the full rationale.
   if (_magicGearEnchantments.handleClick(e)) return true;
 
   return false;
@@ -120,10 +109,7 @@ export function handleMagicGearChange(e) {
     return true;
   }
 
-  // ── Enchantments: cascading category/type/target filters ───────────────────
-  // Delegated to the shared factory — see accessoriesEvents.js's click
-  // section for the ownership-guard rationale.
-
+  // Delegated to the shared factory — see accessoriesEvents.js's click section for the ownership-guard rationale.
   if (_magicGearEnchantments.handleChange(e)) return true;
 
   return false;

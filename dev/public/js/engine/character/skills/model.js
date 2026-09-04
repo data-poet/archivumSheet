@@ -10,10 +10,7 @@ import { offerUndo } from "../../../components/undo.js";
 const data = state.data;
 const selected = state.selected;
 
-/**
- * Re-renders ONLY the skill list, not a full renderLists() sweep of all 21
- * sections — same reasoning/shape as shield's _renderShieldLists.
- */
+// Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderSkillList() {
   const snapshots = snapshotAll();
 

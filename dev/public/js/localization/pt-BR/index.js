@@ -1,14 +1,4 @@
-// localization/pt-BR/index.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Single source of truth for ALL visible text in the application, assembled
-// from the per-domain files below. Public API (LABELS, t(), and the get*
-// helpers) is unchanged from the old single-file pt-BR.js — every existing
-// `import { ... } from ".../pt-BR.js"` only needs its path suffix updated to
-// ".../pt-BR/index.js"; nothing else about the import changes.
-//
-// To add a new language, duplicate this pt-BR/ folder (e.g. en-US/) and swap
-// the import in main.js: import { LABELS } from "./localization/en-US/index.js";
-// ─────────────────────────────────────────────────────────────────────────────
+// To add a new language, duplicate this pt-BR/ folder (e.g. en-US/) and swap the import in main.js.
 
 import { APP } from "./app.js";
 import { REFERENCE } from "./reference.js";
@@ -89,8 +79,6 @@ export const LABELS = {
   reference: REFERENCE,
   undo: UNDO,
 };
-
-// ── Accessor helpers ──────────────────────────────────────────────────────────
 
 export function t(path, fallback = "") {
   return path.split(".").reduce((obj, key) => obj?.[key], LABELS) ?? fallback;

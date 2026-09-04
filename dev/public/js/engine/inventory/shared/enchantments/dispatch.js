@@ -1,18 +1,9 @@
-/**
- * dispatch.js (enchantments)
- *
- * Shared factory for the enchantments add/remove/save click branches and
- * the category/type/target cascading-filter change branches, previously
- * copy-pasted byte-for-byte between accessories/events.js and
- * magicGear/events.js (including the ownership guard and form-reading
- * helper — see _ownsEnchantmentFormKey's writeup in either of those files
- * for the full rationale on why the guard exists).
- *
- * readEnchantmentFormParams and the clear/set form-selection helpers have
- * zero variance across equipment types (they only touch the shared
- * UI-state Maps in inventory/enchantments.js model.js), so they're used
- * directly here rather than threaded through as config.
- */
+// Shared factory for the enchantments add/remove/save click branches and the
+// category/type/target cascading-filter change branches, previously copy-pasted
+// byte-for-byte between accessories/events.js and magicGear/events.js.
+// readEnchantmentFormParams and the clear/set form-selection helpers have zero variance
+// across equipment types (they only touch the shared UI-state Maps in model.js), so
+// they're used directly here rather than threaded through as config.
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,
@@ -20,15 +11,9 @@ import {
   clearEnchantmentAddFormSelection,
 } from "./model.js";
 
-/**
- * Reads a not-yet-committed enchantment form's current values straight out
- * of the DOM (uncontrolled inputs — nothing writes to state until
- * "Adicionar"/"Salvar" is pressed, same spirit as
- * readCustomFieldsEditorValues). Works for both the add-form (formKey =
- * parent item instanceId) and an entry's edit-form (formKey = the entry's
- * own _instanceId) — same shared markup, see renderEnchantments.js.
- * Returns null if the form isn't found or has no type selected.
- */
+// Reads a not-yet-committed enchantment form straight out of the DOM (uncontrolled inputs —
+// nothing writes to state until "Adicionar"/"Salvar" is pressed). formKey is either the parent
+// item's instanceId (add-form) or an entry's own _instanceId (edit-form) — same shared markup.
 export function readEnchantmentFormParams(formKey) {
   const form = document.querySelector(
     `.enchantment-form[data-form-key="${formKey}"]`,
@@ -52,26 +37,9 @@ export function readEnchantmentFormParams(formKey) {
   };
 }
 
-/**
- * @param {Object} config
- * @param {(instanceId: string) => object|undefined} config.findByInstanceId
- * @param {() => Array} config.getItems
- *        e.g. () => selected.accessories — read live each call, not cached,
- *        for the ownership-guard fallback (entry-level formKeys).
- * @param {(item: object) => Array} [config.getEnchantments]
- *        Defaults to item => item.enchantments.
- * @param {(instanceId: string, enchantmentId: string, params: object) => void} config.addEnchantment
- * @param {(instanceId: string, entryInstanceId: string, enchantmentId: string, params: object) => void} config.updateEnchantment
- * @param {(instanceId: string, entryInstanceId: string) => void} config.removeEnchantment
- * @param {() => void} config.render
- *        Zero-arg — the type provides an already-bound callback (e.g.
- *        `() => _renderAccessoryLists(state.sheet)`), matching the
- *        pre-existing per-call-site convention of passing state.sheet
- *        explicitly for these change-driven re-renders.
- * @param {(e: Event, fn: () => void) => void} [config.runWithOpenState]
- *        Defaults to calling the work immediately.
- * @returns {{ ownsFormKey: (formKey: string) => boolean, handleClick: (e: Event) => boolean, handleChange: (e: Event) => boolean }}
- */
+// getItems is read live each call (not cached) so the ownership-guard fallback for
+// entry-level formKeys sees current state. render is zero-arg — each type passes an
+// already-bound callback (e.g. `() => _renderAccessoryLists(state.sheet)`).
 export function createEnchantmentsHandlers({
   findByInstanceId,
   getItems,
