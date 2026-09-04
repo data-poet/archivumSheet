@@ -74,8 +74,8 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    *
    * Bridges the inventory layer into the character layer: reads ONLY
-   * equipped items' resolved enchantments (accessories, magic gear, armor)
-   * and turns them into attribute modifiers, elemental-resistance
+   * equipped items' resolved enchantments (accessories, magic gear, armor,
+   * shield) and turns them into attribute modifiers, elemental-resistance
    * modifiers, advantage/disadvantage grants, and skill/spell
    * grants+modifiers. Must happen after inventory is built (equipped items
    * aren't known before that) and before the final character build (which
@@ -83,7 +83,9 @@ function buildSheet({
    *
    * Armor's `equipped` is slot-keyed (one piece per slot, some slots
    * null), unlike accessories/magicGear's flat equipped array — flatten
-   * it here before merging.
+   * it here before merging. Shield's `equipped` is simpler still: a
+   * single object or null (no slot map at all — see shieldConstants.js),
+   * so it's just wrapped into a one-item array.
    */
 
   const equippedAccessories =
@@ -92,10 +94,18 @@ function buildSheet({
   const equippedArmor = Object.values(
     inventoryResult.inventory.armor?.equipped || {},
   ).filter(Boolean);
+  // Shield's `equipped` is a single object (or null), unlike armor's
+  // slot-keyed map — wrap it into a one-item array (or none) before
+  // merging, same flattening armor needs, just simpler since there's no
+  // slot map to flatten.
+  const equippedShield = inventoryResult.inventory.shield?.equipped
+    ? [inventoryResult.inventory.shield.equipped]
+    : [];
   const enchantmentEffects = collectEquippedEnchantments([
     ...equippedAccessories,
     ...equippedMagicGear,
     ...equippedArmor,
+    ...equippedShield,
   ]);
 
   /**
