@@ -1,4 +1,9 @@
-const { VALID_STORED_AT } = require("./rangedConstants");
+const { VALID_STORED_AT, RANGED_ITEM_CATEGORY } = require("./rangedConstants");
+
+const {
+  validateEnchantmentEntryShape,
+  validateEnchantmentEntryApplication,
+} = require("../shared/enchantmentsValidation.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // VALIDATION
@@ -37,6 +42,58 @@ function validateRangedInstance(instance, index) {
     );
   }
 
+  // enchantments — optional; unlimited count, no slot system (same
+  // shape-only pass as melee/shield/accessories/magicGear/armor — see
+  // meleeValidation.js)
+  if (instance.enchantments !== undefined) {
+    if (!Array.isArray(instance.enchantments)) {
+      errors.push(`${prefix}: enchantments must be an array when present`);
+    } else {
+      instance.enchantments.forEach((entry, entryIndex) => {
+        errors.push(
+          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
+        );
+      });
+    }
+  }
+
+  return errors;
+}
+
+/**
+ * DB-dependent enchantment checks (unknown ids, allowed_itens, target
+ * existence, value/step alignment) — separate pass from the shape-only
+ * checks above, same split melee/shield/accessories/magicGear/armor use.
+ *
+ * itemCategory is the fixed RANGED_ITEM_CATEGORY constant — dual-use
+ * counterpart-category resolution (decision #5 of the weapons
+ * enchantments plan) lands in Batch 4, untouched here.
+ */
+function validateRangedEnchantments(
+  rangedInventory,
+  enchantmentsDb,
+  targetsDb,
+) {
+  const errors = [];
+
+  rangedInventory.forEach((instance, index) => {
+    const prefix = `rangedInventory[${index}]`;
+    const entries = instance.enchantments || [];
+
+    entries.forEach((entry, entryIndex) => {
+      errors.push(
+        ...validateEnchantmentEntryApplication(
+          entry,
+          enchantmentsDb,
+          targetsDb,
+          RANGED_ITEM_CATEGORY,
+          entryIndex,
+          prefix,
+        ),
+      );
+    });
+  });
+
   return errors;
 }
 
@@ -46,4 +103,5 @@ function validateRangedInstance(instance, index) {
 
 module.exports = {
   validateRangedInstance,
+  validateRangedEnchantments,
 };

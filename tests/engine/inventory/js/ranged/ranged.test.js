@@ -221,5 +221,56 @@ describe("EQUIPMENT RANGED", () => {
         result.equipped[0].weapon_half_distance,
       );
     });
+
+    test("Should resolve a valid enchantment and reflect it in final_weight/total_ranged_weight", () => {
+      // weaponId (first DB entry) has weapon_weight 0 — pick a weapon with
+      // nonzero weight so the enchantment delta is observable.
+      const weightedWeaponId = Object.values(db).find(
+        (weapon) => weapon.weapon_weight > 0,
+      ).weapon_id;
+
+      const result = buildRangedSlots([
+        {
+          weapon_id: weightedWeaponId,
+          material_id: materialId,
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas de Longo Alcance
+              value: 0.1,
+            },
+          ],
+        },
+      ]);
+
+      expect(result.equipped[0].enchantments).toHaveLength(1);
+      expect(result.equipped[0].enchantment_weight_modifier).toBe(0.1);
+      expect(result.equipped[0].final_weight).toBeGreaterThan(
+        result.equipped[0].weapon_final_weight,
+      );
+      // carried_ranged_weapons_weight/total_ranged_weight should reflect the
+      // enchanted final_weight, not the material-only weapon_final_weight
+      expect(result.carried_ranged_weapons_weight).toBe(
+        result.equipped[0].final_weight,
+      );
+      expect(result.total_ranged_weight).toBe(result.equipped[0].final_weight);
+    });
+
+    test("Should throw for an enchantment not allowed on ranged weapons (e.g. a melee-only BAL enchantment)", () => {
+      expect(() => {
+        buildRangedSlots([
+          {
+            weapon_id: weaponId,
+            is_equipped: true,
+            storedAt: null,
+            enchantments: [
+              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056" },
+            ],
+          },
+        ]);
+      }).toThrow("Invalid enchantments");
+    });
   });
 });
