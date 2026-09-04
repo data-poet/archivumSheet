@@ -168,6 +168,16 @@ describe("MELEE WEAPON VALIDATION", () => {
         enchantment_step: 1,
         enchantment_allowed_itens: ["Acessórios"],
       },
+      "ENCHANTMENT-062": {
+        enchantment_id: "ENCHANTMENT-062",
+        enchantment_name: "Aumentar Precisão (PREC)",
+        enchantment_effect_type: "add_requisite",
+        enchantment_target: "PREC",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Armas de Longo Alcance", "Armas de Fogo"],
+      },
     };
 
     const targetsDb = {
@@ -232,6 +242,60 @@ describe("MELEE WEAPON VALIDATION", () => {
       );
 
       expect(errors).toEqual([]);
+    });
+
+    // MELEE-215 is a dual-use weapon (paired with RANGED-050 — see
+    // dualUseWeapons.js). Enchantments sync across the pair (decision #4),
+    // so a ranged-only entry (e.g. PREC) can legitimately end up on this
+    // melee mirror — decision #5 requires validating against the union of
+    // both sides' categories, not melee's alone.
+    test("Should allow a ranged-only enchantment on a dual-use melee instance (union category)", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-215",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-062", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should still reject an enchantment not allowed on either side of a dual-use pair", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-215",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toContain(
+        'meleeInventory[0].enchantments[0]: enchantment "Enchantment de Acessórios" is not allowed on Armas Corpo a Corpo or Armas de Longo Alcance',
+      );
+    });
+
+    test("Should NOT extend the union to a non-dual-use melee instance", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-001",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-062", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toContain(
+        'meleeInventory[0].enchantments[0]: enchantment "Aumentar Precisão (PREC)" is not allowed on Armas Corpo a Corpo',
+      );
     });
   });
 });

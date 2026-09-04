@@ -1,4 +1,6 @@
 const { VALID_STORED_AT, MELEE_ITEM_CATEGORY } = require("./meleeConstants");
+const { RANGED_ITEM_CATEGORY } = require("../ranged/rangedConstants");
+const { isMeleeDualUse } = require("../shared/dualUseWeapons.js");
 
 const {
   validateEnchantmentEntryShape,
@@ -65,9 +67,11 @@ function validateMeleeInstance(instance, index) {
  * existence, value/step alignment) — separate pass from the shape-only
  * checks above, same split shield/accessories/magicGear/armor use.
  *
- * itemCategory is the fixed MELEE_ITEM_CATEGORY constant — dual-use
- * counterpart-category resolution (decision #5 of the weapons
- * enchantments plan) lands in Batch 4, untouched here.
+ * itemCategory is MELEE_ITEM_CATEGORY, OR — for a dual-use instance (decision
+ * #4/#5 of the weapons enchantments plan) — `[MELEE_ITEM_CATEGORY,
+ * RANGED_ITEM_CATEGORY]`. Enchantments sync across a dual-use pair, so an
+ * entry added via the ranged side (e.g. PREC) ends up on this melee mirror
+ * too; validating against melee's category alone would wrongly reject it.
  */
 function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
   const errors = [];
@@ -76,13 +80,17 @@ function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
     const prefix = `meleeInventory[${index}]`;
     const entries = instance.enchantments || [];
 
+    const itemCategory = isMeleeDualUse(instance.weapon_id)
+      ? [MELEE_ITEM_CATEGORY, RANGED_ITEM_CATEGORY]
+      : MELEE_ITEM_CATEGORY;
+
     entries.forEach((entry, entryIndex) => {
       errors.push(
         ...validateEnchantmentEntryApplication(
           entry,
           enchantmentsDb,
           targetsDb,
-          MELEE_ITEM_CATEGORY,
+          itemCategory,
           entryIndex,
           prefix,
         ),
