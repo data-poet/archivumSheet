@@ -6,6 +6,7 @@ import {
 } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
 import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
+import { decimalToPercent } from "../../../components/resistances.js";
 import {
   materialOptions,
   tierOptions,
@@ -18,7 +19,10 @@ import {
   equippedDetailBlock,
   customFieldsEquippedDetail,
   customFieldsDetailRow,
+  withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
+import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { getShieldItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedShield(sheet, instanceId) {
   if (!sheet?.inventory?.shield) return null;
@@ -35,6 +39,18 @@ function resolvedShield(sheet, instanceId) {
   return null;
 }
 
+/**
+ * Shield-local wrapper around the shared withEnchantmentBadge, pre-filled
+ * with shield's own localized contribution string — same relationship
+ * armor/render.js's withArmorEnchantmentBadge has with the shared helper.
+ */
+function withShieldEnchantmentBadge(finalValue, delta, suffix = "") {
+  return withEnchantmentBadge(finalValue, delta, {
+    suffix,
+    title: t("shield.enchantmentContribution"),
+  });
+}
+
 function shieldDetailFields(resolved, shieldData) {
   const src = resolved ?? shieldData;
   if (!src) return [];
@@ -47,19 +63,31 @@ function shieldDetailFields(resolved, shieldData) {
     },
     {
       label: t("shield.dr"),
-      value:
-        resolved?.shield_final_damage_resistance ??
-        src.shield_damage_resistance ??
-        src.shield_damage_resistance ??
-        "—",
+      value: resolved
+        ? withShieldEnchantmentBadge(
+            resolved.final_damage_resistance,
+            resolved.enchantment_damage_resistance_modifier,
+          )
+        : (src.shield_damage_resistance ?? "—"),
     },
     {
       label: t("common.weight"),
-      value: resolved?.shield_final_weight ?? src.shield_weight ?? "—",
+      value: resolved
+        ? withShieldEnchantmentBadge(
+            resolved.final_weight,
+            decimalToPercent(resolved.enchantment_weight_modifier),
+            "%",
+          )
+        : (src.shield_weight ?? "—"),
     },
     {
       label: t("common.price"),
-      value: resolved?.shield_final_price ?? src.shield_price ?? "—",
+      value: resolved
+        ? withShieldEnchantmentBadge(
+            resolved.total_value,
+            resolved.enchantments_total_price,
+          )
+        : (src.shield_price ?? "—"),
     },
     ...(resolved?.material_def_effect
       ? [
@@ -141,12 +169,20 @@ export function renderEquippedShield(selected, data, sheet) {
     ${equippedDetailBlock(fields)}
     ${
       equippedInstance
-        ? customFieldsEquippedDetail({
-            instanceId: equippedInstance._instanceId,
-            name: equippedInstance.shield_custom_name,
-            description: equippedInstance.shield_custom_description,
-            effect: equippedInstance.shield_custom_effect,
-          })
+        ? customFieldsEquippedDetail(
+            {
+              instanceId: equippedInstance._instanceId,
+              name: equippedInstance.shield_custom_name,
+              description: equippedInstance.shield_custom_description,
+              effect: equippedInstance.shield_custom_effect,
+            },
+            enchantmentsExpander({
+              instanceId: equippedInstance._instanceId,
+              entries: equippedInstance.enchantments || [],
+              itemCategory: getShieldItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          )
         : ""
     }
   `,
@@ -207,12 +243,21 @@ function renderStorageSection(location, stored, data, sheet) {
           </td>
         </tr>
         ${detailRow(6, shieldDetailFields(resolved, shieldData))}
-        ${customFieldsDetailRow(6, {
-          instanceId,
-          name: inst.shield_custom_name,
-          description: inst.shield_custom_description,
-          effect: inst.shield_custom_effect,
-        })}`;
+        ${customFieldsDetailRow(
+          6,
+          {
+            instanceId,
+            name: inst.shield_custom_name,
+            description: inst.shield_custom_description,
+            effect: inst.shield_custom_effect,
+          },
+          enchantmentsExpander({
+            instanceId,
+            entries: inst.enchantments || [],
+            itemCategory: getShieldItemCategory(),
+            resolvedEntries: resolved?.enchantments,
+          }),
+        )}`;
       })
       .join("");
   }

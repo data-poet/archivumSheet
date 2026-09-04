@@ -14,6 +14,9 @@ const {
 const {
   MAGIC_GEAR_ITEM_CATEGORY,
 } = require("../engine/inventory/js/magicGear/magicGearValidation.js");
+const {
+  SHIELD_ITEM_CATEGORY,
+} = require("../engine/inventory/js/shield/shieldValidation.js");
 
 const app = express();
 
@@ -213,6 +216,7 @@ app.get("/api/inventory/item-categories", (req, res) => {
   res.json({
     ACCESSORY: ACCESSORY_ITEM_CATEGORY,
     MAGIC_GEAR: MAGIC_GEAR_ITEM_CATEGORY,
+    SHIELD: SHIELD_ITEM_CATEGORY,
   });
 });
 

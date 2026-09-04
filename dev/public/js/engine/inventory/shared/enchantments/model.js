@@ -46,6 +46,10 @@ export function getMagicGearItemCategory() {
   return data.itemCategories.MAGIC_GEAR;
 }
 
+export function getShieldItemCategory() {
+  return data.itemCategories.SHIELD;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EFFECT TYPE GROUPS
 //

@@ -467,7 +467,12 @@ function renderResumeArmor(sheet) {
     if (!piece) {
       return `<tr><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
     }
-    const dr = piece.armor_final_damage_resistance ?? "—";
+    // final_damage_resistance is material + enchantments (the truly-final
+    // number); armor_final_damage_resistance is material-only. Resume was
+    // showing the material-only value, silently hiding equipped armor
+    // enchantment DR bonuses — fixed to match the full inventory detail
+    // panel, which already used the final_* fields.
+    const dr = piece.final_damage_resistance ?? "—";
     const maxHp = piece.armor_final_hit_points ?? 0;
     const modifier = piece.hit_points_modifier ?? 0;
     const actualHp = calcActualHp(maxHp, modifier);
@@ -520,7 +525,9 @@ function renderResumeShield(sheet) {
   }
   container.hidden = false;
 
-  const dr = equippedShield.shield_final_damage_resistance ?? "—";
+  // final_damage_resistance is material + enchantments — same fix as
+  // renderResumeArmor above.
+  const dr = equippedShield.final_damage_resistance ?? "—";
   const block = equippedShield.block ?? "—";
   const maxHp = equippedShield.shield_final_hit_points ?? 0;
   const modifier = equippedShield.hit_points_modifier ?? 0;

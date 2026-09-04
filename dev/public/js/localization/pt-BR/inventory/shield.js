@@ -11,4 +11,5 @@ export const SHIELD = {
   hp: "PV",
   gdpMod: "Mod. GDP",
   block: "Bloqueio",
+  enchantmentContribution: "Contribuição de encantamentos",
 };
