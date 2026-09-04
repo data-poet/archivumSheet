@@ -2,6 +2,14 @@
 // SHIELD RESOLVER
 // ─────────────────────────────────────────────────────────────────────────────
 
+const {
+  resolveItemEnchantments,
+} = require("../shared/enchantmentsResolver.js");
+const {
+  WEIGHT_EFFECT_TYPES,
+  DAMAGE_RESISTANCE_EFFECT_TYPES,
+} = require("../shared/enchantmentsConstants.js");
+
 function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
@@ -42,18 +50,72 @@ function applyMaterialToShield(shield, material) {
 }
 
 /**
+ * Sums the `value` of every resolved enchantment entry whose
+ * enchantment_effect_type is in `types` — shared by the weight and
+ * damage-resistance rollups below, same helper as armorResolver.js's
+ * sumEnchantmentValues. Both groups are signed at the validation layer
+ * (fortify/add positive, weaken/remove negative), so a plain sum is the
+ * net modifier.
+ */
+function sumEnchantmentValues(enchantments, types) {
+  return enchantments
+    .filter((entry) => types.includes(entry.enchantment_effect_type))
+    .reduce((sum, entry) => sum + Number(entry.value || 0), 0);
+}
+
+/**
  * Merges:
  *
  * - shield db record
  * - material db record
  * - runtime instance state
+ * - enchantments applied to this instance
  *
  * into a fully resolved shield piece.
+ *
+ * `shield_final_weight`/`shield_final_damage_resistance` stay
+ * material-derived only (unchanged — other code may still read them
+ * expecting that). `final_weight`/`final_damage_resistance` are the
+ * truly-final numbers, mirroring armorResolver.js's
+ * armor_final_weight -> final_weight pattern: enchantment weight is a
+ * percentage of the post-material weight (enchantment_is_percentage is
+ * true for add_weight/remove_weight), applied once after summing every
+ * weight enchantment on the item; damage resistance is a flat sum added
+ * on top.
+ *
+ * Enchantment price (enchantments_total_price) is intrinsic to the item
+ * and counts toward total_value regardless of equip state, same as
+ * accessories/magicGear/armor. The enchantments' MECHANICAL effect on
+ * weight/DR is likewise item-intrinsic (applies whether worn or in the
+ * backpack); it's only the character-level elemental-resistance effect
+ * that's equipped-only, resolved separately in
+ * collectEquippedEnchantments.js.
  */
-function resolveShieldPiece(instance, shield, material = null) {
+function resolveShieldPiece(
+  instance,
+  shield,
+  material = null,
+  enchantmentsDb = {},
+  targetsDb = {},
+) {
   const finalStats = applyMaterialToShield(shield, material);
 
   const hitPointsModifier = Number(instance.hit_points_modifier || 0);
+
+  const { resolved: enchantments, total_price: enchantments_total_price } =
+    resolveItemEnchantments(
+      instance.enchantments || [],
+      enchantmentsDb,
+      targetsDb,
+    );
+
+  const enchantment_weight_modifier = round2(
+    sumEnchantmentValues(enchantments, WEIGHT_EFFECT_TYPES),
+  );
+
+  const enchantment_damage_resistance_modifier = round2(
+    sumEnchantmentValues(enchantments, DAMAGE_RESISTANCE_EFFECT_TYPES),
+  );
 
   return {
     // SHIELD BASE
@@ -70,8 +132,14 @@ function resolveShieldPiece(instance, shield, material = null) {
     material_tier: material?.material_tier || null,
     material_def_effect: material?.material_def_effect || null,
 
-    // FINAL VALUES
+    // FINAL VALUES (material-derived only — see doc comment above)
     ...finalStats,
+
+    // ENCHANTMENTS
+    enchantments,
+    enchantments_total_price,
+    enchantment_weight_modifier,
+    enchantment_damage_resistance_modifier,
 
     // RUNTIME MODIFIERS
     hit_points_modifier: hitPointsModifier,
@@ -79,12 +147,24 @@ function resolveShieldPiece(instance, shield, material = null) {
       finalStats.shield_final_hit_points + hitPointsModifier,
     ),
 
+    // TRULY-FINAL VALUES (material + enchantments)
+    final_weight: round2(
+      finalStats.shield_final_weight * (1 + enchantment_weight_modifier),
+    ),
+    final_damage_resistance: round2(
+      finalStats.shield_final_damage_resistance +
+        enchantment_damage_resistance_modifier,
+    ),
+
     // VALUE — one instance = one piece
-    total_value: round2(finalStats.shield_final_price),
+    total_value: round2(
+      finalStats.shield_final_price + enchantments_total_price,
+    ),
 
     // CUSTOM FIELDS
     shield_custom_name: instance.shield_custom_name?.trim() || null,
-    shield_custom_description: instance.shield_custom_description?.trim() || null,
+    shield_custom_description:
+      instance.shield_custom_description?.trim() || null,
     shield_custom_effect: instance.shield_custom_effect?.trim() || null,
 
     // RUNTIME
@@ -107,6 +187,8 @@ function calculateTotalShieldWeight(
   shieldInventory,
   shieldDb,
   materialDb = {},
+  enchantmentsDb = {},
+  targetsDb = {},
 ) {
   return shieldInventory.reduce((sum, instance) => {
     if (instance.storedAt === "stash" || instance.storedAt === "camp") {
@@ -120,9 +202,15 @@ function calculateTotalShieldWeight(
       ? materialDb[instance.material_id]
       : null;
 
-    const resolved = resolveShieldPiece(instance, shield, material);
+    const resolved = resolveShieldPiece(
+      instance,
+      shield,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
-    return sum + resolved.shield_final_weight;
+    return sum + resolved.final_weight;
   }, 0);
 }
 
@@ -130,7 +218,13 @@ function calculateTotalShieldWeight(
  * Calculates total shield value (equipped + backpack).
  * Stash and camp are excluded — mirrors the weight convention.
  */
-function calculateTotalShieldValue(shieldInventory, shieldDb, materialDb = {}) {
+function calculateTotalShieldValue(
+  shieldInventory,
+  shieldDb,
+  materialDb = {},
+  enchantmentsDb = {},
+  targetsDb = {},
+) {
   return round2(
     shieldInventory.reduce((sum, instance) => {
       if (instance.storedAt === "stash" || instance.storedAt === "camp") {
@@ -144,7 +238,13 @@ function calculateTotalShieldValue(shieldInventory, shieldDb, materialDb = {}) {
         ? materialDb[instance.material_id]
         : null;
 
-      const resolved = resolveShieldPiece(instance, shield, material);
+      const resolved = resolveShieldPiece(
+        instance,
+        shield,
+        material,
+        enchantmentsDb,
+        targetsDb,
+      );
 
       return sum + resolved.total_value;
     }, 0),
