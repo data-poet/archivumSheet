@@ -7,6 +7,7 @@ const { VALID_STORED_AT } = require("./shieldConstants.js");
 const {
   validateShieldInstance,
   validateSingleEquippedShield,
+  validateShieldEnchantments,
 } = require("./shieldValidation.js");
 
 const {
@@ -74,10 +75,10 @@ function buildShieldSlots(shieldInventory = []) {
 
   const materialDb = getMaterialsDB();
 
-  // Fetched here (not yet threaded through validation/resolver calls below —
-  // that lands in later enchantments batches) so buildShieldSlots already
-  // owns both DBs by the time Batch 2 (validation) and Batch 3/4 (resolver +
-  // wiring) need them, same DB-acquisition point armor.js uses.
+  // Fetched here so buildShieldSlots owns both DBs — used by
+  // validateShieldEnchantments below and threaded through every
+  // resolveShieldPiece/total-calc call, same DB-acquisition point
+  // armor.js uses.
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
@@ -129,6 +130,20 @@ function buildShieldSlots(shieldInventory = []) {
     );
   }
 
+  // VALIDATE ENCHANTMENTS
+
+  const enchantmentErrors = validateShieldEnchantments(
+    shieldInventory,
+    enchantmentsDb,
+    targetsDb,
+  );
+
+  if (enchantmentErrors.length > 0) {
+    throw new Error(
+      `[buildShieldSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
+    );
+  }
+
   // BUILD INVENTORY
 
   // Only one shield can be equipped — single object, not a slot map.
@@ -149,14 +164,20 @@ function buildShieldSlots(shieldInventory = []) {
       ? materialDb[instance.material_id]
       : null;
 
-    const resolvedShield = resolveShieldPiece(instance, shield, material);
+    const resolvedShield = resolveShieldPiece(
+      instance,
+      shield,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
     // EQUIPPED
 
     if (instance.is_equipped) {
       equipped = resolvedShield;
 
-      carried_shield_weight += resolvedShield.shield_final_weight;
+      carried_shield_weight += resolvedShield.final_weight;
       carried_shield_value += resolvedShield.total_value;
 
       continue;
@@ -183,7 +204,7 @@ function buildShieldSlots(shieldInventory = []) {
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedShield);
 
-      carried_shield_weight += resolvedShield.shield_final_weight;
+      carried_shield_weight += resolvedShield.final_weight;
       carried_shield_value += resolvedShield.total_value;
     }
   }
@@ -194,12 +215,16 @@ function buildShieldSlots(shieldInventory = []) {
     shieldInventory,
     shieldDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   const total_shield_value = calculateTotalShieldValue(
     shieldInventory,
     shieldDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   return {
