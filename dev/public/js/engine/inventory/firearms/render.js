@@ -9,6 +9,7 @@ import {
   hpModifierBlock,
   statModifierBlock,
 } from "../shared/inventoryRenderUtils.js";
+import { decimalToPercent } from "../../../components/resistances.js";
 import {
   materialOptions,
   equippedMoveSelect,
@@ -20,11 +21,25 @@ import {
   equippedDetailBlock,
   customFieldsEquippedDetail,
   customFieldsDetailRow,
+  withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
+import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { getFirearmsItemCategory } from "../shared/enchantments/model.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Firearms-local wrapper around the shared withEnchantmentBadge, same
+ * relationship melee/ranged's local wrappers have with the shared helper.
+ */
+function withFirearmEnchantmentBadge(finalValue, delta, suffix = "") {
+  return withEnchantmentBadge(finalValue, delta, {
+    suffix,
+    title: t("firearms.enchantmentContribution"),
+  });
+}
 
 export function resolvedFirearm(sheet, instanceId) {
   if (!sheet?.inventory?.firearms) return null;
@@ -49,11 +64,22 @@ function firearmDetailFields(resolved, weaponData) {
     { label: t("firearms.cdt"), value: src.weapon_cdt ?? "—" },
     {
       label: t("common.weight"),
-      value: resolved?.weapon_final_weight ?? src.weapon_weight ?? "—",
+      value: resolved
+        ? withFirearmEnchantmentBadge(
+            resolved.final_weight,
+            decimalToPercent(resolved.enchantment_weight_modifier),
+            "%",
+          )
+        : (src.weapon_weight ?? "—"),
     },
     {
       label: t("common.price"),
-      value: resolved?.weapon_final_price ?? src.weapon_price ?? "—",
+      value: resolved
+        ? withFirearmEnchantmentBadge(
+            resolved.total_value,
+            resolved.enchantments_total_price,
+          )
+        : (src.weapon_price ?? "—"),
     },
     { label: t("ranged.minST"), value: src.weapon_min_strength ?? "—" },
     { label: t("ranged.damageType"), value: src.weapon_damage_type ?? "—" },
@@ -242,12 +268,20 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     </div>
     ${tuningBlock({ weaponData, inst, instanceId, prefix: "equipped" })}
     ${equippedDetailBlock(firearmDetailFields(resolved, weaponData))}
-    ${customFieldsEquippedDetail({
-      instanceId,
-      name: inst.weapon_custom_name,
-      description: inst.weapon_custom_description,
-      effect: inst.weapon_custom_effect,
-    })}
+    ${customFieldsEquippedDetail(
+      {
+        instanceId,
+        name: inst.weapon_custom_name,
+        description: inst.weapon_custom_description,
+        effect: inst.weapon_custom_effect,
+      },
+      enchantmentsExpander({
+        instanceId,
+        entries: inst.enchantments || [],
+        itemCategory: getFirearmsItemCategory(),
+        resolvedEntries: resolved?.enchantments,
+      }),
+    )}
   `;
 }
 
@@ -325,12 +359,21 @@ function renderStorageSection(location, stored, data, sheet) {
             ${tuningBlock({ weaponData, inst, instanceId, prefix: "stored" })}
           </td>
         </tr>
-        ${customFieldsDetailRow(6, {
-          instanceId,
-          name: inst.weapon_custom_name,
-          description: inst.weapon_custom_description,
-          effect: inst.weapon_custom_effect,
-        })}
+        ${customFieldsDetailRow(
+          6,
+          {
+            instanceId,
+            name: inst.weapon_custom_name,
+            description: inst.weapon_custom_description,
+            effect: inst.weapon_custom_effect,
+          },
+          enchantmentsExpander({
+            instanceId,
+            entries: inst.enchantments || [],
+            itemCategory: getFirearmsItemCategory(),
+            resolvedEntries: resolved?.enchantments,
+          }),
+        )}
         `;
       })
       .join("");

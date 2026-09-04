@@ -1,15 +1,25 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
-  equipFirearm, moveFirearm, removeFirearm, findFirearmByInstanceId,
-  reloadFirearm, computeFinalMagazineSize,
-  addEquippedFirearm, addStoredFirearm, saveFirearmCustomFields,
+  equipFirearm,
+  moveFirearm,
+  removeFirearm,
+  findFirearmByInstanceId,
+  reloadFirearm,
+  computeFinalMagazineSize,
+  addEquippedFirearm,
+  addStoredFirearm,
+  saveFirearmCustomFields,
+  addFirearmEnchantment,
+  updateFirearmEnchantment,
+  removeFirearmEnchantment,
 } from "./model.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedFirearms, renderStoredFirearms } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -60,7 +70,8 @@ function _updateActualStatDisplay(inputEl, baseValue, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
   const strong = block.querySelector("strong");
-  if (strong) strong.textContent = (Number(baseValue) || 0) + (Number(modifier) || 0);
+  if (strong)
+    strong.textContent = (Number(baseValue) || 0) + (Number(modifier) || 0);
 }
 
 /**
@@ -80,39 +91,75 @@ const _handleFirearmCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderFirearmLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
+/**
+ * Click-path mutators (addFirearmEnchantment/update/remove) already
+ * self-wrap render+snapshot/restore synchronously, so runWithOpenState is
+ * left at its no-op default — same reasoning as melee/ranged. No dual-use
+ * counterpart to also refresh, so the change-path render is the
+ * firearm-only _renderFirearmLists (unlike melee/ranged's combined
+ * re-render).
+ */
+const _firearmEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findFirearmByInstanceId,
+  getItems: () => selected.firearms,
+  addEnchantment: addFirearmEnchantment,
+  updateEnchantment: updateFirearmEnchantment,
+  removeEnchantment: removeFirearmEnchantment,
+  render: () => _renderFirearmLists(state.sheet),
+});
+
 // Maps tuning input CSS classes to instance fields + the weapon DB base field.
 const TUNING_FIELDS = {
-  "equipped-firearm-gdp":            { field: "gdp_modifier",            base: "weapon_gdp_modifier" },
-  "stored-firearm-gdp":              { field: "gdp_modifier",            base: "weapon_gdp_modifier" },
-  "equipped-firearm-tr":             { field: "tr_modifier",             base: "weapon_tr" },
-  "stored-firearm-tr":               { field: "tr_modifier",             base: "weapon_tr" },
-  "equipped-firearm-prec":           { field: "prec_modifier",           base: "weapon_prec" },
-  "stored-firearm-prec":             { field: "prec_modifier",           base: "weapon_prec" },
-  "equipped-firearm-magazine-mod":   { field: "magazine_size_modifier",  base: "weapon_magazine_size" },
-  "stored-firearm-magazine-mod":     { field: "magazine_size_modifier",  base: "weapon_magazine_size" },
+  "equipped-firearm-gdp": {
+    field: "gdp_modifier",
+    base: "weapon_gdp_modifier",
+  },
+  "stored-firearm-gdp": { field: "gdp_modifier", base: "weapon_gdp_modifier" },
+  "equipped-firearm-tr": { field: "tr_modifier", base: "weapon_tr" },
+  "stored-firearm-tr": { field: "tr_modifier", base: "weapon_tr" },
+  "equipped-firearm-prec": { field: "prec_modifier", base: "weapon_prec" },
+  "stored-firearm-prec": { field: "prec_modifier", base: "weapon_prec" },
+  "equipped-firearm-magazine-mod": {
+    field: "magazine_size_modifier",
+    base: "weapon_magazine_size",
+  },
+  "stored-firearm-magazine-mod": {
+    field: "magazine_size_modifier",
+    base: "weapon_magazine_size",
+  },
 };
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleFirearmClick(e) {
   if (e.target.classList.contains("remove-firearm")) {
-    removeFirearm(e.target.dataset.instanceId); return true;
+    removeFirearm(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("remove-equipped-firearm")) {
-    removeFirearm(e.target.dataset.instanceId); return true;
+    removeFirearm(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("equip-stored-firearm")) {
     const instanceId = e.target.dataset.instanceId;
     const firearmToEquip = findFirearmByInstanceId(instanceId);
     if (!firearmToEquip) return true;
-    equipFirearm(instanceId, firearmToEquip.weapon_id, firearmToEquip.material_id || null);
+    equipFirearm(
+      instanceId,
+      firearmToEquip.weapon_id,
+      firearmToEquip.material_id || null,
+    );
     return true;
   }
 
-  if (e.target.classList.contains("reload-firearm") || e.target.classList.contains("resume-reload-firearm")) {
-    reloadFirearm(e.target.dataset.instanceId); return true;
+  if (
+    e.target.classList.contains("reload-firearm") ||
+    e.target.classList.contains("resume-reload-firearm")
+  ) {
+    reloadFirearm(e.target.dataset.instanceId);
+    return true;
   }
 
   // ── Custom fields: edit / save / cancel ───────────────────────────────────
@@ -120,6 +167,8 @@ export function handleFirearmClick(e) {
   // full rationale.
 
   if (_handleFirearmCustomFieldsClick(e)) return true;
+
+  if (_firearmEnchantments.handleClick(e)) return true;
 
   return false;
 }
@@ -132,10 +181,23 @@ export function handleFirearmInput(e) {
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
     if (/^-$/.test(e.target.value)) return true;
-    const weaponData = data.firearms.find((w) => w.weapon_id === firearmInstance.weapon_id);
-    const { maxHp } = resolveHp(firearmInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
-    firearmInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateResumeHpDisplay(e.target, maxHp, firearmInstance.hit_points_modifier);
+    const weaponData = data.firearms.find(
+      (w) => w.weapon_id === firearmInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      firearmInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
+    firearmInstance.hit_points_modifier = clampHpModifier(
+      e.target.value,
+      maxHp,
+    );
+    _updateResumeHpDisplay(
+      e.target,
+      maxHp,
+      firearmInstance.hit_points_modifier,
+    );
     _deferRender();
     triggerAutoRun();
     return true;
@@ -146,39 +208,68 @@ export function handleFirearmInput(e) {
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
     if (e.target.value === "") return true;
-    const weaponData = data.firearms.find((w) => w.weapon_id === firearmInstance.weapon_id);
+    const weaponData = data.firearms.find(
+      (w) => w.weapon_id === firearmInstance.weapon_id,
+    );
     const max = computeFinalMagazineSize(firearmInstance, weaponData);
     const parsed = parseInt(e.target.value, 10);
-    firearmInstance.rounds_loaded = Math.min(Math.max(isNaN(parsed) ? 0 : parsed, 0), max);
+    firearmInstance.rounds_loaded = Math.min(
+      Math.max(isNaN(parsed) ? 0 : parsed, 0),
+      max,
+    );
     _deferRender();
     triggerAutoRun();
     return true;
   }
 
-  if (e.target.classList.contains("equipped-firearm-hp") || e.target.classList.contains("stored-firearm-hp")) {
+  if (
+    e.target.classList.contains("equipped-firearm-hp") ||
+    e.target.classList.contains("stored-firearm-hp")
+  ) {
     const instanceId = e.target.dataset.instanceId;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.firearms.find((w) => w.weapon_id === firearmInstance.weapon_id);
-    const { maxHp } = resolveHp(firearmInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
-    firearmInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateActualHpDisplay(e.target, maxHp, firearmInstance.hit_points_modifier);
+    const weaponData = data.firearms.find(
+      (w) => w.weapon_id === firearmInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      firearmInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
+    firearmInstance.hit_points_modifier = clampHpModifier(
+      e.target.value,
+      maxHp,
+    );
+    _updateActualHpDisplay(
+      e.target,
+      maxHp,
+      firearmInstance.hit_points_modifier,
+    );
     _deferRender();
     triggerAutoRun();
     return true;
   }
 
-  if (e.target.classList.contains("equipped-firearm-rounds") || e.target.classList.contains("stored-firearm-rounds")) {
+  if (
+    e.target.classList.contains("equipped-firearm-rounds") ||
+    e.target.classList.contains("stored-firearm-rounds")
+  ) {
     const instanceId = e.target.dataset.instanceId;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
     if (e.target.value === "") return true;
 
-    const weaponData = data.firearms.find((w) => w.weapon_id === firearmInstance.weapon_id);
+    const weaponData = data.firearms.find(
+      (w) => w.weapon_id === firearmInstance.weapon_id,
+    );
     const max = computeFinalMagazineSize(firearmInstance, weaponData);
     const parsed = parseInt(e.target.value, 10);
-    firearmInstance.rounds_loaded = Math.min(Math.max(isNaN(parsed) ? 0 : parsed, 0), max);
+    firearmInstance.rounds_loaded = Math.min(
+      Math.max(isNaN(parsed) ? 0 : parsed, 0),
+      max,
+    );
 
     _deferRender();
     triggerAutoRun();
@@ -196,8 +287,14 @@ export function handleFirearmInput(e) {
     const parsed = parseInt(e.target.value, 10);
     firearmInstance[field] = isNaN(parsed) ? 0 : parsed;
 
-    const weaponData = data.firearms.find((w) => w.weapon_id === firearmInstance.weapon_id);
-    _updateActualStatDisplay(e.target, weaponData?.[base] ?? 0, firearmInstance[field]);
+    const weaponData = data.firearms.find(
+      (w) => w.weapon_id === firearmInstance.weapon_id,
+    );
+    _updateActualStatDisplay(
+      e.target,
+      weaponData?.[base] ?? 0,
+      firearmInstance[field],
+    );
 
     _deferRender();
     triggerAutoRun();
@@ -215,13 +312,20 @@ export function handleFirearmChange(e) {
     const name = e.target.value;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
-    const availableFirearms = data.firearms.filter((w) => w.weapon_name === name);
+    const availableFirearms = data.firearms.filter(
+      (w) => w.weapon_name === name,
+    );
     const firstFirearm = availableFirearms[0];
     if (!firstFirearm) return true;
-    const tierSelect = document.querySelector(`.equipped-firearm-tier[data-instance-id="${instanceId}"]`);
+    const tierSelect = document.querySelector(
+      `.equipped-firearm-tier[data-instance-id="${instanceId}"]`,
+    );
     if (tierSelect) {
       tierSelect.innerHTML = availableFirearms
-        .map((w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`).join("");
+        .map(
+          (w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`,
+        )
+        .join("");
     }
     firearmInstance.weapon_id = firstFirearm.weapon_id;
     firearmInstance.hit_points_modifier = 0;
@@ -234,7 +338,9 @@ export function handleFirearmChange(e) {
     const tier = e.target.value;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
-    const nameEl = document.querySelector(`.equipped-firearm-name[data-instance-id="${instanceId}"]`);
+    const nameEl = document.querySelector(
+      `.equipped-firearm-name[data-instance-id="${instanceId}"]`,
+    );
     if (!nameEl) return true;
     const weapon = data.firearms.find(
       (w) => w.weapon_name === nameEl.value && w.weapon_tier === tier,
@@ -258,7 +364,8 @@ export function handleFirearmChange(e) {
   }
 
   if (e.target.classList.contains("firearm-storage-select")) {
-    moveFirearm(e.target.dataset.instanceId, e.target.value); return true;
+    moveFirearm(e.target.dataset.instanceId, e.target.value);
+    return true;
   }
 
   if (e.target.classList.contains("equipped-firearm-move")) {
@@ -266,12 +373,19 @@ export function handleFirearmChange(e) {
     const destination = e.target.value;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
-    if (!destination) { firearmInstance.is_equipped = true; firearmInstance.storedAt = null; }
-    else { firearmInstance.is_equipped = false; firearmInstance.storedAt = destination; }
+    if (!destination) {
+      firearmInstance.is_equipped = true;
+      firearmInstance.storedAt = null;
+    } else {
+      firearmInstance.is_equipped = false;
+      firearmInstance.storedAt = destination;
+    }
     _renderFirearmLists();
     triggerAutoRun();
     return true;
   }
+
+  if (_firearmEnchantments.handleChange(e)) return true;
 
   return false;
 }
@@ -279,10 +393,10 @@ export function handleFirearmChange(e) {
 // ─── Add form ─────────────────────────────────────────────────────────────────
 
 export function handleAddFirearm() {
-  const nameEl     = document.getElementById("firearmNameSelect");
-  const tierEl     = document.getElementById("firearmTierSelect");
+  const nameEl = document.getElementById("firearmNameSelect");
+  const tierEl = document.getElementById("firearmTierSelect");
   const materialEl = document.getElementById("firearmMaterialSelect");
-  const storageEl  = document.getElementById("firearmStorage");
+  const storageEl = document.getElementById("firearmStorage");
   if (!nameEl || !tierEl || !materialEl || !storageEl) return;
 
   const firearm = data.firearms.find(
@@ -290,9 +404,12 @@ export function handleAddFirearm() {
   );
   if (!firearm) return;
 
-  const material = data.materials.find((m) => m.material_name === materialEl.value);
+  const material = data.materials.find(
+    (m) => m.material_name === materialEl.value,
+  );
   const materialId = material?.material_id ?? null;
 
-  if (storageEl.value === "equipped") addEquippedFirearm(firearm.weapon_id, materialId);
+  if (storageEl.value === "equipped")
+    addEquippedFirearm(firearm.weapon_id, materialId);
   else addStoredFirearm(firearm.weapon_id, materialId, storageEl.value);
 }

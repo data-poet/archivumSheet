@@ -7,6 +7,12 @@ import { nextFirearmInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { updateContainerAmmoQuantity } from "../ammo/model.js";
 import { t } from "../../../localization/pt-BR/index.js";
+import {
+  addEnchantmentEntry,
+  updateEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "../shared/enchantments/model.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -146,6 +152,7 @@ function _newFirearmInstance(weaponId, materialId, isEquipped, storedAt) {
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   };
 }
 
@@ -198,6 +205,7 @@ export function removeFirearm(instanceId) {
   selected.firearms = selected.firearms.filter(
     (w) => w._instanceId !== instanceId,
   );
+  clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
 
@@ -321,6 +329,84 @@ export function saveFirearmCustomFields(
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+//
+// No dual-use counterpart sync — firearms aren't part of any dual-use
+// pairing (see firearmsConstants.js).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addFirearmEnchantment(instanceId, enchantmentId, params) {
+  const instance = findFirearmByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const before = structuredClone(instance.enchantments);
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
+}
+
+export function updateFirearmEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findFirearmByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
+}
+
+export function removeFirearmEnchantment(instanceId, entryInstanceId) {
+  const instance = findFirearmByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

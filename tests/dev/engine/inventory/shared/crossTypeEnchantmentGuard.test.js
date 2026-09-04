@@ -100,17 +100,38 @@ jest.mock("dev/public/js/engine/inventory/ranged/render.js", () => ({
   renderEquippedRanged: jest.fn(),
   renderStoredRanged: jest.fn(),
 }));
+jest.mock("dev/public/js/engine/inventory/firearms/model.js", () => ({
+  removeFirearmEnchantment: jest.fn(),
+  findFirearmByInstanceId: jest.fn(),
+  // Unused by this test but required since events.js imports them.
+  equipFirearm: jest.fn(),
+  moveFirearm: jest.fn(),
+  removeFirearm: jest.fn(),
+  reloadFirearm: jest.fn(),
+  computeFinalMagazineSize: jest.fn(),
+  addEquippedFirearm: jest.fn(),
+  addStoredFirearm: jest.fn(),
+  saveFirearmCustomFields: jest.fn(),
+  addFirearmEnchantment: jest.fn(),
+  updateFirearmEnchantment: jest.fn(),
+}));
+jest.mock("dev/public/js/engine/inventory/firearms/render.js", () => ({
+  renderEquippedFirearms: jest.fn(),
+  renderStoredFirearms: jest.fn(),
+}));
 
 import * as accessoryModel from "dev/public/js/engine/inventory/accessories/model.js";
 import * as magicGearModel from "dev/public/js/engine/inventory/magicGear/model.js";
 import * as shieldModel from "dev/public/js/engine/inventory/shield/model.js";
 import * as meleeModel from "dev/public/js/engine/inventory/melee/model.js";
 import * as rangedModel from "dev/public/js/engine/inventory/ranged/model.js";
+import * as firearmsModel from "dev/public/js/engine/inventory/firearms/model.js";
 import { handleAccessoryClick } from "dev/public/js/engine/inventory/accessories/events.js";
 import { handleMagicGearClick } from "dev/public/js/engine/inventory/magicGear/events.js";
 import { handleShieldClick } from "dev/public/js/engine/inventory/shield/events.js";
 import { handleMeleeClick } from "dev/public/js/engine/inventory/melee/events.js";
 import { handleRangedClick } from "dev/public/js/engine/inventory/ranged/events.js";
+import { handleFirearmClick } from "dev/public/js/engine/inventory/firearms/events.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
@@ -145,6 +166,9 @@ beforeEach(() => {
   );
   rangedModel.findRangedByInstanceId.mockImplementation((id) =>
     id === "RANGED-1" ? { instance_id: "RANGED-1" } : undefined,
+  );
+  firearmsModel.findFirearmByInstanceId.mockImplementation((id) =>
+    id === "FIREARM-1" ? { instance_id: "FIREARM-1" } : undefined,
   );
 });
 
@@ -352,6 +376,75 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
     expect(magicGearModel.removeMagicGearEnchantment).not.toHaveBeenCalled();
   });
 
+  test("firearms' handler acts on its own enchantment entry", () => {
+    const result = handleFirearmClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(result).toBe(true);
+    expect(firearmsModel.removeFirearmEnchantment).toHaveBeenCalledWith(
+      "FIREARM-1",
+      "ENTRY-6",
+    );
+  });
+
+  test("firearms' handler refuses an accessory, magicGear, shield, melee, or ranged instanceId — no cross-type mutation", () => {
+    const accResult = handleFirearmClick(
+      enchantmentRemoveButton("ACC-1", "ENTRY-1"),
+    );
+    const mgResult = handleFirearmClick(
+      enchantmentRemoveButton("MG-1", "ENTRY-2"),
+    );
+    const shieldResult = handleFirearmClick(
+      enchantmentRemoveButton("SHIELD-1", "ENTRY-3"),
+    );
+    const meleeResult = handleFirearmClick(
+      enchantmentRemoveButton("MELEE-1", "ENTRY-4"),
+    );
+    const rangedResult = handleFirearmClick(
+      enchantmentRemoveButton("RANGED-1", "ENTRY-5"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(accResult).toBe(false);
+    expect(mgResult).toBe(false);
+    expect(shieldResult).toBe(false);
+    expect(meleeResult).toBe(false);
+    expect(rangedResult).toBe(false);
+    expect(firearmsModel.removeFirearmEnchantment).not.toHaveBeenCalled();
+  });
+
+  test("other handlers refuse a firearms instanceId — no cross-type mutation", () => {
+    const accResult = handleAccessoryClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    const mgResult = handleMagicGearClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    const shieldResult = handleShieldClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    const meleeResult = handleMeleeClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    const rangedResult = handleRangedClick(
+      enchantmentRemoveButton("FIREARM-1", "ENTRY-6"),
+    );
+    jest.advanceTimersToNextFrame();
+
+    expect(accResult).toBe(false);
+    expect(mgResult).toBe(false);
+    expect(shieldResult).toBe(false);
+    expect(meleeResult).toBe(false);
+    expect(rangedResult).toBe(false);
+    expect(accessoryModel.removeAccessoryEnchantment).not.toHaveBeenCalled();
+    expect(magicGearModel.removeMagicGearEnchantment).not.toHaveBeenCalled();
+    expect(shieldModel.removeShieldEnchantment).not.toHaveBeenCalled();
+    expect(meleeModel.removeMeleeEnchantment).not.toHaveBeenCalled();
+    expect(rangedModel.removeRangedEnchantment).not.toHaveBeenCalled();
+  });
+
   test("neither handler acts on an entryInstanceId belonging to the other type", () => {
     // Simulates the more subtle collision: the outer instanceId is unknown
     // to both (e.g. a stale/mismatched dataset), but an entryInstanceId
@@ -371,6 +464,9 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
     const rangedResult = handleRangedClick(
       enchantmentRemoveButton("GHOST", "SAME-ENTRY-ID"),
     );
+    const firearmsResult = handleFirearmClick(
+      enchantmentRemoveButton("GHOST", "SAME-ENTRY-ID"),
+    );
     jest.advanceTimersToNextFrame();
 
     expect(accessoryResult).toBe(false);
@@ -378,10 +474,12 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
     expect(shieldResult).toBe(false);
     expect(meleeResult).toBe(false);
     expect(rangedResult).toBe(false);
+    expect(firearmsResult).toBe(false);
     expect(accessoryModel.removeAccessoryEnchantment).not.toHaveBeenCalled();
     expect(magicGearModel.removeMagicGearEnchantment).not.toHaveBeenCalled();
     expect(shieldModel.removeShieldEnchantment).not.toHaveBeenCalled();
     expect(meleeModel.removeMeleeEnchantment).not.toHaveBeenCalled();
     expect(rangedModel.removeRangedEnchantment).not.toHaveBeenCalled();
+    expect(firearmsModel.removeFirearmEnchantment).not.toHaveBeenCalled();
   });
 });
