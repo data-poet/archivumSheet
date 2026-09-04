@@ -5,6 +5,7 @@ const {
   isRangedDualUse,
   getRangedCounterpart,
   getMeleeCounterpart,
+  resolveDualUseEnchantmentCategory,
 } = require("engine/inventory/js/shared/dualUseWeapons");
 
 describe("DUAL-USE WEAPONS", () => {
@@ -139,6 +140,42 @@ describe("DUAL-USE WEAPONS", () => {
 
     test("returns null for a non-dual-use ranged weapon", () => {
       expect(getMeleeCounterpart("RANGED-015")).toBeNull();
+    });
+  });
+
+  // ── resolveDualUseEnchantmentCategory ────────────────────────────────────
+  describe("resolveDualUseEnchantmentCategory", () => {
+    test("returns the own category alone for a non-dual-use weapon", () => {
+      expect(
+        resolveDualUseEnchantmentCategory(
+          "MELEE-000",
+          "Armas Corpo a Corpo",
+          "Armas de Longo Alcance",
+          isMeleeDualUse,
+        ),
+      ).toBe("Armas Corpo a Corpo");
+    });
+
+    test("returns [own, counterpart] for a dual-use melee weapon", () => {
+      expect(
+        resolveDualUseEnchantmentCategory(
+          "MELEE-280",
+          "Armas Corpo a Corpo",
+          "Armas de Longo Alcance",
+          isMeleeDualUse,
+        ),
+      ).toEqual(["Armas Corpo a Corpo", "Armas de Longo Alcance"]);
+    });
+
+    test("returns [own, counterpart] for a dual-use ranged weapon", () => {
+      expect(
+        resolveDualUseEnchantmentCategory(
+          "RANGED-005",
+          "Armas de Longo Alcance",
+          "Armas Corpo a Corpo",
+          isRangedDualUse,
+        ),
+      ).toEqual(["Armas de Longo Alcance", "Armas Corpo a Corpo"]);
     });
   });
 

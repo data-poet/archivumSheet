@@ -27,12 +27,16 @@ function seedCatalog() {
     WEIGHT_EFFECT_TYPES: ["add_weight"],
     DAMAGE_RESISTANCE_EFFECT_TYPES: ["fortify_damage_resistance"],
     ELEMENTAL_RESISTANCE_EFFECT_TYPES: ["fortify_resistance"],
+    DAMAGE_EFFECT_TYPES: ["fortify_damage"],
+    REQUISITE_EFFECT_TYPES: ["add_requisite"],
     VALUE_EFFECT_TYPES: [
       "attribute",
       "weaken_attribute",
       "add_weight",
       "fortify_damage_resistance",
       "fortify_resistance",
+      "fortify_damage",
+      "add_requisite",
     ],
     FORTIFY_EFFECT_TYPES: ["fortify_skill", "add_weight"],
     WEAKEN_EFFECT_TYPES: ["weaken_attribute"],
@@ -122,6 +126,28 @@ function seedCatalog() {
       enchantment_base_value: 0.05,
       enchantment_step: 0.05,
       enenchantment_is_percentage: "TRUE",
+    },
+    {
+      enchantment_id: "ENCH-BAL",
+      enchantment_name: "Fortificar BAL",
+      enchantment_effect_type: "fortify_damage",
+      enchantment_target: "BAL",
+      enchantment_allowed_itens: "Armas Corpo a Corpo",
+      enchantment_type: "Fortificar Dano",
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enenchantment_is_percentage: "FALSE",
+    },
+    {
+      enchantment_id: "ENCH-MIN-STRENGTH",
+      enchantment_name: "Aumentar ST Mín",
+      enchantment_effect_type: "add_requisite",
+      enchantment_target: "Min Strength",
+      enchantment_allowed_itens: "Armas Corpo a Corpo",
+      enchantment_type: "Aumentar Requisito",
+      enchantment_base_value: 1,
+      enchantment_step: 1,
+      enenchantment_is_percentage: "FALSE",
     },
   ];
   state.data.advantages = [
@@ -374,6 +400,40 @@ describe("enchantmentsExpander — entry list", () => {
     );
     expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
       "Fortificar Resistência à Fogo: Fogo: +5%",
+    );
+  });
+
+  test("renders a fixed-target damage entry's target stat, read from the record (not the entry)", () => {
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [{ _instanceId: "E1", enchantment_id: "ENCH-BAL", value: 2 }],
+        itemCategory: "Armas Corpo a Corpo",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
+      "Fortificar BAL: BAL: +2",
+    );
+  });
+
+  test("renders a fixed-target requisite entry's target stat, read from the record (not the entry)", () => {
+    const el = parse(
+      enchantmentsExpander({
+        instanceId: "ITEM-1",
+        entries: [
+          {
+            _instanceId: "E1",
+            enchantment_id: "ENCH-MIN-STRENGTH",
+            value: 1,
+          },
+        ],
+        itemCategory: "Armas Corpo a Corpo",
+        resolvedEntries: [],
+      }),
+    );
+    expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
+      "Aumentar ST Mín: Min Strength: +1",
     );
   });
 

@@ -17,6 +17,8 @@ import {
   isAttributeType,
   isValueType,
   isElementalResistanceType,
+  isDamageType,
+  isRequisiteType,
   isPercentageType,
   isAdvantageType,
   isDisadvantageType,
@@ -111,6 +113,8 @@ describe("effect type predicates", () => {
         "fortify_resistance",
         "weaken_resistance",
       ],
+      DAMAGE_EFFECT_TYPES: ["fortify_damage", "weaken_damage"],
+      REQUISITE_EFFECT_TYPES: ["add_requisite", "remove_requisite"],
       VALUE_EFFECT_TYPES: [
         "attribute",
         "add_weight",
@@ -119,6 +123,10 @@ describe("effect type predicates", () => {
         "weaken_damage_resistance",
         "fortify_resistance",
         "weaken_resistance",
+        "fortify_damage",
+        "weaken_damage",
+        "add_requisite",
+        "remove_requisite",
       ],
       FORTIFY_EFFECT_TYPES: ["fortify_skill", "fortify_attribute"],
       WEAKEN_EFFECT_TYPES: ["weaken_skill", "weaken_attribute"],
@@ -143,6 +151,18 @@ describe("effect type predicates", () => {
     expect(isElementalResistanceType("fortify_resistance")).toBe(true);
     expect(isElementalResistanceType("weaken_resistance")).toBe(true);
     expect(isElementalResistanceType("fortify_damage_resistance")).toBe(false);
+  });
+
+  test("isDamageType checks membership in DAMAGE_EFFECT_TYPES", () => {
+    expect(isDamageType("fortify_damage")).toBe(true);
+    expect(isDamageType("weaken_damage")).toBe(true);
+    expect(isDamageType("add_requisite")).toBe(false);
+  });
+
+  test("isRequisiteType checks membership in REQUISITE_EFFECT_TYPES", () => {
+    expect(isRequisiteType("add_requisite")).toBe(true);
+    expect(isRequisiteType("remove_requisite")).toBe(true);
+    expect(isRequisiteType("fortify_damage")).toBe(false);
   });
 
   test("isAdvantageType / isDisadvantageType are literal string checks, not list-based", () => {
