@@ -9,7 +9,10 @@ const {
   getRangedCounterpart,
 } = require("../shared/dualUseWeapons.js");
 
-const { validateMeleeInstance } = require("./meleeValidation.js");
+const {
+  validateMeleeInstance,
+  validateMeleeEnchantments,
+} = require("./meleeValidation.js");
 
 const {
   resolveMeleeWeapons,
@@ -18,6 +21,10 @@ const {
 } = require("./meleeResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
+const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
+const {
+  getEnchantmentTargetsDB,
+} = require("../shared/enchantmentTargetsDB.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MELEE DB
@@ -81,6 +88,13 @@ function buildMeleeSlots(meleeInventory = []) {
 
   const materialDb = getMaterialsDB();
 
+  // Fetched here so buildMeleeSlots owns both DBs — used by
+  // validateMeleeEnchantments below and threaded through every
+  // resolveMeleeWeapons/total-calc call, same DB-acquisition point
+  // shield.js/armor.js use.
+  const enchantmentsDb = getEnchantmentsDB();
+  const targetsDb = getEnchantmentTargetsDB();
+
   // VALIDATE INSTANCES
 
   const instanceErrors = meleeInventory.flatMap((instance, index) =>
@@ -119,6 +133,20 @@ function buildMeleeSlots(meleeInventory = []) {
     );
   }
 
+  // VALIDATE ENCHANTMENTS
+
+  const enchantmentErrors = validateMeleeEnchantments(
+    meleeInventory,
+    enchantmentsDb,
+    targetsDb,
+  );
+
+  if (enchantmentErrors.length > 0) {
+    throw new Error(
+      `[buildMeleeSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
+    );
+  }
+
   // BUILD INVENTORY
 
   // Storage buckets are flat arrays — no slot keying.
@@ -128,7 +156,7 @@ function buildMeleeSlots(meleeInventory = []) {
   const backpack = buildStorageBucket();
 
   let carried_melee_weapons_weight = 0;
-  let carried_melee_weapons_value  = 0;
+  let carried_melee_weapons_value = 0;
 
   for (const instance of meleeInventory) {
     const melee = meleeDb[instance.weapon_id];
@@ -137,15 +165,21 @@ function buildMeleeSlots(meleeInventory = []) {
       ? materialDb[instance.material_id]
       : null;
 
-    const resolvedMelee = resolveMeleeWeapons(instance, melee, material);
+    const resolvedMelee = resolveMeleeWeapons(
+      instance,
+      melee,
+      material,
+      enchantmentsDb,
+      targetsDb,
+    );
 
     // EQUIPPED
 
     if (instance.is_equipped) {
       equipped.push(resolvedMelee);
 
-      carried_melee_weapons_weight += resolvedMelee.weapon_final_weight;
-      carried_melee_weapons_value  += resolvedMelee.total_value;
+      carried_melee_weapons_weight += resolvedMelee.final_weight;
+      carried_melee_weapons_value += resolvedMelee.total_value;
 
       continue;
     }
@@ -171,8 +205,8 @@ function buildMeleeSlots(meleeInventory = []) {
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedMelee);
 
-      carried_melee_weapons_weight += resolvedMelee.weapon_final_weight;
-      carried_melee_weapons_value  += resolvedMelee.total_value;
+      carried_melee_weapons_weight += resolvedMelee.final_weight;
+      carried_melee_weapons_value += resolvedMelee.total_value;
     }
   }
 
@@ -182,12 +216,16 @@ function buildMeleeSlots(meleeInventory = []) {
     meleeInventory,
     meleeDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   const total_melee_value = calculateTotalMeleeValue(
     meleeInventory,
     meleeDb,
     materialDb,
+    enchantmentsDb,
+    targetsDb,
   );
 
   return {

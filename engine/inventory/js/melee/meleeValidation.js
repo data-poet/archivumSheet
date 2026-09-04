@@ -1,4 +1,9 @@
-const { VALID_STORED_AT } = require("./meleeConstants");
+const { VALID_STORED_AT, MELEE_ITEM_CATEGORY } = require("./meleeConstants");
+
+const {
+  validateEnchantmentEntryShape,
+  validateEnchantmentEntryApplication,
+} = require("../shared/enchantmentsValidation.js");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // VALIDATION
@@ -37,6 +42,54 @@ function validateMeleeInstance(instance, index) {
     );
   }
 
+  // enchantments — optional; unlimited count, no slot system (same
+  // shape-only pass as shield/accessories/magicGear/armor — see
+  // shieldValidation.js)
+  if (instance.enchantments !== undefined) {
+    if (!Array.isArray(instance.enchantments)) {
+      errors.push(`${prefix}: enchantments must be an array when present`);
+    } else {
+      instance.enchantments.forEach((entry, entryIndex) => {
+        errors.push(
+          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
+        );
+      });
+    }
+  }
+
+  return errors;
+}
+
+/**
+ * DB-dependent enchantment checks (unknown ids, allowed_itens, target
+ * existence, value/step alignment) — separate pass from the shape-only
+ * checks above, same split shield/accessories/magicGear/armor use.
+ *
+ * itemCategory is the fixed MELEE_ITEM_CATEGORY constant — dual-use
+ * counterpart-category resolution (decision #5 of the weapons
+ * enchantments plan) lands in Batch 4, untouched here.
+ */
+function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
+  const errors = [];
+
+  meleeInventory.forEach((instance, index) => {
+    const prefix = `meleeInventory[${index}]`;
+    const entries = instance.enchantments || [];
+
+    entries.forEach((entry, entryIndex) => {
+      errors.push(
+        ...validateEnchantmentEntryApplication(
+          entry,
+          enchantmentsDb,
+          targetsDb,
+          MELEE_ITEM_CATEGORY,
+          entryIndex,
+          prefix,
+        ),
+      );
+    });
+  });
+
   return errors;
 }
 
@@ -46,4 +99,5 @@ function validateMeleeInstance(instance, index) {
 
 module.exports = {
   validateMeleeInstance,
+  validateMeleeEnchantments,
 };

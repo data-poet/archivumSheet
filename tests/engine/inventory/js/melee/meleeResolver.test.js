@@ -2,6 +2,7 @@ const {
   applyMaterialToMelee,
   resolveMeleeWeapons,
   calculateTotalMeleeWeight,
+  calculateTotalMeleeValue,
   calculateHex,
 } = require("engine/inventory/js/melee/meleeResolver");
 
@@ -103,10 +104,19 @@ describe("meleeResolver", () => {
         weapon_final_weight: 5.25,
         weapon_final_price: 165,
         weapon_final_hit_points: 40,
+        weapon_min_strength: 5,
+
+        // ENCHANTMENTS
+        enchantments: [],
+        enchantments_total_price: 0,
+        enchantment_weight_modifier: 0,
 
         // RUNTIME MODIFIERS
         hit_points_modifier: -5,
         final_hit_points: 35,
+
+        // TRULY-FINAL VALUES
+        final_weight: 5.25,
 
         weapon_custom_name: "Lâmina do Juramento",
         weapon_custom_description: "Uma espada gasta pelo tempo.",
@@ -173,10 +183,19 @@ describe("meleeResolver", () => {
         weapon_final_weight: 5,
         weapon_final_price: 150,
         weapon_final_hit_points: 20,
+        weapon_min_strength: 5,
+
+        // ENCHANTMENTS
+        enchantments: [],
+        enchantments_total_price: 0,
+        enchantment_weight_modifier: 0,
 
         // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 18,
+
+        // TRULY-FINAL VALUES
+        final_weight: 5,
 
         weapon_custom_name: null,
         weapon_custom_description: null,
@@ -188,6 +207,243 @@ describe("meleeResolver", () => {
         storedAt: "stash",
         total_value: 150,
       });
+    });
+  });
+
+  describe("resolveMeleeWeapons — enchantments", () => {
+    // Same fixture shape as shieldResolver.test.js's "resolveShieldPiece —
+    // enchantments" describe block — melee reuses the identical shared
+    // enchantments engine, applied to weapon_final_bal_modifier/
+    // weapon_final_gdp_modifier/weapon_min_strength (mutated directly, no
+    // separate "truly final" tier — see meleeResolver.js doc comment) plus
+    // the two-tier weight split (weapon_final_weight vs final_weight).
+    const enchantmentsDb = {
+      "ENCHANTMENT-036": {
+        enchantment_id: "ENCHANTMENT-036",
+        enchantment_name: "Aumentar Peso",
+        enchantment_effect_type: "add_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-037": {
+        enchantment_id: "ENCHANTMENT-037",
+        enchantment_name: "Reduzir Peso",
+        enchantment_effect_type: "remove_weight",
+        enchantment_is_percentage: true,
+        enchantment_base_value: 0.1,
+        enchantment_step: 0.1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-056": {
+        enchantment_id: "ENCHANTMENT-056",
+        enchantment_name: "Fortificar BAL",
+        enchantment_effect_type: "fortify_damage",
+        enchantment_target: "BAL",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 1000,
+        enchantment_price_per_extra_value: 1000,
+      },
+      "ENCHANTMENT-058": {
+        enchantment_id: "ENCHANTMENT-058",
+        enchantment_name: "Fortificar GDP",
+        enchantment_effect_type: "fortify_damage",
+        enchantment_target: "GDP",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 2000,
+        enchantment_price_per_extra_value: 2000,
+      },
+      "ENCHANTMENT-060": {
+        enchantment_id: "ENCHANTMENT-060",
+        enchantment_name: "Aumentar ST Mín",
+        enchantment_effect_type: "add_requisite",
+        enchantment_target: "Min Strength",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 500,
+        enchantment_price_per_extra_value: 500,
+      },
+      "ENCHANTMENT-061": {
+        enchantment_id: "ENCHANTMENT-061",
+        enchantment_name: "Diminuir ST Mín",
+        enchantment_effect_type: "remove_requisite",
+        enchantment_target: "Min Strength",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_base_price: 500,
+        enchantment_price_per_extra_value: 500,
+      },
+    };
+
+    const baseInstance = {
+      weapon_id: "MELEE-001",
+      material_id: "MAT-003",
+      hit_points_modifier: 0,
+      is_equipped: true,
+      storedAt: null,
+    };
+
+    test("Should apply a weight-percentage enchantment on top of the post-material weight", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // material weight is 5.25; +10% -> 5.775 -> rounds to 5.78
+      expect(result.weapon_final_weight).toBe(5.25);
+      expect(result.enchantment_weight_modifier).toBe(0.1);
+      expect(result.final_weight).toBe(5.78);
+    });
+
+    test("Should net multiple weight enchantments before applying once", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          {
+            _instanceId: "e2",
+            enchantment_id: "ENCHANTMENT-037",
+            value: -0.1,
+          },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // net +10% on top of 5.25 -> 5.775 -> 5.78
+      expect(result.enchantment_weight_modifier).toBe(0.1);
+      expect(result.final_weight).toBe(5.78);
+    });
+
+    test("Should apply a BAL enchantment directly onto weapon_final_bal_modifier, independent of GDP", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.weapon_final_bal_modifier).toBe(4);
+      expect(result.weapon_final_gdp_modifier).toBe(6);
+    });
+
+    test("Should apply a GDP enchantment directly onto weapon_final_gdp_modifier, independent of BAL", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.weapon_final_bal_modifier).toBe(3);
+      expect(result.weapon_final_gdp_modifier).toBe(7);
+    });
+
+    test("Should net multiple Min Strength requisite enchantments onto weapon_min_strength", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
+          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-061", value: -1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      // base weapon_min_strength (5) + net (2 - 1 = 1) -> 6
+      expect(result.weapon_min_strength).toBe(6);
+    });
+
+    test("Should not let BAL/GDP/Min-Strength/weight enchantments affect each other", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-056", value: 1 },
+          { _instanceId: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.final_weight).toBe(5.78);
+      expect(result.weapon_final_bal_modifier).toBe(4);
+      expect(result.weapon_final_gdp_modifier).toBe(6);
+      expect(result.weapon_min_strength).toBe(6);
+    });
+
+    test("Should add enchantments_total_price on top of weapon_final_price for total_value, regardless of the enchantment's mechanical effect", () => {
+      const instance = {
+        ...baseInstance,
+        enchantments: [
+          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
+        ],
+      };
+
+      const result = resolveMeleeWeapons(
+        instance,
+        mockWeapon,
+        mockMaterial,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result.weapon_final_price).toBe(165);
+      expect(result.enchantments_total_price).toBe(1000);
+      expect(result.total_value).toBe(1165);
     });
   });
 
@@ -262,6 +518,127 @@ describe("meleeResolver", () => {
       const result = calculateTotalMeleeWeight(meleeInventory, meleeDb);
 
       expect(result).toBe(5);
+    });
+
+    test("Should include enchantment weight in the total", () => {
+      const enchantmentsDb = {
+        "ENCHANTMENT-036": {
+          enchantment_id: "ENCHANTMENT-036",
+          enchantment_effect_type: "add_weight",
+          enchantment_is_percentage: true,
+          enchantment_base_value: 0.1,
+          enchantment_step: 0.1,
+          enchantment_base_price: 1000,
+          enchantment_price_per_extra_value: 1000,
+        },
+      };
+
+      const meleeInventory = [
+        {
+          weapon_id: "MELEE-001",
+          storedAt: "backpack",
+          enchantments: [
+            {
+              _instanceId: "e1",
+              enchantment_id: "ENCHANTMENT-036",
+              value: 0.1,
+            },
+          ],
+        },
+      ];
+
+      const meleeDb = { "MELEE-001": mockWeapon };
+
+      const result = calculateTotalMeleeWeight(
+        meleeInventory,
+        meleeDb,
+        {},
+        enchantmentsDb,
+        {},
+      );
+
+      // weapon_final_weight is 5 (no material); +10% -> 5.5
+      expect(result).toBe(5.5);
+    });
+  });
+
+  describe("calculateTotalMeleeValue", () => {
+    test("Should calculate equipped and backpack weapon value only", () => {
+      const meleeInventory = [
+        {
+          weapon_id: "MELEE-001",
+          material_id: "MAT-003",
+          is_equipped: true,
+          storedAt: null,
+        },
+        {
+          weapon_id: "MELEE-001",
+          material_id: "MAT-003",
+          storedAt: "camp",
+        },
+        {
+          weapon_id: "MELEE-001",
+          material_id: "MAT-003",
+          storedAt: "stash",
+        },
+        {
+          weapon_id: "MELEE-001",
+          material_id: "MAT-003",
+          storedAt: "backpack",
+        },
+      ];
+
+      const meleeDb = { "MELEE-001": mockWeapon };
+      const materialDb = { "MAT-003": mockMaterial };
+
+      const result = calculateTotalMeleeValue(
+        meleeInventory,
+        meleeDb,
+        materialDb,
+      );
+
+      // 165 (equipped) + 165 (backpack), camp/stash excluded
+      expect(result).toBe(330);
+    });
+
+    test("Should include enchantment price in the total", () => {
+      const enchantmentsDb = {
+        "ENCHANTMENT-056": {
+          enchantment_id: "ENCHANTMENT-056",
+          enchantment_effect_type: "fortify_damage",
+          enchantment_target: "BAL",
+          enchantment_is_percentage: false,
+          enchantment_base_value: 1,
+          enchantment_step: 1,
+          enchantment_base_price: 1000,
+          enchantment_price_per_extra_value: 1000,
+        },
+      };
+
+      const meleeInventory = [
+        {
+          weapon_id: "MELEE-001",
+          material_id: "MAT-003",
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [
+            { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
+          ],
+        },
+      ];
+
+      const meleeDb = { "MELEE-001": mockWeapon };
+      const materialDb = { "MAT-003": mockMaterial };
+
+      const result = calculateTotalMeleeValue(
+        meleeInventory,
+        meleeDb,
+        materialDb,
+        enchantmentsDb,
+        {},
+      );
+
+      expect(result).toBe(1165);
     });
   });
 

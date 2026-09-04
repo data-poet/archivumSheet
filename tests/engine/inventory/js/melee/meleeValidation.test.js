@@ -1,5 +1,6 @@
 const {
   validateMeleeInstance,
+  validateMeleeEnchantments,
 } = require("engine/inventory/js/melee/meleeValidation");
 
 const { VALID_STORED_AT } = require("engine/inventory/js/melee/meleeConstants");
@@ -93,6 +94,144 @@ describe("MELEE WEAPON VALIDATION", () => {
       expect(errors).toContain(
         `meleeInventory[0]: storedAt must be one of [${VALID_STORED_AT.join(", ")}] when not equipped`,
       );
+    });
+
+    test("Should return empty array when enchantments is a valid array", () => {
+      const errors = validateMeleeInstance(
+        {
+          weapon_id: "MELEE-001",
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
+        },
+        0,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when enchantments is present but not an array", () => {
+      const errors = validateMeleeInstance(
+        {
+          weapon_id: "MELEE-001",
+          is_equipped: true,
+          storedAt: null,
+          enchantments: "not-an-array",
+        },
+        0,
+      );
+
+      expect(errors).toContain(
+        "meleeInventory[0]: enchantments must be an array when present",
+      );
+    });
+
+    test("Should surface enchantment shape errors with the correct entry index", () => {
+      const errors = validateMeleeInstance(
+        {
+          weapon_id: "MELEE-001",
+          is_equipped: true,
+          storedAt: null,
+          enchantments: [{ value: 1 }],
+        },
+        0,
+      );
+
+      expect(errors).toContain(
+        "meleeInventory[0].enchantments[0]: enchantment_id is required",
+      );
+    });
+  });
+
+  describe("validateMeleeEnchantments", () => {
+    // Unlike armor's validateArmorEnchantments, this takes no meleeDb —
+    // itemCategory is the fixed MELEE_ITEM_CATEGORY constant ("Armas Corpo
+    // a Corpo"), not looked up per-instance, so every instance is validated
+    // against the same category regardless of its weapon_id.
+    const enchantmentsDb = {
+      "ENCHANTMENT-056": {
+        enchantment_id: "ENCHANTMENT-056",
+        enchantment_name: "Fortificar BAL",
+        enchantment_effect_type: "fortify_damage",
+        enchantment_target: "BAL",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Armas Corpo a Corpo"],
+      },
+      "ENCHANTMENT-000": {
+        enchantment_id: "ENCHANTMENT-000",
+        enchantment_name: "Enchantment de Acessórios",
+        enchantment_effect_type: "fortify_skill",
+        enchantment_is_percentage: false,
+        enchantment_base_value: 1,
+        enchantment_step: 1,
+        enchantment_allowed_itens: ["Acessórios"],
+      },
+    };
+
+    const targetsDb = {
+      advantages: {},
+      disadvantages: {},
+      skills: {},
+      spells: {},
+    };
+
+    test("Should return empty array for a valid enchantment allowed on Armas Corpo a Corpo", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-001",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should fail when the enchantment isn't allowed on Armas Corpo a Corpo", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-001",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toContain(
+        'meleeInventory[0].enchantments[0]: enchantment "Enchantment de Acessórios" is not allowed on Armas Corpo a Corpo',
+      );
+    });
+
+    test("Should apply the same fixed category regardless of weapon_id — no per-instance lookup", () => {
+      const errors = validateMeleeEnchantments(
+        [
+          {
+            weapon_id: "MELEE-DOES-NOT-EXIST",
+            enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
+          },
+        ],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toEqual([]);
+    });
+
+    test("Should default to an empty enchantments array when the instance has none", () => {
+      const errors = validateMeleeEnchantments(
+        [{ weapon_id: "MELEE-001" }],
+        enchantmentsDb,
+        targetsDb,
+      );
+
+      expect(errors).toEqual([]);
     });
   });
 });
