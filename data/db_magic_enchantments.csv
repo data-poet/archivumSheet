@@ -35,8 +35,8 @@ ENCHANTMENT-032,Enfraquecer Perícia,Perícia,weaken_skill,TRUE,,FALSE,1,1,Acess
 ENCHANTMENT-033,Adicionar Feitiço,Feitiço,spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Adiciona um feitiço ao usuário.
 ENCHANTMENT-034,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Fortifica um feitiço do usuário.
 ENCHANTMENT-035,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Enfraquece um feitiço do usuário.
-ENCHANTMENT-036,Aumentar Peso,Peso,add_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta o peso do item.
-ENCHANTMENT-037,Reduzir Peso,Peso,remove_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Reduz o peso do item.
+ENCHANTMENT-036,Aumentar Peso,Peso,add_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o peso do item.
+ENCHANTMENT-037,Reduzir Peso,Peso,remove_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Reduz o peso do item.
 ENCHANTMENT-038,Aumentar Resistência à Dano,RD,fortify_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano do item.
 ENCHANTMENT-039,Diminuir Resistência à Dano,RD,weaken_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano do item.
 ENCHANTMENT-040,Fortificar Resistência à Fogo,Fortificar Resistência,fortify_resistance,FALSE,Fire,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano de fogo do usuário.
@@ -55,3 +55,14 @@ ENCHANTMENT-052,Fortificar Resistência à Vazio,Fortificar Resistência,fortify
 ENCHANTMENT-053,Enfraquecer Resistência à Vazio,Enfraquecer Resistência,weaken_resistance,FALSE,Void,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano vazio do usuário.
 ENCHANTMENT-054,Fortificar Resistência à Arcano,Fortificar Resistência,fortify_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano arcano do usuário.
 ENCHANTMENT-055,Enfraquecer Resistência à Arcano,Enfraquecer Resistência,weaken_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano arcano do usuário.
+ENCHANTMENT-056,Fortificar BAL,Fortificar Dano,fortify_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Aumenta o dano de BAL da Arma
+ENCHANTMENT-057,Enfraquecer BAL,Enfraquecer Dano,weaken_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Diminui o dano de BAL da Arma
+ENCHANTMENT-058,Fortificar GDP,Fortificar Dano,fortify_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Aumenta o dano de GDP da Arma
+ENCHANTMENT-059,Enfraquecer GDP,Enfraquecer Dano,weaken_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Diminui o dano de GDP da Arma
+ENCHANTMENT-060,Aumentar ST Mín,Aumentar Requisito,add_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Aumenta o ST Mínimo necessário para empunhar a arma corretamente.
+ENCHANTMENT-061,Diminuir ST Mín,Diminuir Requisito,remove_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Diminui o ST Mínimo necessário para empunhar a arma corretamente.
+ENCHANTMENT-062,Aumentar Precisão (PREC),Aumentar Requisito,add_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o bônus de precisão da arma.
+ENCHANTMENT-063,Reduzir Precisão (PREC),Diminuir Requisito,remove_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui o bônus de precisão da arma.
+ENCHANTMENT-064,Aumentar Tiro Rápido (TR),Aumentar Requisito,add_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta a dificuldade de tiro rápido da arma.
+ENCHANTMENT-065,Reduzir Tiro Rápido (TR),Diminuir Requisito,remove_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui a dificuldade de tiro rápido da arma.
+ENCHANTMENT-066,Retorno Mágico,Efeito,special_effect,FALSE,,FALSE,,,Armas de Longo Alcance,5000,,,,A arma pode ser acionada e retornar para o usuário após ser arremessada.
