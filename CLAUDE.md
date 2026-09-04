@@ -12,4 +12,4 @@ Code should be self-explanatory through clear naming and structure. Comments are
 # Commits
 
 - Never add a `Co-Authored-By` trailer or any other AI-attribution line — commits are authored by the user alone.
-- Commit messages are one-liners, no body.
+- Commit messages are one-liners, no body and always not signed.
