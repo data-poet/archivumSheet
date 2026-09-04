@@ -96,6 +96,26 @@ export function isElementalResistanceType(effectType) {
 }
 
 /**
+ * Phase 3 (weapons). Fixed target (BAL/GDP), same "baked into the DB row,
+ * not player-picked" shape as ELEMENTAL_RESISTANCE_EFFECT_TYPES — see
+ * DAMAGE_EFFECT_TYPES in enchantmentsConstants.js.
+ */
+export function isDamageType(effectType) {
+  return data.enchantmentEffectTypes.DAMAGE_EFFECT_TYPES.includes(effectType);
+}
+
+/**
+ * Phase 3 (weapons). Fixed target (Min Strength/PREC/TR), same shape as
+ * isDamageType above — see REQUISITE_EFFECT_TYPES in
+ * enchantmentsConstants.js.
+ */
+export function isRequisiteType(effectType) {
+  return data.enchantmentEffectTypes.REQUISITE_EFFECT_TYPES.includes(
+    effectType,
+  );
+}
+
+/**
  * Whether an enchantment's `value` is a decimal fraction (0.05 = 5%)
  * rather than a whole number — true for weight and elemental-resistance
  * types (see enchantmentsConstants.js's WEIGHT_EFFECT_TYPES/

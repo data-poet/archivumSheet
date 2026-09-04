@@ -1,6 +1,9 @@
 const { VALID_STORED_AT, RANGED_ITEM_CATEGORY } = require("./rangedConstants");
 const { MELEE_ITEM_CATEGORY } = require("../melee/meleeConstants");
-const { isRangedDualUse } = require("../shared/dualUseWeapons.js");
+const {
+  isRangedDualUse,
+  resolveDualUseEnchantmentCategory,
+} = require("../shared/dualUseWeapons.js");
 
 const {
   validateEnchantmentEntryShape,
@@ -84,9 +87,12 @@ function validateRangedEnchantments(
     const prefix = `rangedInventory[${index}]`;
     const entries = instance.enchantments || [];
 
-    const itemCategory = isRangedDualUse(instance.weapon_id)
-      ? [RANGED_ITEM_CATEGORY, MELEE_ITEM_CATEGORY]
-      : RANGED_ITEM_CATEGORY;
+    const itemCategory = resolveDualUseEnchantmentCategory(
+      instance.weapon_id,
+      RANGED_ITEM_CATEGORY,
+      MELEE_ITEM_CATEGORY,
+      isRangedDualUse,
+    );
 
     entries.forEach((entry, entryIndex) => {
       errors.push(

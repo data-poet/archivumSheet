@@ -54,6 +54,8 @@ import {
   isValueType,
   isPercentageType,
   isElementalResistanceType,
+  isDamageType,
+  isRequisiteType,
   isAdvantageType,
   isDisadvantageType,
   isSkillType,
@@ -107,6 +109,15 @@ function entryTargetLabel(record, entry) {
   // target for this type.
   if (isElementalResistanceType(type)) {
     return getElementalResistanceLabel(record.enchantment_target);
+  }
+
+  // Fixed on the DB row itself, same "not player-picked" shape as
+  // elemental-resistance above — BAL/GDP/Min Strength/PREC/TR (Phase 3
+  // weapon rows) are already baked into enchantment_name too (e.g.
+  // "Fortificar BAL"), so this is a consistency/defensive label rather
+  // than something today's rows are ambiguous without.
+  if (isDamageType(type) || isRequisiteType(type)) {
+    return record.enchantment_target ?? null;
   }
 
   return null;

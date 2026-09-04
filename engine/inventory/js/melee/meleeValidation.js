@@ -1,6 +1,9 @@
 const { VALID_STORED_AT, MELEE_ITEM_CATEGORY } = require("./meleeConstants");
 const { RANGED_ITEM_CATEGORY } = require("../ranged/rangedConstants");
-const { isMeleeDualUse } = require("../shared/dualUseWeapons.js");
+const {
+  isMeleeDualUse,
+  resolveDualUseEnchantmentCategory,
+} = require("../shared/dualUseWeapons.js");
 
 const {
   validateEnchantmentEntryShape,
@@ -80,9 +83,12 @@ function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
     const prefix = `meleeInventory[${index}]`;
     const entries = instance.enchantments || [];
 
-    const itemCategory = isMeleeDualUse(instance.weapon_id)
-      ? [MELEE_ITEM_CATEGORY, RANGED_ITEM_CATEGORY]
-      : MELEE_ITEM_CATEGORY;
+    const itemCategory = resolveDualUseEnchantmentCategory(
+      instance.weapon_id,
+      MELEE_ITEM_CATEGORY,
+      RANGED_ITEM_CATEGORY,
+      isMeleeDualUse,
+    );
 
     entries.forEach((entry, entryIndex) => {
       errors.push(

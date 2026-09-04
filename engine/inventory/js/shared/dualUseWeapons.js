@@ -72,6 +72,26 @@ function getMeleeCounterpart(rangedWeaponId) {
   return RANGED_TO_MELEE[rangedWeaponId] ?? null;
 }
 
+/**
+ * Resolves the `itemCategory` argument for validateEnchantmentEntryApplication:
+ * an instance's own category alone, or `[ownCategory, counterpartCategory]`
+ * when its weapon_id is part of a dual-use pair — enchantments sync across a
+ * dual-use pair (weapons enchantments plan decisions #4/#5), so an entry
+ * added via one side must validate against either side's allowed list, not
+ * just this instance's own category.
+ *
+ * `isDualUse` is the caller's own predicate (isMeleeDualUse/isRangedDualUse)
+ * so this stays symmetric for both sides rather than baking in a direction.
+ */
+function resolveDualUseEnchantmentCategory(
+  weaponId,
+  ownCategory,
+  counterpartCategory,
+  isDualUse,
+) {
+  return isDualUse(weaponId) ? [ownCategory, counterpartCategory] : ownCategory;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -83,4 +103,5 @@ module.exports = {
   isRangedDualUse,
   getRangedCounterpart,
   getMeleeCounterpart,
+  resolveDualUseEnchantmentCategory,
 };
