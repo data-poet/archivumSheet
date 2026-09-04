@@ -28,7 +28,7 @@ describe("renderResumeArmor", () => {
     const container = id("resume_armor_container");
     expect(container.hidden).toBe(false);
     const rows = container.querySelectorAll("tbody tr");
-    expect(rows).toHaveLength(6); // all 6 ARMOR_SLOTS, equipped or not
+    expect(rows).toHaveLength(6);
 
     const torsoRow = Array.from(rows).find((r) =>
       r.textContent.includes("Tronco"),
@@ -65,7 +65,7 @@ describe("renderResumeArmor", () => {
     ).find((r) => r.textContent.includes("Tronco"));
     const input = torsoRow.querySelector(".resume-armor-hp");
     expect(input.value).toBe("-2");
-    expect(torsoRow.textContent).toContain("8/10"); // actualHp = 10-2, maxHp = 10
+    expect(torsoRow.textContent).toContain("8/10");
   });
 
   test("omits the HP stepper when the piece has no hit points (e.g. cloth)", () => {
@@ -107,8 +107,8 @@ describe("renderResumeShield", () => {
     expect(container.hidden).toBe(false);
     expect(container.textContent).toContain("Broquel");
     const cells = container.querySelectorAll("tbody td");
-    expect(cells[1].textContent).toBe("2"); // dr
-    expect(cells[2].textContent).toBe("8"); // block
+    expect(cells[1].textContent).toBe("2");
+    expect(cells[2].textContent).toBe("8");
     expect(container.querySelector(".resume-shield-hp")).not.toBeNull();
   });
 
@@ -116,8 +116,8 @@ describe("renderResumeShield", () => {
     renderResume({ inventory: { shield: { equipped: {} } } });
     const container = id("resume_shield_container");
     const cells = container.querySelectorAll("tbody td");
-    expect(cells[0].textContent).toBe("—"); // name
-    expect(cells[1].textContent).toBe("—"); // dr
+    expect(cells[0].textContent).toBe("—");
+    expect(cells[1].textContent).toBe("—");
     expect(container.querySelector(".resume-shield-hp")).toBeNull();
   });
 });
@@ -136,8 +136,8 @@ describe("renderResumeMelee", () => {
           equipped: [
             {
               weapon_name: "Espada Longa",
-              weapon_final_hit_points: 12, // authoritative — should win over the derived value
-              final_hit_points: 999, // deliberately inconsistent, to prove it's ignored
+              weapon_final_hit_points: 12, // authoritative, wins over the derived value below
+              final_hit_points: 999, // deliberately inconsistent — should be ignored
               hit_points_modifier: -1,
             },
           ],
@@ -146,7 +146,7 @@ describe("renderResumeMelee", () => {
     });
 
     const row = id("resume_melee_container").querySelector("tbody tr");
-    expect(row.textContent).toContain("11/12"); // actualHp = 12-1, maxHp = 12 (not 999-ish)
+    expect(row.textContent).toContain("11/12");
   });
 
   test("falls back to final_hit_points minus the modifier when weapon_final_hit_points is absent", () => {
@@ -156,7 +156,7 @@ describe("renderResumeMelee", () => {
           equipped: [
             {
               weapon_name: "Adaga",
-              final_hit_points: 8, // = maxHp(10) + modifier(-2)
+              final_hit_points: 8,
               hit_points_modifier: -2,
             },
           ],
@@ -165,7 +165,6 @@ describe("renderResumeMelee", () => {
     });
 
     const row = id("resume_melee_container").querySelector("tbody tr");
-    // derived maxHp = final_hit_points(8) - modifier(-2) = 10
     expect(row.textContent).toContain("8/10");
   });
 
@@ -194,7 +193,7 @@ describe("renderResumeMelee", () => {
     const cells = id("resume_melee_container").querySelectorAll("tbody td");
     expect(cells[1].textContent).toBe("C,1");
     expect(cells[2].textContent).toBe("1d");
-    expect(cells[3].textContent).toBe("—"); // gdp damage, absent
+    expect(cells[3].textContent).toBe("—");
   });
 
   test("renders one row per equipped weapon, each with its own instance id on the stepper", () => {

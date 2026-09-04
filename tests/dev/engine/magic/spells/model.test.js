@@ -21,9 +21,7 @@ import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
-// Two tiers of the same spell name — the select must dedupe by spell_name,
-// keeping just one entry per name (the model comment calls this out
-// explicitly: "Deduplicate by spell_name within the filtered set").
+// Two tiers of the same spell name — the select must dedupe by spell_name, keeping one entry per name.
 const SPELL_ROWS = [
   {
     spell_name: "bola-de-fogo",
@@ -80,9 +78,7 @@ describe("loadSpells", () => {
     const spellOptions = Array.from(
       document.getElementById("spellSelect").options,
     );
-    // Dedup is Map-based keyed by spell_name: the key's position is set by
-    // the FIRST occurrence, but a later duplicate key overwrites its value —
-    // so the surviving "bola-de-fogo" entry is the LAST row seen for it.
+    // Dedup is Map-based keyed by spell_name: position comes from the first occurrence, but value from the last.
     expect(spellOptions.map((o) => o.value)).toEqual([
       "bola-de-fogo",
       "curar-ferimentos",
@@ -109,7 +105,7 @@ describe("filterSpellsBySchool", () => {
       `<option value="" selected>x</option>`;
     filterSpellsBySchool();
     const options = Array.from(document.getElementById("spellSelect").options);
-    expect(options).toHaveLength(2); // deduped: bola-de-fogo + curar-ferimentos
+    expect(options).toHaveLength(2);
   });
 });
 
@@ -169,7 +165,7 @@ describe("removeSpell", () => {
       "bola-de-fogo": { base_value: 13, modifier: 0 },
       "curar-ferimentos": { base_value: 13, modifier: 1 },
     });
-    expect(triggerAutoRun).toHaveBeenCalledTimes(2); // once for remove, once for undo
+    expect(triggerAutoRun).toHaveBeenCalledTimes(2);
   });
 });
 

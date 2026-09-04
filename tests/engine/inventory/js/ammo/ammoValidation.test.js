@@ -9,9 +9,6 @@ const {
   VALID_LOOSE_STORED_AT,
 } = require("engine/inventory/js/ammo/ammoConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED MOCKS
-// ─────────────────────────────────────────────────────────────────────────────
 
 const mockContainerDb = {
   "CONT-001": {
@@ -79,9 +76,6 @@ const mockAmmoDb = {
   },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// validateContainerInstance
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid equipped container", () => {
@@ -286,9 +280,6 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// validateLooseAmmoInstance
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("AMMO VALIDATION — validateLooseAmmoInstance", () => {
   test("Should return empty array for a valid backpack loose ammo entry", () => {
@@ -398,9 +389,6 @@ describe("AMMO VALIDATION — validateLooseAmmoInstance", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// validateContainerCrossRules
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("AMMO VALIDATION — validateContainerCrossRules", () => {
   test("Should return empty array for a valid single equipped carriable container", () => {

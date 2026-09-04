@@ -75,10 +75,8 @@ describe("activateTab", () => {
     const skillsPanel = document
       .getElementById("section-skills")
       .querySelector("#tab-a");
-    // Both panels share id "tab-a" (invalid HTML, but tabs.js scopes its
-    // querySelectorAll to `section`, so only the traits one should react)
-    // — querySelector by id would return the traits one; scope check via
-    // the button state within section-skills instead.
+    // Both panels share id "tab-a" (invalid HTML); check button state
+    // instead of querying by id, which would just return the traits one.
     const skillsBtn = document
       .getElementById("section-skills")
       .querySelector(".tab-btn");
@@ -105,7 +103,7 @@ describe("initTabs — collapse wiring", () => {
     isCollapsed.mockReturnValue(false);
     getActiveTab.mockReturnValue(null);
     initTabs();
-    jest.clearAllMocks(); // clear the setActiveTab call from initTabs()'s own initial activateTab
+    jest.clearAllMocks(); // initTabs() itself calls activateTab, which calls setActiveTab
 
     document.querySelector(".tab-strip-collapse").click();
 
@@ -113,8 +111,7 @@ describe("initTabs — collapse wiring", () => {
     expect(document.querySelector("#section-traits .box").classList).toContain(
       "is-collapsed",
     );
-    // stopPropagation on the chevron's handler means the click never
-    // bubbles up to the strip's own tab-click listener.
+    // stopPropagation on the chevron handler keeps the click from bubbling to the tab listener.
     expect(setActiveTab).not.toHaveBeenCalled();
   });
 });

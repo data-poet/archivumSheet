@@ -7,9 +7,7 @@ jest.mock("dev/public/js/engine/inventory/firearms/model.js", () => ({
   addEquippedFirearm: jest.fn(),
   addStoredFirearm: jest.fn(),
   saveFirearmCustomFields: jest.fn(),
-  // computeFinalMagazineSize is intentionally NOT mocked — it's pure and
-  // imported directly by events.js, so using the real implementation
-  // exercises genuine clamp-bound math instead of an arbitrary stub.
+  // computeFinalMagazineSize is intentionally not mocked — it's pure, so the real implementation exercises genuine clamp-bound math instead of an arbitrary stub.
   computeFinalMagazineSize: jest.requireActual(
     "dev/public/js/engine/inventory/firearms/model.js",
   ).computeFinalMagazineSize,
@@ -84,9 +82,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleFirearmClick
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleFirearmClick", () => {
   test("remove-firearm and remove-equipped-firearm both remove by instanceId", () => {
     const a = elWithClass("button", "remove-firearm", {
@@ -201,9 +196,6 @@ describe("handleFirearmClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleFirearmInput — HP
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleFirearmInput — HP modifiers", () => {
   test("no-ops (but handled) when the instance can't be found", () => {
     model.findFirearmByInstanceId.mockReturnValue(undefined);
@@ -281,9 +273,6 @@ describe("handleFirearmInput — HP modifiers", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleFirearmInput — rounds loaded (magazine clamp)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleFirearmInput — rounds loaded", () => {
   test("allows an empty value mid-typing without mutating", () => {
     const instance = { weapon_id: "FIREARM-DB-1", rounds_loaded: 5 };
@@ -339,9 +328,6 @@ describe("handleFirearmInput — rounds loaded", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleFirearmInput — TUNING_FIELDS generic dispatch (gdp/tr/prec/magazine-mod)
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleFirearmInput — tuning fields", () => {
   test("equipped-firearm-gdp sets gdp_modifier and patches the single-value display", () => {
     const instance = { weapon_id: "FIREARM-DB-1", gdp_modifier: 0 };
@@ -424,9 +410,6 @@ test("handleFirearmInput returns false for an unrelated input target", () => {
   expect(handleFirearmInput({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleFirearmChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleFirearmChange — equipped-firearm-name / tier", () => {
   test("edits the instance in place — no equipFirearm() call, no local render", () => {
     const instance = { weapon_id: "OLD-ID", hit_points_modifier: -5 };
@@ -568,9 +551,6 @@ test("handleFirearmChange returns false for an unrelated change target", () => {
   expect(handleFirearmChange({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddFirearm
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddFirearm", () => {
   function buildAddForm({
     name = "Pistola",

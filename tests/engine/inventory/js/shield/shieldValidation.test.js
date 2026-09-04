@@ -113,10 +113,7 @@ describe("SHIELD VALIDATION", () => {
   });
 
   describe("validateShieldEnchantments", () => {
-    // Unlike armor's validateArmorEnchantments, this takes no shieldDb —
-    // itemCategory is the fixed SHIELD_ITEM_CATEGORY constant ("Escudos"),
-    // not looked up per-instance, so every instance is validated against
-    // the same category regardless of its shield_id.
+    // Unlike armor, itemCategory is the fixed "Escudos" constant, not looked up per-instance.
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",
@@ -187,9 +184,7 @@ describe("SHIELD VALIDATION", () => {
     });
 
     test("Should apply the same fixed category regardless of shield_id — no per-instance lookup", () => {
-      // Unlike armor, there's no slot to vary by — a second instance with a
-      // different (even unknown) shield_id is validated against the exact
-      // same "Escudos" category as the first.
+      // Unlike armor, there's no slot to vary by, so even an unknown shield_id gets the same category.
       const errors = validateShieldEnchantments(
         [
           {

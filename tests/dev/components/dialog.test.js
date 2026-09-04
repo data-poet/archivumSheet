@@ -106,8 +106,7 @@ describe("showConfirm — resolution", () => {
   test("does not resolve when clicking inside the card itself", () => {
     showConfirm({ message: "x" });
     const card = overlay().querySelector(".dialog-card");
-    // Clicking the card bubbles to the overlay, but e.target is the card,
-    // not the overlay, so the "click outside" branch must not fire.
+    // e.target is the card, not the overlay, so "click outside" must not fire.
     card.dispatchEvent(new Event("click", { bubbles: true }));
     expect(overlay()).not.toBeNull();
   });
@@ -129,8 +128,7 @@ describe("showConfirm — resolution", () => {
     overlay().querySelector(".dialog-btn-confirm").click();
     await result;
 
-    // Should not throw, and definitely shouldn't try to resolve an
-    // already-settled promise or touch a removed overlay.
+    // Must not try to resolve an already-settled promise or touch a removed overlay.
     expect(() =>
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" })),
     ).not.toThrow();

@@ -148,10 +148,7 @@ describe("BUILD CHARACTER PRIMARY", () => {
         enchantmentAdvantageIds: ["ADV-002"],
       });
 
-      // Mirrors how is_race_innate already behaves for any id present in
-      // innateIds, regardless of also being in the player's own selection
-      // — enchantmentIds membership is treated the same way here for
-      // consistency, not a deliberate new precedence rule.
+      // mirrors is_race_innate precedence, not a deliberate new rule
       expect(result.advantages["ADV-002"].is_enchantment).toBe(true);
       expect(result.advantages["ADV-002"].points).toBe(0);
     });

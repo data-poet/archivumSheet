@@ -3,7 +3,6 @@ const {
   formatDamageString,
 } = require("engine/inventory/js/shared/weaponDamage");
 
-// ─── Fixtures ─────────────────────────────────────────────────────────────────
 
 const BASE_DAMAGE_ST10 = {
   GDP: {
@@ -35,7 +34,6 @@ const BASE_DAMAGE_ST15 = {
   },
 };
 
-// ─── formatDamageString ───────────────────────────────────────────────────────
 
 describe("formatDamageString", () => {
   test("negative sum uses minus sign without space", () => {
@@ -60,7 +58,6 @@ describe("formatDamageString", () => {
   });
 });
 
-// ─── computeWeaponDamage — guard clauses ─────────────────────────────────────
 
 describe("computeWeaponDamage — guard clauses", () => {
   test("returns empty object when base_damage is null", () => {
@@ -84,7 +81,6 @@ describe("computeWeaponDamage — guard clauses", () => {
   });
 });
 
-// ─── computeWeaponDamage — Perfuração only ───────────────────────────────────
 
 describe("computeWeaponDamage — Perfuração", () => {
   test("computes weapon_gdp_damage only for Perfuração type", () => {
@@ -125,7 +121,6 @@ describe("computeWeaponDamage — Perfuração", () => {
   });
 });
 
-// ─── computeWeaponDamage — Corte ─────────────────────────────────────────────
 
 describe("computeWeaponDamage — Corte", () => {
   test("computes weapon_bal_damage only for Corte type", () => {
@@ -177,7 +172,6 @@ describe("computeWeaponDamage — Corte", () => {
   });
 });
 
-// ─── computeWeaponDamage — Contusão ──────────────────────────────────────────
 
 describe("computeWeaponDamage — Contusão", () => {
   test("computes weapon_bal_damage for Contusão type", () => {
@@ -188,7 +182,6 @@ describe("computeWeaponDamage — Contusão", () => {
   });
 });
 
-// ─── computeWeaponDamage — both fields ───────────────────────────────────────
 
 describe("computeWeaponDamage — both Perfuração and Corte", () => {
   test("computes both fields when type contains Perfuração and Corte", () => {
@@ -253,7 +246,6 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
   });
 });
 
-// ─── computeWeaponDamage — return type ───────────────────────────────────────
 
 describe("computeWeaponDamage — return types", () => {
   test("returned damage values are always strings", () => {

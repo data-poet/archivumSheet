@@ -31,10 +31,7 @@ function headerDOM() {
     "th-res-enchantment",
     "th-res-final",
   ];
-  // <th>/<td>/<tbody> get silently dropped by jsdom's spec-compliant HTML
-  // parser unless they're inside a real <table> context — a bare
-  // insertAdjacentHTML("beforeend", "<th>...") on <body> is a parse error
-  // and is ignored, not just unstyled.
+  // jsdom's spec-compliant HTML parser silently drops <th>/<td>/<tbody> inserted outside a <table>.
   document.body.insertAdjacentHTML(
     "beforeend",
     `<table><thead><tr>${ids.map((id) => `<th id="${id}"></th>`).join("")}</tr></thead></table>`,
@@ -96,7 +93,6 @@ describe("initAttributeTableHeaders", () => {
   });
 
   test("does not throw when some header ids are missing from the DOM", () => {
-    // Only put a couple of the ids in the DOM
     document.body.insertAdjacentHTML(
       "beforeend",
       `<table><thead><tr><th id="th-attr-attribute"></th></tr></thead></table>`,
@@ -123,7 +119,7 @@ describe("updateActualValues", () => {
 
     updateActualValues();
 
-    expect(document.getElementById("ST_actual").textContent).toBe("13"); // 10+1+2+0
+    expect(document.getElementById("ST_actual").textContent).toBe("13");
   });
 
   test("defaults race/enchantment modifiers to 0 when the sheet hasn't run yet", () => {
@@ -189,7 +185,7 @@ describe("updateActualValues", () => {
     state.sheet = {
       character: {
         primary_attributes: {
-          // Nonzero, but presence flag absent — must NOT show as active.
+          // Nonzero but presence flag absent — must not show as active.
           ST: { enchantment_modifier: 3, has_enchantment_modifier: false },
         },
       },

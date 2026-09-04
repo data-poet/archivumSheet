@@ -23,12 +23,7 @@ import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
-// jsdom doesn't decode real images or implement canvas 2D context — mock
-// both so the upload pipeline (dimension read + average-color sampling)
-// can run deterministically. Confirmed via a scratch probe that firing
-// onload synchronously on `.src =` assignment, combined with real
-// FileReader (genuinely async in jsdom but resolves on its own), works
-// with a short real-timer wait rather than fake timers.
+// jsdom can't decode real images or run a canvas 2D context; mock both so the upload pipeline (dimension read + color sampling) runs deterministically with a short real-timer wait, not fake timers.
 class MockImage {
   constructor() {
     this.naturalWidth = 100;
@@ -72,9 +67,6 @@ beforeEach(() => {
   global.Image = MockImage;
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// renderResumeImage
-// ─────────────────────────────────────────────────────────────────────────
 describe("renderResumeImage", () => {
   test("no-ops when the resume container is missing", () => {
     resetDOM();
@@ -106,9 +98,6 @@ describe("renderResumeImage", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// renderCharacterImage
-// ─────────────────────────────────────────────────────────────────────────
 describe("renderCharacterImage", () => {
   test("no-ops when the preview element is missing", () => {
     resetDOM();
@@ -125,10 +114,7 @@ describe("renderCharacterImage", () => {
     renderCharacterImage();
 
     expect(document.getElementById("charimg-img")).toBeNull();
-    // state.js's pristine image.scale is "" (empty string), not undefined —
-    // `_img().scale ?? 100` only falls back for null/undefined, so the
-    // empty string passes straight through. This is real, current
-    // behavior, not a 100-default in practice for a freshly-reset character.
+    // state.js's pristine image.scale is "" not undefined, so `_img().scale ?? 100` passes it straight through — there's no 100-default in practice for a fresh character.
     expect(document.getElementById("charimg-scale").value).toBe("");
   });
 
@@ -203,9 +189,6 @@ describe("renderCharacterImage", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Drag-to-reposition (exercised via renderCharacterImage's _bindDrag)
-// ─────────────────────────────────────────────────────────────────────────
 describe("drag to reposition", () => {
   function setup() {
     resetDOM(`
@@ -227,24 +210,11 @@ describe("drag to reposition", () => {
     return preview;
   }
 
-  // NOTE ON TEST STRUCTURE: _bindDrag() attaches its mousemove/mouseup
-  // listeners to `document` itself (not to the preview element), and does
-  // so freshly on every renderCharacterImage() call without ever removing
-  // the previous set — see the dedicated bug-documentation test at the
-  // bottom of this describe block. That means multiple tests in this file
-  // calling setup() (-> renderCharacterImage() -> _bindDrag()) each leave
-  // a listener on the shared `document` for the rest of the test file's
-  // lifetime. Those stale listeners are harmless AS LONG AS each test's
-  // gesture is fully completed with a mouseup — completing a gesture resets
-  // that closure's `dragging` flag to false, making it a permanent no-op
-  // for every later test. So: every test below that starts a mousedown
-  // must end with a mouseup, even where the mouseup itself isn't the
-  // point of that particular test.
+  // _bindDrag() adds fresh mousemove/mouseup listeners on `document` every render without removing old ones — each test must end its gesture with a mouseup or stale listeners leak into later tests.
 
   test("full gesture: live updates during move, ignores movement before mousedown, commits once on mouseup, ignores movement after", () => {
     const preview = setup();
 
-    // Movement before any mousedown is ignored.
     document.dispatchEvent(
       new MouseEvent("mousemove", {
         clientX: 999,
@@ -267,7 +237,6 @@ describe("drag to reposition", () => {
     document.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
 
-    // Movement after the gesture ended (mouseup) no longer moves anything.
     document.dispatchEvent(
       new MouseEvent("mousemove", {
         clientX: 99999,
@@ -293,23 +262,15 @@ describe("drag to reposition", () => {
     );
     expect(state.selected.character.image.position.x).toBe(-100);
 
-    document.dispatchEvent(new MouseEvent("mouseup", { bubbles: true })); // complete the gesture
+    document.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
   });
 
   test("[fixed] repeated renderCharacterImage() calls do NOT stack duplicate drag listeners", () => {
-    // Previously, _bindDrag() ran again on every renderCharacterImage()
-    // call — which itself re-runs after nearly every portrait interaction
-    // (background change, size/position preset, upload, clear) — without
-    // ever removing the prior set of document-level mousemove/mouseup
-    // listeners. A user changing the background a few times before
-    // dragging the image would get triggerAutoRun() fired once per
-    // accumulated render, not once per drag. Fixed via an idempotency
-    // guard (previewEl._dragBound) since previewEl is the same persistent
-    // DOM node across renders. This test proves the fix holds even after
-    // multiple renders, not just a single one.
+    // _bindDrag() re-ran on every render without removing prior document
+    // listeners; guarded via previewEl._dragBound since previewEl persists.
     const preview = setup();
     renderCharacterImage(); // second render of the SAME previewEl
-    renderCharacterImage(); // third, for good measure
+    renderCharacterImage();
 
     preview.dispatchEvent(
       new MouseEvent("mousedown", { clientX: 0, clientY: 0, bubbles: true }),
@@ -323,9 +284,6 @@ describe("drag to reposition", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageClick — background
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageClick — background radios", () => {
   test("sets the background and re-syncs UI", () => {
     resetDOM(`
@@ -348,9 +306,6 @@ describe("handleCharacterImageClick — background radios", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageClick — size presets
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageClick — size presets", () => {
   function setupPresetDOM() {
     resetDOM(`
@@ -424,9 +379,6 @@ describe("handleCharacterImageClick — size presets", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageClick — position presets
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageClick — position presets", () => {
   function setupPresetDOM() {
     resetDOM(`
@@ -479,9 +431,6 @@ describe("handleCharacterImageClick — position presets", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageClick — clear button
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageClick — clear button", () => {
   test("returns false when nothing is uploaded (no dialog shown)", () => {
     resetDOM(`<button id="charimg-clear-btn"></button>`);
@@ -529,9 +478,6 @@ test("handleCharacterImageClick returns false for an unrelated click target", ()
   expect(handleCharacterImageClick({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageChange — file upload
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageChange", () => {
   function fileInput(file) {
     const input = document.createElement("input");
@@ -563,9 +509,7 @@ describe("handleCharacterImageChange", () => {
     handleCharacterImageChange({ target });
 
     expect(target.value).toBe("");
-    // Let this test's own upload chain fully resolve before the next test
-    // runs — otherwise its still-pending _loadFile() promise can resolve
-    // DURING a later test and mutate that test's freshly-reset state.
+    // Let this test's upload chain fully resolve — otherwise a still-pending _loadFile() promise can resolve during a later test and mutate its freshly-reset state.
     await flush();
   });
 
@@ -638,9 +582,6 @@ describe("handleCharacterImageChange", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleCharacterImageInput — scale slider
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleCharacterImageInput", () => {
   test("updates scale, patches the live preview image if present, and re-renders resume", () => {
     resetDOM(`
@@ -665,9 +606,6 @@ describe("handleCharacterImageInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// initCharacterImage
-// ─────────────────────────────────────────────────────────────────────────
 describe("initCharacterImage", () => {
   test("renders both the editor preview and the resume portrait", () => {
     resetDOM(`

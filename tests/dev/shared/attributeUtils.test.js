@@ -1,8 +1,3 @@
-// shared/attributeUtils.js is pure logic — no DOM, no imports of its own,
-// state is passed in as a plain object. Covers the fallback chain each
-// function documents in its own comment (base_value -> value -> default of
-// 10), since that chain is what keeps the UI default lined up with what
-// each engine calculation actually produces.
 import {
   getSkillAttributeBase,
   getSpellAttributeBase,

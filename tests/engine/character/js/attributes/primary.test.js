@@ -164,8 +164,7 @@ describe("PRIMARY ATTRIBUTES", () => {
     expect(result.primary_attributes.ST.value).toBe(16); // 12 + 1 + 3
     expect(result.primary_attributes.ST.enchantment_modifier).toBe(3);
     expect(result.primary_attributes.ST.has_enchantment_modifier).toBe(true);
-    // cost is still purely a function of base_value, unaffected by the
-    // enchantment — fortifying an attribute costs nothing in build points
+    // cost is a function of base_value only — fortifying costs no build points
     expect(result.character_points.ST).toBe(20);
   });
 

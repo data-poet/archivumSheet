@@ -6,12 +6,7 @@ const {
   _getContainerDB,
 } = require("engine/inventory/js/ammo/ammo");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MOCK DB
-// Injected via jest.mock so buildAmmoSlots never touches the filesystem.
-// Replace these with real IDs once db_equipment_ammo.csv and
-// db_equipment_ammo_containers.csv exist.
-// ─────────────────────────────────────────────────────────────────────────────
+// Mocked via jest.mock so buildAmmoSlots never touches the filesystem; swap for real IDs once the CSVs exist.
 
 jest.mock("engine/inventory/js/ammo/ammo", () => {
   const original = jest.requireActual("engine/inventory/js/ammo/ammo");
@@ -82,16 +77,12 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
     },
   };
 
-  // Patch the private DB singletons so buildAmmoSlots uses our mock data
   return {
     ...original,
     _getAmmoDB: () => mockAmmoDb,
     _getContainerDB: () => mockContainerDb,
+    // Reimplemented here instead of just swapping the DB getters, since buildAmmoSlots reads them via closure at module load time.
     buildAmmoSlots: (containerInventory = [], looseInventory = []) => {
-      // Temporarily override the module-level getters by re-implementing
-      // buildAmmoSlots in terms of the mock DBs.
-      // We do this by calling the original with a replaced module scope —
-      // easier to just re-export a thin wrapper that calls real logic:
       const {
         validateContainerInstance,
         validateLooseAmmoInstance,
@@ -105,7 +96,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
         calculateCarriedAmmoWeight,
       } = require("engine/inventory/js/ammo/ammoResolver");
 
-      // shape validation
       const containerShapeErrors = containerInventory.flatMap((inst, i) =>
         validateContainerInstance(inst, i),
       );
@@ -124,7 +114,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
         );
       }
 
-      // unknown IDs
       const unknownContainers = containerInventory
         .filter((i) => !mockContainerDb[i.container_id])
         .map((i) => i.container_id);
@@ -153,7 +142,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
         );
       }
 
-      // cross-rules
       const crossErrors = validateContainerCrossRules(
         containerInventory,
         mockContainerDb,
@@ -165,7 +153,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
         );
       }
 
-      // build
       const containers = { equipped: [], backpack: [], stash: [], camp: [] };
       for (const inst of containerInventory) {
         const c = mockContainerDb[inst.container_id];
@@ -195,10 +182,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
     },
   };
 });
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TESTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("EQUIPMENT AMMO", () => {
   describe("Constants", () => {

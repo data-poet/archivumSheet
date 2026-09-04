@@ -97,7 +97,6 @@ describe("updateInventoryUI", () => {
       },
     });
 
-    // 5 base + 10+3+2+1+4+0.5+0.5+1+2 = 29
     expect(document.getElementById("total_weight").textContent).toBe("29");
     expect(document.getElementById("armor_weight").textContent).toBe("10");
     expect(document.getElementById("shield_weight").textContent).toBe("3");
@@ -131,12 +130,7 @@ describe("updateInventoryUI", () => {
 });
 
 describe("updateInventoryUI — encumbrance thresholds", () => {
-  // NOTE: each threshold check maps to the label ONE TIER BELOW its name —
-  // e.g. crossing `limits.veryHeavy` is reported as "overloaded", and
-  // crossing `limits.heavy` is reported as "veryHeavy". This mirrors the
-  // source exactly; it reads oddly but is intentional (locking it in here
-  // so a future refactor doesn't accidentally "fix" it into a behavior
-  // change).
+  // Each threshold maps to the label one tier below its name (crossing veryHeavy reports "overloaded"); mirrors the source intentionally.
   const limits = { none: 10, light: 20, medium: 30, heavy: 40, veryHeavy: 50 };
 
   function weightFor(w) {

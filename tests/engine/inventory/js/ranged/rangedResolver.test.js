@@ -84,7 +84,6 @@ describe("rangedResolver", () => {
       );
 
       expect(result).toEqual({
-        // WEAPON BASE
         weapon_id: "RANGED-001",
         weapon_name: "Arco Curto",
         weapon_box_name: "Arco Curto | Comum",
@@ -96,41 +95,34 @@ describe("rangedResolver", () => {
         weapon_tr: 1,
         weapon_prec: 2,
 
-        // RESOLVED DISTANCES
         weapon_half_distance: 10,
         weapon_max_distance: 20,
 
-        // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
         material_atk_effect: null,
 
-        // FINAL VALUES
         weapon_final_gdp_modifier: 5,
         weapon_final_weight: 2.1,
         weapon_final_price: 132,
         weapon_final_hit_points: 30,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
         has_magic_return: false,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -5,
         final_hit_points: 25,
 
-        // TRULY-FINAL VALUES
         final_weight: 2.1,
 
         weapon_custom_name: "Arco do Vento Norte",
         weapon_custom_description: "Um arco entalhado com runas desgastadas.",
         weapon_custom_effect: "+1 em testes de percepção contra o vento.",
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
@@ -167,7 +159,6 @@ describe("rangedResolver", () => {
       const result = resolveRangedWeapons(instance, mockWeapon, null, 8);
 
       expect(result).toEqual({
-        // WEAPON BASE
         weapon_id: "RANGED-001",
         weapon_name: "Arco Curto",
         weapon_box_name: "Arco Curto | Comum",
@@ -179,41 +170,34 @@ describe("rangedResolver", () => {
         weapon_tr: 1,
         weapon_prec: 2,
 
-        // RESOLVED DISTANCES
         weapon_half_distance: 8,
         weapon_max_distance: 16,
 
-        // MATERIAL
         material_id: null,
         material_name: null,
         material_type: null,
         material_tier: null,
         material_atk_effect: null,
 
-        // FINAL VALUES
         weapon_final_gdp_modifier: 3,
         weapon_final_weight: 2,
         weapon_final_price: 120,
         weapon_final_hit_points: 15,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
         has_magic_return: false,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 13,
 
-        // TRULY-FINAL VALUES
         final_weight: 2,
 
         weapon_custom_name: null,
         weapon_custom_description: null,
         weapon_custom_effect: null,
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
@@ -223,14 +207,7 @@ describe("rangedResolver", () => {
   });
 
   describe("resolveRangedWeapons — enchantments", () => {
-    // Same fixture shape as meleeResolver.test.js's "resolveMeleeWeapons —
-    // enchantments" describe block — ranged reuses the identical shared
-    // enchantments engine, applied to weapon_final_gdp_modifier/
-    // weapon_min_strength/weapon_prec/weapon_tr (mutated directly, no
-    // separate "truly final" tier — see rangedResolver.js doc comment) plus
-    // the two-tier weight split (weapon_final_weight vs final_weight), plus
-    // the boolean has_magic_return flag for special_effect (no melee
-    // equivalent).
+    // Same shared enchantments engine as meleeResolver.test.js, mutating weapon_final_* fields directly (no separate "truly final" tier); ranged also adds a has_magic_return flag for special_effect, with no melee equivalent.
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",

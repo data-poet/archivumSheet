@@ -85,7 +85,6 @@ describe("firearmsResolver", () => {
       const result = resolveFirearmWeapon(instance, mockWeapon, mockMaterial);
 
       expect(result).toEqual({
-        // WEAPON BASE
         weapon_id: "FIREARM-000",
         weapon_name: "Revolver Artificier",
         weapon_type: "Besta",
@@ -97,21 +96,18 @@ describe("firearmsResolver", () => {
         weapon_reload_speed: "3 Turnos",
         weapon_cdt: 1,
 
-        // GDP DICE
         weapon_gdp_dice: "1d6",
 
-        // RESOLVED DISTANCES
         weapon_half_distance: 75,
         weapon_max_distance: 1000,
 
-        // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
         material_atk_effect: null,
 
-        // FINAL VALUES — weight/price/HP affected by material, combat stats not
+        // weight/price/HP are affected by material; combat stats are not
         weapon_final_weight: 2.63,
         weapon_final_price: 2200,
         weapon_final_hit_points: 20,
@@ -121,12 +117,10 @@ describe("firearmsResolver", () => {
         weapon_final_magazine_size: 8, // base 6 + instance 2
         weapon_gdp_damage: "1d6+3",
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 18,
         gdp_modifier: 1,
@@ -135,14 +129,12 @@ describe("firearmsResolver", () => {
         magazine_size_modifier: 2,
         rounds_loaded: 4,
 
-        // TRULY-FINAL VALUES
         final_weight: 2.63,
 
         weapon_custom_name: "Revólver do Artificier Renegado",
         weapon_custom_description: "Um revólver com o cano gravado à mão.",
         weapon_custom_effect: "+1 em testes de Intimidação ao sacá-lo.",
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: null,
@@ -199,7 +191,6 @@ describe("firearmsResolver", () => {
       expect(result.magazine_size_modifier).toBe(0);
       expect(result.rounds_loaded).toBe(0);
 
-      // Base-only finals
       expect(result.weapon_final_gdp_modifier).toBe(2);
       expect(result.weapon_final_tr).toBe(8);
       expect(result.weapon_final_prec).toBe(2);
@@ -265,16 +256,7 @@ describe("firearmsResolver", () => {
   });
 
   describe("resolveFirearmWeapon — enchantments", () => {
-    // Same fixture shape as rangedResolver.test.js's "resolveRangedWeapons —
-    // enchantments" describe block. Firearms have no BAL/special_effect
-    // support (neither is offered per the CSV's allowed_itens), but DO
-    // support weight enchantments. GDP/TR/PREC deltas are the interesting
-    // case here — firearms already have pre-existing player-runtime
-    // modifiers (gdp_modifier/tr_modifier/prec_modifier) on the instance,
-    // so the enchantment delta must stack on top of those, not replace or
-    // ignore them (see firearmsResolver.js doc comment). Min Strength has
-    // no player-runtime modifier, so its enchantment delta applies directly
-    // onto weapon_min_strength, mirroring rangedResolver.js.
+    // GDP/TR/PREC enchantment deltas must stack on top of pre-existing player-runtime modifiers, not replace them (see firearmsResolver.js).
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",

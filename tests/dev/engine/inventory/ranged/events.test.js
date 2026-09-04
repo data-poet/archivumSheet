@@ -77,9 +77,6 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleRangedClick
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleRangedClick", () => {
   test("remove-ranged and remove-equipped-ranged both remove by instanceId", () => {
     const a = elWithClass("button", "remove-ranged", {
@@ -161,9 +158,6 @@ describe("handleRangedClick", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleRangedInput — HP modifiers, deliberately NOT mirrored to melee
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleRangedInput", () => {
   test("no-ops (but handled) when the instance can't be found", () => {
     model.findRangedByInstanceId.mockReturnValue(undefined);
@@ -206,11 +200,7 @@ describe("handleRangedInput", () => {
   });
 
   test("[documented asymmetry] does NOT mirror the HP modifier to a linked melee instance", () => {
-    // Per ranged/events.js's own comment: only equip/storage moves mirror
-    // bidirectionally; HP-modifier inputs are melee -> ranged only, never
-    // the reverse. This is pre-existing, intentional behavior, not
-    // something this test suite is introducing — locked in explicitly so
-    // a future change to this is a visible, deliberate test update.
+    // Per ranged/events.js's own comment: only equip/storage moves mirror bidirectionally; HP-modifier inputs are melee -> ranged only, never the reverse — pre-existing, intentional behavior.
     const rangedInstance = { weapon_id: "RANGED-DB-1", hit_points_modifier: 0 };
     model.findRangedByInstanceId.mockReturnValue(rangedInstance);
     const linkedMelee = {
@@ -253,9 +243,6 @@ describe("handleRangedInput", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleRangedChange
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleRangedChange — equipped-ranged-name / tier", () => {
   test("edits the instance in place, no equipRanged() call, no local render", () => {
     const instance = { weapon_id: "OLD-ID", hit_points_modifier: -5 };
@@ -435,9 +422,6 @@ test("handleRangedChange returns false for an unrelated change target", () => {
   expect(handleRangedChange({ target })).toBe(false);
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// handleAddRanged
-// ─────────────────────────────────────────────────────────────────────────
 describe("handleAddRanged", () => {
   function buildAddForm({
     name = "Arco Curto",

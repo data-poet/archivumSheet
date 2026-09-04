@@ -73,37 +73,31 @@ describe("shieldResolver", () => {
       const result = resolveShieldPiece(instance, mockShield, mockMaterial);
 
       expect(result).toEqual({
-        // SHIELD BASE
         shield_id: "SHIELD-000",
         shield_name: "Escudo Redondo",
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
 
-        // MATERIAL
         material_id: "MAT-003",
         material_name: "Aço",
         material_type: "Metal",
         material_tier: "Incomum",
         material_def_effect: null,
 
-        // FINAL VALUES
         shield_final_damage_resistance: 3,
         shield_final_weight: 3.15,
         shield_final_price: 110,
         shield_final_hit_points: 20,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
         enchantment_damage_resistance_modifier: 0,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -5,
         final_hit_points: 15,
 
-        // TRULY-FINAL VALUES
         final_weight: 3.15,
         final_damage_resistance: 3,
 
@@ -111,7 +105,6 @@ describe("shieldResolver", () => {
         shield_custom_description: "Um escudo com brasão apagado pelo tempo.",
         shield_custom_effect: "+1 em testes de Intimidação ao erguê-lo.",
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: true,
         storedAt: "backpack",
@@ -148,37 +141,31 @@ describe("shieldResolver", () => {
       const result = resolveShieldPiece(instance, mockShield);
 
       expect(result).toEqual({
-        // SHIELD BASE
         shield_id: "SHIELD-000",
         shield_name: "Escudo Redondo",
         shield_box_name: "Escudo Redondo | Comum",
         shield_type: "Leve",
         shield_tier: "Comum",
 
-        // MATERIAL
         material_id: null,
         material_name: null,
         material_type: null,
         material_tier: null,
         material_def_effect: null,
 
-        // FINAL VALUES
         shield_final_damage_resistance: 2,
         shield_final_weight: 3,
         shield_final_price: 100,
         shield_final_hit_points: 10,
 
-        // ENCHANTMENTS
         enchantments: [],
         enchantments_total_price: 0,
         enchantment_weight_modifier: 0,
         enchantment_damage_resistance_modifier: 0,
 
-        // RUNTIME MODIFIERS
         hit_points_modifier: -2,
         final_hit_points: 8,
 
-        // TRULY-FINAL VALUES
         final_weight: 3,
         final_damage_resistance: 2,
 
@@ -186,7 +173,6 @@ describe("shieldResolver", () => {
         shield_custom_description: null,
         shield_custom_effect: null,
 
-        // RUNTIME
         _instanceId: null,
         is_equipped: false,
         storedAt: "stash",
@@ -196,10 +182,7 @@ describe("shieldResolver", () => {
   });
 
   describe("resolveShieldPiece — enchantments", () => {
-    // Same fixture shape as armorResolver.test.js's "resolveArmorPiece —
-    // enchantments (Phase 2)" describe block — shield reuses the identical
-    // shared enchantments engine, just applied to shield's own weight/DR
-    // fields.
+    // Mirrors armorResolver.test.js: shield reuses the same shared enchantments engine.
     const enchantmentsDb = {
       "ENCHANTMENT-036": {
         enchantment_id: "ENCHANTMENT-036",

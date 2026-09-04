@@ -1,8 +1,4 @@
-// main.js is pure bootstrap glue: it assigns window.onload = async () => { ... }
-// at import time and calls ~28 already-independently-tested init/load
-// functions. Per the plan's own acceptance criteria for this batch, this
-// is deliberately a LIGHT smoke test — "does it wire up without throwing" —
-// not a re-test of what any of those functions do internally.
+// Smoke test only — main.js's ~28 init/load functions are already tested elsewhere.
 
 jest.mock("dev/public/js/events/index.js", () => ({
   bindUI: jest.fn(),
@@ -131,8 +127,7 @@ import { loadDualUseWeapons } from "dev/public/js/engine/inventory/shared/dualUs
 import { initCharacters } from "dev/public/js/store/characters.js";
 import { initCharacterSelector } from "dev/public/js/components/characterSelector.js";
 
-// Importing main.js is what actually assigns window.onload — it's a
-// side-effecting module, not something with an exported entry point.
+// Side-effecting module: importing it is what assigns window.onload.
 import "dev/public/js/main.js";
 
 describe("main.js bootstrap (window.onload)", () => {
@@ -146,9 +141,6 @@ describe("main.js bootstrap (window.onload)", () => {
 
   test("runs to completion without throwing when every dependency resolves normally", async () => {
     await window.onload();
-    // No assertion needed beyond this — if onload() rejects or throws
-    // synchronously, this test fails automatically via the unhandled
-    // rejection/exception propagating through await.
   });
 
   test("wires up UI bindings and chrome (nav/tabs/theme/view mode) before awaiting data loads", async () => {
@@ -209,12 +201,6 @@ describe("main.js bootstrap (window.onload)", () => {
   test("still initializes characters/selector/portrait even if a data loader rejects (Promise.all vs allSettled is worth knowing about, not silently assumed)", async () => {
     loadSpells.mockRejectedValueOnce(new Error("network down"));
 
-    // Documents real behavior: main.js uses Promise.all, so a single
-    // rejected loader rejects the whole onload() call — character
-    // init/selector/portrait below the Promise.all are NOT reached in
-    // that case. This is worth having as an explicit test rather than an
-    // assumption, since a future switch to Promise.allSettled would
-    // silently change this contract.
     await expect(window.onload()).rejects.toThrow("network down");
     expect(initCharacters).not.toHaveBeenCalled();
 

@@ -1,22 +1,4 @@
-/**
- * resumeDomFixture.js
- *
- * Shared container skeleton for the resume.js test suite (Batch 7f).
- *
- * resume.js exports only renderResume(sheet, data, selected) and
- * initResumeExpanders() — every section renderer (_renderResumeArmor,
- * _renderBar, etc.) is module-private, so every sub-batch of 7f can only
- * reach its target section by calling the real renderResume() against a
- * DOM that has every container id resume.js might touch. This fixture is
- * that DOM, built once and reused unmodified across 7f-i..7f-v so each
- * sub-batch only needs to feed a `sheet` payload targeted at its own
- * section — every other section safely no-ops against an empty/undefined
- * slice of the sheet.
- *
- * Table-shaped containers (tbody targets, the carry-limits table) are
- * wrapped in a real <table> — jsdom's spec-compliant HTML parser silently
- * drops bare <tbody>/<td>/<th> inserted outside a <table> context.
- */
+// resume.js's renderers are module-private, so this must expose every container id renderResume() might touch; table containers are wrapped in <table> since jsdom drops bare <tbody>/<td>/<th>.
 import { resetDOM } from "./domFixture.js";
 
 export const RESUME_SKELETON = `
@@ -75,7 +57,6 @@ export const RESUME_SKELETON = `
   </table>
 `;
 
-/** resetDOM() with the full resume.js container skeleton applied. */
 export function resetResumeDOM() {
   resetDOM(RESUME_SKELETON);
 }

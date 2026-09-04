@@ -146,10 +146,7 @@ describe("RANGED WEAPON VALIDATION", () => {
   });
 
   describe("validateRangedEnchantments", () => {
-    // Unlike armor's validateArmorEnchantments, this takes no rangedDb —
-    // itemCategory is the fixed RANGED_ITEM_CATEGORY constant ("Armas de
-    // Longo Alcance"), not looked up per-instance, so every instance is
-    // validated against the same category regardless of its weapon_id.
+    // Unlike armor, itemCategory here is the fixed RANGED_ITEM_CATEGORY constant, not looked up per-instance.
     const enchantmentsDb = {
       "ENCHANTMENT-058": {
         enchantment_id: "ENCHANTMENT-058",
@@ -237,11 +234,7 @@ describe("RANGED WEAPON VALIDATION", () => {
       expect(errors).toEqual([]);
     });
 
-    // RANGED-050 is a dual-use weapon (paired with MELEE-215 — see
-    // dualUseWeapons.js). Enchantments sync across the pair (decision #4),
-    // so a melee-only entry (e.g. BAL) can legitimately end up on this
-    // ranged mirror — decision #5 requires validating against the union of
-    // both sides' categories, not ranged's alone.
+    // RANGED-050 is dual-use (paired with MELEE-215): enchantments sync across the pair, so a melee-only entry can legitimately end up here — validate against the union of both categories.
     test("Should allow a melee-only enchantment on a dual-use ranged instance (union category)", () => {
       const errors = validateRangedEnchantments(
         [

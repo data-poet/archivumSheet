@@ -1,48 +1,25 @@
 import { state } from "dev/public/js/state.js";
 
-// state.js has no functions — it's a single exported object literal that
-// the entire app treats as a mutable singleton (see stateFixture.js's own
-// comment: at least one module captures a reference to state.selected
-// itself at import time, not per-call). What's actually worth locking down
-// here isn't behavior, it's the SHAPE: an accidentally dropped or renamed
-// top-level key would silently break every module that reads it, and
-// nothing else in the test suite directly asserts on state.js's own
-// literal. This is also exactly the file the architecture notes'
-// "persistence audit discipline" principle points at — a new field has to
-// exist here before it can go anywhere else.
-
-// ─────────────────────────────────────────────────────────────────────────
-// Singleton / reference-identity contract
-// ─────────────────────────────────────────────────────────────────────────
+// state.js is a single object literal treated as a mutable singleton app-wide; an accidentally dropped/renamed top-level key would silently break every module that reads it, so its shape is pinned here.
 
 describe("state singleton contract", () => {
   test("importing state.js from a second spot in the same file resolves to the exact same object reference", () => {
-    // eslint-disable-next-line no-duplicate-imports -- deliberate: proves
-    // the module registry returns the same object, not a fresh copy, which
-    // is the real contract every other module relies on (see
-    // stateFixture.js's own comment about compute/index.js capturing
-    // state.selected at import time).
+    // eslint-disable-next-line no-duplicate-imports -- deliberate: proves the module registry returns the same object, not a fresh copy.
     const { state: stateAgain } = require("dev/public/js/state.js");
     expect(stateAgain).toBe(state);
   });
 
   test("mutating a nested property is visible to every other holder of the reference", () => {
-    // Mirrors what store/characters.js's _applyData() actually does:
-    // mutate a sub-property in place rather than reassigning state itself.
+    // Mirrors store/characters.js's _applyData(), which mutates a sub-property in place rather than reassigning state.
     const original = state.selected.character.player_name;
     state.selected.character.player_name = "Teste";
 
     expect(state.selected.character.player_name).toBe("Teste");
 
-    // Restore, since this module-level singleton persists across every
-    // test in this file that doesn't explicitly reset it.
+    // Restore it — this singleton persists across every test in this file that doesn't explicitly reset it.
     state.selected.character.player_name = original;
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// state.data — shape and defaults
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("state.data shape", () => {
   test("has exactly the expected top-level keys", () => {
@@ -127,10 +104,6 @@ describe("state.data shape", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// state.selected — shape and defaults
-// ─────────────────────────────────────────────────────────────────────────
-
 describe("state.selected shape", () => {
   test("has exactly the expected top-level keys", () => {
     expect(Object.keys(state.selected).sort()).toEqual(
@@ -213,10 +186,6 @@ describe("state.selected shape", () => {
     });
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// state.ui — shape and defaults
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("state.ui shape", () => {
   test("has exactly the expected top-level keys, defaulting debounceTimer to null", () => {

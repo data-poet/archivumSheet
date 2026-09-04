@@ -49,11 +49,7 @@ describe("renderResumeWeight", () => {
   });
 
   test("rounds up (ceiling, not nearest) to 3 decimal places — a documented quirk, not a rounding bug", () => {
-    // 0.1 + 0.2 in raw JS float math is 0.30000000000000004. The source
-    // uses Math.ceil(total * 1000) / 1000, which pushes that up to 0.301
-    // rather than down to the "intuitively correct" 0.3 — worth locking in
-    // explicitly so a future "fix" to Math.round doesn't silently change
-    // carry-weight totals across every character sheet.
+    // 0.1 + 0.2 float math is 0.30000000000000004; Math.ceil(total * 1000) / 1000 pushes it to 0.301, not the "intuitive" 0.3 — locking this in against a future Math.round "fix".
     id("weight").value = "0.1";
     renderResume({
       inventory: {
@@ -99,10 +95,8 @@ describe("renderResumeWeight", () => {
     expect(id("encumbrance").textContent).toBe("—");
   });
 
-  // Same "reports the tier one below the crossed threshold" behavior already
-  // locked in for components/inventory.js in Batch 7c — resume.js duplicates
-  // this exact threshold ladder rather than sharing it, so it's worth
-  // re-verifying here in case the two copies ever drift apart.
+  // resume.js duplicates inventory.js's encumbrance threshold ladder rather
+  // than sharing it, so it's worth re-verifying here in case they drift apart.
   describe("encumbrance thresholds (mirrors inventory.js's ladder)", () => {
     const limits = {
       none: 10,

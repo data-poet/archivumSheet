@@ -223,8 +223,7 @@ describe("EQUIPMENT RANGED", () => {
     });
 
     test("Should resolve a valid enchantment and reflect it in final_weight/total_ranged_weight", () => {
-      // weaponId (first DB entry) has weapon_weight 0 — pick a weapon with
-      // nonzero weight so the enchantment delta is observable.
+      // weaponId (first DB entry) has weapon_weight 0 — need nonzero weight for the enchantment delta to be observable
       const weightedWeaponId = Object.values(db).find(
         (weapon) => weapon.weapon_weight > 0,
       ).weapon_id;
@@ -250,8 +249,7 @@ describe("EQUIPMENT RANGED", () => {
       expect(result.equipped[0].final_weight).toBeGreaterThan(
         result.equipped[0].weapon_final_weight,
       );
-      // carried_ranged_weapons_weight/total_ranged_weight should reflect the
-      // enchanted final_weight, not the material-only weapon_final_weight
+      // carried/total weight must reflect enchanted final_weight, not the material-only weapon_final_weight
       expect(result.carried_ranged_weapons_weight).toBe(
         result.equipped[0].final_weight,
       );

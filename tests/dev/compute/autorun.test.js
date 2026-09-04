@@ -46,12 +46,12 @@ describe("triggerAutoRun", () => {
     initAutoRun(runEngineFn);
 
     triggerAutoRun();
-    expect(updateActualValues).toHaveBeenCalledTimes(1); // the immediate call
+    expect(updateActualValues).toHaveBeenCalledTimes(1);
 
     jest.advanceTimersByTime(300);
     await Promise.resolve();
 
-    expect(updateActualValues).toHaveBeenCalledTimes(2); // + post-run call
+    expect(updateActualValues).toHaveBeenCalledTimes(2);
   });
 
   test("two full trigger/resolve cycles invoke the injected engine twice", async () => {
@@ -70,10 +70,8 @@ describe("triggerAutoRun", () => {
   });
 
   test("is a safe no-op (no throw) when triggered before initAutoRun has ever been called", async () => {
-    // _runEngine is a module-level singleton set only by initAutoRun, so a
-    // fresh module instance is needed to genuinely observe the
-    // never-initialized state — other tests in this file call initAutoRun
-    // first and would otherwise leave it wired up.
+    // _runEngine is a module-level singleton set by initAutoRun; other tests
+    // in this file call it, so a fresh module is needed to see the unset state.
     jest.resetModules();
     const freshAutorun = await import("dev/public/js/compute/autorun.js");
 
@@ -81,7 +79,5 @@ describe("triggerAutoRun", () => {
 
     jest.advanceTimersByTime(300);
     await Promise.resolve();
-    // Nothing to assert on the engine call (there's no fn to spy on before
-    // initAutoRun) — the assertion is simply that none of this throws.
   });
 });

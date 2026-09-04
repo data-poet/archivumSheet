@@ -207,8 +207,7 @@ describe("ARMOR VALIDATION", () => {
         targetsDb,
       );
 
-      // ENCHANTMENT-040 allows Pés — different instance, different slot,
-      // both should be evaluated independently
+      // ENCHANTMENT-040 allows Pés — different instance/slot, evaluated independently
       expect(errors).toEqual([]);
     });
 

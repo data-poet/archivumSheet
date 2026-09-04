@@ -225,8 +225,7 @@ describe("EQUIPMENT MELEE", () => {
       expect(result.equipped[0].final_weight).toBeGreaterThan(
         result.equipped[0].weapon_final_weight,
       );
-      // carried_melee_weapons_weight/total_melee_weight should reflect the
-      // enchanted final_weight, not the material-only weapon_final_weight
+      // carried/total weight must reflect enchanted final_weight, not the material-only weapon_final_weight
       expect(result.carried_melee_weapons_weight).toBe(
         result.equipped[0].final_weight,
       );

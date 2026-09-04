@@ -9,9 +9,6 @@ const {
   COIN_VALUE,
 } = require("engine/inventory/js/coinPurse/coinPurseConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 function round2(v) {
   return Math.round((v + Number.EPSILON) * 100) / 100;
@@ -26,9 +23,6 @@ function coin(overrides = {}) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — constants", () => {
   test("VALID_COIN_TYPES contains copper, silver, gold", () => {
@@ -52,9 +46,6 @@ describe("COIN PURSE — constants", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EMPTY INPUT
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — empty input", () => {
   test("Should return empty buckets with zero totals when called with no args", () => {
@@ -76,9 +67,6 @@ describe("COIN PURSE — empty input", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ROUTING
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — routing", () => {
   test("Should place coins in backpack bucket", () => {
@@ -133,9 +121,6 @@ describe("COIN PURSE — routing", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RESOLVED SHAPE
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — resolved shape", () => {
   test("Should include all expected fields on each resolved entry", () => {
@@ -188,9 +173,6 @@ describe("COIN PURSE — resolved shape", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// WEIGHT
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — carried weight", () => {
   test("Should count backpack coins toward carried weight", () => {
@@ -240,9 +222,6 @@ describe("COIN PURSE — carried weight", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALUE
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — value (copper equivalent)", () => {
   test("total_coin_purse_value includes all locations", () => {
@@ -289,9 +268,6 @@ describe("COIN PURSE — value (copper equivalent)", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("COIN PURSE — validation", () => {
   test("Should throw for invalid coin_type", () => {

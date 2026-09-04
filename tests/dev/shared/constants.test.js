@@ -1,15 +1,4 @@
-// shared/constants.js has no functions, just exported values — several of
-// which are load-bearing keys that must match strings coming from the CSV
-// data files (e.g. ARMOR_SLOTS' Portuguese names matching
-// db_equipment_armors.csv slot values). These tests are a regression lock:
-// an accidental edit to any of these strings would break data matching
-// silently rather than throwing, so pin the exact values.
-//
-// ACCESSORY_ITEM_CATEGORY / MAGIC_GEAR_ITEM_CATEGORY used to live here as
-// hardcoded copies — they're covered instead by
-// tests/dev/engine/inventory/shared/enchantments/model.test.js's
-// getAccessoryItemCategory()/getMagicGearItemCategory() coverage now that
-// they're fetched from the engine.
+// These values are load-bearing keys matched against CSV data (e.g. ARMOR_SLOTS vs db_equipment_armors.csv); pinning them locks in a regression that would otherwise fail silently.
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,

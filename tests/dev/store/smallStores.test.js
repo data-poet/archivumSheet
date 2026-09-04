@@ -1,8 +1,4 @@
-// tabState.js and sectionCollapseState.js: module-level, NOT persisted,
-// reset to defaults on every page load (test-relevant: reset means nothing
-// special here since each test file gets a fresh module registry anyway —
-// but explicitly re-importing per describe block would be redundant, so
-// this file just exercises the get/set contract).
+// tabState.js and sectionCollapseState.js are module-level, not persisted.
 import { getActiveTab, setActiveTab } from "dev/public/js/store/tabState.js";
 import {
   isCollapsed,

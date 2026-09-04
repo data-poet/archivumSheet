@@ -1,16 +1,4 @@
-// bindUI() wires ~24 individual on(id, event, handler) bindings plus three
-// document-level delegated click/input/change chains that try each
-// equipment type's handler in a hard-coded order until one returns true.
-// This does NOT go through shared/eventDispatch.js's generic registry (see
-// eventDispatch.test.js's own notes — that module exists but production
-// code hasn't adopted it yet). So "confirming registration order = dispatch
-// order" here means confirming the literal if-chain in events/index.js
-// itself, not a data-driven registry.
-//
-// Every individual handler's own behavior is already covered by that
-// type's own events.test.js — this file only tests the WIRING: did the
-// right handler get attached to the right id/event, and does the chain
-// try things in the declared order and stop at the first true.
+// bindUI() dispatches via a hard-coded if-chain, not shared/eventDispatch.js's registry (production hasn't adopted that yet) — tests wiring only.
 
 jest.mock("dev/public/js/shared/dom.js", () => ({
   on: jest.fn(),
@@ -150,21 +138,13 @@ import * as coinPurse from "dev/public/js/engine/inventory/coinPurse/index.js";
 import { bindUI } from "dev/public/js/events/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
-// bindUI() attaches real document-level listeners on every call, and
-// jsdom gives one `document` per test FILE (not per test) — so bindUI()
-// is called EXACTLY ONCE for this whole file, in beforeAll, mirroring how
-// main.js calls it once at real bootstrap. Calling it per-test would stack
-// duplicate listeners and make later tests see handlers fire N times (the
-// same class of bug documented in eventDispatch.test.js).
+// jsdom gives one `document` per test FILE, so bindUI() runs once here (in
+// beforeAll), mirroring bootstrap — calling it per-test would stack listeners.
 let onCallsSnapshot;
 
 beforeAll(() => {
   bindUI();
-  // Individual on(id, event, handler) bindings are asserted against this
-  // frozen snapshot rather than the live `on` mock, since later
-  // jest.clearAllMocks() calls (needed to reset call counts on the
-  // delegated-chain handler mocks between tests) would otherwise wipe the
-  // one-time record of bindUI()'s on() calls too.
+  // Snapshotted because later jest.clearAllMocks() calls would wipe on()'s call record too.
   onCallsSnapshot = [...on.mock.calls];
 });
 
@@ -172,10 +152,6 @@ beforeEach(() => {
   resetDOM("<div></div>");
   jest.clearAllMocks();
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// Individual on(id, event, handler) bindings
-// ─────────────────────────────────────────────────────────────────────────
 
 describe("bindUI — individual element bindings", () => {
   test.each([
@@ -247,10 +223,6 @@ describe("bindUI — individual element bindings", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Delegated click chain
-// ─────────────────────────────────────────────────────────────────────────
-
 const CLICK_CHAIN_HANDLERS = [
   character.handleTraitClick,
   character.handleSkillClick,
@@ -272,9 +244,7 @@ const CLICK_CHAIN_HANDLERS = [
 
 describe("bindUI — delegated click chain", () => {
   beforeEach(() => {
-    // jest.clearAllMocks() (top-level beforeEach) resets call counts but
-    // NOT a previous test's .mockReturnValue(true) override — that has to
-    // be undone explicitly, or it would leak into every later test.
+    // jest.clearAllMocks() resets call counts but not a prior mockReturnValue(true).
     CLICK_CHAIN_HANDLERS.forEach((fn) => fn.mockReturnValue(false));
   });
 
@@ -300,7 +270,7 @@ describe("bindUI — delegated click chain", () => {
   });
 
   test("the last handler in the chain (handleCharacterImageClick) still fires when every earlier handler returns false", () => {
-    document.body.click(); // every mock in this suite defaults to () => false
+    document.body.click();
 
     expect(character.handleCharacterImageClick).toHaveBeenCalledTimes(1);
   });
@@ -309,10 +279,6 @@ describe("bindUI — delegated click chain", () => {
     expect(() => document.body.click()).not.toThrow();
   });
 });
-
-// ─────────────────────────────────────────────────────────────────────────
-// Delegated input chain
-// ─────────────────────────────────────────────────────────────────────────
 
 const INPUT_CHAIN_HANDLERS = [
   character.handleCharacterInput,
@@ -373,10 +339,6 @@ describe("bindUI — delegated input chain", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Delegated change chain
-// ─────────────────────────────────────────────────────────────────────────
-
 const CHANGE_CHAIN_HANDLERS = [
   character.handleSkillChange,
   character.handleCharacterChange,
@@ -434,17 +396,10 @@ describe("bindUI — delegated change chain", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Stepper ± buttons — real logic, not mocked (this IS the implementation,
-// not a dispatch to some other module)
-// ─────────────────────────────────────────────────────────────────────────
-
+// Stepper buttons are the real implementation, not a dispatch to another module.
 describe("bindUI — stepper ± buttons", () => {
-  // No local beforeEach/bindUI() call here — the single beforeAll() bindUI()
-  // call already attached this listener once, and it uses event delegation
-  // (e.target.closest(".stepper-btn")), so it keeps working correctly
-  // against whatever markup the top-level beforeEach's resetDOM() installs
-  // for each test without needing to be re-attached.
+  // Relies on the single beforeAll() bindUI() call plus event delegation
+  // (closest(".stepper-btn")) — no per-test re-attachment needed.
 
   function stepperFixture({ value = "5", step, min, max } = {}) {
     resetDOM(`

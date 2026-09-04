@@ -7,9 +7,7 @@ import {
 import { STORAGE_LOCATIONS } from "dev/public/js/shared/constants.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 
-// These functions build raw HTML strings meant to be dropped into a
-// <select>'s innerHTML — parsing them back into real <option> elements
-// gives reliable assertions instead of fragile substring/regex matching.
+// Parse the HTML strings back into real <option> elements for reliable assertions.
 function parseOptions(html) {
   const select = document.createElement("select");
   select.innerHTML = html;
@@ -44,11 +42,7 @@ describe("storageOptions", () => {
   });
 
   test("marks no option's attribute as selected when currentLocation matches nothing", () => {
-    // Note: the live DOM .selected property would still report the first
-    // option as selected here — that's normal <select> default behavior
-    // when no option has the `selected` attribute, not something this
-    // function controls. Checking the attribute itself is the correct way
-    // to verify the markup this function actually produced.
+    // The live .selected property defaults to the first option even with none marked; check the attribute instead.
     const options = parseOptions(storageOptions("nowhere"));
     expect(options.some((o) => o.hasAttribute("selected"))).toBe(false);
   });

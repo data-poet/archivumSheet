@@ -118,7 +118,7 @@ describe("renderSpells — an item-granted (pure enchantment) spell", () => {
     expect(row.classList.contains("trait-enchantment")).toBe(true);
     expect(row.textContent).toContain(t("character.enchanted"));
     expect(row.querySelector(".remove-spell")).toBeNull();
-    expect(row.querySelector("input.spell-input")).toBeNull(); // no editable steppers
+    expect(row.querySelector("input.spell-input")).toBeNull();
     expect(row.textContent).toContain("15"); // engine's final value, used as-is
     expect(row.querySelector("td:nth-child(4)").textContent).toBe("Experiente"); // engine's tier, used as-is
   });

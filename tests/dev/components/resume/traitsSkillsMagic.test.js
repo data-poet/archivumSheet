@@ -100,10 +100,10 @@ describe("renderResumeSkills", () => {
       character: { skills: { "SK-1": { parry: 0 } } },
     });
     const cells = id("resume_skills_container").querySelectorAll("tbody td");
-    expect(cells[0].textContent).toBe("—"); // name
-    expect(cells[1].textContent).toBe("—"); // value
-    expect(cells[2].textContent).toBe("0"); // parry: 0 is a real value, not "missing"
-    expect(cells[3].textContent).toBe("—"); // actions
+    expect(cells[0].textContent).toBe("—");
+    expect(cells[1].textContent).toBe("—");
+    expect(cells[2].textContent).toBe("0"); // 0 is a real value, not "missing"
+    expect(cells[3].textContent).toBe("—");
   });
 
   test("hides the container when there are no skills", () => {

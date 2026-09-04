@@ -144,10 +144,7 @@ describe("MELEE WEAPON VALIDATION", () => {
   });
 
   describe("validateMeleeEnchantments", () => {
-    // Unlike armor's validateArmorEnchantments, this takes no meleeDb —
-    // itemCategory is the fixed MELEE_ITEM_CATEGORY constant ("Armas Corpo
-    // a Corpo"), not looked up per-instance, so every instance is validated
-    // against the same category regardless of its weapon_id.
+    // Unlike armor, itemCategory here is the fixed MELEE_ITEM_CATEGORY constant, not looked up per-instance.
     const enchantmentsDb = {
       "ENCHANTMENT-056": {
         enchantment_id: "ENCHANTMENT-056",
@@ -244,11 +241,7 @@ describe("MELEE WEAPON VALIDATION", () => {
       expect(errors).toEqual([]);
     });
 
-    // MELEE-215 is a dual-use weapon (paired with RANGED-050 — see
-    // dualUseWeapons.js). Enchantments sync across the pair (decision #4),
-    // so a ranged-only entry (e.g. PREC) can legitimately end up on this
-    // melee mirror — decision #5 requires validating against the union of
-    // both sides' categories, not melee's alone.
+    // MELEE-215 is dual-use (paired with RANGED-050): enchantments sync across the pair, so a ranged-only entry can legitimately end up here — validate against the union of both categories.
     test("Should allow a ranged-only enchantment on a dual-use melee instance (union category)", () => {
       const errors = validateMeleeEnchantments(
         [

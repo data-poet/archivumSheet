@@ -5,9 +5,6 @@ const {
   calculateCarriedAmmoWeight,
 } = require("engine/inventory/js/ammo/ammoResolver");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED MOCKS
-// ─────────────────────────────────────────────────────────────────────────────
 
 const mockAmmoDb = {
   "AMMO-001": {
@@ -51,9 +48,6 @@ const mockContainer = {
   is_carriable: true,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// resolveContainer
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("ammoResolver — resolveContainer", () => {
   test("Should resolve a fully populated equipped container correctly", () => {
@@ -70,7 +64,6 @@ describe("ammoResolver — resolveContainer", () => {
     const result = resolveContainer(instance, mockContainer, mockAmmoDb);
 
     expect(result).toEqual({
-      // CONTAINER BASE
       _instanceId: "inst-1",
       container_id: "CONT-001",
       container_name: "Quiver",
@@ -82,10 +75,8 @@ describe("ammoResolver — resolveContainer", () => {
       container_price: 15,
       is_carriable: true,
 
-      // RUNTIME
       storedAt: "equipped",
 
-      // CONTENTS
       contents: [
         { ammo_id: "AMMO-001", quantity: 12, weight: 0.6 },
         { ammo_id: "AMMO-002", quantity: 8, weight: 0.4 },
@@ -173,9 +164,6 @@ describe("ammoResolver — resolveContainer", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// resolveLooseAmmo
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("ammoResolver — resolveLooseAmmo", () => {
   test("Should resolve a loose ammo entry correctly", () => {
@@ -222,9 +210,6 @@ describe("ammoResolver — resolveLooseAmmo", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// calculateTotalEquippedAmmo
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("ammoResolver — calculateTotalEquippedAmmo", () => {
   test("Should aggregate ammo quantities by type across equipped containers", () => {
@@ -285,9 +270,6 @@ describe("ammoResolver — calculateTotalEquippedAmmo", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// calculateCarriedAmmoWeight
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("ammoResolver — calculateCarriedAmmoWeight", () => {
   const equippedContainer = { total_weight: 1.5 };

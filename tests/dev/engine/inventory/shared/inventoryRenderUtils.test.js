@@ -22,8 +22,8 @@ describe("hpModifierBlock", () => {
       }),
     );
     const strongs = block.querySelectorAll("strong");
-    expect(strongs[0].textContent).toBe("20"); // maxHp = 10 * 2
-    expect(strongs[1].textContent).toBe("15"); // actualHp = 20 - 5
+    expect(strongs[0].textContent).toBe("20");
+    expect(strongs[1].textContent).toBe("15");
   });
 
   test("applies the given css class and data attributes to the input", () => {

@@ -187,9 +187,7 @@ describe("BUILD CHARACTER", () => {
     });
 
     it("Should carry a granted skill through using the final (enchanted) attribute value as its base", () => {
-      // SKILL-000 is IQ-based; give IQ a +2 enchantment_modifier and grant
-      // the skill fresh — the granted base_value should equal the final
-      // (enchanted) IQ, not the pre-enchantment one.
+      // granted base_value must equal the final (enchanted) IQ, not the pre-enchantment one
       const { character } = buildCharacter({
         ...mockInput,
         advantages: [],

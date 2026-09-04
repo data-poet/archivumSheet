@@ -50,8 +50,7 @@ describe("magicGearResolver", () => {
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: false,
         storedAt: "backpack",
-        // even if a caller mistakenly puts price/weight on the instance,
-        // the resolver must ignore it and use the DB record instead
+        // resolver must ignore instance price/weight and use the DB record instead
         magic_gear_price: 999999,
         magic_gear_weight: 999999,
       };

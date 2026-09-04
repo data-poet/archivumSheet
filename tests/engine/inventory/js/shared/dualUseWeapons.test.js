@@ -9,7 +9,6 @@ const {
 } = require("engine/inventory/js/shared/dualUseWeapons");
 
 describe("DUAL-USE WEAPONS", () => {
-  // ── Lança de Mão ─────────────────────────────────────────────────────────
   describe("Lança de Mão", () => {
     const TIERS = [
       ["MELEE-215", "RANGED-050"],
@@ -28,7 +27,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── Lança de Arremesso ────────────────────────────────────────────────────
   describe("Lança de Arremesso", () => {
     const TIERS = [
       ["MELEE-220", "RANGED-055"],
@@ -47,7 +45,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── Machadinha ────────────────────────────────────────────────────────────
   describe("Machadinha", () => {
     const TIERS = [
       ["MELEE-280", "RANGED-005"],
@@ -66,7 +63,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── Machado de Arremesso ──────────────────────────────────────────────────
   describe("Machado de Arremesso", () => {
     const TIERS = [
       ["MELEE-285", "RANGED-010"],
@@ -85,7 +81,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── isMeleeDualUse ────────────────────────────────────────────────────────
   describe("isMeleeDualUse", () => {
     test("returns true for all dual-use melee IDs", () => {
       const dualMeleeIds = Object.keys(MELEE_TO_RANGED);
@@ -103,7 +98,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── isRangedDualUse ───────────────────────────────────────────────────────
   describe("isRangedDualUse", () => {
     test("returns true for all dual-use ranged IDs", () => {
       const dualRangedIds = Object.keys(RANGED_TO_MELEE);
@@ -121,7 +115,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── getRangedCounterpart ──────────────────────────────────────────────────
   describe("getRangedCounterpart", () => {
     test("returns ranged ID for a dual-use melee weapon", () => {
       expect(getRangedCounterpart("MELEE-280")).toBe("RANGED-005");
@@ -132,7 +125,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── getMeleeCounterpart ───────────────────────────────────────────────────
   describe("getMeleeCounterpart", () => {
     test("returns melee ID for a dual-use ranged weapon", () => {
       expect(getMeleeCounterpart("RANGED-050")).toBe("MELEE-215");
@@ -143,7 +135,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── resolveDualUseEnchantmentCategory ────────────────────────────────────
   describe("resolveDualUseEnchantmentCategory", () => {
     test("returns the own category alone for a non-dual-use weapon", () => {
       expect(
@@ -179,7 +170,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── Mapping symmetry ──────────────────────────────────────────────────────
   describe("Mapping symmetry", () => {
     test("MELEE_TO_RANGED and RANGED_TO_MELEE have the same number of entries", () => {
       expect(Object.keys(MELEE_TO_RANGED).length).toBe(
@@ -198,7 +188,6 @@ describe("DUAL-USE WEAPONS", () => {
     });
   });
 
-  // ── Engine DB integration ─────────────────────────────────────────────────
   describe("Engine DB integration", () => {
     const { _getMeleeDB } = require("engine/inventory/js/melee/melee");
     const { _getRangedDB } = require("engine/inventory/js/ranged/ranged");

@@ -1,20 +1,4 @@
-// This is the regression test for the collision risk documented in the
-// project's architecture notes: accessories, magicGear, and shield all
-// render generic .enchantment-* buttons (from the shared
-// enchantments/render.js), and all three wire them through
-// createEnchantmentsHandlers' ownsFormKey guard. Nothing in the DOM
-// distinguishes "this button belongs to an accessory" from "this button
-// belongs to a shield" — the ONLY thing preventing one type's handler from
-// acting on another type's instanceId is each handler's own
-// findByInstanceId/getItems ownership check. This test proves that guard
-// actually holds when all three handlers are live at once, not just in
-// isolation (each type's own events.test.js mocks the OTHER types out of
-// existence, which wouldn't catch a real collision).
-//
-// Note: armor also renders the same shared .enchantment-* buttons and
-// isn't covered by this file — a pre-existing gap from before shield was
-// added, not something introduced here. Worth folding armor in as a
-// follow-up.
+// accessories, magicGear, and shield share the same .enchantment-* buttons via createEnchantmentsHandlers' ownsFormKey guard; this proves the guard holds with all three live at once, since each type's own events.test.js mocks the others away. Armor shares the buttons too but isn't covered here (pre-existing gap).
 jest.mock("dev/public/js/engine/inventory/accessories/model.js", () => ({
   removeAccessoryEnchantment: jest.fn(),
   findAccessoryByInstanceId: jest.fn(),
@@ -149,9 +133,7 @@ beforeEach(() => {
   jest.clearAllMocks();
   jest.useFakeTimers();
 
-  // Each type only recognizes its OWN items — this is the realistic setup:
-  // an accessory instanceId is genuinely unknown to magicGear's lookup,
-  // and vice versa.
+  // Each type only recognizes its own items — an accessory instanceId is genuinely unknown to magicGear's lookup, and vice versa.
   accessoryModel.findAccessoryByInstanceId.mockImplementation((id) =>
     id === "ACC-1" ? { instance_id: "ACC-1" } : undefined,
   );
@@ -446,9 +428,7 @@ describe("_ownsEnchantmentFormKey cross-type collision guard", () => {
   });
 
   test("neither handler acts on an entryInstanceId belonging to the other type", () => {
-    // Simulates the more subtle collision: the outer instanceId is unknown
-    // to both (e.g. a stale/mismatched dataset), but an entryInstanceId
-    // happens to coincide. Neither should fire.
+    // Simulates the subtler collision: the outer instanceId is unknown to both, but an entryInstanceId happens to coincide — neither should fire.
     const accessoryResult = handleAccessoryClick(
       enchantmentRemoveButton("GHOST", "SAME-ENTRY-ID"),
     );

@@ -76,9 +76,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// readEnchantmentFormParams
-// ─────────────────────────────────────────────────────────────────────────
 describe("readEnchantmentFormParams", () => {
   test("returns null when the form isn't found", () => {
     resetDOM();
@@ -123,9 +120,6 @@ describe("readEnchantmentFormParams", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// createEnchantmentsHandlers
-// ─────────────────────────────────────────────────────────────────────────
 describe("createEnchantmentsHandlers", () => {
   function makeConfig(overrides = {}) {
     return {

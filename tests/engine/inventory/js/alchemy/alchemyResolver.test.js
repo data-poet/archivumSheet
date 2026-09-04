@@ -3,10 +3,6 @@ const {
   calculateCarriedAlchemyWeight,
 } = require("engine/inventory/js/alchemy/alchemyResolver");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED MOCKS
-// ─────────────────────────────────────────────────────────────────────────────
-
 const mockPotion = {
   consumable_id: "POTION-000",
   consumable_name: "Purificador",
@@ -44,10 +40,6 @@ const mockElixir = {
   consumable_method: null,
   consumable_effect_area: null,
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// resolveAlchemyConsumable
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe("alchemyResolver — resolveAlchemyConsumable", () => {
   test("Should resolve a backpack entry with quantity 1 correctly", () => {
@@ -129,10 +121,6 @@ describe("alchemyResolver — resolveAlchemyConsumable", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// calculateCarriedAlchemyWeight
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe("alchemyResolver — calculateCarriedAlchemyWeight", () => {
   test("Should return 0 for an empty backpack", () => {
     const weight = calculateCarriedAlchemyWeight([]);
@@ -164,9 +152,7 @@ describe("alchemyResolver — calculateCarriedAlchemyWeight", () => {
   });
 
   test("Should not include stash or camp entries in its calculation", () => {
-    // The function receives only backpack entries — stash and camp are filtered
-    // upstream in buildAlchemySlots. This test confirms total_weight is summed
-    // correctly regardless of the storedAt field on entries passed in.
+    // Stash/camp entries are filtered upstream in buildAlchemySlots, not here.
     const backpack = [
       { consumable_id: "POTION-000", quantity: 3, storedAt: "backpack", total_weight: 1.5 },
     ];

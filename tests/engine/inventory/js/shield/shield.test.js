@@ -211,8 +211,7 @@ describe("EQUIPMENT SHIELD", () => {
       expect(result.equipped.final_weight).toBeGreaterThan(
         result.equipped.shield_final_weight,
       );
-      // carried_shield_weight/total_shield_weight should reflect the
-      // enchanted final_weight, not the material-only shield_final_weight
+      // carried/total weight must reflect enchanted final_weight, not shield_final_weight
       expect(result.carried_shield_weight).toBe(result.equipped.final_weight);
       expect(result.total_shield_weight).toBe(result.equipped.final_weight);
     });

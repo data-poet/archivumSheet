@@ -38,9 +38,9 @@ describe("renderSkills — a purely player-selected skill (engine hasn't run yet
 
     const row = parse().querySelector("tbody tr");
     expect(row.querySelector("td").textContent).toBe("Espada");
-    expect(row.querySelector("td strong").textContent).toBe("14"); // 12 + 2
+    expect(row.querySelector("td strong").textContent).toBe("14");
     expect(row.querySelector(".remove-skill")).not.toBeNull();
-    expect(row.querySelector(".skill-input")).not.toBeNull(); // editable stepper
+    expect(row.querySelector(".skill-input")).not.toBeNull();
   });
 });
 
@@ -64,7 +64,7 @@ describe("renderSkills — engine has run (sheet present)", () => {
 
 describe("renderSkills — a purely engine-granted skill (item enchantment)", () => {
   test("renders read-only cells, no remove button, and the enchanted tag", () => {
-    const selected = { skills: {} }; // not in the player's own selection at all
+    const selected = { skills: {} };
     const data = { skills: [] };
     const sheet = {
       character: {
@@ -86,7 +86,7 @@ describe("renderSkills — a purely engine-granted skill (item enchantment)", ()
     expect(row.classList.contains("trait-enchantment")).toBe(true);
     expect(row.textContent).toContain(t("character.enchanted"));
     expect(row.querySelector(".remove-skill")).toBeNull();
-    expect(row.querySelector(".skill-input")).toBeNull(); // not editable
+    expect(row.querySelector(".skill-input")).toBeNull();
     expect(row.querySelector("td strong").textContent).toBe("13");
   });
 

@@ -52,9 +52,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// loadEnchantments
-// ─────────────────────────────────────────────────────────────────────────
 describe("loadEnchantments", () => {
   test("loads all three catalogs in parallel and stores them on state.data", async () => {
     const enchantments = [{ enchantment_id: "ENCH-001" }];
@@ -75,9 +72,6 @@ describe("loadEnchantments", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// getAccessoryItemCategory / getMagicGearItemCategory
-// ─────────────────────────────────────────────────────────────────────────
 describe("getAccessoryItemCategory / getMagicGearItemCategory", () => {
   test("read straight from state.data.itemCategories, fetched from the engine", async () => {
     fetchEnchantments.mockResolvedValue([]);
@@ -94,9 +88,6 @@ describe("getAccessoryItemCategory / getMagicGearItemCategory", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Effect type group predicates
-// ─────────────────────────────────────────────────────────────────────────
 describe("effect type predicates", () => {
   beforeEach(() => {
     state.data.enchantmentEffectTypes = {
@@ -203,9 +194,6 @@ describe("isPercentageType", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Catalog lookups
-// ─────────────────────────────────────────────────────────────────────────
 describe("getEnchantmentRecord", () => {
   test("finds the record by enchantment_id", () => {
     state.data.enchantments = [
@@ -312,9 +300,6 @@ describe("getUniqueSpellNames / getUniqueSpellRows", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Add-form selection state
-// ─────────────────────────────────────────────────────────────────────────
 describe("add-form selection state", () => {
   test("setEnchantmentAddFormSelection / getEnchantmentFormSelection round trip", () => {
     setEnchantmentAddFormSelection("INST-1", "ENCH-001");
@@ -427,9 +412,6 @@ describe("add-form selection state", () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────
-// Entry mutation
-// ─────────────────────────────────────────────────────────────────────────
 describe("entry mutation", () => {
   beforeEach(() => {
     state.data.enchantmentEffectTypes = {

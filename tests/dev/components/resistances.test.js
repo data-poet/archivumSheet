@@ -44,14 +44,14 @@ describe("renderElementalResistances", () => {
       character: {
         elemental_resistances: {
           Fire: {
-            race_base: 0.5, // half damage
+            race_base: 0.5,
             modifier: -0.2,
             enchantment_modifier: 0,
             has_enchantment_modifier: false,
             final: 0.3,
           },
           Necrotic: {
-            race_base: 2, // double damage
+            race_base: 2,
             modifier: 0,
             enchantment_modifier: 0,
             has_enchantment_modifier: false,
@@ -67,12 +67,12 @@ describe("renderElementalResistances", () => {
     expect(rows).toHaveLength(2);
 
     const fireRow = rows[0];
-    expect(fireRow.textContent).toContain("Fogo"); // localized label, not the raw key
-    expect(fireRow.textContent).toContain("50%"); // race base
-    expect(fireRow.textContent).toContain("30%"); // final
+    expect(fireRow.textContent).toContain("Fogo");
+    expect(fireRow.textContent).toContain("50%");
+    expect(fireRow.textContent).toContain("30%");
 
     const necroticRow = rows[1];
-    expect(necroticRow.textContent).toContain("200%"); // double damage
+    expect(necroticRow.textContent).toContain("200%");
   });
 
   test("the modifier stepper displays and steps in whole percentage points", () => {
@@ -92,7 +92,6 @@ describe("renderElementalResistances", () => {
 
     const stepperInput = document.querySelector(".resistance-input");
     expect(stepperInput.dataset.type).toBe("Fire");
-    // -0.2 (raw decimal modifier) displays as -20 (whole percentage points)
     expect(stepperInput.value).toBe("-20");
     // 5-percentage-point step, so +/- taps swing by 0.05 once converted back
     expect(stepperInput.dataset.step).toBe("5");
@@ -187,10 +186,10 @@ describe("renderElementalResistances", () => {
 
 describe("decimalToPercent / percentToDecimal", () => {
   test("decimalToPercent converts a raw decimal multiplier to whole percentage points", () => {
-    expect(decimalToPercent(1)).toBe(100); // normal damage
-    expect(decimalToPercent(2)).toBe(200); // double damage
-    expect(decimalToPercent(0.5)).toBe(50); // half damage
-    expect(decimalToPercent(0)).toBe(0); // immune
+    expect(decimalToPercent(1)).toBe(100);
+    expect(decimalToPercent(2)).toBe(200);
+    expect(decimalToPercent(0.5)).toBe(50);
+    expect(decimalToPercent(0)).toBe(0);
     expect(decimalToPercent(0.2)).toBe(20);
     expect(decimalToPercent(-0.2)).toBe(-20);
   });
