@@ -1,8 +1,16 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
-  equipRanged, addStoredRanged, addEquippedRanged, moveRanged,
-  removeRanged, findRangedByInstanceId, saveRangedCustomFields,
+  equipRanged,
+  addStoredRanged,
+  addEquippedRanged,
+  moveRanged,
+  removeRanged,
+  findRangedByInstanceId,
+  saveRangedCustomFields,
+  addRangedEnchantment,
+  updateRangedEnchantment,
+  removeRangedEnchantment,
 } from "./model.js";
 import { clampHpModifier } from "../shared/durabilityUtils.js";
 import { resolveHp } from "../shared/inventoryRenderUtils.js";
@@ -10,6 +18,7 @@ import { renderEquippedRanged, renderStoredRanged } from "./render.js";
 import { renderEquippedMelee, renderStoredMelee } from "../melee/render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -94,21 +103,45 @@ const _handleRangedCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderRangedLists, // already self-wraps via snapshotAll/restoreAll above
 });
 
+/**
+ * Click-path mutators (addRangedEnchantment/update/remove) already
+ * self-wrap render+snapshot/restore synchronously, so runWithOpenState is
+ * left at its no-op default. The change-path render is explicit and uses
+ * _renderRangedAndMeleeLists (not the ranged-only _renderRangedLists) so a
+ * dual-use pair's linked melee enchantments list also refreshes on
+ * cascading-filter changes — same reasoning as melee/events.js's
+ * _meleeEnchantments wiring.
+ */
+const _rangedEnchantments = createEnchantmentsHandlers({
+  findByInstanceId: findRangedByInstanceId,
+  getItems: () => selected.ranged_weapons,
+  addEnchantment: addRangedEnchantment,
+  updateEnchantment: updateRangedEnchantment,
+  removeEnchantment: removeRangedEnchantment,
+  render: () => _renderRangedAndMeleeLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleRangedClick(e) {
   if (e.target.classList.contains("remove-ranged")) {
-    removeRanged(e.target.dataset.instanceId); return true;
+    removeRanged(e.target.dataset.instanceId);
+    return true;
   }
 
   if (e.target.classList.contains("remove-equipped-ranged")) {
-    removeRanged(e.target.dataset.instanceId); return true;
+    removeRanged(e.target.dataset.instanceId);
+    return true;
   }
   if (e.target.classList.contains("equip-stored-ranged")) {
     const instanceId = e.target.dataset.instanceId;
     const rangedToEquip = findRangedByInstanceId(instanceId);
     if (!rangedToEquip) return true;
-    equipRanged(instanceId, rangedToEquip.weapon_id, rangedToEquip.material_id || "MAT-000");
+    equipRanged(
+      instanceId,
+      rangedToEquip.weapon_id,
+      rangedToEquip.material_id || "MAT-000",
+    );
     return true;
   }
 
@@ -118,6 +151,8 @@ export function handleRangedClick(e) {
 
   if (_handleRangedCustomFieldsClick(e)) return true;
 
+  if (_rangedEnchantments.handleClick(e)) return true;
+
   return false;
 }
 
@@ -125,12 +160,18 @@ export function handleRangedClick(e) {
 
 export function handleRangedInput(e) {
   if (e.target.classList.contains("resume-ranged-hp")) {
-    const instanceId      = e.target.dataset.instanceId;
-    const rangedInstance  = findRangedByInstanceId(instanceId);
+    const instanceId = e.target.dataset.instanceId;
+    const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
     if (/^-$/.test(e.target.value)) return true;
-    const weaponData = data.ranged_weapons.find((w) => w.weapon_id === rangedInstance.weapon_id);
-    const { maxHp }  = resolveHp(rangedInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.ranged_weapons.find(
+      (w) => w.weapon_id === rangedInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      rangedInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     rangedInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateResumeHpDisplay(e.target, maxHp, rangedInstance.hit_points_modifier);
     _deferRender();
@@ -143,8 +184,14 @@ export function handleRangedInput(e) {
     const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.ranged_weapons.find((w) => w.weapon_id === rangedInstance.weapon_id);
-    const { maxHp } = resolveHp(rangedInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.ranged_weapons.find(
+      (w) => w.weapon_id === rangedInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      rangedInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     rangedInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, rangedInstance.hit_points_modifier);
     _deferRender();
@@ -157,8 +204,14 @@ export function handleRangedInput(e) {
     const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
     if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.ranged_weapons.find((w) => w.weapon_id === rangedInstance.weapon_id);
-    const { maxHp } = resolveHp(rangedInstance, weaponData?.weapon_hit_points ?? 0, data.materials);
+    const weaponData = data.ranged_weapons.find(
+      (w) => w.weapon_id === rangedInstance.weapon_id,
+    );
+    const { maxHp } = resolveHp(
+      rangedInstance,
+      weaponData?.weapon_hit_points ?? 0,
+      data.materials,
+    );
     rangedInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
     _updateActualHpDisplay(e.target, maxHp, rangedInstance.hit_points_modifier);
     _deferRender();
@@ -177,13 +230,20 @@ export function handleRangedChange(e) {
     const name = e.target.value;
     const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
-    const availableWeapons = data.ranged_weapons.filter((w) => w.weapon_name === name);
+    const availableWeapons = data.ranged_weapons.filter(
+      (w) => w.weapon_name === name,
+    );
     const firstWeapon = availableWeapons[0];
     if (!firstWeapon) return true;
-    const tierSelect = document.querySelector(`.equipped-ranged-tier[data-instance-id="${instanceId}"]`);
+    const tierSelect = document.querySelector(
+      `.equipped-ranged-tier[data-instance-id="${instanceId}"]`,
+    );
     if (tierSelect) {
       tierSelect.innerHTML = availableWeapons
-        .map((w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`).join("");
+        .map(
+          (w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`,
+        )
+        .join("");
     }
     rangedInstance.weapon_id = firstWeapon.weapon_id;
     rangedInstance.hit_points_modifier = 0;
@@ -196,7 +256,9 @@ export function handleRangedChange(e) {
     const tier = e.target.value;
     const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
-    const nameEl = document.querySelector(`.equipped-ranged-name[data-instance-id="${instanceId}"]`);
+    const nameEl = document.querySelector(
+      `.equipped-ranged-name[data-instance-id="${instanceId}"]`,
+    );
     if (!nameEl) return true;
     const weapon = data.ranged_weapons.find(
       (w) => w.weapon_name === nameEl.value && w.weapon_tier === tier,
@@ -220,7 +282,8 @@ export function handleRangedChange(e) {
   }
 
   if (e.target.classList.contains("ranged-storage-select")) {
-    moveRanged(e.target.dataset.instanceId, e.target.value); return true;
+    moveRanged(e.target.dataset.instanceId, e.target.value);
+    return true;
   }
 
   if (e.target.classList.contains("equipped-ranged-move")) {
@@ -228,13 +291,22 @@ export function handleRangedChange(e) {
     const destination = e.target.value;
     const rangedInstance = findRangedByInstanceId(instanceId);
     if (!rangedInstance) return true;
-    if (!destination) { rangedInstance.is_equipped = true; rangedInstance.storedAt = null; }
-    else { rangedInstance.is_equipped = false; rangedInstance.storedAt = destination; }
+    if (!destination) {
+      rangedInstance.is_equipped = true;
+      rangedInstance.storedAt = null;
+    } else {
+      rangedInstance.is_equipped = false;
+      rangedInstance.storedAt = destination;
+    }
     // Mirror to melee counterpart (bidirectional: melee may point at us, or we may point at melee).
     const linked =
-      state.selected.melee_weapons?.find((m) => m._linkedInstanceId === instanceId) ??
+      state.selected.melee_weapons?.find(
+        (m) => m._linkedInstanceId === instanceId,
+      ) ??
       (rangedInstance._linkedInstanceId
-        ? state.selected.melee_weapons?.find((m) => m._instanceId === rangedInstance._linkedInstanceId)
+        ? state.selected.melee_weapons?.find(
+            (m) => m._instanceId === rangedInstance._linkedInstanceId,
+          )
         : null);
     if (linked) {
       linked.is_equipped = rangedInstance.is_equipped;
@@ -245,23 +317,28 @@ export function handleRangedChange(e) {
     return true;
   }
 
+  if (_rangedEnchantments.handleChange(e)) return true;
+
   return false;
 }
 
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddRanged() {
-  const nameEl     = document.getElementById("rangedNameSelect");
-  const tierEl     = document.getElementById("rangedTierSelect");
+  const nameEl = document.getElementById("rangedNameSelect");
+  const tierEl = document.getElementById("rangedTierSelect");
   const materialEl = document.getElementById("rangedMaterialSelect");
-  const storageEl  = document.getElementById("rangedStorage");
+  const storageEl = document.getElementById("rangedStorage");
   if (!nameEl || !tierEl || !materialEl || !storageEl) return;
   const ranged = data.ranged_weapons.find(
     (w) => w.weapon_name === nameEl.value && w.weapon_tier === tierEl.value,
   );
   if (!ranged) return;
-  const material = data.materials.find((m) => m.material_name === materialEl.value);
+  const material = data.materials.find(
+    (m) => m.material_name === materialEl.value,
+  );
   const materialId = material?.material_id ?? null;
-  if (storageEl.value === "equipped") addEquippedRanged(ranged.weapon_id, materialId);
+  if (storageEl.value === "equipped")
+    addEquippedRanged(ranged.weapon_id, materialId);
   else addStoredRanged(ranged.weapon_id, materialId, storageEl.value);
 }

@@ -17,4 +17,5 @@ export const RANGED = {
   hp: "PV",
   tr: "TR",
   prec: "PREC",
+  enchantmentContribution: "Contribuição de encantamentos",
 };

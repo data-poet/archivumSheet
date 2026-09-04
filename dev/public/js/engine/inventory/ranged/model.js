@@ -11,6 +11,12 @@ import {
 import { getMeleeCounterpart } from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
+import {
+  addEnchantmentEntry,
+  updateEnchantmentEntry,
+  removeEnchantmentEntry,
+  clearEnchantmentAddFormSelection,
+} from "../shared/enchantments/model.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -183,6 +189,7 @@ function _syncMeleeCounterpart(
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 }
 
@@ -237,6 +244,7 @@ export function addEquippedRanged(weaponId, materialId = null) {
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 
   _syncMeleeCounterpart(instanceId, weaponId, materialId, true, null);
@@ -265,6 +273,7 @@ export function addStoredRanged(
     weapon_custom_name: null,
     weapon_custom_description: null,
     weapon_custom_effect: null,
+    enchantments: [],
   });
 
   _syncMeleeCounterpart(instanceId, rangedId, materialId, false, storedAt);
@@ -303,6 +312,7 @@ export function removeRanged(instanceId) {
   selected.ranged_weapons = selected.ranged_weapons.filter(
     (w) => w._instanceId !== instanceId,
   );
+  clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
 
@@ -348,6 +358,93 @@ export function saveRangedCustomFields(
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCHANTMENTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function addRangedEnchantment(instanceId, enchantmentId, params) {
+  const instance = findRangedByInstanceId(instanceId);
+  if (!instance) return;
+  if (!instance.enchantments) instance.enchantments = [];
+
+  const before = structuredClone(instance.enchantments);
+
+  const added = addEnchantmentEntry(
+    instance.enchantments,
+    enchantmentId,
+    params,
+  );
+  if (!added) return;
+
+  const linked = _findLinkedMelee(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  }, t("common.added"));
+}
+
+export function updateRangedEnchantment(
+  instanceId,
+  entryInstanceId,
+  enchantmentId,
+  params,
+) {
+  const instance = findRangedByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  const updated = updateEnchantmentEntry(
+    instance.enchantments,
+    entryInstanceId,
+    enchantmentId,
+    params,
+  );
+  if (!updated) return;
+
+  const linked = _findLinkedMelee(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
+}
+
+export function removeRangedEnchantment(instanceId, entryInstanceId) {
+  const instance = findRangedByInstanceId(instanceId);
+  if (!instance || !instance.enchantments) return;
+
+  const before = structuredClone(instance.enchantments);
+
+  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
+
+  const linked = _findLinkedMelee(instance);
+  if (linked) linked.enchantments = structuredClone(instance.enchantments);
+
+  renderListsPreserving(selected, data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    instance.enchantments = before;
+    if (linked) linked.enchantments = structuredClone(before);
+    renderListsPreserving(selected, data, state.sheet);
+    triggerAutoRun();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
