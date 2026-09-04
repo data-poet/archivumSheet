@@ -8,22 +8,9 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// enchantment_allowed_itens category for this item type — matches the
-// SLOT_MAP-style Portuguese keys convention used by accessories/armor.
 const MAGIC_GEAR_ITEM_CATEGORY = "Instrumentos Mágicos";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single magic gear instance object (shape only, no DB lookups).
- * Returns an array of error strings (empty = valid).
- *
- * Unlike accessories, price and weight are NOT user-input here — they come
- * entirely from the DB catalog row (db_magic_gear.csv), so no price field
- * is validated on the instance.
- */
+// Unlike accessories, price/weight are not user-input here — they come entirely from the DB catalog row, so no price field is validated on the instance.
 function validateMagicGearInstance(instance, index) {
   const errors = [];
   const prefix = `magicGearInventory[${index}]`;
@@ -53,7 +40,6 @@ function validateMagicGearInstance(instance, index) {
     );
   }
 
-  // custom fields — optional; if present must be a string or null
   for (const field of [
     "magic_gear_custom_name",
     "magic_gear_custom_description",
@@ -68,7 +54,6 @@ function validateMagicGearInstance(instance, index) {
     }
   }
 
-  // enchantments — optional; unlimited count, no slot system
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -84,11 +69,6 @@ function validateMagicGearInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split accessories/armor/materials use.
- */
 function validateMagicGearEnchantments(
   magicGearInventory,
   enchantmentsDb,
@@ -117,19 +97,7 @@ function validateMagicGearEnchantments(
   return errors;
 }
 
-/**
- * Ensures the number of equipped instances of each magic_gear_type never
- * exceeds that type's entry in MAGIC_GEAR_EQUIP_LIMITS. Unlike accessories'
- * per-accessory_id limit, this is scoped to TYPE (Arcano, Musical, ...),
- * shared across every magic_gear_id of that type — 2 wands, or 1 wand + 1
- * staff, both count against the same Arcano limit.
- *
- * Requires magicGearDb (magic_gear_id -> DB row) to resolve each instance's
- * type; callers should run this only after confirming every magic_gear_id
- * is known (unknownIds check in buildMagicGearSlots runs first).
- *
- * Returns an array of error strings (empty = valid).
- */
+// Unlike accessories' per-accessory_id limit, this is scoped to TYPE (Arcano, Musical, ...), shared across every magic_gear_id of that type.
 function validateMagicGearEquipLimits(instances, magicGearDb) {
   const equippedCountByType = {};
 
@@ -154,10 +122,6 @@ function validateMagicGearEquipLimits(instances, magicGearDb) {
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateMagicGearInstance,

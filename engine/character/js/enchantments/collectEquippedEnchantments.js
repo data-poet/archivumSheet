@@ -1,31 +1,7 @@
-/**
- * collectEquippedEnchantments.js
- *
- * Bridges the inventory layer (resolved equipped items, each carrying a
- * resolved `enchantments` array — see engine/inventory/js/shared/
- * enchantmentsResolver.js) into the character layer's inputs.
- *
- * Reads ONLY equipped items — an enchantment on a stashed/backpacked item
- * has no character effect, by design (its price still counts toward the
- * item's worth, computed separately in the inventory layer; this collector
- * is only about the character-effect side).
- *
- * Called once per buildSheet() run, after inventory is resolved and before
- * the final character build, since equipped items aren't known until then.
- *
- * Output shape is presence-aware, not just magnitude-aware: a map only
- * gets a key for a target that has at least one contributing enchantment,
- * even if the net sum happens to be 0 (e.g. a +2 and a -2 on the same
- * attribute). This lets the character layer expose a `has_enchantment`
- * flag the UI can use to decide whether to show the enchantment_modifier
- * field at all — "only appears when an enchanted item is equipped in that
- * category" — without the UI re-deriving that from raw inventory data
- * itself (the engine stays the single source of truth).
- */
+// Reads ONLY equipped items — enchantments on stashed items have no character effect by design (their price still counts toward item worth elsewhere).
+// Output maps are presence-aware: a target gets a key if any enchantment touches it, even if the net sum is 0, so the UI can show/hide the modifier field.
 
-// CSV target strings that don't match the engine's internal attribute keys
-// 1:1. Every other attribute target (ST, DX, IQ, HT, HP, Mana, Toxicity,
-// Will, Vision, Hearing, Smell, Movement, Dodge) matches exactly.
+// CSV target strings that don't match the engine's internal attribute keys 1:1.
 const ATTRIBUTE_TARGET_MAP = {
   "Basic Speed": "BasicSpeed",
 };
@@ -41,13 +17,7 @@ function addToGrantMap(map, key, extraPoints) {
   map[key].push(Number(extraPoints || 0));
 }
 
-/**
- * @param {Array} equippedItems - resolved equipped items from any source
- *   that carries enchantments (accessories, magic gear, armor), each with
- *   a resolved `.enchantments` array (see enchantmentsResolver.js's
- *   resolveEnchantmentEntry shape). Callers merge equipped items from
- *   multiple item types into a single array before calling this.
- */
+// Callers merge equipped items from multiple item types into a single array before calling this.
 function collectEquippedEnchantments(equippedItems = []) {
   const attributeModifiers = {};
   const elementalModifiers = {};
@@ -73,11 +43,7 @@ function collectEquippedEnchantments(equippedItems = []) {
 
         case "fortify_resistance":
         case "weaken_resistance":
-          // target is a fixed element name (Fire/Ice/...) baked into the
-          // enchantment's own DB row — see enchantmentsConstants.js's
-          // ELEMENTAL_RESISTANCE_EFFECT_TYPES. No target-map translation
-          // needed, unlike ATTRIBUTE_TARGET_MAP: elemental keys already
-          // match 1:1 between the CSV and elementalResistances.js.
+          // Elemental keys already match 1:1 between CSV and elementalResistances.js, so no target-map translation needed here.
           addToSumMap(elementalModifiers, target, enchantment.value);
           break;
 
@@ -108,10 +74,7 @@ function collectEquippedEnchantments(equippedItems = []) {
           break;
 
         default:
-        // "add_weight"/"remove_weight"/"fortify_damage_resistance"/
-        // "weaken_damage_resistance" (item-intrinsic — already applied in
-        // armorResolver.js, no character-level effect) / "custom" /
-        // unrecognized — no character effect to collect.
+        // Item-intrinsic effects (weight, damage resistance) are already applied in armorResolver.js; no character-level effect to collect.
       }
     }
   }

@@ -1,19 +1,4 @@
-/**
- * Elemental Damage Resistances
- *
- * Percentage-based damage multipliers per element (1 = normal damage).
- * Unlike other secondary attributes, there is no "bought"/points concept
- * here — just race_base (from the race CSV) + modifier (player) +
- * enchantment_modifier (equipment, unwired for now — see
- * collectEquippedEnchantments.js, which doesn't produce elemental targets
- * yet). Same has_enchantment_modifier presence-flag pattern as
- * buildCharacterPrimary/buildCharacterSecondary use elsewhere.
- *
- * These are percentages, not flat stats: modifiers can push the final
- * value down to (but not below) zero, but there is no upper cap — a
- * character can become arbitrarily weak against an element.
- */
-
+// Final value is floored at 0 but has no upper cap — a character can become arbitrarily weak against an element.
 const ELEMENTAL_TYPES = [
   "Fire",
   "Ice",

@@ -1,13 +1,6 @@
-/**
- * Secondary Attributes Builder
- */
-
 const { calculateCarryWeight } = require("../../../inventory/js/carryWeight");
 const { calculateDamage } = require("./baseDamage");
 
-/**
- * Helpers
- */
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
@@ -48,9 +41,6 @@ function applySecondaryBaseEffects(base, effects = {}) {
   return base;
 }
 
-/**
- * Base formulas
- */
 function computeBaseSecondary({ ST, HT, IQ, DX }) {
   return {
     HP: Math.floor((HT * 4 + ST * 2) / 2),
@@ -66,13 +56,6 @@ function computeBaseSecondary({ ST, HT, IQ, DX }) {
   };
 }
 
-/**
- * Builder
- *
- * @param {Object} primaryAttributes
- * @param {Object} config (bought values + modifiers)
- * @param {number} weight (current carried weight)
- */
 function buildSecondaryAttributes(
   primaryAttributes,
   config = {},
@@ -134,15 +117,9 @@ function buildSecondaryAttributes(
     }),
   };
 
-  /**
-   * HP < 1/3 rule — halve BasicSpeed (floor) when current HP is below 1/3
-   * of final_base_value. Movement and Dodge cascade from the (possibly halved)
-   * BasicSpeed.value, so they are computed afterwards.
-   *
-   * current HP = final_base_value + modifier  (modifier is ≤ 0 when injured)
-   */
+  // Halve BasicSpeed (floor) when current HP is below 1/3 of final_base_value; Movement/Dodge are computed after since they cascade from it.
   const hpFinalBase = result.HP.final_base_value;
-  const hpCurrent   = result.HP.value; // final_base_value + modifier
+  const hpCurrent   = result.HP.value;
   if (hpCurrent < hpFinalBase / 3) {
     result.BasicSpeed = {
       ...result.BasicSpeed,
@@ -150,9 +127,6 @@ function buildSecondaryAttributes(
     };
   }
 
-  /**
-   * Movement & Dodge (depends on BasicSpeed + carry weight)
-   */
   const carry = carry_weight || calculateCarryWeight(ST, 0);
 
   let movementBase = Math.floor(
@@ -184,10 +158,7 @@ function buildSecondaryAttributes(
     ...config.Dodge,
   });
 
-  /**
-   * Damage (depends on ST)
-   * Not a "secondary attribute" → no bought/points
-   */
+  // Damage isn't a "secondary attribute" — no bought/points.
   const damage = calculateDamage(ST, {
     GDP: {
       modifier: config?.damage?.GDP?.modifier,
@@ -197,11 +168,6 @@ function buildSecondaryAttributes(
     },
   });
 
-  // result.Damage = damage;
-
-  /**
-   * Points calculation (flat 5 per bought level)
-   */
   const points = {};
 
   Object.entries(result).forEach(([key, attr]) => {

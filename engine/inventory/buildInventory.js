@@ -12,9 +12,6 @@ const { buildMagicGearSlots } = require("./js/magicGear/magicGear.js");
 const { buildCustomInventorySlots } = require("./js/customInventory/customInventory.js");
 const { buildCoinPurseSlots } = require("./js/coinPurse/coinPurse.js");
 
-/**
- * Builds inventory data
- */
 function buildInventory({
   ST = 0,
   weight = 0,

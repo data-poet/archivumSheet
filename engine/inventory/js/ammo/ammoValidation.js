@@ -3,14 +3,6 @@ const {
   VALID_LOOSE_STORED_AT,
 } = require("./ammoConstants");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONTAINER INSTANCE VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single container instance object (shape only, no DB lookups).
- * Returns an array of error strings (empty = valid).
- */
 function validateContainerInstance(instance, index) {
   const errors = [];
   const prefix = `ammoContainerInventory[${index}]`;
@@ -64,14 +56,6 @@ function validateContainerInstance(instance, index) {
   return errors;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOOSE AMMO INSTANCE VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single loose ammo instance object (shape only, no DB lookups).
- * Returns an array of error strings (empty = valid).
- */
 function validateLooseAmmoInstance(instance, index) {
   const errors = [];
   const prefix = `looseAmmoInventory[${index}]`;
@@ -101,24 +85,9 @@ function validateLooseAmmoInstance(instance, index) {
   return errors;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CROSS-INSTANCE RULES VALIDATION
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates cross-instance rules against the container DB:
- *
- * - is_carriable must be true for equipped/backpack
- * - max 1 instance per container_id at equipped
- * - max 1 instance per container_id at backpack
- * - ammo types in contents must match container_ammo_type
- *
- * Returns an array of error strings (empty = valid).
- */
 function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb) {
   const errors = [];
 
-  // Tally equipped and backpack counts per container_id
   const equippedCount = {};
   const backpackCount = {};
 
@@ -126,12 +95,10 @@ function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb
     const prefix = `ammoContainerInventory[${index}]`;
     const container = containerDb[instance.container_id];
 
-    // Unknown container_id — skip further checks for this instance
     if (!container) continue;
 
     const { storedAt, container_id } = instance;
 
-    // is_carriable rule
     if (
       (storedAt === "equipped" || storedAt === "backpack") &&
       !container.is_carriable
@@ -141,7 +108,6 @@ function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb
       );
     }
 
-    // Tally for uniqueness check
     if (storedAt === "equipped") {
       equippedCount[container_id] = (equippedCount[container_id] || 0) + 1;
     }
@@ -150,13 +116,12 @@ function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb
       backpackCount[container_id] = (backpackCount[container_id] || 0) + 1;
     }
 
-    // Ammo type compatibility
     if (Array.isArray(instance.contents)) {
       instance.contents.forEach((entry, i) => {
         const ep = `${prefix}.contents[${i}]`;
         const ammo = ammoDb[entry.ammo_id];
 
-        if (!ammo) return; // unknown ammo_id is caught elsewhere
+        if (!ammo) return;
 
         if (ammo.ammo_type !== container.container_ammo_type) {
           errors.push(
@@ -167,7 +132,6 @@ function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb
     }
   }
 
-  // Uniqueness checks
   for (const [container_id, count] of Object.entries(equippedCount)) {
     if (count > 1) {
       errors.push(
@@ -186,10 +150,6 @@ function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateContainerInstance,

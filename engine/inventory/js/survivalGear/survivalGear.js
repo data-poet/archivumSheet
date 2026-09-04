@@ -12,10 +12,6 @@ const {
   calculateCarriedSurvivalGearValue,
 } = require("./survivalGearResolver.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SURVIVAL GEAR DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _survivalGearDB = null;
 
 function getSurvivalGearDB() {
@@ -44,17 +40,9 @@ function getSurvivalGearDB() {
   return _survivalGearDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Builds the resolved survival gear inventory, distributed across storage locations.
@@ -63,8 +51,6 @@ function buildStorageBucket() {
  */
 function buildSurvivalGearSlots(survivalGearInventory = []) {
   const survivalGearDb = getSurvivalGearDB();
-
-  // ── VALIDATE INSTANCES (shape) ────────────────────────────────────────────
 
   const instanceErrors = survivalGearInventory.flatMap((instance, index) =>
     validateSurvivalGearInstance(instance, index),
@@ -76,8 +62,6 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
     );
   }
 
-  // ── VALIDATE UNKNOWN IDS ──────────────────────────────────────────────────
-
   const unknownIds = survivalGearInventory
     .filter((instance) => !survivalGearDb[instance.adventure_gear_id])
     .map((instance) => instance.adventure_gear_id);
@@ -87,8 +71,6 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
       `[buildSurvivalGearSlots] Unknown adventure_gear_id(s): ${unknownIds.join(", ")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
@@ -113,8 +95,6 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_survival_gear_weight =
     calculateCarriedSurvivalGearWeight(backpack);
   const carried_survival_gear_value =
@@ -128,10 +108,6 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
     carried_survival_gear_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildSurvivalGearSlots,

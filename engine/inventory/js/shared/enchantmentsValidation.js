@@ -7,24 +7,7 @@ const {
   WEAKEN_EFFECT_TYPES,
 } = require("./enchantmentsConstants.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHAPE VALIDATION (no DB access)
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates a single enchantment application entry's shape — types only.
- * Does not know which fields are required (that depends on the
- * enchantment's effect_type, looked up from the DB), so this only rejects
- * entries with the wrong type for a field that IS present.
- *
- * Both `value` and `extraPoints` are checked here — types only. `value`
- * must be a number (not necessarily an integer: percentage-flagged
- * enchantments carry decimal fractions, e.g. 0.05 for +5% — see
- * enchantment_is_percentage in enchantmentsDB.js). `extraPoints` (skill/
- * spell only) stays integer-only, since points are never fractional. Sign
- * (fortify > 0, weaken < 0) depends on effect_type, so that's checked in
- * the application pass below, not here.
- */
+// Doesn't know which fields are required (that depends on effect_type, looked up from the DB) — only rejects a wrong type for a field that IS present. Sign checking happens in the application pass below.
 function validateEnchantmentEntryShape(entry, index, parentPrefix) {
   const prefix = `${parentPrefix}.enchantments[${index}]`;
 
@@ -60,21 +43,7 @@ function validateEnchantmentEntryShape(entry, index, parentPrefix) {
   return errors;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// APPLICATION VALIDATION (DB-dependent)
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Validates one enchantment application entry against the enchantments DB
- * and the target reference DBs (advantages/disadvantages/skills/spells).
- *
- * itemCategory must match one of enchantment_allowed_itens' values
- * ("Acessórios", "Cabeça", "Pés", etc — SLOT_MAP's Portuguese keys), OR be
- * an array of such values — used as `[ownCategory, counterpartCategory]`
- * for dual-use weapon pairs, where an entry synced from the counterpart
- * side must validate against either side's allowed list, not just this
- * instance's own category.
- */
+// itemCategory may be an array (`[ownCategory, counterpartCategory]`) for dual-use weapon pairs, so a synced entry validates against either side's allowed list.
 function validateEnchantmentEntryApplication(
   entry,
   enchantmentsDb,
@@ -112,11 +81,6 @@ function validateEnchantmentEntryApplication(
   const isWeaken = WEAKEN_EFFECT_TYPES.includes(type);
 
   if (VALUE_EFFECT_TYPES.includes(type)) {
-    // Covers attribute, weight, damage-resistance, and elemental-resistance
-    // types — same base_value/step-aligned magnitude shape for all four.
-    // Percentage-flagged types (weight, elemental-resistance) carry decimal
-    // fractions here (e.g. 0.05), everything else whole numbers — the
-    // step-alignment math below is unit-agnostic either way.
     if (typeof entry.value !== "number") {
       errors.push(`${prefix}: value is required for ${type}`);
     } else if (isFortify && entry.value <= 0) {
@@ -170,11 +134,7 @@ function validateEnchantmentEntryApplication(
       }
     }
 
-    // fortify_skill/fortify_spell/weaken_skill/weaken_spell: extraPoints is
-    // the modifier magnitude itself (not "extra above a grant"), so it must
-    // be nonzero and match the fortify(+)/weaken(-) sign. The plain
-    // "skill"/"spell" grant type is neither fortify nor weaken, so it's
-    // untouched here — stays unsigned ≥ 0, checked nowhere but shape.
+    // For fortify/weaken, extraPoints is the modifier magnitude itself, not "extra above a grant" — must match the fortify(+)/weaken(-) sign.
     if (isFortify || isWeaken) {
       const extraPoints = entry.extraPoints;
 
@@ -190,18 +150,12 @@ function validateEnchantmentEntryApplication(
         );
       }
     } else if (entry.extraPoints !== undefined && entry.extraPoints < 0) {
-      // plain "skill"/"spell" grant type — investment above the granted
-      // base level, unsigned
       errors.push(`${prefix}: extraPoints must be >= 0 for ${type}`);
     }
   }
 
   return errors;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   validateEnchantmentEntryShape,

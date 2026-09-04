@@ -13,10 +13,7 @@ function buildCharacterPrimary({
   enchantmentAdvantageIds = [],
   enchantmentDisadvantageIds = [],
 }) {
-  // Merge race modifiers + equipped-enchantment modifiers into each primary
-  // attribute input. has_enchantment_modifier is presence-based (does an
-  // equipped item touch this attribute at all), not magnitude-based (is the
-  // net sum nonzero) — see collectEquippedEnchantments.js.
+  // has_enchantment_modifier is presence-based (item touches attribute), not magnitude-based (nonzero sum) — see collectEquippedEnchantments.js.
   const attributesWithRace = {};
   for (const attr of ["ST", "DX", "IQ", "HT"]) {
     attributesWithRace[attr] = {
@@ -27,10 +24,7 @@ function buildCharacterPrimary({
     };
   }
 
-  // Merge user-selected + innate + enchantment-granted ids (deduplicated)
-  // for engine processing. buildAdvantages/buildDisadvantages decide cost
-  // (0 for innate or enchantment-granted) and the is_race_innate/
-  // is_enchantment flags from the innate/enchantment id lists.
+  // buildAdvantages/buildDisadvantages derive cost (0 if innate/enchantment-granted) and is_race_innate/is_enchantment from the innate/enchantment id lists.
   const allAdvantageIds = [
     ...new Set([
       ...advantages,

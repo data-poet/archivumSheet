@@ -1,9 +1,6 @@
 const path = require("path");
 const { loadCSV } = require("../../../helpers/dataUtils.js");
 
-/**
- * Load and cache all DB tables used by resolver
- */
 let _dbCache = null;
 
 function getAllSpells() {
@@ -16,13 +13,7 @@ function getAllSpells() {
   return _dbCache;
 }
 
-/**
- * Magic Aptitude (ADV-063 → ADV-065)
- *
- * Grants a flat bonus to the effective level of every learned spell.
- * Only the highest-ranked advantage in the group applies (they are
- * mutually exclusive tiers of the same trait).
- */
+// Only the highest-ranked advantage in the group applies — they're mutually exclusive tiers of the same trait.
 const magicAptitudeGroup = {
   "ADV-063": 1,
   "ADV-064": 2,
@@ -39,9 +30,6 @@ function getAptitudeLevel(advantages = {}) {
   return max;
 }
 
-/**
- * Spell tier rules (single source of truth)
- */
 function getSpellTierByLevel(level) {
   if (level <= 12) return "Aprendiz";
   if (level <= 15) return "Experiente";
@@ -50,9 +38,6 @@ function getSpellTierByLevel(level) {
   return "Mestre";
 }
 
-/**
- * Normalize strings to avoid mismatch issues
- */
 function normalize(str) {
   return String(str || "")
     .normalize("NFD")
@@ -61,9 +46,6 @@ function normalize(str) {
     .toLowerCase();
 }
 
-/**
- * Safely read possible column variations
- */
 function getRowName(row) {
   return row.spell_name || row.name;
 }
@@ -72,21 +54,7 @@ function getRowTier(row) {
   return row.spell_tier || row.tier;
 }
 
-/**
- * SPELL RESOLVER
- *
- * enchantmentSpellGrants = { "Moldar Mana": [0, 2] }  — one array entry per
- *   equipped "Adicionar Feitiço" enchantment targeting this spell, each the
- *   extraPoints chosen above the granted IQ-based level. Multiple grants
- *   don't stack — only the single highest-level candidate competes against
- *   the player's own purchase, same collision rule as skills.
- *
- * enchantmentSpellModifiers = { "Moldar Mana": 2 }  — summed extraPoints
- *   from equipped fortify_spell(+)/weaken_spell(-) enchantments targeting
- *   this spell. Only applies to a spell that ends up known one way or
- *   another — a fortify/weaken enchantment on a spell nobody has is a
- *   no-op, same as skills.
- */
+// enchantmentSpellGrants/enchantmentSpellModifiers follow the same collision/no-op rules as skills (see skills.js): multiple grants don't stack, and a fortify/weaken on a spell nobody has is a no-op.
 function resolveSpells({
   selectedSpells = {},
   character = {},
@@ -111,14 +79,7 @@ function resolveSpells({
     const hasEnchantmentModifier = spellName in enchantmentSpellModifiers;
     const enchantmentModifier = enchantmentSpellModifiers[spellName] || 0;
 
-    // Neither purchased nor granted — a fortify/weaken enchantment alone
-    // never creates an entry (no-op, per design, same as skills).
     if (!input && grants.length === 0) continue;
-
-    // ── Determine the winning source: player's own purchase vs the best
-    //    equipped "Adicionar Feitiço" grant. Same rule as skills: higher
-    //    pre-fortify level wins, ties favor the player's own entry, and
-    //    multiple grants on one spell don't stack. ─────────────────────────
 
     const playerBaseValue = input ? Number(input.base_value ?? 0) : null;
     const playerModifier = input ? Number(input.modifier ?? 0) : 0;
@@ -146,10 +107,7 @@ function resolveSpells({
       is_enchantment = true;
     }
 
-    // Final effective level — what's actually cast at, and what
-    // determines tier. Includes aptitude (applies to both sources
-    // equally, so doesn't affect who wins above) and the fortify/weaken
-    // enchantment_modifier on top.
+    // Aptitude applies equally to both sources, so it doesn't affect who won above.
     const level = base_value + modifier + aptitude_level + enchantmentModifier;
     const tier = getSpellTierByLevel(level);
 
@@ -197,9 +155,6 @@ function resolveSpells({
   return resolved;
 }
 
-/**
- * MAIN RESOLVER ENTRY
- */
 function resolveAll({
   spells = {},
   character = {},

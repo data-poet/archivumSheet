@@ -20,10 +20,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ACCESSORIES DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _accessoriesDB = null;
 
 function getAccessoriesDB() {
@@ -50,30 +46,13 @@ function getAccessoriesDB() {
   return _accessoriesDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageBucket() {
   return [];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Builds the resolved accessories inventory, distributed across storage
- * locations. Each instance is a distinct physical item (no quantity), since
- * every accessory may carry its own custom name/description/effect.
- *
- * Only equipped + backpack items contribute to carried value.
- * Accessories have no weight and never contribute to carry weight.
- */
+// Each instance is a distinct physical item (no quantity) since it may carry its own custom name/description/effect. Accessories have no weight.
 function buildAccessorySlots(accessoryInventory = []) {
   const accessoriesDb = getAccessoriesDB();
-
-  // ── VALIDATE INSTANCES (shape) ────────────────────────────────────────────
 
   const instanceErrors = accessoryInventory.flatMap((instance, index) =>
     validateAccessoryInstance(instance, index),
@@ -85,8 +64,6 @@ function buildAccessorySlots(accessoryInventory = []) {
     );
   }
 
-  // ── VALIDATE UNKNOWN IDS ──────────────────────────────────────────────────
-
   const unknownIds = accessoryInventory
     .filter((instance) => !accessoriesDb[instance.accessory_id])
     .map((instance) => instance.accessory_id);
@@ -96,8 +73,6 @@ function buildAccessorySlots(accessoryInventory = []) {
       `[buildAccessorySlots] Unknown accessory_id(s): ${unknownIds.join(", ")}`,
     );
   }
-
-  // ── VALIDATE EQUIP LIMITS ──────────────────────────────────────────────────
 
   const equipLimitErrors = validateAccessoryEquipLimits(
     accessoryInventory,
@@ -109,8 +84,6 @@ function buildAccessorySlots(accessoryInventory = []) {
       `[buildAccessorySlots] Equip limit exceeded:\n${equipLimitErrors.join("\n")}`,
     );
   }
-
-  // ── VALIDATE ENCHANTMENTS ────────────────────────────────────────────────
 
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
@@ -126,8 +99,6 @@ function buildAccessorySlots(accessoryInventory = []) {
       `[buildAccessorySlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
     );
   }
-
-  // ── BUILD BUCKETS ─────────────────────────────────────────────────────────
 
   const equipped = buildStorageBucket();
   const stash = buildStorageBucket();
@@ -163,8 +134,6 @@ function buildAccessorySlots(accessoryInventory = []) {
     }
   }
 
-  // ── TOTALS ────────────────────────────────────────────────────────────────
-
   const carried_accessory_value = calculateCarriedAccessoryValue(
     equipped,
     backpack,
@@ -178,10 +147,6 @@ function buildAccessorySlots(accessoryInventory = []) {
     carried_accessory_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildAccessorySlots,

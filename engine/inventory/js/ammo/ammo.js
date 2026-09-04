@@ -21,10 +21,6 @@ const {
   calculateCarriedAmmoValue,
 } = require("./ammoResolver.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// AMMO DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _ammoDB = null;
 
 function getAmmoDB() {
@@ -50,10 +46,6 @@ function getAmmoDB() {
 
   return _ammoDB;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CONTAINER DB
-// ─────────────────────────────────────────────────────────────────────────────
 
 let _containerDB = null;
 
@@ -86,23 +78,13 @@ function getContainerDB() {
   return _containerDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildStorageBucket() {
   return [];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
-
 function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
   const ammoDb = getAmmoDB();
   const containerDb = getContainerDB();
-
-  // ── VALIDATE CONTAINER INSTANCES (shape) ──────────────────────────────────
 
   const containerShapeErrors = ammoContainerInventory.flatMap(
     (instance, index) => validateContainerInstance(instance, index),
@@ -114,8 +96,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     );
   }
 
-  // ── VALIDATE LOOSE AMMO INSTANCES (shape) ─────────────────────────────────
-
   const looseShapeErrors = looseAmmoInventory.flatMap((instance, index) =>
     validateLooseAmmoInstance(instance, index),
   );
@@ -126,8 +106,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     );
   }
 
-  // ── VALIDATE UNKNOWN CONTAINER IDS ────────────────────────────────────────
-
   const unknownContainerIds = ammoContainerInventory
     .filter((instance) => !containerDb[instance.container_id])
     .map((instance) => instance.container_id);
@@ -137,8 +115,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
       `[buildAmmoSlots] Unknown container_id(s): ${unknownContainerIds.join(", ")}`,
     );
   }
-
-  // ── VALIDATE UNKNOWN AMMO IDS (containers) ────────────────────────────────
 
   const unknownAmmoIdsInContainers = ammoContainerInventory
     .flatMap((instance) => instance.contents)
@@ -151,8 +127,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     );
   }
 
-  // ── VALIDATE UNKNOWN AMMO IDS (loose) ────────────────────────────────────
-
   const unknownAmmoIdsLoose = looseAmmoInventory
     .filter((instance) => !ammoDb[instance.ammo_id])
     .map((instance) => instance.ammo_id);
@@ -162,8 +136,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
       `[buildAmmoSlots] Unknown ammo_id(s) in loose ammo: ${unknownAmmoIdsLoose.join(", ")}`,
     );
   }
-
-  // ── VALIDATE CROSS-INSTANCE RULES ────────────────────────────────────────
 
   const crossRuleErrors = validateContainerCrossRules(
     ammoContainerInventory,
@@ -176,8 +148,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
       `[buildAmmoSlots] Ammo container rule violations:\n${crossRuleErrors.join("\n")}`,
     );
   }
-
-  // ── BUILD CONTAINER BUCKETS ───────────────────────────────────────────────
 
   const containers = {
     equipped: buildStorageBucket(),
@@ -192,8 +162,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     containers[instance.storedAt].push(resolved);
   }
 
-  // ── BUILD LOOSE AMMO BUCKETS ─────────────────────────────────────────────
-
   const loose = {
     equipped: [], // always empty — loose ammo cannot be equipped
     backpack: buildStorageBucket(),
@@ -206,8 +174,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     const resolved = resolveLooseAmmo(instance, ammo);
     loose[instance.storedAt].push(resolved);
   }
-
-  // ── TOTALS ────────────────────────────────────────────────────────────────
 
   const total_equipped_ammo = calculateTotalEquippedAmmo(
     containers.equipped,
@@ -234,10 +200,6 @@ function buildAmmoSlots(ammoContainerInventory = [], looseAmmoInventory = []) {
     carried_ammo_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildAmmoSlots,

@@ -1,26 +1,5 @@
 const { getSpellCost } = require("./js/spellsCost.js");
 
-/**
- * Build resolved spells + total cost
- *
- * EXPECTS:
- * selectedSpells = {
- *   "ARC-0001": {
- *     row: {...},          // resolved DB row
- *     name: "Moldar Mana",
- *     tier: "Aprendiz",
- *     base_value: 10,
- *     modifier: 0,
- *     enchantment_modifier: 0,   // from fortify_spell/weaken_spell, default 0
- *     has_enchantment_modifier: false,
- *     is_enchantment: false,     // true if base_value/modifier came from an
- *                                // equipped "Adicionar Feitiço" grant, not
- *                                // the player's own purchase — see
- *                                // spellsResolver.js's resolveSpells()
- *     level: 10
- *   }
- * }
- */
 function buildGrimoire(selectedSpells = {}, character = {}) {
   const spells = {};
   let totalCost = 0;
@@ -29,7 +8,7 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
 
   for (const [id, spell] of Object.entries(selectedSpells)) {
     const row = spell.row;
-    if (!row) continue; // safety
+    if (!row) continue;
 
     const attribute = "IQ";
 
@@ -48,18 +27,12 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
     );
     const is_enchantment = Boolean(spell.is_enchantment ?? false);
 
-    // Point cost is calculated on the level BEFORE Magic Aptitude
-    // (ADV-063→065) and BEFORE any fortify_spell/weaken_spell
-    // enchantment_modifier: neither the advantage nor an equipped item
-    // should make spells cheaper (or costlier) to learn — they raise the
-    // effective NH for free, same principle as attributes/skills.
+    // Cost is calculated before Magic Aptitude and any enchantment_modifier — those raise effective level for free, same as attributes/skills.
     const costLevel = base_value + modifier;
     const level = costLevel + aptitude_level + enchantment_modifier;
     const relative = costLevel - attributeBase;
 
-    // An enchantment-granted spell (from "Adicionar Feitiço") was never
-    // purchased with points — same zero-cost treatment as
-    // is_race_innate/enchantment-granted skills and advantages.
+    // Enchantment-granted spells were never purchased — zero cost, same as enchantment-granted skills/advantages.
     const cost = is_enchantment
       ? 0
       : getSpellCost({

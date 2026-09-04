@@ -20,23 +20,7 @@ function buildCharacter({
   enchantmentSkillGrants = {},
   enchantmentSkillModifiers = {},
 }) {
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 1. PRIMARY LAYER
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Base character definition:
-   *
-   * - primary attributes
-   * - traits
-   * - base costs
-   *
-   * enchantmentAttributeModifiers/enchantmentAdvantageIds/
-   * enchantmentDisadvantageIds come from collectEquippedEnchantments() on
-   * the resolved equipped items — computed by buildSheet.js before this
-   * call, since equipped items aren't known until inventory is resolved.
-   */
-
+  // enchantment* args come from collectEquippedEnchantments() on resolved equipped items, computed by buildSheet.js before this call.
   const primary = buildCharacterPrimary({
     advantages,
     disadvantages,
@@ -49,35 +33,11 @@ function buildCharacter({
     enchantmentDisadvantageIds,
   });
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 1.5 TRAIT EFFECTS
-   * ───────────────────────────────────────────────────────────────────────────
-   */
-
   const effects = buildTraitsEffects({
     advantages: primary.advantages,
 
     disadvantages: primary.disadvantages,
   });
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 2. DERIVED LAYER
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Derived systems:
-   *
-   * - secondary attributes
-   * - base damage
-   * - skills
-   *
-   * These may depend on:
-   *
-   * - trait effects
-   * - encumbrance penalties
-   * - equipped-enchantment attribute modifiers and skill grants/modifiers
-   */
 
   const secondary = buildCharacterSecondary({
     primary_attributes: primary.primary_attributes,
@@ -100,21 +60,9 @@ function buildCharacter({
     enchantmentSkillModifiers,
   });
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3. SAFE EXTRACTION
-   * ───────────────────────────────────────────────────────────────────────────
-   */
-
   const primaryPoints = primary.character_points || {};
 
   const secondaryPoints = secondary.character_points || {};
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 4. FINAL COMPOSITION
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   return {
     character: {

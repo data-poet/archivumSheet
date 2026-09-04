@@ -5,12 +5,6 @@ const {
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
 
-// Validation
-
-/**
- * Validates a single armor instance object.
- * Returns an array of error strings (empty = valid).
- */
 function validateArmorInstance(instance, index) {
   const errors = [];
 
@@ -41,8 +35,6 @@ function validateArmorInstance(instance, index) {
     );
   }
 
-  // enchantments — optional; unlimited count, no slot system (same
-  // shape-only pass as accessories/magicGear — see accessoriesValidation.js)
   if (instance.enchantments !== undefined) {
     if (!Array.isArray(instance.enchantments)) {
       errors.push(`${prefix}: enchantments must be an array when present`);
@@ -58,17 +50,7 @@ function validateArmorInstance(instance, index) {
   return errors;
 }
 
-/**
- * DB-dependent enchantment checks (unknown ids, allowed_itens, target
- * existence, value/step alignment) — separate pass from the shape-only
- * checks above, same split accessories/magicGear use.
- *
- * Unlike accessories' single fixed ACCESSORY_ITEM_CATEGORY, armor's
- * itemCategory is per-instance: each piece's own armor_piece_location
- * (the raw Portuguese SLOT_MAP key, e.g. "Cabeça") — a helmet enchantment
- * isn't necessarily allowed on boots. Instances with an unknown armor_id
- * are skipped here; that's caught separately in armor.js.
- */
+// Unlike accessories' single fixed category, armor's itemCategory is per-instance (each piece's own armor_piece_location) — a helmet enchantment isn't necessarily allowed on boots.
 function validateArmorEnchantments(
   armorInventory,
   armorDb,
@@ -102,10 +84,6 @@ function validateArmorEnchantments(
   return errors;
 }
 
-/**
- * Ensures at most one item per slot is equipped.
- * Returns an array of error strings (empty = valid).
- */
 function validateSingleEquippedPerSlot(instances, db) {
   const errors = [];
 
@@ -118,7 +96,6 @@ function validateSingleEquippedPerSlot(instances, db) {
 
     const armor = db[instance.armor_id];
 
-    // Unknown ids are validated elsewhere
     if (!armor) {
       continue;
     }
@@ -139,8 +116,6 @@ function validateSingleEquippedPerSlot(instances, db) {
 
   return errors;
 }
-
-// Exports
 
 module.exports = {
   validateArmorInstance,

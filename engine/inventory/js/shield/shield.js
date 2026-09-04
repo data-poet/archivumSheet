@@ -22,10 +22,6 @@ const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHIELD DB
-// ─────────────────────────────────────────────────────────────────────────────
-
 let _shieldDB = null;
 
 function getShieldDB() {
@@ -57,32 +53,17 @@ function getShieldDB() {
   return _shieldDB;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Shields have no slots — storage buckets are flat arrays.
 function buildStorageBucket() {
   return [];
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildShieldSlots(shieldInventory = []) {
   const shieldDb = getShieldDB();
 
   const materialDb = getMaterialsDB();
 
-  // Fetched here so buildShieldSlots owns both DBs — used by
-  // validateShieldEnchantments below and threaded through every
-  // resolveShieldPiece/total-calc call, same DB-acquisition point
-  // armor.js uses.
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
-
-  // VALIDATE INSTANCES
 
   const instanceErrors = shieldInventory.flatMap((instance, index) =>
     validateShieldInstance(instance, index),
@@ -94,8 +75,6 @@ function buildShieldSlots(shieldInventory = []) {
     );
   }
 
-  // VALIDATE SHIELD IDS
-
   const unknownShieldIds = shieldInventory
     .filter((instance) => !shieldDb[instance.shield_id])
     .map((instance) => instance.shield_id);
@@ -105,8 +84,6 @@ function buildShieldSlots(shieldInventory = []) {
       `[buildShieldSlots] Unknown shield_id(s): ${unknownShieldIds.join(", ")}`,
     );
   }
-
-  // VALIDATE MATERIAL IDS
 
   const unknownMaterialIds = shieldInventory
     .filter(
@@ -120,8 +97,6 @@ function buildShieldSlots(shieldInventory = []) {
     );
   }
 
-  // VALIDATE SINGLE EQUIPPED
-
   const equippedErrors = validateSingleEquippedShield(shieldInventory);
 
   if (equippedErrors.length > 0) {
@@ -129,8 +104,6 @@ function buildShieldSlots(shieldInventory = []) {
       `[buildShieldSlots] Equipped conflict:\n${equippedErrors.join("\n")}`,
     );
   }
-
-  // VALIDATE ENCHANTMENTS
 
   const enchantmentErrors = validateShieldEnchantments(
     shieldInventory,
@@ -144,12 +117,8 @@ function buildShieldSlots(shieldInventory = []) {
     );
   }
 
-  // BUILD INVENTORY
-
-  // Only one shield can be equipped — single object, not a slot map.
   let equipped = null;
 
-  // Storage buckets are flat arrays — no slot keying.
   const stash = buildStorageBucket();
   const camp = buildStorageBucket();
   const backpack = buildStorageBucket();
@@ -172,8 +141,6 @@ function buildShieldSlots(shieldInventory = []) {
       targetsDb,
     );
 
-    // EQUIPPED
-
     if (instance.is_equipped) {
       equipped = resolvedShield;
 
@@ -183,23 +150,17 @@ function buildShieldSlots(shieldInventory = []) {
       continue;
     }
 
-    // STASH
-
     if (instance.storedAt === "stash") {
       stash.push(resolvedShield);
 
       continue;
     }
 
-    // CAMP
-
     if (instance.storedAt === "camp") {
       camp.push(resolvedShield);
 
       continue;
     }
-
-    // BACKPACK
 
     if (instance.storedAt === "backpack") {
       backpack.push(resolvedShield);
@@ -208,8 +169,6 @@ function buildShieldSlots(shieldInventory = []) {
       carried_shield_value += resolvedShield.total_value;
     }
   }
-
-  // TOTALS
 
   const total_shield_weight = calculateTotalShieldWeight(
     shieldInventory,
@@ -238,10 +197,6 @@ function buildShieldSlots(shieldInventory = []) {
     carried_shield_value,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   buildShieldSlots,

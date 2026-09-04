@@ -31,16 +31,7 @@ function buildCharacterSecondary({
   enchantmentSkillGrants = {},
   enchantmentSkillModifiers = {},
 }) {
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 1. SECONDARY ATTRIBUTES
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Merge equipped-enchantment modifiers into each secondary attribute's
-   * config before resolving — same has_enchantment_modifier presence-flag
-   * pattern as buildCharacterPrimary uses for ST/DX/IQ/HT.
-   */
-
+  // Same has_enchantment_modifier presence-flag pattern as buildCharacterPrimary uses for ST/DX/IQ/HT.
   const secondaryWithEnchantments = {};
   for (const attr of SECONDARY_ATTRS) {
     secondaryWithEnchantments[attr] = {
@@ -57,17 +48,7 @@ function buildCharacterSecondary({
     effects,
   );
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 1.5 ELEMENTAL DAMAGE RESISTANCES
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Same has_enchantment_modifier presence-flag pattern as above — a target
-   * key present in enchantmentElementalModifiers counts even if its net
-   * value is 0. No equipped enchantment currently produces this map (Phase
-   * 2 territory), so it stays empty until that's wired up.
-   */
-
+  // No equipped enchantment currently produces enchantmentElementalModifiers, so this stays empty until that's wired up.
   const elementalWithEnchantments = {};
   for (const type of ELEMENTAL_TYPES) {
     elementalWithEnchantments[type] = {
@@ -81,22 +62,6 @@ function buildCharacterSecondary({
     raceElementalMultipliers,
     elementalWithEnchantments,
   );
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 2. SKILLS
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Normalize UI input into:
-   *
-   * {
-   *   skill_id: {
-   *     base_value,
-   *     modifier,
-   *     isTrainedWithMaster,
-   *   }
-   * }
-   */
 
   const normalizedSkills = Array.isArray(skills)
     ? Object.fromEntries(
@@ -118,12 +83,6 @@ function buildCharacterSecondary({
     enchantmentSkillGrants,
     enchantmentSkillModifiers,
   );
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3. FINAL COMPOSITION
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   return {
     secondary_attributes: secondaryResult.attributes,

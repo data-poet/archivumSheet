@@ -6,23 +6,7 @@ function round2(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RESOLVE
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Merges an accessory DB record + instance runtime state into a fully
- * resolved entry.
- *
- * Accessories have no weight and no DB-driven price — price is entirely
- * user-input, since it is highly variable per item. Enchantments DO have a
- * DB-driven price, added on top of the user-input price.
- *
- * Enchantment price is intrinsic to the item and counts toward total_value
- * regardless of equip state — an enchanted ring is worth more whether it's
- * worn or in the backpack. Whether the enchantment's MECHANICAL effect
- * applies while unequipped is a separate, Phase 3 concern.
- */
+// Accessories have no DB-driven price (it's entirely user-input, since it's highly variable per item) but enchantment price is DB-driven and counts toward total_value regardless of equip state.
 function resolveAccessoryItem(
   instance,
   accessory,
@@ -39,12 +23,10 @@ function resolveAccessoryItem(
     );
 
   return {
-    // DB BASE
     accessory_id: accessory.accessory_id,
     accessory_name: accessory.accessory_name,
     accessory_equip_limit: accessory.accessory_equip_limit,
 
-    // RUNTIME
     price,
     enchantments,
     enchantments_total_price,
@@ -62,14 +44,6 @@ function resolveAccessoryItem(
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VALUE
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Sums total_value for equipped + backpack entries only.
- * Stash and camp are excluded — mirrors the armor/firearms convention.
- */
 function calculateCarriedAccessoryValue(equipped, backpackItems) {
   return round2(
     [...equipped, ...backpackItems].reduce(
@@ -78,10 +52,6 @@ function calculateCarriedAccessoryValue(equipped, backpackItems) {
     ),
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EXPORTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
   resolveAccessoryItem,
