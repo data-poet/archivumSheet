@@ -73,10 +73,7 @@ function getEnchantmentsDB() {
       // is true, in which case these are decimal fractions (0.05 = 5%).
       enchantment_base_value: toNumberOrNull(row.enchantment_base_value),
       enchantment_step: toNumberOrNull(row.enchantment_step),
-      // CSV header is "enenchantment_is_percentage" (source typo, kept
-      // as-is in the file so this loader stays a 1:1 mirror of the sheet —
-      // the field below is the clean name everything else should use).
-      enchantment_is_percentage: toBoolean(row.enenchantment_is_percentage),
+      enchantment_is_percentage: toBoolean(row.enchantment_is_percentage),
 
       enchantment_allowed_itens: toItemList(row.enchantment_allowed_itens),
 

@@ -123,13 +123,11 @@ export function isRequisiteType(effectType) {
  * damage-resistance.
  *
  * Reads the RAW catalog record (data.enchantments, unparsed CSV — see
- * getEnchantmentRecord below), so this checks the CSV's own typo'd column
- * name directly rather than the engine's cleaned-up
- * enchantment_is_percentage field; contained to this one function so nothing
- * else needs to know about it.
+ * getEnchantmentRecord below), so this checks the CSV column's raw string
+ * value ("TRUE") rather than the engine's parsed boolean.
  */
 export function isPercentageType(record) {
-  return record?.enenchantment_is_percentage === "TRUE";
+  return record?.enchantment_is_percentage === "TRUE";
 }
 
 export function isAdvantageType(effectType) {

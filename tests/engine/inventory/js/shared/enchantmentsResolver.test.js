@@ -2,6 +2,7 @@ const {
   resolveEnchantmentPrice,
   resolveEnchantmentEntry,
   resolveItemEnchantments,
+  hasEnchantment,
 } = require("engine/inventory/js/shared/enchantmentsResolver");
 
 describe("enchantmentsResolver", () => {
@@ -552,6 +553,27 @@ describe("enchantmentsResolver", () => {
       expect(resolved).toHaveLength(2);
       // 5000 (at base) + 15000 (at +3, two extra steps)
       expect(total_price).toBe(20000);
+    });
+  });
+
+  describe("hasEnchantment", () => {
+    test("Should return true when a resolved entry matches the given enchantment_id", () => {
+      const resolved = [
+        { enchantment_id: "ENCHANTMENT-000" },
+        { enchantment_id: "ENCHANTMENT-066" },
+      ];
+
+      expect(hasEnchantment(resolved, "ENCHANTMENT-066")).toBe(true);
+    });
+
+    test("Should return false when no resolved entry matches the given enchantment_id", () => {
+      const resolved = [{ enchantment_id: "ENCHANTMENT-000" }];
+
+      expect(hasEnchantment(resolved, "ENCHANTMENT-066")).toBe(false);
+    });
+
+    test("Should return false for an empty resolved list", () => {
+      expect(hasEnchantment([], "ENCHANTMENT-066")).toBe(false);
     });
   });
 });

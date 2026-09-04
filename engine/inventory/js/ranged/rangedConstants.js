@@ -10,7 +10,13 @@ const VALID_STORED_AT = ["stash", "camp", "backpack"];
 // (Batch 4) — untouched here.
 const RANGED_ITEM_CATEGORY = "Armas de Longo Alcance";
 
+// Phase 3 flat-effect (special_effect) enchantment id for Retorno Mágico.
+// has_magic_return (rangedResolver.js) keys off this id, not effect_type —
+// see hasEnchantment in enchantmentsResolver.js.
+const MAGIC_RETURN_ENCHANTMENT_ID = "ENCHANTMENT-066";
+
 module.exports = {
   VALID_STORED_AT,
   RANGED_ITEM_CATEGORY,
+  MAGIC_RETURN_ENCHANTMENT_ID,
 };

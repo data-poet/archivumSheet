@@ -50,7 +50,7 @@ describe("getEnchantmentsDB", () => {
       enchantment_target: "",
       enchantment_base_value: "0.1",
       enchantment_step: "0.1",
-      enenchantment_is_percentage: "TRUE",
+      enchantment_is_percentage: "TRUE",
       enchantment_allowed_itens: "Cabeça, Tronco",
       enchantment_base_price: "500",
       enchantment_price_per_extra_value: "500",
@@ -67,7 +67,7 @@ describe("getEnchantmentsDB", () => {
       enchantment_target: "Fire",
       enchantment_base_value: "0.05",
       enchantment_step: "0.05",
-      enenchantment_is_percentage: "TRUE",
+      enchantment_is_percentage: "TRUE",
       enchantment_allowed_itens: "Cabeça, Tronco, Braços, Mãos, Pernas, Pés",
       enchantment_base_price: "1000",
       enchantment_price_per_extra_value: "1000",
@@ -155,7 +155,7 @@ describe("getEnchantmentsDB", () => {
     expect(result["ENCHANTMENT-026"].enchantment_type).toBe("Peculiaridade");
   });
 
-  test("Should parse enenchantment_is_percentage TRUE/FALSE as booleans on enchantment_is_percentage", () => {
+  test("Should parse enchantment_is_percentage TRUE/FALSE as booleans", () => {
     const result = getEnchantmentsDB();
 
     expect(result["ENCHANTMENT-000"].enchantment_is_percentage).toBe(false);
@@ -166,7 +166,7 @@ describe("getEnchantmentsDB", () => {
   test("Should default enchantment_is_percentage to false when the CSV column is missing", () => {
     const result = getEnchantmentsDB();
 
-    // ENCHANTMENT-026 has no enenchantment_is_percentage key at all in
+    // ENCHANTMENT-026 has no enchantment_is_percentage key at all in
     // mockRows — confirms toBoolean() degrades safely rather than throwing.
     expect(result["ENCHANTMENT-026"].enchantment_is_percentage).toBe(false);
   });

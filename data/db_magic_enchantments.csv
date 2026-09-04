@@ -1,4 +1,4 @@
-enchantment_id,enchantment_name,enchantment_type,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enenchantment_is_percentage,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
+enchantment_id,enchantment_name,enchantment_type,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enchantment_is_percentage,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
 ENCHANTMENT-000,Fortificar ST,Fortificar Atributo,fortify_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Aumenta a ST do usuário.
 ENCHANTMENT-001,Enfraquecer ST,Enfraquecer Atributo,weaken_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Diminui a ST do usuário.
 ENCHANTMENT-002,Fortificar DX,Fortificar Atributo,fortify_attribute,FALSE,DX,FALSE,1,1,Acessórios,10000,10000,,,Aumenta a DX do usuário.

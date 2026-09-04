@@ -144,6 +144,24 @@ function resolveItemEnchantments(entries, enchantmentsDb, targetsDb) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// FLAT EFFECTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * True when a resolved enchantments list carries a specific flat-effect
+ * enchantment (FLAT_EFFECT_TYPES — e.g. special_effect), identified by
+ * enchantment_id rather than effect_type. effect_type groups share a pricing
+ * formula, but flat effects are individually distinct — a future
+ * special_effect row (besides Retorno Mágico) must not be conflated with
+ * this one just because they share a type.
+ */
+function hasEnchantment(resolvedEnchantments, enchantmentId) {
+  return resolvedEnchantments.some(
+    (entry) => entry.enchantment_id === enchantmentId,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -151,4 +169,5 @@ module.exports = {
   resolveEnchantmentPrice,
   resolveEnchantmentEntry,
   resolveItemEnchantments,
+  hasEnchantment,
 };
