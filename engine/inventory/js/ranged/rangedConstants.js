@@ -1,5 +1,5 @@
 
-const VALID_STORED_AT = ["stash", "camp", "backpack"];
+const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 const RANGED_ITEM_CATEGORY = "Armas de Longo Alcance";
 

@@ -15,7 +15,7 @@ const COIN_VALUE = {
   gold:   1000,
 };
 
-const VALID_STORED_AT = ["backpack", "stash", "camp"];
+const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 module.exports = {
   VALID_COIN_TYPES,

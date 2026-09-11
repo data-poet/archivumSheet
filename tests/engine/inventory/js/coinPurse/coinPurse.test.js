@@ -29,8 +29,8 @@ describe("COIN PURSE — constants", () => {
     expect(VALID_COIN_TYPES).toEqual(["copper", "silver", "gold"]);
   });
 
-  test("VALID_STORED_AT contains backpack, stash, camp", () => {
-    expect(VALID_STORED_AT).toEqual(["backpack", "stash", "camp"]);
+  test("VALID_STORED_AT contains stash, camp, backpack", () => {
+    expect(VALID_STORED_AT).toEqual(["stash", "camp", "backpack"]);
   });
 
   test("COIN_WEIGHT values are correct", () => {

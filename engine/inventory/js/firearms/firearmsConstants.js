@@ -1,5 +1,5 @@
 
-const VALID_STORED_AT = ["stash", "camp", "backpack"];
+const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 // enchantment_allowed_itens category for this item type — fixed-constant
 // pattern, same shape as MELEE_ITEM_CATEGORY/RANGED_ITEM_CATEGORY. Firearms
