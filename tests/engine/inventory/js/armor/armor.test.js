@@ -34,7 +34,7 @@ describe("EQUIPMENT ARMOR", () => {
     });
 
     test("Should export VALID_STORED_AT", () => {
-      expect(VALID_STORED_AT).toEqual(["camp", "stash", "backpack"]);
+      expect(VALID_STORED_AT).toEqual(["stash", "camp", "backpack"]);
     });
   });
 

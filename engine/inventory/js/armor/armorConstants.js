@@ -9,7 +9,7 @@ const SLOT_MAP = {
 
 const SLOTS = Object.keys(SLOT_MAP);
 
-const VALID_STORED_AT = ["camp", "stash", "backpack"];
+const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 module.exports = {
   SLOT_MAP,

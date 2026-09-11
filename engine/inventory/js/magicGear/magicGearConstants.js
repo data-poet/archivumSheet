@@ -1,4 +1,4 @@
-const VALID_STORED_AT = ["stash", "camp", "backpack"];
+const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 const MAGIC_GEAR_TYPES = {
   ARCANO: "Arcano",
