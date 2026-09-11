@@ -50,7 +50,7 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  const inventoryResult = buildInventory({
+  let inventoryResult = buildInventory({
     ST: st,
     weight: inventory.weight || 0,
     armorInventory: inventory.armor || [],
@@ -114,7 +114,7 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  const characterResult = buildCharacter({
+  let characterResult = buildCharacter({
     advantages: character.advantages,
     disadvantages: character.disadvantages,
     primaryAttributes: character.primaryAttributes,
@@ -133,12 +133,73 @@ function buildSheet({
     enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
   });
 
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
+   * 3.5 ST-DEPENDENT INVENTORY CORRECTION
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * ST-boosting/weakening equipped enchantments (e.g. ENCHANTMENT-000/001,
+   * "Fortificar/Enfraquecer ST") are only known after step 2.5, but ranged
+   * weapon distances and carry_weight were already resolved in step 2 using
+   * the pre-enchantment ST. Re-run the inventory layer with the corrected ST
+   * and rebuild the character once more so Movement (which is derived from
+   * carry_weight.weight_modifier) reflects it too.
+   *
+   * IQ/DX/HT have no equivalent leak: their only consumers (skills, spells,
+   * shield block, weapon damage) all run after this final character build,
+   * so they already see enchantment-corrected values with no extra pass.
+   *
+   * Skipped when ST didn't change — the common case with no ST-affecting
+   * gear equipped — so this costs nothing for the vast majority of sheets.
+   */
+
+  const correctedST = characterResult.character.primary_attributes.ST.value;
+
+  if (correctedST !== st) {
+    inventoryResult = buildInventory({
+      ST: correctedST,
+      weight: inventory.weight || 0,
+      armorInventory: inventory.armor || [],
+      shieldInventory: inventory.shield || [],
+      meleeInventory: inventory.melee || [],
+      rangedInventory: inventory.ranged || [],
+      firearmsInventory: inventory.firearms || [],
+      ammoContainerInventory: inventory.ammo_containers || [],
+      looseAmmoInventory: inventory.loose_ammo || [],
+      alchemyInventory: inventory.alchemy || [],
+      survivalGearInventory: inventory.survival_gear || [],
+      accessoryInventory: inventory.accessories || [],
+      magicGearInventory: inventory.magic_gear || [],
+      customInventory: inventory.custom_inventory || [],
+      coinInventory: inventory.coins || [],
+    });
+
+    characterResult = buildCharacter({
+      advantages: character.advantages,
+      disadvantages: character.disadvantages,
+      primaryAttributes: character.primaryAttributes,
+      secondaryAttributes: character.secondaryAttributes,
+      skills: character.skills,
+      carry_weight: inventoryResult.inventory.carry_weight,
+      raceModifiers: race.modifiers || {},
+      raceElementalMultipliers: race.elemental_modifiers || {},
+      innateAdvantageIds: race.innate_advantage_ids || [],
+      innateDisadvantageIds: race.innate_disadvantage_ids || [],
+      enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
+      enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
+      enchantmentAdvantageIds: enchantmentEffects.advantageIds,
+      enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
+      enchantmentSkillGrants: enchantmentEffects.skillGrants,
+      enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
+    });
+  }
+
   const characterData = characterResult.character;
   const iq = characterData.primary_attributes.IQ.value;
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
-   * 3.5 SHIELD BLOCK COMPUTATION
+   * 3.6 SHIELD BLOCK COMPUTATION
    * ───────────────────────────────────────────────────────────────────────────
    *
    * Block depends on the final character skills and DX, so it is computed here
@@ -168,7 +229,7 @@ function buildSheet({
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
-   * 3.6 WEAPON DAMAGE COMPUTATION
+   * 3.7 WEAPON DAMAGE COMPUTATION
    * ───────────────────────────────────────────────────────────────────────────
    *
    * Depends on the final character base_damage, so it is computed here after
