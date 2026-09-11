@@ -192,74 +192,7 @@ function resolveFirearmWeapon(
   };
 }
 
-// Only equipped + backpack count as carried weight.
-function calculateTotalFirearmsWeight(
-  firearmsInventory,
-  firearmsDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return firearmsInventory.reduce((sum, instance) => {
-    if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-      return sum;
-    }
-
-    const weapon = firearmsDb[instance.weapon_id];
-    if (!weapon) return sum;
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolved = resolveFirearmWeapon(
-      instance,
-      weapon,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    return sum + resolved.final_weight;
-  }, 0);
-}
-
-function calculateTotalFirearmsValue(
-  firearmsInventory,
-  firearmsDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return round2(
-    firearmsInventory.reduce((sum, instance) => {
-      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-        return sum;
-      }
-
-      const weapon = firearmsDb[instance.weapon_id];
-      if (!weapon) return sum;
-
-      const material = instance.material_id
-        ? materialDb[instance.material_id]
-        : null;
-
-      const resolved = resolveFirearmWeapon(
-        instance,
-        weapon,
-        material,
-        enchantmentsDb,
-        targetsDb,
-      );
-
-      return sum + resolved.total_value;
-    }, 0),
-  );
-}
-
 module.exports = {
   applyMaterialToFirearm,
   resolveFirearmWeapon,
-  calculateTotalFirearmsWeight,
-  calculateTotalFirearmsValue,
 };

@@ -10,12 +10,7 @@ const {
   validateArmorEnchantments,
 } = require("./armorValidation.js");
 
-const {
-  resolveArmorPiece,
-  buildEquippedSlots,
-  calculateTotalArmorWeight,
-  calculateTotalArmorValue,
-} = require("./armorResolver.js");
+const { resolveArmorPiece, buildEquippedSlots } = require("./armorResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
 const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
@@ -176,30 +171,14 @@ function buildArmorSlots(armorInventory = []) {
     }
   }
 
-  const total_armor_weight = calculateTotalArmorWeight(
-    armorInventory,
-    armorDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  const total_armor_value = calculateTotalArmorValue(
-    armorInventory,
-    armorDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
   return {
     equipped,
     stash,
     camp,
     backpack,
-    total_armor_weight,
+    total_armor_weight: carried_armor_weight,
     carried_armor_weight,
-    total_armor_value,
+    total_armor_value: carried_armor_value,
     carried_armor_value,
   };
 }

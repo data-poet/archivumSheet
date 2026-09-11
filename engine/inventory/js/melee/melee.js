@@ -14,11 +14,7 @@ const {
   validateMeleeEnchantments,
 } = require("./meleeValidation.js");
 
-const {
-  resolveMeleeWeapons,
-  calculateTotalMeleeWeight,
-  calculateTotalMeleeValue,
-} = require("./meleeResolver.js");
+const { resolveMeleeWeapons } = require("./meleeResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
 const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
@@ -174,30 +170,14 @@ function buildMeleeSlots(meleeInventory = []) {
     }
   }
 
-  const total_melee_weight = calculateTotalMeleeWeight(
-    meleeInventory,
-    meleeDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  const total_melee_value = calculateTotalMeleeValue(
-    meleeInventory,
-    meleeDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
   return {
     equipped,
     stash,
     camp,
     backpack,
-    total_melee_weight,
+    total_melee_weight: carried_melee_weapons_weight,
     carried_melee_weapons_weight,
-    total_melee_value,
+    total_melee_value: carried_melee_weapons_value,
     carried_melee_weapons_value,
   };
 }
