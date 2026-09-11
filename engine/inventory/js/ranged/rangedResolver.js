@@ -208,79 +208,8 @@ function resolveRangedWeapons(
   };
 }
 
-// Only equipped + backpack count as carried weight.
-function calculateTotalRangedWeight(
-  rangedInventory,
-  rangedDb,
-  materialDb = {},
-  ST = 0,
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return rangedInventory.reduce((sum, instance) => {
-    if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-      return sum;
-    }
-
-    const weapon = rangedDb[instance.weapon_id];
-    if (!weapon) return sum;
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolved = resolveRangedWeapons(
-      instance,
-      weapon,
-      material,
-      ST,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    return sum + resolved.final_weight;
-  }, 0);
-}
-
-function calculateTotalRangedValue(
-  rangedInventory,
-  rangedDb,
-  materialDb = {},
-  ST = 0,
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return round2(
-    rangedInventory.reduce((sum, instance) => {
-      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-        return sum;
-      }
-
-      const weapon = rangedDb[instance.weapon_id];
-      if (!weapon) return sum;
-
-      const material = instance.material_id
-        ? materialDb[instance.material_id]
-        : null;
-
-      const resolved = resolveRangedWeapons(
-        instance,
-        weapon,
-        material,
-        ST,
-        enchantmentsDb,
-        targetsDb,
-      );
-
-      return sum + resolved.total_value;
-    }, 0),
-  );
-}
-
 module.exports = {
   applyMaterialToRanged,
   resolveRangedWeapons,
-  calculateTotalRangedWeight,
-  calculateTotalRangedValue,
   resolveDistanceFormula,
 };

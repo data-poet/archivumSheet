@@ -9,11 +9,7 @@ const {
   validateFirearmEnchantments,
 } = require("./firearmsValidation.js");
 
-const {
-  resolveFirearmWeapon,
-  calculateTotalFirearmsWeight,
-  calculateTotalFirearmsValue,
-} = require("./firearmsResolver.js");
+const { resolveFirearmWeapon } = require("./firearmsResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
 const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
@@ -175,30 +171,14 @@ function buildFirearmSlots(firearmsInventory = []) {
     }
   }
 
-  const total_firearms_weight = calculateTotalFirearmsWeight(
-    firearmsInventory,
-    firearmsDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  const total_firearms_value = calculateTotalFirearmsValue(
-    firearmsInventory,
-    firearmsDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
   return {
     equipped,
     stash,
     camp,
     backpack,
-    total_firearms_weight,
+    total_firearms_weight: carried_firearms_weight,
     carried_firearms_weight,
-    total_firearms_value,
+    total_firearms_value: carried_firearms_value,
     carried_firearms_value,
   };
 }

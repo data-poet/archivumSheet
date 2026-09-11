@@ -121,74 +121,7 @@ function resolveShieldPiece(
   };
 }
 
-// Only equipped + backpack count as carried weight.
-function calculateTotalShieldWeight(
-  shieldInventory,
-  shieldDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return shieldInventory.reduce((sum, instance) => {
-    if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-      return sum;
-    }
-
-    const shield = shieldDb[instance.shield_id];
-    if (!shield) return sum;
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolved = resolveShieldPiece(
-      instance,
-      shield,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    return sum + resolved.final_weight;
-  }, 0);
-}
-
-function calculateTotalShieldValue(
-  shieldInventory,
-  shieldDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return round2(
-    shieldInventory.reduce((sum, instance) => {
-      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-        return sum;
-      }
-
-      const shield = shieldDb[instance.shield_id];
-      if (!shield) return sum;
-
-      const material = instance.material_id
-        ? materialDb[instance.material_id]
-        : null;
-
-      const resolved = resolveShieldPiece(
-        instance,
-        shield,
-        material,
-        enchantmentsDb,
-        targetsDb,
-      );
-
-      return sum + resolved.total_value;
-    }, 0),
-  );
-}
-
 module.exports = {
   applyMaterialToShield,
   resolveShieldPiece,
-  calculateTotalShieldWeight,
-  calculateTotalShieldValue,
 };

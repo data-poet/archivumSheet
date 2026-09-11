@@ -14,11 +14,7 @@ const {
   validateRangedEnchantments,
 } = require("./rangedValidation.js");
 
-const {
-  resolveRangedWeapons,
-  calculateTotalRangedWeight,
-  calculateTotalRangedValue,
-} = require("./rangedResolver.js");
+const { resolveRangedWeapons } = require("./rangedResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
 const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
@@ -177,32 +173,14 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
     }
   }
 
-  const total_ranged_weight = calculateTotalRangedWeight(
-    rangedInventory,
-    rangedDb,
-    materialDb,
-    ST,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  const total_ranged_value = calculateTotalRangedValue(
-    rangedInventory,
-    rangedDb,
-    materialDb,
-    ST,
-    enchantmentsDb,
-    targetsDb,
-  );
-
   return {
     equipped,
     stash,
     camp,
     backpack,
-    total_ranged_weight,
+    total_ranged_weight: carried_ranged_weapons_weight,
     carried_ranged_weapons_weight,
-    total_ranged_value,
+    total_ranged_value: carried_ranged_weapons_value,
     carried_ranged_weapons_value,
   };
 }

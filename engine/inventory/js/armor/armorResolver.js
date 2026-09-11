@@ -135,75 +135,8 @@ function buildEquippedSlots() {
   );
 }
 
-// Only equipped + backpack count as carried weight.
-function calculateTotalArmorWeight(
-  armorInventory,
-  armorDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return armorInventory.reduce((sum, instance) => {
-    if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-      return sum;
-    }
-
-    const armor = armorDb[instance.armor_id];
-    if (!armor) return sum;
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolved = resolveArmorPiece(
-      instance,
-      armor,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    return sum + resolved.final_weight;
-  }, 0);
-}
-
-function calculateTotalArmorValue(
-  armorInventory,
-  armorDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return round2(
-    armorInventory.reduce((sum, instance) => {
-      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-        return sum;
-      }
-
-      const armor = armorDb[instance.armor_id];
-      if (!armor) return sum;
-
-      const material = instance.material_id
-        ? materialDb[instance.material_id]
-        : null;
-
-      const resolved = resolveArmorPiece(
-        instance,
-        armor,
-        material,
-        enchantmentsDb,
-        targetsDb,
-      );
-
-      return sum + resolved.total_value;
-    }, 0),
-  );
-}
-
 module.exports = {
   applyMaterialToArmor,
   resolveArmorPiece,
   buildEquippedSlots,
-  calculateTotalArmorWeight,
-  calculateTotalArmorValue,
 };

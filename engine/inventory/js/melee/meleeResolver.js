@@ -164,75 +164,8 @@ function resolveMeleeWeapons(
   };
 }
 
-// Only equipped + backpack count as carried weight.
-function calculateTotalMeleeWeight(
-  meleeInventory,
-  meleeDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return meleeInventory.reduce((sum, instance) => {
-    if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-      return sum;
-    }
-
-    const weapon = meleeDb[instance.weapon_id];
-    if (!weapon) return sum;
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolved = resolveMeleeWeapons(
-      instance,
-      weapon,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    return sum + resolved.final_weight;
-  }, 0);
-}
-
-function calculateTotalMeleeValue(
-  meleeInventory,
-  meleeDb,
-  materialDb = {},
-  enchantmentsDb = {},
-  targetsDb = {},
-) {
-  return round2(
-    meleeInventory.reduce((sum, instance) => {
-      if (instance.storedAt === "stash" || instance.storedAt === "camp") {
-        return sum;
-      }
-
-      const weapon = meleeDb[instance.weapon_id];
-      if (!weapon) return sum;
-
-      const material = instance.material_id
-        ? materialDb[instance.material_id]
-        : null;
-
-      const resolved = resolveMeleeWeapons(
-        instance,
-        weapon,
-        material,
-        enchantmentsDb,
-        targetsDb,
-      );
-
-      return sum + resolved.total_value;
-    }, 0),
-  );
-}
-
 module.exports = {
   applyMaterialToMelee,
   resolveMeleeWeapons,
-  calculateTotalMeleeWeight,
-  calculateTotalMeleeValue,
   calculateHex,
 };

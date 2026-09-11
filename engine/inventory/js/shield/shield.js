@@ -10,11 +10,7 @@ const {
   validateShieldEnchantments,
 } = require("./shieldValidation.js");
 
-const {
-  resolveShieldPiece,
-  calculateTotalShieldWeight,
-  calculateTotalShieldValue,
-} = require("./shieldResolver.js");
+const { resolveShieldPiece } = require("./shieldResolver.js");
 
 const { getMaterialsDB } = require("../shared/materialsDB.js");
 const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
@@ -170,30 +166,14 @@ function buildShieldSlots(shieldInventory = []) {
     }
   }
 
-  const total_shield_weight = calculateTotalShieldWeight(
-    shieldInventory,
-    shieldDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  const total_shield_value = calculateTotalShieldValue(
-    shieldInventory,
-    shieldDb,
-    materialDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
   return {
     equipped,
     stash,
     camp,
     backpack,
-    total_shield_weight,
+    total_shield_weight: carried_shield_weight,
     carried_shield_weight,
-    total_shield_value,
+    total_shield_value: carried_shield_value,
     carried_shield_value,
   };
 }
