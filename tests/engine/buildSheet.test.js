@@ -500,6 +500,154 @@ describe("BUILD SHEET", () => {
       ).toBe(false);
     });
 
+    it("Should recompute ST-dependent ranged weapon distances after an equipped ST-fortify accessory is applied", () => {
+      const enchantedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          ranged: [
+            {
+              _instanceId: "rng-1",
+              weapon_id: "RANGED-001",
+              is_equipped: true,
+              storedAt: null,
+            },
+          ],
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: true,
+              storedAt: null,
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-000",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baselineInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          ranged: enchantedInput.inventory.ranged,
+        },
+      };
+
+      const baseline = buildSheet(baselineInput);
+      const enchanted = buildSheet(enchantedInput);
+
+      const baselineWeapon = baseline.inventory.ranged.equipped[0];
+      const enchantedWeapon = enchanted.inventory.ranged.equipped[0];
+
+      expect(enchanted.character.primary_attributes.ST.value).toBe(
+        baseline.character.primary_attributes.ST.value + 2,
+      );
+      // weapon_half_distance is "ST - 5", weapon_max_distance is "ST" — both shift by the same +2
+      expect(enchantedWeapon.weapon_half_distance).toBe(
+        baselineWeapon.weapon_half_distance + 2,
+      );
+      expect(enchantedWeapon.weapon_max_distance).toBe(
+        baselineWeapon.weapon_max_distance + 2,
+      );
+    });
+
+    it("Should recompute carry_weight limits and Movement after an equipped ST-fortify accessory shifts the encumbrance tier", () => {
+      const withWeight = (extra) => ({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          weight: 32,
+          accessories: extra,
+        },
+      });
+
+      const baseline = buildSheet(withWeight([]));
+      const enchanted = buildSheet(
+        withWeight([
+          {
+            _instanceId: "acc-1",
+            accessory_id: "ACCESSORY-000",
+            is_equipped: true,
+            storedAt: null,
+            price: 0,
+            enchantments: [
+              {
+                _instanceId: "ench-1",
+                enchantment_id: "ENCHANTMENT-000",
+                value: 2,
+              },
+            ],
+          },
+        ]),
+      );
+
+      const correctedST = enchanted.character.primary_attributes.ST.value;
+
+      // carry_weight.limits must reflect the corrected ST, not the pre-enchantment one
+      expect(enchanted.inventory.carry_weight.limits.none).toBe(correctedST);
+      expect(enchanted.inventory.carry_weight.limits.none).not.toBe(
+        baseline.inventory.carry_weight.limits.none,
+      );
+
+      // At weight 32: ST 10 → heavy tier (modifier -2); ST 12 → medium tier (modifier -1)
+      expect(baseline.inventory.carry_weight.weight_modifier).toBe(-2);
+      expect(enchanted.inventory.carry_weight.weight_modifier).toBe(-1);
+
+      expect(enchanted.character.secondary_attributes.Movement.value).toBe(
+        baseline.character.secondary_attributes.Movement.value + 1,
+      );
+    });
+
+    it("Should NOT re-run the inventory layer when no equipped enchantment changes ST", () => {
+      const result = buildSheet(mockInput);
+
+      expect(result.inventory.carry_weight.limits.none).toBe(
+        result.character.primary_attributes.ST.value,
+      );
+    });
+
+    it("Should already reflect an equipped IQ-fortify accessory without needing a correction pass", () => {
+      const enchantedInput = {
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          accessories: [
+            {
+              _instanceId: "acc-1",
+              accessory_id: "ACCESSORY-000",
+              is_equipped: true,
+              storedAt: null,
+              price: 0,
+              enchantments: [
+                {
+                  _instanceId: "ench-1",
+                  enchantment_id: "ENCHANTMENT-004",
+                  value: 2,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const baseline = buildSheet(mockInput);
+      const enchanted = buildSheet(enchantedInput);
+
+      expect(enchanted.character.primary_attributes.IQ.value).toBe(
+        baseline.character.primary_attributes.IQ.value + 2,
+      );
+      expect(
+        enchanted.character.primary_attributes.IQ.has_enchantment_modifier,
+      ).toBe(true);
+    });
+
     it("Should leave the armor item's own final_weight/final_damage_resistance visible on the resolved inventory alongside the character-level effect", () => {
       const result = buildSheet({
         ...mockInput,
