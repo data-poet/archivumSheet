@@ -16,13 +16,15 @@ import {
 } from "../shared/equipmentSelectors.js";
 import {
   formatRichText,
-  detailRow,
-  equippedDetailBlock,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
+  customFieldsBody,
   withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import {
+  equippedItemTabs,
+  itemTabsDetailRow,
+  statsTabContent,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 
 function resolvedArmor(sheet, instanceId) {
   if (!sheet?.inventory?.armor) return null;
@@ -181,23 +183,35 @@ function renderArmorSlot(slot, selected, data, sheet) {
         ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
       </div>
     </div>
-    ${equippedDetailBlock(fields)}
     ${
       equippedInstance
-        ? customFieldsEquippedDetail(
+        ? equippedItemTabs(equippedInstance._instanceId, [
             {
-              instanceId: equippedInstance._instanceId,
-              name: equippedInstance.armor_custom_name,
-              description: equippedInstance.armor_custom_description,
-              effect: equippedInstance.armor_custom_effect,
+              key: "details",
+              label: t("common.technical"),
+              content: statsTabContent(fields),
             },
-            enchantmentsExpander({
-              instanceId: equippedInstance._instanceId,
-              entries: equippedInstance.enchantments || [],
-              itemCategory: slot,
-              resolvedEntries: resolved?.enchantments,
-            }),
-          )
+            {
+              key: "customize",
+              label: t("common.customize"),
+              content: customFieldsBody({
+                instanceId: equippedInstance._instanceId,
+                name: equippedInstance.armor_custom_name,
+                description: equippedInstance.armor_custom_description,
+                effect: equippedInstance.armor_custom_effect,
+              }),
+            },
+            {
+              key: "enchantments",
+              label: t("enchantments.title"),
+              content: enchantmentsBody({
+                instanceId: equippedInstance._instanceId,
+                entries: equippedInstance.enchantments || [],
+                itemCategory: slot,
+                resolvedEntries: resolved?.enchantments,
+              }),
+            },
+          ])
         : ""
     }
   `;
@@ -255,22 +269,33 @@ function renderStorageSection(location, storedArmors, data, sheet) {
             <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(7, armorDetailFields(resolved, armorData))}
-        ${customFieldsDetailRow(
-          7,
+        ${itemTabsDetailRow(7, instanceId, [
           {
-            instanceId,
-            name: inst.armor_custom_name,
-            description: inst.armor_custom_description,
-            effect: inst.armor_custom_effect,
+            key: "details",
+            label: t("common.technical"),
+            content: statsTabContent(armorDetailFields(resolved, armorData)),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: armorData.armor_piece_location,
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}`;
+          {
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.armor_custom_name,
+              description: inst.armor_custom_description,
+              effect: inst.armor_custom_effect,
+            }),
+          },
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: armorData.armor_piece_location,
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}`;
       })
       .join("");
   }

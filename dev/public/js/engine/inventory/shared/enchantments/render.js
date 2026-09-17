@@ -460,7 +460,7 @@ function enchantmentsSubtotal(entries, resolvedEntries) {
   return hasResolvedPrice ? total : null;
 }
 
-function enchantmentsBody({
+export function enchantmentsBody({
   instanceId,
   entries,
   itemCategory,
@@ -487,7 +487,9 @@ function enchantmentsBody({
     </div>`;
 }
 
-// No outer wrapper — for nesting inside another <details> (e.g. accessories' "Personalizar" block), which already provides its own .equipped-detail/<tr>.
+// Kept for its own <details data-detail-kind="enchantments"> summary/subtotal — no render.js file
+// calls this directly anymore (itemTabs.js's tab panels use enchantmentsBody instead), but it's
+// still exercised directly by render.test.js.
 function enchantmentsExpanderMarkup(params) {
   const subtotal = enchantmentsSubtotal(params.entries, params.resolvedEntries);
 
@@ -503,22 +505,4 @@ function enchantmentsExpanderMarkup(params) {
 
 export function enchantmentsExpander(params) {
   return enchantmentsExpanderMarkup(params);
-}
-
-// Sibling to customFieldsEquippedDetail, not nested inside it — for equipment types that want enchantments as a standalone block.
-export function enchantmentsEquippedDetail(params) {
-  return `
-    <div class="equipped-detail">
-      ${enchantmentsExpanderMarkup(params)}
-    </div>`;
-}
-
-// Sibling to customFieldsDetailRow, not nested inside it — see enchantmentsEquippedDetail above.
-export function enchantmentsDetailRow(colspan, params) {
-  return `
-    <tr class="detail-row">
-      <td colspan="${colspan}">
-        ${enchantmentsExpanderMarkup(params)}
-      </td>
-    </tr>`;
 }

@@ -15,13 +15,15 @@ import {
 } from "../shared/equipmentSelectors.js";
 import {
   formatRichText,
-  detailRow,
-  equippedDetailBlock,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
+  customFieldsBody,
   withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import {
+  equippedItemTabs,
+  itemTabsDetailRow,
+  statsTabContent,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getShieldItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedShield(sheet, instanceId) {
@@ -161,23 +163,35 @@ export function renderEquippedShield(selected, data, sheet) {
         ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
       </div>
     </div>
-    ${equippedDetailBlock(fields)}
     ${
       equippedInstance
-        ? customFieldsEquippedDetail(
+        ? equippedItemTabs(equippedInstance._instanceId, [
             {
-              instanceId: equippedInstance._instanceId,
-              name: equippedInstance.shield_custom_name,
-              description: equippedInstance.shield_custom_description,
-              effect: equippedInstance.shield_custom_effect,
+              key: "details",
+              label: t("common.technical"),
+              content: statsTabContent(fields),
             },
-            enchantmentsExpander({
-              instanceId: equippedInstance._instanceId,
-              entries: equippedInstance.enchantments || [],
-              itemCategory: getShieldItemCategory(),
-              resolvedEntries: resolved?.enchantments,
-            }),
-          )
+            {
+              key: "customize",
+              label: t("common.customize"),
+              content: customFieldsBody({
+                instanceId: equippedInstance._instanceId,
+                name: equippedInstance.shield_custom_name,
+                description: equippedInstance.shield_custom_description,
+                effect: equippedInstance.shield_custom_effect,
+              }),
+            },
+            {
+              key: "enchantments",
+              label: t("enchantments.title"),
+              content: enchantmentsBody({
+                instanceId: equippedInstance._instanceId,
+                entries: equippedInstance.enchantments || [],
+                itemCategory: getShieldItemCategory(),
+                resolvedEntries: resolved?.enchantments,
+              }),
+            },
+          ])
         : ""
     }
   `,
@@ -237,22 +251,33 @@ function renderStorageSection(location, stored, data, sheet) {
             <button class="btn-remove remove-shield" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(6, shieldDetailFields(resolved, shieldData))}
-        ${customFieldsDetailRow(
-          6,
+        ${itemTabsDetailRow(6, instanceId, [
           {
-            instanceId,
-            name: inst.shield_custom_name,
-            description: inst.shield_custom_description,
-            effect: inst.shield_custom_effect,
+            key: "details",
+            label: t("common.technical"),
+            content: statsTabContent(shieldDetailFields(resolved, shieldData)),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getShieldItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}`;
+          {
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.shield_custom_name,
+              description: inst.shield_custom_description,
+              effect: inst.shield_custom_effect,
+            }),
+          },
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getShieldItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}`;
       })
       .join("");
   }

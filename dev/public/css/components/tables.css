@@ -179,24 +179,23 @@ tr.spell-detail-row details[open] summary {
   border-bottom: 1px solid var(--color-border);
 }
 
-/* boxed and inset so a nested <details> (see customFieldsEquippedDetail/customFieldsDetailRow's extraContent param) reads as a sub-section, not another top-level block */
-.equipped-detail details[data-detail-kind="customize"] > details,
-tr.detail-row details[data-detail-kind="customize"] > details {
-  margin: 0 10px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-}
-
-.equipped-detail details[data-detail-kind="customize"] > details summary,
-tr.detail-row details[data-detail-kind="customize"] > details summary {
-  padding: 6px 10px;
-  min-height: unset;
-}
-
-.equipped-detail details[data-detail-kind="customize"] > details[open] summary,
-tr.detail-row details[data-detail-kind="customize"] > details[open] summary {
+/* Scaled down from tabs.css's page-section sizing (clamp()/44px tap targets) to fit the compact nested context. */
+.item-tab-strip {
   border-bottom: 1px solid var(--color-border);
+  background: none;
+}
+
+.item-tab-btn {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  padding: 6px 12px;
+  min-height: unset;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.item-tab-panel {
+  padding: 0;
 }
 
 .item-detail-grid,
@@ -352,7 +351,8 @@ tr.detail-row details[data-detail-kind="customize"] > details[open] summary {
   margin-bottom: 8px;
 }
 
-.enchantment-entry {
+/* Higher specificity than .equipped-detail details / tr.detail-row details, which otherwise strip this border via their descendant selector. */
+.enchantment-list .enchantment-entry {
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font-size: var(--fs-xs);
@@ -372,7 +372,7 @@ tr.detail-row details[data-detail-kind="customize"] > details[open] summary {
   display: none;
 }
 
-.enchantment-entry[open] .enchantment-entry-summary {
+.enchantment-list .enchantment-entry[open] .enchantment-entry-summary {
   border-bottom: 1px solid var(--color-border);
 }
 

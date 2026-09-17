@@ -17,13 +17,15 @@ import {
 } from "../shared/equipmentSelectors.js";
 import {
   formatRichText,
-  detailRow,
-  equippedDetailBlock,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
+  customFieldsBody,
   withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import {
+  equippedItemTabs,
+  itemTabsDetailRow,
+  statsTabContent,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getFirearmsItemCategory } from "../shared/enchantments/model.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -138,7 +140,7 @@ function magazineBlock({ roundsLoaded, magazineSize, cssClass, instanceId }) {
   `;
 }
 
-function tuningBlock({ weaponData, inst, instanceId, prefix }) {
+function tuningBody({ weaponData, inst, instanceId, prefix }) {
   const content = [
     statModifierBlock({
       label: t("ranged.gdpMod"),
@@ -170,14 +172,7 @@ function tuningBlock({ weaponData, inst, instanceId, prefix }) {
     }),
   ].join("");
 
-  return `
-    <div class="equipped-detail firearm-tuning">
-      <details>
-        <summary>${t("firearms.tuning")}</summary>
-        <div class="item-detail-grid">${content}</div>
-      </details>
-    </div>
-  `;
+  return `<div class="item-detail-grid">${content}</div>`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -261,22 +256,38 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
         <button class="btn-remove remove-equipped-firearm" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${tuningBlock({ weaponData, inst, instanceId, prefix: "equipped" })}
-    ${equippedDetailBlock(firearmDetailFields(resolved, weaponData))}
-    ${customFieldsEquippedDetail(
+    ${equippedItemTabs(instanceId, [
       {
-        instanceId,
-        name: inst.weapon_custom_name,
-        description: inst.weapon_custom_description,
-        effect: inst.weapon_custom_effect,
+        key: "details",
+        label: t("common.technical"),
+        content: statsTabContent(firearmDetailFields(resolved, weaponData)),
       },
-      enchantmentsExpander({
-        instanceId,
-        entries: inst.enchantments || [],
-        itemCategory: getFirearmsItemCategory(),
-        resolvedEntries: resolved?.enchantments,
-      }),
-    )}
+      {
+        key: "customize",
+        label: t("common.customize"),
+        content: customFieldsBody({
+          instanceId,
+          name: inst.weapon_custom_name,
+          description: inst.weapon_custom_description,
+          effect: inst.weapon_custom_effect,
+        }),
+      },
+      {
+        key: "enchantments",
+        label: t("enchantments.title"),
+        content: enchantmentsBody({
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: getFirearmsItemCategory(),
+          resolvedEntries: resolved?.enchantments,
+        }),
+      },
+      {
+        key: "tuning",
+        label: t("firearms.tuning"),
+        content: tuningBody({ weaponData, inst, instanceId, prefix: "equipped" }),
+      },
+    ])}
   `;
 }
 
@@ -348,27 +359,38 @@ function renderStorageSection(location, stored, data, sheet) {
             })}
           </td>
         </tr>
-        ${detailRow(6, firearmDetailFields(resolved, weaponData))}
-        <tr data-instance-id="${instanceId}">
-          <td colspan="6">
-            ${tuningBlock({ weaponData, inst, instanceId, prefix: "stored" })}
-          </td>
-        </tr>
-        ${customFieldsDetailRow(
-          6,
+        ${itemTabsDetailRow(6, instanceId, [
           {
-            instanceId,
-            name: inst.weapon_custom_name,
-            description: inst.weapon_custom_description,
-            effect: inst.weapon_custom_effect,
+            key: "details",
+            label: t("common.technical"),
+            content: statsTabContent(firearmDetailFields(resolved, weaponData)),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getFirearmsItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}
+          {
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.weapon_custom_name,
+              description: inst.weapon_custom_description,
+              effect: inst.weapon_custom_effect,
+            }),
+          },
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getFirearmsItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+          {
+            key: "tuning",
+            label: t("firearms.tuning"),
+            content: tuningBody({ weaponData, inst, instanceId, prefix: "stored" }),
+          },
+        ])}
         `;
       })
       .join("");

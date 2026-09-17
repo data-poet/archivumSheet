@@ -9,9 +9,7 @@ import {
   closeCustomFieldsEditor,
   isCustomFieldsEditorOpen,
   readCustomFieldsEditorValues,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
-  equippedDetailBlock,
+  customFieldsBody,
   readCustomItemEditorValues,
   customItemEditRow,
 } from "dev/public/js/shared/renderUtils.js";
@@ -265,11 +263,11 @@ describe("custom-fields editor open/close tracking", () => {
     expect(isCustomFieldsEditorOpen("NEVER-OPENED")).toBe(false);
   });
 
-  test("the tracking Set is shared across equipment types — the same id being open affects both customFieldsEquippedDetail AND customItemEditRow rendering for that id", () => {
+  test("the tracking Set is shared across equipment types — the same id being open affects both customFieldsBody AND customItemEditRow rendering for that id", () => {
     // The Set is keyed generically by id, not scoped per equipment type.
     openCustomFieldsEditor("SHARED-ID");
 
-    const equippedHtml = customFieldsEquippedDetail({
+    const equippedHtml = customFieldsBody({
       instanceId: "SHARED-ID",
       name: "",
       description: "",
@@ -330,9 +328,9 @@ describe("readCustomFieldsEditorValues", () => {
   });
 });
 
-describe("customFieldsEquippedDetail", () => {
+describe("customFieldsBody", () => {
   test("read-only mode shows an empty-state message when no custom fields are set", () => {
-    const html = customFieldsEquippedDetail({
+    const html = customFieldsBody({
       instanceId: "ITEM-1",
       name: "",
       description: "",
@@ -345,7 +343,7 @@ describe("customFieldsEquippedDetail", () => {
   });
 
   test("read-only mode shows only the fields that are actually set", () => {
-    const html = customFieldsEquippedDetail({
+    const html = customFieldsBody({
       instanceId: "ITEM-1",
       name: "Espada Nomeada",
       description: "",
@@ -359,7 +357,7 @@ describe("customFieldsEquippedDetail", () => {
 
   test("editing mode (id open) renders the input/textarea form instead of read-only text", () => {
     openCustomFieldsEditor("ITEM-1");
-    const html = customFieldsEquippedDetail({
+    const html = customFieldsBody({
       instanceId: "ITEM-1",
       name: "Nome Atual",
       description: "Desc Atual",
@@ -376,7 +374,7 @@ describe("customFieldsEquippedDetail", () => {
   });
 
   test("HTML-unsafe custom field values are escaped, not injected raw", () => {
-    const html = customFieldsEquippedDetail({
+    const html = customFieldsBody({
       instanceId: "ITEM-1",
       name: `<img src=x onerror=alert(1)>`,
       description: "",
@@ -385,63 +383,6 @@ describe("customFieldsEquippedDetail", () => {
 
     expect(html).not.toContain("<img src=x");
     expect(html).toContain("&lt;img");
-  });
-
-  test("appends extraContent inside the details expander, after the custom-fields body", () => {
-    const html = customFieldsEquippedDetail(
-      { instanceId: "ITEM-1", name: "", description: "", effect: "" },
-      `<div class="enchantments-marker"></div>`,
-    );
-    const dom = parseInto(html);
-
-    expect(dom.querySelector("details .enchantments-marker")).not.toBeNull();
-  });
-
-  test("uses a div-based .equipped-detail wrapper with data-detail-kind='customize'", () => {
-    const html = customFieldsEquippedDetail({
-      instanceId: "ITEM-1",
-      name: "",
-      description: "",
-      effect: "",
-    });
-    const dom = parseInto(html);
-
-    const wrapper = dom.querySelector(".equipped-detail > details");
-    expect(wrapper.dataset.detailKind).toBe("customize");
-  });
-});
-
-describe("customFieldsDetailRow", () => {
-  test("uses a tr/td-based wrapper (mirrors detailRow) instead of a div", () => {
-    const html = customFieldsDetailRow(5, {
-      instanceId: "ITEM-1",
-      name: "",
-      description: "",
-      effect: "",
-    });
-    const dom = parseRowInto(html);
-
-    const row = dom.querySelector("tr.detail-row");
-    expect(row).not.toBeNull();
-    expect(row.querySelector("td").getAttribute("colspan")).toBe("5");
-    expect(row.querySelector("details").dataset.detailKind).toBe("customize");
-  });
-});
-
-describe("equippedDetailBlock", () => {
-  test("renders a div-based .equipped-detail wrapper with data-detail-kind='stats'", () => {
-    const html = equippedDetailBlock([{ label: "Peso", value: "2 kg" }]);
-    const dom = parseInto(html);
-
-    const details = dom.querySelector(".equipped-detail > details");
-    expect(details.dataset.detailKind).toBe("stats");
-    expect(details.querySelector(".item-detail").textContent).toBe(
-      "Peso: 2 kg",
-    );
-  });
-
-  test("returns an empty string when every field is filtered out, same as detailRow", () => {
-    expect(equippedDetailBlock([{ label: "Vazio", value: "" }])).toBe("");
   });
 });
 
@@ -525,7 +466,7 @@ describe("customItemEditRow", () => {
     closeCustomFieldsEditor("CUSTOM-1");
   });
 
-  test("editing mode's <details> is rendered open, unlike detailRow/equippedDetailBlock which default closed", () => {
+  test("editing mode's <details> is rendered open, unlike detailRow which defaults closed", () => {
     openCustomFieldsEditor("CUSTOM-1");
     const dom = parseRowInto(customItemEditRow(4, baseParams));
 

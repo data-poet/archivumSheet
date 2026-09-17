@@ -2,6 +2,7 @@
 
 export const COMMON = {
   details: "Detalhes",
+  technical: "Técnico",
   empty: "Vazio",
   equip: "Equipar",
   material: "Material",

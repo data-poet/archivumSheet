@@ -1,5 +1,6 @@
 import { on } from "../shared/dom.js";
 import { runEngine } from "../compute/index.js";
+import { handleItemTabClick } from "../shared/itemTabs.js";
 
 import {
   filterSubRacesByName,
@@ -232,6 +233,10 @@ export function bindUI() {
     if (handleCustomInventoryChange(e)) return;
     if (handleCoinPurseChange(e)) return;
     if (handleCharacterImageChange(e)) return;
+  });
+
+  document.addEventListener("click", (e) => {
+    if (handleItemTabClick(e)) return;
   });
 
   document.addEventListener("click", (e) => {

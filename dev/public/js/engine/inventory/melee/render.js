@@ -13,14 +13,16 @@ import {
 } from "../shared/equipmentSelectors.js";
 import {
   formatRichText,
-  detailRow,
-  equippedDetailBlock,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
+  customFieldsBody,
   withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
+import {
+  equippedItemTabs,
+  itemTabsDetailRow,
+  statsTabContent,
+} from "../../../shared/itemTabs.js";
 import { decimalToPercent } from "../../../components/resistances.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMeleeItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedMelee(sheet, instanceId) {
@@ -180,21 +182,33 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
         <button class="btn-remove remove-equipped-melee" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${equippedDetailBlock(meleeDetailFields(resolved, weaponData))}
-    ${customFieldsEquippedDetail(
+    ${equippedItemTabs(instanceId, [
       {
-        instanceId,
-        name: inst.weapon_custom_name,
-        description: inst.weapon_custom_description,
-        effect: inst.weapon_custom_effect,
+        key: "details",
+        label: t("common.technical"),
+        content: statsTabContent(meleeDetailFields(resolved, weaponData)),
       },
-      enchantmentsExpander({
-        instanceId,
-        entries: inst.enchantments || [],
-        itemCategory: getMeleeItemCategory(),
-        resolvedEntries: resolved?.enchantments,
-      }),
-    )}
+      {
+        key: "customize",
+        label: t("common.customize"),
+        content: customFieldsBody({
+          instanceId,
+          name: inst.weapon_custom_name,
+          description: inst.weapon_custom_description,
+          effect: inst.weapon_custom_effect,
+        }),
+      },
+      {
+        key: "enchantments",
+        label: t("enchantments.title"),
+        content: enchantmentsBody({
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: getMeleeItemCategory(),
+          resolvedEntries: resolved?.enchantments,
+        }),
+      },
+    ])}
   `;
 }
 
@@ -251,22 +265,33 @@ function renderStorageSection(location, stored, data, sheet) {
             <button class="btn-remove remove-melee" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(6, meleeDetailFields(resolved, weaponData))}
-        ${customFieldsDetailRow(
-          6,
+        ${itemTabsDetailRow(6, instanceId, [
           {
-            instanceId,
-            name: inst.weapon_custom_name,
-            description: inst.weapon_custom_description,
-            effect: inst.weapon_custom_effect,
+            key: "details",
+            label: t("common.technical"),
+            content: statsTabContent(meleeDetailFields(resolved, weaponData)),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getMeleeItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}`;
+          {
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.weapon_custom_name,
+              description: inst.weapon_custom_description,
+              effect: inst.weapon_custom_effect,
+            }),
+          },
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getMeleeItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}`;
       })
       .join("");
   }
