@@ -47,6 +47,16 @@
   --color-bar-experience: #8b5cf6;
   --bar-h: 13px;
 
+  /* margin / padding / gap only. Fluid spacing keeps literal px inside clamp() for readability, but its stops come from this scale too. */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 10px;
+  --space-6: 12px;
+  --space-7: 16px;
+  --space-8: 20px;
+
   --radius: 6px;
   --radius-sm: 4px;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);

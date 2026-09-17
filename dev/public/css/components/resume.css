@@ -33,7 +33,7 @@
 .resume-bars-block {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-3);
   min-width: 0;
 }
 
@@ -41,7 +41,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 .resume-bar-label {
@@ -90,26 +90,26 @@
   justify-content: center;
   min-width: 16px;
   height: 16px;
-  padding: 0 4px;
+  padding: 0 var(--space-2);
   border-radius: 999px;
   background: var(--color-bar-experience);
   color: var(--color-on-accent);
   font-size: var(--fs-xxs);
   font-weight: 700;
   line-height: 1;
-  margin-right: 4px;
+  margin-right: var(--space-2);
 }
 
 .resume-bar-caption {
   font-size: var(--fs-xxs);
   color: var(--color-text-muted);
-  margin-top: 4px;
+  margin-top: var(--space-2);
 }
 
 .resume-bar-stepper {
   display: flex;
   justify-content: flex-end;
-  margin-top: 4px;
+  margin-top: var(--space-2);
 }
 
 .resume-bar-stepper .num-stepper input {
@@ -131,8 +131,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 6px 4px;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -157,14 +157,14 @@
 
 .resume-attr-mod-stepper {
   width: 100%;
-  margin-top: 2px;
+  margin-top: var(--space-1);
 }
 
 .resume-attr-mod-stepper input {
   width: 100%;
   font-size: var(--fs-xxs);
   text-align: center;
-  padding: 1px 2px;
+  padding: var(--space-1);
 }
 
 .resume-attr-mod-stepper .stepper-btns {
@@ -173,7 +173,7 @@
 
 .resume-attr-mod-stepper .stepper-btn {
   font-size: var(--fs-xxs);
-  padding: 0 4px;
+  padding: 0 var(--space-2);
   line-height: 1.4;
 }
 
@@ -184,7 +184,7 @@
 .resume-secondary-mod-stepper input {
   font-size: var(--fs-xs);
   text-align: center;
-  padding: 1px 2px;
+  padding: var(--space-1);
 }
 
 .resume-table--secondary-snapshot td:last-child {
@@ -218,13 +218,13 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-3);
   font-size: var(--fs-xxs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
-  padding: 4px 0 4px 2px;
+  padding: var(--space-2) 0 var(--space-2) var(--space-1);
   width: 100%;
   text-align: left;
   border-bottom: 1px solid var(--color-border);
@@ -240,7 +240,7 @@
 }
 
 .resume-collapse-body {
-  padding-top: 4px;
+  padding-top: var(--space-2);
 }
 
 .resume-col-title {
@@ -249,22 +249,22 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-4);
 }
 
 .resume-base-weight-row {
-  margin-bottom: 6px;
+  margin-bottom: var(--space-3);
 }
 
 .resume-table {
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-4);
   border-collapse: collapse;
 }
 
 .resume-table td,
 .resume-table th {
-  padding: 5px 8px;
+  padding: var(--space-3) var(--space-4);
   font-size: var(--fs-xs);
 }
 
@@ -279,7 +279,7 @@
 
 .resume-encumbrance {
   font-size: var(--fs-xs);
-  margin: 4px 0 8px;
+  margin: var(--space-2) 0 var(--space-4);
   color: var(--color-text-muted);
 }
 .resume-encumbrance strong {
@@ -291,7 +291,7 @@
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
   text-align: right !important;
-  padding-top: 4px !important;
+  padding-top: var(--space-2) !important;
   border-top: none !important;
 }
 
@@ -301,13 +301,13 @@
 }
 .resume-limits-table th,
 .resume-limits-table td {
-  padding: 3px 6px;
+  padding: var(--space-2) var(--space-3);
   text-align: center;
 }
 
 /* legacy weight/value tables */
 .resume-expander-row td {
-  padding: 4px 6px;
+  padding: var(--space-2) var(--space-3);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -317,11 +317,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-3);
   font-size: var(--fs-xs);
   font-weight: 600;
   color: var(--color-text-muted);
-  padding: 2px 0;
+  padding: var(--space-1) 0;
   width: 100%;
   text-align: left;
 }
