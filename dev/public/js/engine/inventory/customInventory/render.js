@@ -57,8 +57,8 @@ function renderCustomInventorySection(location, entries, sheet) {
 
         return `
           <tr>
-            <td>${escapeHtml(entry.name)}</td>
-            <td class="col-num">
+            <td class="col-title">${escapeHtml(entry.name)}</td>
+            <td class="col-num" data-label="${t("customInventory.qty")}">
               <div class="num-stepper">
                 <input
                   type="text"
@@ -74,7 +74,7 @@ function renderCustomInventorySection(location, entries, sheet) {
                 </div>
               </div>
             </td>
-            <td class="col-num">${totalWeight}</td>
+            <td class="col-num" data-label="${t("common.weight")}">${totalWeight}</td>
             <td class="col-action">
               ${customItemLocationSelect(entry.custom_item_id, location)}
               <button
@@ -96,7 +96,7 @@ function renderCustomInventorySection(location, entries, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>

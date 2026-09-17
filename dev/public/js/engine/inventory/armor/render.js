@@ -246,11 +246,11 @@ function renderStorageSection(location, storedArmors, data, sheet) {
 
         return `
         <tr>
-          <td>${armorData.armor_piece_location}</td>
-          <td>${armorData.armor_name}</td>
-          <td>${armorData.armor_tier}</td>
-          <td>${material?.material_name ?? "—"}</td>
-          <td class="col-num">
+          <td data-label="${t("armor.slot")}">${armorData.armor_piece_location}</td>
+          <td class="col-title">${armorData.armor_name}</td>
+          <td data-label="${t("common.tier")}">${armorData.armor_tier}</td>
+          <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
+          <td class="col-num" data-label="${t("common.hp")}">
             ${hpModifierBlock({
               baseHp: armorData.armor_hit_points ?? 0,
               material,
@@ -259,7 +259,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
               dataAttrs: `data-instance-id="${instanceId}"`,
             })}
           </td>
-          <td>
+          <td data-label="${t("common.storage")}">
             <select class="armor-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
@@ -302,7 +302,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("armor.slot")}</th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>

@@ -106,9 +106,9 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
 
         return `
           <tr>
-            <td>${name}</td>
-            <td class="col-num">${tier}</td>
-            <td class="col-num">
+            <td class="col-title">${name}</td>
+            <td class="col-num" data-label="${t("alchemy.tier")}">${tier}</td>
+            <td class="col-num" data-label="${t("alchemy.qty")}">
               <div class="num-stepper">
                 <input
                   type="text"
@@ -125,7 +125,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
                 </div>
               </div>
             </td>
-            <td class="col-num">${totalWeight}</td>
+            <td class="col-num" data-label="${t("common.weight")}">${totalWeight}</td>
             <td class="col-action">
               ${alchemyLocationSelect(entry.consumable_id, location)}
               <button
@@ -142,7 +142,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>

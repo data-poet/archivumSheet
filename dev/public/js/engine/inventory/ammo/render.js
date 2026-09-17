@@ -227,8 +227,8 @@ function renderContainerSlot(
 
             return `
             <tr>
-              <td>${getAmmoName(entry.ammo_id, ammoData)}</td>
-              <td class="col-num">
+              <td class="col-title">${getAmmoName(entry.ammo_id, ammoData)}</td>
+              <td class="col-num" data-label="${t("ammo.qty")}">
                 <div class="num-stepper">
                   <input
                     type="text"
@@ -281,7 +281,7 @@ function renderContainerSlot(
         <span>${t("common.weight")}: ${totalWeight} kg</span>
         ${!isCarriable ? `<span class="ammo-not-carriable">${t("ammo.notCarriable")}</span>` : ""}
       </div>
-      <div class="table-wrapper"><table class="ammo-contents-table">
+      <div class="table-wrapper table-wrapper--stack"><table class="ammo-contents-table">
         <thead>
           <tr>
             <th>${t("common.name")}</th>
@@ -349,9 +349,9 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
 
         return `
           <tr>
-            <td>${ammoName}</td>
-            <td class="col-num">${ammoType}</td>
-            <td class="col-num">
+            <td class="col-title">${ammoName}</td>
+            <td class="col-num" data-label="${t("common.type")}">${ammoType}</td>
+            <td class="col-num" data-label="${t("ammo.qty")}">
               <div class="num-stepper">
                 <input
                   type="text"
@@ -368,7 +368,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
                 </div>
               </div>
             </td>
-            <td class="col-num">${totalWeight}</td>
+            <td class="col-num" data-label="${t("common.weight")}">${totalWeight}</td>
             <td class="col-action">
               ${looseAmmoLocationSelect(entry.ammo_id, location)}
               <button
@@ -385,7 +385,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>

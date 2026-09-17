@@ -87,8 +87,8 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
 
         return `
           <tr>
-            <td>${name}</td>
-            <td class="col-num">
+            <td class="col-title">${name}</td>
+            <td class="col-num" data-label="${t("survivalGear.qty")}">
               <div class="num-stepper">
                 <input
                   type="text"
@@ -105,7 +105,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 </div>
               </div>
             </td>
-            <td class="col-num">${totalWeight}</td>
+            <td class="col-num" data-label="${t("common.weight")}">${totalWeight}</td>
             <td class="col-action">
               ${survivalGearLocationSelect(entry.adventure_gear_id, location)}
               <button
@@ -122,7 +122,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>

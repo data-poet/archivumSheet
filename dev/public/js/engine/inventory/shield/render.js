@@ -229,10 +229,10 @@ function renderStorageSection(location, stored, data, sheet) {
 
         return `
         <tr>
-          <td>${shieldData.shield_name}</td>
-          <td>${shieldData.shield_tier}</td>
-          <td>${material?.material_name ?? "—"}</td>
-          <td class="col-num">
+          <td class="col-title">${shieldData.shield_name}</td>
+          <td data-label="${t("common.tier")}">${shieldData.shield_tier}</td>
+          <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
+          <td class="col-num" data-label="${t("shield.hp")}">
             ${hpModifierBlock({
               baseHp: shieldData.shield_hit_points ?? 0,
               material,
@@ -241,7 +241,7 @@ function renderStorageSection(location, stored, data, sheet) {
               dataAttrs: `data-instance-id="${instanceId}"`,
             })}
           </td>
-          <td>
+          <td data-label="${t("common.storage")}">
             <select class="shield-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
@@ -284,7 +284,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
