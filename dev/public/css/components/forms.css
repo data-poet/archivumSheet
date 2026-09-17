@@ -13,10 +13,25 @@ input[type="text"] {
 }
 
 select:focus,
-input:focus {
-  outline: none;
-  border-color: var(--accent-attributes);
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+input:focus,
+textarea:focus {
+  border-color: var(--color-focus-ring);
+}
+
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring-w) solid var(--color-focus-ring);
+  outline-offset: 1px;
+}
+
+/* full-bleed controls sit flush against an `overflow: hidden` container, which would clip an outset ring */
+summary:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-w));
 }
 
 /* iOS Safari auto-zooms the page when a focused text field is under 16px, so text/number inputs are pinned to 16px here; <select> is excluded since its native picker isn't affected. */

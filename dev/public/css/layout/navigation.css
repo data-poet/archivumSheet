@@ -110,6 +110,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.bottomnav-link:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-w));
+}
+
 .bottomnav-link.is-active {
   color: var(--_section-accent, var(--accent-character));
   border-top-color: var(--_section-accent, var(--accent-character));
@@ -231,6 +235,11 @@
     transition:
       color 0.15s,
       background 0.15s;
+  }
+
+  /* inset so `.l-sidebar`'s overflow: hidden doesn't clip the ring */
+  .sidebar-link:focus-visible {
+    outline-offset: calc(-1 * var(--focus-ring-w));
   }
 
   .sidebar-link:hover {
