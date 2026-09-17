@@ -4,6 +4,7 @@ import {
   getCarryLimitLabel,
   getSecondaryAttributeLabel,
   getElementalResistanceLabel,
+  getExperienceRankName,
 } from "../localization/pt-BR/index.js";
 import { decimalToPercent } from "./resistances.js";
 import { el } from "../shared/dom.js";
@@ -12,6 +13,7 @@ import {
   calcActualHp,
 } from "../engine/inventory/shared/durabilityUtils.js";
 import { renderResumeImage } from "../engine/character/portrait/portrait.js";
+import { getExperienceRank } from "../engine/character/experienceRank.js";
 
 // State survives re-renders because renderResume() writes into existing containers
 // rather than innerHTML-ing the root panel.
@@ -31,6 +33,7 @@ export function renderResume(sheet, data = {}, selected = {}) {
   initResumeExpanders();
 
   renderResumeHeader(sheet);
+  renderExperienceBar(sheet);
   renderResumeImage();
   renderResumePrimaryAttributes(sheet);
   renderResumeBars(sheet);
@@ -60,6 +63,48 @@ function renderResumeHeader(sheet) {
   const separator = charName && subRace ? " | " : "";
 
   nameEl.textContent = charName + separator + subRace;
+}
+
+function renderExperienceBar(sheet) {
+  const container = el("resume_bar_experience");
+  if (!container) return;
+
+  const cp = sheet?.character?.character_points ?? {};
+  const spentPoints =
+    (cp.primary_attributes ?? 0) +
+    (cp.secondary_attributes ?? 0) +
+    (cp.advantages ?? 0) +
+    (cp.disadvantages ?? 0) +
+    (cp.skills ?? 0) +
+    (cp.spells ?? 0);
+
+  const sex = sheet?.pc?.character_sex;
+  const rank = getExperienceRank(spentPoints);
+  const rankName = getExperienceRankName(rank.index, sex);
+  const caption = rank.isMaxRank
+    ? t("experience.maxRank")
+    : `${rank.pointsToNext} ${t("experience.pointsToNextRank")}`;
+
+  container.innerHTML = `
+    <div class="resume-bar-header">
+      <span>
+        <span class="resume-bar-badge">${rank.badge}</span>
+        <span class="resume-bar-label">${rankName}</span>
+      </span>
+      <span class="resume-bar-values">${spentPoints}${rank.isMaxRank ? "" : "/" + rank.tierMax}</span>
+    </div>
+    <div class="resume-bar-track">
+      <div
+        class="resume-bar-fill resume-bar--experience"
+        style="width: ${rank.progress}%"
+        role="progressbar"
+        aria-valuenow="${spentPoints}"
+        aria-valuemin="${rank.tierMin}"
+        aria-valuemax="${rank.isMaxRank ? spentPoints : rank.tierMax}"
+      ></div>
+    </div>
+    <div class="resume-bar-caption">${caption}</div>
+  `;
 }
 
 function renderResumePrimaryAttributes(sheet) {

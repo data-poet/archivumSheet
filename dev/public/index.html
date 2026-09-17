@@ -111,6 +111,11 @@
             ></button>
             <button
               class="tab-btn"
+              data-tab="tab-char-points"
+              id="tab-btn-char-points"
+            ></button>
+            <button
+              class="tab-btn"
               data-tab="tab-char-image"
               id="tab-btn-char-image"
             ></button>
@@ -235,48 +240,134 @@
                 ></div>
               </div>
             </div>
+          </div>
 
-            <!-- Points block -->
-            <div class="character-points-block">
-              <h3 id="sec-character-points"></h3>
-              <table class="character-info-table">
+          <!-- Panel: Pontos do Personagem -->
+          <div class="tab-panel" id="tab-char-points">
+            <div class="character-points-xp-block">
+              <div id="resume_bar_experience"></div>
+            </div>
+
+            <div class="character-panel-grid character-points-grid">
+              <div class="character-points-block">
+                <h3 id="sec-character-points"></h3>
+                <table class="character-info-table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label
+                          for="startingPointsInput"
+                          id="lbl-startingPoints"
+                        ></label>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          id="startingPointsInput"
+                          class="character-input"
+                          data-field="starting_points"
+                          min="0"
+                          step="1"
+                          placeholder="0"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label
+                          for="experiencePointsInput"
+                          id="lbl-experiencePoints"
+                        ></label>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          id="experiencePointsInput"
+                          class="character-input"
+                          data-field="experience_points"
+                          min="0"
+                          step="1"
+                          placeholder="0"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label
+                          for="abilityPointsInput"
+                          id="lbl-abilityPoints"
+                        ></label>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          id="abilityPointsInput"
+                          class="character-input"
+                          data-field="ability_points"
+                          min="0"
+                          step="1"
+                          placeholder="0"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label
+                          for="magicPointsInput"
+                          id="lbl-magicPoints"
+                        ></label>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          id="magicPointsInput"
+                          class="character-input"
+                          data-field="magic_points"
+                          min="0"
+                          step="1"
+                          placeholder="0"
+                        />
+                      </td>
+                    </tr>
+                    <tr class="character-points-total-row">
+                      <td>
+                        <label id="lbl-totalAvailablePoints"></label>
+                      </td>
+                      <td>
+                        <span id="totalAvailablePointsValue">0</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Points spent breakdown (moved from resume view) -->
+              <table class="resume-table">
                 <tbody>
-                  <tr>
-                    <td>
-                      <label
-                        for="startingPointsInput"
-                        id="lbl-startingPoints"
-                      ></label>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        id="startingPointsInput"
-                        class="character-input"
-                        data-field="starting_points"
-                        min="0"
-                        step="1"
-                        placeholder="0"
-                      />
+                  <tr
+                    class="resume-expander-row"
+                    data-tbody-target="resume_points_tbody"
+                  >
+                    <td colspan="2">
+                      <button class="resume-expander-btn" aria-expanded="false">
+                        <span class="resume-expander-arrow">&#8250;</span>
+                        <span id="sec-resume-points-detail"></span>
+                      </button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <label
-                        for="experiencePointsInput"
-                        id="lbl-experiencePoints"
-                      ></label>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        id="experiencePointsInput"
-                        class="character-input"
-                        data-field="experience_points"
-                        min="0"
-                        step="1"
-                        placeholder="0"
-                      />
+                </tbody>
+
+                <tbody
+                  id="resume_points_tbody"
+                  class="resume-collapsible"
+                  hidden
+                ></tbody>
+
+                <tbody>
+                  <tr class="resume-total-row">
+                    <td><strong id="lbl-resume-totalPoints"></strong></td>
+                    <td class="col-num" id="resume_total_points_cell">
+                      <strong>0</strong>
                     </td>
                   </tr>
                 </tbody>
@@ -1640,38 +1731,6 @@
             </table>
           </div>
         </div>
-
-        <!-- ── Row: points (moved to end of resume) ─────────────────── -->
-        <table class="resume-table">
-          <tbody>
-            <tr
-              class="resume-expander-row"
-              data-tbody-target="resume_points_tbody"
-            >
-              <td colspan="2">
-                <button class="resume-expander-btn" aria-expanded="false">
-                  <span class="resume-expander-arrow">&#8250;</span>
-                  <span id="sec-resume-points-detail"></span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody
-            id="resume_points_tbody"
-            class="resume-collapsible"
-            hidden
-          ></tbody>
-
-          <tbody>
-            <tr class="resume-total-row">
-              <td><strong id="lbl-resume-totalPoints"></strong></td>
-              <td class="col-num" id="resume_total_points_cell">
-                <strong>0</strong>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     <!-- /#resume-panel-host -->
@@ -1732,6 +1791,7 @@
         // Tab button labels
         // section-character
         setText("tab-btn-char-info", L.tabs.character.info);
+        setText("tab-btn-char-points", L.tabs.character.points);
         setText("tab-btn-char-image", L.tabs.character.image);
         // section-attributes
         setText("tab-btn-attr-primary", L.tabs.attributes.primary);
@@ -1787,6 +1847,9 @@
         setText("lbl-weight", L.character.weight);
         setText("lbl-startingPoints", L.character.startingPoints);
         setText("lbl-experiencePoints", L.character.experiencePoints);
+        setText("lbl-abilityPoints", L.character.abilityPoints);
+        setText("lbl-magicPoints", L.character.magicPoints);
+        setText("lbl-totalAvailablePoints", L.character.totalAvailablePoints);
 
         // Sex options
         setText("opt-sex-none", L.character.sexOption);
