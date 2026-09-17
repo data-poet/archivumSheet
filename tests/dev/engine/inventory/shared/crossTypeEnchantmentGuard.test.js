@@ -91,7 +91,6 @@ jest.mock("dev/public/js/engine/inventory/firearms/model.js", () => ({
   equipFirearm: jest.fn(),
   moveFirearm: jest.fn(),
   removeFirearm: jest.fn(),
-  reloadFirearm: jest.fn(),
   computeFinalMagazineSize: jest.fn(),
   addEquippedFirearm: jest.fn(),
   addStoredFirearm: jest.fn(),

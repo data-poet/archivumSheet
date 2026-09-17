@@ -135,7 +135,6 @@ function magazineBlock({ roundsLoaded, magazineSize, cssClass, instanceId }) {
         </div>
       </div>
       / <strong>${magazineSize}</strong>
-      <button class="btn-reload reload-firearm" data-instance-id="${instanceId}">${t("firearms.reloadAction")}</button>
     </div>
   `;
 }

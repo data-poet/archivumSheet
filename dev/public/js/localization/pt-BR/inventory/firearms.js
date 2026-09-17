@@ -5,7 +5,6 @@ export const FIREARMS = {
   cdt: "CDT",
   magazine: "Munição",
   magazineMod: "Capacidade",
-  reloadAction: "Recarregar",
   tuning: "Modificações",
   enchantmentContribution: "Contribuição de encantamentos",
 };
