@@ -12,6 +12,7 @@
   font-weight: 600;
   cursor: pointer;
   max-width: clamp(140px, 40vw, 260px);
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   transition: background 0.15s;
@@ -34,11 +35,14 @@
   font-weight: 700;
 }
 
+/* Secondary to the name, and the name is what has to stay legible when the mobile topbar runs out of room. */
 .char-selector-btn-race {
+  display: none;
   font-size: var(--fs-xs);
   opacity: 0.8;
   font-weight: 400;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .char-selector-btn-chevron {
@@ -193,5 +197,9 @@
 @media (min-width: 768px) {
   .is-view-mode .view-mode-resume {
     padding: clamp(12px, 2vw, 20px);
+  }
+
+  .char-selector-btn-race {
+    display: inline;
   }
 }
