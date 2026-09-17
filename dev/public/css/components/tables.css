@@ -320,6 +320,12 @@ tr.spell-detail-row details[open] summary {
   box-sizing: border-box;
 }
 
+/* Higher specificity than `table input[type="text"]`'s fixed 48px width, which otherwise bleeds into stored-row custom-fields inputs. */
+.custom-fields-grid .item-detail-field input {
+  width: 100%;
+  text-align: left;
+}
+
 .item-detail-field select {
   font-size: var(--fs-xs);
   font-family: inherit;
