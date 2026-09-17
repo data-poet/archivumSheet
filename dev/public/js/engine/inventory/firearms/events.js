@@ -14,12 +14,23 @@ import {
   updateFirearmEnchantment,
   removeFirearmEnchantment,
 } from "./model.js";
-import { clampHpModifier } from "../shared/durabilityUtils.js";
-import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedFirearms, renderStoredFirearms } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import {
+  createCustomFieldsClickHandler,
+  withPreservedOpenState,
+} from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import {
+  createListRenderer,
+  createDeferredRender,
+} from "../shared/renderScheduling.js";
+import {
+  createHpInputHandler,
+  updateResumeHpDisplay,
+  updateActualHpDisplay,
+} from "../shared/durabilityDispatch.js";
+import { createWeaponChangeHandler } from "../shared/weaponChangeDispatch.js";
+import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -27,41 +38,14 @@ const selected = state.selected;
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 // Firearms have their own dedicated tab, with its own containers.
 
-// Re-renders only firearm lists, not the full renderLists() sweep — same shape as shield's _renderShieldLists.
-function _renderFirearmLists(sheet) {
-  const snapshots = snapshotAll();
+const _renderFirearmLists = createListRenderer(
+  renderEquippedFirearms,
+  renderStoredFirearms,
+);
 
-  requestAnimationFrame(() => {
-    renderEquippedFirearms(selected, data, sheet);
-    renderStoredFirearms(selected, data, sheet);
-    restoreAll(snapshots);
-  });
-}
+const _deferRender = createDeferredRender(() => _renderFirearmLists());
 
-let _deferTimer = null;
-function _deferRender() {
-  clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => {
-    _renderFirearmLists();
-  }, 300);
-}
-
-function _updateActualHpDisplay(inputEl, maxHp, modifier) {
-  const block = inputEl.closest(".hp-modifier");
-  if (!block) return;
-  const strongs = block.querySelectorAll("strong");
-  if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
-}
-
-// Resume page HP cell: the "actual" value sits in a dedicated <strong> in the <td>.
-function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
-  const cell = inputEl.closest("td");
-  if (!cell) return;
-  const actual = cell.querySelector(".resume-hp-actual");
-  if (actual) actual.textContent = maxHp + (modifier || 0);
-}
-
-// Same idea as _updateActualHpDisplay but for the single-value statModifierBlock.
+// Same idea as updateActualHpDisplay but for the single-value statModifierBlock.
 function _updateActualStatDisplay(inputEl, baseValue, modifier) {
   const block = inputEl.closest(".hp-modifier");
   if (!block) return;
@@ -70,17 +54,10 @@ function _updateActualStatDisplay(inputEl, baseValue, modifier) {
     strong.textContent = (Number(baseValue) || 0) + (Number(modifier) || 0);
 }
 
-// saveFirearmCustomFields renders internally (unwrapped); snapshot/restore around it here.
-function _saveFirearmCustomFieldsWrapped(instanceId, values) {
-  const snapshots = snapshotAll();
-  saveFirearmCustomFields(instanceId, values);
-  restoreAll(snapshots);
-}
-
 const _handleFirearmCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findFirearmByInstanceId,
-  saveCustomFields: _saveFirearmCustomFieldsWrapped,
-  render: _renderFirearmLists, // already self-wraps via snapshotAll/restoreAll above
+  saveCustomFields: withPreservedOpenState(saveFirearmCustomFields),
+  render: _renderFirearmLists,
 });
 
 // Enchantment mutators self-wrap render+snapshot/restore, so runWithOpenState stays at its no-op default (same as melee/ranged).
@@ -157,87 +134,42 @@ export function handleFirearmClick(e) {
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 
+const _handleFirearmHpInput = createHpInputHandler({
+  variants: [
+    {
+      cssClass: "resume-firearm-hp",
+      findInstance: (el) => findFirearmByInstanceId(el.dataset.instanceId),
+      display: updateResumeHpDisplay,
+    },
+    {
+      cssClass: "equipped-firearm-hp",
+      findInstance: (el) => findFirearmByInstanceId(el.dataset.instanceId),
+      display: updateActualHpDisplay,
+    },
+    {
+      cssClass: "stored-firearm-hp",
+      findInstance: (el) => findFirearmByInstanceId(el.dataset.instanceId),
+      display: updateActualHpDisplay,
+    },
+  ],
+  catalog: () => data.firearms,
+  catalogIdField: "weapon_id",
+  baseHpField: "weapon_hit_points",
+  deferRender: _deferRender,
+});
+
+// The resume, equipped and stored rounds inputs all clamp to the same magazine
+// size, so they share one branch.
+const ROUNDS_CLASSES = [
+  "resume-firearm-rounds",
+  "equipped-firearm-rounds",
+  "stored-firearm-rounds",
+];
+
 export function handleFirearmInput(e) {
-  if (e.target.classList.contains("resume-firearm-hp")) {
-    const instanceId = e.target.dataset.instanceId;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    if (/^-$/.test(e.target.value)) return true;
-    const weaponData = data.firearms.find(
-      (w) => w.weapon_id === firearmInstance.weapon_id,
-    );
-    const { maxHp } = resolveHp(
-      firearmInstance,
-      weaponData?.weapon_hit_points ?? 0,
-      data.materials,
-    );
-    firearmInstance.hit_points_modifier = clampHpModifier(
-      e.target.value,
-      maxHp,
-    );
-    _updateResumeHpDisplay(
-      e.target,
-      maxHp,
-      firearmInstance.hit_points_modifier,
-    );
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
+  if (_handleFirearmHpInput(e)) return true;
 
-  if (e.target.classList.contains("resume-firearm-rounds")) {
-    const instanceId = e.target.dataset.instanceId;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    if (e.target.value === "") return true;
-    const weaponData = data.firearms.find(
-      (w) => w.weapon_id === firearmInstance.weapon_id,
-    );
-    const max = computeFinalMagazineSize(firearmInstance, weaponData);
-    const parsed = parseInt(e.target.value, 10);
-    firearmInstance.rounds_loaded = Math.min(
-      Math.max(isNaN(parsed) ? 0 : parsed, 0),
-      max,
-    );
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (
-    e.target.classList.contains("equipped-firearm-hp") ||
-    e.target.classList.contains("stored-firearm-hp")
-  ) {
-    const instanceId = e.target.dataset.instanceId;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const weaponData = data.firearms.find(
-      (w) => w.weapon_id === firearmInstance.weapon_id,
-    );
-    const { maxHp } = resolveHp(
-      firearmInstance,
-      weaponData?.weapon_hit_points ?? 0,
-      data.materials,
-    );
-    firearmInstance.hit_points_modifier = clampHpModifier(
-      e.target.value,
-      maxHp,
-    );
-    _updateActualHpDisplay(
-      e.target,
-      maxHp,
-      firearmInstance.hit_points_modifier,
-    );
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (
-    e.target.classList.contains("equipped-firearm-rounds") ||
-    e.target.classList.contains("stored-firearm-rounds")
-  ) {
+  if (ROUNDS_CLASSES.some((cls) => e.target.classList.contains(cls))) {
     const instanceId = e.target.dataset.instanceId;
     const firearmInstance = findFirearmByInstanceId(instanceId);
     if (!firearmInstance) return true;
@@ -288,84 +220,18 @@ export function handleFirearmInput(e) {
 
 // ─── Change ───────────────────────────────────────────────────────────────────
 
+// No dual-use counterpart for firearms, so no onMoved mirror and both renders are firearm-only.
+const _handleFirearmWeaponChange = createWeaponChangeHandler({
+  classPrefix: "firearm",
+  catalog: () => data.firearms,
+  findByInstanceId: findFirearmByInstanceId,
+  move: moveFirearm,
+  renderAfterMaterial: () => _renderFirearmLists(),
+  renderAfterMove: () => _renderFirearmLists(),
+});
+
 export function handleFirearmChange(e) {
-  if (e.target.classList.contains("equipped-firearm-name")) {
-    const instanceId = e.target.dataset.instanceId;
-    const name = e.target.value;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    const availableFirearms = data.firearms.filter(
-      (w) => w.weapon_name === name,
-    );
-    const firstFirearm = availableFirearms[0];
-    if (!firstFirearm) return true;
-    const tierSelect = document.querySelector(
-      `.equipped-firearm-tier[data-instance-id="${instanceId}"]`,
-    );
-    if (tierSelect) {
-      tierSelect.innerHTML = availableFirearms
-        .map(
-          (w) => `<option value="${w.weapon_tier}">${w.weapon_tier}</option>`,
-        )
-        .join("");
-    }
-    firearmInstance.weapon_id = firstFirearm.weapon_id;
-    firearmInstance.hit_points_modifier = 0;
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("equipped-firearm-tier")) {
-    const instanceId = e.target.dataset.instanceId;
-    const tier = e.target.value;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    const nameEl = document.querySelector(
-      `.equipped-firearm-name[data-instance-id="${instanceId}"]`,
-    );
-    if (!nameEl) return true;
-    const weapon = data.firearms.find(
-      (w) => w.weapon_name === nameEl.value && w.weapon_tier === tier,
-    );
-    if (!weapon) return true;
-    firearmInstance.weapon_id = weapon.weapon_id;
-    firearmInstance.hit_points_modifier = 0;
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("equipped-firearm-material")) {
-    const instanceId = e.target.dataset.instanceId;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    firearmInstance.material_id = e.target.value;
-    firearmInstance.hit_points_modifier = 0;
-    _renderFirearmLists();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("firearm-storage-select")) {
-    moveFirearm(e.target.dataset.instanceId, e.target.value);
-    return true;
-  }
-
-  if (e.target.classList.contains("equipped-firearm-move")) {
-    const instanceId = e.target.dataset.instanceId;
-    const destination = e.target.value;
-    const firearmInstance = findFirearmByInstanceId(instanceId);
-    if (!firearmInstance) return true;
-    if (!destination) {
-      firearmInstance.is_equipped = true;
-      firearmInstance.storedAt = null;
-    } else {
-      firearmInstance.is_equipped = false;
-      firearmInstance.storedAt = destination;
-    }
-    _renderFirearmLists();
-    triggerAutoRun();
-    return true;
-  }
+  if (_handleFirearmWeaponChange(e)) return true;
 
   if (_firearmEnchantments.handleChange(e)) return true;
 
@@ -374,24 +240,9 @@ export function handleFirearmChange(e) {
 
 // ─── Add form ─────────────────────────────────────────────────────────────────
 
-export function handleAddFirearm() {
-  const nameEl = document.getElementById("firearmNameSelect");
-  const tierEl = document.getElementById("firearmTierSelect");
-  const materialEl = document.getElementById("firearmMaterialSelect");
-  const storageEl = document.getElementById("firearmStorage");
-  if (!nameEl || !tierEl || !materialEl || !storageEl) return;
-
-  const firearm = data.firearms.find(
-    (w) => w.weapon_name === nameEl.value && w.weapon_tier === tierEl.value,
-  );
-  if (!firearm) return;
-
-  const material = data.materials.find(
-    (m) => m.material_name === materialEl.value,
-  );
-  const materialId = material?.material_id ?? null;
-
-  if (storageEl.value === "equipped")
-    addEquippedFirearm(firearm.weapon_id, materialId);
-  else addStoredFirearm(firearm.weapon_id, materialId, storageEl.value);
-}
+export const handleAddFirearm = createWeaponAddHandler({
+  idPrefix: "firearm",
+  catalog: () => data.firearms,
+  addEquipped: addEquippedFirearm,
+  addStored: addStoredFirearm,
+});

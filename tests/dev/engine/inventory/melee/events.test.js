@@ -216,7 +216,11 @@ describe("handleMeleeInput", () => {
   });
 
   test("mirrors the HP modifier to a linked ranged instance found via r._linkedInstanceId (ranged points at us)", () => {
-    const meleeInstance = { weapon_id: "MELEE-DB-1", hit_points_modifier: 0 };
+    const meleeInstance = {
+      _instanceId: "MELEE-1",
+      weapon_id: "MELEE-DB-1",
+      hit_points_modifier: 0,
+    };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
     const linkedRanged = {
       _linkedInstanceId: "MELEE-1",
@@ -253,9 +257,13 @@ describe("handleMeleeInput", () => {
   });
 
   test("does not touch ranged_weapons when there's no link at all", () => {
-    const meleeInstance = { weapon_id: "MELEE-DB-1", hit_points_modifier: 0 };
+    const meleeInstance = {
+      _instanceId: "MELEE-1",
+      weapon_id: "MELEE-DB-1",
+      hit_points_modifier: 0,
+    };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
-    const unrelatedRanged = { hit_points_modifier: 5 };
+    const unrelatedRanged = { _instanceId: "RANGED-9", hit_points_modifier: 5 };
     state.selected.ranged_weapons = [unrelatedRanged];
     const target = elWithClass("input", "equipped-melee-hp", {
       instanceId: "MELEE-1",
@@ -408,7 +416,11 @@ describe("handleMeleeChange — storage / move", () => {
   });
 
   test("equipped-melee-move mirrors is_equipped/storedAt onto the linked ranged instance and renders both", () => {
-    const meleeInstance = { is_equipped: true, storedAt: null };
+    const meleeInstance = {
+      _instanceId: "MELEE-1",
+      is_equipped: true,
+      storedAt: null,
+    };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
     const linkedRanged = {
       _linkedInstanceId: "MELEE-1",
@@ -434,9 +446,17 @@ describe("handleMeleeChange — storage / move", () => {
   });
 
   test("equipped-melee-move with no link leaves ranged_weapons untouched", () => {
-    const meleeInstance = { is_equipped: true, storedAt: null };
+    const meleeInstance = {
+      _instanceId: "MELEE-1",
+      is_equipped: true,
+      storedAt: null,
+    };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
-    const unrelatedRanged = { is_equipped: true, storedAt: null };
+    const unrelatedRanged = {
+      _instanceId: "RANGED-9",
+      is_equipped: true,
+      storedAt: null,
+    };
     state.selected.ranged_weapons = [unrelatedRanged];
     const target = selectWithValue(
       "equipped-melee-move",

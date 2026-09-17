@@ -8,7 +8,10 @@ import {
   nextMeleeInstanceId,
   nextRangedInstanceId,
 } from "../../../store/instanceId.js";
-import { getRangedCounterpart } from "../shared/dualUseWeapons.js";
+import {
+  getRangedCounterpart,
+  findLinkedCounterpart,
+} from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
 import {
@@ -150,21 +153,8 @@ export function equipMelee(
 // DUAL-USE SYNC HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Handles both link directions: melee created first (ranged points at melee) or ranged created first (melee points at ranged).
 function _findLinkedRanged(meleeInstance) {
-  if (!meleeInstance) return null;
-  const byRangedLink = selected.ranged_weapons.find(
-    (r) => r._linkedInstanceId === meleeInstance._instanceId,
-  );
-  if (byRangedLink) return byRangedLink;
-  if (meleeInstance._linkedInstanceId) {
-    return (
-      selected.ranged_weapons.find(
-        (r) => r._instanceId === meleeInstance._linkedInstanceId,
-      ) ?? null
-    );
-  }
-  return null;
+  return findLinkedCounterpart(meleeInstance, selected.ranged_weapons);
 }
 
 // If weaponId is dual-use, pushes a mirrored ranged instance linked back via _linkedInstanceId.

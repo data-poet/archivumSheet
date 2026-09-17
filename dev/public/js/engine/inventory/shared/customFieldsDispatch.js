@@ -8,6 +8,18 @@ import {
   closeCustomFieldsEditor,
   readCustomFieldsEditorValues,
 } from "../../../shared/renderUtils.js";
+import { snapshotAll, restoreAll } from "../../../shared/openState.js";
+
+// The saveXCustomFields model functions render internally via the global
+// renderListsPreserving (unwrapped), which would collapse open <details>
+// elsewhere on the page; this snapshots/restores synchronously around them.
+export function withPreservedOpenState(saveCustomFields) {
+  return function saveCustomFieldsPreserving(instanceId, values) {
+    const snapshots = snapshotAll();
+    saveCustomFields(instanceId, values);
+    restoreAll(snapshots);
+  };
+}
 
 // findByInstanceId is the ownership guard (falsy return means the click isn't for this type).
 // render doesn't assume any open-state strategy — that belongs inside the function passed in.

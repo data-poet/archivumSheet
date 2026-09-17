@@ -11,64 +11,37 @@ import {
   updateShieldEnchantment,
   removeShieldEnchantment,
 } from "./model.js";
-import { clampHpModifier } from "../shared/durabilityUtils.js";
-import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderEquippedShield, renderStoredShields } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import {
+  createCustomFieldsClickHandler,
+  withPreservedOpenState,
+} from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import {
+  createListRenderer,
+  createDeferredRender,
+} from "../shared/renderScheduling.js";
+import {
+  createHpInputHandler,
+  updateResumeHpDisplay,
+  updateActualHpDisplay,
+} from "../shared/durabilityDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-// Uses snapshotAll()/restoreAll() (all containers) rather than a single-scope helper: shield
-// actions can move an item BETWEEN #shieldSlot and #shieldStorageList in one step, so both need
-// open/closed state captured together. Deferred by one rAF so replacing a <select>'s DOM ancestor
-// doesn't race the browser's own change-event/native-picker cycle (visible flicker on mobile Safari).
-function _renderShieldLists(sheet) {
-  const snapshots = snapshotAll();
+const _renderShieldLists = createListRenderer(
+  renderEquippedShield,
+  renderStoredShields,
+);
 
-  requestAnimationFrame(() => {
-    renderEquippedShield(selected, data, sheet);
-    renderStoredShields(selected, data, sheet);
-    restoreAll(snapshots);
-  });
-}
-
-let _deferTimer = null;
-function _deferRender() {
-  clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => {
-    _renderShieldLists();
-  }, 300);
-}
-
-function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
-  const cell = inputEl.closest("td");
-  if (!cell) return;
-  const actual = cell.querySelector(".resume-hp-actual");
-  if (actual) actual.textContent = maxHp + (modifier || 0);
-}
-
-function _updateActualHpDisplay(inputEl, maxHp, modifier) {
-  const block = inputEl.closest(".hp-modifier");
-  if (!block) return;
-  const strongs = block.querySelectorAll("strong");
-  if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
-}
-
-// saveShieldCustomFields renders internally (unwrapped); snapshot/restore around it here.
-function _saveShieldCustomFieldsWrapped(instanceId, values) {
-  const snapshots = snapshotAll();
-  saveShieldCustomFields(instanceId, values);
-  restoreAll(snapshots);
-}
+const _deferRender = createDeferredRender(() => _renderShieldLists());
 
 const _handleShieldCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findShieldByInstanceId,
-  saveCustomFields: _saveShieldCustomFieldsWrapped,
+  saveCustomFields: withPreservedOpenState(saveShieldCustomFields),
   render: _renderShieldLists,
 });
 
@@ -122,67 +95,31 @@ export function handleShieldClick(e) {
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 
-export function handleShieldInput(e) {
-  if (e.target.classList.contains("resume-shield-hp")) {
-    const equippedShield = selected.shields.find((s) => s.is_equipped);
-    if (!equippedShield) return true;
-    if (/^-$/.test(e.target.value)) return true;
-    const shieldData = data.shields.find(
-      (s) => s.shield_id === equippedShield.shield_id,
-    );
-    const { maxHp } = resolveHp(
-      equippedShield,
-      shieldData?.shield_hit_points ?? 0,
-      data.materials,
-    );
-    equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateResumeHpDisplay(e.target, maxHp, equippedShield.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("equipped-shield-hp")) {
-    const equippedShield = selected.shields.find((s) => s.is_equipped);
-    if (!equippedShield) return true;
-    if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const shieldData = data.shields.find(
-      (s) => s.shield_id === equippedShield.shield_id,
-    );
-    const { maxHp } = resolveHp(
-      equippedShield,
-      shieldData?.shield_hit_points ?? 0,
-      data.materials,
-    );
-    equippedShield.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateActualHpDisplay(e.target, maxHp, equippedShield.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("stored-shield-hp")) {
-    const instanceId = e.target.dataset.instanceId;
-    const shieldInstance = findShieldByInstanceId(instanceId);
-    if (!shieldInstance) return true;
-    if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const shieldData = data.shields.find(
-      (s) => s.shield_id === shieldInstance.shield_id,
-    );
-    const { maxHp } = resolveHp(
-      shieldInstance,
-      shieldData?.shield_hit_points ?? 0,
-      data.materials,
-    );
-    shieldInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateActualHpDisplay(e.target, maxHp, shieldInstance.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  return false;
-}
+// Only one shield can be equipped at a time, so the equipped rows don't need an id
+// to address — "the equipped shield" is unambiguous.
+export const handleShieldInput = createHpInputHandler({
+  variants: [
+    {
+      cssClass: "resume-shield-hp",
+      findInstance: () => selected.shields.find((s) => s.is_equipped),
+      display: updateResumeHpDisplay,
+    },
+    {
+      cssClass: "equipped-shield-hp",
+      findInstance: () => selected.shields.find((s) => s.is_equipped),
+      display: updateActualHpDisplay,
+    },
+    {
+      cssClass: "stored-shield-hp",
+      findInstance: (el) => findShieldByInstanceId(el.dataset.instanceId),
+      display: updateActualHpDisplay,
+    },
+  ],
+  catalog: () => data.shields,
+  catalogIdField: "shield_id",
+  baseHpField: "shield_hit_points",
+  deferRender: _deferRender,
+});
 
 // ─── Change ───────────────────────────────────────────────────────────────────
 
