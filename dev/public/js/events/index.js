@@ -120,6 +120,88 @@ import {
   handleCoinPurseChange,
 } from "../engine/inventory/coinPurse/index.js";
 
+const DELEGATED_EVENT_TYPES = ["click", "input", "change"];
+
+// One entry per delegated domain; all three listeners walk this same list, so
+// adding a domain is one edit rather than one per event type. A handler returns
+// true once it has claimed the event.
+//
+// Dispatch order cannot change the outcome: every domain matches on its own
+// disjoint set of class names, and the handful that ARE shared across domains
+// (custom-fields-*, enchantment-*) ownership-check the instance id and return
+// false when it isn't theirs — see customFieldsDispatch.js.
+const DELEGATED_DOMAINS = [
+  { input: handleCharacterInput, change: handleCharacterChange },
+  { click: handleTraitClick, input: handleTraitInput },
+  {
+    click: handleSkillClick,
+    input: handleSkillInput,
+    change: handleSkillChange,
+  },
+  { click: handleSpellClick, input: handleSpellInput },
+  {
+    click: handleArmorClick,
+    input: handleArmorInput,
+    change: handleArmorChange,
+  },
+  {
+    click: handleShieldClick,
+    input: handleShieldInput,
+    change: handleShieldChange,
+  },
+  {
+    click: handleMeleeClick,
+    input: handleMeleeInput,
+    change: handleMeleeChange,
+  },
+  {
+    click: handleRangedClick,
+    input: handleRangedInput,
+    change: handleRangedChange,
+  },
+  {
+    click: handleFirearmClick,
+    input: handleFirearmInput,
+    change: handleFirearmChange,
+  },
+  { click: handleAmmoClick, input: handleAmmoInput, change: handleAmmoChange },
+  {
+    click: handleAlchemyClick,
+    input: handleAlchemyInput,
+    change: handleAlchemyChange,
+  },
+  {
+    click: handleSurvivalGearClick,
+    input: handleSurvivalGearInput,
+    change: handleSurvivalGearChange,
+  },
+  {
+    click: handleAccessoryClick,
+    input: handleAccessoryInput,
+    change: handleAccessoryChange,
+  },
+  {
+    click: handleMagicGearClick,
+    input: handleMagicGearInput,
+    change: handleMagicGearChange,
+  },
+  {
+    click: handleCustomInventoryClick,
+    input: handleCustomInventoryInput,
+    change: handleCustomInventoryChange,
+  },
+  {
+    click: handleCoinPurseClick,
+    input: handleCoinPurseInput,
+    change: handleCoinPurseChange,
+  },
+  {
+    click: handleCharacterImageClick,
+    input: handleCharacterImageInput,
+    change: handleCharacterImageChange,
+  },
+];
+
 export function bindUI() {
   on("raceNameSelect", "change", filterSubRacesByName);
   on("raceSubSelect", "change", selectSubRace);
@@ -178,63 +260,17 @@ export function bindUI() {
 
   on("runEngineBtn", "click", runEngine);
 
-  document.addEventListener("click", (e) => {
-    if (handleTraitClick(e)) return;
-    if (handleSkillClick(e)) return;
-    if (handleSpellClick(e)) return;
-    if (handleArmorClick(e)) return;
-    if (handleShieldClick(e)) return;
-    if (handleMeleeClick(e)) return;
-    if (handleRangedClick(e)) return;
-    if (handleFirearmClick(e)) return;
-    if (handleAmmoClick(e)) return;
-    if (handleAlchemyClick(e)) return;
-    if (handleSurvivalGearClick(e)) return;
-    if (handleAccessoryClick(e)) return;
-    if (handleMagicGearClick(e)) return;
-    if (handleCustomInventoryClick(e)) return;
-    if (handleCoinPurseClick(e)) return;
-    if (handleCharacterImageClick(e)) return;
+  DELEGATED_EVENT_TYPES.forEach((type) => {
+    document.addEventListener(type, (e) => {
+      for (const domain of DELEGATED_DOMAINS) {
+        if (domain[type]?.(e)) return;
+      }
+    });
   });
 
-  document.addEventListener("input", (e) => {
-    if (handleCharacterInput(e)) return;
-    if (handleTraitInput(e)) return;
-    if (handleSkillInput(e)) return;
-    if (handleSpellInput(e)) return;
-    if (handleArmorInput(e)) return;
-    if (handleShieldInput(e)) return;
-    if (handleMeleeInput(e)) return;
-    if (handleRangedInput(e)) return;
-    if (handleFirearmInput(e)) return;
-    if (handleAmmoInput(e)) return;
-    if (handleAlchemyInput(e)) return;
-    if (handleSurvivalGearInput(e)) return;
-    if (handleAccessoryInput(e)) return;
-    if (handleMagicGearInput(e)) return;
-    if (handleCustomInventoryInput(e)) return;
-    if (handleCoinPurseInput(e)) return;
-    if (handleCharacterImageInput(e)) return;
-  });
-
-  document.addEventListener("change", (e) => {
-    if (handleSkillChange(e)) return;
-    if (handleCharacterChange(e)) return;
-    if (handleArmorChange(e)) return;
-    if (handleShieldChange(e)) return;
-    if (handleMeleeChange(e)) return;
-    if (handleRangedChange(e)) return;
-    if (handleFirearmChange(e)) return;
-    if (handleAmmoChange(e)) return;
-    if (handleAlchemyChange(e)) return;
-    if (handleSurvivalGearChange(e)) return;
-    if (handleAccessoryChange(e)) return;
-    if (handleMagicGearChange(e)) return;
-    if (handleCustomInventoryChange(e)) return;
-    if (handleCoinPurseChange(e)) return;
-    if (handleCharacterImageChange(e)) return;
-  });
-
+  // Registered separately from the domain chain above, not folded into it: item
+  // tabs are cross-cutting UI rather than a domain, and as its own listener it
+  // still runs even if a domain handler claimed the same click.
   document.addEventListener("click", (e) => {
     if (handleItemTabClick(e)) return;
   });
