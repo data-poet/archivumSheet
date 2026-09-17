@@ -26,6 +26,9 @@
   --accent-inventory: #5b21b6;
   --accent-combat: #7a1f2e; /* reference page — Combate section */
 
+  --color-focus-ring: #1d4ed8;
+  --focus-ring-w: 2px;
+
   --color-bar-hp: #e05252;
   --color-bar-mana: #4a90d9;
   --color-bar-toxicity: #3aaa5c;
@@ -114,6 +117,7 @@ html[data-theme="dark"] {
   --color-remove-hover: #f87171;
   --color-success: #34d399;
   --color-info: #60a5fa;
+  --color-focus-ring: #8ab4ff;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.4);
 

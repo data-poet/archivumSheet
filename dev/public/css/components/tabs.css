@@ -48,6 +48,12 @@
   transform: none; /* override global button:active scale */
 }
 
+/* inset so `.tab-strip`'s overflow-y: hidden doesn't clip the ring */
+.tab-btn:focus-visible,
+.tab-strip-collapse:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-w));
+}
+
 .tab-strip-collapse {
   flex-shrink: 0;
   margin-left: auto;
