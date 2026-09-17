@@ -1,5 +1,6 @@
 import { bindUI } from "./events/index.js";
 import { initNav } from "./components/nav.js";
+import { initSelectLabels } from "./components/selectLabels.js";
 import { initTabs } from "./components/tabs.js";
 import { initViewMode } from "./components/viewMode.js";
 import { initTheme } from "./components/theme.js";
@@ -43,6 +44,7 @@ export async function bootstrap() {
   initTheme();
   setupAutoRun();
   initAttributeTableHeaders();
+  initSelectLabels();
   updateActualValues();
 
   // The load*() functions only fetch catalogs and populate their own add-form

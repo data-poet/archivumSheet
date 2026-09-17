@@ -11,6 +11,7 @@ export const COMMON = {
   price: "Preço",
   description: "Descrição",
   type: "Tipo",
+  category: "Categoria",
   name: "Nome",
   tier: "Tier",
   storage: "Armazenamento",

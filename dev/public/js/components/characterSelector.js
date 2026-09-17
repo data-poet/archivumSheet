@@ -38,14 +38,24 @@ function isOpen() {
   return getPopover()?.classList.contains("is-open") ?? false;
 }
 
+function getTriggerButton() {
+  return document.getElementById("char-selector-btn");
+}
+
 export function openSelector() {
   renderPopover();
   getPopover()?.classList.add("is-open");
+  getTriggerButton()?.setAttribute("aria-expanded", "true");
   updateSelectorButton();
+  getPopover()?.querySelector("button")?.focus();
 }
 
-export function closeSelector() {
+// restoreFocus is skipped when the popover closes because focus already moved elsewhere
+// (an outside click, or an action that opens a dialog / file picker).
+export function closeSelector({ restoreFocus = false } = {}) {
   getPopover()?.classList.remove("is-open");
+  getTriggerButton()?.setAttribute("aria-expanded", "false");
+  if (restoreFocus) getTriggerButton()?.focus();
 }
 
 export function toggleSelector() {
@@ -66,47 +76,42 @@ export function renderPopover() {
       const name = c.name?.trim() || t("characters.unnamed");
       const race = c.race?.trim();
       return `
-      <li class="char-selector-item${isActive ? " is-active" : ""}"
-          data-action="select-char"
-          data-id="${c.id}"
-          role="option"
-          aria-selected="${isActive}">
-        <span class="char-selector-radio" aria-hidden="true">${isActive ? "⦿" : "○"}</span>
-        <span class="char-selector-item-info">
-          <span class="char-selector-item-name">${escapeHtml(name)}</span>
-          ${race ? `<span class="char-selector-item-race">${escapeHtml(race)}</span>` : ""}
-        </span>
+      <li>
+        <button type="button"
+            class="char-selector-item${isActive ? " is-active" : ""}"
+            data-action="select-char"
+            data-id="${c.id}"
+            ${isActive ? 'aria-current="true"' : ""}>
+          <span class="char-selector-radio" aria-hidden="true">${isActive ? "⦿" : "○"}</span>
+          <span class="char-selector-item-info">
+            <span class="char-selector-item-name">${escapeHtml(name)}</span>
+            ${race ? `<span class="char-selector-item-race">${escapeHtml(race)}</span>` : ""}
+          </span>
+        </button>
       </li>`;
     })
     .join("");
 
+  const actionItem = (action, icon, label, extraClass = "") => `
+      <li>
+        <button type="button" class="char-selector-action-item${extraClass}" data-action="${action}">
+          <span class="char-selector-action-icon" aria-hidden="true">${icon}</span>
+          <span>${label}</span>
+        </button>
+      </li>`;
+
   popover.innerHTML = `
-    <ul class="char-selector-list" role="listbox">
+    <ul class="char-selector-list">
       ${charItems}
     </ul>
     <div class="char-selector-divider"></div>
     <ul class="char-selector-actions">
-      <li class="char-selector-action-item" data-action="add-char">
-        <span class="char-selector-action-icon">+</span>
-        <span>${t("characters.add")}</span>
-      </li>
-      <li class="char-selector-action-item char-selector-action-remove" data-action="remove-char">
-        <span class="char-selector-action-icon">−</span>
-        <span>${t("characters.remove")}</span>
-      </li>
-      <div class="char-selector-divider"></div>
-      <li class="char-selector-action-item" data-action="import-char">
-        <span class="char-selector-action-icon">⬆️</span>
-        <span>${t("app.import")}</span>
-      </li>
-      <li class="char-selector-action-item" data-action="export-char">
-        <span class="char-selector-action-icon">⬇️</span>
-        <span>${t("app.export")}</span>
-      </li>
-      <li class="char-selector-action-item" data-action="replace-char">
-        <span class="char-selector-action-icon">🔄</span>
-        <span>${t("characters.replace")}</span>
-      </li>
+      ${actionItem("add-char", "+", t("characters.add"))}
+      ${actionItem("remove-char", "−", t("characters.remove"), " char-selector-action-remove")}
+      <li class="char-selector-divider" role="presentation"></li>
+      ${actionItem("import-char", "⬆️", t("app.import"))}
+      ${actionItem("export-char", "⬇️", t("app.export"))}
+      ${actionItem("replace-char", "🔄", t("characters.replace"))}
     </ul>
   `;
 }
@@ -115,7 +120,7 @@ export function initCharacterSelector() {
   updateSelectorButton();
   renderPopover();
 
-  const btn = document.getElementById("char-selector-btn");
+  const btn = getTriggerButton();
   if (btn) {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -123,10 +128,15 @@ export function initCharacterSelector() {
     });
   }
 
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !isOpen()) return;
+    closeSelector({ restoreFocus: true });
+  });
+
   document.addEventListener("click", (e) => {
     if (!isOpen()) return;
     const popover = getPopover();
-    const btnEl = document.getElementById("char-selector-btn");
+    const btnEl = getTriggerButton();
     if (!popover?.contains(e.target) && !btnEl?.contains(e.target)) {
       closeSelector();
     }
@@ -145,12 +155,12 @@ export function initCharacterSelector() {
     switch (action) {
       case "select-char": {
         if (id === getActiveCharacterId()) {
-          closeSelector();
+          closeSelector({ restoreFocus: true });
           return;
         }
         saveActiveCharacter();
         loadCharacter(id);
-        closeSelector();
+        closeSelector({ restoreFocus: true });
         updateSelectorButton();
         break;
       }
@@ -162,7 +172,7 @@ export function initCharacterSelector() {
         );
         if (name === null) return;
         addCharacter(name.trim() || t("characters.newCharacter"));
-        closeSelector();
+        closeSelector({ restoreFocus: true });
         updateSelectorButton();
         break;
       }
@@ -183,14 +193,14 @@ export function initCharacterSelector() {
         });
         if (!confirmed) return;
         removeCharacter(getActiveCharacterId());
-        closeSelector();
+        closeSelector({ restoreFocus: true });
         updateSelectorButton();
         break;
       }
 
       case "export-char": {
         exportSheet();
-        closeSelector();
+        closeSelector({ restoreFocus: true });
         break;
       }
 

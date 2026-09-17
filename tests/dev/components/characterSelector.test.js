@@ -120,7 +120,8 @@ describe("renderPopover", () => {
     const items = document.querySelectorAll(".char-selector-item");
     expect(items).toHaveLength(2);
     expect(items[0].classList.contains("is-active")).toBe(true);
-    expect(items[0].getAttribute("aria-selected")).toBe("true");
+    expect(items[0].getAttribute("aria-current")).toBe("true");
+    expect(items[1].hasAttribute("aria-current")).toBe(false);
     expect(items[0].querySelector(".char-selector-radio").textContent).toBe(
       "⦿",
     );
@@ -157,6 +158,25 @@ describe("renderPopover", () => {
     document.getElementById("char-selector-popover").remove();
     expect(() => renderPopover()).not.toThrow();
   });
+
+  test("every row is a real button, so the whole popover is keyboard-operable", () => {
+    renderPopover();
+    const rows = document.querySelectorAll(
+      ".char-selector-item, .char-selector-action-item",
+    );
+    expect(rows).toHaveLength(7);
+    rows.forEach((row) => {
+      expect(row.tagName).toBe("BUTTON");
+      expect(row.type).toBe("button");
+    });
+  });
+
+  test("claims no listbox semantics it can't honour", () => {
+    renderPopover();
+    const popover = document.getElementById("char-selector-popover");
+    expect(popover.querySelector('[role="listbox"]')).toBeNull();
+    expect(popover.querySelector('[role="option"]')).toBeNull();
+  });
 });
 
 describe("openSelector / closeSelector / toggleSelector", () => {
@@ -168,6 +188,30 @@ describe("openSelector / closeSelector / toggleSelector", () => {
         .classList.contains("is-open"),
     ).toBe(true);
     expect(document.querySelectorAll(".char-selector-item")).toHaveLength(2);
+  });
+
+  test("openSelector moves focus into the popover and marks the trigger expanded", () => {
+    openSelector();
+    expect(
+      document
+        .getElementById("char-selector-btn")
+        .getAttribute("aria-expanded"),
+    ).toBe("true");
+    expect(document.activeElement).toBe(
+      document.querySelectorAll(".char-selector-item")[0],
+    );
+  });
+
+  test("closeSelector resets aria-expanded, and only restores focus when asked", () => {
+    openSelector();
+    closeSelector();
+    const btn = document.getElementById("char-selector-btn");
+    expect(btn.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).not.toBe(btn);
+
+    openSelector();
+    closeSelector({ restoreFocus: true });
+    expect(document.activeElement).toBe(btn);
   });
 
   test("closeSelector removes is-open", () => {
@@ -220,6 +264,47 @@ describe("initCharacterSelector — button + outside click", () => {
         .getElementById("char-selector-popover")
         .classList.contains("is-open"),
     ).toBe(false);
+  });
+
+  test("Escape closes the popover and hands focus back to the trigger", () => {
+    initCharacterSelector();
+    document.getElementById("char-selector-btn").click();
+
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+
+    expect(
+      document
+        .getElementById("char-selector-popover")
+        .classList.contains("is-open"),
+    ).toBe(false);
+    expect(document.activeElement).toBe(
+      document.getElementById("char-selector-btn"),
+    );
+  });
+
+  test("Escape is ignored while the popover is already closed", () => {
+    initCharacterSelector();
+    const btn = document.getElementById("char-selector-btn");
+    btn.blur();
+
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+
+    expect(document.activeElement).not.toBe(btn);
+  });
+
+  test("an outside click closes it without yanking focus away from whatever was clicked", () => {
+    initCharacterSelector();
+    document.getElementById("char-selector-btn").click();
+
+    document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(document.activeElement).not.toBe(
+      document.getElementById("char-selector-btn"),
+    );
   });
 
   test("clicking inside the popover (not outside) does not close it", () => {

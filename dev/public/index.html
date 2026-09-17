@@ -75,7 +75,7 @@
         <button
           id="char-selector-btn"
           class="char-selector-btn"
-          aria-haspopup="listbox"
+          aria-haspopup="true"
           aria-expanded="false"
         >
           <span class="char-selector-btn-name">—</span>
@@ -1681,7 +1681,7 @@
     <div
       id="char-selector-popover"
       class="char-selector-popover"
-      role="listbox"
+      role="group"
       aria-label="Selecionar personagem"
     ></div>
 
@@ -1695,6 +1695,9 @@
 
     <!-- Hidden control required by events/index.js -->
     <button id="runEngineBtn" style="display: none"></button>
+
+    <!-- Persistent live region: toasts are appended here so screen readers announce them -->
+    <div id="toast-host" aria-live="polite" aria-atomic="true"></div>
 
     <script type="module" src="/js/main.js"></script>
 
