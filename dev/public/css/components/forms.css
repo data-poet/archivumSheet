@@ -34,17 +34,18 @@ summary:focus-visible {
   outline-offset: calc(-1 * var(--focus-ring-w));
 }
 
-/* iOS Safari auto-zooms the page when a focused text field is under 16px, so text/number inputs are pinned to 16px here; <select> is excluded since its native picker isn't affected. */
-@media (max-width: 767px) {
+/* iOS Safari auto-zooms the page when a focused text field is under 16px, so text/number inputs are pinned to 16px on touch widths; <select> is excluded since its native picker isn't affected. */
+input[type="number"],
+input[type="text"] {
+  font-size: 16px;
+  padding: 3px 6px;
+}
+
+@media (min-width: 768px) {
   input[type="number"],
   input[type="text"] {
-    font-size: 16px;
-    padding: 3px 6px;
-  }
-
-  table input[type="number"],
-  table input[type="text"] {
-    padding: 2px 3px;
+    font-size: var(--fs-sm);
+    padding: 6px 8px;
   }
 }
 
