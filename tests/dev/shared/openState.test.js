@@ -2,9 +2,7 @@ import {
   withOpenState,
   snapshotAll,
   restoreAll,
-  tableRowKeyFn,
-  divBlockKeyFn,
-  ammoDetailKeyFn,
+  detailKeyFn,
 } from "dev/public/js/shared/openState.js";
 
 beforeEach(() => {
@@ -16,83 +14,78 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+// Realistic managed-container markup: the key lives on the row preceding the
+// .detail-row, which is what detailKeyFn walks back to find.
+function rowScope(instanceId, { open = false } = {}) {
+  return `
+    <table><tbody id="scope">
+      <tr data-instance-id="${instanceId}"></tr>
+      <tr class="detail-row"><td><details ${open ? "open" : ""}></details></td></tr>
+    </tbody></table>
+  `;
+}
+
+function rebuildScopeAs(html) {
+  return jest.fn(() => {
+    document.querySelector("#scope").innerHTML = html;
+  });
+}
+
 describe("withOpenState", () => {
   test("renderFn is deferred by one animation frame, not called synchronously", () => {
     document.body.innerHTML = `<div id="scope"></div>`;
     const renderFn = jest.fn();
 
-    withOpenState("#scope", () => null, renderFn);
+    withOpenState("#scope", renderFn);
     expect(renderFn).not.toHaveBeenCalled();
 
     jest.advanceTimersToNextFrame();
     expect(renderFn).toHaveBeenCalledTimes(1);
   });
 
-  test("an open <details> matching keyFn is re-opened after renderFn rebuilds the DOM", () => {
-    document.body.innerHTML = `
-      <div id="scope">
-        <details data-instance-id="ITEM-1" open></details>
-      </div>
-    `;
-    const keyFn = (el) => el.getAttribute("data-instance-id");
+  test("an open <details> is re-opened after renderFn rebuilds the DOM", () => {
+    document.body.innerHTML = rowScope("ITEM-1", { open: true });
+    const renderFn = rebuildScopeAs(`
+      <tr data-instance-id="ITEM-1"></tr>
+      <tr class="detail-row"><td><details></details></td></tr>
+    `);
 
-    const renderFn = jest.fn(() => {
-      document.querySelector("#scope").innerHTML = `
-        <details data-instance-id="ITEM-1"></details>
-      `;
-    });
-
-    withOpenState("#scope", keyFn, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
-    const rebuilt = document.querySelector(
-      '#scope details[data-instance-id="ITEM-1"]',
+    expect(document.querySelector("#scope details").hasAttribute("open")).toBe(
+      true,
     );
-    expect(rebuilt.hasAttribute("open")).toBe(true);
   });
 
   test("a <details> that was closed before the render stays closed after it", () => {
-    document.body.innerHTML = `
-      <div id="scope">
-        <details data-instance-id="ITEM-1"></details>
-      </div>
-    `;
-    const keyFn = (el) => el.getAttribute("data-instance-id");
-    const renderFn = jest.fn(() => {
-      document.querySelector("#scope").innerHTML = `
-        <details data-instance-id="ITEM-1"></details>
-      `;
-    });
+    document.body.innerHTML = rowScope("ITEM-1");
+    const renderFn = rebuildScopeAs(`
+      <tr data-instance-id="ITEM-1"></tr>
+      <tr class="detail-row"><td><details></details></td></tr>
+    `);
 
-    withOpenState("#scope", keyFn, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
-    const rebuilt = document.querySelector(
-      '#scope details[data-instance-id="ITEM-1"]',
+    expect(document.querySelector("#scope details").hasAttribute("open")).toBe(
+      false,
     );
-    expect(rebuilt.hasAttribute("open")).toBe(false);
   });
 
-  test("a stale key from before the render (item removed) is simply dropped, not applied to an unrelated element", () => {
-    document.body.innerHTML = `
-      <div id="scope">
-        <details data-instance-id="ITEM-1" open></details>
-      </div>
-    `;
-    const keyFn = (el) => el.getAttribute("data-instance-id");
-    const renderFn = jest.fn(() => {
-      document.querySelector("#scope").innerHTML = `
-        <details data-instance-id="ITEM-2"></details>
-      `;
-    });
+  test("a stale key from before the render (item removed) is dropped, not applied to an unrelated element", () => {
+    document.body.innerHTML = rowScope("ITEM-1", { open: true });
+    const renderFn = rebuildScopeAs(`
+      <tr data-instance-id="ITEM-2"></tr>
+      <tr class="detail-row"><td><details></details></td></tr>
+    `);
 
-    withOpenState("#scope", keyFn, renderFn);
+    withOpenState("#scope", renderFn);
     expect(() => jest.advanceTimersToNextFrame()).not.toThrow();
 
-    const survivor = document.querySelector(
-      '#scope details[data-instance-id="ITEM-2"]',
+    expect(document.querySelector("#scope details").hasAttribute("open")).toBe(
+      false,
     );
-    expect(survivor.hasAttribute("open")).toBe(false);
   });
 
   test(".table-wrapper horizontal scroll position is restored after the render", () => {
@@ -102,22 +95,14 @@ describe("withOpenState", () => {
       </div>
     `;
     const wrapper = document.querySelector(".table-wrapper");
-    Object.defineProperty(wrapper, "scrollLeft", {
-      value: 42,
-      writable: true,
-    });
+    Object.defineProperty(wrapper, "scrollLeft", { value: 42, writable: true });
 
-    const renderFn = jest.fn(() => {
-      document.querySelector("#scope").innerHTML = `
-        <div class="table-wrapper"></div>
-      `;
-    });
+    const renderFn = rebuildScopeAs(`<div class="table-wrapper"></div>`);
 
-    withOpenState("#scope", () => null, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
-    const rebuiltWrapper = document.querySelector("#scope .table-wrapper");
-    expect(rebuiltWrapper.scrollLeft).toBe(42);
+    expect(document.querySelector("#scope .table-wrapper").scrollLeft).toBe(42);
   });
 
   test("the page's vertical scroll position is restored if renderFn changed it", () => {
@@ -131,7 +116,7 @@ describe("withOpenState", () => {
       .spyOn(window, "scrollTo")
       .mockImplementation(() => {});
 
-    withOpenState("#scope", () => null, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 250);
@@ -146,7 +131,7 @@ describe("withOpenState", () => {
       .spyOn(window, "scrollTo")
       .mockImplementation(() => {});
 
-    withOpenState("#scope", () => null, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
     expect(scrollToSpy).not.toHaveBeenCalled();
@@ -156,16 +141,14 @@ describe("withOpenState", () => {
   test("when the scope selector matches nothing, renderFn still runs (deferred one frame) and nothing throws", () => {
     const renderFn = jest.fn();
 
-    expect(() => withOpenState("#missing", () => null, renderFn)).not.toThrow();
+    expect(() => withOpenState("#missing", renderFn)).not.toThrow();
     expect(renderFn).not.toHaveBeenCalled();
 
     jest.advanceTimersToNextFrame();
     expect(renderFn).toHaveBeenCalledTimes(1);
   });
 
-  test("two sibling <details> for the same instance stay independently scoped when keyFn differentiates them (data-detail-kind)", () => {
-    // Drives the real tableRowKeyFn (not a hand-rolled keyFn) so it exercises the
-    // internal _withDetailKind composition that keeps sibling panels independent.
+  test("two sibling <details> for the same instance stay independently scoped via data-detail-kind", () => {
     document.body.innerHTML = `
       <table><tbody id="scope">
         <tr data-instance-id="ITEM-1"></tr>
@@ -173,22 +156,23 @@ describe("withOpenState", () => {
         <tr class="detail-row"><td><details data-detail-kind="customize"></details></td></tr>
       </tbody></table>
     `;
-    const keyFn = tableRowKeyFn("data-instance-id");
-    const renderFn = jest.fn(() => {
-      document.querySelector("#scope").innerHTML = `
-        <tr data-instance-id="ITEM-1"></tr>
-        <tr class="detail-row"><td><details data-detail-kind="stats"></details></td></tr>
-        <tr class="detail-row"><td><details data-detail-kind="customize"></details></td></tr>
-      `;
-    });
+    const renderFn = rebuildScopeAs(`
+      <tr data-instance-id="ITEM-1"></tr>
+      <tr class="detail-row"><td><details data-detail-kind="stats"></details></td></tr>
+      <tr class="detail-row"><td><details data-detail-kind="customize"></details></td></tr>
+    `);
 
-    withOpenState("#scope", keyFn, renderFn);
+    withOpenState("#scope", renderFn);
     jest.advanceTimersToNextFrame();
 
-    const stats = document.querySelector('[data-detail-kind="stats"]');
-    const customize = document.querySelector('[data-detail-kind="customize"]');
-    expect(stats.hasAttribute("open")).toBe(true);
-    expect(customize.hasAttribute("open")).toBe(false);
+    expect(
+      document.querySelector('[data-detail-kind="stats"]').hasAttribute("open"),
+    ).toBe(true);
+    expect(
+      document
+        .querySelector('[data-detail-kind="customize"]')
+        .hasAttribute("open"),
+    ).toBe(false);
   });
 });
 
@@ -287,178 +271,178 @@ describe("snapshotAll / restoreAll", () => {
   });
 });
 
-describe("tableRowKeyFn", () => {
-  test("reads the key attribute off the immediately preceding data row", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr data-instance-id="ROW-1"></tr>
+describe("detailKeyFn", () => {
+  function detailsAfter(rowsHtml) {
+    document.body.innerHTML = `<table><tbody>${rowsHtml}</tbody></table>`;
+    return document.querySelector("details");
+  }
+
+  describe("table rows", () => {
+    test("keys off data-instance-id on the row preceding the detail row", () => {
+      const details = detailsAfter(`
+        <tr data-instance-id="ITEM-1"></tr>
         <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-    const keyFn = tableRowKeyFn("data-instance-id");
+      `);
 
-    expect(keyFn(details)).toBe("ROW-1");
+      expect(detailKeyFn(details)).toBe("ITEM-1");
+    });
+
+    test("finds the key on a descendant of the preceding row, not just the row itself", () => {
+      const details = detailsAfter(`
+        <tr><td><button data-instance-id="ITEM-1"></button></td></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `);
+
+      expect(detailKeyFn(details)).toBe("ITEM-1");
+    });
+
+    test("walks back past intervening .detail-row siblings to reach the data row", () => {
+      document.body.innerHTML = `
+        <table><tbody>
+          <tr data-instance-id="ITEM-1"></tr>
+          <tr class="detail-row"><td><details id="first"></details></td></tr>
+          <tr class="detail-row"><td><details id="second"></details></td></tr>
+        </tbody></table>
+      `;
+
+      expect(detailKeyFn(document.getElementById("second"))).toBe("ITEM-1");
+    });
+
+    test("stops at a non-detail row that carries no key rather than scanning the whole table", () => {
+      const details = detailsAfter(`
+        <tr data-instance-id="ITEM-1"></tr>
+        <tr></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `);
+
+      expect(detailKeyFn(details)).toBeNull();
+    });
+
+    test.each([
+      ["data-id", "SKILL-9"],
+      ["data-name", "Espada"],
+      ["data-custom-item-id", "CUSTOM-3"],
+    ])("falls back to %s when data-instance-id is absent", (attr, value) => {
+      const details = detailsAfter(`
+        <tr ${attr}="${value}"></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `);
+
+      expect(detailKeyFn(details)).toBe(value);
+    });
+
+    test("appends data-detail-kind so sibling panels for one instance don't share a key", () => {
+      const details = detailsAfter(`
+        <tr data-instance-id="ITEM-1"></tr>
+        <tr class="detail-row"><td><details data-detail-kind="tabs"></details></td></tr>
+      `);
+
+      expect(detailKeyFn(details)).toBe("ITEM-1:tabs");
+    });
   });
 
-  test("walks back through several sibling .detail-row rows to find the owning data row", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr data-instance-id="ROW-1"></tr>
-        <tr class="detail-row"><td><details data-detail-kind="stats"></details></td></tr>
-        <tr class="detail-row"><td><details data-detail-kind="customize"></details></td></tr>
-      </tbody></table>
-    `;
-    const secondDetail = document.querySelector(
-      '[data-detail-kind="customize"]',
-    );
-    const keyFn = tableRowKeyFn("data-instance-id");
+  // An ammo entry is identified by (container, ammo). Keying on the container's
+  // data-instance-id alone made every entry in a container share one key, so
+  // opening one entry's details reopened all of them on the next re-render.
+  describe("ammo rows", () => {
+    test("composes container instance id with ammo id, taking precedence over data-instance-id", () => {
+      const details = detailsAfter(`
+        <tr><td>
+          <input data-instance-id="CONTAINER-1" data-ammo-id="AMMO-1" />
+        </td></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `);
 
-    expect(keyFn(secondDetail)).toBe("ROW-1:customize");
+      expect(detailKeyFn(details)).toBe("CONTAINER-1:AMMO-1");
+    });
+
+    test("two entries in the SAME container get distinct keys", () => {
+      document.body.innerHTML = `
+        <table><tbody>
+          <tr><td><input data-instance-id="CONTAINER-1" data-ammo-id="AMMO-1" /></td></tr>
+          <tr class="detail-row"><td><details id="one"></details></td></tr>
+          <tr><td><input data-instance-id="CONTAINER-1" data-ammo-id="AMMO-2" /></td></tr>
+          <tr class="detail-row"><td><details id="two"></details></td></tr>
+        </tbody></table>
+      `;
+
+      expect(detailKeyFn(document.getElementById("one"))).toBe(
+        "CONTAINER-1:AMMO-1",
+      );
+      expect(detailKeyFn(document.getElementById("two"))).toBe(
+        "CONTAINER-1:AMMO-2",
+      );
+    });
+
+    test("loose ammo (no container) keys with an empty instance-id segment", () => {
+      const details = detailsAfter(`
+        <tr><td><input data-ammo-id="AMMO-1" data-stored-at="backpack" /></td></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `);
+
+      expect(detailKeyFn(details)).toBe(":AMMO-1");
+    });
+
+    test("snapshotAll/restoreAll reopens only the ammo entry that was open", () => {
+      const markup = `
+        <div id="ammoContainerList"><table><tbody>
+          <tr><td><input data-instance-id="CONTAINER-1" data-ammo-id="AMMO-1" /></td></tr>
+          <tr class="detail-row"><td><details id="one"></details></td></tr>
+          <tr><td><input data-instance-id="CONTAINER-1" data-ammo-id="AMMO-2" /></td></tr>
+          <tr class="detail-row"><td><details id="two"></details></td></tr>
+        </tbody></table></div>
+      `;
+      document.body.innerHTML = markup;
+      document.getElementById("one").setAttribute("open", "");
+
+      const snapshot = snapshotAll();
+      document.body.innerHTML = markup; // re-render: nothing open
+      restoreAll(snapshot);
+
+      expect(document.getElementById("one").hasAttribute("open")).toBe(true);
+      expect(document.getElementById("two").hasAttribute("open")).toBe(false);
+    });
   });
 
-  test("returns null when no ancestor <tr> exists at all", () => {
+  describe("equipped-slot blocks", () => {
+    test("keys off data-instance-id on the preceding sibling block", () => {
+      document.body.innerHTML = `
+        <div id="slots">
+          <div class="equipped-slot-grid" data-instance-id="ITEM-1"></div>
+          <div class="equipped-detail"><details></details></div>
+        </div>
+      `;
+
+      expect(detailKeyFn(document.querySelector("details"))).toBe("ITEM-1");
+    });
+
+    test("falls back to data-slot when there is no instance id (armor slots)", () => {
+      document.body.innerHTML = `
+        <div id="slots">
+          <div class="equipped-slot-grid" data-slot="Torso"></div>
+          <div class="equipped-detail"><details></details></div>
+        </div>
+      `;
+
+      expect(detailKeyFn(document.querySelector("details"))).toBe("Torso");
+    });
+
+    test("walks back past sibling .equipped-detail blocks to reach the slot block", () => {
+      document.body.innerHTML = `
+        <div id="slots">
+          <div class="equipped-slot-grid" data-instance-id="ITEM-1"></div>
+          <div class="equipped-detail"><details id="first"></details></div>
+          <div class="equipped-detail"><details id="second"></details></div>
+        </div>
+      `;
+
+      expect(detailKeyFn(document.getElementById("second"))).toBe("ITEM-1");
+    });
+  });
+
+  test("returns null for a <details> in neither a table row nor an equipped-slot block", () => {
     document.body.innerHTML = `<div><details></details></div>`;
-    const details = document.querySelector("details");
-    const keyFn = tableRowKeyFn("data-instance-id");
 
-    expect(keyFn(details)).toBeNull();
-  });
-
-  test("returns null when walking back hits a non-detail row before finding the key", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr><td>unrelated header row, no key attr</td></tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-    const keyFn = tableRowKeyFn("data-instance-id");
-
-    expect(keyFn(details)).toBeNull();
-  });
-
-  test("finds the key on a descendant element of the data row, not just the row itself", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr><td><span data-instance-id="ROW-1"></span></td></tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-    const keyFn = tableRowKeyFn("data-instance-id");
-
-    expect(keyFn(details)).toBe("ROW-1");
-  });
-});
-
-describe("divBlockKeyFn", () => {
-  test("reads the key attribute off the immediately preceding sibling block", () => {
-    document.body.innerHTML = `
-      <div>
-        <div data-instance-id="SLOT-1"></div>
-        <div class="equipped-detail"><details></details></div>
-      </div>
-    `;
-    const details = document.querySelector("details");
-    const keyFn = divBlockKeyFn("data-instance-id");
-
-    expect(keyFn(details)).toBe("SLOT-1");
-  });
-
-  test("walks back through several preceding siblings to find the owning slot block", () => {
-    document.body.innerHTML = `
-      <div>
-        <div data-instance-id="SLOT-1"></div>
-        <div class="equipped-detail"><details data-detail-kind="stats"></details></div>
-        <div class="equipped-detail"><details data-detail-kind="customize"></details></div>
-      </div>
-    `;
-    const secondDetail = document.querySelector(
-      '[data-detail-kind="customize"]',
-    );
-    const keyFn = divBlockKeyFn("data-instance-id");
-
-    expect(keyFn(secondDetail)).toBe("SLOT-1:customize");
-  });
-
-  test("returns null when no ancestor .equipped-detail block exists", () => {
-    document.body.innerHTML = `<div><details></details></div>`;
-    const details = document.querySelector("details");
-    const keyFn = divBlockKeyFn("data-instance-id");
-
-    expect(keyFn(details)).toBeNull();
-  });
-
-  test("returns null when no preceding sibling carries the key attribute", () => {
-    document.body.innerHTML = `
-      <div>
-        <div class="equipped-detail"><details></details></div>
-      </div>
-    `;
-    const details = document.querySelector("details");
-    const keyFn = divBlockKeyFn("data-instance-id");
-
-    expect(keyFn(details)).toBeNull();
-  });
-});
-
-describe("ammoDetailKeyFn", () => {
-  test("composes containerInstanceId:ammoId from the preceding data row", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr data-instance-id="CONTAINER-1" data-ammo-id="AMMO-1"></tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-
-    expect(ammoDetailKeyFn(details)).toBe("CONTAINER-1:AMMO-1");
-  });
-
-  test("finds data-instance-id and data-ammo-id on descendant elements of the row, not just the row itself", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr>
-          <td><span data-instance-id="CONTAINER-1"></span></td>
-          <td><span data-ammo-id="AMMO-1"></span></td>
-        </tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-
-    expect(ammoDetailKeyFn(details)).toBe("CONTAINER-1:AMMO-1");
-  });
-
-  test("composes with an empty container id segment when only ammoId is present", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr data-ammo-id="AMMO-1"></tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-
-    expect(ammoDetailKeyFn(details)).toBe(":AMMO-1");
-  });
-
-  test("returns null when the preceding row has no data-ammo-id at all", () => {
-    document.body.innerHTML = `
-      <table><tbody>
-        <tr data-instance-id="CONTAINER-1"></tr>
-        <tr class="detail-row"><td><details></details></td></tr>
-      </tbody></table>
-    `;
-    const details = document.querySelector("details");
-
-    expect(ammoDetailKeyFn(details)).toBeNull();
-  });
-
-  test("returns null when no ancestor <tr> exists", () => {
-    document.body.innerHTML = `<div><details></details></div>`;
-    const details = document.querySelector("details");
-
-    expect(ammoDetailKeyFn(details)).toBeNull();
+    expect(detailKeyFn(document.querySelector("details"))).toBeNull();
   });
 });

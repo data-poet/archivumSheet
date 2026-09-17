@@ -15,7 +15,7 @@ import {
   updateLooseAmmoTypeFilter,
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { ammoDetailKeyFn } from "../../../shared/openState.js";
+import { detailKeyFn } from "../../../shared/openState.js";
 
 const selected = state.selected;
 const data = state.data;
@@ -70,8 +70,8 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
 
 function _snapshot() {
   return {
-    containers: _snap("#ammoContainerList", ammoDetailKeyFn),
-    loose: _snap("#looseAmmoList", ammoDetailKeyFn),
+    containers: _snap("#ammoContainerList", detailKeyFn),
+    loose: _snap("#looseAmmoList", detailKeyFn),
   };
 }
 function _snap(sel, keyFn) {
@@ -86,8 +86,8 @@ function _snap(sel, keyFn) {
   return open;
 }
 function _restore(snap) {
-  _rest("#ammoContainerList", ammoDetailKeyFn, snap.containers);
-  _rest("#looseAmmoList", ammoDetailKeyFn, snap.loose);
+  _rest("#ammoContainerList", detailKeyFn, snap.containers);
+  _rest("#looseAmmoList", detailKeyFn, snap.loose);
 }
 function _rest(sel, keyFn, open) {
   if (!open.size) return;
