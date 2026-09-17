@@ -81,3 +81,16 @@
   margin: 0 0 0.5rem;
 }
 
+.character-points-total-row td {
+  border-top: 1px solid var(--color-border);
+  font-weight: 700;
+}
+
+.character-points-total-row td:first-child {
+  color: var(--color-text);
+}
+
+.character-points-grid {
+  align-items: start;
+}
+
