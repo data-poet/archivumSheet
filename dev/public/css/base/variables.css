@@ -48,8 +48,12 @@
   --color-bar-hp: #e05252;
   --color-bar-mana: #4a90d9;
   --color-bar-toxicity: #3aaa5c;
-  --color-bar-experience: #8b5cf6;
+  /* darker than the other bars' tone because .resume-bar-badge reuses it as a fill under white text */
+  --color-bar-experience: #8452f5;
   --bar-h: 13px;
+
+  /* Not a section accent: the neutral fill for ammo badges and save buttons. Carries white text, so it stays put in both themes. */
+  --color-accent: #4a6fa5;
 
   /* margin / padding / gap only. Fluid spacing keeps literal px inside clamp() for readability, but its stops come from this scale too. */
   --space-1: 2px;

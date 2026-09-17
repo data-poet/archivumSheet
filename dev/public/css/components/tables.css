@@ -279,8 +279,8 @@ tr.spell-detail-row details[open] summary {
 
 .custom-fields-save-btn,
 .custom-item-save-btn {
-  background: var(--color-accent, #4a6fa5);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 .item-detail-field {
