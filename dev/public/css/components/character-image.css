@@ -97,6 +97,7 @@
 .charimg-clear-btn {
   width: 28px;
   height: 28px;
+  min-height: 0; /* the global button min-height would make this 28×36 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -177,6 +178,7 @@
 .charimg-radio-btn {
   width: 22px;
   height: 22px;
+  min-height: 0; /* the global button min-height would stretch the circle into an ellipse */
   border-radius: 50%;
   border: 2px solid var(--color-border);
   background: var(--color-btn-bg);
