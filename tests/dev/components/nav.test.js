@@ -86,6 +86,11 @@ describe("initNav — building the nav bars", () => {
 });
 
 describe("initNav — click highlighting", () => {
+  const nativeMatchMedia = window.matchMedia;
+  afterEach(() => {
+    window.matchMedia = nativeMatchMedia;
+  });
+
   test("clicking a sidebar link prevents default, scrolls to the target section, and marks it active", () => {
     initNav();
     sectionDOM(LABELS.nav[1].key);
@@ -121,6 +126,23 @@ describe("initNav — click highlighting", () => {
       `#bottomnav .bottomnav-link[data-section="${LABELS.nav[2].key}"]`,
     );
     expect(matchingBottomLink.classList.contains("is-active")).toBe(true);
+  });
+
+  test("scrolls without animation when the OS reduce-motion setting is on", () => {
+    window.matchMedia = jest.fn(() => ({ matches: true }));
+    initNav();
+    sectionDOM(LABELS.nav[1].key);
+
+    document
+      .querySelectorAll("#sidebar .sidebar-link")[1]
+      .dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+
+    expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({
+      behavior: "auto",
+      block: "start",
+    });
   });
 
   test("does not throw when the clicked link's target section isn't in the DOM", () => {
