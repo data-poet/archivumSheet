@@ -11,7 +11,7 @@ import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
-import { customFieldsBody } from "../../../shared/renderUtils.js";
+import { customFieldsBody, escapeHtml } from "../../../shared/renderUtils.js";
 import {
   equippedItemTabs,
   itemTabsDetailRow,
@@ -79,7 +79,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
     <div class="equipped-slot-grid" data-instance-id="${instanceId}">
       <div class="equipped-slot-label">${t("magicGear.magicGear")}</div>
       <div class="equipped-slot-controls">
-        <strong class="equipped-magic-gear-name">${displayName(inst, record)}</strong>
+        <strong class="equipped-magic-gear-name">${escapeHtml(displayName(inst, record))}</strong>
         <span class="item-detail"><em>${t("common.price")}:</em> ${resolved?.total_value ?? record.magic_gear_price}</span>
         <span class="item-detail"><em>${t("common.weight")}:</em> ${resolved?.total_weight ?? record.magic_gear_weight}</span>
         ${equippedMoveSelect("equipped-magic-gear-move", `data-instance-id="${instanceId}"`)}
@@ -148,7 +148,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
         return `
         <tr data-instance-id="${instanceId}">
-          <td>${displayName(inst, record)}</td>
+          <td>${escapeHtml(displayName(inst, record))}</td>
           <td class="col-num">${resolved?.total_value ?? record.magic_gear_price}</td>
           <td>
             <select class="magic-gear-storage-select" data-instance-id="${instanceId}">
