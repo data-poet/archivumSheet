@@ -79,7 +79,7 @@
 
 .ammo-type-badge {
   display: inline-block;
-  background: var(--color-accent, #4a6fa5);
+  background: var(--color-accent);
   color: var(--color-on-accent);
   font-size: var(--fs-xxs);
   padding: var(--space-1) var(--space-4);
@@ -90,7 +90,7 @@
 
 .ammo-container-body {
   padding: var(--space-3) var(--space-5) var(--space-5) var(--space-5);
-  border-left: 2px solid var(--color-border, #333);
+  border-left: 2px solid var(--color-border);
   margin: 0 0 var(--space-6) var(--space-2);
 }
 
@@ -105,7 +105,7 @@
 }
 
 .ammo-not-carriable {
-  color: var(--color-danger, #e55);
+  color: var(--color-remove);
   font-weight: 600;
 }
 
