@@ -3,6 +3,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { showToast } from "../../../store/persistence.js";
 import { showConfirm } from "../../../components/dialog.js";
+import { escapeAttr } from "../../../shared/renderUtils.js";
 
 function _img() {
   return state.selected.character.image;
@@ -114,13 +115,16 @@ export function renderResumeImage() {
 
   container.hidden = false;
 
+  // Every interpolation is escaped because an imported sheet's JSON supplies these
+  // verbatim — a quote in img.data would otherwise break out of the src attribute.
+  // escapeAttr leaves valid numbers and empty strings untouched.
   container.innerHTML = `
-    <div class="resume-charimg-frame" id="resume-charimg-bg" style="background-color:${_bgColor(img)}">
+    <div class="resume-charimg-frame" id="resume-charimg-bg" style="background-color:${escapeAttr(_bgColor(img))}">
       <img
         id="resume-charimg-img"
         class="resume-charimg-img"
-        src="${img.data}"
-        style="width:${img.scale}%; left:${img.position.x}%; top:${img.position.y}%;"
+        src="${escapeAttr(img.data)}"
+        style="width:${escapeAttr(img.scale)}%; left:${escapeAttr(img.position.x)}%; top:${escapeAttr(img.position.y)}%;"
         alt=""
       />
     </div>

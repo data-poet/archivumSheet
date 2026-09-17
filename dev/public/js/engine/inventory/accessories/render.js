@@ -8,7 +8,7 @@ import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
-import { customFieldsBody } from "../../../shared/renderUtils.js";
+import { customFieldsBody, escapeHtml } from "../../../shared/renderUtils.js";
 import {
   equippedItemTabs,
   itemTabsDetailRow,
@@ -89,7 +89,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
     <div class="equipped-slot-grid" data-instance-id="${instanceId}">
       <div class="equipped-slot-label">${t("accessories.accessory")}</div>
       <div class="equipped-slot-controls">
-        <strong class="equipped-accessory-name">${displayName(inst, record)}</strong>
+        <strong class="equipped-accessory-name">${escapeHtml(displayName(inst, record))}</strong>
         <label class="hp-modifier">
           ${t("common.price")}:
           <input
@@ -161,7 +161,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
 
         return `
         <tr data-instance-id="${instanceId}">
-          <td>${displayName(inst, record)}</td>
+          <td>${escapeHtml(displayName(inst, record))}</td>
           <td class="col-num">
             <input
               type="number"

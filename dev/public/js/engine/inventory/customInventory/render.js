@@ -4,7 +4,7 @@ import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
-import { customItemEditRow } from "../../../shared/renderUtils.js";
+import { customItemEditRow, escapeHtml } from "../../../shared/renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -57,7 +57,7 @@ function renderCustomInventorySection(location, entries, sheet) {
 
         return `
           <tr>
-            <td>${entry.name}</td>
+            <td>${escapeHtml(entry.name)}</td>
             <td class="col-num">
               <div class="num-stepper">
                 <input

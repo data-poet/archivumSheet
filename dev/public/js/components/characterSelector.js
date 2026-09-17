@@ -10,6 +10,7 @@ import {
 import { exportSheet, importSheet, showToast } from "../store/persistence.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
+import { escapeHtml } from "../shared/renderUtils.js";
 
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
@@ -23,8 +24,8 @@ export function updateSelectorButton() {
   const race = active?.race?.trim();
 
   btn.innerHTML = `
-    <span class="char-selector-btn-name">${name}</span>
-    ${race ? `<span class="char-selector-btn-race">${race}</span>` : ""}
+    <span class="char-selector-btn-name">${escapeHtml(name)}</span>
+    ${race ? `<span class="char-selector-btn-race">${escapeHtml(race)}</span>` : ""}
     <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
   `;
 }
@@ -72,8 +73,8 @@ export function renderPopover() {
           aria-selected="${isActive}">
         <span class="char-selector-radio" aria-hidden="true">${isActive ? "⦿" : "○"}</span>
         <span class="char-selector-item-info">
-          <span class="char-selector-item-name">${name}</span>
-          ${race ? `<span class="char-selector-item-race">${race}</span>` : ""}
+          <span class="char-selector-item-name">${escapeHtml(name)}</span>
+          ${race ? `<span class="char-selector-item-race">${escapeHtml(race)}</span>` : ""}
         </span>
       </li>`;
     })
