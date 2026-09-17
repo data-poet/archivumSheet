@@ -11,11 +11,12 @@ import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
+import { customFieldsBody } from "../../../shared/renderUtils.js";
 import {
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
-} from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+  equippedItemTabs,
+  itemTabsDetailRow,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMagicGearItemCategory } from "../shared/enchantments/model.js";
 import { isMagicGearAtEquipLimit } from "./model.js";
 
@@ -85,20 +86,28 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
         <button class="btn-remove remove-equipped-magic-gear" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${customFieldsEquippedDetail(
+    ${equippedItemTabs(instanceId, [
       {
-        instanceId,
-        name: inst.magic_gear_custom_name,
-        description: inst.magic_gear_custom_description,
-        effect: inst.magic_gear_custom_effect,
+        key: "customize",
+        label: t("common.customize"),
+        content: customFieldsBody({
+          instanceId,
+          name: inst.magic_gear_custom_name,
+          description: inst.magic_gear_custom_description,
+          effect: inst.magic_gear_custom_effect,
+        }),
       },
-      enchantmentsExpander({
-        instanceId,
-        entries: inst.enchantments || [],
-        itemCategory: getMagicGearItemCategory(),
-        resolvedEntries: resolved?.enchantments,
-      }),
-    )}
+      {
+        key: "enchantments",
+        label: t("enchantments.title"),
+        content: enchantmentsBody({
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: getMagicGearItemCategory(),
+          resolvedEntries: resolved?.enchantments,
+        }),
+      },
+    ])}
   `;
 }
 
@@ -156,21 +165,28 @@ function renderStorageSection(location, stored, data, sheet) {
             <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${customFieldsDetailRow(
-          4,
+        ${itemTabsDetailRow(4, instanceId, [
           {
-            instanceId,
-            name: inst.magic_gear_custom_name,
-            description: inst.magic_gear_custom_description,
-            effect: inst.magic_gear_custom_effect,
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.magic_gear_custom_name,
+              description: inst.magic_gear_custom_description,
+              effect: inst.magic_gear_custom_effect,
+            }),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getMagicGearItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getMagicGearItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}
         `;
       })
       .join("");

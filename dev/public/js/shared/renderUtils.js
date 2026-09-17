@@ -99,7 +99,7 @@ function _buildNestedList(items) {
   return render(root);
 }
 
-function _buildDetailContent(fields) {
+export function buildDetailContent(fields) {
   return fields
     .filter(({ value }) => value && value !== "—")
     .map(({ label, value, rich }) =>
@@ -111,7 +111,7 @@ function _buildDetailContent(fields) {
 }
 
 export function detailRow(colspan, fields) {
-  const content = _buildDetailContent(fields);
+  const content = buildDetailContent(fields);
   if (!content) return "";
 
   return `
@@ -173,7 +173,7 @@ export function readCustomFieldsEditorValues(instanceId) {
   };
 }
 
-function _customFieldsBody({ instanceId, name, description, effect }) {
+export function customFieldsBody({ instanceId, name, description, effect }) {
   if (isCustomFieldsEditorOpen(instanceId)) {
     return `
       <div class="custom-fields-block custom-fields-block--editing" data-instance-id="${instanceId}">
@@ -225,45 +225,6 @@ function _customFieldsBody({ instanceId, name, description, effect }) {
           : `<p class="custom-fields-empty">${t("common.noCustomFields")}</p>`
       }
       <button type="button" class="custom-fields-edit-btn" data-instance-id="${instanceId}">${t("common.customize")}</button>
-    </div>`;
-}
-
-// Mirrors equippedDetailBlock's wrapper exactly, so open/closed state survives re-renders via
-// the existing generic openState.js key functions.
-export function customFieldsEquippedDetail(params, extraContent = "") {
-  return `
-    <div class="equipped-detail">
-      <details data-detail-kind="customize">
-        <summary>${t("common.customize")}</summary>
-        ${_customFieldsBody(params)}
-        ${extraContent}
-      </details>
-    </div>`;
-}
-
-export function customFieldsDetailRow(colspan, params, extraContent = "") {
-  return `
-    <tr class="detail-row">
-      <td colspan="${colspan}">
-        <details data-detail-kind="customize">
-          <summary>${t("common.customize")}</summary>
-          ${_customFieldsBody(params)}
-          ${extraContent}
-        </details>
-      </td>
-    </tr>`;
-}
-
-export function equippedDetailBlock(fields) {
-  const content = _buildDetailContent(fields);
-  if (!content) return "";
-
-  return `
-    <div class="equipped-detail">
-      <details data-detail-kind="stats">
-        <summary>${t("common.details")}</summary>
-        <div class="item-detail-grid">${content}</div>
-      </details>
     </div>`;
 }
 

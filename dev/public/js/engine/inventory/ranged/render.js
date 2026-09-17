@@ -14,13 +14,15 @@ import {
 } from "../shared/equipmentSelectors.js";
 import {
   formatRichText,
-  detailRow,
-  equippedDetailBlock,
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
+  customFieldsBody,
   withEnchantmentBadge,
 } from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+import {
+  equippedItemTabs,
+  itemTabsDetailRow,
+  statsTabContent,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getRangedItemCategory } from "../shared/enchantments/model.js";
 
 // Ranged-local wrapper around withEnchantmentBadge — same relationship melee/render.js's withMeleeEnchantmentBadge has with it.
@@ -184,21 +186,33 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
         <button class="btn-remove remove-equipped-ranged" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${equippedDetailBlock(rangedDetailFields(resolved, weaponData))}
-    ${customFieldsEquippedDetail(
+    ${equippedItemTabs(instanceId, [
       {
-        instanceId,
-        name: inst.weapon_custom_name,
-        description: inst.weapon_custom_description,
-        effect: inst.weapon_custom_effect,
+        key: "details",
+        label: t("common.technical"),
+        content: statsTabContent(rangedDetailFields(resolved, weaponData)),
       },
-      enchantmentsExpander({
-        instanceId,
-        entries: inst.enchantments || [],
-        itemCategory: getRangedItemCategory(),
-        resolvedEntries: resolved?.enchantments,
-      }),
-    )}
+      {
+        key: "customize",
+        label: t("common.customize"),
+        content: customFieldsBody({
+          instanceId,
+          name: inst.weapon_custom_name,
+          description: inst.weapon_custom_description,
+          effect: inst.weapon_custom_effect,
+        }),
+      },
+      {
+        key: "enchantments",
+        label: t("enchantments.title"),
+        content: enchantmentsBody({
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: getRangedItemCategory(),
+          resolvedEntries: resolved?.enchantments,
+        }),
+      },
+    ])}
   `;
 }
 
@@ -255,22 +269,33 @@ function renderStorageSection(location, stored, data, sheet) {
             <button class="btn-remove remove-ranged" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${detailRow(6, rangedDetailFields(resolved, weaponData))}
-        ${customFieldsDetailRow(
-          6,
+        ${itemTabsDetailRow(6, instanceId, [
           {
-            instanceId,
-            name: inst.weapon_custom_name,
-            description: inst.weapon_custom_description,
-            effect: inst.weapon_custom_effect,
+            key: "details",
+            label: t("common.technical"),
+            content: statsTabContent(rangedDetailFields(resolved, weaponData)),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getRangedItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}`;
+          {
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.weapon_custom_name,
+              description: inst.weapon_custom_description,
+              effect: inst.weapon_custom_effect,
+            }),
+          },
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getRangedItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}`;
       })
       .join("");
   }

@@ -8,11 +8,12 @@ import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
+import { customFieldsBody } from "../../../shared/renderUtils.js";
 import {
-  customFieldsEquippedDetail,
-  customFieldsDetailRow,
-} from "../../../shared/renderUtils.js";
-import { enchantmentsExpander } from "../shared/enchantments/render.js";
+  equippedItemTabs,
+  itemTabsDetailRow,
+} from "../../../shared/itemTabs.js";
+import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getAccessoryItemCategory } from "../shared/enchantments/model.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -105,20 +106,28 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
         <button class="btn-remove remove-equipped-accessory" data-instance-id="${instanceId}">✕</button>
       </div>
     </div>
-    ${customFieldsEquippedDetail(
+    ${equippedItemTabs(instanceId, [
       {
-        instanceId,
-        name: inst.accessory_custom_name,
-        description: inst.accessory_custom_description,
-        effect: inst.accessory_custom_effect,
+        key: "customize",
+        label: t("common.customize"),
+        content: customFieldsBody({
+          instanceId,
+          name: inst.accessory_custom_name,
+          description: inst.accessory_custom_description,
+          effect: inst.accessory_custom_effect,
+        }),
       },
-      enchantmentsExpander({
-        instanceId,
-        entries: inst.enchantments || [],
-        itemCategory: getAccessoryItemCategory(),
-        resolvedEntries: resolved?.enchantments,
-      }),
-    )}
+      {
+        key: "enchantments",
+        label: t("enchantments.title"),
+        content: enchantmentsBody({
+          instanceId,
+          entries: inst.enchantments || [],
+          itemCategory: getAccessoryItemCategory(),
+          resolvedEntries: resolved?.enchantments,
+        }),
+      },
+    ])}
   `;
 }
 
@@ -179,21 +188,28 @@ function renderStorageSection(location, stored, selected, data, sheet) {
             <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
           </td>
         </tr>
-        ${customFieldsDetailRow(
-          4,
+        ${itemTabsDetailRow(4, instanceId, [
           {
-            instanceId,
-            name: inst.accessory_custom_name,
-            description: inst.accessory_custom_description,
-            effect: inst.accessory_custom_effect,
+            key: "customize",
+            label: t("common.customize"),
+            content: customFieldsBody({
+              instanceId,
+              name: inst.accessory_custom_name,
+              description: inst.accessory_custom_description,
+              effect: inst.accessory_custom_effect,
+            }),
           },
-          enchantmentsExpander({
-            instanceId,
-            entries: inst.enchantments || [],
-            itemCategory: getAccessoryItemCategory(),
-            resolvedEntries: resolved?.enchantments,
-          }),
-        )}
+          {
+            key: "enchantments",
+            label: t("enchantments.title"),
+            content: enchantmentsBody({
+              instanceId,
+              entries: inst.enchantments || [],
+              itemCategory: getAccessoryItemCategory(),
+              resolvedEntries: resolved?.enchantments,
+            }),
+          },
+        ])}
         `;
       })
       .join("");

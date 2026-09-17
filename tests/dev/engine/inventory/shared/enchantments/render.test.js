@@ -1,8 +1,4 @@
-import {
-  enchantmentsExpander,
-  enchantmentsEquippedDetail,
-  enchantmentsDetailRow,
-} from "dev/public/js/engine/inventory/shared/enchantments/render.js";
+import { enchantmentsExpander } from "dev/public/js/engine/inventory/shared/enchantments/render.js";
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTypeFilter,
@@ -475,36 +471,6 @@ describe("enchantmentsExpander — entry list", () => {
     expect(el.querySelector(".enchantment-entry-label").textContent).toBe(
       "Concede Vantagem: GHOST-ID",
     );
-  });
-});
-
-describe("enchantmentsEquippedDetail / enchantmentsDetailRow", () => {
-  const params = {
-    instanceId: "ITEM-1",
-    entries: [],
-    itemCategory: "Cabeça",
-    resolvedEntries: [],
-  };
-
-  test("enchantmentsEquippedDetail wraps the expander in a .equipped-detail div", () => {
-    const el = parse(enchantmentsEquippedDetail(params));
-    const wrapper = el.querySelector(".equipped-detail");
-    expect(wrapper).not.toBeNull();
-    expect(
-      wrapper.querySelector("details[data-detail-kind='enchantments']"),
-    ).not.toBeNull();
-  });
-
-  test("enchantmentsDetailRow wraps the expander in a detail-row <tr><td colspan>", () => {
-    const el = parse(
-      `<table><tbody>${enchantmentsDetailRow(4, params)}</tbody></table>`,
-    );
-    const row = el.querySelector("tr.detail-row");
-    expect(row).not.toBeNull();
-    expect(row.querySelector("td").getAttribute("colspan")).toBe("4");
-    expect(
-      row.querySelector("details[data-detail-kind='enchantments']"),
-    ).not.toBeNull();
   });
 });
 
