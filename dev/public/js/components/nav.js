@@ -1,5 +1,6 @@
 // initNav() must run before initTabs().
 import { LABELS } from "../localization/pt-BR/index.js";
+import { scrollToSection } from "../shared/motion.js";
 
 function _buildSidebar(items) {
   const nav = document.getElementById("sidebar");
@@ -62,7 +63,7 @@ function _initActiveHighlight() {
     if (!link) return;
     e.preventDefault();
     const target = document.getElementById(link.dataset.section);
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (target) scrollToSection(target);
     setActiveNav(link.dataset.section);
   });
 

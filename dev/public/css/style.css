@@ -36,3 +36,6 @@
 
 /* ── Pages ────────────────────────────────────────────────────────────────── */
 @import url("pages/reference.css");
+
+/* ── Overrides (last: must win over every transition declared above) ─────── */
+@import url("base/motion.css");
