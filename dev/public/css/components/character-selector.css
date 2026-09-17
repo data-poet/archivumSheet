@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  background: var(--accent-character);
+  background: var(--accent-character-fill);
   color: var(--color-on-accent);
   border: none;
   border-radius: var(--radius-sm);
@@ -19,7 +19,7 @@
 }
 
 .char-selector-btn:hover {
-  background: color-mix(in srgb, var(--accent-character) 85%, #000);
+  background: color-mix(in srgb, var(--accent-character-fill) 85%, #000);
 }
 
 .char-selector-btn:active {

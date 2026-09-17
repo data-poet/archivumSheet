@@ -120,7 +120,7 @@
 }
 
 .dialog-btn-confirm {
-  background: var(--accent-equipment);
+  background: var(--accent-equipment-fill);
   color: var(--color-on-accent);
 }
 
