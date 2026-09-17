@@ -47,7 +47,7 @@ tr.trait-enchantment td {
 .trait-innate-tag {
   display: inline-block;
   margin-left: var(--space-3);
-  font-size: 9px;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -62,7 +62,7 @@ tr.trait-enchantment td {
 .trait-enchantment-tag {
   display: inline-block;
   margin-left: var(--space-3);
-  font-size: 9px;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -78,7 +78,7 @@ tr.trait-enchantment td {
 .detail-enchantment-badge {
   display: inline-block;
   margin-left: var(--space-2);
-  font-size: 9px;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   color: var(--color-enchantment-tag);
   border: 1px solid currentColor;
