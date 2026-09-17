@@ -125,3 +125,16 @@
   font-style: italic;
 }
 
+/* Matches the stacked stored-item cards: the slot label becomes a heading band instead of
+   a side column, so the controls get the full width rather than ~345px minus a 20vw gutter. */
+@media (max-width: 600px) {
+  .equipped-slot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .equipped-slot-label {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-5);
+  }
+}

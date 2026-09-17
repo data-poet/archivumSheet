@@ -57,8 +57,8 @@ function renderCoinSection(location, coins, sheet) {
 
         return `
           <tr>
-            <td>${coinLabel(entry.coin_type)}</td>
-            <td class="col-num">
+            <td class="col-title">${coinLabel(entry.coin_type)}</td>
+            <td class="col-num" data-label="${t("coinPurse.qty")}">
               <div class="num-stepper">
                 <input
                   type="text"
@@ -75,8 +75,8 @@ function renderCoinSection(location, coins, sheet) {
                 </div>
               </div>
             </td>
-            <td class="col-num">${totalWeight}</td>
-            <td class="col-num">${totalValue}</td>
+            <td class="col-num" data-label="${t("coinPurse.weight")}">${totalWeight}</td>
+            <td class="col-num" data-label="${t("coinPurse.value")}">${totalValue}</td>
             <td class="col-action">
               ${locationSelect(entry.coin_type, location)}
               <button
@@ -92,7 +92,7 @@ function renderCoinSection(location, coins, sheet) {
 
   return `
     <div class="storage-section-header">${storageLabel(location)}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.type")}</th>

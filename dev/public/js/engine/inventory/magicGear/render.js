@@ -148,9 +148,9 @@ function renderStorageSection(location, stored, data, sheet) {
 
         return `
         <tr data-instance-id="${instanceId}">
-          <td>${escapeHtml(displayName(inst, record))}</td>
-          <td class="col-num">${resolved?.total_value ?? record.magic_gear_price}</td>
-          <td>
+          <td class="col-title">${escapeHtml(displayName(inst, record))}</td>
+          <td class="col-num" data-label="${t("common.price")}">${resolved?.total_value ?? record.magic_gear_price}</td>
+          <td data-label="${t("common.storage")}">
             <select class="magic-gear-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
@@ -194,7 +194,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   return `
     <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>

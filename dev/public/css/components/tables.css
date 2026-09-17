@@ -423,3 +423,124 @@ tr.spell-detail-row details[open] summary {
   color: var(--color-text-muted);
 }
 
+/* Stacked cards for the inventory tables on phones. Their control columns (num-stepper,
+   storage select, Equipar + ✕) can't shrink, so a 6-column row needs ~540px against ~345px
+   of usable width and the whole table scrolls sideways. Opt-in per table: the numeric grids
+   (skills, spells, resume) keep scrolling, since there the column alignment is the point. */
+@media (max-width: 600px) {
+  .table-wrapper--stack {
+    overflow-x: visible;
+  }
+
+  /* every cell carries its own label below this width, so the header row is pure noise */
+  .table-wrapper--stack thead {
+    display: none;
+  }
+
+  .table-wrapper--stack table,
+  .table-wrapper--stack tbody,
+  .table-wrapper--stack tr {
+    display: block;
+  }
+
+  .table-wrapper--stack tbody tr:not(.empty-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3) var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-4);
+  }
+
+  /* zebra striping and the sticky first column both assume a grid; neither survives as cards */
+  .table-wrapper--stack tbody tr:nth-child(even),
+  .table-wrapper--stack tbody tr:hover {
+    background: var(--color-surface);
+  }
+  .table-wrapper--stack td:first-child,
+  .table-wrapper--stack tbody tr:nth-child(even) td:first-child,
+  .table-wrapper--stack tbody tr:hover td:first-child {
+    position: static;
+    background: none;
+    box-shadow: none;
+  }
+
+  .table-wrapper--stack td:not([colspan]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: 0;
+    border: none;
+    text-align: left;
+  }
+
+  .table-wrapper--stack td[data-label]::before {
+    content: attr(data-label);
+    font-size: var(--fs-xxs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  /* `order` rather than DOM position: armor leads with the body slot, not the name */
+  .table-wrapper--stack td.col-title {
+    grid-column: 1 / -1;
+    order: -1;
+    font-size: var(--fs-base);
+    font-weight: 700;
+  }
+
+  .table-wrapper--stack td.col-action {
+    grid-column: 1 / -1;
+    order: 1;
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  .table-wrapper--stack td select {
+    max-width: 100%;
+    width: 100%;
+  }
+  .table-wrapper--stack td.col-action select {
+    width: auto;
+  }
+
+  /* `Mod: [±] PV: 20 Atual: 18` is one wrapping row — in a half-width column it breaks
+     across three lines and the totals drift away from the stepper they describe */
+  .table-wrapper--stack td:has(.hp-modifier) {
+    grid-column: 1 / -1;
+  }
+  .table-wrapper--stack .hp-modifier .num-stepper {
+    width: auto;
+  }
+
+  /* detail / magazine rows are siblings of their data row, so the card border is drawn
+     across the whole group and only the last member keeps the bottom corners */
+  .table-wrapper--stack tbody tr.detail-row,
+  .table-wrapper--stack tbody tr.magazine-row {
+    padding: 0;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .table-wrapper--stack tbody tr:has(+ tr.detail-row),
+  .table-wrapper--stack tbody tr:has(+ tr.magazine-row) {
+    margin-bottom: 0;
+    border-bottom: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  .table-wrapper--stack td[colspan] {
+    display: block;
+    border: none;
+  }
+
+  .table-wrapper--stack tr.magazine-row td {
+    padding: var(--space-3) var(--space-5);
+  }
+}
