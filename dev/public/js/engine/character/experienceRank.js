@@ -19,12 +19,16 @@ export function getExperienceRank(xp) {
     ? 100
     : Math.round(((points - tier.min) / tierSpan) * 100);
   const pointsToNext = isMaxRank ? 0 : tier.max - points + 1;
+  // tier.max is the last point value still in this tier — the points value that actually
+  // triggers the next rank is one past it, which is what "X/Y" should show, not tier.max.
+  const nextThreshold = isMaxRank ? null : tier.max + 1;
 
   return {
     index,
     badge: tier.badge,
     tierMin: tier.min,
     tierMax: tier.max,
+    nextThreshold,
     isMaxRank,
     progress,
     pointsToNext,
