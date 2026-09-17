@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { fetchFirearms, fetchMaterials } from "../../../api.js";
+import { fetchFirearms } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
@@ -21,15 +21,11 @@ const selected = state.selected;
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadFirearms() {
-  [data.firearms, data.materials] = await Promise.all([
-    fetchFirearms(),
-    fetchMaterials(),
-  ]);
+  data.firearms = await fetchFirearms();
 
   loadFirearmSelectors();
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

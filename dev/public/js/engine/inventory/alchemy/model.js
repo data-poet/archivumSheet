@@ -12,12 +12,11 @@ const selected = state.selected;
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAlchemy() {
   data.alchemy = await fetchAlchemy();
 
   loadAlchemySelectors();
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

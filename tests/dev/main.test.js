@@ -21,6 +21,7 @@ jest.mock("dev/public/js/compute/attributes.js", () => ({
 jest.mock("dev/public/js/ui.js", () => ({
   updateActualValues: jest.fn(),
   initAttributeTableHeaders: jest.fn(),
+  renderListsPreserving: jest.fn(),
 }));
 jest.mock("dev/public/js/compute/index.js", () => ({
   runEngine: jest.fn(),
@@ -88,8 +89,11 @@ jest.mock(
 jest.mock("dev/public/js/engine/inventory/shared/dualUseWeapons.js", () => ({
   loadDualUseWeapons: jest.fn(() => Promise.resolve()),
 }));
+jest.mock("dev/public/js/engine/inventory/shared/materials.js", () => ({
+  loadMaterials: jest.fn(() => Promise.resolve()),
+}));
 jest.mock("dev/public/js/store/characters.js", () => ({
-  initCharacters: jest.fn(),
+  initCharacters: jest.fn(() => true),
 }));
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   initCharacterSelector: jest.fn(),
@@ -104,6 +108,7 @@ import { setupAutoRun } from "dev/public/js/compute/attributes.js";
 import {
   updateActualValues,
   initAttributeTableHeaders,
+  renderListsPreserving,
 } from "dev/public/js/ui.js";
 import { initAutoRun } from "dev/public/js/compute/autorun.js";
 import { loadRaces } from "dev/public/js/engine/character/races/index.js";
@@ -124,27 +129,29 @@ import { loadAccessories } from "dev/public/js/engine/inventory/accessories/inde
 import { loadMagicGear } from "dev/public/js/engine/inventory/magicGear/index.js";
 import { loadEnchantments } from "dev/public/js/engine/inventory/shared/enchantments/index.js";
 import { loadDualUseWeapons } from "dev/public/js/engine/inventory/shared/dualUseWeapons.js";
+import { loadMaterials } from "dev/public/js/engine/inventory/shared/materials.js";
 import { initCharacters } from "dev/public/js/store/characters.js";
 import { initCharacterSelector } from "dev/public/js/components/characterSelector.js";
 
-// Side-effecting module: importing it is what assigns window.onload.
-import "dev/public/js/main.js";
+import { bootstrap } from "dev/public/js/main.js";
 
-describe("main.js bootstrap (window.onload)", () => {
+describe("main.js bootstrap (DOMContentLoaded)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    initCharacters.mockReturnValue(true);
   });
 
-  test("assigns an onload handler", () => {
-    expect(typeof window.onload).toBe("function");
+  test("registers bootstrap on DOMContentLoaded rather than window.onload, so catalog fetches aren't blocked on images", () => {
+    expect(window.onload).toBeFalsy();
+    expect(typeof bootstrap).toBe("function");
   });
 
   test("runs to completion without throwing when every dependency resolves normally", async () => {
-    await window.onload();
+    await bootstrap();
   });
 
   test("wires up UI bindings and chrome (nav/tabs/theme/view mode) before awaiting data loads", async () => {
-    await window.onload();
+    await bootstrap();
 
     expect(bindUI).toHaveBeenCalledTimes(1);
     expect(initNav).toHaveBeenCalledTimes(1);
@@ -159,13 +166,13 @@ describe("main.js bootstrap (window.onload)", () => {
   test("initializes autorun with the real runEngine function", async () => {
     const { runEngine } = require("dev/public/js/compute/index.js");
 
-    await window.onload();
+    await bootstrap();
 
     expect(initAutoRun).toHaveBeenCalledWith(runEngine);
   });
 
   test("awaits every data loader before proceeding to character init", async () => {
-    await window.onload();
+    await bootstrap();
 
     [
       loadRaces,
@@ -173,6 +180,7 @@ describe("main.js bootstrap (window.onload)", () => {
       loadDisadvantages,
       loadSkills,
       loadSpells,
+      loadMaterials,
       loadArmors,
       loadShields,
       loadMeleeWeapons,
@@ -191,17 +199,35 @@ describe("main.js bootstrap (window.onload)", () => {
   });
 
   test("initializes character persistence, the character selector, and the portrait after data loads resolve", async () => {
-    await window.onload();
+    await bootstrap();
 
     expect(initCharacters).toHaveBeenCalledTimes(1);
     expect(initCharacterSelector).toHaveBeenCalledTimes(1);
     expect(initCharacterImage).toHaveBeenCalledTimes(1);
   });
 
+  // The load*() functions no longer render individually, so exactly one of these
+  // two paths has to paint the sheet — never both, never neither.
+  test("leaves rendering to initCharacters when it applied a stored character", async () => {
+    initCharacters.mockReturnValue(true);
+
+    await bootstrap();
+
+    expect(renderListsPreserving).not.toHaveBeenCalled();
+  });
+
+  test("renders once itself when initCharacters found no character to apply", async () => {
+    initCharacters.mockReturnValue(false);
+
+    await bootstrap();
+
+    expect(renderListsPreserving).toHaveBeenCalledTimes(1);
+  });
+
   test("still initializes characters/selector/portrait even if a data loader rejects (Promise.all vs allSettled is worth knowing about, not silently assumed)", async () => {
     loadSpells.mockRejectedValueOnce(new Error("network down"));
 
-    await expect(window.onload()).rejects.toThrow("network down");
+    await expect(bootstrap()).rejects.toThrow("network down");
     expect(initCharacters).not.toHaveBeenCalled();
 
     loadSpells.mockReset().mockReturnValue(Promise.resolve());

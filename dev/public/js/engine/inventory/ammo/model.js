@@ -14,6 +14,7 @@ const selected = state.selected;
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAmmo() {
   [data.ammo, data.ammo_containers] = await Promise.all([
     fetchAmmo(),
@@ -21,8 +22,6 @@ export async function loadAmmo() {
   ]);
 
   loadAmmoSelectors();
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
