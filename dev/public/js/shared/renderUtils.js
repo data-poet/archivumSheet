@@ -178,7 +178,7 @@ export function customFieldsBody({ instanceId, name, description, effect }) {
     return `
       <div class="custom-fields-block custom-fields-block--editing" data-instance-id="${instanceId}">
         <div class="item-detail-grid custom-fields-grid">
-          <label class="item-detail-field">
+          <label class="item-detail-field item-detail-field--full">
             <em>${t("common.customName")}</em>
             <input
               type="text"
@@ -218,7 +218,7 @@ export function customFieldsBody({ instanceId, name, description, effect }) {
       ${
         hasAny
           ? `<div class="item-detail-grid custom-fields-grid">
-              ${name ? `<div class="item-detail-field"><em>${t("common.customName")}</em><span>${escapeHtml(name)}</span></div>` : ""}
+              ${name ? `<div class="item-detail-field item-detail-field--full"><em>${t("common.customName")}</em><span>${escapeHtml(name)}</span></div>` : ""}
               ${description ? `<div class="item-detail-field item-detail-field--full"><em>${t("common.customDescription")}</em><span>${escapeHtml(description)}</span></div>` : ""}
               ${effect ? `<div class="item-detail-field item-detail-field--full"><em>${t("common.customEffect")}</em><span>${escapeHtml(effect)}</span></div>` : ""}
             </div>`
