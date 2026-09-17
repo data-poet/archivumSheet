@@ -93,6 +93,8 @@ describe("buildSheet payload — pc", () => {
       character_weight: null,
       starting_points: null,
       experience_points: null,
+      ability_points: null,
+      magic_points: null,
       image: {
         uploaded: false,
         data: "",

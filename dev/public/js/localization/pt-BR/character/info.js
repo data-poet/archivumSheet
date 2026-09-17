@@ -20,4 +20,7 @@ export const CHARACTER = {
   pointsTitle: "Pontos",
   startingPoints: "Pontos Iniciais",
   experiencePoints: "Pontos de Experiência",
+  abilityPoints: "Pontos de Habilidade",
+  magicPoints: "Pontos de Magia",
+  totalAvailablePoints: "Total de Pontos Disponíveis",
 };

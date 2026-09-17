@@ -24,7 +24,12 @@ export function handleCharacterInput(e) {
   } else if (field === "character_weight") {
     const parsed = parseFloat(value);
     value = isNaN(parsed) ? null : Math.round(parsed * 10) / 10;
-  } else if (field === "starting_points" || field === "experience_points") {
+  } else if (
+    field === "starting_points" ||
+    field === "experience_points" ||
+    field === "ability_points" ||
+    field === "magic_points"
+  ) {
     const parsed = parseInt(value, 10);
     value = isNaN(parsed) || parsed < 0 ? null : parsed;
     if (value !== null) el.value = value;

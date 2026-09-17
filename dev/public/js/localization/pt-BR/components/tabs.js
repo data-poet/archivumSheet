@@ -1,6 +1,7 @@
 export const TABS = {
   character: {
     info: "Personagem",
+    points: "Pontos",
     image: "Imagem",
     resume: "Resumo",
   },

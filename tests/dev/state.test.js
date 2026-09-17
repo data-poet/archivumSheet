@@ -173,6 +173,8 @@ describe("state.selected shape", () => {
       race_id: null,
       starting_points: null,
       experience_points: null,
+      ability_points: null,
+      magic_points: null,
       image: {
         uploaded: false,
         data: "",

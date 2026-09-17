@@ -170,6 +170,8 @@ function _applyImport(payload) {
     race_id:           race?.race_id         ?? null,
     starting_points:   pc?.starting_points   ?? null,
     experience_points: pc?.experience_points ?? null,
+    ability_points:    pc?.ability_points    ?? null,
+    magic_points:      pc?.magic_points      ?? null,
     image: pc?.image ?? {
       uploaded:    false,
       data:        "",
@@ -193,6 +195,8 @@ function _applyImport(payload) {
   setVal("characterWeightInput",  selected.character.character_weight);
   setVal("startingPointsInput",   selected.character.starting_points);
   setVal("experiencePointsInput", selected.character.experience_points);
+  setVal("abilityPointsInput",    selected.character.ability_points);
+  setVal("magicPointsInput",      selected.character.magic_points);
 
   if (selected.character.race_id && state.data.races.length) {
     restoreRaceSelection(selected.character.race_id);
