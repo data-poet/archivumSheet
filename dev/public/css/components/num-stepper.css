@@ -11,6 +11,11 @@
   min-width: 0;
 }
 
+/* Higher specificity than `.item-detail-field input`'s width: 100%, which otherwise stretches steppers nested in a labeled field (e.g. enchantment value/extra-points inputs). */
+.item-detail-field .num-stepper input {
+  width: auto;
+}
+
 .num-stepper input:focus {
   position: relative;
   z-index: 1;
