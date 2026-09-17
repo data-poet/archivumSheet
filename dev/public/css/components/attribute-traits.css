@@ -19,7 +19,7 @@
 .hp-modifier {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-2);
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
   flex-wrap: wrap;
@@ -46,7 +46,7 @@ tr.trait-enchantment td {
 
 .trait-innate-tag {
   display: inline-block;
-  margin-left: 6px;
+  margin-left: var(--space-3);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -54,14 +54,14 @@ tr.trait-enchantment td {
   color: var(--color-innate-tag);
   border: 1px solid currentColor;
   border-radius: 3px;
-  padding: 0 3px;
+  padding: 0 var(--space-2);
   vertical-align: middle;
   opacity: 0.7;
 }
 
 .trait-enchantment-tag {
   display: inline-block;
-  margin-left: 6px;
+  margin-left: var(--space-3);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -69,7 +69,7 @@ tr.trait-enchantment td {
   color: var(--color-enchantment-tag);
   border: 1px solid currentColor;
   border-radius: 3px;
-  padding: 0 3px;
+  padding: 0 var(--space-2);
   vertical-align: middle;
   opacity: 0.7;
 }
@@ -77,13 +77,13 @@ tr.trait-enchantment td {
 /* Shown inline rather than as a hover-only tooltip since this is mobile-first and most users can't hover; the native `title` attribute is a bonus for desktop/mouse users only. */
 .detail-enchantment-badge {
   display: inline-block;
-  margin-left: 4px;
+  margin-left: var(--space-2);
   font-size: 9px;
   font-weight: 700;
   color: var(--color-enchantment-tag);
   border: 1px solid currentColor;
   border-radius: 3px;
-  padding: 0 3px;
+  padding: 0 var(--space-2);
   vertical-align: middle;
   opacity: 0.85;
 }

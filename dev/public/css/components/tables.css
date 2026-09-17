@@ -76,7 +76,7 @@ table input[type="text"] {
   width: 48px;
   min-width: 0;
   text-align: center;
-  padding: 4px 4px;
+  padding: var(--space-2);
   min-height: 32px;
 }
 
@@ -93,7 +93,7 @@ table .num-stepper input {
 
 table select {
   max-width: 160px;
-  padding: 4px 6px;
+  padding: var(--space-2) var(--space-3);
   min-height: 32px;
 }
 
@@ -101,19 +101,19 @@ table select {
   text-align: center;
   color: var(--color-text-muted);
   font-style: italic;
-  padding: 12px;
+  padding: var(--space-6);
 }
 
 .empty-storage {
   color: var(--color-text-muted);
   font-style: italic;
   font-size: var(--fs-sm);
-  margin: 4px 0;
+  margin: var(--space-2) 0;
 }
 
 tr.detail-row td,
 tr.spell-detail-row td {
-  padding: 0 10px;
+  padding: 0 var(--space-5);
   border-top: none;
   background: var(--detail-bg);
 }
@@ -131,7 +131,7 @@ tr.spell-detail-row details summary {
   font-size: var(--fs-xxs);
   font-weight: 600;
   color: var(--color-text-muted);
-  padding: 6px 4px;
+  padding: var(--space-3) var(--space-2);
   border: none;
   border-left: none !important;
   background: none;
@@ -143,11 +143,11 @@ tr.spell-detail-row details summary {
 tr.detail-row details[open] summary,
 tr.spell-detail-row details[open] summary {
   border-bottom: none;
-  padding-bottom: 4px;
+  padding-bottom: var(--space-2);
 }
 
 .equipped-detail {
-  margin: -6px 0 10px;
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
   border: 1px solid var(--color-border);
   border-top: none;
   border-radius: 0 0 var(--radius) var(--radius);
@@ -166,7 +166,7 @@ tr.spell-detail-row details[open] summary {
   font-size: var(--fs-xxs);
   font-weight: 600;
   color: var(--color-text-muted);
-  padding: 6px 12px;
+  padding: var(--space-3) var(--space-6);
   border: none;
   border-left: none !important;
   background: none;
@@ -188,7 +188,7 @@ tr.spell-detail-row details[open] summary {
 .item-tab-btn {
   font-size: var(--fs-xxs);
   font-weight: 600;
-  padding: 6px 12px;
+  padding: var(--space-3) var(--space-6);
   min-height: unset;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -202,8 +202,8 @@ tr.spell-detail-row details[open] summary {
 .spell-detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 4px 16px;
-  padding: 6px 8px 10px;
+  gap: var(--space-2) var(--space-7);
+  padding: var(--space-3) var(--space-4) var(--space-5);
 }
 
 .item-detail,
@@ -212,7 +212,7 @@ tr.spell-detail-row details[open] summary {
   color: var(--color-text-muted);
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: var(--space-2);
   line-height: 1.4;
 }
 
@@ -239,31 +239,31 @@ tr.spell-detail-row details[open] summary {
   font-weight: 700;
   color: var(--color-text);
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 .custom-fields-block {
   grid-column: 1 / -1;
-  margin-top: 6px;
+  margin-top: var(--space-3);
 }
 
 .custom-fields-empty {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
   font-style: italic;
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-2);
 }
 
 .custom-fields-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .custom-fields-actions {
   display: flex;
-  gap: 6px;
+  gap: var(--space-3);
 }
 
 .custom-fields-edit-btn,
@@ -273,7 +273,7 @@ tr.spell-detail-row details[open] summary {
 .custom-item-save-btn,
 .custom-item-cancel-btn {
   font-size: var(--fs-xs);
-  padding: 3px 10px;
+  padding: var(--space-2) var(--space-5);
   min-height: unset;
 }
 
@@ -286,7 +286,7 @@ tr.spell-detail-row details[open] summary {
 .item-detail-field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
   font-size: var(--fs-xs);
 }
 
@@ -310,7 +310,7 @@ tr.spell-detail-row details[open] summary {
 .item-detail-field textarea {
   font-size: var(--fs-xs);
   font-family: inherit;
-  padding: 4px 6px;
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border);
   border-radius: 4px;
   background: var(--color-bg);
@@ -329,7 +329,7 @@ tr.spell-detail-row details[open] summary {
 .item-detail-field select {
   font-size: var(--fs-xs);
   font-family: inherit;
-  padding: 4px 6px;
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border);
   border-radius: 4px;
   background: var(--color-bg);
@@ -341,7 +341,7 @@ tr.spell-detail-row details[open] summary {
 .enchantments-summary {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-4);
 }
 
 .enchantments-subtotal {
@@ -353,8 +353,8 @@ tr.spell-detail-row details[open] summary {
 .enchantment-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 /* Higher specificity than .equipped-detail details / tr.detail-row details, which otherwise strip this border via their descendant selector. */
@@ -368,8 +368,8 @@ tr.spell-detail-row details[open] summary {
 .enchantment-entry-summary {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   cursor: pointer;
   list-style: none;
 }
@@ -393,7 +393,7 @@ tr.spell-detail-row details[open] summary {
 }
 
 .enchantment-entry-edit {
-  padding: 8px;
+  padding: var(--space-4);
 }
 
 .enchantment-form .item-detail-grid {
@@ -407,17 +407,17 @@ tr.spell-detail-row details[open] summary {
 }
 
 .scaling-list {
-  margin: 2px 0 2px 14px;
+  margin: var(--space-1) 0 var(--space-1) var(--space-7);
   padding: 0;
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 .scaling-list li {
-  margin-bottom: 1px;
+  margin-bottom: var(--space-1);
 }
 
 .scaling-note {
-  margin: 2px 0 0;
+  margin: var(--space-1) 0 0;
   font-size: var(--fs-xxs);
   font-style: italic;
   color: var(--color-text-muted);

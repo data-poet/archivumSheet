@@ -4,7 +4,7 @@ input[type="number"],
 input[type="text"] {
   font-family: inherit;
   font-size: var(--fs-sm);
-  padding: 6px 8px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
@@ -38,14 +38,14 @@ summary:focus-visible {
 input[type="number"],
 input[type="text"] {
   font-size: 16px;
-  padding: 3px 6px;
+  padding: var(--space-2) var(--space-3);
 }
 
 @media (min-width: 768px) {
   input[type="number"],
   input[type="text"] {
     font-size: var(--fs-sm);
-    padding: 6px 8px;
+    padding: var(--space-3) var(--space-4);
   }
 }
 
@@ -67,7 +67,7 @@ button.btn-remove {
   background: none;
   border: none;
   color: var(--color-remove);
-  padding: 4px 6px;
+  padding: var(--space-2) var(--space-3);
   font-size: var(--fs-sm);
   min-height: 36px;
   min-width: 36px;

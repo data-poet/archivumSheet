@@ -100,7 +100,7 @@
 
 .tab-panel {
   display: none;
-  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 16px);
 }
 
 .tab-panel.is-active {

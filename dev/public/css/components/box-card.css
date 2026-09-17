@@ -1,5 +1,5 @@
 .box {
-  margin-bottom: 10px;
+  margin-bottom: var(--space-5);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -17,7 +17,7 @@ details summary {
   border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-4);
   list-style: none;
   min-height: 44px; /* minimum tap target */
 }
@@ -44,7 +44,7 @@ details[open] summary {
 }
 
 details > *:not(summary) {
-  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px);
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 16px);
 }
 
 .box--attr details summary {
@@ -85,8 +85,8 @@ details > *:not(summary) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
 }
 
 .controls-row--labeled {
