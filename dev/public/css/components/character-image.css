@@ -167,23 +167,27 @@
   gap: var(--space-4);
 }
 
+/* The button is the whole swatch + label, so the text is a tap target too; the circle inside is decorative. */
 .charimg-radio-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
   cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  min-height: 0;
+  padding: var(--space-1) var(--space-2);
+  font-family: inherit;
 }
 
 .charimg-radio-btn {
   width: 22px;
   height: 22px;
-  min-height: 0; /* the global button min-height would stretch the circle into an ellipse */
   border-radius: 50%;
   border: 2px solid var(--color-border);
   background: var(--color-btn-bg);
-  cursor: pointer;
-  padding: 0;
   position: relative;
   transition: border-color 0.15s;
   flex-shrink: 0;
@@ -198,11 +202,11 @@
   transition: background 0.15s;
 }
 
-.charimg-radio-btn.is-active {
+.charimg-radio-wrap.is-active .charimg-radio-btn {
   border-color: var(--accent-character);
 }
 
-.charimg-radio-btn.is-active::after {
+.charimg-radio-wrap.is-active .charimg-radio-btn::after {
   background: var(--accent-character);
 }
 

@@ -166,26 +166,22 @@ describe("renderCharacterImage", () => {
     expect(document.getElementById("charimg-img")).toBeNull();
   });
 
-  test("marks the matching background radio button active", () => {
+  test("marks the matching background choice active, and says so via aria-current", () => {
     resetDOM(`
       <div id="charimg-preview"></div>
-      <button class="charimg-radio-btn" data-bg="black"></button>
-      <button class="charimg-radio-btn" data-bg="white"></button>
+      <button class="charimg-radio-wrap" data-bg="black"></button>
+      <button class="charimg-radio-wrap" data-bg="white"></button>
     `);
     state.selected.character.image.background = "white";
 
     renderCharacterImage();
 
-    expect(
-      document
-        .querySelector('[data-bg="black"]')
-        .classList.contains("is-active"),
-    ).toBe(false);
-    expect(
-      document
-        .querySelector('[data-bg="white"]')
-        .classList.contains("is-active"),
-    ).toBe(true);
+    const black = document.querySelector('[data-bg="black"]');
+    const white = document.querySelector('[data-bg="white"]');
+    expect(black.classList.contains("is-active")).toBe(false);
+    expect(black.hasAttribute("aria-current")).toBe(false);
+    expect(white.classList.contains("is-active")).toBe(true);
+    expect(white.getAttribute("aria-current")).toBe("true");
   });
 });
 
@@ -287,7 +283,7 @@ describe("drag to reposition", () => {
 describe("handleCharacterImageClick — background radios", () => {
   test("sets the background and re-syncs UI", () => {
     resetDOM(`
-      <button class="charimg-radio-btn" data-bg="black"></button>
+      <button class="charimg-radio-wrap" data-bg="black"></button>
       <div id="resume-charimg-wrapper"></div>
     `);
     const target = document.querySelector('[data-bg="black"]');
@@ -299,10 +295,27 @@ describe("handleCharacterImageClick — background radios", () => {
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
 
-  test("returns false when the radio button has no data-bg", () => {
-    resetDOM(`<button class="charimg-radio-btn"></button>`);
-    const target = document.querySelector(".charimg-radio-btn");
+  test("returns false when the choice has no data-bg", () => {
+    resetDOM(`<button class="charimg-radio-wrap"></button>`);
+    const target = document.querySelector(".charimg-radio-wrap");
     expect(handleCharacterImageClick({ target })).toBe(false);
+  });
+
+  test("clicking the label text, not just the swatch, still picks the background", () => {
+    resetDOM(`
+      <button class="charimg-radio-wrap" data-bg="black">
+        <span class="charimg-radio-btn"></span>
+        <span class="charimg-radio-label">Preto</span>
+      </button>
+      <div id="resume-charimg-wrapper"></div>
+    `);
+
+    const result = handleCharacterImageClick({
+      target: document.querySelector(".charimg-radio-label"),
+    });
+
+    expect(result).toBe(true);
+    expect(state.selected.character.image.background).toBe("black");
   });
 });
 

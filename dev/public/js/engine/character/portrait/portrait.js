@@ -97,8 +97,11 @@ function _syncScaleControls() {
 
 function _syncBgRadios() {
   const bg = _img().background || "average";
-  document.querySelectorAll(".charimg-radio-btn").forEach((r) => {
-    r.classList.toggle("is-active", r.dataset.bg === bg);
+  document.querySelectorAll(".charimg-radio-wrap").forEach((r) => {
+    const selected = r.dataset.bg === bg;
+    r.classList.toggle("is-active", selected);
+    if (selected) r.setAttribute("aria-current", "true");
+    else r.removeAttribute("aria-current");
   });
 }
 
@@ -295,8 +298,8 @@ async function _loadFile(file) {
 // ── Public event handlers ─────────────────────────────────────────────────────
 
 export function handleCharacterImageClick(e) {
-  // Background radio buttons
-  const bgBtn = e.target.closest(".charimg-radio-btn");
+  // Background radio buttons — the whole swatch+label is one button, so clicking either works
+  const bgBtn = e.target.closest(".charimg-radio-wrap");
   if (bgBtn) {
     const bg = bgBtn.dataset.bg;
     if (!bg) return false;
