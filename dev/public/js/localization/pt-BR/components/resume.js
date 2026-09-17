@@ -15,7 +15,7 @@ export const RESUME = {
   disadvantages: "Desvantagens",
   spells: "Magias",
   total: "Total",
-  totalPoints: "Total de Pontos",
+  totalPoints: "Total de Pontos Gastos",
   availablePoints: "Disponíveis",
   sparePoints: "Restantes",
   insufficientPoints:

@@ -20,6 +20,7 @@ import { COMMON } from "./shared/common.js";
 
 import { CHARACTER } from "./character/info.js";
 import { CHARACTER_IMAGE } from "./character/portrait.js";
+import { EXPERIENCE } from "./character/experience.js";
 import { TRAITS } from "./character/traits.js";
 
 import { MAGIC } from "./magic/spells.js";
@@ -53,6 +54,7 @@ export const LABELS = {
   resume: RESUME,
   attributes: ATTRIBUTES,
   character: CHARACTER,
+  experience: EXPERIENCE,
   secondaryAttributes: SECONDARY_ATTRIBUTES,
   elementalResistances: ELEMENTAL_RESISTANCES,
   traits: TRAITS,
@@ -86,6 +88,12 @@ export function t(path, fallback = "") {
 
 export function getSecondaryAttributeLabel(key) {
   return LABELS.secondaryAttributes[key] ?? key;
+}
+
+export function getExperienceRankName(index, sex) {
+  const rank = LABELS.experience.ranks[index];
+  if (!rank) return "";
+  return sex === "F" ? rank.f : rank.m;
 }
 
 export function getElementalResistanceLabel(key) {
