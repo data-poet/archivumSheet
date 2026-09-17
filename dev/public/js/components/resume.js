@@ -91,7 +91,7 @@ function renderExperienceBar(sheet) {
         <span class="resume-bar-badge">${rank.badge}</span>
         <span class="resume-bar-label">${rankName}</span>
       </span>
-      <span class="resume-bar-values">${spentPoints}${rank.isMaxRank ? "" : "/" + rank.tierMax}</span>
+      <span class="resume-bar-values">${spentPoints}${rank.isMaxRank ? "" : "/" + rank.nextThreshold}</span>
     </div>
     <div class="resume-bar-track">
       <div
@@ -100,7 +100,7 @@ function renderExperienceBar(sheet) {
         role="progressbar"
         aria-valuenow="${spentPoints}"
         aria-valuemin="${rank.tierMin}"
-        aria-valuemax="${rank.isMaxRank ? spentPoints : rank.tierMax}"
+        aria-valuemax="${rank.isMaxRank ? spentPoints : rank.nextThreshold}"
       ></div>
     </div>
     <div class="resume-bar-caption">${caption}</div>
