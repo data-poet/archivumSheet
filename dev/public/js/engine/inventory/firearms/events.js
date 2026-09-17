@@ -5,7 +5,6 @@ import {
   moveFirearm,
   removeFirearm,
   findFirearmByInstanceId,
-  reloadFirearm,
   computeFinalMagazineSize,
   addEquippedFirearm,
   addStoredFirearm,
@@ -113,14 +112,6 @@ export function handleFirearmClick(e) {
       firearmToEquip.weapon_id,
       firearmToEquip.material_id || null,
     );
-    return true;
-  }
-
-  if (
-    e.target.classList.contains("reload-firearm") ||
-    e.target.classList.contains("resume-reload-firearm")
-  ) {
-    reloadFirearm(e.target.dataset.instanceId);
     return true;
   }
 

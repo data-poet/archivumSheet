@@ -5,7 +5,6 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { nextFirearmInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
-import { updateContainerAmmoQuantity } from "../ammo/model.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
   addEnchantmentEntry,
@@ -207,7 +206,7 @@ export function removeFirearm(instanceId) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AMMO / RELOAD
+// AMMO
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function computeFinalMagazineSize(instance, weaponData) {
@@ -231,59 +230,6 @@ export function setFirearmRoundsLoaded(instanceId, rawValue) {
     Math.max(isNaN(parsed) ? 0 : parsed, 0),
     max,
   );
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
-}
-
-// Drains matching ammo from equipped containers in insertion order (mirrors the resume ranged-ammo stepper); partially reloads if stock is short.
-export function reloadFirearm(instanceId) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance) return;
-
-  const weaponData = data.firearms.find(
-    (w) => w.weapon_id === instance.weapon_id,
-  );
-  if (!weaponData) return;
-
-  const maxRounds = computeFinalMagazineSize(instance, weaponData);
-  const current = Number(instance.rounds_loaded || 0);
-  let needed = maxRounds - current;
-  if (needed <= 0) return;
-
-  const matchingAmmoIds = new Set(
-    data.ammo
-      .filter((a) => a.ammo_type === weaponData.weapon_type)
-      .map((a) => a.ammo_id),
-  );
-  if (matchingAmmoIds.size === 0) return;
-
-  const equippedContainers = selected.ammo_containers.filter(
-    (c) => c.storedAt === "equipped",
-  );
-
-  let drained = 0;
-  for (const container of equippedContainers) {
-    if (needed <= 0) break;
-    for (const entry of container.contents) {
-      if (needed <= 0) break;
-      if (!matchingAmmoIds.has(entry.ammo_id) || entry.quantity <= 0) continue;
-
-      const toRemove = Math.min(needed, entry.quantity);
-      updateContainerAmmoQuantity(
-        container._instanceId,
-        entry.ammo_id,
-        entry.quantity - toRemove,
-      );
-
-      needed -= toRemove;
-      drained += toRemove;
-    }
-  }
-
-  if (drained > 0) {
-    instance.rounds_loaded = current + drained;
-  }
 
   renderListsPreserving(selected, data);
   triggerAutoRun();

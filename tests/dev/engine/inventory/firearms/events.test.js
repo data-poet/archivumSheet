@@ -3,7 +3,6 @@ jest.mock("dev/public/js/engine/inventory/firearms/model.js", () => ({
   moveFirearm: jest.fn(),
   removeFirearm: jest.fn(),
   findFirearmByInstanceId: jest.fn(),
-  reloadFirearm: jest.fn(),
   addEquippedFirearm: jest.fn(),
   addStoredFirearm: jest.fn(),
   saveFirearmCustomFields: jest.fn(),
@@ -137,20 +136,6 @@ describe("handleFirearmClick", () => {
     });
     expect(handleFirearmClick({ target })).toBe(true);
     expect(model.equipFirearm).not.toHaveBeenCalled();
-  });
-
-  test("reload-firearm and resume-reload-firearm both reload by instanceId", () => {
-    const a = elWithClass("button", "reload-firearm", {
-      instanceId: "FIREARM-1",
-    });
-    expect(handleFirearmClick({ target: a })).toBe(true);
-    expect(model.reloadFirearm).toHaveBeenCalledWith("FIREARM-1");
-
-    const b = elWithClass("button", "resume-reload-firearm", {
-      instanceId: "FIREARM-2",
-    });
-    handleFirearmClick({ target: b });
-    expect(model.reloadFirearm).toHaveBeenCalledWith("FIREARM-2");
   });
 
   test("custom-fields save is synchronous (wrapped directly by snapshotAll/restoreAll, no rAF)", () => {

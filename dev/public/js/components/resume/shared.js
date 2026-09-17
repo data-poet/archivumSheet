@@ -1,7 +1,6 @@
 // Cross-section resume helpers: the collapsible-section machinery and the two
 // stepper cells reused by the equipment and supplies sections.
 
-import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 
 const _collapseOpen = new Map();
@@ -60,7 +59,6 @@ export function roundsStepperCell({
           </div>
         </div>
         / <strong>${magazineSize}</strong>
-        <button class="btn-reload resume-reload-firearm" ${dataAttrs}>${t("firearms.reloadAction")}</button>
       </div>
     </td>
   `;

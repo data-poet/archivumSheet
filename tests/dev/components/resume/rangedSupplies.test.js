@@ -55,7 +55,33 @@ describe("renderResumeFirearms", () => {
     expect(roundsInput.value).toBe("9");
     expect(roundsInput.getAttribute("data-max")).toBe("12");
     expect(roundsInput.getAttribute("data-min")).toBe("0");
-    expect(container.querySelector(".resume-reload-firearm")).not.toBeNull();
+  });
+
+  // Reloading was removed from the project entirely: rounds and container stock are
+  // adjusted by hand via the steppers, the same way ranged ammo has always worked.
+  test("renders no reload button — nothing drains containers automatically", () => {
+    renderResume({
+      inventory: {
+        firearms: {
+          equipped: [
+            {
+              weapon_name: "Pistola",
+              weapon_final_hit_points: 8,
+              hit_points_modifier: 0,
+              weapon_final_magazine_size: 12,
+              rounds_loaded: 9,
+              _instanceId: "inst-1",
+            },
+          ],
+        },
+      },
+    });
+
+    const container = id("resume_firearms_container");
+    expect(container.querySelector(".resume-reload-firearm")).toBeNull();
+    expect(container.querySelector(".btn-reload")).toBeNull();
+    // the manual stepper is still there
+    expect(container.querySelector(".resume-firearm-rounds")).not.toBeNull();
   });
 
   test("omits the HP stepper (but always keeps a rounds stepper) when there's no max HP", () => {
