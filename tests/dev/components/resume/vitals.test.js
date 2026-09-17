@@ -1,4 +1,4 @@
-import { renderResume } from "dev/public/js/components/resume.js";
+import { renderResume } from "dev/public/js/components/resume/index.js";
 import {
   t,
   getSecondaryAttributeLabel,
