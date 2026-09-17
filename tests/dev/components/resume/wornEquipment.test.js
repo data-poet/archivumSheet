@@ -1,4 +1,4 @@
-import { renderResume } from "dev/public/js/components/resume.js";
+import { renderResume } from "dev/public/js/components/resume/index.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
 

@@ -1,0 +1,231 @@
+// Whole-sheet aggregates: carry weight/encumbrance, monetary value, spent points.
+
+import {
+  t,
+  getEncumbranceLabel,
+  getCarryLimitLabel,
+} from "../../localization/pt-BR/index.js";
+import { el } from "../../shared/dom.js";
+
+export function renderResumeWeight(sheet) {
+  const carry = sheet?.inventory?.carry_weight;
+
+  const weightEl = el("weight");
+  const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
+
+  const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
+  const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
+  const meleeWeight =
+    sheet?.inventory?.melee?.carried_melee_weapons_weight || 0;
+  const rangedWeight =
+    sheet?.inventory?.ranged?.carried_ranged_weapons_weight || 0;
+  const firearmsWeight =
+    sheet?.inventory?.firearms?.carried_firearms_weight || 0;
+  const ammoWeight = sheet?.inventory?.ammo?.carried_ammo_weight || 0;
+  const alchemyWeight = sheet?.inventory?.alchemy?.carried_alchemy_weight || 0;
+  const survivalGearWeight =
+    sheet?.inventory?.survivalGear?.carried_survival_gear_weight || 0;
+  const magicGearWeight =
+    sheet?.inventory?.magicGear?.carried_magic_gear_weight || 0;
+  const customWeight =
+    sheet?.inventory?.customInventory?.carried_custom_inventory_weight || 0;
+  const coinPurseWeight =
+    sheet?.inventory?.coinPurse?.carried_coin_purse_weight || 0;
+
+  const totalWeight =
+    Math.ceil(
+      (baseWeight +
+        armorWeight +
+        shieldWeight +
+        meleeWeight +
+        rangedWeight +
+        firearmsWeight +
+        ammoWeight +
+        alchemyWeight +
+        survivalGearWeight +
+        magicGearWeight +
+        customWeight +
+        coinPurseWeight) *
+        1000,
+    ) / 1000;
+
+  let stateKey = "none";
+  if (carry) {
+    if (totalWeight >= carry.limits.veryHeavy) stateKey = "overloaded";
+    else if (totalWeight >= carry.limits.heavy) stateKey = "veryHeavy";
+    else if (totalWeight >= carry.limits.medium) stateKey = "heavy";
+    else if (totalWeight >= carry.limits.light) stateKey = "medium";
+    else if (totalWeight > carry.limits.none) stateKey = "light";
+  }
+
+  const encumbranceLabel = carry
+    ? `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`
+    : "—";
+
+  const weightTbody = el("resume_weight_tbody");
+  if (weightTbody) {
+    weightTbody.innerHTML = `
+      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorWeight}</td></tr>
+      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldWeight}</td></tr>
+      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeWeight}</td></tr>
+      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedWeight}</td></tr>
+      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsWeight}</td></tr>
+      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoWeight}</td></tr>
+      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyWeight}</td></tr>
+      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearWeight}</td></tr>
+      <tr><td>${t("magicGear.magicGearWeight")}</td><td class="col-num">${magicGearWeight}</td></tr>
+      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customWeight}</td></tr>
+      <tr><td>${t("coinPurse.coinPurseWeight")}</td><td class="col-num">${coinPurseWeight}</td></tr>
+    `;
+  }
+
+  const totalWeightCell = el("resume_total_weight_cell");
+  if (totalWeightCell)
+    totalWeightCell.innerHTML = `<strong>${totalWeight}</strong>`;
+
+  const set = (id, val) => {
+    const e = el(id);
+    if (e) e.textContent = val;
+  };
+  set("armor_weight", armorWeight);
+  set("shield_weight", shieldWeight);
+  set("melee_weight", meleeWeight);
+  set("ranged_weight", rangedWeight);
+  set("firearms_weight", firearmsWeight);
+  set("ammo_weight", ammoWeight);
+  set("alchemy_weight", alchemyWeight);
+  set("survival_gear_weight", survivalGearWeight);
+  set("magic_gear_weight", magicGearWeight);
+  set("custom_inventory_weight", customWeight);
+  set("total_weight", totalWeight);
+  set("encumbrance", encumbranceLabel);
+
+  const limitsEl = el("carry_limits");
+  if (limitsEl && carry) {
+    limitsEl.innerHTML = `
+      <table class="resume-limits-table">
+        <thead>
+          <tr>
+            <th>${getCarryLimitLabel("none")}</th>
+            <th>${getCarryLimitLabel("light")}</th>
+            <th>${getCarryLimitLabel("medium")}</th>
+            <th>${getCarryLimitLabel("heavy")}</th>
+            <th>${getCarryLimitLabel("veryHeavy")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-num">${carry.limits.none}</td>
+            <td class="col-num">${carry.limits.light}</td>
+            <td class="col-num">${carry.limits.medium}</td>
+            <td class="col-num">${carry.limits.heavy}</td>
+            <td class="col-num">${carry.limits.veryHeavy}</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+export function renderResumeValue(sheet) {
+  const armorValue = sheet?.inventory?.armor?.carried_armor_value || 0;
+  const shieldValue = sheet?.inventory?.shield?.carried_shield_value || 0;
+  const meleeValue = sheet?.inventory?.melee?.carried_melee_weapons_value || 0;
+  const rangedValue =
+    sheet?.inventory?.ranged?.carried_ranged_weapons_value || 0;
+  const firearmsValue = sheet?.inventory?.firearms?.carried_firearms_value || 0;
+  const ammoValue = sheet?.inventory?.ammo?.carried_ammo_value || 0;
+  const alchemyValue = sheet?.inventory?.alchemy?.carried_alchemy_value || 0;
+  const survivalGearValue =
+    sheet?.inventory?.survivalGear?.carried_survival_gear_value || 0;
+  const accessoryValue =
+    sheet?.inventory?.accessories?.carried_accessory_value || 0;
+  const magicGearValue =
+    sheet?.inventory?.magicGear?.carried_magic_gear_value || 0;
+  const customValue =
+    sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
+
+  const totalValue =
+    armorValue +
+    shieldValue +
+    meleeValue +
+    rangedValue +
+    firearmsValue +
+    ammoValue +
+    alchemyValue +
+    survivalGearValue +
+    accessoryValue +
+    magicGearValue +
+    customValue;
+
+  const valueTbody = el("resume_value_tbody");
+  if (valueTbody) {
+    valueTbody.innerHTML = `
+      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorValue}</td></tr>
+      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldValue}</td></tr>
+      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeValue}</td></tr>
+      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedValue}</td></tr>
+      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsValue}</td></tr>
+      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoValue}</td></tr>
+      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyValue}</td></tr>
+      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearValue}</td></tr>
+      <tr><td>${t("sections.accessories")}</td><td class="col-num">${accessoryValue}</td></tr>
+      <tr><td>${t("magicGear.title")}</td><td class="col-num">${magicGearValue}</td></tr>
+      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customValue}</td></tr>
+    `;
+  }
+
+  const totalValueCell = el("resume_total_value_cell");
+  if (totalValueCell)
+    totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
+
+  const backpackCoins = sheet?.inventory?.coinPurse?.backpack ?? [];
+  const totalCoins = backpackCoins.reduce(
+    (sum, entry) => sum + (entry.total_value ?? 0),
+    0,
+  );
+  const hasCoins = backpackCoins.length > 0;
+
+  const coinsRowEl = el("resume_coins_row");
+  if (coinsRowEl) coinsRowEl.hidden = !hasCoins;
+
+  document.querySelectorAll(".resume-coins-value").forEach((span) => {
+    span.textContent = totalCoins.toLocaleString("pt-BR");
+  });
+}
+
+export function renderResumePoints(sheet) {
+  const primaryAttributesPoints =
+    sheet?.character?.character_points?.primary_attributes ?? 0;
+  const secondaryAttributesPoints =
+    sheet?.character?.character_points?.secondary_attributes ?? 0;
+  const advantagesPoints = sheet?.character?.character_points?.advantages ?? 0;
+  const disadvantagesPoints =
+    sheet?.character?.character_points?.disadvantages ?? 0;
+  const skillsPoints = sheet?.character?.character_points?.skills ?? 0;
+  const spellsPoints = sheet?.character?.character_points?.spells ?? 0;
+
+  const totalPoints =
+    primaryAttributesPoints +
+    secondaryAttributesPoints +
+    advantagesPoints +
+    disadvantagesPoints +
+    skillsPoints +
+    spellsPoints;
+
+  const pointsTbody = el("resume_points_tbody");
+  if (pointsTbody) {
+    pointsTbody.innerHTML = `
+      <tr><td>${t("resume.primaryAttributes")}</td><td class="col-num">${primaryAttributesPoints}</td></tr>
+      <tr><td>${t("resume.secondaryAttributes")}</td><td class="col-num">${secondaryAttributesPoints}</td></tr>
+      <tr><td>${t("resume.advantages")}</td><td class="col-num">${advantagesPoints}</td></tr>
+      <tr><td>${t("resume.disadvantages")}</td><td class="col-num">${disadvantagesPoints}</td></tr>
+      <tr><td>${t("resume.skills")}</td><td class="col-num">${skillsPoints}</td></tr>
+      <tr><td>${t("resume.spells")}</td><td class="col-num">${spellsPoints}</td></tr>
+    `;
+  }
+
+  const totalPointsCell = el("resume_total_points_cell");
+  if (totalPointsCell)
+    totalPointsCell.innerHTML = `<strong>${totalPoints}</strong>`;
+}
