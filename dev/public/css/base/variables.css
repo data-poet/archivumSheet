@@ -1,5 +1,17 @@
 /* Mobile-first: primary users are on phones during tabletop sessions. */
 
+/* ── Breakpoints ──────────────────────────────────────────────────────────────
+   Custom properties can't be used inside @media, so these three widths are the
+   canonical set by convention — grep before introducing a fourth.
+
+     max-width:  480px  compact phone: bigger tap targets, last grids collapse
+     max-width:  600px  two-column grids collapse to one
+     min-width:  768px  desktop shell: sidebar replaces the bottom nav
+
+   768px has no `max-width: 767px` twin: rules below it are the unconditional
+   mobile-first base, overridden inside the 768px block.
+   ──────────────────────────────────────────────────────────────────────────── */
+
 :root {
   --color-bg: #f2f3f6;
   --color-surface: #ffffff;
