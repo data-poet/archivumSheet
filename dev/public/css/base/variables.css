@@ -28,7 +28,7 @@
   --color-success: #22c55e;
   --color-info: #3b82f6;
 
-  /* readable on both light and dark themes */
+  /* Section identity, used as text and as 2-3px borders. Every value is overridden in the dark block — these tones are tuned against the light surface only. */
   --accent-character: #c62828;
   --accent-attributes: #d96b1d;
   --accent-traits: #b8860b;
@@ -37,6 +37,10 @@
   --accent-equipment: #2563eb;
   --accent-inventory: #5b21b6;
   --accent-combat: #7a1f2e; /* reference page — Combate section */
+
+  /* Same hues as solid fills carrying --color-on-accent text, so they must stay dark in BOTH themes — lightening them for dark mode would break the white text on top. */
+  --accent-character-fill: #c62828;
+  --accent-equipment-fill: #2563eb;
 
   --color-focus-ring: #1d4ed8;
   --focus-ring-w: 2px;
@@ -123,7 +127,7 @@
   --color-enchantment-tag: #7c5cbf;
 }
 
-/* [data-theme="dark"] is set synchronously pre-paint by an inline script, kept in sync by ui/theme.js; accent/bar colors are intentionally unchanged here since they already read well on both themes */
+/* [data-theme="dark"] is set synchronously pre-paint by an inline script, kept in sync by ui/theme.js. Bar colors are unchanged — they're decorative fills with no text on them. */
 html[data-theme="dark"] {
   --color-bg: #14141c;
   --color-surface: #1e1e2a;
@@ -140,6 +144,17 @@ html[data-theme="dark"] {
   --color-success: #34d399;
   --color-info: #60a5fa;
   --color-focus-ring: #8ab4ff;
+
+  /* Each one clears 4.5:1 against the lightest dark surface (--color-row-hover #262636), so it holds up as text anywhere. Combat stays the desaturated red of the pair so it doesn't read as --accent-character. */
+  --accent-character: #e16b6b;
+  --accent-attributes: #da752d;
+  --accent-traits: #b48920;
+  --accent-skills: #5ba036;
+  --accent-magic: #1fad77;
+  --accent-equipment: #678ee4;
+  --accent-inventory: #a57be7;
+  --accent-combat: #c47b87;
+
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.4);
 
