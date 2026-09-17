@@ -18,7 +18,7 @@ import {
   renderStoredAccessories,
 } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
-import { withOpenState, tableRowKeyFn, divBlockKeyFn } from "../../../shared/openState.js";
+import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
@@ -36,19 +36,10 @@ function _renderAccessoryLists(sheet) {
 }
 
 function _withPreservedOpenState(e, mutateAndRenderFn) {
-  if (e.target.closest("#accessorySlots")) {
-    withOpenState(
-      "#accessorySlots",
-      divBlockKeyFn("data-instance-id"),
-      mutateAndRenderFn,
-    );
-  } else {
-    withOpenState(
-      "#accessoryStorageList",
-      tableRowKeyFn("data-instance-id"),
-      mutateAndRenderFn,
-    );
-  }
+  const scope = e.target.closest("#accessorySlots")
+    ? "#accessorySlots"
+    : "#accessoryStorageList";
+  withOpenState(scope, mutateAndRenderFn);
 }
 
 const _handleAccessoryCustomFieldsClick = createCustomFieldsClickHandler({

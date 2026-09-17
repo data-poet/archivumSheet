@@ -17,11 +17,7 @@ import {
   renderStoredMagicGear,
 } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
-import {
-  withOpenState,
-  tableRowKeyFn,
-  divBlockKeyFn,
-} from "../../../shared/openState.js";
+import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
@@ -34,19 +30,10 @@ function _renderMagicGearLists(sheet) {
 }
 
 function _withPreservedOpenState(e, mutateAndRenderFn) {
-  if (e.target.closest("#magicGearSlots")) {
-    withOpenState(
-      "#magicGearSlots",
-      divBlockKeyFn("data-instance-id"),
-      mutateAndRenderFn,
-    );
-  } else {
-    withOpenState(
-      "#magicGearStorageList",
-      tableRowKeyFn("data-instance-id"),
-      mutateAndRenderFn,
-    );
-  }
+  const scope = e.target.closest("#magicGearSlots")
+    ? "#magicGearSlots"
+    : "#magicGearStorageList";
+  withOpenState(scope, mutateAndRenderFn);
 }
 
 const _handleMagicGearCustomFieldsClick = createCustomFieldsClickHandler({
