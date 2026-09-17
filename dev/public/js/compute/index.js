@@ -39,6 +39,8 @@ export async function runEngine() {
       character_weight: info.character_weight ?? null,
       starting_points: info.starting_points ?? null,
       experience_points: info.experience_points ?? null,
+      ability_points: info.ability_points ?? null,
+      magic_points: info.magic_points ?? null,
       image: info.image ?? {
         uploaded: false,
         data: "",
@@ -212,9 +214,26 @@ export async function runEngine() {
 
     const startingPts = json.pc?.starting_points ?? null;
     const experiencePts = json.pc?.experience_points ?? null;
+    const abilityPts = json.pc?.ability_points ?? null;
+    const magicPts = json.pc?.magic_points ?? null;
 
-    if (startingPts !== null || experiencePts !== null) {
-      const available = (startingPts ?? 0) + (experiencePts ?? 0);
+    const available =
+      (startingPts ?? 0) +
+      (experiencePts ?? 0) +
+      (abilityPts ?? 0) +
+      (magicPts ?? 0);
+
+    const totalAvailableEl = document.getElementById(
+      "totalAvailablePointsValue",
+    );
+    if (totalAvailableEl) totalAvailableEl.textContent = String(available);
+
+    if (
+      startingPts !== null ||
+      experiencePts !== null ||
+      abilityPts !== null ||
+      magicPts !== null
+    ) {
       if (totalSpent > available) {
         showToast(t("resume.insufficientPoints"), "error");
       }
