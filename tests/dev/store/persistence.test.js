@@ -85,6 +85,40 @@ describe("showToast", () => {
     expect(toast.className).toBe("toast toast--success");
   });
 
+  test("mounts into the persistent #toast-host live region when one exists", () => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<div id="toast-host" aria-live="polite" aria-atomic="true"></div>`,
+    );
+
+    showToast("Announced", "success");
+
+    const host = document.getElementById("toast-host");
+    expect(host.querySelector("#_archivum-toast")).not.toBeNull();
+    expect(host.getAttribute("aria-live")).toBe("polite");
+  });
+
+  test("escalates the live region to assertive for errors only", () => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<div id="toast-host" aria-live="polite"></div>`,
+    );
+    const host = document.getElementById("toast-host");
+
+    showToast("Broke", "error");
+    expect(host.getAttribute("aria-live")).toBe("assertive");
+
+    showToast("Fine", "success");
+    expect(host.getAttribute("aria-live")).toBe("polite");
+  });
+
+  test("falls back to <body> when no host is present, without making <body> a live region", () => {
+    showToast("No host", "error");
+
+    expect(document.body.querySelector("#_archivum-toast")).not.toBeNull();
+    expect(document.body.hasAttribute("aria-live")).toBe(false);
+  });
+
   test("falls back to the info icon for an unrecognized type", () => {
     showToast("Hmm", "not-a-real-type");
     const toast = document.getElementById("_archivum-toast");

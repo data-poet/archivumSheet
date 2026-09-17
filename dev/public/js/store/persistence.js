@@ -26,7 +26,13 @@ export function showToast(message, type = "success", options = {}) {
     <span class="toast-message">${message}</span>
     ${actionLabel ? `<button type="button" class="toast-action">${actionLabel}</button>` : ""}
   `;
-  document.body.appendChild(toast);
+  // A live region only announces mutations it was already present for, so the toast goes into the
+  // persistent #toast-host rather than straight into <body>.
+  const host = document.getElementById("toast-host");
+  if (host) {
+    host.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+  }
+  (host ?? document.body).appendChild(toast);
 
   let dismissed = false;
   const dismiss = () => {

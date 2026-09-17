@@ -77,6 +77,24 @@
   padding: var(--space-3) 0;
 }
 
+/* Both row types are <button>s so they're keyboard-operable; this strips the global button chrome back to a flush list row. */
+.char-selector-item,
+.char-selector-action-item {
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: inherit;
+  text-align: left;
+}
+
+/* inset so the popover's overflow: hidden doesn't clip the ring on these full-width rows */
+.char-selector-item:focus-visible,
+.char-selector-action-item:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-w));
+}
+
 .char-selector-item {
   display: flex;
   align-items: center;
