@@ -20,12 +20,11 @@ const selected = state.selected;
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAccessories() {
   data.accessories = await fetchAccessories();
 
   loadAccessorySelectors();
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

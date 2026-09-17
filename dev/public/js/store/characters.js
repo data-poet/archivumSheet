@@ -255,15 +255,18 @@ export function saveActiveCharacter() {
   _save(store);
 }
 
+// Returns whether a character was found and applied — bootstrap relies on this to
+// know whether _applyData already rendered, or whether it must paint the empty sheet.
 export function loadCharacter(id) {
   const store = getStore();
   const entry = store.list.find((c) => c.id === id);
-  if (!entry) return;
+  if (!entry) return false;
 
   store.activeId = id;
   _save(store);
 
   _applyData(entry.data);
+  return true;
 }
 
 export function addCharacter(name) {
@@ -322,5 +325,5 @@ export function replaceActiveCharacter(payload) {
 
 export function initCharacters() {
   const store = getStore();
-  loadCharacter(store.activeId);
+  return loadCharacter(store.activeId);
 }

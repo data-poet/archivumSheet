@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { fetchMeleeWeapons, fetchMaterials } from "../../../api.js";
+import { fetchMeleeWeapons } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
@@ -25,15 +25,11 @@ const selected = state.selected;
 // LOAD
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadMeleeWeapons() {
-  [data.melee_weapons, data.materials] = await Promise.all([
-    fetchMeleeWeapons(),
-    fetchMaterials(),
-  ]);
+  data.melee_weapons = await fetchMeleeWeapons();
 
   loadMeleeSelectors();
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

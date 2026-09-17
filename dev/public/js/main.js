@@ -4,7 +4,11 @@ import { initTabs } from "./components/tabs.js";
 import { initViewMode } from "./components/viewMode.js";
 import { initTheme } from "./components/theme.js";
 import { setupAutoRun } from "./compute/attributes.js";
-import { updateActualValues, initAttributeTableHeaders } from "./ui.js";
+import {
+  updateActualValues,
+  initAttributeTableHeaders,
+  renderListsPreserving,
+} from "./ui.js";
 import { runEngine } from "./compute/index.js";
 import { initAutoRun } from "./compute/autorun.js";
 import { loadRaces } from "./engine/character/races/index.js";
@@ -25,10 +29,12 @@ import { loadAccessories } from "./engine/inventory/accessories/index.js";
 import { loadMagicGear } from "./engine/inventory/magicGear/index.js";
 import { loadEnchantments } from "./engine/inventory/shared/enchantments/index.js";
 import { loadDualUseWeapons } from "./engine/inventory/shared/dualUseWeapons.js";
+import { loadMaterials } from "./engine/inventory/shared/materials.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
+import { state } from "./state.js";
 
-window.onload = async () => {
+export async function bootstrap() {
   initAutoRun(runEngine);
   bindUI();
   initNav();
@@ -39,12 +45,16 @@ window.onload = async () => {
   initAttributeTableHeaders();
   updateActualValues();
 
+  // The load*() functions only fetch catalogs and populate their own add-form
+  // selectors — none of them render. Rendering once here instead costs one DOM
+  // sweep rather than one per catalog.
   await Promise.all([
     loadRaces(),
     loadAdvantages(),
     loadDisadvantages(),
     loadSkills(),
     loadSpells(),
+    loadMaterials(),
     loadArmors(),
     loadShields(),
     loadMeleeWeapons(),
@@ -59,7 +69,17 @@ window.onload = async () => {
     loadDualUseWeapons(),
   ]);
 
-  initCharacters();
+  // initCharacters() applies the active character, which ends in its own
+  // renderListsPreserving + triggerAutoRun. Only render here when it couldn't
+  // (no persisted character matched), so the empty sheet still paints.
+  if (!initCharacters()) {
+    renderListsPreserving(state.selected, state.data);
+  }
+
   initCharacterSelector();
   initCharacterImage();
-};
+}
+
+// Not `window.onload` — that waits on every image, delaying the catalog fetches.
+// main.js is a module script, so it always runs before DOMContentLoaded fires.
+document.addEventListener("DOMContentLoaded", bootstrap);
