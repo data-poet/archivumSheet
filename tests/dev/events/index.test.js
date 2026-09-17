@@ -339,9 +339,13 @@ describe("bindUI — delegated input chain", () => {
   });
 });
 
+// Order mirrors DELEGATED_DOMAINS in events/index.js. Which domain sits where is
+// not behaviour the app depends on — every handler matches on its own disjoint
+// predicate, and the shared custom-fields/enchantment classes ownership-check the
+// instance id — so the tests below address positions, not domain names.
 const CHANGE_CHAIN_HANDLERS = [
-  character.handleSkillChange,
   character.handleCharacterChange,
+  character.handleSkillChange,
   armor.handleArmorChange,
   shield.handleShieldChange,
   melee.handleMeleeChange,
@@ -366,29 +370,33 @@ describe("bindUI — delegated change chain", () => {
     document.body.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  test("the first handler in the chain (handleSkillChange) is tried first — returning true stops everything after it", () => {
-    character.handleSkillChange.mockReturnValue(true);
+  test("the first handler returning true short-circuits every handler after it", () => {
+    CHANGE_CHAIN_HANDLERS[0].mockReturnValue(true);
 
     fireChange();
 
-    expect(character.handleSkillChange).toHaveBeenCalledTimes(1);
-    expect(character.handleCharacterChange).not.toHaveBeenCalled();
+    expect(CHANGE_CHAIN_HANDLERS[0]).toHaveBeenCalledTimes(1);
+    CHANGE_CHAIN_HANDLERS.slice(1).forEach((fn) =>
+      expect(fn).not.toHaveBeenCalled(),
+    );
   });
 
   test("when an earlier handler returns false, the chain falls through to the next one", () => {
-    character.handleSkillChange.mockReturnValue(false);
-    character.handleCharacterChange.mockReturnValue(true);
+    CHANGE_CHAIN_HANDLERS[1].mockReturnValue(true);
 
     fireChange();
 
-    expect(character.handleCharacterChange).toHaveBeenCalledTimes(1);
-    expect(armor.handleArmorChange).not.toHaveBeenCalled();
+    expect(CHANGE_CHAIN_HANDLERS[0]).toHaveBeenCalledTimes(1);
+    expect(CHANGE_CHAIN_HANDLERS[1]).toHaveBeenCalledTimes(1);
+    CHANGE_CHAIN_HANDLERS.slice(2).forEach((fn) =>
+      expect(fn).not.toHaveBeenCalled(),
+    );
   });
 
-  test("the last handler in the chain (handleCharacterImageChange) still fires when every earlier handler returns false", () => {
+  test("the last handler still fires when every earlier handler returns false", () => {
     fireChange();
 
-    expect(character.handleCharacterImageChange).toHaveBeenCalledTimes(1);
+    CHANGE_CHAIN_HANDLERS.forEach((fn) => expect(fn).toHaveBeenCalledTimes(1));
   });
 
   test("a change event that no handler claims does not throw", () => {
