@@ -78,36 +78,37 @@
 
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
+  /* Floors are what a 320-430px phone actually gets, so none of them go below 10px. Maxima are unchanged. */
   --fs-base: clamp(
-    10px,
-    0.4vw + 9px,
+    13px,
+    0.4vw + 11.5px,
     16px
   );
   --fs-sm: clamp(
-    9px,
-    0.35vw + 8px,
+    12px,
+    0.35vw + 10.7px,
     14px
   );
   --fs-xs: clamp(
-    8px,
-    0.3vw + 7px,
+    11px,
+    0.3vw + 9.9px,
     12px
   );
   --fs-xxs: clamp(
-    7px,
-    0.25vw + 6px,
+    10px,
+    0.25vw + 9.1px,
     11px
   );
 
-  /* bigger than --fs-base so titles never read smaller than the body text below them */
+  /* bigger than --fs-base so titles never read smaller than the body text below them — floors included */
   --fs-lg: clamp(
-    13px,
-    0.55vw + 11px,
+    15px,
+    0.55vw + 13px,
     18px
   );
   --fs-xl: clamp(
-    16px,
-    0.7vw + 13px,
+    18px,
+    0.7vw + 15.5px,
     22px
   );
 
