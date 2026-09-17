@@ -351,7 +351,11 @@ describe("handleRangedChange — storage / move", () => {
   });
 
   test("equipped-ranged-move DOES mirror is_equipped/storedAt onto the linked melee instance and renders both", () => {
-    const rangedInstance = { is_equipped: true, storedAt: null };
+    const rangedInstance = {
+      _instanceId: "RANGED-1",
+      is_equipped: true,
+      storedAt: null,
+    };
     model.findRangedByInstanceId.mockReturnValue(rangedInstance);
     const linkedMelee = {
       _linkedInstanceId: "RANGED-1",

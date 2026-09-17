@@ -8,7 +8,10 @@ import {
   nextRangedInstanceId,
   nextMeleeInstanceId,
 } from "../../../store/instanceId.js";
-import { getMeleeCounterpart } from "../shared/dualUseWeapons.js";
+import {
+  getMeleeCounterpart,
+  findLinkedCounterpart,
+} from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
 import {
@@ -182,21 +185,8 @@ function _syncMeleeCounterpart(
   });
 }
 
-// Handles both link directions: ranged created first (melee points at ranged) or melee created first (ranged points at melee).
 function _findLinkedMelee(rangedInstance) {
-  if (!rangedInstance) return null;
-  const byMeleeLink = selected.melee_weapons.find(
-    (m) => m._linkedInstanceId === rangedInstance._instanceId,
-  );
-  if (byMeleeLink) return byMeleeLink;
-  if (rangedInstance._linkedInstanceId) {
-    return (
-      selected.melee_weapons.find(
-        (m) => m._instanceId === rangedInstance._linkedInstanceId,
-      ) ?? null
-    );
-  }
-  return null;
+  return findLinkedCounterpart(rangedInstance, selected.melee_weapons);
 }
 
 function _removeMeleeCounterpart(rangedInstance) {

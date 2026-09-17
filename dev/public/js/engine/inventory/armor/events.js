@@ -12,48 +12,37 @@ import {
   updateArmorEnchantment,
   removeArmorEnchantment,
 } from "./model.js";
-import { clampHpModifier } from "../shared/durabilityUtils.js";
-import { resolveHp } from "../shared/inventoryRenderUtils.js";
 import { renderArmorSlots, renderStoredArmors } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
+import {
+  createCustomFieldsClickHandler,
+  withPreservedOpenState,
+} from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import {
+  createListRenderer,
+  createDeferredRender,
+} from "../shared/renderScheduling.js";
+import {
+  createHpInputHandler,
+  updateResumeHpDisplay,
+  updateActualHpDisplay,
+} from "../shared/durabilityDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-// Re-renders only the armor lists, not a full renderLists() sweep — same reasoning as accessories' _renderAccessoryLists.
-//
-// Uses snapshotAll()/restoreAll() rather than a single-scope helper because armor actions can move an item BETWEEN
-// #armorSlots and #armorStorageList in one step (equip/unequip/move), so both need their state captured together.
-//
-// Deferred by one rAF because several callers fire from native <select> "change" handlers, and replacing the
-// select's DOM ancestor before the browser finishes its own change/native-picker cycle causes a visible flicker
-// (worst on mobile Safari). Restore happens in the same frame as the render to avoid painting the rebuilt DOM
-// in its default-collapsed state first. Mirrors openState.js's withOpenState.
-function _renderArmorLists(sheet) {
-  const snapshots = snapshotAll();
+const _renderArmorLists = createListRenderer(
+  renderArmorSlots,
+  renderStoredArmors,
+);
 
-  requestAnimationFrame(() => {
-    renderArmorSlots(selected, data, sheet);
-    renderStoredArmors(selected, data, sheet);
-    restoreAll(snapshots);
-  });
-}
-
-// saveArmorCustomFields calls its own renderLists()+triggerAutoRun() internally (unwrapped); snapshot/restore
-// synchronously around it here so that internal render doesn't blow away open state elsewhere on the page.
-function _saveArmorCustomFieldsWrapped(instanceId, values) {
-  const snapshots = snapshotAll();
-  saveArmorCustomFields(instanceId, values);
-  restoreAll(snapshots);
-}
+const _deferRender = createDeferredRender(() => _renderArmorLists());
 
 const _handleArmorCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findArmorByInstanceId,
-  saveCustomFields: _saveArmorCustomFieldsWrapped,
+  saveCustomFields: withPreservedOpenState(saveArmorCustomFields),
   render: _renderArmorLists,
 });
 
@@ -116,69 +105,31 @@ export function handleArmorClick(e) {
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 
-export function handleArmorInput(e) {
-  if (e.target.classList.contains("resume-armor-hp")) {
-    const slot = e.target.dataset.slot;
-    const equippedArmor = findEquippedArmorInSlot(slot);
-    if (!equippedArmor) return true;
-    if (/^-$/.test(e.target.value)) return true;
-    const armorData = data.armors.find(
-      (a) => a.armor_id === equippedArmor.armor_id,
-    );
-    const { maxHp } = resolveHp(
-      equippedArmor,
-      armorData?.armor_hit_points ?? 0,
-      data.materials,
-    );
-    equippedArmor.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateResumeHpDisplay(e.target, maxHp, equippedArmor.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("equipped-armor-hp")) {
-    const slot = e.target.dataset.slot;
-    const equippedArmor = findEquippedArmorInSlot(slot);
-    if (!equippedArmor) return true;
-    if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const armorData = data.armors.find(
-      (a) => a.armor_id === equippedArmor.armor_id,
-    );
-    const { maxHp } = resolveHp(
-      equippedArmor,
-      armorData?.armor_hit_points ?? 0,
-      data.materials,
-    );
-    equippedArmor.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateActualHpDisplay(e.target, maxHp, equippedArmor.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  if (e.target.classList.contains("stored-armor-hp")) {
-    const instanceId = e.target.dataset.instanceId;
-    const armorInstance = findArmorByInstanceId(instanceId);
-    if (!armorInstance) return true;
-    if (/^-$/.test(e.target.value)) return true; // allow '-' mid-type
-    const armorData = data.armors.find(
-      (a) => a.armor_id === armorInstance.armor_id,
-    );
-    const { maxHp } = resolveHp(
-      armorInstance,
-      armorData?.armor_hit_points ?? 0,
-      data.materials,
-    );
-    armorInstance.hit_points_modifier = clampHpModifier(e.target.value, maxHp);
-    _updateActualHpDisplay(e.target, maxHp, armorInstance.hit_points_modifier);
-    _deferRender();
-    triggerAutoRun();
-    return true;
-  }
-
-  return false;
-}
+// Armor's equipped rows are addressed by slot (one piece per body location), not by
+// instance id — only the storage rows carry data-instance-id.
+export const handleArmorInput = createHpInputHandler({
+  variants: [
+    {
+      cssClass: "resume-armor-hp",
+      findInstance: (el) => findEquippedArmorInSlot(el.dataset.slot),
+      display: updateResumeHpDisplay,
+    },
+    {
+      cssClass: "equipped-armor-hp",
+      findInstance: (el) => findEquippedArmorInSlot(el.dataset.slot),
+      display: updateActualHpDisplay,
+    },
+    {
+      cssClass: "stored-armor-hp",
+      findInstance: (el) => findArmorByInstanceId(el.dataset.instanceId),
+      display: updateActualHpDisplay,
+    },
+  ],
+  catalog: () => data.armors,
+  catalogIdField: "armor_id",
+  baseHpField: "armor_hit_points",
+  deferRender: _deferRender,
+});
 
 // ─── Change ───────────────────────────────────────────────────────────────────
 
@@ -312,27 +263,3 @@ export function handleAddArmor() {
   );
 }
 
-// ─── Private helpers ──────────────────────────────────────────────────────────
-
-// 300ms-debounced render for HP-modifier inputs so typing doesn't trigger a re-render per keystroke.
-let _deferTimer = null;
-function _deferRender() {
-  clearTimeout(_deferTimer);
-  _deferTimer = setTimeout(() => {
-    _renderArmorLists();
-  }, 300);
-}
-
-function _updateResumeHpDisplay(inputEl, maxHp, modifier) {
-  const cell = inputEl.closest("td");
-  if (!cell) return;
-  const actual = cell.querySelector(".resume-hp-actual");
-  if (actual) actual.textContent = maxHp + (modifier || 0);
-}
-
-function _updateActualHpDisplay(inputEl, maxHp, modifier) {
-  const block = inputEl.closest(".hp-modifier");
-  if (!block) return;
-  const strongs = block.querySelectorAll("strong");
-  if (strongs.length >= 2) strongs[1].textContent = maxHp + (modifier || 0);
-}
