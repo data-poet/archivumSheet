@@ -40,9 +40,6 @@ export function renderEntryKind() {
       <legend class="entry-kind-legend">${t("characters.kindLegend")}</legend>
       ${option(ENTRY_KINDS.CHARACTER, t("characters.kindCharacter"))}
       ${option(ENTRY_KINDS.ALLY, t("characters.kindAlly"))}
-      <p class="entry-kind-hint" ${kind === ENTRY_KINDS.ALLY ? "" : "hidden"}>
-        ${t("characters.kindAllyHint")}
-      </p>
     </fieldset>
   `;
 }
