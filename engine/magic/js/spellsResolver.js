@@ -1,5 +1,11 @@
 const path = require("path");
 const { loadCSV } = require("../../../helpers/dataUtils.js");
+const {
+  SPELL_ATTRIBUTE,
+  MAGIC_APTITUDE_GROUP,
+  SPELL_TIER_THRESHOLDS,
+  SPELL_TIER_DEFAULT,
+} = require("./spellsConstants.js");
 
 let _dbCache = null;
 
@@ -13,29 +19,21 @@ function getAllSpells() {
   return _dbCache;
 }
 
-// Only the highest-ranked advantage in the group applies — they're mutually exclusive tiers of the same trait.
-const magicAptitudeGroup = {
-  "ADV-063": 1,
-  "ADV-064": 2,
-  "ADV-065": 3,
-};
-
 function getAptitudeLevel(advantages = {}) {
   let max = 0;
   for (const id of Object.keys(advantages)) {
-    if (magicAptitudeGroup[id] && magicAptitudeGroup[id] > max) {
-      max = magicAptitudeGroup[id];
+    if (MAGIC_APTITUDE_GROUP[id] && MAGIC_APTITUDE_GROUP[id] > max) {
+      max = MAGIC_APTITUDE_GROUP[id];
     }
   }
   return max;
 }
 
 function getSpellTierByLevel(level) {
-  if (level <= 12) return "Aprendiz";
-  if (level <= 15) return "Experiente";
-  if (level <= 17) return "Veterano";
-  if (level <= 19) return "Especialista";
-  return "Mestre";
+  for (const { max, tier } of SPELL_TIER_THRESHOLDS) {
+    if (level <= max) return tier;
+  }
+  return SPELL_TIER_DEFAULT;
 }
 
 function normalize(str) {
@@ -64,7 +62,10 @@ function resolveSpells({
 }) {
   const resolved = {};
 
-  const iq = character?.iq ?? character?.primary_attributes?.IQ?.value ?? 0;
+  const iq =
+    character?.iq ??
+    character?.primary_attributes?.[SPELL_ATTRIBUTE]?.value ??
+    0;
   const aptitude_level = getAptitudeLevel(character?.advantages);
 
   const spellNames = new Set([
@@ -139,7 +140,7 @@ function resolveSpells({
       category: row.spell_type,
       tier: getRowTier(row),
 
-      attribute: "IQ",
+      attribute: SPELL_ATTRIBUTE,
       attribute_base: iq,
 
       base_value,

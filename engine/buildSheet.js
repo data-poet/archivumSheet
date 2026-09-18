@@ -2,18 +2,12 @@ const { buildCharacter } = require("./character/buildCharacter");
 const { buildInventory } = require("./inventory/buildInventory");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
+const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
 const { computeWeaponDamage } = require("./inventory/js/shared/weaponDamage");
 const {
   collectEquippedEnchantments,
 } = require("./character/js/enchantments/collectEquippedEnchantments");
-
-function sumObjectValues(obj = {}) {
-  return Object.values(obj).reduce(
-    (sum, value) => sum + (Number(value) || 0),
-    0,
-  );
-}
 
 function buildSheet({
   pc = {},
@@ -195,7 +189,7 @@ function buildSheet({
   }
 
   const characterData = characterResult.character;
-  const iq = characterData.primary_attributes.IQ.value;
+  const iq = characterData.primary_attributes[SPELL_ATTRIBUTE].value;
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -301,8 +295,8 @@ function buildSheet({
   const basePoints = characterResult.character.character_points;
 
   const characterPoints = {
-    primary_attributes: sumObjectValues(basePoints.primary_attributes),
-    secondary_attributes: sumObjectValues(basePoints.secondary_attributes),
+    primary_attributes: basePoints.primary_attributes || 0,
+    secondary_attributes: basePoints.secondary_attributes || 0,
     skills: basePoints.skills || 0,
     advantages: basePoints.advantages || 0,
     disadvantages: basePoints.disadvantages || 0,
