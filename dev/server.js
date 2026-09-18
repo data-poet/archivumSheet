@@ -4,6 +4,7 @@ const path = require("path");
 
 const { version } = require("../package.json");
 const { loadCSV } = require("../helpers/dataUtils.js");
+const alliesCatalog = require("../helpers/alliesCatalog.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
 const enchantmentsConstants = require("../engine/inventory/js/shared/enchantmentsConstants.js");
@@ -238,6 +239,26 @@ app.get("/api/inventory/item-categories", (req, res) => {
     RANGED: RANGED_ITEM_CATEGORY,
     FIREARMS: FIREARMS_ITEM_CATEGORY,
   });
+});
+
+/* -----------------------
+   ALLIES CATALOG
+   The index is served separately from the full payloads so the picker doesn't
+   pull every ally's whole sheet on page load. Allies are built by the client
+   through /api/sheet/build — an ally is just another character.
+------------------------ */
+app.get("/api/allies", (req, res) => {
+  res.json(alliesCatalog.listAllies());
+});
+
+app.get("/api/allies/:allyId", (req, res) => {
+  const ally = alliesCatalog.getAlly(req.params.allyId);
+
+  if (!ally) {
+    return res.status(404).json({ error: "Ally not found" });
+  }
+
+  res.json(ally);
 });
 
 /* -----------------------
