@@ -5,8 +5,8 @@ const { getSkillCost } = require("./skillsCost.js");
 // Categories that support isTrainedWithMaster and the actions formula
 const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
 
-// Eligible categories only: without master, +1 action per 8 levels above 8; with master, +1 per 4 levels above 12 in base_value.
-function computeActions({ category, base_value, level, isTrainedWithMaster }) {
+// Eligible categories only: without master, +1 action per 8 levels of base_value above 8; with master, +1 per 4 levels of base_value above 12.
+function computeActions({ category, base_value, isTrainedWithMaster }) {
   if (!MASTER_ELIGIBLE_CATEGORIES.has(category)) return 1;
 
   if (isTrainedWithMaster) {
@@ -14,8 +14,8 @@ function computeActions({ category, base_value, level, isTrainedWithMaster }) {
     return 1 + Math.floor((base_value - 12) / 4);
   }
 
-  if (level <= 8) return 1;
-  return 1 + Math.floor((level - 8) / 8);
+  if (base_value <= 8) return 1;
+  return 1 + Math.floor((base_value - 8) / 8);
 }
 
 // enchantmentSkillGrants: multiple grants targeting the same skill don't stack — only the single highest-level candidate competes against the player's own purchase.
@@ -49,8 +49,11 @@ function buildSkills(
 
     const attribute = row.skill_base_attribute || "DX";
 
+    // Natural attribute score for cost/relative_level purposes: purchased base plus innate race
+    // modifier, excluding situational/equipment/enchantment modifiers (those must not affect cost).
     const attributeBase =
-      primary?.[attribute]?.base_value ?? primary?.[attribute]?.value ?? 0;
+      (primary?.[attribute]?.base_value ?? 0) +
+      (primary?.[attribute]?.race_modifier ?? 0);
 
     // A granted skill's base_value uses the FINAL (post-enchantment) attribute value; attributeBase stays unchanged since cost/relative_level must not be inflated by equipment.
     const grantAttributeBase = primary?.[attribute]?.value ?? attributeBase;
@@ -114,7 +117,6 @@ function buildSkills(
     const actions = computeActions({
       category,
       base_value,
-      level,
       isTrainedWithMaster,
     });
 

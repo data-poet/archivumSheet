@@ -1,17 +1,3 @@
-const path = require("path");
-const { loadCSV } = require("../../../helpers/dataUtils.js");
-
-let _skillsCache = null;
-
-function getAllSpells() {
-  if (_skillsCache) return _skillsCache;
-
-  const filePath = path.join(process.cwd(), "data", "db_magic_grimoire.csv");
-  _skillsCache = loadCSV(filePath);
-
-  return _skillsCache;
-}
-
 const COST_TABLES = {
   IQ: {
     F: {
@@ -88,7 +74,12 @@ function getSpellCost({ attribute = "IQ", base = 0, level = 0, difficulty }) {
   const relative = getRelativeLevel(base, level);
 
   const table = COST_TABLES[attribute]?.[difficulty];
-  if (!table) return 0;
+  if (!table) {
+    console.warn(
+      `[getSpellCost] Unknown attribute/difficulty combination: ${attribute}/${difficulty}`,
+    );
+    return 0;
+  }
 
   const clamped = Math.max(-4, Math.min(10, relative));
 
@@ -96,7 +87,6 @@ function getSpellCost({ attribute = "IQ", base = 0, level = 0, difficulty }) {
 }
 
 module.exports = {
-  getAllSpells,
   getSpellCost,
   getRelativeLevel,
   COST_TABLES,

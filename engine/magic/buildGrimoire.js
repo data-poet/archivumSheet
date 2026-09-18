@@ -12,11 +12,11 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
 
     const attribute = "IQ";
 
+    // Natural attribute score for cost/relative_level purposes: purchased base plus innate race
+    // modifier, excluding situational/equipment/enchantment modifiers (those must not affect cost).
     const attributeBase =
-      primary?.[attribute]?.value ??
-      primary?.[attribute]?.base_value ??
-      character?.iq ??
-      0;
+      (primary?.[attribute]?.base_value ?? character?.iq ?? 0) +
+      (primary?.[attribute]?.race_modifier ?? 0);
 
     const base_value = Number(spell.base_value ?? 0);
     const modifier = Number(spell.modifier ?? 0);
