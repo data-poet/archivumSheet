@@ -14,17 +14,15 @@ import {
   syncViewMode,
 } from "../ui.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";
+import {
+  toEngineRace,
+  toEngineCharacter,
+  toEngineInventory,
+} from "../shared/enginePayload.js";
 import { showToast } from "../store/persistence.js";
 import { t } from "../localization/pt-BR/index.js";
 
 const selected = state.selected;
-
-// Not `Number(x) || 1` — a literal 0 (immune to this element) is a real value that `||` would erase.
-function parseRaceMultiplier(raw) {
-  if (raw === undefined || raw === null || raw === "") return 1;
-  const n = Number(raw);
-  return Number.isNaN(n) ? 1 : n;
-}
 
 // renderLists() here is wrapped in a synchronous snapshot/restore (see call site below)
 // so equipment selects aren't destroyed mid-interaction on every autorun tick.
@@ -57,113 +55,37 @@ export async function runEngine() {
       ? state.data.races.find((r) => r.race_id === info.race_id)
       : null;
 
-    const race = raceRow
-      ? {
-          race_id: raceRow.race_id,
-          race_name: raceRow.race_name,
-          race_sub_name: raceRow.race_sub_name || null,
-          race_physical_maturity: raceRow.race_physical_maturity || null,
-          race_mental_maturity: raceRow.race_mental_maturity || null,
-          race_life_expectancy: raceRow.race_life_expectancy || null,
-          modifiers: {
-            ST: Number(raceRow.race_st_modifier) || 0,
-            DX: Number(raceRow.race_dx_modifier) || 0,
-            IQ: Number(raceRow.race_iq_modifier) || 0,
-            HT: Number(raceRow.race_ht_modifier) || 0,
-          },
-          elemental_modifiers: {
-            Fire: parseRaceMultiplier(raceRow.race_fire_damage_multiplier),
-            Ice: parseRaceMultiplier(raceRow.race_ice_damage_multiplier),
-            Electricity: parseRaceMultiplier(
-              raceRow.race_electricity_damage_multiplier,
-            ),
-            Corrosion: parseRaceMultiplier(
-              raceRow.race_corrossion_damage_multiplier,
-            ),
-            Necrotic: parseRaceMultiplier(
-              raceRow.race_necrotic_damage_multiplier,
-            ),
-            Holy: parseRaceMultiplier(raceRow.race_holy_damage_multiplier),
-            Void: parseRaceMultiplier(raceRow.race_void_damage_multiplier),
-            Arcane: parseRaceMultiplier(raceRow.race_arcane_damage_multiplier),
-          },
-          innate_advantage_ids: raceRow.race_innate_advantage_id
-            ? raceRow.race_innate_advantage_id
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-          innate_disadvantage_ids: raceRow.race_innate_disadvantage_id
-            ? raceRow.race_innate_disadvantage_id
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-          innate_advantage_names: raceRow.race_innate_advantage_name
-            ? raceRow.race_innate_advantage_name
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-          innate_disadvantage_names: raceRow.race_innate_disadvantage_name
-            ? raceRow.race_innate_disadvantage_name
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-        }
-      : {};
-
     const json = await buildSheet({
       pc,
-      race,
-      character: {
-        advantages: Object.keys(selected.advantages),
-        disadvantages: Object.keys(selected.disadvantages),
-        primaryAttributes: getPrimaryAttributes(),
-
-        secondaryAttributes: {
-          ...selected.secondary,
-          damage: Object.fromEntries(
-            Object.entries(selected.damage).map(([type, data]) => [
-              type,
-              { modifier: Number(data.modifier) || 0 },
-            ]),
-          ),
-          elementalResistances: Object.fromEntries(
-            Object.entries(selected.resistances).map(([type, data]) => [
-              type,
-              { modifier: Number(data.modifier) || 0 },
-            ]),
-          ),
+      race: toEngineRace(raceRow),
+      character: toEngineCharacter(
+        {
+          advantages: selected.advantages,
+          disadvantages: selected.disadvantages,
+          secondary: selected.secondary,
+          damage: selected.damage,
+          resistances: selected.resistances,
+          skills: selected.skills,
+          spells: selected.spells,
         },
-
-        skills: Object.entries(selected.skills).map(([skill_id, data]) => ({
-          skill_id,
-          base_value: Number(data.base_value ?? data.base) || 0,
-          modifier: Number(data.modifier) || 0,
-          isTrainedWithMaster: Boolean(data.isTrainedWithMaster ?? false),
-        })),
-
-        spells: selected.spells,
-      },
-
-      inventory: {
-        weight: Number(document.getElementById("weight").value) || 0,
-        armor: selected.armors,
-        shield: selected.shields,
-        melee: selected.melee_weapons,
-        ranged: selected.ranged_weapons,
+        getPrimaryAttributes(),
+      ),
+      inventory: toEngineInventory({
+        weight: document.getElementById("weight").value,
+        armors: selected.armors,
+        shields: selected.shields,
+        melee_weapons: selected.melee_weapons,
+        ranged_weapons: selected.ranged_weapons,
         firearms: selected.firearms,
         ammo_containers: selected.ammo_containers,
         loose_ammo: selected.loose_ammo,
         alchemy: selected.alchemy,
-        survival_gear: selected.survivalGear,
+        survivalGear: selected.survivalGear,
         accessories: selected.accessories,
-        magic_gear: selected.magicGear,
-        custom_inventory: selected.customInventory,
+        magicGear: selected.magicGear,
+        customInventory: selected.customInventory,
         coins: selected.coins,
-      },
+      }),
     });
 
     const sec = json.character?.secondary_attributes || {};
