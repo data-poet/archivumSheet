@@ -110,6 +110,14 @@ export async function fetchItemCategories() {
   return getJSON("/api/inventory/item-categories");
 }
 
+export async function fetchAllyIndex() {
+  return getJSON("/api/allies");
+}
+
+export async function fetchAlly(allyId) {
+  return getJSON(`/api/allies/${encodeURIComponent(allyId)}`);
+}
+
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);
 }
