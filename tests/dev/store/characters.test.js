@@ -223,6 +223,31 @@ describe("addCharacter", () => {
       "Novo Personagem",
     );
   });
+
+  // Autosave is debounced 300ms, so without an explicit save here an edit made moments before
+  // adding a character would be lost. Switching characters has always saved first; adding did not.
+  test("saves the outgoing character before switching away", () => {
+    const firstId = getActiveCharacterId();
+    state.selected.character.character_name = "Kael";
+    state.selected.advantages = { "ADV-031": {} };
+
+    const draftId = addCharacter("Rascunho");
+
+    expect(draftId).not.toBe(firstId);
+    loadCharacter(firstId);
+    const stored = getStore().list.find((c) => c.id === firstId);
+    expect(stored.name).toBe("Kael");
+    expect(stored.data.character.advantages).toEqual({ "ADV-031": {} });
+  });
+
+  test("the new character starts blank rather than inheriting the outgoing one", () => {
+    state.selected.advantages = { "ADV-031": {} };
+
+    const draftId = addCharacter("Rascunho");
+
+    const draft = getStore().list.find((c) => c.id === draftId);
+    expect(draft.data.character.advantages).toEqual({});
+  });
 });
 
 describe("removeCharacter", () => {
