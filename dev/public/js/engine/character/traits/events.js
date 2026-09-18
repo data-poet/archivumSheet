@@ -3,6 +3,8 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { removeAdv } from "./advantages/model.js";
 import { removeDis } from "./disadvantages/model.js";
 import { percentToDecimal } from "../../../components/resistances.js";
+import { getEditTarget } from "../../../shared/editTarget.js";
+import { PC_EDIT_TARGET } from "./pcEditTarget.js";
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -16,6 +18,9 @@ export function handleTraitClick(e) {
 
 export function handleTraitInput(e) {
   const selected = state.selected;
+  // Parsing and the clamping rules below are the domain's, so they stay here; the target
+  // only owns where the accepted value is written.
+  const target = getEditTarget() ?? PC_EDIT_TARGET;
 
   // ── Resume: primary attribute modifier stepper ────────────────────────────
   if (e.target.classList.contains("resume-primary-mod-input")) {
@@ -28,12 +33,7 @@ export function handleTraitInput(e) {
     const value = parseInt(raw, 10);
     if (isNaN(value)) return true;
 
-    // Mirror to the edit-view DOM input, which is what the engine reads from
-    const editInput = document.getElementById(`${attr}_mod`);
-    if (editInput) {
-      editInput.value = value;
-      editInput.dispatchEvent(new Event("input", { bubbles: true }));
-    }
+    target.setPrimaryModifier(attr, value);
     return true;
   }
 
@@ -46,11 +46,11 @@ export function handleTraitInput(e) {
     const value = parseFloat(raw);
     if (isNaN(value)) return true;
 
-    if (!selected.secondary[name]) selected.secondary[name] = { bought: 0, modifier: 0 };
+    target.ensureSecondary(name);
     if (field === "bought") {
       if (name === "Movement") return true;
       const max = name === "BasicSpeed" ? 6 : 5;
-      selected.secondary[name].bought = Math.max(0, Math.min(max, value));
+      target.setSecondary(name, "bought", Math.max(0, Math.min(max, value)));
     }
     if (field === "modifier") {
       // HP/Mana/Toxicity modifier tracks missing (spent/lost) points, not a stat bonus, so it's capped at 0; gear/enchantment bonuses flow through enchantment_modifier instead.
@@ -60,9 +60,8 @@ export function handleTraitInput(e) {
         : name === "BasicSpeed"
           ? Math.round(value * 2) / 2
           : value;
-      selected.secondary[name].modifier = normalized;
+      target.setSecondary(name, "modifier", normalized);
     }
-    triggerAutoRun();
     return true;
   }
 
@@ -91,7 +90,8 @@ export function handleTraitInput(e) {
     const percent = parseFloat(raw);
     if (isNaN(percent)) return true;
 
-    if (!selected.resistances[type]) selected.resistances[type] = { modifier: 0 };
+    if (!selected.resistances[type])
+      selected.resistances[type] = { modifier: 0 };
     selected.resistances[type].modifier = percentToDecimal(percent);
     triggerAutoRun();
     return true;
