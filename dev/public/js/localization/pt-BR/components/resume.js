@@ -39,8 +39,6 @@ export const RESUME = {
 
 export const SECTIONS = {
   character: "Personagem",
-  characterInfo: "Informações",
-  race: "Raça",
   attributes: "Atributos",
   primaryAttributes: "Atributos Primários",
   secondaryAttributes: "Atributos Secundários",
