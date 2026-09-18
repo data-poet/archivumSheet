@@ -522,7 +522,7 @@ describe("initCharacterSelector — file input handling", () => {
     input.dispatchEvent(new Event("change"));
     await flush();
 
-    expect(addCharacter).toHaveBeenCalledWith("Importado");
+    expect(addCharacter).toHaveBeenCalledWith("Importado", "character");
     expect(replaceActiveCharacter).toHaveBeenCalledWith(
       JSON.parse(VALID_PAYLOAD),
     );
@@ -541,7 +541,10 @@ describe("initCharacterSelector — file input handling", () => {
     input.dispatchEvent(new Event("change"));
     await flush();
 
-    expect(addCharacter).toHaveBeenCalledWith(t("characters.unnamed"));
+    expect(addCharacter).toHaveBeenCalledWith(
+      t("characters.unnamed"),
+      "character",
+    );
   });
 
   // An imported character lands in a slot whose kind may differ from the one on screen, so the
@@ -568,6 +571,55 @@ describe("initCharacterSelector — file input handling", () => {
     await flush();
 
     expect(renderEntryKind).toHaveBeenCalled();
+  });
+
+  // The kind is only a label — no sheet data differs either way — but getting it wrong would
+  // put an ally badge on someone's character, so the detection is a positive test on `portrait`
+  // and everything else falls through to "character".
+  describe("recognising an ally file on import", () => {
+    async function importPayload(payload) {
+      initCharacterSelector();
+      const input = setFile(fakeFile(JSON.stringify(payload)));
+      input._mode = "import";
+      addCharacter.mockClear();
+
+      input.dispatchEvent(new Event("change"));
+      await flush();
+    }
+
+    const BASE = {
+      version: 1,
+      character: {},
+      inventory: {},
+      pc: { character_name: "X" },
+    };
+
+    test("an ally export reopens as a draft, so edit → re-export needs no manual step", async () => {
+      await importPayload({
+        ...BASE,
+        portrait: "/images/allies/ally-0001-bran.png",
+      });
+
+      expect(addCharacter).toHaveBeenCalledWith("X", "ally");
+    });
+
+    test("a character export stays a character", async () => {
+      await importPayload({ ...BASE, exportedAt: "2026-09-18T00:00:00.000Z" });
+
+      expect(addCharacter).toHaveBeenCalledWith("X", "character");
+    });
+
+    // A file predating either marker must not be guessed at.
+    test.each([
+      ["neither marker", {}],
+      ["an empty portrait", { portrait: "" }],
+      ["a non-string portrait", { portrait: true }],
+      ["a null portrait", { portrait: null }],
+    ])("%s stays a character", async (_label, extra) => {
+      await importPayload({ ...BASE, ...extra });
+
+      expect(addCharacter).toHaveBeenCalledWith("X", "character");
+    });
   });
 
   test("replace mode: replaces the active character's data without adding a new slot", async () => {

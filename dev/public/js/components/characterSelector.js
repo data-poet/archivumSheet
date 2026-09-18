@@ -17,6 +17,7 @@ import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
+import { isAllyFile } from "../store/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
 
@@ -275,7 +276,10 @@ export function initCharacterSelector() {
           }
           const name =
             payload?.pc?.character_name?.trim() || t("characters.unnamed");
-          addCharacter(name);
+          addCharacter(
+            name,
+            isAllyFile(payload) ? ENTRY_KINDS.ALLY : ENTRY_KINDS.CHARACTER,
+          );
           // addCharacter loads a blank character; overwrite it with the imported data.
           replaceActiveCharacter(payload);
           updateSelectorButton();

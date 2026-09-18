@@ -208,3 +208,39 @@ describe("an exported ally file feeds the ally pipeline", () => {
     expect(payload.portrait).toContain("/images/allies/");
   });
 });
+
+// Existing characters must never be mistaken for allies. The kind is only a label — no sheet
+// data differs either way — but an ally badge on someone's character is still wrong, so the
+// detector is a positive test and everything unrecognised falls through to "character".
+describe("isAllyFile", () => {
+  const { isAllyFile } = require("dev/public/js/store/allyExport.js");
+
+  test("recognises what buildAllyFile writes", () => {
+    expect(isAllyFile(buildAllyFile("Bran", DATE).payload)).toBe(true);
+  });
+
+  test("rejects what the character export writes", () => {
+    const characterExport = {
+      ...capturePersistedSheet(),
+      exportedAt: new Date().toISOString(),
+    };
+
+    expect(isAllyFile(characterExport)).toBe(false);
+  });
+
+  test("rejects the bare persisted sheet", () => {
+    expect(isAllyFile(capturePersistedSheet())).toBe(false);
+  });
+
+  test.each([
+    ["undefined", undefined],
+    ["null", null],
+    ["an empty object", {}],
+    ["an empty portrait", { portrait: "" }],
+    ["a truthy non-string portrait", { portrait: true }],
+    ["a numeric portrait", { portrait: 1 }],
+    ["a null portrait", { portrait: null }],
+  ])("rejects %s", (_label, payload) => {
+    expect(isAllyFile(payload)).toBe(false);
+  });
+});
