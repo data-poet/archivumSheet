@@ -2,9 +2,6 @@
 export const REFERENCE = {
   pageTitle: "Referência de Regras",
   topbarTitle: "Archivum — Referência",
-  backToSheet: "Voltar à Ficha",
-  openReference: "Abrir referência de regras",
-  refButtonLabel: "Ref",
   loadError: "Não foi possível carregar este conteúdo.",
   sections: [
     {

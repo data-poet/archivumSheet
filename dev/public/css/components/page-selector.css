@@ -1,0 +1,36 @@
+/* The trigger only; its popover reuses the .char-selector-* list styles (see
+   components/pageSelector.js for why). */
+
+.page-selector-btn-chevron {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.page-selector-btn[aria-expanded="true"] .page-selector-btn-chevron {
+  transform: rotate(180deg);
+}
+
+/* The label is the first thing to go when the mobile topbar runs out of room — the icon
+   still says which page you're on. */
+.page-selector-btn-label {
+  display: none;
+}
+
+/* Page rows carry no radio/secondary line, so the list's two-line padding is too airy. */
+.page-selector-popover .char-selector-item {
+  padding: var(--space-4) var(--space-7);
+  text-decoration: none;
+}
+
+.page-selector-popover .char-selector-item.is-active {
+  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
+  border-left-color: var(--accent-character);
+}
+
+@media (min-width: 768px) {
+  .page-selector-btn-label {
+    display: inline;
+  }
+}

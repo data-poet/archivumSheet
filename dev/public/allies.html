@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Archivum Sheet — Referência</title>
+    <title>Archivum Sheet — Aliados</title>
     <!-- Applies the resolved theme before first paint, to avoid a flash of
          the wrong theme. Mirrored in components/theme.js, which keeps it in sync
          afterward (button state, live OS-preference changes). -->
@@ -31,21 +31,6 @@
       content="/images/ms-touch-icon-144x144-precomposed.png"
     />
     <meta name="msapplication-TileColor" content="#ffffff" />
-    <!-- Markdown renderer for the static reference content (see reference/content.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- Math renderer (KaTeX) for formulas inside reference markdown (see reference/content.js) -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-    />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
-    ></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
-    ></script>
   </head>
 
   <body>
@@ -56,7 +41,7 @@
       <div class="topbar-logo">
         <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
         <span class="topbar-logo-name" id="topbar-title"
-          >Archivum — Referência</span
+          >Archivum — Aliados</span
         >
       </div>
       <div class="topbar-actions">
@@ -81,19 +66,11 @@
     </header>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
-         DESKTOP: Sidebar nav (built by reference/nav.js)
+         MAIN CONTENT — the ally selector and resume panel land here next
          ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         MAIN CONTENT — sections/tabs built by reference/content.js
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <main class="l-main" id="reference-main"></main>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         MOBILE: Bottom tab navigation (built by reference/nav.js)
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
+    <main class="l-main" id="allies-main">
+      <p class="allies-empty" id="allies-empty"></p>
+    </main>
 
     <!-- Page selector popover (built by components/pageSelector.js) -->
     <div
@@ -103,6 +80,6 @@
       aria-label="Selecionar página"
     ></div>
 
-    <script type="module" src="/js/reference/main.js"></script>
+    <script type="module" src="/js/allies/main.js"></script>
   </body>
 </html>
