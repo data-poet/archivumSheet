@@ -11,6 +11,8 @@ import { exportSheet, importSheet, showToast } from "../store/persistence.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
+import { ENTRY_KINDS } from "../shared/constants.js";
+import { renderEntryKind } from "./entryKind.js";
 
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
@@ -75,6 +77,7 @@ export function renderPopover() {
       const isActive = c.id === activeId;
       const name = c.name?.trim() || t("characters.unnamed");
       const race = c.race?.trim();
+      const isAlly = c.kind === ENTRY_KINDS.ALLY;
       return `
       <li>
         <button type="button"
@@ -87,6 +90,7 @@ export function renderPopover() {
             <span class="char-selector-item-name">${escapeHtml(name)}</span>
             ${race ? `<span class="char-selector-item-race">${escapeHtml(race)}</span>` : ""}
           </span>
+          ${isAlly ? `<span class="char-selector-item-kind">${t("characters.kindBadge")}</span>` : ""}
         </button>
       </li>`;
     })
@@ -162,6 +166,7 @@ export function initCharacterSelector() {
         loadCharacter(id);
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
+        renderEntryKind();
         break;
       }
 
@@ -174,6 +179,7 @@ export function initCharacterSelector() {
         addCharacter(name.trim() || t("characters.newCharacter"));
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
+        renderEntryKind();
         break;
       }
 
@@ -195,6 +201,7 @@ export function initCharacterSelector() {
         removeCharacter(getActiveCharacterId());
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
+        renderEntryKind();
         break;
       }
 

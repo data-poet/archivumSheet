@@ -9,4 +9,12 @@ export const CHARACTERS = {
   confirmRemoveTitle: "Remover personagem?",
   cannotRemoveLast: "Não é possível remover o único personagem.",
   importErrorPrefix: "Erro ao importar",
+
+  // Entry kind — a draft being authored for export as an ally file.
+  kindLegend: "Editando como",
+  kindCharacter: "Personagem",
+  kindAlly: "Aliado",
+  kindAllyHint:
+    "Rascunho de aliado — será exportado como ficha de aliado, não jogado.",
+  kindBadge: "Aliado",
 };

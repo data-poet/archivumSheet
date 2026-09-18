@@ -6,6 +6,8 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   removeCharacter: jest.fn(),
   saveActiveCharacter: jest.fn(),
   replaceActiveCharacter: jest.fn(),
+  getActiveKind: jest.fn(() => "character"),
+  setActiveKind: jest.fn(),
 }));
 jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),
