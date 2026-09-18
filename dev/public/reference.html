@@ -61,6 +61,14 @@
       </div>
       <div class="topbar-actions">
         <button
+          id="page-selector-btn"
+          class="topbar-btn page-selector-btn"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label="Trocar de página"
+        ></button>
+        <button
           id="theme-toggle-btn"
           class="topbar-btn topbar-btn-icon-only"
           type="button"
@@ -86,6 +94,14 @@
          MOBILE: Bottom tab navigation (built by reference/nav.js)
          ═══════════════════════════════════════════════════════════════════════ -->
     <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
+
+    <!-- Page selector popover (built by components/pageSelector.js) -->
+    <div
+      id="page-selector-popover"
+      class="char-selector-popover page-selector-popover"
+      role="group"
+      aria-label="Selecionar página"
+    ></div>
 
     <script type="module" src="/js/reference/main.js"></script>
   </body>

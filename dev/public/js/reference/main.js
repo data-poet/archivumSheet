@@ -2,6 +2,7 @@ import { buildReferenceSections, loadReferenceContent } from "./content.js";
 import { initReferenceNav } from "./nav.js";
 import { initReferenceTabs } from "./tabs.js";
 import { initTheme } from "../components/theme.js";
+import { initPageSelector } from "../components/pageSelector.js";
 import { LABELS } from "../localization/pt-BR/index.js";
 
 function _hydrateShell() {
@@ -10,12 +11,6 @@ function _hydrateShell() {
 
   const topbarTitle = document.getElementById("topbar-title");
   if (topbarTitle) topbarTitle.textContent = L.topbarTitle;
-
-  const backBtn = document.getElementById("back-to-sheet-btn");
-  if (backBtn) {
-    backBtn.setAttribute("aria-label", L.backToSheet);
-    backBtn.setAttribute("title", L.backToSheet);
-  }
 }
 
 window.onload = async () => {
@@ -25,6 +20,7 @@ window.onload = async () => {
   initReferenceNav();
   initReferenceTabs();
   initTheme();
+  initPageSelector();
 
   await loadReferenceContent();
 };

@@ -1,5 +1,6 @@
 // To add a new language, duplicate this pt-BR/ folder (e.g. en-US/) and swap the import in main.js.
 
+import { ALLIES } from "./allies.js";
 import { APP } from "./app.js";
 import { REFERENCE } from "./reference.js";
 
@@ -8,6 +9,7 @@ import { CHARACTERS } from "./components/characterSelector.js";
 import { DIALOG } from "./components/dialog.js";
 import { INVENTORY } from "./components/inventory.js";
 import { NAV } from "./components/nav.js";
+import { PAGES } from "./components/pageSelector.js";
 import { OUTPUT } from "./components/output.js";
 import { ELEMENTAL_RESISTANCES } from "./components/resistances.js";
 import { RESUME, SECTIONS } from "./components/resume.js";
@@ -49,6 +51,7 @@ export const LABELS = {
   dialog: DIALOG,
   characterImage: CHARACTER_IMAGE,
   nav: NAV,
+  pages: PAGES,
   tabs: TABS,
   sections: SECTIONS,
   resume: RESUME,
@@ -79,6 +82,7 @@ export const LABELS = {
   theme: THEME,
   output: OUTPUT,
   reference: REFERENCE,
+  allies: ALLIES,
   undo: UNDO,
 };
 
