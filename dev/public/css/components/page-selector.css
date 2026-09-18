@@ -34,10 +34,13 @@
   transform: rotate(180deg);
 }
 
-/* The label is the first thing to go when the mobile topbar runs out of room — the icon
-   still says which page you're on. */
+/* The label is the only thing naming the current page, so it can't be hidden on mobile —
+   it ellipsizes instead ("Referência" is the one that truncates on a narrow phone). */
 .page-selector-btn-label {
-  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: clamp(52px, 18vw, 140px);
 }
 
 /* Page rows carry no radio/secondary line, so the list's two-line padding is too airy. */
@@ -50,14 +53,4 @@
 .page-selector-popover .char-selector-item.is-active {
   background: color-mix(in srgb, var(--accent-attributes) 8%, transparent);
   border-left-color: var(--accent-attributes);
-}
-
-.page-selector-popover .char-selector-radio {
-  color: var(--accent-attributes);
-}
-
-@media (min-width: 768px) {
-  .page-selector-btn-label {
-    display: inline;
-  }
 }

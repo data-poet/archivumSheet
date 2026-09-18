@@ -49,14 +49,27 @@ describe("getCurrentPage", () => {
 });
 
 describe("renderPageSelector", () => {
-  test("the trigger shows the current page's icon and label", () => {
+  test("the trigger shows the current page's label", () => {
     setPath("/reference.html");
 
     renderPageSelector();
 
     const btn = document.getElementById("page-selector-btn");
     expect(btn.textContent).toContain("Referência");
-    expect(btn.textContent).toContain("📖");
+  });
+
+  // The label is the only thing naming the page now, so it must never be empty.
+  test("carries no emoji in the trigger or the rows", () => {
+    renderPageSelector();
+
+    const emoji = /\p{Extended_Pictographic}/u;
+    expect(
+      emoji.test(document.getElementById("page-selector-btn").textContent),
+    ).toBe(false);
+    document.querySelectorAll("#page-selector-popover a").forEach((a) => {
+      expect(emoji.test(a.textContent)).toBe(false);
+      expect(a.textContent.trim()).not.toBe("");
+    });
   });
 
   test("one row per configured page, in config order", () => {
