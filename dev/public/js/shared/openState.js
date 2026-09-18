@@ -148,10 +148,13 @@ function _rowKey(row) {
 // Single key function for every managed container — both the table-row and the
 // equipped-slot div patterns, with no per-container config.
 export function detailKeyFn(detailsEl) {
-  // Container-level details (e.g. an ammo container) carry their own key directly, rather
-  // than relying on a preceding sibling row — there is no row, this *is* the item.
-  const ownInstanceId = detailsEl.getAttribute("data-instance-id");
-  if (ownInstanceId) return _withDetailKind(detailsEl, ownInstanceId);
+  // Container-level details (e.g. an ammo container, or a backpack/stash/camp storage
+  // section) carry their own key directly, rather than relying on a preceding sibling
+  // row — there is no row, this *is* the item.
+  const ownKey =
+    detailsEl.getAttribute("data-instance-id") ||
+    detailsEl.getAttribute("data-storage-loc");
+  if (ownKey) return _withDetailKind(detailsEl, ownKey);
 
   // Walk back through preceding <tr> siblings, not just the immediate one — a data row may be
   // followed by several sibling .detail-row rows (e.g. stats + customize), so the row carrying

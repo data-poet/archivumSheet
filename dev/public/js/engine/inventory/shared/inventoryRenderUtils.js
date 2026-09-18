@@ -38,6 +38,19 @@ export function hpModifierBlock({
   `;
 }
 
+/**
+ * Wrap one storage-location's table (backpack/stash/camp) in a collapsed-by-default
+ * <details>, keyed by location so openState.js can restore its state across re-renders.
+ */
+export function renderStorageLocationBlock(location, label, tableHtml) {
+  return `
+    <details class="storage-section" data-storage-loc="${location}">
+      <summary class="storage-section-header">${label}</summary>
+      <div class="table-wrapper table-wrapper--stack">${tableHtml}</div>
+    </details>
+  `;
+}
+
 export function resolveHp(instance, baseHp, materials) {
   const material = resolveMaterial(instance, materials);
   const maxHp = calcMaxHp(baseHp, material);
