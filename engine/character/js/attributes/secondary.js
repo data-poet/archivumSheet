@@ -115,6 +115,12 @@ function buildSecondaryAttributes(
       maxBought: 6,
       ...config.BasicSpeed,
     }),
+
+    DamageResistance: resolveSecondary({
+      base_value: 0,
+      maxBought: 0,
+      ...config.DamageResistance,
+    }),
   };
 
   // Halve BasicSpeed (floor) when current HP is below 1/3 of final_base_value; Movement/Dodge are computed after since they cascade from it.

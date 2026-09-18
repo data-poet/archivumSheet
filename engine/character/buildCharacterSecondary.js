@@ -19,6 +19,7 @@ const SECONDARY_ATTRS = [
   "BasicSpeed",
   "Movement",
   "Dodge",
+  "DamageResistance",
 ];
 
 function buildCharacterSecondary({

@@ -25,4 +25,5 @@ export const SECONDARY_ATTRIBUTES = {
   BasicSpeed: "Velocidade Básica",
   Movement: "Deslocamento",
   Dodge: "Esquiva",
+  DamageResistance: "Resistência a Dano",
 };

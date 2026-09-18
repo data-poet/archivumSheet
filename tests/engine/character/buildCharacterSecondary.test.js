@@ -64,6 +64,7 @@ describe("BUILD CHARACTER SECONDARY", () => {
         "BasicSpeed",
         "Movement",
         "Dodge",
+        "DamageResistance",
       ];
 
       expected.forEach((key) => {

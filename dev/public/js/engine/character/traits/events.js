@@ -48,7 +48,7 @@ export function handleTraitInput(e) {
 
     target.ensureSecondary(name);
     if (field === "bought") {
-      if (name === "Movement") return true;
+      if (name === "Movement" || name === "DamageResistance") return true;
       const max = name === "BasicSpeed" ? 6 : 5;
       target.setSecondary(name, "bought", Math.max(0, Math.min(max, value)));
     }
