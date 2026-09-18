@@ -1,4 +1,4 @@
-/* .topbar-btn also doubles as an <a> here (reference link, back-to-sheet link); the underline reset is a no-op on <button> elements */
+/* Kept for any <a> that borrows .topbar-btn; a no-op on the <button> elements now in the topbar */
 .topbar-btn {
   text-decoration: none;
 }
