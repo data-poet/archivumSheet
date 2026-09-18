@@ -17,7 +17,6 @@ export const CHARACTER = {
   raceModifiers: "Modificadores Raciais",
   innate: "Inato",
   enchanted: "Encantado",
-  pointsTitle: "Pontos",
   startingPoints: "Pontos Iniciais",
   experiencePoints: "Pontos de Experiência",
   abilityPoints: "Pontos de Habilidade",

@@ -134,7 +134,6 @@
             <div class="character-panel-grid">
               <!-- Left: Info -->
               <div class="character-info">
-                <h3 id="sec-character-info"></h3>
                 <table class="character-info-table">
                   <tbody>
                     <tr>
@@ -224,7 +223,6 @@
 
               <!-- Right: Race -->
               <div class="character-race">
-                <h3 id="sec-race"></h3>
                 <div class="race-selects">
                   <select id="raceNameSelect" style="display: none">
                     <option value="" id="opt-race-none"></option>
@@ -250,7 +248,6 @@
 
             <div class="character-panel-grid character-points-grid">
               <div class="character-points-block">
-                <h3 id="sec-character-points"></h3>
                 <table class="character-info-table">
                   <tbody>
                     <tr>
@@ -1793,11 +1790,6 @@
         // Race
         setText("opt-race-none", L.character.selectRace);
         setText("opt-subrace-none", L.character.selectSubRace);
-
-        // Character info panel headings
-        setText("sec-character-info", L.sections.characterInfo);
-        setText("sec-race", L.sections.race);
-        setText("sec-character-points", L.character.pointsTitle);
 
         // Resume labels
         setText("sec-resume-weight", L.resume.weightTitle);
