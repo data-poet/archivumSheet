@@ -2,18 +2,12 @@ const { buildCharacter } = require("./character/buildCharacter");
 const { buildInventory } = require("./inventory/buildInventory");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
+const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
 const { computeWeaponDamage } = require("./inventory/js/shared/weaponDamage");
 const {
   collectEquippedEnchantments,
 } = require("./character/js/enchantments/collectEquippedEnchantments");
-
-function sumObjectValues(obj = {}) {
-  return Object.values(obj).reduce(
-    (sum, value) => sum + (Number(value) || 0),
-    0,
-  );
-}
 
 function buildSheet({
   pc = {},
@@ -50,23 +44,27 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  let inventoryResult = buildInventory({
-    ST: st,
-    weight: inventory.weight || 0,
-    armorInventory: inventory.armor || [],
-    shieldInventory: inventory.shield || [],
-    meleeInventory: inventory.melee || [],
-    rangedInventory: inventory.ranged || [],
-    firearmsInventory: inventory.firearms || [],
-    ammoContainerInventory: inventory.ammo_containers || [],
-    looseAmmoInventory: inventory.loose_ammo || [],
-    alchemyInventory: inventory.alchemy || [],
-    survivalGearInventory: inventory.survival_gear || [],
-    accessoryInventory: inventory.accessories || [],
-    magicGearInventory: inventory.magic_gear || [],
-    customInventory: inventory.custom_inventory || [],
-    coinInventory: inventory.coins || [],
-  });
+  function runInventory(inventoryST) {
+    return buildInventory({
+      ST: inventoryST,
+      weight: inventory.weight || 0,
+      armorInventory: inventory.armor || [],
+      shieldInventory: inventory.shield || [],
+      meleeInventory: inventory.melee || [],
+      rangedInventory: inventory.ranged || [],
+      firearmsInventory: inventory.firearms || [],
+      ammoContainerInventory: inventory.ammo_containers || [],
+      looseAmmoInventory: inventory.loose_ammo || [],
+      alchemyInventory: inventory.alchemy || [],
+      survivalGearInventory: inventory.survival_gear || [],
+      accessoryInventory: inventory.accessories || [],
+      magicGearInventory: inventory.magic_gear || [],
+      customInventory: inventory.custom_inventory || [],
+      coinInventory: inventory.coins || [],
+    });
+  }
+
+  let inventoryResult = runInventory(st);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -114,24 +112,28 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  let characterResult = buildCharacter({
-    advantages: character.advantages,
-    disadvantages: character.disadvantages,
-    primaryAttributes: character.primaryAttributes,
-    secondaryAttributes: character.secondaryAttributes,
-    skills: character.skills,
-    carry_weight: inventoryResult.inventory.carry_weight,
-    raceModifiers: race.modifiers || {},
-    raceElementalMultipliers: race.elemental_modifiers || {},
-    innateAdvantageIds: race.innate_advantage_ids || [],
-    innateDisadvantageIds: race.innate_disadvantage_ids || [],
-    enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
-    enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
-    enchantmentAdvantageIds: enchantmentEffects.advantageIds,
-    enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
-    enchantmentSkillGrants: enchantmentEffects.skillGrants,
-    enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
-  });
+  function runCharacter(carryWeight) {
+    return buildCharacter({
+      advantages: character.advantages,
+      disadvantages: character.disadvantages,
+      primaryAttributes: character.primaryAttributes,
+      secondaryAttributes: character.secondaryAttributes,
+      skills: character.skills,
+      carry_weight: carryWeight,
+      raceModifiers: race.modifiers || {},
+      raceElementalMultipliers: race.elemental_modifiers || {},
+      innateAdvantageIds: race.innate_advantage_ids || [],
+      innateDisadvantageIds: race.innate_disadvantage_ids || [],
+      enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
+      enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
+      enchantmentAdvantageIds: enchantmentEffects.advantageIds,
+      enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
+      enchantmentSkillGrants: enchantmentEffects.skillGrants,
+      enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
+    });
+  }
+
+  let characterResult = runCharacter(inventoryResult.inventory.carry_weight);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -156,46 +158,12 @@ function buildSheet({
   const correctedST = characterResult.character.primary_attributes.ST.value;
 
   if (correctedST !== st) {
-    inventoryResult = buildInventory({
-      ST: correctedST,
-      weight: inventory.weight || 0,
-      armorInventory: inventory.armor || [],
-      shieldInventory: inventory.shield || [],
-      meleeInventory: inventory.melee || [],
-      rangedInventory: inventory.ranged || [],
-      firearmsInventory: inventory.firearms || [],
-      ammoContainerInventory: inventory.ammo_containers || [],
-      looseAmmoInventory: inventory.loose_ammo || [],
-      alchemyInventory: inventory.alchemy || [],
-      survivalGearInventory: inventory.survival_gear || [],
-      accessoryInventory: inventory.accessories || [],
-      magicGearInventory: inventory.magic_gear || [],
-      customInventory: inventory.custom_inventory || [],
-      coinInventory: inventory.coins || [],
-    });
-
-    characterResult = buildCharacter({
-      advantages: character.advantages,
-      disadvantages: character.disadvantages,
-      primaryAttributes: character.primaryAttributes,
-      secondaryAttributes: character.secondaryAttributes,
-      skills: character.skills,
-      carry_weight: inventoryResult.inventory.carry_weight,
-      raceModifiers: race.modifiers || {},
-      raceElementalMultipliers: race.elemental_modifiers || {},
-      innateAdvantageIds: race.innate_advantage_ids || [],
-      innateDisadvantageIds: race.innate_disadvantage_ids || [],
-      enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
-      enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
-      enchantmentAdvantageIds: enchantmentEffects.advantageIds,
-      enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
-      enchantmentSkillGrants: enchantmentEffects.skillGrants,
-      enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
-    });
+    inventoryResult = runInventory(correctedST);
+    characterResult = runCharacter(inventoryResult.inventory.carry_weight);
   }
 
   const characterData = characterResult.character;
-  const iq = characterData.primary_attributes.IQ.value;
+  const iq = characterData.primary_attributes[SPELL_ATTRIBUTE].value;
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -301,8 +269,8 @@ function buildSheet({
   const basePoints = characterResult.character.character_points;
 
   const characterPoints = {
-    primary_attributes: sumObjectValues(basePoints.primary_attributes),
-    secondary_attributes: sumObjectValues(basePoints.secondary_attributes),
+    primary_attributes: basePoints.primary_attributes || 0,
+    secondary_attributes: basePoints.secondary_attributes || 0,
     skills: basePoints.skills || 0,
     advantages: basePoints.advantages || 0,
     disadvantages: basePoints.disadvantages || 0,

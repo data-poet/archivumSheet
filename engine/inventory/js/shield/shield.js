@@ -17,6 +17,7 @@ const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
 const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
+const { buildEquipmentSlots } = require("../shared/buildEquipmentSlots.js");
 
 let _shieldDB = null;
 
@@ -49,10 +50,6 @@ function getShieldDB() {
   return _shieldDB;
 }
 
-function buildStorageBucket() {
-  return [];
-}
-
 function buildShieldSlots(shieldInventory = []) {
   const shieldDb = getShieldDB();
 
@@ -61,121 +58,42 @@ function buildShieldSlots(shieldInventory = []) {
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
-  const instanceErrors = shieldInventory.flatMap((instance, index) =>
-    validateShieldInstance(instance, index),
-  );
-
-  if (instanceErrors.length > 0) {
-    throw new Error(
-      `[buildShieldSlots] Invalid shield inventory:\n${instanceErrors.join("\n")}`,
-    );
-  }
-
-  const unknownShieldIds = shieldInventory
-    .filter((instance) => !shieldDb[instance.shield_id])
-    .map((instance) => instance.shield_id);
-
-  if (unknownShieldIds.length > 0) {
-    throw new Error(
-      `[buildShieldSlots] Unknown shield_id(s): ${unknownShieldIds.join(", ")}`,
-    );
-  }
-
-  const unknownMaterialIds = shieldInventory
-    .filter(
-      (instance) => instance.material_id && !materialDb[instance.material_id],
-    )
-    .map((instance) => instance.material_id);
-
-  if (unknownMaterialIds.length > 0) {
-    throw new Error(
-      `[buildShieldSlots] Unknown material_id(s): ${unknownMaterialIds.join(", ")}`,
-    );
-  }
-
-  const equippedErrors = validateSingleEquippedShield(shieldInventory);
-
-  if (equippedErrors.length > 0) {
-    throw new Error(
-      `[buildShieldSlots] Equipped conflict:\n${equippedErrors.join("\n")}`,
-    );
-  }
-
-  const enchantmentErrors = validateShieldEnchantments(
-    shieldInventory,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  if (enchantmentErrors.length > 0) {
-    throw new Error(
-      `[buildShieldSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
-    );
-  }
-
-  let equipped = null;
-
-  const stash = buildStorageBucket();
-  const camp = buildStorageBucket();
-  const backpack = buildStorageBucket();
-
-  let carried_shield_weight = 0;
-  let carried_shield_value = 0;
-
-  for (const instance of shieldInventory) {
-    const shield = shieldDb[instance.shield_id];
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolvedShield = resolveShieldPiece(
-      instance,
-      shield,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    if (instance.is_equipped) {
-      equipped = resolvedShield;
-
-      carried_shield_weight += resolvedShield.final_weight;
-      carried_shield_value += resolvedShield.total_value;
-
-      continue;
-    }
-
-    if (instance.storedAt === "stash") {
-      stash.push(resolvedShield);
-
-      continue;
-    }
-
-    if (instance.storedAt === "camp") {
-      camp.push(resolvedShield);
-
-      continue;
-    }
-
-    if (instance.storedAt === "backpack") {
-      backpack.push(resolvedShield);
-
-      carried_shield_weight += resolvedShield.final_weight;
-      carried_shield_value += resolvedShield.total_value;
-    }
-  }
-
-  return {
-    equipped,
-    stash,
-    camp,
-    backpack,
-    total_shield_weight: carried_shield_weight,
-    carried_shield_weight,
-    total_shield_value: carried_shield_value,
-    carried_shield_value,
-  };
+  return buildEquipmentSlots({
+    label: "buildShieldSlots",
+    entityLabel: "shield",
+    inventory: shieldInventory,
+    idKey: "shield_id",
+    db: shieldDb,
+    materialDb,
+    validateInstance: validateShieldInstance,
+    extraValidationSteps: [
+      {
+        message: "Equipped conflict",
+        validate: () => validateSingleEquippedShield(shieldInventory),
+      },
+      {
+        message: "Invalid enchantments",
+        validate: () =>
+          validateShieldEnchantments(
+            shieldInventory,
+            enchantmentsDb,
+            targetsDb,
+          ),
+      },
+    ],
+    resolveInstance: (instance, shield, material) =>
+      resolveShieldPiece(instance, shield, material, enchantmentsDb, targetsDb),
+    equippedContainer: {
+      init: () => null,
+      place: (_current, resolved) => resolved,
+    },
+    fieldNames: {
+      totalWeight: "total_shield_weight",
+      carriedWeight: "carried_shield_weight",
+      totalValue: "total_shield_value",
+      carriedValue: "carried_shield_value",
+    },
+  });
 }
 
 module.exports = {

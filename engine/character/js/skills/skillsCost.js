@@ -1,17 +1,3 @@
-const path = require("path");
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
-
-let _skillsCache = null;
-
-function getAllSkills() {
-  if (_skillsCache) return _skillsCache;
-
-  const filePath = path.join(process.cwd(), "data", "db_skills.csv");
-  _skillsCache = loadCSV(filePath);
-
-  return _skillsCache;
-}
-
 const COST_TABLES = {
   DX: {
     F: {
@@ -149,7 +135,12 @@ function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
   const relative = getRelativeLevel(base, level);
 
   const table = COST_TABLES[attribute]?.[difficulty];
-  if (!table) return 0;
+  if (!table) {
+    console.warn(
+      `[getSkillCost] Unknown attribute/difficulty combination: ${attribute}/${difficulty}`,
+    );
+    return 0;
+  }
 
   const clamped = Math.max(-4, Math.min(10, relative));
 
@@ -157,7 +148,6 @@ function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
 }
 
 module.exports = {
-  getAllSkills,
   getSkillCost,
   getRelativeLevel,
   COST_TABLES,

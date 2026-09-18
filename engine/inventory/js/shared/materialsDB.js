@@ -34,7 +34,7 @@ function getMaterialsDB() {
       material_weight_modifier: Number(row.material_weight_modifier || 1),
       material_price_modifier: Number(row.material_price_modifier || 1),
       material_hit_points_modifier: Number(
-        row.material_hit_points_modifier || 0,
+        row.material_hit_points_modifier || 1,
       ),
     };
   }

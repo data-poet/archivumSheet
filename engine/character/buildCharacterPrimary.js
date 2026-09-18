@@ -1,6 +1,9 @@
 const { buildAdvantages } = require("./js/traits/advantages");
 const { buildDisadvantages } = require("./js/traits/disadvantages");
 const { buildPrimaryAttributes } = require("./js/attributes/primary");
+const {
+  withEnchantmentModifier,
+} = require("./js/shared/withEnchantmentModifier");
 
 function buildCharacterPrimary({
   advantages = [],
@@ -14,15 +17,12 @@ function buildCharacterPrimary({
   enchantmentDisadvantageIds = [],
 }) {
   // has_enchantment_modifier is presence-based (item touches attribute), not magnitude-based (nonzero sum) — see collectEquippedEnchantments.js.
-  const attributesWithRace = {};
-  for (const attr of ["ST", "DX", "IQ", "HT"]) {
-    attributesWithRace[attr] = {
-      ...(primaryAttributes[attr] || {}),
-      race_modifier: raceModifiers[attr] ?? 0,
-      enchantment_modifier: enchantmentAttributeModifiers[attr] ?? 0,
-      has_enchantment_modifier: attr in enchantmentAttributeModifiers,
-    };
-  }
+  const attributesWithRace = withEnchantmentModifier(
+    primaryAttributes,
+    enchantmentAttributeModifiers,
+    ["ST", "DX", "IQ", "HT"],
+    (attr) => ({ race_modifier: raceModifiers[attr] ?? 0 }),
+  );
 
   // buildAdvantages/buildDisadvantages derive cost (0 if innate/enchantment-granted) and is_race_innate/is_enchantment from the innate/enchantment id lists.
   const allAdvantageIds = [

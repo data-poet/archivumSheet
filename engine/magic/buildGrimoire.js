@@ -1,4 +1,5 @@
 const { getSpellCost } = require("./js/spellsCost.js");
+const { SPELL_ATTRIBUTE } = require("./js/spellsConstants.js");
 
 function buildGrimoire(selectedSpells = {}, character = {}) {
   const spells = {};
@@ -10,13 +11,13 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
     const row = spell.row;
     if (!row) continue;
 
-    const attribute = "IQ";
+    const attribute = SPELL_ATTRIBUTE;
 
+    // Natural attribute score for cost/relative_level purposes: purchased base plus innate race
+    // modifier, excluding situational/equipment/enchantment modifiers (those must not affect cost).
     const attributeBase =
-      primary?.[attribute]?.value ??
-      primary?.[attribute]?.base_value ??
-      character?.iq ??
-      0;
+      (primary?.[attribute]?.base_value ?? character?.iq ?? 0) +
+      (primary?.[attribute]?.race_modifier ?? 0);
 
     const base_value = Number(spell.base_value ?? 0);
     const modifier = Number(spell.modifier ?? 0);

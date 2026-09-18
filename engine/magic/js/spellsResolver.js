@@ -1,5 +1,11 @@
 const path = require("path");
 const { loadCSV } = require("../../../helpers/dataUtils.js");
+const {
+  SPELL_ATTRIBUTE,
+  MAGIC_APTITUDE_GROUP,
+  SPELL_TIER_THRESHOLDS,
+  SPELL_TIER_DEFAULT,
+} = require("./spellsConstants.js");
 
 let _dbCache = null;
 
@@ -13,29 +19,21 @@ function getAllSpells() {
   return _dbCache;
 }
 
-// Only the highest-ranked advantage in the group applies — they're mutually exclusive tiers of the same trait.
-const magicAptitudeGroup = {
-  "ADV-063": 1,
-  "ADV-064": 2,
-  "ADV-065": 3,
-};
-
 function getAptitudeLevel(advantages = {}) {
   let max = 0;
   for (const id of Object.keys(advantages)) {
-    if (magicAptitudeGroup[id] && magicAptitudeGroup[id] > max) {
-      max = magicAptitudeGroup[id];
+    if (MAGIC_APTITUDE_GROUP[id] && MAGIC_APTITUDE_GROUP[id] > max) {
+      max = MAGIC_APTITUDE_GROUP[id];
     }
   }
   return max;
 }
 
 function getSpellTierByLevel(level) {
-  if (level <= 12) return "Aprendiz";
-  if (level <= 15) return "Experiente";
-  if (level <= 17) return "Veterano";
-  if (level <= 19) return "Especialista";
-  return "Mestre";
+  for (const { max, tier } of SPELL_TIER_THRESHOLDS) {
+    if (level <= max) return tier;
+  }
+  return SPELL_TIER_DEFAULT;
 }
 
 function normalize(str) {
@@ -46,12 +44,22 @@ function normalize(str) {
     .toLowerCase();
 }
 
-function getRowName(row) {
-  return row.spell_name || row.name;
+function spellIndexKey(name, tier) {
+  return `${normalize(name)}|${normalize(tier)}`;
 }
 
-function getRowTier(row) {
-  return row.spell_tier || row.tier;
+// First occurrence wins on duplicate name+tier rows (the CSV has a few, e.g. "Jato de Fogo"), matching the previous rows.find() behavior.
+function buildSpellIndex(rows) {
+  const index = new Map();
+
+  for (const row of rows) {
+    const key = spellIndexKey(row.spell_name, row.spell_tier);
+    if (!index.has(key)) {
+      index.set(key, row);
+    }
+  }
+
+  return index;
 }
 
 // enchantmentSpellGrants/enchantmentSpellModifiers follow the same collision/no-op rules as skills (see skills.js): multiple grants don't stack, and a fortify/weaken on a spell nobody has is a no-op.
@@ -64,7 +72,12 @@ function resolveSpells({
 }) {
   const resolved = {};
 
-  const iq = character?.iq ?? character?.primary_attributes?.IQ?.value ?? 0;
+  const spellIndex = buildSpellIndex(rows);
+
+  const iq =
+    character?.iq ??
+    character?.primary_attributes?.[SPELL_ATTRIBUTE]?.value ??
+    0;
   const aptitude_level = getAptitudeLevel(character?.advantages);
 
   const spellNames = new Set([
@@ -111,15 +124,7 @@ function resolveSpells({
     const level = base_value + modifier + aptitude_level + enchantmentModifier;
     const tier = getSpellTierByLevel(level);
 
-    const normalizedInput = normalize(spellName);
-    const normalizedTier = normalize(tier);
-
-    const row = rows.find((r) => {
-      const name = normalize(getRowName(r));
-      const rowTier = normalize(getRowTier(r));
-
-      return name === normalizedInput && rowTier === normalizedTier;
-    });
+    const row = spellIndex.get(spellIndexKey(spellName, tier));
 
     if (!row) {
       console.warn("SPELL NOT FOUND:", {
@@ -134,12 +139,12 @@ function resolveSpells({
       row,
 
       spell_id: row.spell_id,
-      name: getRowName(row),
+      name: row.spell_name,
       school: row.spell_school,
       category: row.spell_type,
-      tier: getRowTier(row),
+      tier: row.spell_tier,
 
-      attribute: "IQ",
+      attribute: SPELL_ATTRIBUTE,
       attribute_base: iq,
 
       base_value,
