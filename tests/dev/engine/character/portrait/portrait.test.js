@@ -198,6 +198,33 @@ describe("renderResumeImage", () => {
     ).toBe("");
   });
 
+  // A re-imported ally carries its portrait as a path rather than pixels.
+  test("uses image.path when nothing is uploaded", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage({
+      uploaded: false,
+      data: "",
+      path: "/images/allies/ally-0001-bran.png",
+      scale: 120,
+      position: { x: 42, y: 61 },
+    });
+
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.getAttribute("src")).toBe("/images/allies/ally-0001-bran.png");
+    expect(img.style.width).toBe("120%");
+  });
+
+  test("an uploaded image still beats image.path", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage({ ...UPLOADED_IMAGE, path: "/images/allies/x.png" });
+
+    expect(
+      document.getElementById("resume-charimg-img").getAttribute("src"),
+    ).toBe(UPLOADED_IMAGE.data);
+  });
+
   test("escapes a hostile path fallback", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
@@ -261,6 +288,41 @@ describe("renderCharacterImage", () => {
     expect(document.getElementById("charimg-bg").style.backgroundColor).toBe(
       "rgb(10, 20, 30)",
     );
+  });
+
+  // The edit view has to show it too, or a re-imported ally looks like it lost its portrait.
+  test("when only a path is set: renders it with the stored framing", () => {
+    resetDOM(`
+      <div id="charimg-preview"></div>
+      <div id="charimg-bg"></div>
+      <input id="charimg-scale" />
+    `);
+    Object.assign(state.selected.character.image, {
+      uploaded: false,
+      data: "",
+      path: "/images/allies/ally-0001-bran.png",
+      scale: 80,
+      position: { x: 30, y: 70 },
+    });
+
+    renderCharacterImage();
+
+    const img = document.getElementById("charimg-img");
+    expect(img.getAttribute("src")).toBe("/images/allies/ally-0001-bran.png");
+    expect(img.style.width).toBe("80%");
+    expect(img.style.left).toBe("30%");
+  });
+
+  test("creates no image element when there is neither data nor a path", () => {
+    resetDOM(`
+      <div id="charimg-preview"></div>
+      <div id="charimg-bg"></div>
+      <input id="charimg-scale" />
+    `);
+
+    renderCharacterImage();
+
+    expect(document.getElementById("charimg-img")).toBeNull();
   });
 
   test("removes a stale preview image before rendering again", () => {

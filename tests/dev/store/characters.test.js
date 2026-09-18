@@ -258,6 +258,56 @@ describe("addCharacter", () => {
   });
 });
 
+describe("a portrait that lives on disk", () => {
+  // An ally file carries the path, not the pixels; without this the sheet would look like it
+  // lost the portrait the moment the ally was re-imported to be edited.
+  test("an ally payload's portrait reaches the image block", () => {
+    replaceActiveCharacter({
+      version: 1,
+      portrait: "/images/allies/ally-0001-bran.png",
+      pc: {
+        character_name: "Bran",
+        image: { uploaded: false, data: "", scale: 120 },
+      },
+      race: {},
+      character: {},
+      inventory: {},
+    });
+
+    expect(state.selected.character.image.path).toBe(
+      "/images/allies/ally-0001-bran.png",
+    );
+    expect(state.selected.character.image.scale).toBe(120);
+  });
+
+  test("a character payload gains no path", () => {
+    replaceActiveCharacter({
+      version: 1,
+      pc: { character_name: "Kael", image: { uploaded: false, data: "" } },
+      race: {},
+      character: {},
+      inventory: {},
+    });
+
+    expect(state.selected.character.image.path).toBeUndefined();
+  });
+
+  test("the path persists, so it survives a reload", () => {
+    replaceActiveCharacter({
+      version: 1,
+      portrait: "/images/allies/ally-0001-bran.png",
+      pc: { character_name: "Bran", image: { uploaded: false, data: "" } },
+      race: {},
+      character: {},
+      inventory: {},
+    });
+    saveActiveCharacter();
+
+    const stored = getStore().list.find((c) => c.id === getActiveCharacterId());
+    expect(stored.data.pc.image.path).toBe("/images/allies/ally-0001-bran.png");
+  });
+});
+
 describe("entry kind", () => {
   test("a new store's character is a real character, not a draft", () => {
     expect(getActiveKind()).toBe("character");

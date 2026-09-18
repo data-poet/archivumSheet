@@ -244,3 +244,56 @@ describe("isAllyFile", () => {
     expect(isAllyFile(payload)).toBe(false);
   });
 });
+
+// The point of carrying image.path: export → drop in data/allies/ → re-import to tweak →
+// re-export, with the portrait still visible while editing and the framing intact throughout.
+describe("the portrait survives an export / re-import round trip", () => {
+  const { isAllyFile } = require("dev/public/js/store/allyExport.js");
+
+  test("the exported file points the image block at the same PNG as the index", () => {
+    const { payload } = buildAllyFile("Bran", DATE);
+
+    expect(payload.pc.image.path).toBe(payload.portrait);
+    expect(payload.portrait).toBe("/images/allies/ally-2026-09-18-bran.png");
+  });
+
+  test("the framing rides along with the path, not with the pixels", () => {
+    state.selected.character.image = {
+      uploaded: true,
+      data: "data:image/png;base64,BLOB",
+      scale: 140,
+      position: { x: 25, y: 75 },
+      background: "black",
+    };
+
+    const { payload } = buildAllyFile("Bran", DATE);
+
+    expect(payload.pc.image.data).toBe("");
+    expect(payload.pc.image.scale).toBe(140);
+    expect(payload.pc.image.position).toEqual({ x: 25, y: 75 });
+    expect(payload.pc.image.background).toBe("black");
+  });
+
+  test("re-exporting a re-imported ally regenerates a matching pair", () => {
+    const first = buildAllyFile("Bran", DATE).payload;
+
+    // Simulate the re-import: the sheet's image block is what the file carried.
+    state.selected.character.image = { ...first.pc.image };
+    const second = buildAllyFile("Bran", DATE).payload;
+
+    expect(second.portrait).toBe(first.portrait);
+    expect(second.pc.image.path).toBe(second.portrait);
+    expect(isAllyFile(second)).toBe(true);
+  });
+
+  // A character that never was an ally must not gain a path, or it would look like an ally file.
+  test("a plain character export gains no path and stays unrecognised", () => {
+    const characterExport = {
+      ...capturePersistedSheet(),
+      exportedAt: new Date().toISOString(),
+    };
+
+    expect(characterExport.pc.image.path).toBeUndefined();
+    expect(isAllyFile(characterExport)).toBe(false);
+  });
+});

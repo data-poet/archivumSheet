@@ -135,6 +135,15 @@ function _applyData(data) {
     },
   };
 
+  // An ally file keeps its portrait on disk, so carry the path into the image block — that is
+  // what lets a re-imported ally still render while it is being edited.
+  if (data.portrait) {
+    selected.character.image = {
+      ...selected.character.image,
+      path: data.portrait,
+    };
+  }
+
   const setVal = (id, v) => {
     const el = document.getElementById(id);
     if (el) el.value = v ?? "";
