@@ -1,6 +1,7 @@
 const { buildCharacterPrimary } = require("./buildCharacterPrimary");
 const { buildCharacterSecondary } = require("./buildCharacterSecondary");
 const { buildTraitsEffects } = require("./js/traits/effects");
+const { sumObjectValues } = require("../../helpers/sumObjectValues");
 
 function buildCharacter({
   advantages = [],
@@ -80,10 +81,13 @@ function buildCharacter({
 
       disadvantages: primary.disadvantages,
 
+      // primary_attributes/secondary_attributes are per-attribute cost maps at the sub-builder
+      // level (see buildCharacterPrimary/buildCharacterSecondary); summed here so every
+      // character_points entry is a flat number, consistent with skills/advantages/disadvantages.
       character_points: {
-        primary_attributes: primaryPoints.primary_attributes ?? 0,
+        primary_attributes: sumObjectValues(primaryPoints.primary_attributes),
 
-        secondary_attributes: secondaryPoints.secondary_attributes ?? 0,
+        secondary_attributes: sumObjectValues(secondaryPoints.secondary_attributes),
 
         skills: secondaryPoints.skills ?? 0,
 
