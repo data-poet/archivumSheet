@@ -242,13 +242,19 @@ app.post("/api/character/build", (req, res) => {
     primaryAttributes = {},
   } = req.body;
 
-  const result = buildCharacter({
-    advantages,
-    disadvantages,
-    primaryAttributes,
-  });
+  try {
+    const result = buildCharacter({
+      advantages,
+      disadvantages,
+      primaryAttributes,
+    });
 
-  res.json(result);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
 });
 
 /* -----------------------
