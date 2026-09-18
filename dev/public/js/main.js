@@ -3,6 +3,7 @@ import { initNav } from "./components/nav.js";
 import { initSelectLabels } from "./components/selectLabels.js";
 import { initTabs } from "./components/tabs.js";
 import { initViewMode } from "./components/viewMode.js";
+import { mountResumePanel } from "./components/resume/skeleton.js";
 import { initTheme } from "./components/theme.js";
 import { setupAutoRun } from "./compute/attributes.js";
 import {
@@ -36,6 +37,7 @@ import { initCharacterSelector } from "./components/characterSelector.js";
 import { state } from "./state.js";
 
 export async function bootstrap() {
+  mountResumePanel();
   initAutoRun(runEngine);
   bindUI();
   initNav();

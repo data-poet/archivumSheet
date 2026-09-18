@@ -12,6 +12,9 @@ jest.mock("dev/public/js/components/tabs.js", () => ({
 jest.mock("dev/public/js/components/viewMode.js", () => ({
   initViewMode: jest.fn(),
 }));
+jest.mock("dev/public/js/components/resume/skeleton.js", () => ({
+  mountResumePanel: jest.fn(),
+}));
 jest.mock("dev/public/js/components/theme.js", () => ({
   initTheme: jest.fn(),
 }));
@@ -103,6 +106,7 @@ import { bindUI } from "dev/public/js/events/index.js";
 import { initNav } from "dev/public/js/components/nav.js";
 import { initTabs } from "dev/public/js/components/tabs.js";
 import { initViewMode } from "dev/public/js/components/viewMode.js";
+import { mountResumePanel } from "dev/public/js/components/resume/skeleton.js";
 import { initTheme } from "dev/public/js/components/theme.js";
 import { setupAutoRun } from "dev/public/js/compute/attributes.js";
 import {
@@ -161,6 +165,22 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
     expect(setupAutoRun).toHaveBeenCalledTimes(1);
     expect(initAttributeTableHeaders).toHaveBeenCalledTimes(1);
     expect(updateActualValues).toHaveBeenCalledTimes(1);
+  });
+
+  // Order matters: initViewMode() moves #tab-char-resume and updateActualValues() reads
+  // the legacy weight spans, both of which only exist once the panel is mounted.
+  test("mounts the resume panel before anything that reads it", async () => {
+    const order = [];
+    mountResumePanel.mockImplementation(() => order.push("mount"));
+    initViewMode.mockImplementation(() => order.push("initViewMode"));
+    updateActualValues.mockImplementation(() =>
+      order.push("updateActualValues"),
+    );
+
+    await bootstrap();
+
+    expect(order[0]).toBe("mount");
+    expect(order).toEqual(["mount", "initViewMode", "updateActualValues"]);
   });
 
   test("initializes autorun with the real runEngine function", async () => {
