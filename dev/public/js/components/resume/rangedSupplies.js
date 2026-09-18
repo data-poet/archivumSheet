@@ -8,9 +8,10 @@ import {
   bindCollapse,
   hpStepperCell,
   roundsStepperCell,
+  quantityStepperCell,
 } from "./shared.js";
 
-export function renderResumeFirearms(sheet) {
+export function renderResumeFirearms(sheet, { editable = true } = {}) {
   const equipped = sheet?.inventory?.firearms?.equipped ?? [];
   const container = el("resume_firearms_container");
   if (!container) return;
@@ -36,6 +37,7 @@ export function renderResumeFirearms(sheet) {
               maxHp: baseMaxHp,
               modifier,
               actualHp,
+              editable,
             })
           : `<td></td>`;
 
@@ -47,6 +49,7 @@ export function renderResumeFirearms(sheet) {
         dataAttrs: `data-instance-id="${instanceId}"`,
         magazineSize,
         roundsLoaded,
+        editable,
       });
 
       return `
@@ -87,7 +90,12 @@ export function renderResumeFirearms(sheet) {
 
 // Quantities are aggregated across all equipped containers per ammo_id; the stepper
 // writes back to the first equipped container (by insertion order) holding that ammo_id.
-export function renderResumeAmmo(sheet, data, selected) {
+export function renderResumeAmmo(
+  sheet,
+  data,
+  selected,
+  { editable = true } = {},
+) {
   const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
   const ammoDb = data?.ammo ?? [];
   const container = el("resume_ammo_container");
@@ -130,23 +138,12 @@ export function renderResumeAmmo(sheet, data, selected) {
       (e) => `
       <tr>
         <td>${e.name}</td>
-        <td class="col-num">
-          <div class="num-stepper">
-            <input
-              type="text"
-              inputmode="numeric"
-              class="resume-ammo-qty"
-              data-ammo-id="${e.ammo_id}"
-              data-instance-id="${e.instanceId}"
-              value="${e.quantity}"
-              style="width:50px"
-            />
-            <div class="stepper-btns">
-              <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-              <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-            </div>
-          </div>
-        </td>
+        ${quantityStepperCell({
+          cssClass: "resume-ammo-qty",
+          dataAttrs: `data-ammo-id="${e.ammo_id}" data-instance-id="${e.instanceId}"`,
+          quantity: e.quantity,
+          editable,
+        })}
       </tr>
     `,
     )

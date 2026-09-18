@@ -15,7 +15,7 @@ const ARMOR_SLOTS = [
   { key: "feet", label: "Pés" },
 ];
 
-export function renderResumeArmor(sheet) {
+export function renderResumeArmor(sheet, { editable = true } = {}) {
   const equipped = sheet?.inventory?.armor?.equipped || {};
   const container = el("resume_armor_container");
   if (!container) return;
@@ -45,6 +45,7 @@ export function renderResumeArmor(sheet) {
             maxHp,
             modifier,
             actualHp,
+            editable,
           })
         : `<td></td>`;
 
@@ -71,7 +72,7 @@ export function renderResumeArmor(sheet) {
   bindCollapse(container);
 }
 
-export function renderResumeShield(sheet) {
+export function renderResumeShield(sheet, { editable = true } = {}) {
   const equippedShield = sheet?.inventory?.shield?.equipped;
   const container = el("resume_shield_container");
   if (!container) return;
@@ -97,6 +98,7 @@ export function renderResumeShield(sheet) {
           maxHp,
           modifier,
           actualHp,
+          editable,
         })
       : `<td></td>`;
 
@@ -128,7 +130,7 @@ export function renderResumeShield(sheet) {
   bindCollapse(container);
 }
 
-export function renderResumeMelee(sheet) {
+export function renderResumeMelee(sheet, { editable = true } = {}) {
   const equipped = sheet?.inventory?.melee?.equipped ?? [];
   const container = el("resume_melee_container");
   if (!container) return;
@@ -159,6 +161,7 @@ export function renderResumeMelee(sheet) {
               maxHp: baseMaxHp,
               modifier,
               actualHp,
+              editable,
             })
           : `<td></td>`;
 
@@ -196,7 +199,7 @@ export function renderResumeMelee(sheet) {
   bindCollapse(container);
 }
 
-export function renderResumeRanged(sheet) {
+export function renderResumeRanged(sheet, { editable = true } = {}) {
   const equipped = sheet?.inventory?.ranged?.equipped ?? [];
   const container = el("resume_ranged_container");
   if (!container) return;
@@ -222,6 +225,7 @@ export function renderResumeRanged(sheet) {
               maxHp: baseMaxHp,
               modifier,
               actualHp,
+              editable,
             })
           : `<td></td>`;
 
