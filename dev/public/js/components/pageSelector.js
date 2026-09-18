@@ -49,7 +49,6 @@ export function renderPageSelector() {
     trigger.setAttribute("aria-label", triggerAria);
     trigger.setAttribute("title", triggerAria);
     trigger.innerHTML = `
-      <span class="topbar-btn-icon" aria-hidden="true">${current?.icon ?? "📋"}</span>
       <span class="page-selector-btn-label">${current?.label ?? ""}</span>
       <span class="page-selector-btn-chevron" aria-hidden="true">⌄</span>
     `;
@@ -67,7 +66,6 @@ export function renderPageSelector() {
              class="char-selector-item${page.key === current?.key ? " is-active" : ""}"
              data-page="${page.key}"
              ${page.key === current?.key ? 'aria-current="page"' : ""}>
-            <span class="char-selector-radio" aria-hidden="true">${page.icon}</span>
             <span class="char-selector-item-info">
               <span class="char-selector-item-name">${page.label}</span>
             </span>
