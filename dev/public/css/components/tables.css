@@ -423,6 +423,39 @@ tr.spell-detail-row details[open] summary {
   color: var(--color-text-muted);
 }
 
+/* Markdown tables pasted into a description (e.g. a reference chart) can carry more columns
+   than fit a phone screen, so this scrolls sideways rather than the .item-detail-block itself. */
+.scaling-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: var(--space-1) 0;
+}
+
+.scaling-table {
+  border-collapse: collapse;
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+}
+
+.scaling-table th,
+.scaling-table td {
+  padding: clamp(3px, 1vw, 6px) clamp(5px, 1.5vw, 8px);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.scaling-table thead tr {
+  background: var(--color-table-header-bg);
+}
+
+.scaling-table th {
+  font-weight: 600;
+  font-size: var(--fs-xxs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+
 /* Stacked cards for the inventory tables on phones. Their control columns (num-stepper,
    storage select, Equipar + ✕) can't shrink, so a 6-column row needs ~540px against ~345px
    of usable width and the whole table scrolls sideways. Opt-in per table: the numeric grids

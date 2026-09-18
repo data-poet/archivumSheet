@@ -41,8 +41,84 @@ export function withEnchantmentBadge(
 export function formatRichText(raw) {
   if (!raw || raw.trim() === "") return "—";
 
-  const parsed = raw
-    .split("\n")
+  return _splitIntoBlocks(raw.split("\n"))
+    .map((block) =>
+      block.type === "table" ? _buildTable(block.rows) : _formatTextBlock(block.lines),
+    )
+    .join("");
+}
+
+// A GFM-style pipe table is only recognized when a "|"-bearing line is immediately
+// followed by a separator line (cells of just dashes/colons) — otherwise ordinary
+// prose that happens to contain "|" would be misread as a table.
+const TABLE_SEPARATOR_CELL_RE = /^:?-+:?$/;
+
+function _isTableStart(lines, i) {
+  const header = lines[i];
+  const separator = lines[i + 1];
+  if (header == null || separator == null) return false;
+  if (!header.includes("|")) return false;
+
+  const sepCells = _splitTableRow(separator);
+  return (
+    sepCells.length > 0 &&
+    sepCells.every((cell) => TABLE_SEPARATOR_CELL_RE.test(cell))
+  );
+}
+
+function _splitTableRow(line) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+}
+
+function _splitIntoBlocks(lines) {
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    if (_isTableStart(lines, i)) {
+      const rows = [_splitTableRow(lines[i])];
+      i += 2; // header + separator
+
+      while (i < lines.length && lines[i].includes("|") && lines[i].trim() !== "") {
+        rows.push(_splitTableRow(lines[i]));
+        i++;
+      }
+
+      blocks.push({ type: "table", rows });
+    } else {
+      const start = i;
+      while (i < lines.length && !_isTableStart(lines, i)) i++;
+      blocks.push({ type: "text", lines: lines.slice(start, i) });
+    }
+  }
+
+  return blocks;
+}
+
+function _buildTable(rows) {
+  const [headerCells, ...bodyRows] = rows;
+  const head = `<thead><tr>${headerCells
+    .map((cell) => `<th>${cell}</th>`)
+    .join("")}</tr></thead>`;
+  const body = bodyRows.length
+    ? `<tbody>${bodyRows
+        .map(
+          (row) =>
+            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`,
+        )
+        .join("")}</tbody>`
+    : "";
+
+  return `<div class="scaling-table-wrapper"><table class="scaling-table">${head}${body}</table></div>`;
+}
+
+function _formatTextBlock(lines) {
+  const parsed = lines
     .map((l) => {
       const match = l.match(/^(\s*)(.*)$/);
       const indent = match[1].replace(/\t/g, "    ").length;
@@ -50,10 +126,12 @@ export function formatRichText(raw) {
     })
     .filter((l) => l.text.length > 0);
 
+  if (parsed.length === 0) return "";
+
   const bulletLines = parsed.filter((l) => l.text.startsWith("-"));
 
   if (bulletLines.length === 0)
-    return `<p class="scaling-note">${raw.trim()}</p>`;
+    return `<p class="scaling-note">${parsed.map((l) => l.text).join(" ")}</p>`;
 
   const uniqueIndents = [...new Set(bulletLines.map((l) => l.indent))].sort(
     (a, b) => a - b,

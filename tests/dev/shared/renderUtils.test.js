@@ -139,6 +139,66 @@ describe("formatRichText", () => {
 
     expect(dom.querySelectorAll("li").length).toBe(2);
   });
+
+  test("a GFM pipe table (header + separator row) renders as a real <table>", () => {
+    const html = formatRichText(
+      "| Grau | Nome |\n| :---: | :--- |\n| 0 | Calmaria |\n| 1 | Ar Leve |",
+    );
+    const dom = parseInto(html);
+
+    const table = dom.querySelector("table.scaling-table");
+    expect(table).not.toBeNull();
+
+    const headers = table.querySelectorAll("thead th");
+    expect(headers.length).toBe(2);
+    expect(headers[0].textContent).toBe("Grau");
+    expect(headers[1].textContent).toBe("Nome");
+
+    const rows = table.querySelectorAll("tbody tr");
+    expect(rows.length).toBe(2);
+    expect(rows[0].querySelectorAll("td")[1].textContent).toBe("Calmaria");
+  });
+
+  test("a table is wrapped in a scrollable container for narrow screens", () => {
+    const html = formatRichText("| A |\n| :--- |\n| 1 |");
+    const dom = parseInto(html);
+
+    expect(
+      dom.querySelector(".scaling-table-wrapper > table.scaling-table"),
+    ).not.toBeNull();
+  });
+
+  test("a pipe-containing line with no following separator row is treated as plain text, not a table", () => {
+    const html = formatRichText("Custo: 10 | 20 gold");
+    const dom = parseInto(html);
+
+    expect(dom.querySelector("table")).toBeNull();
+    expect(dom.querySelector("p.scaling-note").textContent).toBe(
+      "Custo: 10 | 20 gold",
+    );
+  });
+
+  test("text before and after a table are rendered as separate note paragraphs around it", () => {
+    const html = formatRichText(
+      "Introdução.\n\n| A | B |\n| :--- | :--- |\n| 1 | 2 |\n\nConclusão.",
+    );
+    const dom = parseInto(html);
+
+    const paragraphs = dom.querySelectorAll("p.scaling-note");
+    expect(paragraphs.length).toBe(2);
+    expect(paragraphs[0].textContent).toBe("Introdução.");
+    expect(paragraphs[1].textContent).toBe("Conclusão.");
+    expect(dom.querySelector("table")).not.toBeNull();
+  });
+
+  test("a table with only a header/separator and no data rows renders with an empty body", () => {
+    const html = formatRichText("| A | B |\n| :--- | :--- |");
+    const dom = parseInto(html);
+
+    const table = dom.querySelector("table.scaling-table");
+    expect(table.querySelectorAll("thead th").length).toBe(2);
+    expect(table.querySelector("tbody")).toBeNull();
+  });
 });
 
 describe("detailRow", () => {
