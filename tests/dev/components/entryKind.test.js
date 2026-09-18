@@ -9,6 +9,12 @@ jest.mock("dev/public/js/shared/availability.js", () => ({
 jest.mock("dev/public/js/shared/navigation.js", () => ({
   reloadPage: jest.fn(),
 }));
+jest.mock("dev/public/js/store/allyOnlyContent.js", () => ({
+  findAllyOnlyContent: jest.fn(() => []),
+}));
+jest.mock("dev/public/js/store/persistence.js", () => ({
+  showToast: jest.fn(),
+}));
 
 import {
   getActiveKind,
@@ -17,6 +23,8 @@ import {
 } from "dev/public/js/store/characters.js";
 import { audienceAffectsCatalogs } from "dev/public/js/shared/availability.js";
 import { reloadPage } from "dev/public/js/shared/navigation.js";
+import { findAllyOnlyContent } from "dev/public/js/store/allyOnlyContent.js";
+import { showToast } from "dev/public/js/store/persistence.js";
 import {
   initEntryKind,
   renderEntryKind,
@@ -29,6 +37,7 @@ beforeEach(() => {
   jest.clearAllMocks();
   getActiveKind.mockReturnValue("character");
   audienceAffectsCatalogs.mockReturnValue(false);
+  findAllyOnlyContent.mockReturnValue([]);
 });
 
 function chooseKind(value) {
@@ -165,5 +174,44 @@ describe("reloading on a kind change", () => {
     chooseKind("ally");
 
     expect(order).toEqual(["setKind", "reload"]);
+  });
+});
+
+// Reported, not blocked: the engine resolves the content either way, so this is a rules
+// problem for the player to judge rather than a broken sheet.
+describe("the ally-only content backstop", () => {
+  test("warns when a draft holding ally-only content becomes a character", () => {
+    getActiveKind.mockReturnValue("ally");
+    findAllyOnlyContent.mockReturnValue([
+      { id: "ADV-ALLY-1", label: "Corpo Elemental" },
+    ]);
+    initEntryKind();
+
+    chooseKind("character");
+
+    expect(showToast).toHaveBeenCalledTimes(1);
+    expect(showToast.mock.calls[0][0]).toContain("Corpo Elemental");
+    expect(showToast.mock.calls[0][1]).toBe("error");
+  });
+
+  test("stays quiet when the draft holds nothing ally-only", () => {
+    getActiveKind.mockReturnValue("ally");
+    initEntryKind();
+
+    chooseKind("character");
+
+    expect(showToast).not.toHaveBeenCalled();
+  });
+
+  // Going the other way is always fine — an ally may hold anything.
+  test("does not warn when a character becomes a draft", () => {
+    findAllyOnlyContent.mockReturnValue([
+      { id: "ADV-ALLY-1", label: "Corpo Elemental" },
+    ]);
+    initEntryKind();
+
+    chooseKind("ally");
+
+    expect(showToast).not.toHaveBeenCalled();
   });
 });
