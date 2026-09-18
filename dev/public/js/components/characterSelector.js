@@ -17,6 +17,7 @@ import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
+import { clickStartedInside } from "../shared/eventDispatch.js";
 import { isAllyFile } from "../store/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
@@ -151,11 +152,8 @@ export function initCharacterSelector() {
 
   document.addEventListener("click", (e) => {
     if (!isOpen()) return;
-    const popover = getPopover();
-    const btnEl = getTriggerButton();
-    if (!popover?.contains(e.target) && !btnEl?.contains(e.target)) {
-      closeSelector();
-    }
+    if (clickStartedInside(e, getPopover(), getTriggerButton())) return;
+    closeSelector();
   });
 
   const popover = getPopover();

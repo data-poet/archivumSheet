@@ -10,6 +10,7 @@
 // popover-list styles, and renaming them is a separate cleanup.
 
 import { LABELS } from "../localization/pt-BR/index.js";
+import { clickStartedInside } from "../shared/eventDispatch.js";
 
 const TRIGGER_ID = "page-selector-btn";
 const POPOVER_ID = "page-selector-popover";
@@ -115,9 +116,7 @@ export function initPageSelector() {
 
   document.addEventListener("click", (e) => {
     if (!isOpen()) return;
-    if (getPopover()?.contains(e.target) || getTrigger()?.contains(e.target)) {
-      return;
-    }
+    if (clickStartedInside(e, getPopover(), getTrigger())) return;
     closePageSelector();
   });
 
