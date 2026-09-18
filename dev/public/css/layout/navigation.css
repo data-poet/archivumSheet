@@ -295,6 +295,25 @@
     opacity: 1;
   }
 
+  .sidebar-version {
+    flex-shrink: 0;
+    width: 100%;
+    padding: var(--space-3) var(--space-5) var(--space-5);
+    font-size: var(--fs-xxs);
+    color: var(--color-text-muted);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.15s 0.05s;
+  }
+
+  .l-sidebar:hover .sidebar-version {
+    opacity: 1;
+  }
+
   .l-main {
     margin-left: var(--sidebar-w);
     padding: clamp(12px, 2vw, 20px);
@@ -308,4 +327,3 @@
     max-width: var(--content-max-w);
   }
 }
-
