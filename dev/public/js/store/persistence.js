@@ -1,5 +1,6 @@
 import { state } from "../state.js";
 import { capturePersistedSheet } from "./persistedSheet.js";
+import { buildAllyFile } from "./allyExport.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
@@ -58,23 +59,37 @@ export function exportSheet() {
     exportedAt: new Date().toISOString(),
   };
 
+  const characterName = (
+    sheet?.pc?.character_name ||
+    selected.character?.character_name ||
+    "personagem"
+  )
+    .trim()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-zA-Z0-9_\-áéíóúâêîôûãõàèìòùçÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ]/g, "")
+    || "personagem";
+
+  const date = new Date().toISOString().slice(0, 10);
+
+  _downloadJSON(payload, `archivum_${characterName}_${date}.json`, "Ficha exportada");
+}
+
+// Writes the active sheet as an ally catalog file, ready to drop into data/allies/. The
+// portrait is saved beside it as a PNG of the same name — see store/allyExport.js.
+export function exportAllySheet() {
+  const { selected, sheet } = state;
+  const name = sheet?.pc?.character_name || selected.character?.character_name || "";
+
+  const { filename, payload } = buildAllyFile(name);
+
+  _downloadJSON(payload, filename, "Aliado exportado");
+}
+
+function _downloadJSON(payload, filename, successLabel) {
   try {
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json",
     });
-
-    const characterName = (
-      sheet?.pc?.character_name ||
-      selected.character?.character_name ||
-      "personagem"
-    )
-      .trim()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-zA-Z0-9_\-áéíóúâêîôûãõàèìòùçÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ]/g, "")
-      || "personagem";
-
-    const date = new Date().toISOString().slice(0, 10);
-    const filename = `archivum_${characterName}_${date}.json`;
 
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -82,7 +97,7 @@ export function exportSheet() {
     a.click();
     URL.revokeObjectURL(a.href);
 
-    showToast(`Ficha exportada: ${filename}`, "success");
+    showToast(`${successLabel}: ${filename}`, "success");
   } catch (err) {
     showToast(`Erro ao exportar: ${err.message}`, "error");
   }

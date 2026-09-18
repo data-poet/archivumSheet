@@ -15,4 +15,5 @@ export const CHARACTERS = {
   kindCharacter: "Personagem",
   kindAlly: "Aliado",
   kindBadge: "Aliado",
+  exportAlly: "Exportar como aliado",
 };
