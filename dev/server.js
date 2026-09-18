@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+const { version } = require("../package.json");
 const { loadCSV } = require("../helpers/dataUtils.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
@@ -43,6 +44,13 @@ app.get("/favicon.ico", (req, res) => {
 
 // serve UI
 app.use(express.static(path.join(__dirname, "public")));
+
+/* -----------------------
+   APP INFO
+------------------------ */
+app.get("/api/app-info", (req, res) => {
+  res.json({ version });
+});
 
 /* -----------------------
    ADVANTAGES

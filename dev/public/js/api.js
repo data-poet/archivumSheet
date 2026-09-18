@@ -113,3 +113,7 @@ export async function fetchItemCategories() {
 export async function buildSheet(payload) {
   return postJSON("/api/sheet/build", payload);
 }
+
+export async function fetchAppInfo() {
+  return getJSON("/api/app-info");
+}

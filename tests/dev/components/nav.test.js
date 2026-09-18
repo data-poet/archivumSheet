@@ -1,6 +1,11 @@
 import { initNav } from "dev/public/js/components/nav.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import {
+  installMockFetch,
+  mockFetchResponse,
+  mockFetchError,
+} from "tests/dev/helpers/mockFetch.js";
 
 // jsdom implements neither scrollIntoView nor IntersectionObserver.
 class MockIntersectionObserver {
@@ -160,6 +165,32 @@ describe("initNav — click highlighting", () => {
       new MouseEvent("click", { bubbles: true, cancelable: true }),
     );
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+  });
+});
+
+describe("initNav — sidebar version", () => {
+  beforeEach(() => {
+    installMockFetch();
+  });
+
+  test("fetches /api/app-info and renders the version into the sidebar", async () => {
+    mockFetchResponse("/api/app-info", { version: "1.8.14" });
+    initNav();
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(
+      document.querySelector("#sidebar .sidebar-version").textContent,
+    ).toBe("v1.8.14");
+  });
+
+  test("removes the version element when the fetch fails", async () => {
+    mockFetchError("/api/app-info", 500);
+    initNav();
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(document.querySelector("#sidebar .sidebar-version")).toBeNull();
   });
 });
 

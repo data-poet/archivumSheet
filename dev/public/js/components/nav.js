@@ -1,6 +1,7 @@
 // initNav() must run before initTabs().
 import { LABELS } from "../localization/pt-BR/index.js";
 import { scrollToSection } from "../shared/motion.js";
+import { fetchAppInfo } from "../api.js";
 
 function _buildSidebar(items) {
   const nav = document.getElementById("sidebar");
@@ -28,6 +29,25 @@ function _buildSidebar(items) {
     ul.setAttribute("role", "list");
     nav.appendChild(ul);
   }
+}
+
+// Desktop-only by inheritance: .l-sidebar itself is display:none below the 768px
+// breakpoint, so this never needs its own media query.
+function _renderSidebarVersion() {
+  const nav = document.getElementById("sidebar");
+  if (!nav) return;
+
+  const span = document.createElement("span");
+  span.className = "sidebar-version";
+  nav.appendChild(span);
+
+  fetchAppInfo()
+    .then(({ version }) => {
+      span.textContent = `v${version}`;
+    })
+    .catch(() => {
+      span.remove();
+    });
 }
 
 function _buildBottomNav(items) {
@@ -84,4 +104,5 @@ export function initNav() {
   _buildSidebar(items);
   _buildBottomNav(items);
   _initActiveHighlight();
+  _renderSidebarVersion();
 }
