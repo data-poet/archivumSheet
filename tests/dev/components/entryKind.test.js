@@ -50,15 +50,6 @@ describe("renderEntryKind", () => {
     expect(document.body.classList.contains("is-ally-draft")).toBe(false);
   });
 
-  test("shows the explanatory hint only for a draft", () => {
-    renderEntryKind();
-    expect(document.querySelector(".entry-kind-hint").hidden).toBe(true);
-
-    getActiveKind.mockReturnValue("ally");
-    renderEntryKind();
-    expect(document.querySelector(".entry-kind-hint").hidden).toBe(false);
-  });
-
   // Pages without the control (reference, allies) still call this for the body class.
   test("sets the body class even when the host is absent", () => {
     resetDOM();

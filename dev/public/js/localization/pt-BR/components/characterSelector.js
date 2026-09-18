@@ -14,7 +14,5 @@ export const CHARACTERS = {
   kindLegend: "Editando como",
   kindCharacter: "Personagem",
   kindAlly: "Aliado",
-  kindAllyHint:
-    "Rascunho de aliado — será exportado como ficha de aliado, não jogado.",
   kindBadge: "Aliado",
 };

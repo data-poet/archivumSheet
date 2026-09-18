@@ -31,14 +31,6 @@
   font-weight: 600;
 }
 
-/* Full width so it drops below the radios rather than squeezing them on a phone. */
-.entry-kind-hint {
-  flex-basis: 100%;
-  margin: 0;
-  font-size: var(--fs-xs);
-  color: var(--accent-attributes);
-}
-
 /* ── Ally-draft treatment ──────────────────────────────────────────────────────
    The radio scrolls out of view; the topbar does not. Authoring an ally while
    believing you are editing your character is the mistake this guards against. */
