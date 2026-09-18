@@ -109,6 +109,7 @@ const SECONDARY_SNAPSHOT_KEYS = [
   "BasicSpeed",
   "Movement",
   "Dodge",
+  "DamageResistance",
 ];
 
 export function renderResumeSecondarySnapshot(sheet) {

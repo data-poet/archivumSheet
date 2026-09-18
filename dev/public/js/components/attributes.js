@@ -81,7 +81,7 @@ export function renderSecondaryAttributes(sheet) {
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
-      const isMovement = name === "Movement";
+      const isNotBuyable = name === "Movement" || name === "DamageResistance";
       // HP/Mana/Toxicity's modifier is a damage tracker (≤ 0 only), not a stat bonus.
       const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
 
@@ -102,7 +102,7 @@ export function renderSecondaryAttributes(sheet) {
           : `${enchantmentMod}`
         : "—";
 
-      const boughtCell = isMovement
+      const boughtCell = isNotBuyable
         ? `<td>—</td>`
         : `<td>
             <div class="num-stepper">

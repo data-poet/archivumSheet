@@ -373,6 +373,7 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes).toHaveProperty("BasicSpeed");
       expect(attributes).toHaveProperty("Movement");
       expect(attributes).toHaveProperty("Dodge");
+      expect(attributes).toHaveProperty("DamageResistance");
     });
 
     it("Each attribute should have base_value, bought, modifier, value, final_base_value", () => {
