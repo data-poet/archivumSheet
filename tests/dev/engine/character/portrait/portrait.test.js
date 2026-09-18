@@ -139,6 +139,65 @@ describe("renderResumeImage", () => {
     ).toBe(UPLOADED_IMAGE.data);
   });
 
+  // An ally exported from the sheet keeps its framing but drops the base64 blob, so the
+  // position/scale set on the character page must survive into the path-based portrait.
+  test("applies stored framing to a path portrait", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage(
+      {
+        uploaded: false,
+        data: "",
+        background: "average",
+        color: { r: 10, g: 20, b: 30 },
+        position: { x: 42, y: 61 },
+        scale: 120,
+      },
+      "/images/allies/ally-0001-bran.png",
+    );
+
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.getAttribute("src")).toBe("/images/allies/ally-0001-bran.png");
+    expect(img.style.width).toBe("120%");
+    expect(img.style.left).toBe("42%");
+    expect(img.style.top).toBe("61%");
+    expect(
+      document.getElementById("resume-charimg-bg").style.backgroundColor,
+    ).toBe("rgb(10, 20, 30)");
+  });
+
+  test("centres a path portrait when the image block carries no framing", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage(
+      { uploaded: false, data: "", scale: "", position: { x: "", y: "" } },
+      "/images/allies/ally-0001-bran.png",
+    );
+
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.style.width).toBe("100%");
+    expect(img.style.left).toBe("50%");
+  });
+
+  test("tolerates a hand-edited file declaring average with no color block", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    expect(() =>
+      renderResumeImage(
+        {
+          uploaded: false,
+          background: "average",
+          scale: 100,
+          position: { x: 50, y: 50 },
+        },
+        "/images/allies/ally-0001-bran.png",
+      ),
+    ).not.toThrow();
+    expect(
+      document.getElementById("resume-charimg-bg").style.backgroundColor,
+    ).toBe("");
+  });
+
   test("escapes a hostile path fallback", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 

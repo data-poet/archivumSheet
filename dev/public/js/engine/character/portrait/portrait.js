@@ -45,10 +45,11 @@ function _averageColor(base64) {
   });
 }
 
+// `color` is optional-chained because a hand-edited ally file can declare "average" without it.
 function _bgColor(img) {
-  if (img.background === "black") return "rgb(0,0,0)";
-  if (img.background === "white") return "rgb(255,255,255)";
-  if (img.background === "average")
+  if (img?.background === "black") return "rgb(0,0,0)";
+  if (img?.background === "white") return "rgb(255,255,255)";
+  if (img?.background === "average" && img.color)
     return `rgb(${img.color.r},${img.color.g},${img.color.b})`;
   return "";
 }
@@ -105,8 +106,21 @@ function _syncBgRadios() {
   });
 }
 
-// A path-based portrait has no stored scale/position, so it gets centred at natural size.
-const PATH_IMAGE_LAYOUT = { scale: 100, position: { x: 50, y: 50 } };
+// Used only when nothing framed the portrait at all — centred at natural size.
+const DEFAULT_IMAGE_LAYOUT = { scale: 100, position: { x: 50, y: 50 } };
+
+// An ally exported from the sheet keeps the framing it was given there but drops the base64
+// blob (which would bloat a committed catalog file), so scale/position/background arrive
+// without `data`. Treat them as framing whenever they are present, whatever the src is.
+function _layoutOf(image) {
+  const scale = image?.scale;
+  const x = image?.position?.x;
+  const y = image?.position?.y;
+  const framed =
+    scale !== undefined && scale !== "" && x !== undefined && x !== "";
+
+  return framed ? { scale, position: { x, y } } : DEFAULT_IMAGE_LAYOUT;
+}
 
 // Called from components/resume/index.js after renderResumeHeader(). `image` defaults to
 // the active character's; other sheets (a catalog ally) pass their own, plus fallbackSrc
@@ -125,8 +139,8 @@ export function renderResumeImage(image = _img(), fallbackSrc = "") {
 
   container.hidden = false;
 
-  const layout = uploaded ? image : PATH_IMAGE_LAYOUT;
-  const background = uploaded ? _bgColor(image) : "";
+  const layout = _layoutOf(image);
+  const background = image ? _bgColor(image) : "";
 
   // Every interpolation is escaped because an imported sheet's JSON supplies these
   // verbatim — a quote in image.data would otherwise break out of the src attribute.
