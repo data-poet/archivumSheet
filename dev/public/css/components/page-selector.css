@@ -1,6 +1,28 @@
 /* The trigger only; its popover reuses the .char-selector-* list styles (see
    components/pageSelector.js for why). */
 
+/* Filled like the character selector, so the topbar reads as two peer selectors
+   (page | character) rather than one more button among the icon actions. Overrides
+   .topbar-btn's outline look — page-selector.css is imported after layout/navigation.css,
+   so these win at equal specificity. */
+.page-selector-btn {
+  background: var(--accent-attributes-fill);
+  border-color: transparent;
+  color: var(--color-on-accent);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  min-height: 36px;
+}
+
+.page-selector-btn:hover {
+  background: color-mix(in srgb, var(--accent-attributes-fill) 85%, #000);
+  color: var(--color-on-accent);
+}
+
+.page-selector-btn:active {
+  transform: scale(0.98);
+}
+
 .page-selector-btn-chevron {
   font-size: 14px;
   line-height: 1;
@@ -24,9 +46,14 @@
   text-decoration: none;
 }
 
+/* Matches the trigger's accent rather than the character selector's red. */
 .page-selector-popover .char-selector-item.is-active {
-  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
-  border-left-color: var(--accent-character);
+  background: color-mix(in srgb, var(--accent-attributes) 8%, transparent);
+  border-left-color: var(--accent-attributes);
+}
+
+.page-selector-popover .char-selector-radio {
+  color: var(--accent-attributes);
 }
 
 @media (min-width: 768px) {

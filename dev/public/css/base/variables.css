@@ -41,6 +41,9 @@
   /* Same hues as solid fills carrying --color-on-accent text, so they must stay dark in BOTH themes — lightening them for dark mode would break the white text on top. */
   --accent-character-fill: #c62828;
   --accent-equipment-fill: #2563eb;
+  /* Darker than --accent-attributes (#d96b1d): that hue only reaches 3.46:1 against white,
+     while a solid fill carrying --color-on-accent has to clear 4.5:1. This is 4.66:1. */
+  --accent-attributes-fill: #b85a0d;
 
   --color-focus-ring: #1d4ed8;
   --focus-ring-w: 2px;
@@ -79,45 +82,17 @@
   --font-body: "Segoe UI", system-ui, sans-serif;
   --font-mono: "Courier New", monospace;
   /* Floors are what a 320-430px phone actually gets, so none of them go below 10px. Maxima are unchanged. */
-  --fs-base: clamp(
-    13px,
-    0.4vw + 11.5px,
-    16px
-  );
-  --fs-sm: clamp(
-    12px,
-    0.35vw + 10.7px,
-    14px
-  );
-  --fs-xs: clamp(
-    11px,
-    0.3vw + 9.9px,
-    12px
-  );
-  --fs-xxs: clamp(
-    10px,
-    0.25vw + 9.1px,
-    11px
-  );
+  --fs-base: clamp(13px, 0.4vw + 11.5px, 16px);
+  --fs-sm: clamp(12px, 0.35vw + 10.7px, 14px);
+  --fs-xs: clamp(11px, 0.3vw + 9.9px, 12px);
+  --fs-xxs: clamp(10px, 0.25vw + 9.1px, 11px);
 
   /* bigger than --fs-base so titles never read smaller than the body text below them — floors included */
-  --fs-lg: clamp(
-    15px,
-    0.55vw + 13px,
-    18px
-  );
-  --fs-xl: clamp(
-    18px,
-    0.7vw + 15.5px,
-    22px
-  );
+  --fs-lg: clamp(15px, 0.55vw + 13px, 18px);
+  --fs-xl: clamp(18px, 0.7vw + 15.5px, 22px);
 
   --detail-bg: #f4f4fb;
-  --detail-label-w: clamp(
-    80px,
-    4vw + 65px,
-    120px
-  );
+  --detail-label-w: clamp(80px, 4vw + 65px, 120px);
 
   --content-max-w: 1440px; /* sized up to use 1920px desktop real estate without over-stretching */
 
@@ -198,4 +173,3 @@ body {
   padding-bottom: var(--bottomnav-h);
   min-height: 100dvh;
 }
-
