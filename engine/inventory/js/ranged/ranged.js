@@ -92,7 +92,7 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
 
   if (unknownRangedIds.length > 0) {
     throw new Error(
-      `[buildMeleeSlots] Unknown weapon_id(s): ${unknownRangedIds.join(", ")}`,
+      `[buildRangedSlots] Unknown weapon_id(s): ${unknownRangedIds.join(", ")}`,
     );
   }
 
