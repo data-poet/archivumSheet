@@ -1,12 +1,22 @@
 jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveKind: jest.fn(() => "character"),
   setActiveKind: jest.fn(),
+  saveActiveCharacter: jest.fn(),
+}));
+jest.mock("dev/public/js/shared/availability.js", () => ({
+  audienceAffectsCatalogs: jest.fn(() => false),
+}));
+jest.mock("dev/public/js/shared/navigation.js", () => ({
+  reloadPage: jest.fn(),
 }));
 
 import {
   getActiveKind,
   setActiveKind,
+  saveActiveCharacter,
 } from "dev/public/js/store/characters.js";
+import { audienceAffectsCatalogs } from "dev/public/js/shared/availability.js";
+import { reloadPage } from "dev/public/js/shared/navigation.js";
 import {
   initEntryKind,
   renderEntryKind,
@@ -18,7 +28,14 @@ beforeEach(() => {
   document.body.classList.remove("is-ally-draft");
   jest.clearAllMocks();
   getActiveKind.mockReturnValue("character");
+  audienceAffectsCatalogs.mockReturnValue(false);
 });
+
+function chooseKind(value) {
+  const radio = document.querySelector(`input[value="${value}"]`);
+  radio.checked = true;
+  radio.dispatchEvent(new Event("change", { bubbles: true }));
+}
 
 describe("renderEntryKind", () => {
   test("offers exactly two mutually exclusive options", () => {
@@ -100,5 +117,53 @@ describe("initEntryKind", () => {
     stray.dispatchEvent(new Event("change", { bubbles: true }));
 
     expect(setActiveKind).not.toHaveBeenCalled();
+  });
+});
+
+// The catalogs a page sees are fixed before the first fetch, so a kind change cannot take
+// effect in place — but reloading is pointless while every audience sees the same rows.
+describe("reloading on a kind change", () => {
+  test("does not reload while no catalog row declares an availability", () => {
+    initEntryKind();
+
+    chooseKind("ally");
+
+    expect(setActiveKind).toHaveBeenCalledWith("ally");
+    expect(reloadPage).not.toHaveBeenCalled();
+    expect(saveActiveCharacter).not.toHaveBeenCalled();
+  });
+
+  test("reloads once the audiences can diverge", () => {
+    audienceAffectsCatalogs.mockReturnValue(true);
+    initEntryKind();
+
+    chooseKind("ally");
+
+    expect(reloadPage).toHaveBeenCalledTimes(1);
+  });
+
+  // Autosave is debounced 300ms, so the reload would otherwise discard the last edit.
+  test("saves before reloading, not after", () => {
+    audienceAffectsCatalogs.mockReturnValue(true);
+    const order = [];
+    saveActiveCharacter.mockImplementation(() => order.push("save"));
+    reloadPage.mockImplementation(() => order.push("reload"));
+    initEntryKind();
+
+    chooseKind("ally");
+
+    expect(order).toEqual(["save", "reload"]);
+  });
+
+  test("persists the kind before reloading, so the new audience is read from it", () => {
+    audienceAffectsCatalogs.mockReturnValue(true);
+    const order = [];
+    setActiveKind.mockImplementation(() => order.push("setKind"));
+    reloadPage.mockImplementation(() => order.push("reload"));
+    initEntryKind();
+
+    chooseKind("ally");
+
+    expect(order).toEqual(["setKind", "reload"]);
   });
 });

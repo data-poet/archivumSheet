@@ -5,6 +5,10 @@ import {
   availableFor,
   setCatalogAudience,
   getCatalogAudience,
+  audienceAffectsCatalogs,
+  getDroppedIds,
+  getDroppedRow,
+  resetAudienceRecord,
 } from "dev/public/js/shared/availability.js";
 import {
   installMockFetch,
@@ -18,6 +22,7 @@ const row = (value) =>
 
 afterEach(() => {
   setCatalogAudience(null);
+  resetAudienceRecord();
 });
 
 describe("isAvailableFor", () => {
@@ -153,5 +158,71 @@ describe("api.js applies the audience to catalog responses", () => {
     expect(await fetchEnchantmentEffectTypes()).toEqual({
       ATTRIBUTE_EFFECT_TYPES: ["a"],
     });
+  });
+});
+
+// Whether the two audiences can diverge at all, and which rows the active one lost. Recorded
+// as rows stream past the transport filter, since that is the only place both sets are visible.
+describe("the audience record", () => {
+  const ROWS = [
+    { race_id: "R-both" },
+    { race_id: "R-ally", [AVAILABLE_FOR_COLUMN]: "ally" },
+  ];
+
+  test("records nothing unless asked", () => {
+    availableFor(ROWS, AUDIENCE.PLAYER);
+
+    expect(audienceAffectsCatalogs()).toBe(false);
+    expect(getDroppedIds().size).toBe(0);
+  });
+
+  test("an unmarked catalog leaves the audiences equivalent", () => {
+    availableFor([{ race_id: "R1" }, { race_id: "R2" }], AUDIENCE.PLAYER, {
+      record: true,
+    });
+
+    expect(audienceAffectsCatalogs()).toBe(false);
+  });
+
+  // The distinction that matters: a row marked player-only is *kept* by the player audience,
+  // but the ally audience would still see a different catalog — so a reload is needed either way.
+  test("a marked row counts even when the active audience keeps it", () => {
+    availableFor(
+      [{ race_id: "R1", [AVAILABLE_FOR_COLUMN]: "player" }],
+      AUDIENCE.PLAYER,
+      {
+        record: true,
+      },
+    );
+
+    expect(audienceAffectsCatalogs()).toBe(true);
+    expect(getDroppedIds().size).toBe(0);
+  });
+
+  test("dropped rows are recorded by their <domain>_id", () => {
+    availableFor(ROWS, AUDIENCE.PLAYER, { record: true });
+
+    expect([...getDroppedIds()]).toEqual(["R-ally"]);
+    expect(getDroppedRow("R-ally")).toEqual(ROWS[1]);
+    expect(getDroppedRow("R-both")).toBeNull();
+  });
+
+  test("accumulates across catalogs", () => {
+    availableFor(ROWS, AUDIENCE.PLAYER, { record: true });
+    availableFor(
+      [{ advantage_id: "ADV-9", [AVAILABLE_FOR_COLUMN]: "ally" }],
+      AUDIENCE.PLAYER,
+      { record: true },
+    );
+
+    expect([...getDroppedIds()].sort()).toEqual(["ADV-9", "R-ally"]);
+  });
+
+  test("resets cleanly", () => {
+    availableFor(ROWS, AUDIENCE.PLAYER, { record: true });
+    resetAudienceRecord();
+
+    expect(audienceAffectsCatalogs()).toBe(false);
+    expect(getDroppedIds().size).toBe(0);
   });
 });
