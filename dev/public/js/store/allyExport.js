@@ -32,15 +32,23 @@ export function allyIdFor(name, date = new Date()) {
 
 // The framing (scale / position / background) is kept while `data` is dropped: it is what makes
 // the saved PNG sit in the frame it was arranged in on the sheet. See portrait.js's _layoutOf.
-function _detachPortrait(pc = {}) {
+//
+// `image.path` mirrors the top-level `portrait` deliberately: the catalog index reads the
+// top-level key, the sheet's renderers read the image block, and both are written here from the
+// same id so they cannot disagree within a file.
+function _detachPortrait(pc = {}, portrait) {
   const { image = {}, ...rest } = pc;
 
-  return { ...rest, image: { ...image, uploaded: false, data: "" } };
+  return {
+    ...rest,
+    image: { ...image, uploaded: false, data: "", path: portrait },
+  };
 }
 
 export function buildAllyFile(name, date = new Date()) {
   const sheet = capturePersistedSheet();
   const allyId = allyIdFor(name, date);
+  const portrait = `${PORTRAIT_DIR}/${allyId}.png`;
 
   return {
     allyId,
@@ -49,8 +57,8 @@ export function buildAllyFile(name, date = new Date()) {
     // would be noise in the diff.
     payload: {
       version: sheet.version,
-      portrait: `${PORTRAIT_DIR}/${allyId}.png`,
-      pc: _detachPortrait(sheet.pc),
+      portrait,
+      pc: _detachPortrait(sheet.pc, portrait),
       race: sheet.race,
       character: sheet.character,
       inventory: sheet.inventory,

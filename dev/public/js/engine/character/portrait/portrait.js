@@ -122,6 +122,15 @@ function _layoutOf(image) {
   return framed ? { scale, position: { x, y } } : DEFAULT_IMAGE_LAYOUT;
 }
 
+// Resolves what to actually show. `path` is how a portrait that lives on disk rather than in
+// the sheet travels: an ally file carries the framing but not the pixels, so re-importing one
+// to edit still renders it. Optional everywhere — an image object without `path` behaves
+// exactly as before.
+function _srcOf(image, fallbackSrc = "") {
+  if (image?.uploaded && image.data) return image.data;
+  return image?.path || fallbackSrc;
+}
+
 // Called from components/resume/index.js after renderResumeHeader(). `image` defaults to
 // the active character's; other sheets (a catalog ally) pass their own, plus fallbackSrc
 // when the portrait ships as a file path rather than uploaded base64.
@@ -129,8 +138,7 @@ export function renderResumeImage(image = _img(), fallbackSrc = "") {
   const container = document.getElementById("resume-charimg-wrapper");
   if (!container) return;
 
-  const uploaded = Boolean(image?.uploaded);
-  const src = uploaded ? image.data : fallbackSrc;
+  const src = _srcOf(image, fallbackSrc);
 
   if (!src) {
     container.hidden = true;
@@ -167,21 +175,23 @@ export function renderCharacterImage() {
   const old = _imageEl();
   if (old) old.remove();
 
-  if (!img?.uploaded) {
+  const src = _srcOf(img);
+  if (!src) {
     _syncScaleControls();
     _syncBgRadios();
     _applyBackground();
     return;
   }
 
+  const layout = _layoutOf(img);
   const imgEl = document.createElement("img");
   imgEl.id = "charimg-img";
   imgEl.className = "charimg-img";
-  imgEl.src = img.data;
+  imgEl.src = src;
   imgEl.alt = "";
-  imgEl.style.width = img.scale + "%";
-  imgEl.style.left = img.position.x + "%";
-  imgEl.style.top = img.position.y + "%";
+  imgEl.style.width = layout.scale + "%";
+  imgEl.style.left = layout.position.x + "%";
+  imgEl.style.top = layout.position.y + "%";
   previewEl.appendChild(imgEl);
 
   _applyBackground();
