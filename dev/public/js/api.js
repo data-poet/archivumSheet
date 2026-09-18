@@ -13,7 +13,7 @@ async function getJSON(url) {
   // dropdown is deliberate — see shared/availability.js. A no-op until a page sets an audience,
   // and on non-array responses (effect types, dual-use maps).
   const audience = getCatalogAudience();
-  return audience ? availableFor(json, audience) : json;
+  return audience ? availableFor(json, audience, { record: true }) : json;
 }
 
 async function postJSON(url, body) {

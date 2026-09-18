@@ -10,8 +10,14 @@
 // character.
 
 import { t } from "../localization/pt-BR/index.js";
-import { getActiveKind, setActiveKind } from "../store/characters.js";
+import {
+  getActiveKind,
+  setActiveKind,
+  saveActiveCharacter,
+} from "../store/characters.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
+import { audienceAffectsCatalogs } from "../shared/availability.js";
+import { reloadPage } from "../shared/navigation.js";
 
 const HOST_ID = "entry-kind";
 const BODY_CLASS = "is-ally-draft";
@@ -56,5 +62,15 @@ export function initEntryKind() {
 
     setActiveKind(input.value);
     renderEntryKind();
+
+    // The catalogs a page sees are chosen before the first fetch (see main.js), so a kind
+    // change cannot take effect in place. A reload is the honest reset — everything derived
+    // from the audience is rebuilt, with no corner left stale — and it is skipped entirely
+    // while no row declares an availability, which is every catalog today.
+    if (!audienceAffectsCatalogs()) return;
+
+    // Autosave is debounced 300ms; without this the last edit would not survive the reload.
+    saveActiveCharacter();
+    reloadPage();
   });
 }
