@@ -47,6 +47,17 @@ const isOpen = (id) =>
 const pagePopover = () => isOpen("page-selector-popover");
 const charPopover = () => isOpen("char-selector-popover");
 
+// A real click lands on a span inside the trigger, never the button itself — and opening the
+// character selector re-renders that button, orphaning the very node that was clicked. Clicking
+// the button directly (as the earlier tests did) never exercised that.
+function clickInner(id) {
+  const host = document.getElementById(id);
+  const inner = host.querySelector("span") ?? host;
+  inner.dispatchEvent(
+    new MouseEvent("click", { bubbles: true, cancelable: true }),
+  );
+}
+
 function click(id) {
   document
     .getElementById(id)
@@ -118,4 +129,38 @@ test("a click elsewhere closes whichever is open", () => {
 
   expect(pagePopover()).toBe(false);
   expect(charPopover()).toBe(false);
+});
+
+describe("clicking the inner span, as a real pointer does", () => {
+  test("the character selector opens and stays open", () => {
+    clickInner("char-selector-btn");
+
+    expect(charPopover()).toBe(true);
+  });
+
+  test("the page selector opens and stays open", () => {
+    clickInner("page-selector-btn");
+
+    expect(pagePopover()).toBe(true);
+  });
+
+  test("and they remain mutually exclusive", () => {
+    clickInner("char-selector-btn");
+    clickInner("page-selector-btn");
+
+    expect(pagePopover()).toBe(true);
+    expect(charPopover()).toBe(false);
+
+    clickInner("char-selector-btn");
+
+    expect(charPopover()).toBe(true);
+    expect(pagePopover()).toBe(false);
+  });
+
+  test("a second click on the inner span closes it again", () => {
+    clickInner("char-selector-btn");
+    clickInner("char-selector-btn");
+
+    expect(charPopover()).toBe(false);
+  });
 });
