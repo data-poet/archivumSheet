@@ -5,6 +5,7 @@ import {
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
+import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import { state } from "../../../state.js";
 
 const CONTAINER_STORAGE_LOCATIONS_CARRIABLE = [
@@ -386,9 +387,10 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    STORAGE_LABELS[location],
+    `<table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>
@@ -399,6 +401,6 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>
-  `;
+    </table>`,
+  );
 }

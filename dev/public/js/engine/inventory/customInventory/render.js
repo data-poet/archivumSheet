@@ -5,6 +5,7 @@ import {
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
 import { customItemEditRow, escapeHtml } from "../../../shared/renderUtils.js";
+import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -94,9 +95,10 @@ function renderCustomInventorySection(location, entries, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    STORAGE_LABELS[location],
+    `<table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>
@@ -106,6 +108,6 @@ function renderCustomInventorySection(location, entries, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>
-  `;
+    </table>`,
+  );
 }

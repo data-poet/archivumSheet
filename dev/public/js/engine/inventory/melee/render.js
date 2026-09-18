@@ -5,7 +5,10 @@ import {
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
 import { resolveMaterial } from "../shared/durabilityUtils.js";
-import { hpModifierBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  hpModifierBlock,
+  renderStorageLocationBlock,
+} from "../shared/inventoryRenderUtils.js";
 import {
   materialOptions,
   equippedMoveSelect,
@@ -296,9 +299,10 @@ function renderStorageSection(location, stored, data, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    STORAGE_LABELS[location],
+    `<table>
       <thead>
         <tr>
           <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
@@ -306,6 +310,6 @@ function renderStorageSection(location, stored, data, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>
-  `;
+    </table>`,
+  );
 }

@@ -1,6 +1,7 @@
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
+import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -90,9 +91,10 @@ function renderCoinSection(location, coins, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${storageLabel(location)}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    storageLabel(location),
+    `<table>
       <thead>
         <tr>
           <th>${t("common.type")}</th>
@@ -103,7 +105,8 @@ function renderCoinSection(location, coins, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>`;
+    </table>`,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

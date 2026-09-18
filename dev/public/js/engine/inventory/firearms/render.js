@@ -8,6 +8,7 @@ import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   statModifierBlock,
+  renderStorageLocationBlock,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -284,7 +285,12 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
       {
         key: "tuning",
         label: t("firearms.tuning"),
-        content: tuningBody({ weaponData, inst, instanceId, prefix: "equipped" }),
+        content: tuningBody({
+          weaponData,
+          inst,
+          instanceId,
+          prefix: "equipped",
+        }),
       },
     ])}
   `;
@@ -387,7 +393,12 @@ function renderStorageSection(location, stored, data, sheet) {
           {
             key: "tuning",
             label: t("firearms.tuning"),
-            content: tuningBody({ weaponData, inst, instanceId, prefix: "stored" }),
+            content: tuningBody({
+              weaponData,
+              inst,
+              instanceId,
+              prefix: "stored",
+            }),
           },
         ])}
         `;
@@ -395,9 +406,10 @@ function renderStorageSection(location, stored, data, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    STORAGE_LABELS[location],
+    `<table>
       <thead>
         <tr>
           <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
@@ -405,6 +417,6 @@ function renderStorageSection(location, stored, data, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>
-  `;
+    </table>`,
+  );
 }

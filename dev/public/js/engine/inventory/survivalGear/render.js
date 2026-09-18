@@ -5,6 +5,7 @@ import {
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
 import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
+import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -120,9 +121,10 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
       .join("");
   }
 
-  return `
-    <div class="storage-section-header">${STORAGE_LABELS[location]}</div>
-    <div class="table-wrapper table-wrapper--stack"><table>
+  return renderStorageLocationBlock(
+    location,
+    STORAGE_LABELS[location],
+    `<table>
       <thead>
         <tr>
           <th>${t("common.name")}</th>
@@ -132,6 +134,6 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
-    </table></div>
-  `;
+    </table>`,
+  );
 }
