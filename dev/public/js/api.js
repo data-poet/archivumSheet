@@ -1,3 +1,5 @@
+import { availableFor, getCatalogAudience } from "./shared/availability.js";
+
 async function getJSON(url) {
   const res = await fetch(url);
 
@@ -5,7 +7,13 @@ async function getJSON(url) {
     throw new Error(`GET ${url} failed: ${res.status}`);
   }
 
-  return res.json();
+  const json = await res.json();
+
+  // Catalog rows may be marked player-only or ally-only. Filtering here rather than in each
+  // dropdown is deliberate — see shared/availability.js. A no-op until a page sets an audience,
+  // and on non-array responses (effect types, dual-use maps).
+  const audience = getCatalogAudience();
+  return audience ? availableFor(json, audience) : json;
 }
 
 async function postJSON(url, body) {

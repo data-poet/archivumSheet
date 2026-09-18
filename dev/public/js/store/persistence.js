@@ -1,13 +1,10 @@
 import { state } from "../state.js";
-import { getPrimaryAttributes } from "../compute/attributes.js";
+import { capturePersistedSheet } from "./persistedSheet.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
-
-// Bump this if the shape of the export JSON ever changes in a breaking way.
-const SCHEMA_VERSION = 1;
 
 const TOAST_ICONS = { success: "✓", error: "✕", info: "ℹ" };
 
@@ -57,36 +54,8 @@ export function exportSheet() {
   const { selected, sheet } = state;
 
   const payload = {
-    version:    SCHEMA_VERSION,
+    ...capturePersistedSheet(),
     exportedAt: new Date().toISOString(),
-    pc:         { ...(sheet?.pc ?? selected.character), image: selected.character.image },
-    race:       sheet?.race ?? {},
-    character: {
-      primary:        getPrimaryAttributes(),
-      secondary:      selected.secondary,
-      damage:         selected.damage,
-      resistances:    selected.resistances,
-      advantages:     selected.advantages,
-      disadvantages:  selected.disadvantages,
-      skills:         selected.skills,
-      spells:         selected.spells,
-    },
-    inventory: {
-      weight:         Number(document.getElementById("weight")?.value) || 0,
-      armors:         selected.armors,
-      shields:        selected.shields,
-      melee_weapons:  selected.melee_weapons,
-      ranged_weapons: selected.ranged_weapons,
-      firearms:       selected.firearms,
-      ammo_containers: selected.ammo_containers,
-      loose_ammo:     selected.loose_ammo,
-      alchemy:        selected.alchemy,
-      survivalGear:   selected.survivalGear,
-      accessories:    selected.accessories,
-      magicGear:      selected.magicGear,
-      customInventory: selected.customInventory,
-      coins:          selected.coins,
-    },
   };
 
   try {

@@ -36,8 +36,13 @@ import { loadMaterials } from "./engine/inventory/shared/materials.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 import { state } from "./state.js";
+import { setCatalogAudience, AUDIENCE } from "./shared/availability.js";
 
 export async function bootstrap() {
+  // Must precede every load*(): each one assigns its catalog and builds its add-form selectors in
+  // the same call, so there is no post-load moment left to filter in.
+  setCatalogAudience(AUDIENCE.PLAYER);
+
   mountResumePanel();
   initAutoRun(runEngine);
   bindUI();

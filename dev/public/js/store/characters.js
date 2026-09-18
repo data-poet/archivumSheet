@@ -1,7 +1,8 @@
-// "data" below mirrors the exportSheet() payload shape so import/export stays compatible.
+// "data" below is the shape store/persistedSheet.js produces, which the export file uses too —
+// that is what keeps autosave and import/export compatible.
 
 import { state } from "../state.js";
-import { getPrimaryAttributes } from "../compute/attributes.js";
+import { capturePersistedSheet, SCHEMA_VERSION } from "./persistedSheet.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
@@ -9,7 +10,6 @@ import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
 
 const STORAGE_KEY = "archivum_characters";
-const SCHEMA_VERSION = 1;
 
 function _generateId() {
   return "c-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7);
@@ -96,41 +96,6 @@ function _initStore(firstCharName) {
   const store = { activeId: first.id, list: [first] };
   _save(store);
   return store;
-}
-
-function _captureCurrentData() {
-  const { selected, sheet } = state;
-  return {
-    version: SCHEMA_VERSION,
-    pc: sheet?.pc ?? { ...selected.character },
-    race: sheet?.race ?? {},
-    character: {
-      primary: getPrimaryAttributes(),
-      secondary: selected.secondary,
-      damage: selected.damage,
-      resistances: selected.resistances,
-      advantages: selected.advantages,
-      disadvantages: selected.disadvantages,
-      skills: selected.skills,
-      spells: selected.spells,
-    },
-    inventory: {
-      weight: Number(document.getElementById("weight")?.value) || 0,
-      armors: selected.armors,
-      shields: selected.shields,
-      melee_weapons: selected.melee_weapons,
-      ranged_weapons: selected.ranged_weapons,
-      firearms: selected.firearms,
-      ammo_containers: selected.ammo_containers,
-      loose_ammo: selected.loose_ammo,
-      alchemy: selected.alchemy,
-      survivalGear: selected.survivalGear,
-      accessories: selected.accessories,
-      magicGear: selected.magicGear,
-      customInventory: selected.customInventory,
-      coins: selected.coins,
-    },
-  };
 }
 
 // Mirrors _applyImport in persistence.js.
@@ -238,7 +203,7 @@ export function saveActiveCharacter() {
   const idx = store.list.findIndex((c) => c.id === store.activeId);
   if (idx === -1) return;
 
-  const data = _captureCurrentData();
+  const data = capturePersistedSheet();
   store.list[idx].data = data;
 
   const charName = state.selected.character?.character_name?.trim();
