@@ -100,8 +100,10 @@ export function initPageSelector() {
 
   const trigger = getTrigger();
   if (trigger) {
-    trigger.addEventListener("click", (e) => {
-      e.stopPropagation();
+    // The click is deliberately allowed to reach document: that is what lets the character
+    // selector's own outside-click handler close it, so opening one selector closes the other.
+    // Self-closing is prevented by the contains() guard below, not by stopping propagation.
+    trigger.addEventListener("click", () => {
       togglePageSelector();
     });
   }
