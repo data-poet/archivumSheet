@@ -21,6 +21,7 @@ const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
 const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
+const { buildEquipmentSlots } = require("../shared/buildEquipmentSlots.js");
 
 let _rangedDB = null;
 
@@ -64,10 +65,6 @@ function getRangedDB() {
   return _rangedDB;
 }
 
-function buildStorageBucket() {
-  return [];
-}
-
 function buildRangedSlots(rangedInventory = [], ST = 0) {
   const rangedDb = getRangedDB();
 
@@ -76,113 +73,48 @@ function buildRangedSlots(rangedInventory = [], ST = 0) {
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
-  const instanceErrors = rangedInventory.flatMap((instance, index) =>
-    validateRangedInstance(instance, index),
-  );
-
-  if (instanceErrors.length > 0) {
-    throw new Error(
-      `[buildRangedSlots] Invalid ranged inventory:\n${instanceErrors.join("\n")}`,
-    );
-  }
-
-  const unknownRangedIds = rangedInventory
-    .filter((instance) => !rangedDb[instance.weapon_id])
-    .map((instance) => instance.weapon_id);
-
-  if (unknownRangedIds.length > 0) {
-    throw new Error(
-      `[buildRangedSlots] Unknown weapon_id(s): ${unknownRangedIds.join(", ")}`,
-    );
-  }
-
-  const unknownMaterialIds = rangedInventory
-    .filter(
-      (instance) => instance.material_id && !materialDb[instance.material_id],
-    )
-    .map((instance) => instance.material_id);
-
-  if (unknownMaterialIds.length > 0) {
-    throw new Error(
-      `[buildRangedSlots] Unknown material_id(s): ${unknownMaterialIds.join(", ")}`,
-    );
-  }
-
-  const enchantmentErrors = validateRangedEnchantments(
-    rangedInventory,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  if (enchantmentErrors.length > 0) {
-    throw new Error(
-      `[buildRangedSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
-    );
-  }
-
-  const equipped = buildStorageBucket();
-  const stash = buildStorageBucket();
-  const camp = buildStorageBucket();
-  const backpack = buildStorageBucket();
-
-  let carried_ranged_weapons_weight = 0;
-  let carried_ranged_weapons_value = 0;
-
-  for (const instance of rangedInventory) {
-    const ranged = rangedDb[instance.weapon_id];
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolvedRanged = resolveRangedWeapons(
-      instance,
-      ranged,
-      material,
-      ST,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    if (instance.is_equipped) {
-      equipped.push(resolvedRanged);
-
-      carried_ranged_weapons_weight += resolvedRanged.final_weight;
-      carried_ranged_weapons_value += resolvedRanged.total_value;
-
-      continue;
-    }
-
-    if (instance.storedAt === "stash") {
-      stash.push(resolvedRanged);
-
-      continue;
-    }
-
-    if (instance.storedAt === "camp") {
-      camp.push(resolvedRanged);
-
-      continue;
-    }
-
-    if (instance.storedAt === "backpack") {
-      backpack.push(resolvedRanged);
-
-      carried_ranged_weapons_weight += resolvedRanged.final_weight;
-      carried_ranged_weapons_value += resolvedRanged.total_value;
-    }
-  }
-
-  return {
-    equipped,
-    stash,
-    camp,
-    backpack,
-    total_ranged_weight: carried_ranged_weapons_weight,
-    carried_ranged_weapons_weight,
-    total_ranged_value: carried_ranged_weapons_value,
-    carried_ranged_weapons_value,
-  };
+  return buildEquipmentSlots({
+    label: "buildRangedSlots",
+    entityLabel: "ranged",
+    inventory: rangedInventory,
+    idKey: "weapon_id",
+    db: rangedDb,
+    materialDb,
+    validateInstance: validateRangedInstance,
+    extraValidationSteps: [
+      {
+        message: "Invalid enchantments",
+        validate: () =>
+          validateRangedEnchantments(
+            rangedInventory,
+            enchantmentsDb,
+            targetsDb,
+          ),
+      },
+    ],
+    resolveInstance: (instance, ranged, material) =>
+      resolveRangedWeapons(
+        instance,
+        ranged,
+        material,
+        ST,
+        enchantmentsDb,
+        targetsDb,
+      ),
+    equippedContainer: {
+      init: () => [],
+      place: (bucket, resolved) => {
+        bucket.push(resolved);
+        return bucket;
+      },
+    },
+    fieldNames: {
+      totalWeight: "total_ranged_weight",
+      carriedWeight: "carried_ranged_weapons_weight",
+      totalValue: "total_ranged_value",
+      carriedValue: "carried_ranged_weapons_value",
+    },
+  });
 }
 
 module.exports = {

@@ -16,6 +16,7 @@ const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
 const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
+const { buildEquipmentSlots } = require("../shared/buildEquipmentSlots.js");
 
 let _firearmsDB = null;
 
@@ -63,10 +64,6 @@ function getFirearmsDB() {
   return _firearmsDB;
 }
 
-function buildStorageBucket() {
-  return [];
-}
-
 function buildFirearmSlots(firearmsInventory = []) {
   const firearmsDb = getFirearmsDB();
 
@@ -75,112 +72,47 @@ function buildFirearmSlots(firearmsInventory = []) {
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
-  const instanceErrors = firearmsInventory.flatMap((instance, index) =>
-    validateFirearmInstance(instance, index),
-  );
-
-  if (instanceErrors.length > 0) {
-    throw new Error(
-      `[buildFirearmSlots] Invalid firearms inventory:\n${instanceErrors.join("\n")}`,
-    );
-  }
-
-  const unknownFirearmIds = firearmsInventory
-    .filter((instance) => !firearmsDb[instance.weapon_id])
-    .map((instance) => instance.weapon_id);
-
-  if (unknownFirearmIds.length > 0) {
-    throw new Error(
-      `[buildFirearmSlots] Unknown weapon_id(s): ${unknownFirearmIds.join(", ")}`,
-    );
-  }
-
-  const unknownMaterialIds = firearmsInventory
-    .filter(
-      (instance) => instance.material_id && !materialDb[instance.material_id],
-    )
-    .map((instance) => instance.material_id);
-
-  if (unknownMaterialIds.length > 0) {
-    throw new Error(
-      `[buildFirearmSlots] Unknown material_id(s): ${unknownMaterialIds.join(", ")}`,
-    );
-  }
-
-  const enchantmentErrors = validateFirearmEnchantments(
-    firearmsInventory,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  if (enchantmentErrors.length > 0) {
-    throw new Error(
-      `[buildFirearmSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
-    );
-  }
-
-  const equipped = buildStorageBucket();
-  const stash = buildStorageBucket();
-  const camp = buildStorageBucket();
-  const backpack = buildStorageBucket();
-
-  let carried_firearms_weight = 0;
-  let carried_firearms_value = 0;
-
-  for (const instance of firearmsInventory) {
-    const firearm = firearmsDb[instance.weapon_id];
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolvedFirearm = resolveFirearmWeapon(
-      instance,
-      firearm,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    if (instance.is_equipped) {
-      equipped.push(resolvedFirearm);
-
-      carried_firearms_weight += resolvedFirearm.final_weight;
-      carried_firearms_value += resolvedFirearm.total_value;
-
-      continue;
-    }
-
-    if (instance.storedAt === "stash") {
-      stash.push(resolvedFirearm);
-
-      continue;
-    }
-
-    if (instance.storedAt === "camp") {
-      camp.push(resolvedFirearm);
-
-      continue;
-    }
-
-    if (instance.storedAt === "backpack") {
-      backpack.push(resolvedFirearm);
-
-      carried_firearms_weight += resolvedFirearm.final_weight;
-      carried_firearms_value += resolvedFirearm.total_value;
-    }
-  }
-
-  return {
-    equipped,
-    stash,
-    camp,
-    backpack,
-    total_firearms_weight: carried_firearms_weight,
-    carried_firearms_weight,
-    total_firearms_value: carried_firearms_value,
-    carried_firearms_value,
-  };
+  return buildEquipmentSlots({
+    label: "buildFirearmSlots",
+    entityLabel: "firearms",
+    inventory: firearmsInventory,
+    idKey: "weapon_id",
+    db: firearmsDb,
+    materialDb,
+    validateInstance: validateFirearmInstance,
+    extraValidationSteps: [
+      {
+        message: "Invalid enchantments",
+        validate: () =>
+          validateFirearmEnchantments(
+            firearmsInventory,
+            enchantmentsDb,
+            targetsDb,
+          ),
+      },
+    ],
+    resolveInstance: (instance, firearm, material) =>
+      resolveFirearmWeapon(
+        instance,
+        firearm,
+        material,
+        enchantmentsDb,
+        targetsDb,
+      ),
+    equippedContainer: {
+      init: () => [],
+      place: (bucket, resolved) => {
+        bucket.push(resolved);
+        return bucket;
+      },
+    },
+    fieldNames: {
+      totalWeight: "total_firearms_weight",
+      carriedWeight: "carried_firearms_weight",
+      totalValue: "total_firearms_value",
+      carriedValue: "carried_firearms_value",
+    },
+  });
 }
 
 module.exports = {
