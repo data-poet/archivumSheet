@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  background: var(--accent-character-fill);
+  background: var(--selector-character-fill);
   color: var(--color-on-accent);
   border: none;
   border-radius: var(--radius-sm);
@@ -20,7 +20,7 @@
 }
 
 .char-selector-btn:hover {
-  background: color-mix(in srgb, var(--accent-character-fill) 85%, #000);
+  background: color-mix(in srgb, var(--selector-character-fill) 85%, #000);
 }
 
 .char-selector-btn:active {
@@ -110,13 +110,13 @@
 }
 
 .char-selector-item.is-active {
-  background: color-mix(in srgb, var(--accent-character) 8%, transparent);
-  border-left-color: var(--accent-character);
+  background: color-mix(in srgb, var(--selector-character) 10%, transparent);
+  border-left-color: var(--selector-character);
 }
 
 .char-selector-radio {
   font-size: 16px;
-  color: var(--accent-character);
+  color: var(--selector-character);
   flex-shrink: 0;
   width: 20px;
   text-align: center;
