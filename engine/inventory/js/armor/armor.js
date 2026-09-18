@@ -17,6 +17,7 @@ const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
 const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
+const { buildEquipmentSlots } = require("../shared/buildEquipmentSlots.js");
 
 let _armorDB = null;
 
@@ -61,126 +62,53 @@ function buildArmorSlots(armorInventory = []) {
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
-  const instanceErrors = armorInventory.flatMap((instance, index) =>
-    validateArmorInstance(instance, index),
-  );
-
-  if (instanceErrors.length > 0) {
-    throw new Error(
-      `[buildArmorSlots] Invalid armor inventory:\n${instanceErrors.join("\n")}`,
-    );
-  }
-
-  const unknownArmorIds = armorInventory
-    .filter((instance) => !armorDb[instance.armor_id])
-    .map((instance) => instance.armor_id);
-
-  if (unknownArmorIds.length > 0) {
-    throw new Error(
-      `[buildArmorSlots] Unknown armor_id(s): ${unknownArmorIds.join(", ")}`,
-    );
-  }
-
-  const unknownMaterialIds = armorInventory
-    .filter(
-      (instance) => instance.material_id && !materialDb[instance.material_id],
-    )
-    .map((instance) => instance.material_id);
-
-  if (unknownMaterialIds.length > 0) {
-    throw new Error(
-      `[buildArmorSlots] Unknown material_id(s): ${unknownMaterialIds.join(", ")}`,
-    );
-  }
-
-  const slotErrors = validateSingleEquippedPerSlot(armorInventory, armorDb);
-
-  if (slotErrors.length > 0) {
-    throw new Error(
-      `[buildArmorSlots] Slot conflict:\n${slotErrors.join("\n")}`,
-    );
-  }
-
-  const enchantmentErrors = validateArmorEnchantments(
-    armorInventory,
-    armorDb,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  if (enchantmentErrors.length > 0) {
-    throw new Error(
-      `[buildArmorSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
-    );
-  }
-
-  const equipped = buildEquippedSlots();
-
-  const stash = buildStorageSlots();
-
-  const camp = buildStorageSlots();
-
-  const backpack = buildStorageSlots();
-
-  let carried_armor_weight = 0;
-  let carried_armor_value = 0;
-
-  for (const instance of armorInventory) {
-    const armor = armorDb[instance.armor_id];
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolvedArmor = resolveArmorPiece(
-      instance,
-      armor,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    const slot = SLOT_MAP[armor.armor_piece_location];
-
-    if (instance.is_equipped) {
-      equipped[slot] = resolvedArmor;
-
-      carried_armor_weight += resolvedArmor.final_weight;
-      carried_armor_value += resolvedArmor.total_value;
-
-      continue;
-    }
-
-    if (instance.storedAt === "stash") {
-      stash[slot].push(resolvedArmor);
-
-      continue;
-    }
-
-    if (instance.storedAt === "camp") {
-      camp[slot].push(resolvedArmor);
-
-      continue;
-    }
-
-    if (instance.storedAt === "backpack") {
-      backpack[slot].push(resolvedArmor);
-
-      carried_armor_weight += resolvedArmor.final_weight;
-      carried_armor_value += resolvedArmor.total_value;
-    }
-  }
-
-  return {
-    equipped,
-    stash,
-    camp,
-    backpack,
-    total_armor_weight: carried_armor_weight,
-    carried_armor_weight,
-    total_armor_value: carried_armor_value,
-    carried_armor_value,
-  };
+  return buildEquipmentSlots({
+    label: "buildArmorSlots",
+    entityLabel: "armor",
+    inventory: armorInventory,
+    idKey: "armor_id",
+    db: armorDb,
+    materialDb,
+    validateInstance: validateArmorInstance,
+    extraValidationSteps: [
+      {
+        message: "Slot conflict",
+        validate: () => validateSingleEquippedPerSlot(armorInventory, armorDb),
+      },
+      {
+        message: "Invalid enchantments",
+        validate: () =>
+          validateArmorEnchantments(
+            armorInventory,
+            armorDb,
+            enchantmentsDb,
+            targetsDb,
+          ),
+      },
+    ],
+    resolveInstance: (instance, armor, material) =>
+      resolveArmorPiece(instance, armor, material, enchantmentsDb, targetsDb),
+    equippedContainer: {
+      init: () => buildEquippedSlots(),
+      place: (bucket, resolved, instance, armor) => {
+        bucket[SLOT_MAP[armor.armor_piece_location]] = resolved;
+        return bucket;
+      },
+    },
+    storageBucket: {
+      init: () => buildStorageSlots(),
+      place: (bucket, resolved, instance, armor) => {
+        bucket[SLOT_MAP[armor.armor_piece_location]].push(resolved);
+        return bucket;
+      },
+    },
+    fieldNames: {
+      totalWeight: "total_armor_weight",
+      carriedWeight: "carried_armor_weight",
+      totalValue: "total_armor_value",
+      carriedValue: "carried_armor_value",
+    },
+  });
 }
 
 module.exports = {

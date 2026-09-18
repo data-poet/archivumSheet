@@ -4,6 +4,9 @@ const {
   ELEMENTAL_TYPES,
   calculateElementalResistances,
 } = require("./js/attributes/elementalResistances");
+const {
+  withEnchantmentModifier,
+} = require("./js/shared/withEnchantmentModifier");
 
 const SECONDARY_ATTRS = [
   "HP",
@@ -32,14 +35,11 @@ function buildCharacterSecondary({
   enchantmentSkillModifiers = {},
 }) {
   // Same has_enchantment_modifier presence-flag pattern as buildCharacterPrimary uses for ST/DX/IQ/HT.
-  const secondaryWithEnchantments = {};
-  for (const attr of SECONDARY_ATTRS) {
-    secondaryWithEnchantments[attr] = {
-      ...(secondaryAttributes[attr] || {}),
-      enchantment_modifier: enchantmentAttributeModifiers[attr] ?? 0,
-      has_enchantment_modifier: attr in enchantmentAttributeModifiers,
-    };
-  }
+  const secondaryWithEnchantments = withEnchantmentModifier(
+    secondaryAttributes,
+    enchantmentAttributeModifiers,
+    SECONDARY_ATTRS,
+  );
 
   const secondaryResult = buildSecondaryAttributes(
     primary_attributes,
@@ -49,14 +49,11 @@ function buildCharacterSecondary({
   );
 
   // No equipped enchantment currently produces enchantmentElementalModifiers, so this stays empty until that's wired up.
-  const elementalWithEnchantments = {};
-  for (const type of ELEMENTAL_TYPES) {
-    elementalWithEnchantments[type] = {
-      ...(secondaryAttributes.elementalResistances?.[type] || {}),
-      enchantment_modifier: enchantmentElementalModifiers[type] ?? 0,
-      has_enchantment_modifier: type in enchantmentElementalModifiers,
-    };
-  }
+  const elementalWithEnchantments = withEnchantmentModifier(
+    secondaryAttributes.elementalResistances || {},
+    enchantmentElementalModifiers,
+    ELEMENTAL_TYPES,
+  );
 
   const elementalResistances = calculateElementalResistances(
     raceElementalMultipliers,

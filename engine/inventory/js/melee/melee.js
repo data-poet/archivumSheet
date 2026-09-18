@@ -21,6 +21,7 @@ const { getEnchantmentsDB } = require("../shared/enchantmentsDB.js");
 const {
   getEnchantmentTargetsDB,
 } = require("../shared/enchantmentTargetsDB.js");
+const { buildEquipmentSlots } = require("../shared/buildEquipmentSlots.js");
 
 let _meleeDB = null;
 
@@ -62,10 +63,6 @@ function getMeleeDB() {
   return _meleeDB;
 }
 
-function buildStorageBucket() {
-  return [];
-}
-
 function buildMeleeSlots(meleeInventory = []) {
   const meleeDb = getMeleeDB();
 
@@ -74,112 +71,37 @@ function buildMeleeSlots(meleeInventory = []) {
   const enchantmentsDb = getEnchantmentsDB();
   const targetsDb = getEnchantmentTargetsDB();
 
-  const instanceErrors = meleeInventory.flatMap((instance, index) =>
-    validateMeleeInstance(instance, index),
-  );
-
-  if (instanceErrors.length > 0) {
-    throw new Error(
-      `[buildMeleeSlots] Invalid melee inventory:\n${instanceErrors.join("\n")}`,
-    );
-  }
-
-  const unknownMeleeIds = meleeInventory
-    .filter((instance) => !meleeDb[instance.weapon_id])
-    .map((instance) => instance.weapon_id);
-
-  if (unknownMeleeIds.length > 0) {
-    throw new Error(
-      `[buildMeleeSlots] Unknown weapon_id(s): ${unknownMeleeIds.join(", ")}`,
-    );
-  }
-
-  const unknownMaterialIds = meleeInventory
-    .filter(
-      (instance) => instance.material_id && !materialDb[instance.material_id],
-    )
-    .map((instance) => instance.material_id);
-
-  if (unknownMaterialIds.length > 0) {
-    throw new Error(
-      `[buildMeleeSlots] Unknown material_id(s): ${unknownMaterialIds.join(", ")}`,
-    );
-  }
-
-  const enchantmentErrors = validateMeleeEnchantments(
-    meleeInventory,
-    enchantmentsDb,
-    targetsDb,
-  );
-
-  if (enchantmentErrors.length > 0) {
-    throw new Error(
-      `[buildMeleeSlots] Invalid enchantments:\n${enchantmentErrors.join("\n")}`,
-    );
-  }
-
-  const equipped = buildStorageBucket();
-  const stash = buildStorageBucket();
-  const camp = buildStorageBucket();
-  const backpack = buildStorageBucket();
-
-  let carried_melee_weapons_weight = 0;
-  let carried_melee_weapons_value = 0;
-
-  for (const instance of meleeInventory) {
-    const melee = meleeDb[instance.weapon_id];
-
-    const material = instance.material_id
-      ? materialDb[instance.material_id]
-      : null;
-
-    const resolvedMelee = resolveMeleeWeapons(
-      instance,
-      melee,
-      material,
-      enchantmentsDb,
-      targetsDb,
-    );
-
-    if (instance.is_equipped) {
-      equipped.push(resolvedMelee);
-
-      carried_melee_weapons_weight += resolvedMelee.final_weight;
-      carried_melee_weapons_value += resolvedMelee.total_value;
-
-      continue;
-    }
-
-    if (instance.storedAt === "stash") {
-      stash.push(resolvedMelee);
-
-      continue;
-    }
-
-    if (instance.storedAt === "camp") {
-      camp.push(resolvedMelee);
-
-      continue;
-    }
-
-    if (instance.storedAt === "backpack") {
-      backpack.push(resolvedMelee);
-
-      carried_melee_weapons_weight += resolvedMelee.final_weight;
-      carried_melee_weapons_value += resolvedMelee.total_value;
-    }
-  }
-
-  return {
-    equipped,
-    stash,
-    camp,
-    backpack,
-    total_melee_weight: carried_melee_weapons_weight,
-    carried_melee_weapons_weight,
-    total_melee_value: carried_melee_weapons_value,
-    carried_melee_weapons_value,
-  };
+  return buildEquipmentSlots({
+    label: "buildMeleeSlots",
+    entityLabel: "melee",
+    inventory: meleeInventory,
+    idKey: "weapon_id",
+    db: meleeDb,
+    materialDb,
+    validateInstance: validateMeleeInstance,
+    extraValidationSteps: [
+      {
+        message: "Invalid enchantments",
+        validate: () =>
+          validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb),
+      },
+    ],
+    resolveInstance: (instance, melee, material) =>
+      resolveMeleeWeapons(instance, melee, material, enchantmentsDb, targetsDb),
+    equippedContainer: {
+      init: () => [],
+      place: (bucket, resolved) => {
+        bucket.push(resolved);
+        return bucket;
+      },
+    },
+    fieldNames: {
+      totalWeight: "total_melee_weight",
+      carriedWeight: "carried_melee_weapons_weight",
+      totalValue: "total_melee_value",
+      carriedValue: "carried_melee_weapons_value",
+    },
+  });
 }
 
 module.exports = {

@@ -6,15 +6,15 @@ function round2(value) {
 
 function resolveCoin(instance) {
   const coin_weight = COIN_WEIGHT[instance.coin_type];
-  const coin_value  = COIN_VALUE[instance.coin_type];
+  const coin_value = COIN_VALUE[instance.coin_type];
 
   const total_weight = round2(coin_weight * instance.quantity);
-  const total_value  = coin_value * instance.quantity;
+  const total_value = coin_value * instance.quantity;
 
   return {
-    coin_type:    instance.coin_type,
-    quantity:     instance.quantity,
-    storedAt:     instance.storedAt,
+    coin_type: instance.coin_type,
+    quantity: instance.quantity,
+    storedAt: instance.storedAt,
     coin_weight,
     coin_value,
     total_weight,

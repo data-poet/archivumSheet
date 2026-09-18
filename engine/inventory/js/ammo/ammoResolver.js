@@ -56,7 +56,7 @@ function resolveContainer(instance, container, ammoDb) {
 
 function resolveLooseAmmo(instance, ammo) {
   const total_weight = round2(ammo.ammo_weight * instance.quantity);
-  const total_value  = round2(ammo.ammo_price  * instance.quantity);
+  const total_value = round2(ammo.ammo_price * instance.quantity);
 
   return {
     ammo_id: ammo.ammo_id,
