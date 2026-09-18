@@ -7,6 +7,7 @@ import { resetDOM } from "./domFixture.js";
 
 const OUTSIDE_PANEL = `
   <input id="weight" value="0" />
+  <div id="resume_bar_experience"></div>
   <table>
     <tbody id="resume_points_tbody"></tbody>
     <tfoot><tr><td id="resume_total_points_cell"></td></tr></tfoot>

@@ -5,13 +5,27 @@ import { el } from "../../shared/dom.js";
 
 const _collapseOpen = new Map();
 
+// A consult-only cell deliberately carries neither an <input> nor the stepper's class:
+// the delegated handlers in engine/**/events.js match on that class, so omitting it makes
+// an unwritable sheet (an ally) structurally unable to dispatch a write, not just guarded.
 export function hpStepperCell({
   cssClass,
   dataAttrs,
   maxHp,
   modifier,
   actualHp,
+  editable = true,
 }) {
+  if (!editable) {
+    return `
+    <td>
+      <div class="hp-modifier">
+        <strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>
+      </div>
+    </td>
+  `;
+  }
+
   return `
     <td>
       <div class="hp-modifier">
@@ -39,7 +53,18 @@ export function roundsStepperCell({
   dataAttrs,
   magazineSize,
   roundsLoaded,
+  editable = true,
 }) {
+  if (!editable) {
+    return `
+    <td>
+      <div class="hp-modifier">
+        <strong>${roundsLoaded}</strong> / <strong>${magazineSize}</strong>
+      </div>
+    </td>
+  `;
+  }
+
   return `
     <td>
       <div class="hp-modifier">
@@ -59,6 +84,36 @@ export function roundsStepperCell({
           </div>
         </div>
         / <strong>${magazineSize}</strong>
+      </div>
+    </td>
+  `;
+}
+
+export function quantityStepperCell({
+  cssClass,
+  dataAttrs,
+  quantity,
+  editable = true,
+}) {
+  if (!editable) {
+    return `<td class="col-num">${quantity}</td>`;
+  }
+
+  return `
+    <td class="col-num">
+      <div class="num-stepper">
+        <input
+          type="text"
+          inputmode="numeric"
+          class="${cssClass}"
+          ${dataAttrs}
+          value="${quantity}"
+          style="width:50px"
+        />
+        <div class="stepper-btns">
+          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+        </div>
       </div>
     </td>
   `;
