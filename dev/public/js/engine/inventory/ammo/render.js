@@ -265,52 +265,55 @@ function renderContainerSlot(
   );
 
   return `
-    <div class="equipped-slot-grid ammo-container-slot">
-      <div class="equipped-slot-label">${displayName}</div>
-      <div class="equipped-slot-controls">
+    <details class="ammo-container-details" data-instance-id="${instanceId}">
+      <summary class="ammo-container-summary">
+        <span class="ammo-container-name">${displayName}</span>
         <span class="ammo-type-badge">${ammoType}</span>
-        <select class="ammo-container-storage-select" data-instance-id="${instanceId}">
-          ${containerStorageOptions(inst.storedAt, isCarriable)}
-        </select>
-        <button class="btn-remove remove-ammo-container" data-instance-id="${instanceId}">✕</button>
+        <span class="ammo-container-cap">${usedCap}/${capacity}</span>
+      </summary>
+      <div class="ammo-container-body">
+        <div class="ammo-container-controls controls-row">
+          <select class="ammo-container-storage-select" data-instance-id="${instanceId}">
+            ${containerStorageOptions(inst.storedAt, isCarriable)}
+          </select>
+          <button class="btn-remove remove-ammo-container" data-instance-id="${instanceId}">✕</button>
+        </div>
+        <div class="ammo-container-meta">
+          <span>${t("ammo.capacity")}: ${usedCap}/${capacity}</span>
+          <span>${t("common.weight")}: ${totalWeight} kg</span>
+          ${!isCarriable ? `<span class="ammo-not-carriable">${t("ammo.notCarriable")}</span>` : ""}
+        </div>
+        <div class="table-wrapper table-wrapper--stack"><table class="ammo-contents-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              <th>${t("ammo.qty")}</th>
+              <th class="col-action"></th>
+            </tr>
+          </thead>
+          <tbody>${contentsRows}</tbody>
+        </table></div>
+        ${
+          remainingCap > 0
+            ? `<div class="ammo-add-to-container controls-row">
+                <select class="ammo-select-for-container" data-instance-id="${instanceId}">
+                  ${compatOptions}
+                </select>
+                <input
+                  type="number"
+                  min="1"
+                  max="${remainingCap}"
+                  value="1"
+                  class="ammo-qty-add-input"
+                  data-instance-id="${instanceId}"
+                  style="width:60px"
+                />
+                <button class="add-ammo-to-container-btn" data-instance-id="${instanceId}">${t("ammo.addAmmo")}</button>
+              </div>`
+            : `<p class="ammo-full">${t("ammo.containerFull")}</p>`
+        }
       </div>
-    </div>
-    <div class="ammo-container-body">
-      <div class="ammo-container-meta">
-        <span>${t("ammo.capacity")}: ${usedCap}/${capacity}</span>
-        <span>${t("common.weight")}: ${totalWeight} kg</span>
-        ${!isCarriable ? `<span class="ammo-not-carriable">${t("ammo.notCarriable")}</span>` : ""}
-      </div>
-      <div class="table-wrapper table-wrapper--stack"><table class="ammo-contents-table">
-        <thead>
-          <tr>
-            <th>${t("common.name")}</th>
-            <th>${t("ammo.qty")}</th>
-            <th class="col-action"></th>
-          </tr>
-        </thead>
-        <tbody>${contentsRows}</tbody>
-      </table></div>
-      ${
-        remainingCap > 0
-          ? `<div class="ammo-add-to-container controls-row">
-              <select class="ammo-select-for-container" data-instance-id="${instanceId}">
-                ${compatOptions}
-              </select>
-              <input
-                type="number"
-                min="1"
-                max="${remainingCap}"
-                value="1"
-                class="ammo-qty-add-input"
-                data-instance-id="${instanceId}"
-                style="width:60px"
-              />
-              <button class="add-ammo-to-container-btn" data-instance-id="${instanceId}">${t("ammo.addAmmo")}</button>
-            </div>`
-          : `<p class="ammo-full">${t("ammo.containerFull")}</p>`
-      }
-    </div>
+    </details>
   `;
 }
 
