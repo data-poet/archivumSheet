@@ -118,6 +118,7 @@ function buildSecondaryAttributes(
   };
 
   // Halve BasicSpeed (floor) when current HP is below 1/3 of final_base_value; Movement/Dodge are computed after since they cascade from it.
+  // Threshold intentionally uses pre-modifier final_base_value, not the fully-modified HP.value, so gear/enchantment HP bonuses don't move the danger threshold — only current (post-damage) HP against the character's own natural max does.
   const hpFinalBase = result.HP.final_base_value;
   const hpCurrent   = result.HP.value;
   if (hpCurrent < hpFinalBase / 3) {
@@ -171,7 +172,7 @@ function buildSecondaryAttributes(
   const points = {};
 
   Object.entries(result).forEach(([key, attr]) => {
-    points[key] = attr?.bought ? attr.bought * 5 : 0;
+    points[key] = attr?.points ?? 0;
   });
 
   return {
