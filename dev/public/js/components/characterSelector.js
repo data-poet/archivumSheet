@@ -7,11 +7,17 @@ import {
   removeCharacter,
   saveActiveCharacter,
 } from "../store/characters.js";
-import { exportSheet, importSheet, showToast } from "../store/persistence.js";
+import {
+  exportSheet,
+  exportAllySheet,
+  importSheet,
+  showToast,
+} from "../store/persistence.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
+import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind } from "./entryKind.js";
 
 export function updateSelectorButton() {
@@ -115,6 +121,11 @@ export function renderPopover() {
       <li class="char-selector-divider" role="presentation"></li>
       ${actionItem("import-char", "⬆️", t("app.import"))}
       ${actionItem("export-char", "⬇️", t("app.export"))}
+      ${
+        getActiveKind() === ENTRY_KINDS.ALLY
+          ? actionItem("export-ally", "🤝", t("characters.exportAlly"))
+          : ""
+      }
       ${actionItem("replace-char", "🔄", t("characters.replace"))}
     </ul>
   `;
@@ -207,6 +218,12 @@ export function initCharacterSelector() {
 
       case "export-char": {
         exportSheet();
+        closeSelector({ restoreFocus: true });
+        break;
+      }
+
+      case "export-ally": {
+        exportAllySheet();
         closeSelector({ restoreFocus: true });
         break;
       }
