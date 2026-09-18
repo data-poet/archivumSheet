@@ -2,11 +2,12 @@
    components/pageSelector.js for why). */
 
 /* Filled like the character selector, so the topbar reads as two peer selectors
-   (page | character) rather than one more button among the icon actions. Overrides
+   (page | character) rather than one more button among the icon actions. Neutral against the
+   character selector's brand blue: navigation is chrome and should recede. Overrides
    .topbar-btn's outline look — page-selector.css is imported after layout/navigation.css,
    so these win at equal specificity. */
 .page-selector-btn {
-  background: var(--accent-attributes-fill);
+  background: var(--selector-page-fill);
   border-color: transparent;
   color: var(--color-on-accent);
   font-size: var(--fs-sm);
@@ -15,7 +16,7 @@
 }
 
 .page-selector-btn:hover {
-  background: color-mix(in srgb, var(--accent-attributes-fill) 85%, #000);
+  background: color-mix(in srgb, var(--selector-page-fill) 85%, #000);
   color: var(--color-on-accent);
 }
 
@@ -49,8 +50,8 @@
   text-decoration: none;
 }
 
-/* Matches the trigger's accent rather than the character selector's red. */
+/* Follows its own trigger rather than the character selector's accent. */
 .page-selector-popover .char-selector-item.is-active {
-  background: color-mix(in srgb, var(--accent-attributes) 8%, transparent);
-  border-left-color: var(--accent-attributes);
+  background: color-mix(in srgb, var(--selector-page) 10%, transparent);
+  border-left-color: var(--selector-page);
 }
