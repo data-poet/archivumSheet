@@ -57,3 +57,14 @@ export function buildAllyFile(name, date = new Date()) {
     },
   };
 }
+
+// Recognises a file this module wrote, so re-importing an ally reopens it as a draft and the
+// edit → re-export round trip needs no manual step.
+//
+// `portrait` is the marker because only an ally file has it: capturePersistedSheet() never
+// produces one and the character export adds only `exportedAt`. Deliberately a positive test —
+// a file that is merely missing `exportedAt` (hand-written, hand-edited, from an older build)
+// stays a character, which is the safe direction.
+export function isAllyFile(payload) {
+  return typeof payload?.portrait === "string" && payload.portrait !== "";
+}
