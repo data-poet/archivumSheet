@@ -16,4 +16,5 @@ export const CHARACTERS = {
   kindAlly: "Aliado",
   kindBadge: "Aliado",
   exportAlly: "Exportar como aliado",
+  allyOnlyWarning: "Este personagem tem conteúdo exclusivo de aliado:",
 };

@@ -18,7 +18,7 @@ import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { getActiveKind } from "../store/characters.js";
-import { renderEntryKind } from "./entryKind.js";
+import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
 
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
@@ -217,6 +217,7 @@ export function initCharacterSelector() {
       }
 
       case "export-char": {
+        warnAllyOnlyContent();
         exportSheet();
         closeSelector({ restoreFocus: true });
         break;
