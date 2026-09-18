@@ -98,28 +98,6 @@ function containerStorageOptions(currentLocation, isCarriable) {
     .join("");
 }
 
-// ─── Move select for ammo inside a container ─────────────────────────────────
-
-function containerMoveOptions(fromInstanceId, allContainers, containerData) {
-  const otherContainers = allContainers.filter(
-    (c) => c._instanceId !== fromInstanceId,
-  );
-  if (otherContainers.length === 0) return null;
-
-  const options = otherContainers
-    .map((c) => {
-      const rec = getContainerRecord(c.container_id, containerData);
-      const name = rec?.container_box_name ?? c.container_id;
-      return `<option value="${c._instanceId}">${name}</option>`;
-    })
-    .join("");
-
-  return `<select class="ammo-in-container-move-select" data-from-instance-id="${fromInstanceId}" data-ammo-id="__PLACEHOLDER__">
-    <option value="">— ${t("common.storage")} —</option>
-    ${options}
-  </select>`;
-}
-
 // ─── Move select for loose ammo ───────────────────────────────────────────────
 
 function looseAmmoLocationSelect(ammoId, currentLocation) {
@@ -205,9 +183,11 @@ function renderContainerSlot(
                 : undefined;
 
             const moveSelectHtml = (() => {
-              const other = allContainers.filter(
-                (c) => c._instanceId !== instanceId,
-              );
+              const other = allContainers.filter((c) => {
+                if (c._instanceId === instanceId) return false;
+                const rec = getContainerRecord(c.container_id, containerData);
+                return rec?.container_ammo_type === ammoType;
+              });
               if (other.length === 0) return "";
               const opts = other
                 .map((c) => {
