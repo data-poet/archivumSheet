@@ -73,8 +73,36 @@
   margin-bottom: var(--space-2);
 }
 
-.ammo-container-slot {
-  margin-bottom: 0;
+.ammo-container-details {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+}
+
+.ammo-container-summary {
+  gap: var(--space-3);
+  background: var(--color-table-header-bg);
+  font-size: var(--fs-xs);
+  padding: var(--space-4) var(--space-5);
+}
+
+.ammo-container-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ammo-container-cap {
+  font-size: var(--fs-xxs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.ammo-container-controls {
+  margin-bottom: var(--space-3);
 }
 
 .ammo-type-badge {
@@ -90,8 +118,6 @@
 
 .ammo-container-body {
   padding: var(--space-3) var(--space-5) var(--space-5) var(--space-5);
-  border-left: 2px solid var(--color-border);
-  margin: 0 0 var(--space-6) var(--space-2);
 }
 
 .ammo-container-meta {
