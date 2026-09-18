@@ -9,6 +9,10 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveKind: jest.fn(() => "character"),
   setActiveKind: jest.fn(),
 }));
+jest.mock("dev/public/js/components/entryKind.js", () => ({
+  renderEntryKind: jest.fn(),
+  warnAllyOnlyContent: jest.fn(),
+}));
 jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),
   importSheet: jest.fn(),
@@ -29,6 +33,7 @@ import {
 } from "dev/public/js/store/characters.js";
 import { exportSheet, showToast } from "dev/public/js/store/persistence.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
+import { renderEntryKind } from "dev/public/js/components/entryKind.js";
 import {
   updateSelectorButton,
   openSelector,
@@ -537,6 +542,32 @@ describe("initCharacterSelector — file input handling", () => {
     await flush();
 
     expect(addCharacter).toHaveBeenCalledWith(t("characters.unnamed"));
+  });
+
+  // An imported character lands in a slot whose kind may differ from the one on screen, so the
+  // radio and the ally-draft topbar stripe have to be refreshed with it.
+  test("import mode refreshes the entry-kind control", async () => {
+    initCharacterSelector();
+    const input = setFile(fakeFile(VALID_PAYLOAD));
+    input._mode = "import";
+    renderEntryKind.mockClear();
+
+    input.dispatchEvent(new Event("change"));
+    await flush();
+
+    expect(renderEntryKind).toHaveBeenCalled();
+  });
+
+  test("replace mode refreshes it too", async () => {
+    initCharacterSelector();
+    const input = setFile(fakeFile(VALID_PAYLOAD));
+    input._mode = "replace";
+    renderEntryKind.mockClear();
+
+    input.dispatchEvent(new Event("change"));
+    await flush();
+
+    expect(renderEntryKind).toHaveBeenCalled();
   });
 
   test("replace mode: replaces the active character's data without adding a new slot", async () => {

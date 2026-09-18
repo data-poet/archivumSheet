@@ -266,6 +266,7 @@ export function initCharacterSelector() {
           }
           replaceActiveCharacter(payload);
           updateSelectorButton();
+          renderEntryKind();
         } else {
           const text = await file.text();
           const payload = JSON.parse(text);
@@ -278,6 +279,7 @@ export function initCharacterSelector() {
           // addCharacter loads a blank character; overwrite it with the imported data.
           replaceActiveCharacter(payload);
           updateSelectorButton();
+          renderEntryKind();
         }
       } catch (err) {
         showToast(
