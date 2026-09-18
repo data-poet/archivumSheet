@@ -97,6 +97,10 @@ jest.mock("dev/public/js/engine/inventory/shared/materials.js", () => ({
 }));
 jest.mock("dev/public/js/store/characters.js", () => ({
   initCharacters: jest.fn(() => true),
+  getActiveKind: jest.fn(() => "character"),
+}));
+jest.mock("dev/public/js/components/entryKind.js", () => ({
+  initEntryKind: jest.fn(),
 }));
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   initCharacterSelector: jest.fn(),

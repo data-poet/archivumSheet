@@ -35,13 +35,20 @@ import { loadDualUseWeapons } from "./engine/inventory/shared/dualUseWeapons.js"
 import { loadMaterials } from "./engine/inventory/shared/materials.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
+import { initEntryKind } from "./components/entryKind.js";
+import { getActiveKind } from "./store/characters.js";
+import { ENTRY_KINDS } from "./shared/constants.js";
 import { state } from "./state.js";
 import { setCatalogAudience, AUDIENCE } from "./shared/availability.js";
 
 export async function bootstrap() {
   // Must precede every load*(): each one assigns its catalog and builds its add-form selectors in
-  // the same call, so there is no post-load moment left to filter in.
-  setCatalogAudience(AUDIENCE.PLAYER);
+  // the same call, so there is no post-load moment left to filter in. Reading the kind here means
+  // the catalogs a draft sees are decided at load, so switching kind mid-session needs a reload
+  // before ally-only content appears.
+  setCatalogAudience(
+    getActiveKind() === ENTRY_KINDS.ALLY ? AUDIENCE.ALLY : AUDIENCE.PLAYER,
+  );
 
   mountResumePanel();
   initAutoRun(runEngine);
@@ -88,6 +95,7 @@ export async function bootstrap() {
   }
 
   initCharacterSelector();
+  initEntryKind();
   initCharacterImage();
 }
 

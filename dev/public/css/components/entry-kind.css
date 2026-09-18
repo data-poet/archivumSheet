@@ -1,0 +1,63 @@
+.entry-kind {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4) var(--space-7);
+}
+
+.entry-kind-legend {
+  padding: 0 var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.entry-kind-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.entry-kind-option.is-active {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Full width so it drops below the radios rather than squeezing them on a phone. */
+.entry-kind-hint {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--accent-attributes);
+}
+
+/* ── Ally-draft treatment ──────────────────────────────────────────────────────
+   The radio scrolls out of view; the topbar does not. Authoring an ally while
+   believing you are editing your character is the mistake this guards against. */
+.is-ally-draft .l-topbar {
+  border-bottom: 3px solid var(--accent-attributes-fill);
+}
+
+.is-ally-draft .entry-kind {
+  border-color: var(--accent-attributes-fill);
+}
+
+.char-selector-item-kind {
+  align-self: flex-start;
+  border-radius: var(--radius-sm);
+  background: var(--accent-attributes-fill);
+  color: var(--color-on-accent);
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0 var(--space-3);
+  text-transform: uppercase;
+}

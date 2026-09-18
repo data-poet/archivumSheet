@@ -23,3 +23,9 @@ export const ARMOR_SLOTS = [
 export const RACIAL_TRAIT_TYPE = "Racial";
 
 export const DEFAULT_MATERIAL_ID = "MAT-000";
+
+// An ally draft is an ordinary character entry that will be exported as an ally file rather than
+// played. Keeping it a property of the entry — instead of a global UI mode — is what makes
+// authoring safe: every write goes to store.activeId, so a draft can only write to its own row,
+// and selecting a real character cannot leave the app in ally mode.
+export const ENTRY_KINDS = { CHARACTER: "character", ALLY: "ally" };

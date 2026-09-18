@@ -3,6 +3,7 @@
 
 import { state } from "../state.js";
 import { capturePersistedSheet, SCHEMA_VERSION } from "./persistedSheet.js";
+import { ENTRY_KINDS } from "../shared/constants.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
@@ -86,9 +87,16 @@ function _blankData() {
   };
 }
 
-function _blankCharacter(name) {
+function _blankCharacter(name, kind = ENTRY_KINDS.CHARACTER) {
   const id = _generateId();
-  return { id, name, race: "", data: _blankData() };
+  return { id, name, race: "", kind, data: _blankData() };
+}
+
+// Entries saved before `kind` existed have none; they are all real characters.
+function _kindOf(entry) {
+  return entry?.kind === ENTRY_KINDS.ALLY
+    ? ENTRY_KINDS.ALLY
+    : ENTRY_KINDS.CHARACTER;
 }
 
 function _initStore(firstCharName) {
@@ -191,7 +199,30 @@ export function getStore() {
 }
 
 export function listCharacters() {
-  return getStore().list.map(({ id, name, race }) => ({ id, name, race }));
+  return getStore().list.map((entry) => ({
+    id: entry.id,
+    name: entry.name,
+    race: entry.race,
+    kind: _kindOf(entry),
+  }));
+}
+
+export function getActiveKind() {
+  const store = getStore();
+  return _kindOf(store.list.find((c) => c.id === store.activeId));
+}
+
+// Converting is deliberately just a label change: the sheet's data is identical either way, so
+// nothing is migrated and nothing can be lost by toggling back and forth.
+export function setActiveKind(kind) {
+  const store = getStore();
+  const entry = store.list.find((c) => c.id === store.activeId);
+  if (!entry) return;
+
+  entry.kind = kind === ENTRY_KINDS.ALLY
+    ? ENTRY_KINDS.ALLY
+    : ENTRY_KINDS.CHARACTER;
+  _save(store);
 }
 
 export function getActiveCharacterId() {
@@ -237,11 +268,11 @@ export function loadCharacter(id) {
 // Saves the outgoing character first, same as switching does: autosave is debounced 300ms, so
 // adding a character right after a keystroke would otherwise drop that last edit. getStore() below
 // re-reads, so it sees the write.
-export function addCharacter(name) {
+export function addCharacter(name, kind = ENTRY_KINDS.CHARACTER) {
   saveActiveCharacter();
 
   const store = getStore();
-  const entry = _blankCharacter(name || "Novo Personagem");
+  const entry = _blankCharacter(name || "Novo Personagem", kind);
   store.list.push(entry);
   store.activeId = entry.id;
   _save(store);

@@ -23,6 +23,8 @@ import { state } from "dev/public/js/state.js";
 import { nextArmorInstanceId } from "dev/public/js/store/instanceId.js";
 import {
   getStore,
+  getActiveKind,
+  setActiveKind,
   listCharacters,
   getActiveCharacterId,
   saveActiveCharacter,
@@ -61,10 +63,15 @@ describe("getStore", () => {
 });
 
 describe("listCharacters / getActiveCharacterId", () => {
-  test("lists id, name, and race only", () => {
+  test("lists id, name, race and kind only — never the payload", () => {
     const list = listCharacters();
     expect(list).toEqual([
-      { id: expect.any(String), name: "Personagem 1", race: "" },
+      {
+        id: expect.any(String),
+        name: "Personagem 1",
+        race: "",
+        kind: "character",
+      },
     ]);
   });
 
@@ -213,6 +220,7 @@ describe("addCharacter", () => {
       id,
       name: "Bran the Bold",
       race: "",
+      kind: "character",
     });
     expect(renderListsPreserving).toHaveBeenCalledTimes(1);
   });
@@ -247,6 +255,68 @@ describe("addCharacter", () => {
 
     const draft = getStore().list.find((c) => c.id === draftId);
     expect(draft.data.character.advantages).toEqual({});
+  });
+});
+
+describe("entry kind", () => {
+  test("a new store's character is a real character, not a draft", () => {
+    expect(getActiveKind()).toBe("character");
+  });
+
+  // Entries written before `kind` existed have none; they are all real characters.
+  test("an entry saved without a kind reads as a character", () => {
+    const store = getStore();
+    delete store.list[0].kind;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
+    expect(getActiveKind()).toBe("character");
+    expect(listCharacters()[0].kind).toBe("character");
+  });
+
+  test("setActiveKind persists onto the active entry only", () => {
+    const first = getActiveCharacterId();
+    const second = addCharacter("Outro");
+
+    setActiveKind("ally");
+
+    expect(getActiveKind()).toBe("ally");
+    const list = listCharacters();
+    expect(list.find((c) => c.id === second).kind).toBe("ally");
+    expect(list.find((c) => c.id === first).kind).toBe("character");
+  });
+
+  test("an unrecognized kind falls back to character rather than sticking", () => {
+    setActiveKind("nonsense");
+    expect(getActiveKind()).toBe("character");
+  });
+
+  test("addCharacter can create a draft directly", () => {
+    const id = addCharacter("Rascunho", "ally");
+    expect(listCharacters().find((c) => c.id === id).kind).toBe("ally");
+  });
+
+  // The draft is an entry, so switching away and back must not change anyone's kind.
+  test("switching between a character and a draft preserves both kinds", () => {
+    const characterId = getActiveCharacterId();
+    const draftId = addCharacter("Rascunho", "ally");
+
+    loadCharacter(characterId);
+    expect(getActiveKind()).toBe("character");
+
+    loadCharacter(draftId);
+    expect(getActiveKind()).toBe("ally");
+  });
+
+  test("converting a draft back keeps its sheet data untouched", () => {
+    const draftId = addCharacter("Rascunho", "ally");
+    state.selected.advantages = { "ADV-031": {} };
+    saveActiveCharacter();
+
+    setActiveKind("character");
+
+    const entry = getStore().list.find((c) => c.id === draftId);
+    expect(entry.kind).toBe("character");
+    expect(entry.data.character.advantages).toEqual({ "ADV-031": {} });
   });
 });
 
