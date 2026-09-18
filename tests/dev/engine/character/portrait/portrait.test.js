@@ -96,6 +96,58 @@ describe("renderResumeImage", () => {
       document.getElementById("resume-charimg-bg").style.backgroundColor,
     ).toBe("rgb(10, 20, 30)");
   });
+
+  test("renders an explicitly passed image instead of the active character's", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+    Object.assign(state.selected.character.image, UPLOADED_IMAGE);
+
+    renderResumeImage({
+      ...UPLOADED_IMAGE,
+      data: "data:image/png;base64,other",
+      scale: 80,
+    });
+
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.getAttribute("src")).toBe("data:image/png;base64,other");
+    expect(img.style.width).toBe("80%");
+  });
+
+  test("falls back to a path portrait, centred, when nothing is uploaded", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage(undefined, "/images/allies/ALLY-000.png");
+
+    const wrapper = document.getElementById("resume-charimg-wrapper");
+    expect(wrapper.hidden).toBe(false);
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.getAttribute("src")).toBe("/images/allies/ALLY-000.png");
+    expect(img.style.width).toBe("100%");
+    expect(img.style.left).toBe("50%");
+    expect(img.style.top).toBe("50%");
+    expect(
+      document.getElementById("resume-charimg-bg").style.backgroundColor,
+    ).toBe("");
+  });
+
+  test("prefers an uploaded image over the path fallback", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage(UPLOADED_IMAGE, "/images/allies/ALLY-000.png");
+
+    expect(
+      document.getElementById("resume-charimg-img").getAttribute("src"),
+    ).toBe(UPLOADED_IMAGE.data);
+  });
+
+  test("escapes a hostile path fallback", () => {
+    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
+
+    renderResumeImage(undefined, `x" onerror="alert(1)`);
+
+    const img = document.getElementById("resume-charimg-img");
+    expect(img.getAttribute("src")).toBe(`x" onerror="alert(1)`);
+    expect(img.hasAttribute("onerror")).toBe(false);
+  });
 });
 
 describe("renderCharacterImage", () => {
