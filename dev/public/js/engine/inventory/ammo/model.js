@@ -162,6 +162,11 @@ function usedCapacity(container) {
   return container.contents.reduce((s, e) => s + e.quantity, 0);
 }
 
+function getContainerAmmoType(containerId) {
+  return data.ammo_containers.find((c) => c.container_id === containerId)
+    ?.container_ammo_type;
+}
+
 /** Add ammo to a container's contents, clamped to remaining capacity. */
 export function addAmmoToContainer(instanceId, ammoId, quantity) {
   const container = findContainerByInstanceId(instanceId);
@@ -312,6 +317,14 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
 
   const sourceEntry = from.contents.find((e) => e.ammo_id === ammoId);
   if (!sourceEntry) return;
+
+  // A container only holds the one ammo type printed on its label — moving a mismatched
+  // type in would silently corrupt its contents.
+  if (
+    getContainerAmmoType(from.container_id) !==
+    getContainerAmmoType(to.container_id)
+  )
+    return;
 
   const toCapacity = getContainerCapacity(to.container_id);
   const toUsed = usedCapacity(to);
