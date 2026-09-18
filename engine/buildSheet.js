@@ -44,23 +44,27 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  let inventoryResult = buildInventory({
-    ST: st,
-    weight: inventory.weight || 0,
-    armorInventory: inventory.armor || [],
-    shieldInventory: inventory.shield || [],
-    meleeInventory: inventory.melee || [],
-    rangedInventory: inventory.ranged || [],
-    firearmsInventory: inventory.firearms || [],
-    ammoContainerInventory: inventory.ammo_containers || [],
-    looseAmmoInventory: inventory.loose_ammo || [],
-    alchemyInventory: inventory.alchemy || [],
-    survivalGearInventory: inventory.survival_gear || [],
-    accessoryInventory: inventory.accessories || [],
-    magicGearInventory: inventory.magic_gear || [],
-    customInventory: inventory.custom_inventory || [],
-    coinInventory: inventory.coins || [],
-  });
+  function runInventory(inventoryST) {
+    return buildInventory({
+      ST: inventoryST,
+      weight: inventory.weight || 0,
+      armorInventory: inventory.armor || [],
+      shieldInventory: inventory.shield || [],
+      meleeInventory: inventory.melee || [],
+      rangedInventory: inventory.ranged || [],
+      firearmsInventory: inventory.firearms || [],
+      ammoContainerInventory: inventory.ammo_containers || [],
+      looseAmmoInventory: inventory.loose_ammo || [],
+      alchemyInventory: inventory.alchemy || [],
+      survivalGearInventory: inventory.survival_gear || [],
+      accessoryInventory: inventory.accessories || [],
+      magicGearInventory: inventory.magic_gear || [],
+      customInventory: inventory.custom_inventory || [],
+      coinInventory: inventory.coins || [],
+    });
+  }
+
+  let inventoryResult = runInventory(st);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -108,24 +112,28 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  let characterResult = buildCharacter({
-    advantages: character.advantages,
-    disadvantages: character.disadvantages,
-    primaryAttributes: character.primaryAttributes,
-    secondaryAttributes: character.secondaryAttributes,
-    skills: character.skills,
-    carry_weight: inventoryResult.inventory.carry_weight,
-    raceModifiers: race.modifiers || {},
-    raceElementalMultipliers: race.elemental_modifiers || {},
-    innateAdvantageIds: race.innate_advantage_ids || [],
-    innateDisadvantageIds: race.innate_disadvantage_ids || [],
-    enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
-    enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
-    enchantmentAdvantageIds: enchantmentEffects.advantageIds,
-    enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
-    enchantmentSkillGrants: enchantmentEffects.skillGrants,
-    enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
-  });
+  function runCharacter(carryWeight) {
+    return buildCharacter({
+      advantages: character.advantages,
+      disadvantages: character.disadvantages,
+      primaryAttributes: character.primaryAttributes,
+      secondaryAttributes: character.secondaryAttributes,
+      skills: character.skills,
+      carry_weight: carryWeight,
+      raceModifiers: race.modifiers || {},
+      raceElementalMultipliers: race.elemental_modifiers || {},
+      innateAdvantageIds: race.innate_advantage_ids || [],
+      innateDisadvantageIds: race.innate_disadvantage_ids || [],
+      enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
+      enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
+      enchantmentAdvantageIds: enchantmentEffects.advantageIds,
+      enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
+      enchantmentSkillGrants: enchantmentEffects.skillGrants,
+      enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
+    });
+  }
+
+  let characterResult = runCharacter(inventoryResult.inventory.carry_weight);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -150,42 +158,8 @@ function buildSheet({
   const correctedST = characterResult.character.primary_attributes.ST.value;
 
   if (correctedST !== st) {
-    inventoryResult = buildInventory({
-      ST: correctedST,
-      weight: inventory.weight || 0,
-      armorInventory: inventory.armor || [],
-      shieldInventory: inventory.shield || [],
-      meleeInventory: inventory.melee || [],
-      rangedInventory: inventory.ranged || [],
-      firearmsInventory: inventory.firearms || [],
-      ammoContainerInventory: inventory.ammo_containers || [],
-      looseAmmoInventory: inventory.loose_ammo || [],
-      alchemyInventory: inventory.alchemy || [],
-      survivalGearInventory: inventory.survival_gear || [],
-      accessoryInventory: inventory.accessories || [],
-      magicGearInventory: inventory.magic_gear || [],
-      customInventory: inventory.custom_inventory || [],
-      coinInventory: inventory.coins || [],
-    });
-
-    characterResult = buildCharacter({
-      advantages: character.advantages,
-      disadvantages: character.disadvantages,
-      primaryAttributes: character.primaryAttributes,
-      secondaryAttributes: character.secondaryAttributes,
-      skills: character.skills,
-      carry_weight: inventoryResult.inventory.carry_weight,
-      raceModifiers: race.modifiers || {},
-      raceElementalMultipliers: race.elemental_modifiers || {},
-      innateAdvantageIds: race.innate_advantage_ids || [],
-      innateDisadvantageIds: race.innate_disadvantage_ids || [],
-      enchantmentAttributeModifiers: enchantmentEffects.attributeModifiers,
-      enchantmentElementalModifiers: enchantmentEffects.elementalModifiers,
-      enchantmentAdvantageIds: enchantmentEffects.advantageIds,
-      enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
-      enchantmentSkillGrants: enchantmentEffects.skillGrants,
-      enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
-    });
+    inventoryResult = runInventory(correctedST);
+    characterResult = runCharacter(inventoryResult.inventory.carry_weight);
   }
 
   const characterData = characterResult.character;
