@@ -138,8 +138,8 @@ export function initCharacterSelector() {
 
   const btn = getTriggerButton();
   if (btn) {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
+    // Allowed to reach document on purpose — see the note on the page selector's trigger.
+    btn.addEventListener("click", () => {
       toggleSelector();
     });
   }
