@@ -105,29 +105,39 @@ function _syncBgRadios() {
   });
 }
 
-// Called from resume.js after renderResumeHeader().
-export function renderResumeImage() {
+// A path-based portrait has no stored scale/position, so it gets centred at natural size.
+const PATH_IMAGE_LAYOUT = { scale: 100, position: { x: 50, y: 50 } };
+
+// Called from components/resume/index.js after renderResumeHeader(). `image` defaults to
+// the active character's; other sheets (a catalog ally) pass their own, plus fallbackSrc
+// when the portrait ships as a file path rather than uploaded base64.
+export function renderResumeImage(image = _img(), fallbackSrc = "") {
   const container = document.getElementById("resume-charimg-wrapper");
   if (!container) return;
 
-  const img = _img();
-  if (!img?.uploaded) {
+  const uploaded = Boolean(image?.uploaded);
+  const src = uploaded ? image.data : fallbackSrc;
+
+  if (!src) {
     container.hidden = true;
     return;
   }
 
   container.hidden = false;
 
+  const layout = uploaded ? image : PATH_IMAGE_LAYOUT;
+  const background = uploaded ? _bgColor(image) : "";
+
   // Every interpolation is escaped because an imported sheet's JSON supplies these
-  // verbatim — a quote in img.data would otherwise break out of the src attribute.
+  // verbatim — a quote in image.data would otherwise break out of the src attribute.
   // escapeAttr leaves valid numbers and empty strings untouched.
   container.innerHTML = `
-    <div class="resume-charimg-frame" id="resume-charimg-bg" style="background-color:${escapeAttr(_bgColor(img))}">
+    <div class="resume-charimg-frame" id="resume-charimg-bg" style="background-color:${escapeAttr(background)}">
       <img
         id="resume-charimg-img"
         class="resume-charimg-img"
-        src="${escapeAttr(img.data)}"
-        style="width:${escapeAttr(img.scale)}%; left:${escapeAttr(img.position.x)}%; top:${escapeAttr(img.position.y)}%;"
+        src="${escapeAttr(src)}"
+        style="width:${escapeAttr(layout.scale)}%; left:${escapeAttr(layout.position.x)}%; top:${escapeAttr(layout.position.y)}%;"
         alt=""
       />
     </div>
