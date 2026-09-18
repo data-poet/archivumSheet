@@ -106,6 +106,8 @@ function buildEquipmentSlots({
     }
   }
 
+  // totalWeight/totalValue duplicate carriedWeight/carriedValue exactly — no consumer reads the
+  // total_* keys today, but they're a tested contract on every category's builder, so both stay.
   return {
     equipped,
     stash,
