@@ -14,15 +14,15 @@ const ALLY_ROWS = [
   {
     advantage_id: "ADV-ALLY-1",
     advantage_name: "Corpo Elemental",
-    available_for: "ally",
+    available_for: "NPC",
   },
-  { race_id: "RACE-ELEM", race_name: "Elemental", available_for: "ally" },
+  { race_id: "RACE-ELEM", race_name: "Elemental", available_for: "NPC" },
   {
     armor_id: "ARMOR-ALLY-1",
     armor_name: "Casca de Pedra",
-    available_for: "ally",
+    available_for: "NPC",
   },
-  { skill_id: "SKILL-ALLY-1", available_for: "ally" },
+  { skill_id: "SKILL-ALLY-1", available_for: "NPC" },
 ];
 
 function primeFilter() {
