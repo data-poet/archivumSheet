@@ -35,9 +35,9 @@ describe("listAllies", () => {
 
 describe("getAlly", () => {
   test("returns the full payload with its id attached", () => {
-    const ally = getAlly("ALLY-000");
+    const ally = getAlly("ALLY_HUMANOID_001");
 
-    expect(ally.ally_id).toBe("ALLY-000");
+    expect(ally.ally_id).toBe("ALLY_HUMANOID_001");
     expect(ally.pc).toBeDefined();
     expect(ally.race).toBeDefined();
     expect(ally.character).toBeDefined();

@@ -14,18 +14,26 @@ const { loadJSON } = require("./dataUtils.js");
 const ALLIES_DIR = path.join(__dirname, "../data/allies");
 const ALLY_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
-function _allyPath(allyId) {
-  return path.join(ALLIES_DIR, `${allyId}.json`);
+// Allies are grouped into type subfolders (data/allies/animals/, data/allies/humanoids/, ...),
+// so the id alone doesn't say where the file lives. Built once and cached: a repo ally file
+// never moves within a running process.
+let _pathsById = null;
+
+function _walk(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return _walk(full);
+    if (!entry.name.endsWith(".json")) return [];
+
+    return [[path.basename(entry.name, ".json"), full]];
+  });
 }
 
-function _idsFromDisk() {
-  if (!fs.existsSync(ALLIES_DIR)) return [];
+function _pathsFromDisk() {
+  if (_pathsById) return _pathsById;
 
-  return fs
-    .readdirSync(ALLIES_DIR)
-    .filter((file) => file.endsWith(".json"))
-    .map((file) => path.basename(file, ".json"))
-    .sort();
+  _pathsById = new Map(fs.existsSync(ALLIES_DIR) ? _walk(ALLIES_DIR) : []);
+  return _pathsById;
 }
 
 // Returns null rather than throwing for an unknown id, so the caller decides the status code.
@@ -33,14 +41,15 @@ function getAlly(allyId) {
   // A traversal-safe id check, not cosmetic: allyId arrives straight from the URL.
   if (!allyId || !ALLY_ID_PATTERN.test(allyId)) return null;
 
-  const file = _allyPath(allyId);
-  if (!fs.existsSync(file)) return null;
+  const file = _pathsFromDisk().get(allyId);
+  if (!file) return null;
 
   return { ally_id: allyId, ...loadJSON(file) };
 }
 
 function listAllies() {
-  return _idsFromDisk()
+  return [..._pathsFromDisk().keys()]
+    .sort()
     .map((allyId) => {
       const ally = getAlly(allyId);
       if (!ally) return null;

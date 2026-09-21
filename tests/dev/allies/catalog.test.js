@@ -11,11 +11,11 @@ import {
 } from "dev/public/js/allies/catalog.js";
 
 const INDEX = [
-  { ally_id: "ALLY-000", name: "Bran", race: "Humano", portrait: "" },
-  { ally_id: "ALLY-001", name: "Lyra", race: "Elfo", portrait: "" },
+  { ally_id: "ALLY_HUMANOID_001", name: "Bran", race: "Humano", portrait: "" },
+  { ally_id: "ALLY_HUMANOID_002", name: "Lyra", race: "Elfo", portrait: "" },
 ];
 
-const FULL = { ally_id: "ALLY-000", pc: { character_name: "Bran" } };
+const FULL = { ally_id: "ALLY_HUMANOID_001", pc: { character_name: "Bran" } };
 
 beforeEach(() => {
   installMockFetch();
@@ -43,10 +43,10 @@ describe("listAllies", () => {
 
 describe("getAlly", () => {
   test("fetches a full payload once per id", async () => {
-    mockFetchResponse("/api/allies/ALLY-000", FULL);
+    mockFetchResponse("/api/allies/ALLY_HUMANOID_001", FULL);
 
-    expect(await getAlly("ALLY-000")).toEqual(FULL);
-    expect(await getAlly("ALLY-000")).toEqual(FULL);
+    expect(await getAlly("ALLY_HUMANOID_001")).toEqual(FULL);
+    expect(await getAlly("ALLY_HUMANOID_001")).toEqual(FULL);
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -65,11 +65,11 @@ describe("getAlly", () => {
   });
 
   test("clearAllyCache forces the next call back to the network", async () => {
-    mockFetchResponse("/api/allies/ALLY-000", FULL);
+    mockFetchResponse("/api/allies/ALLY_HUMANOID_001", FULL);
 
-    await getAlly("ALLY-000");
+    await getAlly("ALLY_HUMANOID_001");
     clearAllyCache();
-    await getAlly("ALLY-000");
+    await getAlly("ALLY_HUMANOID_001");
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
@@ -78,9 +78,9 @@ describe("getAlly", () => {
 // Namespaced ids are what let a merged repo + user catalog stay collision-free later,
 // and what tells a caller whether an ally's sheet itself may be edited.
 describe("id namespacing", () => {
-  test("ALLY-* is a repo ally and is not editable", () => {
-    expect(isRepoAlly("ALLY-000")).toBe(true);
-    expect(isEditableAlly("ALLY-000")).toBe(false);
+  test("ALLY_* is a repo ally and is not editable", () => {
+    expect(isRepoAlly("ALLY_HUMANOID_001")).toBe(true);
+    expect(isEditableAlly("ALLY_HUMANOID_001")).toBe(false);
   });
 
   test("a store-generated id is user-authored and editable", () => {

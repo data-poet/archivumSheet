@@ -3,14 +3,14 @@
 // the repo catalog (data/allies/) answers, and adding user-authored allies later means
 // teaching these two functions about a second source — not touching every call site.
 //
-// IDs are namespaced by source from the start: repo allies are `ALLY-*`, user-created
+// IDs are namespaced by source from the start: repo allies are `ALLY_*`, user-created
 // ones will use the `ally-<ts>-<rand>` form that store/characters.js already generates.
 // That keeps a merged list collision-free and lets callers tell read-only from editable
 // by looking at the id alone.
 
 import { fetchAllyIndex, fetchAlly } from "../api.js";
 
-const REPO_ID_PATTERN = /^ALLY-/;
+const REPO_ID_PATTERN = /^ALLY_/;
 
 const _fullAllies = new Map();
 let _index = null;
