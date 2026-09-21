@@ -35,30 +35,30 @@ describe("isAvailableFor", () => {
     },
   );
 
-  test("player means player only", () => {
-    expect(isAvailableFor(row("player"), AUDIENCE.PLAYER)).toBe(true);
-    expect(isAvailableFor(row("player"), AUDIENCE.ALLY)).toBe(false);
+  test("PC means player only", () => {
+    expect(isAvailableFor(row("PC"), AUDIENCE.PLAYER)).toBe(true);
+    expect(isAvailableFor(row("PC"), AUDIENCE.ALLY)).toBe(false);
   });
 
-  test("ally means ally only", () => {
-    expect(isAvailableFor(row("ally"), AUDIENCE.ALLY)).toBe(true);
-    expect(isAvailableFor(row("ally"), AUDIENCE.PLAYER)).toBe(false);
+  test("NPC means ally only", () => {
+    expect(isAvailableFor(row("NPC"), AUDIENCE.ALLY)).toBe(true);
+    expect(isAvailableFor(row("NPC"), AUDIENCE.PLAYER)).toBe(false);
   });
 
   test("case and surrounding space are ignored", () => {
-    expect(isAvailableFor(row(" Ally "), AUDIENCE.ALLY)).toBe(true);
-    expect(isAvailableFor(row("PLAYER"), AUDIENCE.ALLY)).toBe(false);
+    expect(isAvailableFor(row(" npc "), AUDIENCE.ALLY)).toBe(true);
+    expect(isAvailableFor(row("pc"), AUDIENCE.ALLY)).toBe(false);
   });
 
   test("a comma list is tolerated and means both", () => {
-    expect(isAvailableFor(row("player,ally"), AUDIENCE.PLAYER)).toBe(true);
-    expect(isAvailableFor(row("player, ally"), AUDIENCE.ALLY)).toBe(true);
+    expect(isAvailableFor(row("PC,NPC"), AUDIENCE.PLAYER)).toBe(true);
+    expect(isAvailableFor(row("PC, NPC"), AUDIENCE.ALLY)).toBe(true);
   });
 
   // Showing a row that should have been hidden is visible and fixable; hiding one that should
   // have shown is the silent failure this design exists to avoid.
   test("an unrecognized value falls back to available, not hidden", () => {
-    expect(isAvailableFor(row("allly"), AUDIENCE.PLAYER)).toBe(true);
+    expect(isAvailableFor(row("npcc"), AUDIENCE.PLAYER)).toBe(true);
     expect(isAvailableFor(row("gm-only"), AUDIENCE.ALLY)).toBe(true);
   });
 
@@ -70,8 +70,8 @@ describe("isAvailableFor", () => {
 describe("availableFor", () => {
   const ROWS = [
     { id: "both" },
-    { id: "p", [AVAILABLE_FOR_COLUMN]: "player" },
-    { id: "a", [AVAILABLE_FOR_COLUMN]: "ally" },
+    { id: "p", [AVAILABLE_FOR_COLUMN]: "PC" },
+    { id: "a", [AVAILABLE_FOR_COLUMN]: "NPC" },
   ];
 
   test("keeps blank plus the requested audience", () => {
@@ -115,7 +115,7 @@ describe("the catalog audience", () => {
 describe("api.js applies the audience to catalog responses", () => {
   const RACES = [
     { race_id: "RACE-023", race_name: "Humano" },
-    { race_id: "RACE-ELEM", race_name: "Elemental", available_for: "ally" },
+    { race_id: "RACE-ELEM", race_name: "Elemental", available_for: "NPC" },
   ];
 
   beforeEach(() => {
@@ -166,7 +166,7 @@ describe("api.js applies the audience to catalog responses", () => {
 describe("the audience record", () => {
   const ROWS = [
     { race_id: "R-both" },
-    { race_id: "R-ally", [AVAILABLE_FOR_COLUMN]: "ally" },
+    { race_id: "R-ally", [AVAILABLE_FOR_COLUMN]: "NPC" },
   ];
 
   test("records nothing unless asked", () => {
@@ -188,7 +188,7 @@ describe("the audience record", () => {
   // but the ally audience would still see a different catalog — so a reload is needed either way.
   test("a marked row counts even when the active audience keeps it", () => {
     availableFor(
-      [{ race_id: "R1", [AVAILABLE_FOR_COLUMN]: "player" }],
+      [{ race_id: "R1", [AVAILABLE_FOR_COLUMN]: "PC" }],
       AUDIENCE.PLAYER,
       {
         record: true,
@@ -210,7 +210,7 @@ describe("the audience record", () => {
   test("accumulates across catalogs", () => {
     availableFor(ROWS, AUDIENCE.PLAYER, { record: true });
     availableFor(
-      [{ advantage_id: "ADV-9", [AVAILABLE_FOR_COLUMN]: "ally" }],
+      [{ advantage_id: "ADV-9", [AVAILABLE_FOR_COLUMN]: "NPC" }],
       AUDIENCE.PLAYER,
       { record: true },
     );

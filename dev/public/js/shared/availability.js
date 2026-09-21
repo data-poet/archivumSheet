@@ -12,7 +12,7 @@
 // THE ENGINE MUST NEVER FILTER ON THIS. An ally's ally-only content has to resolve at build time;
 // only the pickers care who may choose it.
 
-export const AUDIENCE = { PLAYER: "player", ALLY: "ally" };
+export const AUDIENCE = { PLAYER: "pc", ALLY: "npc" };
 
 export const AVAILABLE_FOR_COLUMN = "available_for";
 
