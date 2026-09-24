@@ -7,7 +7,7 @@ import {
   addRosterEntry,
   setActiveAllyInstanceId,
   getRoster,
-} from "dev/public/js/store/allies.js";
+} from "dev/public/js/store/allies/allies.js";
 import { createAllyEditTarget } from "dev/public/js/allies/allyEditTarget.js";
 
 const STORAGE_KEY = "archivum_characters";

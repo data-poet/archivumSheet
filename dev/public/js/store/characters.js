@@ -229,7 +229,7 @@ function _ownerIdOf(list, allyId) {
 // right after the PC whose roster still references it (indented: true), for the selector to
 // visually group them. Ownership is derived from each PC's own roster ally_id, since forked
 // allies don't record their origin on themselves. An ally with no PC pointing at it anymore
-// (removed from the roster but never deleted, see removeRosterEntry in store/allies.js) just
+// (removed from the roster but never deleted, see removeRosterEntry in store/allies/allies.js) just
 // keeps its own place in list order, un-indented.
 export function listCharactersGrouped() {
   const list = getStore().list;

@@ -6,7 +6,7 @@ import {
   availableFor,
   resetAudienceRecord,
 } from "dev/public/js/shared/availability.js";
-import { findAllyOnlyContent } from "dev/public/js/store/allyOnlyContent.js";
+import { findAllyOnlyContent } from "dev/public/js/store/allies/allyOnlyContent.js";
 import { state } from "dev/public/js/state.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 

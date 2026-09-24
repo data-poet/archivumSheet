@@ -2,9 +2,9 @@
 // roster. Built from the same index the roster selector uses, so both stay in sync
 // without a second fetch.
 
-import { t } from "../localization/pt-BR/index.js";
-import { addRosterEntry } from "../store/allies.js";
-import { escapeHtml } from "../shared/renderUtils.js";
+import { t } from "../../localization/pt-BR/index.js";
+import { addRosterEntry } from "../../store/allies/allies.js";
+import { escapeHtml } from "../../shared/renderUtils.js";
 
 let _index = [];
 let _onAdd = () => {};

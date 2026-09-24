@@ -15,7 +15,7 @@ import {
   resolveAlly,
   forkAllyToLocal,
   pruneOrphanedAllies,
-} from "dev/public/js/store/allies.js";
+} from "dev/public/js/store/allies/allies.js";
 
 const STORAGE_KEY = "archivum_characters";
 

@@ -1,4 +1,4 @@
-jest.mock("dev/public/js/store/allies.js", () => ({
+jest.mock("dev/public/js/store/allies/allies.js", () => ({
   getRoster: jest.fn(),
   getActiveAllyInstanceId: jest.fn(),
   setActiveAllyInstanceId: jest.fn(),
@@ -22,7 +22,7 @@ import {
   setActiveAllyInstanceId,
   removeRosterEntry,
   forkAllyToLocal,
-} from "dev/public/js/store/allies.js";
+} from "dev/public/js/store/allies/allies.js";
 import {
   setActiveCharacterId,
   loadStore,
@@ -36,7 +36,7 @@ import {
   closeSelector,
   toggleSelector,
   initAllyRosterSelector,
-} from "dev/public/js/components/allyRosterSelector.js";
+} from "dev/public/js/components/allies/allyRosterSelector.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 

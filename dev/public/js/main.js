@@ -36,7 +36,7 @@ import { loadMaterials } from "./engine/inventory/shared/materials.js";
 import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 import { renderEntryKind } from "./components/entryKind.js";
-import { renderAllyLinkControl } from "./components/allyLinkControl.js";
+import { renderAllyLinkControl } from "./components/allies/allyLinkControl.js";
 import { getActiveKind } from "./store/characters.js";
 import { ENTRY_KINDS } from "./shared/constants.js";
 import { state } from "./state.js";

@@ -3,8 +3,8 @@ import { initPageSelector } from "../components/pageSelector.js";
 import { LABELS } from "../localization/pt-BR/index.js";
 import { mountResumePanel } from "../components/resume/skeleton.js";
 import { renderResume, RESUME_MODES } from "../components/resume/index.js";
-import { initAllyRosterSelector, updateRosterButton, renderPopover as renderRosterPopover } from "../components/allyRosterSelector.js";
-import { initAllyAddForm } from "../components/allyAddForm.js";
+import { initAllyRosterSelector, updateRosterButton, renderPopover as renderRosterPopover } from "../components/allies/allyRosterSelector.js";
+import { initAllyAddForm } from "../components/allies/allyAddForm.js";
 import { setEditTarget, getEditTarget } from "../shared/editTarget.js";
 import { createAllyEditTarget } from "./allyEditTarget.js";
 import { handleResumeAttributeInput } from "../engine/character/traits/resumeAttributeInput.js";
@@ -19,9 +19,9 @@ import {
   setActiveAllyInstanceId,
   resolveAlly,
   pruneOrphanedAllies,
-} from "../store/allies.js";
+} from "../store/allies/allies.js";
 import { applyOverlay } from "./overlay.js";
-import { initPcSwitcher } from "../components/pcSwitcher.js";
+import { initPcSwitcher } from "../components/allies/pcSwitcher.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 
 function _hydrateShell() {
