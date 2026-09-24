@@ -271,6 +271,56 @@ describe("exportSheet", () => {
     );
   });
 
+  test("bundles linked_allies when the active character has linked allies", async () => {
+    localStorage.setItem(
+      "archivum_characters",
+      JSON.stringify({
+        activeId: "pc-1",
+        list: [
+          {
+            id: "pc-1",
+            name: "Aria",
+            race: "",
+            kind: "character",
+            data: {
+              character: {
+                allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} }],
+              },
+            },
+          },
+          {
+            id: "c-ally-1",
+            name: "Fido",
+            race: "",
+            kind: "ally",
+            data: { pc: { character_name: "Fido" }, race: {}, character: {}, inventory: {} },
+          },
+        ],
+      }),
+    );
+
+    exportSheet();
+
+    const blob = URL.createObjectURL.mock.calls[0][0];
+    const text = await readBlobText(blob);
+    const parsed = JSON.parse(text);
+
+    expect(parsed.linked_allies).toEqual({
+      "c-ally-1": { pc: { character_name: "Fido" }, race: {}, character: {}, inventory: {} },
+    });
+  });
+
+  test("omits linked_allies entirely when the active character has none", async () => {
+    localStorage.clear();
+    exportSheet();
+
+    const blob = URL.createObjectURL.mock.calls[0][0];
+    const text = await readBlobText(blob);
+    const parsed = JSON.parse(text);
+
+    expect(parsed.linked_allies).toBeUndefined();
+  });
+
   test("shows an error toast when building the download fails", () => {
     URL.createObjectURL.mockImplementation(() => {
       throw new Error("boom");

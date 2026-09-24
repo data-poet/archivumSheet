@@ -7,6 +7,7 @@ import {
   addCharacter,
   removeCharacter,
   saveActiveCharacter,
+  recreateLinkedAllies,
 } from "../store/characters.js";
 import {
   exportSheet,
@@ -22,6 +23,7 @@ import { clickStartedInside } from "../shared/eventDispatch.js";
 import { isAllyFile } from "../store/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
+import { renderAllyLinkControl } from "./allyLinkControl.js";
 import { renderPageSelector } from "./pageSelector.js";
 
 export function updateSelectorButton() {
@@ -180,6 +182,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderAllyLinkControl();
         renderPageSelector();
         break;
       }
@@ -194,6 +197,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderAllyLinkControl();
         renderPageSelector();
         break;
       }
@@ -211,6 +215,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderAllyLinkControl();
         renderPageSelector();
         break;
       }
@@ -234,6 +239,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderAllyLinkControl();
         renderPageSelector();
         break;
       }
@@ -287,8 +293,12 @@ export function initCharacterSelector() {
             throw new Error("Arquivo inválido — campos obrigatórios ausentes.");
           }
           replaceActiveCharacter(payload);
+          if (payload.linked_allies) {
+            recreateLinkedAllies(payload.linked_allies, getActiveCharacterId());
+          }
           updateSelectorButton();
           renderEntryKind();
+          renderAllyLinkControl();
           renderPageSelector();
         } else {
           const text = await file.text();
@@ -304,8 +314,12 @@ export function initCharacterSelector() {
           );
           // addCharacter loads a blank character; overwrite it with the imported data.
           replaceActiveCharacter(payload);
+          if (payload.linked_allies) {
+            recreateLinkedAllies(payload.linked_allies, getActiveCharacterId());
+          }
           updateSelectorButton();
           renderEntryKind();
+          renderAllyLinkControl();
           renderPageSelector();
         }
       } catch (err) {

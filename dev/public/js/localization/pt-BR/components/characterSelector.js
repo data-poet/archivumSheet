@@ -16,4 +16,8 @@ export const CHARACTERS = {
   kindBadge: "Aliado",
   exportAlly: "Exportar como aliado",
   allyOnlyWarning: "Este personagem tem conteúdo exclusivo de aliado:",
+
+  // Ally linking — the ally-edit page's "which character owns this ally" control.
+  linkLabel: "Vincular a personagem",
+  linkNone: "Nenhum",
 };
