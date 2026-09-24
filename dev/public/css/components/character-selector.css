@@ -119,6 +119,10 @@
   padding-left: calc(var(--space-7) + var(--space-7));
 }
 
+.char-selector-item--indented .char-selector-item-name {
+  font-size: var(--fs-xs);
+}
+
 .char-selector-radio {
   font-size: 16px;
   color: var(--selector-character);
