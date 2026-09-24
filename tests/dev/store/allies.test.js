@@ -14,6 +14,7 @@ import {
   patchOverride,
   resolveAlly,
   forkAllyToLocal,
+  pruneOrphanedAllies,
 } from "dev/public/js/store/allies.js";
 
 const STORAGE_KEY = "archivum_characters";
@@ -243,5 +244,75 @@ describe("forkAllyToLocal", () => {
   test("returns null for an unknown instance id", async () => {
     seedStore();
     expect(await forkAllyToLocal("ai-does-not-exist")).toBeNull();
+  });
+});
+
+describe("pruneOrphanedAllies", () => {
+  test("drops a local roster entry whose backing character was deleted", () => {
+    seedStore({
+      allies: [{ _instanceId: "ai-1", ally_id: "c-9-local" }],
+      alliesActiveId: "ai-1",
+    });
+
+    pruneOrphanedAllies();
+
+    expect(getRoster()).toEqual([]);
+    expect(getActiveAllyInstanceId()).toBeNull();
+  });
+
+  test("leaves a local entry alone when its backing character still exists", () => {
+    const store = {
+      activeId: "c-1",
+      list: [
+        {
+          id: "c-1",
+          name: "Hero",
+          kind: "character",
+          data: {
+            character: {
+              allies: [{ _instanceId: "ai-1", ally_id: "c-9-local" }],
+              alliesActiveId: "ai-1",
+            },
+          },
+        },
+        { id: "c-9-local", name: "Forked Ally", kind: "ally", data: {} },
+      ],
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
+    pruneOrphanedAllies();
+
+    expect(getRoster()).toEqual([{ _instanceId: "ai-1", ally_id: "c-9-local" }]);
+    expect(getActiveAllyInstanceId()).toBe("ai-1");
+  });
+
+  test("leaves repo entries alone regardless of the character list", () => {
+    seedStore();
+    const a = addRosterEntry("ALLY_HUMANOID_001");
+    setActiveAllyInstanceId(a);
+
+    pruneOrphanedAllies();
+
+    expect(getRoster()).toEqual([
+      { _instanceId: a, ally_id: "ALLY_HUMANOID_001", overrides: {} },
+    ]);
+    expect(getActiveAllyInstanceId()).toBe(a);
+  });
+
+  test("only clears the active id if it pointed at the pruned entry", () => {
+    seedStore({
+      allies: [
+        { _instanceId: "ai-1", ally_id: "c-9-local" },
+        { _instanceId: "ai-2", ally_id: "ALLY_HUMANOID_001", overrides: {} },
+      ],
+      alliesActiveId: "ai-2",
+    });
+
+    pruneOrphanedAllies();
+
+    expect(getRoster()).toEqual([
+      { _instanceId: "ai-2", ally_id: "ALLY_HUMANOID_001", overrides: {} },
+    ]);
+    expect(getActiveAllyInstanceId()).toBe("ai-2");
   });
 });
