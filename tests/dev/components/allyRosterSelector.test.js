@@ -7,6 +7,7 @@ jest.mock("dev/public/js/store/allies.js", () => ({
 }));
 jest.mock("dev/public/js/store/characterStoreCore.js", () => ({
   setActiveCharacterId: jest.fn(),
+  loadStore: jest.fn(() => ({ list: [] })),
 }));
 jest.mock("dev/public/js/components/dialog.js", () => ({
   showConfirm: jest.fn(),
@@ -22,7 +23,10 @@ import {
   removeRosterEntry,
   forkAllyToLocal,
 } from "dev/public/js/store/allies.js";
-import { setActiveCharacterId } from "dev/public/js/store/characterStoreCore.js";
+import {
+  setActiveCharacterId,
+  loadStore,
+} from "dev/public/js/store/characterStoreCore.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
 import { navigateTo } from "dev/public/js/shared/navigate.js";
 import {
@@ -89,6 +93,21 @@ describe("updateRosterButton", () => {
   test("does not throw when the button isn't in the DOM", () => {
     document.getElementById("ally-selector-btn").remove();
     expect(() => updateRosterButton()).not.toThrow();
+  });
+
+  test("shows a forked local ally's own name, not its id", () => {
+    getRoster.mockReturnValue([
+      { _instanceId: "ai-1", ally_id: "c-local-1", overrides: {} },
+    ]);
+    loadStore.mockReturnValue({ list: [{ id: "c-local-1", name: "Fido" }] });
+
+    initAllyRosterSelector({ index: INDEX });
+
+    expect(
+      document
+        .getElementById("ally-selector-btn")
+        .querySelector(".char-selector-btn-name").textContent,
+    ).toBe("Fido");
   });
 });
 
