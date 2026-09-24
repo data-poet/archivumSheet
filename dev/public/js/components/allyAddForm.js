@@ -97,6 +97,7 @@ function _applyStaticLabels() {
     if (elem) elem.textContent = text;
   };
 
+  setText("ally-add-summary", t("allies.addToggle"));
   setText("ally-add-type-label", t("allies.typeLabel"));
   setText("ally-add-subtype-label", t("allies.subtypeLabel"));
   setText("ally-add-name-label", t("allies.nameLabel"));

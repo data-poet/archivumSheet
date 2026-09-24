@@ -79,20 +79,25 @@
     <main class="l-main" id="allies-main">
       <p class="allies-empty" id="allies-empty"></p>
 
-      <div class="ally-add-form" id="ally-add-form">
-        <div class="ally-add-field">
-          <label for="ally-add-type" id="ally-add-type-label"></label>
-          <select id="ally-add-type"></select>
-        </div>
-        <div class="ally-add-field">
-          <label for="ally-add-subtype" id="ally-add-subtype-label"></label>
-          <select id="ally-add-subtype"></select>
-        </div>
-        <div class="ally-add-field">
-          <label for="ally-add-name" id="ally-add-name-label"></label>
-          <select id="ally-add-name"></select>
-        </div>
-        <button type="button" id="ally-add-btn"></button>
+      <div class="box" id="ally-add-box">
+        <details id="ally-add-details">
+          <summary id="ally-add-summary"></summary>
+          <div class="ally-add-form" id="ally-add-form">
+            <div class="ally-add-field">
+              <label for="ally-add-type" id="ally-add-type-label"></label>
+              <select id="ally-add-type"></select>
+            </div>
+            <div class="ally-add-field">
+              <label for="ally-add-subtype" id="ally-add-subtype-label"></label>
+              <select id="ally-add-subtype"></select>
+            </div>
+            <div class="ally-add-field">
+              <label for="ally-add-name" id="ally-add-name-label"></label>
+              <select id="ally-add-name"></select>
+            </div>
+            <button type="button" id="ally-add-btn"></button>
+          </div>
+        </details>
       </div>
 
       <div id="resume-panel-host"></div>

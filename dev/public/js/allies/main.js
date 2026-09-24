@@ -35,6 +35,8 @@ function _hydrateShell() {
   }
 }
 
+let _lastEmptyState = null;
+
 function _showEmpty(show) {
   const empty = document.getElementById("allies-empty");
   const host = document.getElementById("resume-panel-host");
@@ -43,6 +45,12 @@ function _showEmpty(show) {
     empty.textContent = show ? LABELS.allies.emptyHint : "";
   }
   if (host) host.hidden = show;
+
+  // Collapsed once a resume is showing, so the add form doesn't clutter it — but only on
+  // an empty <-> active transition, so it doesn't fight a manual re-open mid-session.
+  const addDetails = document.getElementById("ally-add-details");
+  if (addDetails && _lastEmptyState !== show) addDetails.open = show;
+  _lastEmptyState = show;
 }
 
 function _debounce(fn, ms) {
