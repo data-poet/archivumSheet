@@ -1,6 +1,7 @@
 import { t } from "../localization/pt-BR/index.js";
 import {
   listCharacters,
+  listCharactersGrouped,
   getActiveCharacterId,
   loadCharacter,
   addCharacter,
@@ -78,7 +79,7 @@ export function renderPopover() {
   const popover = getPopover();
   if (!popover) return;
 
-  const chars = listCharacters();
+  const chars = listCharactersGrouped();
   const activeId = getActiveCharacterId();
 
   const charItems = chars
@@ -90,7 +91,7 @@ export function renderPopover() {
       return `
       <li>
         <button type="button"
-            class="char-selector-item${isActive ? " is-active" : ""}"
+            class="char-selector-item${isActive ? " is-active" : ""}${c.indented ? " char-selector-item--indented" : ""}"
             data-action="select-char"
             data-id="${c.id}"
             ${isActive ? 'aria-current="true"' : ""}>

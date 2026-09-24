@@ -114,6 +114,11 @@
   border-left-color: var(--selector-character);
 }
 
+/* A forked local ally still linked to a PC's roster, shown nested under that PC. */
+.char-selector-item--indented {
+  padding-left: calc(var(--space-7) + var(--space-7));
+}
+
 .char-selector-radio {
   font-size: 16px;
   color: var(--selector-character);

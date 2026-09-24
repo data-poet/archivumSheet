@@ -26,6 +26,7 @@ import {
   getActiveKind,
   setActiveKind,
   listCharacters,
+  listCharactersGrouped,
   getActiveCharacterId,
   saveActiveCharacter,
   loadCharacter,
@@ -78,6 +79,56 @@ describe("listCharacters / getActiveCharacterId", () => {
   test("returns the active character's id", () => {
     const store = getStore();
     expect(getActiveCharacterId()).toBe(store.activeId);
+  });
+});
+
+describe("listCharactersGrouped", () => {
+  function seedStore(list, activeId = list[0].id) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ activeId, list }));
+  }
+
+  test("nests a forked local ally right after the PC whose roster still points at it", () => {
+    seedStore([
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1" }] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+      { id: "pc-2", name: "Borin", race: "", kind: "character", data: { character: {} } },
+    ]);
+
+    expect(listCharactersGrouped()).toEqual([
+      { id: "pc-1", name: "Aria", race: "", kind: "character", indented: false },
+      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: true },
+      { id: "pc-2", name: "Borin", race: "", kind: "character", indented: false },
+    ]);
+  });
+
+  test("leaves an ally un-indented once no PC's roster references it anymore", () => {
+    seedStore([
+      { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+    ]);
+
+    expect(listCharactersGrouped()).toEqual([
+      { id: "pc-1", name: "Aria", race: "", kind: "character", indented: false },
+      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: false },
+    ]);
   });
 });
 

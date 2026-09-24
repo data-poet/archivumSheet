@@ -86,6 +86,9 @@ describe("character selector", () => {
     jest
       .spyOn(characters, "listCharacters")
       .mockReturnValue([{ id: "c-1", name: HOSTILE, race: HOSTILE }]);
+    jest
+      .spyOn(characters, "listCharactersGrouped")
+      .mockReturnValue([{ id: "c-1", name: HOSTILE, race: HOSTILE }]);
     jest.spyOn(characters, "getActiveCharacterId").mockReturnValue("c-1");
 
     updateSelectorButton();
