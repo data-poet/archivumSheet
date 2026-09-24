@@ -5,8 +5,10 @@ import { mountResumePanel } from "../components/resume/skeleton.js";
 import { renderResume, RESUME_MODES } from "../components/resume/index.js";
 import { initAllyRosterSelector, updateRosterButton, renderPopover as renderRosterPopover } from "../components/allyRosterSelector.js";
 import { initAllyAddForm } from "../components/allyAddForm.js";
-import { setEditTarget } from "../shared/editTarget.js";
+import { setEditTarget, getEditTarget } from "../shared/editTarget.js";
 import { createAllyEditTarget } from "./allyEditTarget.js";
+import { handleResumeAttributeInput } from "../engine/character/traits/resumeAttributeInput.js";
+import { bindStepperButtons } from "../shared/stepper.js";
 import { toEnginePayload } from "../shared/enginePayload.js";
 import { buildSheet, fetchAmmo, fetchSpells } from "../api.js";
 import { listAllies, isRepoAlly } from "./catalog.js";
@@ -103,6 +105,11 @@ export async function bootstrapAllies() {
   });
 
   setEditTarget(createAllyEditTarget(rebuild));
+  bindStepperButtons();
+  document.addEventListener("input", (e) => {
+    const target = getEditTarget();
+    if (target) handleResumeAttributeInput(e, target);
+  });
 
   await _rebuildAndRenderActive(catalogData);
 
