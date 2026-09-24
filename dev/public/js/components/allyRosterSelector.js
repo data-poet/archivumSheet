@@ -11,7 +11,7 @@ import {
   forkAllyToLocal,
 } from "../store/allies.js";
 import { listAllies, isRepoAlly } from "../allies/catalog.js";
-import { setActiveCharacterId } from "../store/characterStoreCore.js";
+import { setActiveCharacterId, loadStore } from "../store/characterStoreCore.js";
 import { showConfirm } from "./dialog.js";
 import { showToast } from "../shared/toast.js";
 import { escapeHtml } from "../shared/renderUtils.js";
@@ -21,8 +21,15 @@ import { navigateTo } from "../shared/navigate.js";
 let _onChange = () => {};
 let _index = [];
 
+// Repo entries resolve through the fetched index; a forked/local entry (ally_id is a
+// character-store id, not an ALLY_* one) isn't in that index at all — its name lives on
+// its own character-store entry instead.
 function _entryName(ally_id) {
-  return _index.find((a) => a.ally_id === ally_id)?.name || ally_id;
+  const repoName = _index.find((a) => a.ally_id === ally_id)?.name;
+  if (repoName) return repoName;
+
+  const localEntry = loadStore()?.list.find((c) => c.id === ally_id);
+  return localEntry?.name || ally_id;
 }
 
 function getPopover() {
