@@ -4,7 +4,7 @@
 // than innerHTML-ing the root panel, which is what lets collapsed/expanded state survive
 // a re-render.
 
-import { renderResumeImage } from "../../engine/character/portrait/portrait.js";
+import { renderResumeImage } from "../../engine/character/portrait/resumeImage.js";
 import { initResumeExpanders } from "./shared.js";
 import {
   renderResumeHeader,

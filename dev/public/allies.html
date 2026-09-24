@@ -40,9 +40,7 @@
     <header class="l-topbar" id="topbar">
       <div class="topbar-logo">
         <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
-        <span class="topbar-logo-name" id="topbar-title"
-          >Archivum — Aliados</span
-        >
+        <span class="topbar-logo-name" id="active-character-label"></span>
       </div>
       <div class="topbar-actions">
         <button
@@ -62,14 +60,42 @@
           aria-expanded="false"
           aria-label="Trocar de página"
         ></button>
+        <button
+          id="ally-selector-btn"
+          class="char-selector-btn"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="char-selector-btn-name">—</span>
+          <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
+        </button>
       </div>
     </header>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
-         MAIN CONTENT — the ally selector and resume panel land here next
+         MAIN CONTENT
          ═══════════════════════════════════════════════════════════════════════ -->
     <main class="l-main" id="allies-main">
       <p class="allies-empty" id="allies-empty"></p>
+
+      <div class="ally-add-form" id="ally-add-form">
+        <div class="ally-add-field">
+          <label for="ally-add-type" id="ally-add-type-label"></label>
+          <select id="ally-add-type"></select>
+        </div>
+        <div class="ally-add-field">
+          <label for="ally-add-subtype" id="ally-add-subtype-label"></label>
+          <select id="ally-add-subtype"></select>
+        </div>
+        <div class="ally-add-field">
+          <label for="ally-add-name" id="ally-add-name-label"></label>
+          <select id="ally-add-name"></select>
+        </div>
+        <button type="button" id="ally-add-btn"></button>
+      </div>
+
+      <div id="resume-panel-host"></div>
     </main>
 
     <!-- Page selector popover (built by components/pageSelector.js) -->
@@ -78,6 +104,14 @@
       class="char-selector-popover page-selector-popover"
       role="group"
       aria-label="Selecionar página"
+    ></div>
+
+    <!-- Ally roster popover (built by components/allyRosterSelector.js) -->
+    <div
+      id="ally-selector-popover"
+      class="char-selector-popover"
+      role="group"
+      aria-label="Selecionar aliado"
     ></div>
 
     <script type="module" src="/js/allies/main.js"></script>
