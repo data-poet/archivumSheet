@@ -1,5 +1,6 @@
-// Topbar roster popover, modeled on components/characterSelector.js. "Edit" is a stub in
-// this batch — forking a repo ally into a locally-editable draft lands in a later batch.
+// Topbar roster popover, modeled on components/characterSelector.js — same plain-item list +
+// divider + labeled actions pattern, so edit/remove act on the active roster entry rather than
+// carrying a per-row target.
 
 import { t } from "../localization/pt-BR/index.js";
 import {
@@ -85,7 +86,7 @@ export function renderPopover() {
       const isActive = entry._instanceId === activeId;
       const name = _entryName(entry.ally_id);
       return `
-      <li class="ally-selector-row">
+      <li>
         <button type="button"
             class="char-selector-item${isActive ? " is-active" : ""}"
             data-action="select-ally"
@@ -96,13 +97,26 @@ export function renderPopover() {
             <span class="char-selector-item-name">${escapeHtml(name)}</span>
           </span>
         </button>
-        <button type="button" class="char-selector-action-icon" data-action="edit-ally" data-id="${entry._instanceId}" aria-label="${t("allies.edit")}">✎</button>
-        <button type="button" class="char-selector-action-icon" data-action="remove-ally" data-id="${entry._instanceId}" aria-label="${t("allies.remove")}">−</button>
       </li>`;
     })
     .join("");
 
-  popover.innerHTML = `<ul class="char-selector-list">${items}</ul>`;
+  const actionItem = (action, icon, label, extraClass = "") => `
+    <li>
+      <button type="button" class="char-selector-action-item${extraClass}" data-action="${action}">
+        <span class="char-selector-action-icon" aria-hidden="true">${icon}</span>
+        <span>${label}</span>
+      </button>
+    </li>`;
+
+  popover.innerHTML = `
+    <ul class="char-selector-list">${items}</ul>
+    <div class="char-selector-divider"></div>
+    <ul class="char-selector-actions">
+      ${actionItem("edit-ally", "✎", t("allies.edit"))}
+      ${actionItem("remove-ally", "−", t("allies.remove"), " char-selector-action-remove")}
+    </ul>
+  `;
 }
 
 // Repo entries fork into a local draft first (decision #20 in ALLIES_FEATURE.md) — the
@@ -167,13 +181,17 @@ export function initAllyRosterSelector({ index = [], onChange = () => {} } = {})
       }
 
       case "edit-ally": {
-        await _handleEdit(id);
+        const activeId = getActiveAllyInstanceId();
+        if (!activeId) return;
+        await _handleEdit(activeId);
         closeSelector({ restoreFocus: true });
         break;
       }
 
       case "remove-ally": {
-        const entry = getRoster().find((e) => e._instanceId === id);
+        const activeId = getActiveAllyInstanceId();
+        if (!activeId) return;
+        const entry = getRoster().find((e) => e._instanceId === activeId);
         const name = entry ? _entryName(entry.ally_id) : "";
         const confirmed = await showConfirm({
           title: t("allies.confirmRemoveTitle"),
@@ -182,7 +200,7 @@ export function initAllyRosterSelector({ index = [], onChange = () => {} } = {})
           danger: true,
         });
         if (!confirmed) return;
-        removeRosterEntry(id);
+        removeRosterEntry(activeId);
         renderPopover();
         updateRosterButton();
         _onChange();

@@ -1,15 +1,4 @@
-/* Extends character-selector.css's popover/row styles for the allies roster + add form. */
-
-.ally-selector-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.ally-selector-row .char-selector-item {
-  flex: 1;
-  min-width: 0;
-}
+/* Extends character-selector.css's popover/row/action styles for the allies roster + add form. */
 
 .char-selector-empty {
   padding: var(--space-5) var(--space-7);

@@ -193,13 +193,13 @@ describe("initAllyRosterSelector — select-ally", () => {
 });
 
 describe("initAllyRosterSelector — edit-ally", () => {
-  test("forks a repo entry, then activates and navigates to the fork", async () => {
+  test("forks the active repo entry, then activates and navigates to the fork", async () => {
     forkAllyToLocal.mockResolvedValue("c-forked");
     initAllyRosterSelector({ index: INDEX });
     openSelector();
 
     document
-      .querySelector('[data-action="edit-ally"][data-id="ai-1"]')
+      .querySelector('[data-action="edit-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await flush();
 
@@ -208,15 +208,16 @@ describe("initAllyRosterSelector — edit-ally", () => {
     expect(navigateTo).toHaveBeenCalledWith("/");
   });
 
-  test("navigates straight to the editor for an already-local entry, no fork", async () => {
+  test("navigates straight to the editor for an already-local active entry, no fork", async () => {
     getRoster.mockReturnValue([
       { _instanceId: "ai-3", ally_id: "c-local", overrides: {} },
     ]);
+    getActiveAllyInstanceId.mockReturnValue("ai-3");
     initAllyRosterSelector({ index: INDEX });
     openSelector();
 
     document
-      .querySelector('[data-action="edit-ally"][data-id="ai-3"]')
+      .querySelector('[data-action="edit-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await flush();
 
@@ -231,11 +232,25 @@ describe("initAllyRosterSelector — edit-ally", () => {
     openSelector();
 
     document
-      .querySelector('[data-action="edit-ally"][data-id="ai-1"]')
+      .querySelector('[data-action="edit-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await flush();
 
     expect(setActiveCharacterId).not.toHaveBeenCalled();
+    expect(navigateTo).not.toHaveBeenCalled();
+  });
+
+  test("does nothing when no entry is active", async () => {
+    getActiveAllyInstanceId.mockReturnValue(null);
+    initAllyRosterSelector({ index: INDEX });
+    openSelector();
+
+    document
+      .querySelector('[data-action="edit-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(forkAllyToLocal).not.toHaveBeenCalled();
     expect(navigateTo).not.toHaveBeenCalled();
   });
 });
@@ -243,11 +258,12 @@ describe("initAllyRosterSelector — edit-ally", () => {
 describe("initAllyRosterSelector — remove-ally", () => {
   test("asks for confirmation, and does nothing when declined", async () => {
     showConfirm.mockResolvedValue(false);
+    getActiveAllyInstanceId.mockReturnValue("ai-2");
     initAllyRosterSelector({ index: INDEX });
     openSelector();
 
     document
-      .querySelector('[data-action="remove-ally"][data-id="ai-2"]')
+      .querySelector('[data-action="remove-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await flush();
 
@@ -260,19 +276,34 @@ describe("initAllyRosterSelector — remove-ally", () => {
     expect(removeRosterEntry).not.toHaveBeenCalled();
   });
 
-  test("removes the entry once confirmed and notifies onChange", async () => {
+  test("removes the active entry once confirmed and notifies onChange", async () => {
     showConfirm.mockResolvedValue(true);
+    getActiveAllyInstanceId.mockReturnValue("ai-2");
     const onChange = jest.fn();
     initAllyRosterSelector({ index: INDEX, onChange });
     openSelector();
 
     document
-      .querySelector('[data-action="remove-ally"][data-id="ai-2"]')
+      .querySelector('[data-action="remove-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await flush();
 
     expect(removeRosterEntry).toHaveBeenCalledWith("ai-2");
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  test("does nothing when no entry is active", async () => {
+    getActiveAllyInstanceId.mockReturnValue(null);
+    initAllyRosterSelector({ index: INDEX });
+    openSelector();
+
+    document
+      .querySelector('[data-action="remove-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(showConfirm).not.toHaveBeenCalled();
+    expect(removeRosterEntry).not.toHaveBeenCalled();
   });
 });
 
