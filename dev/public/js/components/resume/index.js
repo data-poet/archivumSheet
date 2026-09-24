@@ -40,12 +40,12 @@ export { initResumeExpanders };
 
 export const RESUME_MODES = { PC: "pc", ALLY: "ally" };
 
-// `pcOnly` marks sections an ally sheet has no business showing: it carries no point
-// budget and no storage buckets, so the accounting totals and backpack consumables
-// would render as empty or misleading. Array order is the visual order on the page.
+// Array order is the visual order on the page. An ally's sheet is built through the same
+// engine as a PC's (buildSheet/toEnginePayload are payload-generic), so every section here
+// renders in both modes.
 const SECTIONS = [
   { render: ({ sheet }) => renderResumeHeader(sheet) },
-  { pcOnly: true, render: ({ sheet }) => renderExperienceBar(sheet) },
+  { render: ({ sheet }) => renderExperienceBar(sheet) },
   { render: (ctx) => _renderPortrait(ctx) },
   { render: ({ sheet }) => renderResumePrimaryAttributes(sheet) },
   { render: ({ sheet }) => renderResumeBars(sheet) },
@@ -63,10 +63,10 @@ const SECTIONS = [
     render: ({ sheet, data, selected, opts }) =>
       renderResumeAmmo(sheet, data, selected, opts),
   },
-  { pcOnly: true, render: ({ sheet }) => renderResumeAlchemy(sheet) },
-  { pcOnly: true, render: ({ sheet }) => renderResumeWeight(sheet) },
-  { pcOnly: true, render: ({ sheet }) => renderResumeValue(sheet) },
-  { pcOnly: true, render: ({ sheet }) => renderResumePoints(sheet) },
+  { render: ({ sheet }) => renderResumeAlchemy(sheet) },
+  { render: ({ sheet }) => renderResumeWeight(sheet) },
+  { render: ({ sheet }) => renderResumeValue(sheet) },
+  { render: ({ sheet }) => renderResumePoints(sheet) },
 ];
 
 // The PC's portrait is still being edited elsewhere on the page, so it reads live state
@@ -96,7 +96,6 @@ export function renderResume(
   };
 
   for (const section of SECTIONS) {
-    if (section.pcOnly && mode !== RESUME_MODES.PC) continue;
     section.render(ctx);
   }
 }
