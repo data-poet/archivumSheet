@@ -9,27 +9,18 @@ import { triggerAutoRun } from "../compute/autorun.js";
 import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
-
-const STORAGE_KEY = "archivum_characters";
+import { generateId, loadStore, saveStore } from "./characterStoreCore.js";
 
 function _generateId() {
-  return "c-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7);
+  return generateId("c");
 }
 
 function _load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (_) {}
-  return null;
+  return loadStore();
 }
 
 function _save(store) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-  } catch (err) {
-    console.error("[characters] localStorage write failed:", err);
-  }
+  saveStore(store);
 }
 
 function _blankData() {
@@ -67,6 +58,8 @@ function _blankData() {
       disadvantages: {},
       skills: {},
       spells: {},
+      allies: [],
+      alliesActiveId: null,
     },
     inventory: {
       weight: 0,
@@ -183,6 +176,8 @@ function _applyData(data) {
   selected.disadvantages   = character.disadvantages  ?? {};
   selected.skills          = character.skills         ?? {};
   selected.spells          = character.spells         ?? {};
+  selected.allies          = character.allies         ?? [];
+  selected.alliesActiveId  = character.alliesActiveId ?? null;
   selected.armors          = inventory.armors         ?? [];
   selected.shields         = inventory.shields        ?? [];
   selected.melee_weapons   = inventory.melee_weapons  ?? [];

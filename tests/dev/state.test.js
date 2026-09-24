@@ -129,6 +129,8 @@ describe("state.selected shape", () => {
         "accessories",
         "magicGear",
         "coins",
+        "allies",
+        "alliesActiveId",
       ].sort(),
     );
   });

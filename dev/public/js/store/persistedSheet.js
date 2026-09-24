@@ -36,6 +36,8 @@ export function capturePersistedSheet() {
       disadvantages: selected.disadvantages,
       skills: selected.skills,
       spells: selected.spells,
+      allies: selected.allies,
+      alliesActiveId: selected.alliesActiveId,
     },
     inventory: {
       weight: Number(document.getElementById("weight")?.value) || 0,

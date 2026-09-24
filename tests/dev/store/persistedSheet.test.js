@@ -106,6 +106,8 @@ describe("capturePersistedSheet", () => {
   test("carries every character section", () => {
     expect(Object.keys(capturePersistedSheet().character).sort()).toEqual([
       "advantages",
+      "allies",
+      "alliesActiveId",
       "damage",
       "disadvantages",
       "primary",
