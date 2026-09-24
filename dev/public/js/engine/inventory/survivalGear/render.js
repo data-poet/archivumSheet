@@ -4,7 +4,11 @@ import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
-import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
+import {
+  detailRow,
+  formatRichText,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -88,7 +92,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
 
         return `
           <tr>
-            <td class="col-title">${name}</td>
+            ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("survivalGear.qty")}">
               <div class="num-stepper">
                 <input

@@ -21,6 +21,7 @@ import {
   formatRichText,
   customFieldsBody,
   withEnchantmentBadge,
+  cardTitleCell,
 } from "../../../shared/renderUtils.js";
 import {
   equippedItemTabs,
@@ -250,7 +251,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
         return `
         <tr>
           <td data-label="${t("armor.slot")}">${armorData.armor_piece_location}</td>
-          <td class="col-title">${armorData.armor_name}</td>
+          ${cardTitleCell(armorData.armor_name)}
           <td data-label="${t("common.tier")}">${armorData.armor_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
           <td class="col-num" data-label="${t("common.hp")}">

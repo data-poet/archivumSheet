@@ -1,7 +1,19 @@
 import { renderStoredMelee } from "dev/public/js/engine/inventory/melee/render.js";
 import { renderStoredArmors } from "dev/public/js/engine/inventory/armor/render.js";
 import { renderStoredFirearms } from "dev/public/js/engine/inventory/firearms/render.js";
+import { renderAlchemy } from "dev/public/js/engine/inventory/alchemy/render.js";
+import { renderCoinPurse } from "dev/public/js/engine/inventory/coinPurse/render.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
+
+// Collapsed by default, and the row must be keyable — the click-to-expand state (a
+// separate concern, see shared/cardCollapse.js and shared/openState.js) only survives
+// this section's frequent full re-renders if openState's row-identity lookup finds a key.
+function expectCollapsibleCard(row) {
+  const toggle = row.querySelector(".card-toggle");
+  expect(toggle).not.toBeNull();
+  expect(toggle.getAttribute("aria-expanded")).toBe("false");
+  expect(row.classList.contains("is-card-expanded")).toBe(false);
+}
 
 const MATERIALS = [{ material_id: "MAT-001", material_name: "Aço" }];
 
@@ -36,6 +48,8 @@ beforeEach(() => {
     <div id="meleeStorageList"></div>
     <div id="armorStorageList"></div>
     <div id="firearmStorageList"></div>
+    <div id="alchemyList"></div>
+    <div id="coinPurseList"></div>
   `);
 });
 
@@ -70,9 +84,10 @@ describe("stored inventory tables opt into the stacked card layout", () => {
     const rows = stackedRows("meleeStorageList");
     expect(rows).toHaveLength(1);
     expectEveryCellLabelled(rows[0]);
-    expect(rows[0].querySelector(".col-title").textContent).toBe(
+    expect(rows[0].querySelector(".card-title-text").textContent).toBe(
       "Espada Longa",
     );
+    expectCollapsibleCard(rows[0]);
   });
 
   test("armor titles the card with the name, not the leading body-slot cell", () => {
@@ -110,9 +125,10 @@ describe("stored inventory tables opt into the stacked card layout", () => {
     const cells = [...rows[0].children];
     expect(cells[0].dataset.label).toBeTruthy();
     expect(cells[0].textContent).toBe("Tronco");
-    expect(rows[0].querySelector(".col-title").textContent).toBe(
+    expect(rows[0].querySelector(".card-title-text").textContent).toBe(
       "Cota de Malha",
     );
+    expectCollapsibleCard(rows[0]);
   });
 
   test("the firearms magazine row is classed so it joins the card above it", () => {
@@ -155,5 +171,50 @@ describe("stored inventory tables opt into the stacked card layout", () => {
       "magazine-row",
       "detail-row",
     ]);
+  });
+
+  // Alchemy/survivalGear/coinPurse key their rows on domain-specific attributes
+  // (data-consumable-id, data-gear-id, data-coin-type) rather than data-instance-id — these
+  // had to be added to openState.js's ROW_KEY_ATTRS for the expand state to survive a
+  // re-render at all (see that module).
+  test("alchemy's card is collapsible and its row resolves a stable key via data-consumable-id", () => {
+    renderAlchemy(
+      {
+        alchemy: [
+          { consumable_id: "CONS-1", quantity: 2, storedAt: "backpack" },
+        ],
+      },
+      {
+        alchemy: [
+          {
+            consumable_id: "CONS-1",
+            consumable_name: "Poção de Cura",
+            consumable_tier: "I",
+          },
+        ],
+      },
+      null,
+    );
+
+    const rows = stackedRows("alchemyList");
+    expect(rows).toHaveLength(1);
+    expect(rows[0].querySelector(".card-title-text").textContent).toBe(
+      "Poção de Cura",
+    );
+    expectCollapsibleCard(rows[0]);
+    expect(rows[0].querySelector("[data-consumable-id]")).not.toBeNull();
+  });
+
+  test("coin purse's card is collapsible and its row resolves a stable key via data-coin-type", () => {
+    renderCoinPurse(
+      { coins: [{ coin_type: "gold", quantity: 5, storedAt: "backpack" }] },
+      {},
+      null,
+    );
+
+    const rows = stackedRows("coinPurseList");
+    expect(rows).toHaveLength(1);
+    expectCollapsibleCard(rows[0]);
+    expect(rows[0].querySelector("[data-coin-type]")).not.toBeNull();
   });
 });

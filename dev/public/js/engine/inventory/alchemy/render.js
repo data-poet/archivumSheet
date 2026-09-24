@@ -4,7 +4,11 @@ import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
-import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
+import {
+  detailRow,
+  formatRichText,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -107,7 +111,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
 
         return `
           <tr>
-            <td class="col-title">${name}</td>
+            ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("alchemy.tier")}">${tier}</td>
             <td class="col-num" data-label="${t("alchemy.qty")}">
               <div class="num-stepper">
