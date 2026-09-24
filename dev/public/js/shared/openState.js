@@ -1,7 +1,9 @@
-// Snapshots/restores open <details> state and .table-wrapper scroll position around a DOM
-// re-render. withOpenState covers a single container; for full-page re-renders
-// (runEngine → renderLists) use snapshotAll/restoreAll instead. Both key entries with
-// detailKeyFn, which handles every managed container without per-container config.
+// Snapshots/restores open <details> state, expanded mobile-card rows (.is-card-expanded),
+// and .table-wrapper scroll position around a DOM re-render. withOpenState covers a single
+// container; for full-page re-renders (runEngine → renderLists) use snapshotAll/restoreAll
+// instead. <details> entries key with detailKeyFn; card rows key with the same row-identity
+// logic (_rowKey) detailKeyFn already walks back to — both handle every managed container
+// without per-container config.
 
 // Without data-detail-kind, sibling blocks for the same instance (e.g. "stats" + "customize"
 // panels) would collapse onto the same key, forcing all open together on next re-render.
@@ -44,18 +46,43 @@ function _snapshotContainer(container, keyFn) {
     if (key) open.add(key);
   });
 
+  // Mobile card rows collapse to just their name (see tables.css's table-wrapper--stack
+  // rules); this section rebuilds via setHTML on nearly every input, which would otherwise
+  // re-collapse a card the user just opened mid-edit.
+  const expanded = new Set();
+  container.querySelectorAll("tr.is-card-expanded").forEach((row) => {
+    const key = _rowKey(row);
+    if (key) expanded.add(key);
+  });
+
   const scrollPositions = Array.from(
-    container.querySelectorAll(".table-wrapper")
+    container.querySelectorAll(".table-wrapper"),
   ).map((w) => w.scrollLeft);
 
-  return { open, scrollPositions };
+  return { open, expanded, scrollPositions };
 }
 
-function _restoreContainer(container, keyFn, { open, scrollPositions }) {
+function _restoreContainer(
+  container,
+  keyFn,
+  { open, expanded, scrollPositions },
+) {
   if (open.size > 0) {
     container.querySelectorAll("details").forEach((d) => {
       const key = keyFn(d);
       if (key && open.has(key)) d.setAttribute("open", "");
+    });
+  }
+
+  if (expanded.size > 0) {
+    container.querySelectorAll("tr").forEach((row) => {
+      const key = _rowKey(row);
+      if (key && expanded.has(key)) {
+        row.classList.add("is-card-expanded");
+        row
+          .querySelector(".card-toggle")
+          ?.setAttribute("aria-expanded", "true");
+      }
     });
   }
 
@@ -106,10 +133,10 @@ export function snapshotAll() {
 // Call synchronously right after renderLists(), not inside a later rAF — see withOpenState's
 // comment for why a deferred restore causes a visible collapse-then-reopen flash.
 export function restoreAll(snapshots) {
-  snapshots.forEach(({ open, scrollPositions }, id) => {
+  snapshots.forEach(({ open, expanded, scrollPositions }, id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    _restoreContainer(el, detailKeyFn, { open, scrollPositions });
+    _restoreContainer(el, detailKeyFn, { open, expanded, scrollPositions });
   });
 }
 
@@ -125,6 +152,9 @@ const ROW_KEY_ATTRS = [
   "data-id",
   "data-name",
   "data-custom-item-id",
+  "data-consumable-id",
+  "data-gear-id",
+  "data-coin-type",
 ];
 
 // data-ammo-id is checked BEFORE the plain attrs and combined with the container's

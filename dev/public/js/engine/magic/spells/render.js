@@ -5,6 +5,7 @@ import {
   detailRow,
   numStepper,
   emptyRow,
+  cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
 // ===== SPELLS =====
@@ -148,8 +149,8 @@ export function renderSpells(selected, data, sheet) {
             ];
 
             return `
-          <tr class="${isEnchantment ? "trait-enchantment" : ""}">
-            <td class="col-title">${name}${enchantmentTag}</td>
+          <tr class="${isEnchantment ? "trait-enchantment" : ""}" data-name="${name}">
+            ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td data-label="${t("traits.school")}">${school}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
             <td class="col-center" data-label="${t("traits.tier")}">${tier}</td>

@@ -37,7 +37,7 @@ describe("renderSkills — a purely player-selected skill (engine hasn't run yet
     renderSkills(selected, data, undefined);
 
     const row = parse().querySelector("tbody tr");
-    expect(row.querySelector("td").textContent).toBe("Espada");
+    expect(row.querySelector(".card-title-text").textContent).toBe("Espada");
     expect(row.querySelector("td strong").textContent).toBe("14");
     expect(row.querySelector(".remove-skill")).not.toBeNull();
     expect(row.querySelector(".skill-input")).not.toBeNull();
@@ -68,7 +68,7 @@ describe("renderSkills — mobile card layout", () => {
       parse().querySelector(".table-wrapper.table-wrapper--stack"),
     ).not.toBeNull();
     const row = parse().querySelector("tbody tr");
-    expect(row.querySelector(".col-title").textContent).toBe("Espada");
+    expect(row.querySelector(".card-title-text").textContent).toBe("Espada");
     expect(
       row.querySelector('[data-label="' + t("traits.attr") + '"]'),
     ).not.toBeNull();
@@ -87,6 +87,23 @@ describe("renderSkills — mobile card layout", () => {
     expect(
       row.querySelector('[data-label="' + t("traits.final") + '"]'),
     ).not.toBeNull();
+  });
+
+  test("the name cell is a collapse-toggle button, collapsed by default", () => {
+    const selected = {
+      skills: { "SK-1": { base_value: 12, modifier: 2 } },
+    };
+    const data = { skills: [{ skill_id: "SK-1", skill_name: "Espada" }] };
+
+    renderSkills(selected, data, undefined);
+
+    const row = parse().querySelector("tbody tr");
+    expect(row.getAttribute("data-id")).toBe("SK-1");
+    expect(row.classList.contains("is-card-expanded")).toBe(false);
+    expect(row.querySelector(".card-toggle")).not.toBeNull();
+    expect(
+      row.querySelector(".card-toggle").getAttribute("aria-expanded"),
+    ).toBe("false");
   });
 });
 

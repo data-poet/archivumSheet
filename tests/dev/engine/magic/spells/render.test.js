@@ -395,4 +395,20 @@ describe("renderSpells — mobile card layout", () => {
       row.querySelector(`[data-label="${t("traits.aptitude")}"]`),
     ).not.toBeNull();
   });
+
+  test("the name cell is a collapse-toggle button, collapsed by default", () => {
+    const selected = {
+      spells: { "bola-de-fogo": { base_value: 10, modifier: 0 } },
+    };
+
+    renderSpells(selected, { spells: [] }, undefined);
+
+    const row = spellList().querySelector("tbody tr");
+    expect(row.getAttribute("data-name")).toBe("bola-de-fogo");
+    expect(row.classList.contains("is-card-expanded")).toBe(false);
+    expect(row.querySelector(".card-toggle")).not.toBeNull();
+    expect(
+      row.querySelector(".card-toggle").getAttribute("aria-expanded"),
+    ).toBe("false");
+  });
 });

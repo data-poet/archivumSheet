@@ -40,6 +40,7 @@ import { getActiveKind } from "./store/characters.js";
 import { ENTRY_KINDS } from "./shared/constants.js";
 import { state } from "./state.js";
 import { setCatalogAudience, AUDIENCE } from "./shared/availability.js";
+import { initCardCollapse } from "./shared/cardCollapse.js";
 
 export async function bootstrap() {
   // Must precede every load*(): each one assigns its catalog and builds its add-form selectors in
@@ -61,6 +62,7 @@ export async function bootstrap() {
   setupAutoRun();
   initAttributeTableHeaders();
   initSelectLabels();
+  initCardCollapse();
   updateActualValues();
 
   // The load*() functions only fetch catalogs and populate their own add-form
