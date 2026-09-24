@@ -48,6 +48,16 @@ export function getRoster() {
   return _roster(_activeEntry(loadStore()));
 }
 
+// Only real characters can carry a roster (an ally has no roster of its own — see
+// pageSelector.js's page-hiding for the other half of that rule), so this is the allies
+// page's whole "switch which character I'm viewing" list.
+export function listSwitchableCharacters() {
+  const store = loadStore();
+  return (store?.list ?? [])
+    .filter((c) => c.kind !== ENTRY_KINDS.ALLY)
+    .map((c) => ({ id: c.id, name: c.name ?? "" }));
+}
+
 // Repo additions only — a local ally joins the roster by being linked to the character
 // (out of scope for this batch; see ALLIES_FEATURE.md Part B).
 export function addRosterEntry(ally_id) {

@@ -40,7 +40,6 @@
     <header class="l-topbar" id="topbar">
       <div class="topbar-logo">
         <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
-        <span class="topbar-logo-name" id="active-character-label"></span>
       </div>
       <div class="topbar-actions">
         <button
@@ -60,6 +59,16 @@
           aria-expanded="false"
           aria-label="Trocar de página"
         ></button>
+        <button
+          id="pc-selector-btn"
+          class="char-selector-btn"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="char-selector-btn-name">—</span>
+          <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
+        </button>
         <button
           id="ally-selector-btn"
           class="char-selector-btn"
@@ -109,6 +118,14 @@
       class="char-selector-popover page-selector-popover"
       role="group"
       aria-label="Selecionar página"
+    ></div>
+
+    <!-- Character switcher popover (built by components/pcSwitcher.js) -->
+    <div
+      id="pc-selector-popover"
+      class="char-selector-popover"
+      role="group"
+      aria-label="Trocar de personagem"
     ></div>
 
     <!-- Ally roster popover (built by components/allyRosterSelector.js) -->

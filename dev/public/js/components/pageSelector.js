@@ -11,6 +11,8 @@
 
 import { LABELS } from "../localization/pt-BR/index.js";
 import { clickStartedInside } from "../shared/eventDispatch.js";
+import { getActiveCharacterKind } from "../store/characterStoreCore.js";
+import { ENTRY_KINDS } from "../shared/constants.js";
 
 const TRIGGER_ID = "page-selector-btn";
 const POPOVER_ID = "page-selector-popover";
@@ -40,10 +42,20 @@ export function getCurrentPage(pathname = window.location.pathname) {
   );
 }
 
+// An ally can't have its own roster of allies (no nesting), so the "Aliados" page never
+// applies to one — it stays hidden here rather than letting bootstrapAllies() sort it out.
+function _visiblePages() {
+  const { items } = LABELS.pages;
+  return getActiveCharacterKind() === ENTRY_KINDS.ALLY
+    ? items.filter((page) => page.key !== "allies")
+    : items;
+}
+
 export function renderPageSelector() {
   const trigger = getTrigger();
   const popover = getPopover();
-  const { items, ariaLabel, triggerAria } = LABELS.pages;
+  const { ariaLabel, triggerAria } = LABELS.pages;
+  const items = _visiblePages();
   const current = getCurrentPage();
 
   if (trigger) {
