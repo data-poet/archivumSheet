@@ -3,8 +3,8 @@
 // stepper markup/handler work unmodified on both pages.
 //
 // A repo ally's edits go through the sparse overlay (patchOverride) so a later catalog
-// rebalance still applies; a forked/local ally has no overlay — decision #20 in
-// ALLIES_FEATURE.md — so its character.primary/secondary are mutated directly.
+// rebalance still applies; a forked/local ally has no overlay, so its
+// character.primary/secondary are mutated directly.
 
 import { loadStore, saveStore } from "../store/characterStoreCore.js";
 import { isRepoAlly } from "./catalog.js";

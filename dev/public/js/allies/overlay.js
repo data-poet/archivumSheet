@@ -1,7 +1,6 @@
 // Sparse patch over a catalog ally — never a snapshot, so a catalog rebalance still propagates
-// to every character fielding that ally (decision #3 in ALLIES_FEATURE.md). Touches only
-// character.primary.*/character.secondary.*, matching the resume's editable whitelist
-// (decision #4) — nothing else about a repo ally can be overridden.
+// to every character fielding that ally. Touches only character.primary.*/character.secondary.*,
+// matching the resume's editable whitelist — nothing else about a repo ally can be overridden.
 
 function _mergeAttr(base, patch) {
   if (patch === null || typeof patch !== "object" || Array.isArray(patch)) return patch;

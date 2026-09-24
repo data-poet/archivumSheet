@@ -213,7 +213,7 @@ export function listCharacters() {
 
 // Scans every entry's roster for one pointing at allyId and returns its owner's id, or null if
 // no live entry currently claims it (orphaned, or never linked). This is the single mechanism
-// behind both forked-ally nesting (listCharactersGrouped) and Part B's linking API below — there
+// behind both forked-ally nesting (listCharactersGrouped) and the linking API below — there
 // is deliberately no separate `linkedCharacterId` field, since the roster entry itself already
 // encodes the link and a second field could drift out of sync with it.
 function _ownerIdOf(list, allyId) {
@@ -301,8 +301,8 @@ export function getAllyOwnerId(allyEntryId) {
 }
 
 // Removes allyEntryId's roster entry from whichever character currently owns it, if any. The
-// underlying ally entry is never touched — this is the "orphan" case (decision #21 in
-// ALLIES_FEATURE.md): the ally survives as a standalone draft, just unowned.
+// underlying ally entry is never touched — this is the "orphan" case: the ally survives as a
+// standalone draft, just unowned.
 export function unlinkAlly(allyEntryId) {
   const store = getStore();
   const owner = store.list.find(
@@ -320,10 +320,10 @@ export function unlinkAlly(allyEntryId) {
   _save(store);
 }
 
-// Links a standalone local ally draft to a character by pushing an ordinary roster entry (decision
-// #15 in ALLIES_FEATURE.md) — this is what listCharactersGrouped()'s roster scan then picks up for
-// nesting, and what allies.html's roster reads, with no separate wiring needed on either side.
-// Refuses linking when the target is itself an ally (decision #24 — no allies-of-allies).
+// Links a standalone local ally draft to a character by pushing an ordinary roster entry — this
+// is what listCharactersGrouped()'s roster scan then picks up for nesting, and what allies.html's
+// roster reads, with no separate wiring needed on either side.
+// Refuses linking when the target is itself an ally — no allies-of-allies.
 export function linkAllyToCharacter(allyEntryId, characterId) {
   const store = getStore();
   const allyEntry = store.list.find((c) => c.id === allyEntryId);
