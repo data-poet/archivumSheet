@@ -15,7 +15,7 @@ describe("renderSpells — empty state", () => {
     renderSpells({ spells: {} }, { spells: [] }, undefined);
     const row = spellList().querySelector(".empty-row");
     expect(row).not.toBeNull();
-    expect(row.querySelector("td").getAttribute("colspan")).toBe("9"); // 8 cols + detail col
+    expect(row.querySelector("td").getAttribute("colspan")).toBe("10"); // 9 cols + detail col
   });
 });
 
@@ -88,9 +88,9 @@ describe("renderSpells — a purely player-selected spell (engine hasn't run yet
 
     expect(spellList().textContent).toContain(t("traits.aptitude"));
     const row = spellList().querySelector("tbody tr");
-    // 9 cols now: name/school/diff/tier/base/mod/aptitude/enchantment/final
+    // 10 cols now: name/school/diff/tier/cost/base/mod/aptitude/enchantment/final
     const cells = row.querySelectorAll("td");
-    expect(cells).toHaveLength(9 + 1); // +1 for the action column
+    expect(cells).toHaveLength(10 + 1); // +1 for the action column
   });
 });
 
@@ -300,5 +300,99 @@ describe("renderSpells — detail row", () => {
 
     expect(spellList().textContent).toContain(t("traits.description"));
     expect(spellList().textContent).toContain("Causa dano de fogo.");
+  });
+
+  // Shared detailRow() drops any field that's absent, same as Traits/Skills — no catalog
+  // row means every field (type/cost/cast/target/range/area/duration/scaling) is "—".
+  test("omits the detail row entirely when no catalog row matches at all", () => {
+    const selected = {
+      spells: { "spell-desconhecido": { base_value: 10, modifier: 0 } },
+    };
+
+    renderSpells(selected, { spells: [] }, undefined);
+
+    expect(spellList().querySelector("details")).toBeNull();
+  });
+});
+
+describe("renderSpells — mobile card layout", () => {
+  test("opts the table into the stacked layout with labeled cells", () => {
+    const data = {
+      spells: [
+        {
+          spell_name: "bola-de-fogo",
+          spell_school: "Fogo",
+          spell_difficulty: "Difícil",
+        },
+      ],
+    };
+    const selected = {
+      spells: { "bola-de-fogo": { base_value: 10, modifier: 2 } },
+    };
+
+    renderSpells(selected, data, undefined);
+
+    expect(
+      spellList().querySelector(".table-wrapper.table-wrapper--stack"),
+    ).not.toBeNull();
+    const row = spellList().querySelector("tbody tr");
+    expect(row.querySelector(".col-title").textContent).toContain(
+      "bola-de-fogo",
+    );
+    for (const label of [
+      t("traits.school"),
+      t("traits.diff"),
+      t("traits.tier"),
+      t("traits.spellCost"),
+      t("traits.base"),
+      t("traits.mod"),
+      t("traits.enchantment"),
+      t("traits.final"),
+    ]) {
+      expect(row.querySelector(`[data-label="${label}"]`)).not.toBeNull();
+    }
+  });
+
+  // Cost sits right after Tier, ahead of Base — in the two-column stacked grid this pushes
+  // Base and Mod onto the same row instead of splitting across two, which is the point.
+  test("shows the mana cost as its own column, right before Base", () => {
+    const data = {
+      spells: [{ spell_name: "bola-de-fogo", spell_cost: "3" }],
+    };
+    const selected = {
+      spells: { "bola-de-fogo": { base_value: 10, modifier: 0 } },
+    };
+
+    renderSpells(selected, data, undefined);
+
+    const row = spellList().querySelector("tbody tr");
+    const cells = [...row.querySelectorAll("td")];
+    const costIndex = cells.findIndex(
+      (c) => c.getAttribute("data-label") === t("traits.spellCost"),
+    );
+    const baseIndex = cells.findIndex((c) =>
+      c.querySelector('input[data-field="base_value"]'),
+    );
+    expect(cells[costIndex].textContent).toBe("3");
+    expect(baseIndex).toBe(costIndex + 1);
+  });
+
+  test("labels the aptitude cell too when the column is shown", () => {
+    const selected = {
+      spells: { "bola-de-fogo": { base_value: 10, modifier: 0 } },
+    };
+    const sheet = {
+      character: { advantages: { "ADV-064": true } },
+      grimoire: {
+        "SPELL-1": { name: "bola-de-fogo", aptitude_level: 4 },
+      },
+    };
+
+    renderSpells(selected, { spells: [] }, sheet);
+
+    const row = spellList().querySelector("tbody tr");
+    expect(
+      row.querySelector(`[data-label="${t("traits.aptitude")}"]`),
+    ).not.toBeNull();
   });
 });

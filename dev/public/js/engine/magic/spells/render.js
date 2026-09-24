@@ -53,7 +53,7 @@ export function renderSpells(selected, data, sheet) {
   ];
 
   const showAptitude = hasMagicAptitude(sheet);
-  const COLS = showAptitude ? 9 : 8;
+  const COLS = showAptitude ? 10 : 9;
 
   const rows =
     names.length === 0
@@ -115,14 +115,14 @@ export function renderSpells(selected, data, sheet) {
             const obs = formatRichText(spell?.spell_observation);
 
             const baseCell = isEnchantment
-              ? `<td class="col-num">${base}</td>`
-              : `<td class="col-num">
+              ? `<td class="col-num" data-label="${t("traits.base")}">${base}</td>`
+              : `<td class="col-num" data-label="${t("traits.base")}">
                   ${numStepper("spell-input", `data-name="${name}" data-field="base_value"`, base)}
                 </td>`;
 
             const modCell = isEnchantment
-              ? `<td class="col-num">${mod}</td>`
-              : `<td class="col-num">
+              ? `<td class="col-num" data-label="${t("traits.mod")}">${mod}</td>`
+              : `<td class="col-num" data-label="${t("traits.mod")}">
                   ${numStepper("spell-input", `data-name="${name}" data-field="modifier"`, mod)}
                 </td>`;
 
@@ -135,51 +135,47 @@ export function renderSpells(selected, data, sheet) {
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
               : "";
 
+            const detailItems = [
+              { label: t("traits.spellType"), value: type },
+              { label: t("traits.cast"), value: castTime },
+              { label: t("traits.target"), value: target },
+              { label: t("traits.range"), value: range },
+              { label: t("traits.area"), value: area },
+              { label: t("traits.duration"), value: duration },
+              { label: t("traits.scaling"), value: scaling, rich: true },
+              { label: t("traits.description"), value: desc, rich: true },
+              { label: t("traits.observation"), value: obs, rich: true },
+            ];
+
             return `
           <tr class="${isEnchantment ? "trait-enchantment" : ""}">
-            <td>${name}${enchantmentTag}</td>
-            <td>${school}</td>
-            <td class="col-center">${diff}</td>
-            <td class="col-center">${tier}</td>
+            <td class="col-title">${name}${enchantmentTag}</td>
+            <td data-label="${t("traits.school")}">${school}</td>
+            <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
+            <td class="col-center" data-label="${t("traits.tier")}">${tier}</td>
+            <td class="col-num" data-label="${t("traits.spellCost")}">${cost}</td>
             ${baseCell}
             ${modCell}
-            ${showAptitude ? `<td class="col-num">${aptitude}</td>` : ""}
-            <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}">${enchantmentDisplay}</td>
-            <td class="col-num"><strong>${final}</strong></td>
+            ${showAptitude ? `<td class="col-num" data-label="${t("traits.aptitude")}">${aptitude}</td>` : ""}
+            <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}" data-label="${t("traits.enchantment")}">${enchantmentDisplay}</td>
+            <td class="col-num" data-label="${t("traits.final")}"><strong>${final}</strong></td>
             ${actionCell}
           </tr>
-          <tr class="detail-row spell-detail-row">
-            <td colspan="${COLS + 1}">
-              <details>
-                <summary>${t("common.details")}</summary>
-                <div class="item-detail-grid">
-                  <span class="item-detail"><em>${t("traits.spellType")}:</em> ${type}</span>
-                  <span class="item-detail"><em>${t("traits.spellCost")}:</em> ${cost}</span>
-                  <span class="item-detail"><em>${t("traits.cast")}:</em> ${castTime}</span>
-                  <span class="item-detail"><em>${t("traits.target")}:</em> ${target}</span>
-                  <span class="item-detail"><em>${t("traits.range")}:</em> ${range}</span>
-                  <span class="item-detail"><em>${t("traits.area")}:</em> ${area}</span>
-                  <span class="item-detail"><em>${t("traits.duration")}:</em> ${duration}</span>
-                  ${scaling !== "—" ? `<div class="item-detail-block"><em>${t("traits.scaling")}:</em>${scaling}</div>` : `<span class="item-detail"><em>${t("traits.scaling")}:</em> —</span>`}
-                  ${desc !== "—" ? `<div class="item-detail-block"><em>${t("traits.description")}:</em>${desc}</div>` : ""}
-                  ${obs !== "—" ? `<div class="item-detail-block"><em>${t("traits.observation")}:</em>${obs}</div>` : ""}
-                </div>
-              </details>
-            </td>
-          </tr>`;
+          ${detailRow(COLS + 1, detailItems)}`;
           })
           .join("");
 
   setHTML(
     "spellList",
     `
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
           <th>${t("traits.school")}</th>
           <th class="col-center">${t("traits.diff")}</th>
           <th class="col-center">${t("traits.tier")}</th>
+          <th class="col-num">${t("traits.spellCost")}</th>
           <th class="col-num">${t("traits.base")}</th>
           <th class="col-num">${t("traits.mod")}</th>
           ${showAptitude ? `<th class="col-num">${t("traits.aptitude")}</th>` : ""}
