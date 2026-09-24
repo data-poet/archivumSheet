@@ -2,21 +2,21 @@
 // divider + labeled actions pattern, so edit/remove act on the active roster entry rather than
 // carrying a per-row target.
 
-import { t } from "../localization/pt-BR/index.js";
+import { t } from "../../localization/pt-BR/index.js";
 import {
   getRoster,
   getActiveAllyInstanceId,
   setActiveAllyInstanceId,
   removeRosterEntry,
   forkAllyToLocal,
-} from "../store/allies.js";
-import { listAllies, isRepoAlly } from "../allies/catalog.js";
-import { setActiveCharacterId, loadStore } from "../store/characterStoreCore.js";
-import { showConfirm } from "./dialog.js";
-import { showToast } from "../shared/toast.js";
-import { escapeHtml } from "../shared/renderUtils.js";
-import { clickStartedInside } from "../shared/eventDispatch.js";
-import { navigateTo } from "../shared/navigate.js";
+} from "../../store/allies/allies.js";
+import { listAllies, isRepoAlly } from "../../allies/catalog.js";
+import { setActiveCharacterId, loadStore } from "../../store/characterStoreCore.js";
+import { showConfirm } from "../dialog.js";
+import { showToast } from "../../shared/toast.js";
+import { escapeHtml } from "../../shared/renderUtils.js";
+import { clickStartedInside } from "../../shared/eventDispatch.js";
+import { navigateTo } from "../../shared/navigate.js";
 
 let _onChange = () => {};
 let _index = [];

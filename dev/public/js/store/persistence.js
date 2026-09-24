@@ -1,6 +1,6 @@
 import { state } from "../state.js";
 import { capturePersistedSheet } from "./persistedSheet.js";
-import { buildAllyFile } from "./allyExport.js";
+import { buildAllyFile } from "./allies/allyExport.js";
 import { getActiveCharacterId, getLinkedAllies } from "./characters.js";
 import { loadStore } from "./characterStoreCore.js";
 import { renderListsPreserving } from "../ui.js";
@@ -55,7 +55,7 @@ export function exportSheet() {
 }
 
 // Writes the active sheet as an ally catalog file, ready to drop into data/allies/. The
-// portrait is saved beside it as a PNG of the same name — see store/allyExport.js.
+// portrait is saved beside it as a PNG of the same name — see store/allies/allyExport.js.
 export function exportAllySheet() {
   const { selected, sheet } = state;
   const name = sheet?.pc?.character_name || selected.character?.character_name || "";

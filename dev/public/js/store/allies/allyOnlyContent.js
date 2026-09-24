@@ -6,8 +6,8 @@
 // sheet unable to tell an ally-only id from a nonexistent one; shared/availability.js records
 // what it dropped precisely so this check is possible.
 
-import { state } from "../state.js";
-import { getDroppedIds, getDroppedRow } from "../shared/availability.js";
+import { state } from "../../state.js";
+import { getDroppedIds, getDroppedRow } from "../../shared/availability.js";
 
 // Every id the sheet references, whatever collection it lives in.
 function _selectedIds() {

@@ -6,7 +6,7 @@ import {
   slugify,
   allyIdFor,
   buildAllyFile,
-} from "dev/public/js/store/allyExport.js";
+} from "dev/public/js/store/allies/allyExport.js";
 import { capturePersistedSheet } from "dev/public/js/store/persistedSheet.js";
 import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
@@ -213,7 +213,7 @@ describe("an exported ally file feeds the ally pipeline", () => {
 // data differs either way — but an ally badge on someone's character is still wrong, so the
 // detector is a positive test and everything unrecognised falls through to "character".
 describe("isAllyFile", () => {
-  const { isAllyFile } = require("dev/public/js/store/allyExport.js");
+  const { isAllyFile } = require("dev/public/js/store/allies/allyExport.js");
 
   test("recognises what buildAllyFile writes", () => {
     expect(isAllyFile(buildAllyFile("Bran", DATE).payload)).toBe(true);
@@ -248,7 +248,7 @@ describe("isAllyFile", () => {
 // The point of carrying image.path: export → drop in data/allies/ → re-import to tweak →
 // re-export, with the portrait still visible while editing and the framing intact throughout.
 describe("the portrait survives an export / re-import round trip", () => {
-  const { isAllyFile } = require("dev/public/js/store/allyExport.js");
+  const { isAllyFile } = require("dev/public/js/store/allies/allyExport.js");
 
   test("the exported file points the image block at the same PNG as the index", () => {
     const { payload } = buildAllyFile("Bran", DATE);

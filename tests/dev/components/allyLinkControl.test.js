@@ -15,7 +15,7 @@ import {
   linkAllyToCharacter,
   unlinkAlly,
 } from "dev/public/js/store/characters.js";
-import { renderAllyLinkControl } from "dev/public/js/components/allyLinkControl.js";
+import { renderAllyLinkControl } from "dev/public/js/components/allies/allyLinkControl.js";
 
 beforeEach(() => {
   document.body.innerHTML = `<table><tbody><tr><td id="ally-link-control"></td></tr></tbody></table>`;

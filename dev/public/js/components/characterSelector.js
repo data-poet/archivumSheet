@@ -20,10 +20,10 @@ import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { clickStartedInside } from "../shared/eventDispatch.js";
-import { isAllyFile } from "../store/allyExport.js";
+import { isAllyFile } from "../store/allies/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
-import { renderAllyLinkControl } from "./allyLinkControl.js";
+import { renderAllyLinkControl } from "./allies/allyLinkControl.js";
 import { renderPageSelector } from "./pageSelector.js";
 
 export function updateSelectorButton() {

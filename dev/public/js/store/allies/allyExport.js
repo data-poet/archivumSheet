@@ -5,7 +5,7 @@
 // the heavy base64 portrait becomes a path, and the file is named so it can be dropped straight
 // into data/allies/.
 
-import { capturePersistedSheet } from "./persistedSheet.js";
+import { capturePersistedSheet } from "../persistedSheet.js";
 
 const PORTRAIT_DIR = "/images/allies";
 const COMBINING_MARKS = /[̀-ͯ]/g;

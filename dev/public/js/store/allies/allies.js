@@ -9,10 +9,10 @@
 // keeps a later "local ally store" migration a two-function change (resolveAlly/isRepoAlly)
 // instead of a data migration.
 
-import { loadStore, saveStore, generateId } from "./characterStoreCore.js";
-import { getAlly as getRepoAlly, isRepoAlly } from "../allies/catalog.js";
-import { applyOverlay } from "../allies/overlay.js";
-import { ENTRY_KINDS } from "../shared/constants.js";
+import { loadStore, saveStore, generateId } from "../characterStoreCore.js";
+import { getAlly as getRepoAlly, isRepoAlly } from "../../allies/catalog.js";
+import { applyOverlay } from "../../allies/overlay.js";
+import { ENTRY_KINDS } from "../../shared/constants.js";
 
 function _activeEntry(store) {
   return store?.list.find((c) => c.id === store.activeId) ?? null;

@@ -5,14 +5,14 @@
 // guard in tests/dev/allies/main.test.js) and re-renders in place. Ally-kind entries are
 // excluded from the list — an ally can't have its own roster.
 
-import { t } from "../localization/pt-BR/index.js";
-import { listSwitchableCharacters } from "../store/allies.js";
+import { t } from "../../localization/pt-BR/index.js";
+import { listSwitchableCharacters } from "../../store/allies/allies.js";
 import {
   getActiveCharacterId,
   setActiveCharacterId,
-} from "../store/characterStoreCore.js";
-import { escapeHtml } from "../shared/renderUtils.js";
-import { clickStartedInside } from "../shared/eventDispatch.js";
+} from "../../store/characterStoreCore.js";
+import { escapeHtml } from "../../shared/renderUtils.js";
+import { clickStartedInside } from "../../shared/eventDispatch.js";
 
 let _onChange = () => {};
 

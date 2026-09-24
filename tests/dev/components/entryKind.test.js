@@ -1,7 +1,7 @@
 jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveKind: jest.fn(() => "character"),
 }));
-jest.mock("dev/public/js/store/allyOnlyContent.js", () => ({
+jest.mock("dev/public/js/store/allies/allyOnlyContent.js", () => ({
   findAllyOnlyContent: jest.fn(() => []),
 }));
 jest.mock("dev/public/js/store/persistence.js", () => ({
@@ -9,7 +9,7 @@ jest.mock("dev/public/js/store/persistence.js", () => ({
 }));
 
 import { getActiveKind } from "dev/public/js/store/characters.js";
-import { findAllyOnlyContent } from "dev/public/js/store/allyOnlyContent.js";
+import { findAllyOnlyContent } from "dev/public/js/store/allies/allyOnlyContent.js";
 import { showToast } from "dev/public/js/store/persistence.js";
 import {
   renderEntryKind,

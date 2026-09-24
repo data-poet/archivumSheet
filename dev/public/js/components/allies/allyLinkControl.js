@@ -2,7 +2,7 @@
 // entry isn't kind: "ally" — entryKind.js's `is-ally-draft` body class (see entry-kind.css) is
 // what actually hides the row; this only skips rebuilding it.
 
-import { t } from "../localization/pt-BR/index.js";
+import { t } from "../../localization/pt-BR/index.js";
 import {
   getActiveKind,
   getActiveCharacterId,
@@ -10,9 +10,9 @@ import {
   getAllyOwnerId,
   linkAllyToCharacter,
   unlinkAlly,
-} from "../store/characters.js";
-import { ENTRY_KINDS } from "../shared/constants.js";
-import { escapeHtml } from "../shared/renderUtils.js";
+} from "../../store/characters.js";
+import { ENTRY_KINDS } from "../../shared/constants.js";
+import { escapeHtml } from "../../shared/renderUtils.js";
 
 function getMount() {
   return document.getElementById("ally-link-control");

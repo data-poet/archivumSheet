@@ -8,7 +8,7 @@
 
 import { loadStore, saveStore } from "../store/characterStoreCore.js";
 import { isRepoAlly } from "./catalog.js";
-import { getActiveAllyInstanceId, getRoster, patchOverride } from "../store/allies.js";
+import { getActiveAllyInstanceId, getRoster, patchOverride } from "../store/allies/allies.js";
 
 function _activeRosterEntry() {
   const instanceId = getActiveAllyInstanceId();
