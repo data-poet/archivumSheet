@@ -18,6 +18,7 @@ import {
   getActiveAllyInstanceId,
   setActiveAllyInstanceId,
   resolveAlly,
+  pruneOrphanedAllies,
 } from "../store/allies.js";
 import { applyOverlay } from "./overlay.js";
 
@@ -81,6 +82,7 @@ async function _rebuildAndRenderActive(catalogData) {
 }
 
 export async function bootstrapAllies() {
+  pruneOrphanedAllies();
   _hydrateShell();
   mountResumePanel();
 

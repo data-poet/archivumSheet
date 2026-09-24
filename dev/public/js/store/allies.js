@@ -74,6 +74,26 @@ export function removeRosterEntry(instanceId) {
   });
 }
 
+// A forked local ally (kind: "ally") can be deleted straight from the sheet's own character
+// selector, which has no notion of roster entries pointing at it (store/characters.js never
+// imports store/allies.js). Called on the allies page's bootstrap to drop any roster entry
+// left pointing at a local id that no longer exists, so a deleted ally doesn't linger as a
+// dead selection.
+export function pruneOrphanedAllies() {
+  _mutateActiveEntry((entry, store) => {
+    const roster = _roster(entry);
+    const live = roster.filter(
+      (e) => isRepoAlly(e.ally_id) || store.list.some((c) => c.id === e.ally_id),
+    );
+    if (live.length === roster.length) return;
+
+    entry.data.character.allies = live;
+    if (!live.some((e) => e._instanceId === entry.data.character.alliesActiveId)) {
+      entry.data.character.alliesActiveId = null;
+    }
+  });
+}
+
 export function getActiveAllyInstanceId() {
   return _activeEntry(loadStore())?.data?.character?.alliesActiveId ?? null;
 }
