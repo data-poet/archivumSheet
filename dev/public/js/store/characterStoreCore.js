@@ -3,6 +3,8 @@
 // allies import graph is guarded (tests/dev/allies/catalogBuild.test.js) against ever reaching
 // compute/* or store/characters.js, since both are built around the sheet page's single live DOM.
 
+import { ENTRY_KINDS } from "../shared/constants.js";
+
 export const STORAGE_KEY = "archivum_characters";
 
 export function generateId(prefix = "c") {
@@ -36,4 +38,10 @@ export function setActiveCharacterId(id) {
   if (!store) return;
   store.activeId = id;
   saveStore(store);
+}
+
+export function getActiveCharacterKind() {
+  const store = loadStore();
+  const entry = store?.list.find((c) => c.id === store.activeId);
+  return entry?.kind === ENTRY_KINDS.ALLY ? ENTRY_KINDS.ALLY : ENTRY_KINDS.CHARACTER;
 }

@@ -3,7 +3,8 @@ export const ALLIES = {
   empty: "Nenhum aliado selecionado.",
   emptyHint: "Escolha um aliado para ver a ficha dele aqui.",
 
-  activeCharacterLabel: "Aliados de",
+  noNestedAllies: "Um aliado não pode ter aliados próprios.",
+  noCharacters: "Nenhum personagem disponível.",
 
   pickPrompt: "Escolher aliado",
   rosterEmpty: "Nenhum aliado na lista ainda.",

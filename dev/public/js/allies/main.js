@@ -21,18 +21,12 @@ import {
   pruneOrphanedAllies,
 } from "../store/allies.js";
 import { applyOverlay } from "./overlay.js";
+import { initPcSwitcher } from "../components/pcSwitcher.js";
+import { ENTRY_KINDS } from "../shared/constants.js";
 
 function _hydrateShell() {
   const L = LABELS.allies;
   document.title = `${LABELS.app.title} — ${L.pageTitle}`;
-
-  const display = getActiveCharacterDisplay();
-  const label = document.getElementById("active-character-label");
-  if (label) {
-    label.textContent = display.name
-      ? `${L.activeCharacterLabel} ${display.name}`
-      : "";
-  }
 }
 
 let _lastEmptyState = null;
@@ -89,9 +83,42 @@ async function _rebuildAndRenderActive(catalogData) {
   });
 }
 
+// An ally forked into the character editor has no roster of its own — pageSelector.js hides
+// the nav link for this case, but this page is also reachable by direct URL, so it needs its
+// own lock screen rather than trusting the nav to keep an ally out.
+function _showNestedAllyLock() {
+  const empty = document.getElementById("allies-empty");
+  const addBox = document.getElementById("ally-add-box");
+  const host = document.getElementById("resume-panel-host");
+  const rosterBtn = document.getElementById("ally-selector-btn");
+
+  if (empty) {
+    empty.hidden = false;
+    empty.textContent = LABELS.allies.noNestedAllies;
+  }
+  if (addBox) addBox.hidden = true;
+  if (host) host.hidden = true;
+  if (rosterBtn) rosterBtn.hidden = true;
+}
+
 export async function bootstrapAllies() {
   pruneOrphanedAllies();
   _hydrateShell();
+
+  initTheme();
+  initPageSelector();
+  initPcSwitcher({
+    onChange: () => {
+      pruneOrphanedAllies();
+      window.location.reload();
+    },
+  });
+
+  if (getActiveCharacterDisplay().kind === ENTRY_KINDS.ALLY) {
+    _showNestedAllyLock();
+    return;
+  }
+
   mountResumePanel();
 
   const [ammo, spells, index] = await Promise.all([
@@ -122,9 +149,6 @@ export async function bootstrapAllies() {
   });
 
   await _rebuildAndRenderActive(catalogData);
-
-  initTheme();
-  initPageSelector();
 }
 
 document.addEventListener("DOMContentLoaded", bootstrapAllies);
