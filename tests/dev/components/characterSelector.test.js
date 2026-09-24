@@ -43,6 +43,7 @@ import {
   initCharacterSelector,
 } from "dev/public/js/components/characterSelector.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
+import { ENTRY_KINDS } from "dev/public/js/shared/constants.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 const flush = () => new Promise((r) => setTimeout(r, 20));
@@ -147,14 +148,15 @@ describe("renderPopover", () => {
     expect(secondItem.querySelector(".char-selector-item-race")).toBeNull();
   });
 
-  test("renders all five action items with localized labels", () => {
+  test("renders all six action items with localized labels", () => {
     renderPopover();
     const actions = document.querySelectorAll(".char-selector-action-item");
-    expect(actions).toHaveLength(5);
+    expect(actions).toHaveLength(6);
     const byAction = Object.fromEntries(
       Array.from(actions).map((a) => [a.dataset.action, a.textContent]),
     );
     expect(byAction["add-char"]).toContain(t("characters.add"));
+    expect(byAction["add-ally"]).toContain(t("characters.addAlly"));
     expect(byAction["remove-char"]).toContain(t("characters.remove"));
     expect(byAction["import-char"]).toContain(t("app.import"));
     expect(byAction["export-char"]).toContain(t("app.export"));
@@ -171,7 +173,7 @@ describe("renderPopover", () => {
     const rows = document.querySelectorAll(
       ".char-selector-item, .char-selector-action-item",
     );
-    expect(rows).toHaveLength(7);
+    expect(rows).toHaveLength(8);
     rows.forEach((row) => {
       expect(row.tagName).toBe("BUTTON");
       expect(row.type).toBe("button");
@@ -407,6 +409,56 @@ describe("initCharacterSelector — add-char", () => {
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(addCharacter).toHaveBeenCalledWith(t("characters.newCharacter"));
+  });
+});
+
+describe("initCharacterSelector — add-ally", () => {
+  let promptSpy;
+  beforeEach(() => {
+    promptSpy = jest.spyOn(window, "prompt");
+  });
+  afterEach(() => promptSpy.mockRestore());
+
+  test("cancelling the prompt (returns null) does not add an ally draft", () => {
+    promptSpy.mockReturnValue(null);
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="add-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(addCharacter).not.toHaveBeenCalled();
+  });
+
+  test("adds a draft with kind 'ally' and the trimmed prompt value", () => {
+    promptSpy.mockReturnValue("  Bran, o Batedor  ");
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="add-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(addCharacter).toHaveBeenCalledWith(
+      "Bran, o Batedor",
+      ENTRY_KINDS.ALLY,
+    );
+  });
+
+  test("falls back to the default ally name when the prompt is submitted blank", () => {
+    promptSpy.mockReturnValue("   ");
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="add-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(addCharacter).toHaveBeenCalledWith(
+      t("characters.newAllyDraft"),
+      ENTRY_KINDS.ALLY,
+    );
   });
 });
 

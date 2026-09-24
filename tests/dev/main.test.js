@@ -100,7 +100,7 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveKind: jest.fn(() => "character"),
 }));
 jest.mock("dev/public/js/components/entryKind.js", () => ({
-  initEntryKind: jest.fn(),
+  renderEntryKind: jest.fn(),
 }));
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   initCharacterSelector: jest.fn(),

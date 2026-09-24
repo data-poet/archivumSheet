@@ -1,45 +1,8 @@
-.entry-kind {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-  margin: 0 0 var(--space-6);
-  padding: var(--space-4) var(--space-7);
-}
-
-.entry-kind-legend {
-  padding: 0 var(--space-3);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  color: var(--color-text-muted);
-}
-
-.entry-kind-option {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--fs-sm);
-  cursor: pointer;
-  color: var(--color-text-muted);
-}
-
-.entry-kind-option.is-active {
-  color: var(--color-text);
-  font-weight: 600;
-}
-
 /* ── Ally-draft treatment ──────────────────────────────────────────────────────
-   The radio scrolls out of view; the topbar does not. Authoring an ally while
-   believing you are editing your character is the mistake this guards against. */
+   The active entry's kind has no dedicated control on the page, so the topbar accent is
+   the only persistent cue that this entry is an ally draft. */
 .is-ally-draft .l-topbar {
   border-bottom: 3px solid var(--accent-attributes-fill);
-}
-
-.is-ally-draft .entry-kind {
-  border-color: var(--accent-attributes-fill);
 }
 
 .char-selector-item-kind {
