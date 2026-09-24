@@ -8,7 +8,6 @@ export const ALLIES = {
   pickPrompt: "Escolher aliado",
   rosterEmpty: "Nenhum aliado na lista ainda.",
   edit: "Editar",
-  editNotAvailable: "Edição de aliados ainda não disponível.",
   remove: "Remover",
   confirmRemoveTitle: "Remover aliado",
   confirmRemove: "Remover",

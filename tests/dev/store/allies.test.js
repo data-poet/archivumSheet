@@ -13,6 +13,7 @@ import {
   setActiveAllyInstanceId,
   patchOverride,
   resolveAlly,
+  forkAllyToLocal,
 } from "dev/public/js/store/allies.js";
 
 const STORAGE_KEY = "archivum_characters";
@@ -197,5 +198,50 @@ describe("resolveAlly", () => {
   test("returns null for an unknown local id", async () => {
     seedStore();
     expect(await resolveAlly("c-does-not-exist")).toBeNull();
+  });
+});
+
+describe("forkAllyToLocal", () => {
+  test("bakes catalog + overrides into a new local entry and rewrites the roster entry", async () => {
+    getRepoAllyMock.mockResolvedValue({
+      ally_id: "ALLY_HUMANOID_001",
+      version: 1,
+      pc: { character_name: "Bran" },
+      race: { race_name: "Human" },
+      character: { primary: { ST: { modifier: 0 } }, secondary: {} },
+      inventory: { items: [] },
+    });
+    seedStore();
+    const instanceId = addRosterEntry("ALLY_HUMANOID_001");
+    patchOverride(instanceId, "primary.ST.modifier", 2);
+
+    const localId = await forkAllyToLocal(instanceId);
+
+    expect(localId).toEqual(expect.any(String));
+    expect(getRoster()).toEqual([{ _instanceId: instanceId, ally_id: localId }]);
+
+    const resolved = await resolveAlly(localId);
+    expect(resolved).toEqual({
+      ally_id: localId,
+      version: 1,
+      pc: { character_name: "Bran" },
+      race: { race_name: "Human" },
+      character: { primary: { ST: { modifier: 2 } }, secondary: {} },
+      inventory: { items: [] },
+    });
+  });
+
+  test("returns null for an already-local roster entry, leaving it untouched", async () => {
+    seedStore({
+      allies: [{ _instanceId: "ai-1", ally_id: "c-9-local" }],
+    });
+
+    expect(await forkAllyToLocal("ai-1")).toBeNull();
+    expect(getRoster()).toEqual([{ _instanceId: "ai-1", ally_id: "c-9-local" }]);
+  });
+
+  test("returns null for an unknown instance id", async () => {
+    seedStore();
+    expect(await forkAllyToLocal("ai-does-not-exist")).toBeNull();
   });
 });

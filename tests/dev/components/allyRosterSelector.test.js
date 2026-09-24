@@ -3,12 +3,16 @@ jest.mock("dev/public/js/store/allies.js", () => ({
   getActiveAllyInstanceId: jest.fn(),
   setActiveAllyInstanceId: jest.fn(),
   removeRosterEntry: jest.fn(),
+  forkAllyToLocal: jest.fn(),
+}));
+jest.mock("dev/public/js/store/characterStoreCore.js", () => ({
+  setActiveCharacterId: jest.fn(),
 }));
 jest.mock("dev/public/js/components/dialog.js", () => ({
   showConfirm: jest.fn(),
 }));
-jest.mock("dev/public/js/shared/toast.js", () => ({
-  showToast: jest.fn(),
+jest.mock("dev/public/js/shared/navigate.js", () => ({
+  navigateTo: jest.fn(),
 }));
 
 import {
@@ -16,9 +20,11 @@ import {
   getActiveAllyInstanceId,
   setActiveAllyInstanceId,
   removeRosterEntry,
+  forkAllyToLocal,
 } from "dev/public/js/store/allies.js";
+import { setActiveCharacterId } from "dev/public/js/store/characterStoreCore.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
-import { showToast } from "dev/public/js/shared/toast.js";
+import { navigateTo } from "dev/public/js/shared/navigate.js";
 import {
   updateRosterButton,
   renderPopover,
@@ -186,20 +192,51 @@ describe("initAllyRosterSelector — select-ally", () => {
   });
 });
 
-describe("initAllyRosterSelector — edit-ally (stub)", () => {
-  test("shows a not-available toast and does not touch the roster", () => {
+describe("initAllyRosterSelector — edit-ally", () => {
+  test("forks a repo entry, then activates and navigates to the fork", async () => {
+    forkAllyToLocal.mockResolvedValue("c-forked");
     initAllyRosterSelector({ index: INDEX });
     openSelector();
 
     document
       .querySelector('[data-action="edit-ally"][data-id="ai-1"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
-    expect(showToast).toHaveBeenCalledWith(
-      t("allies.editNotAvailable"),
-      "info",
-    );
-    expect(removeRosterEntry).not.toHaveBeenCalled();
+    expect(forkAllyToLocal).toHaveBeenCalledWith("ai-1");
+    expect(setActiveCharacterId).toHaveBeenCalledWith("c-forked");
+    expect(navigateTo).toHaveBeenCalledWith("/");
+  });
+
+  test("navigates straight to the editor for an already-local entry, no fork", async () => {
+    getRoster.mockReturnValue([
+      { _instanceId: "ai-3", ally_id: "c-local", overrides: {} },
+    ]);
+    initAllyRosterSelector({ index: INDEX });
+    openSelector();
+
+    document
+      .querySelector('[data-action="edit-ally"][data-id="ai-3"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(forkAllyToLocal).not.toHaveBeenCalled();
+    expect(setActiveCharacterId).toHaveBeenCalledWith("c-local");
+    expect(navigateTo).toHaveBeenCalledWith("/");
+  });
+
+  test("does not navigate when forking fails", async () => {
+    forkAllyToLocal.mockResolvedValue(null);
+    initAllyRosterSelector({ index: INDEX });
+    openSelector();
+
+    document
+      .querySelector('[data-action="edit-ally"][data-id="ai-1"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(setActiveCharacterId).not.toHaveBeenCalled();
+    expect(navigateTo).not.toHaveBeenCalled();
   });
 });
 
