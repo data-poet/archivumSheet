@@ -119,6 +119,7 @@ export function renderPopover() {
     <div class="char-selector-divider"></div>
     <ul class="char-selector-actions">
       ${actionItem("add-char", "+", t("characters.add"))}
+      ${actionItem("add-ally", "+", t("characters.addAlly"))}
       ${actionItem("remove-char", "−", t("characters.remove"), " char-selector-action-remove")}
       <li class="char-selector-divider" role="presentation"></li>
       ${actionItem("import-char", "⬆️", t("app.import"))}
@@ -187,6 +188,22 @@ export function initCharacterSelector() {
         );
         if (name === null) return;
         addCharacter(name.trim() || t("characters.newCharacter"));
+        closeSelector({ restoreFocus: true });
+        updateSelectorButton();
+        renderEntryKind();
+        break;
+      }
+
+      case "add-ally": {
+        const name = prompt(
+          t("characters.namePrompt"),
+          t("characters.newAllyDraft"),
+        );
+        if (name === null) return;
+        addCharacter(
+          name.trim() || t("characters.newAllyDraft"),
+          ENTRY_KINDS.ALLY,
+        );
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
