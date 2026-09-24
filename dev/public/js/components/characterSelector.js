@@ -21,6 +21,7 @@ import { clickStartedInside } from "../shared/eventDispatch.js";
 import { isAllyFile } from "../store/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
+import { renderPageSelector } from "./pageSelector.js";
 
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
@@ -178,6 +179,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderPageSelector();
         break;
       }
 
@@ -191,6 +193,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderPageSelector();
         break;
       }
 
@@ -207,6 +210,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderPageSelector();
         break;
       }
 
@@ -229,6 +233,7 @@ export function initCharacterSelector() {
         closeSelector({ restoreFocus: true });
         updateSelectorButton();
         renderEntryKind();
+        renderPageSelector();
         break;
       }
 
@@ -283,6 +288,7 @@ export function initCharacterSelector() {
           replaceActiveCharacter(payload);
           updateSelectorButton();
           renderEntryKind();
+          renderPageSelector();
         } else {
           const text = await file.text();
           const payload = JSON.parse(text);
@@ -299,6 +305,7 @@ export function initCharacterSelector() {
           replaceActiveCharacter(payload);
           updateSelectorButton();
           renderEntryKind();
+          renderPageSelector();
         }
       } catch (err) {
         showToast(
