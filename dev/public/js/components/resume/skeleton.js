@@ -3,6 +3,8 @@
 // keeping hand-synced copies. Containers are empty on purpose — every renderer in this
 // folder writes into them by id.
 
+import { t } from "../../localization/pt-BR/index.js";
+
 const HOST_ID = "resume-panel-host";
 const PANEL_ID = "tab-char-resume";
 
@@ -150,6 +152,24 @@ export const RESUME_PANEL_HTML = `
   </div>
 `;
 
+// Sheet page also sets these via initAppShell() in index.html — duplicated here so the
+// allies page (which never runs initAppShell()) gets them too. Harmless to set twice.
+function applyResumeStaticLabels() {
+  const setText = (id, text) => {
+    const elem = document.getElementById(id);
+    if (elem) elem.textContent = text;
+  };
+
+  setText("sec-resume-weight", t("resume.weightTitle"));
+  setText("sec-resume-weight-detail", t("resume.weightDetail"));
+  setText("sec-resume-value", t("resume.valueTitle"));
+  setText("sec-resume-value-detail", t("resume.valueDetail"));
+  setText("lbl-encumbrance", `${t("resume.encumbrance")}:`);
+  setText("lbl-resume-totalWeight", t("resume.totalWeight"));
+  setText("lbl-resume-totalValue", t("resume.totalValue"));
+  setText("lbl-resume-coins-carried", t("resume.coinsCarried"));
+}
+
 // Must run before anything that reads the panel — initViewMode() moves #tab-char-resume,
 // and updateActualValues() reads the legacy weight spans above.
 export function mountResumePanel(hostId = HOST_ID) {
@@ -157,4 +177,5 @@ export function mountResumePanel(hostId = HOST_ID) {
   if (!host || document.getElementById(PANEL_ID)) return;
 
   host.innerHTML = RESUME_PANEL_HTML;
+  applyResumeStaticLabels();
 }

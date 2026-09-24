@@ -1,0 +1,45 @@
+/* Extends character-selector.css's popover/row styles for the allies roster + add form. */
+
+.ally-selector-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ally-selector-row .char-selector-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.char-selector-empty {
+  padding: var(--space-5) var(--space-7);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.allies-empty {
+  padding: clamp(8px, 3vw, 20px);
+  color: var(--color-text-muted);
+}
+
+.ally-add-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-5);
+  padding: clamp(8px, 3vw, 20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ally-add-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 160px;
+}
+
+.ally-add-field label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
