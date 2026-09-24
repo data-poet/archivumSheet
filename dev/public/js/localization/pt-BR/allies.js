@@ -12,6 +12,8 @@ export const ALLIES = {
   confirmRemoveTitle: "Remover aliado",
   confirmRemove: "Remover",
 
+  addToggle: "Adicionar aliado",
+
   typeLabel: "Tipo",
   subtypeLabel: "Subtipo",
   subtypeNone: "Nenhum",

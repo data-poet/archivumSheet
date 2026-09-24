@@ -12,13 +12,13 @@
   color: var(--color-text-muted);
 }
 
+/* Padding comes from box-card.css's `details > *:not(summary)` rule — this only lays out
+   the fields themselves. */
 .ally-add-form {
   display: flex;
   flex-wrap: wrap;
   align-items: end;
   gap: var(--space-5);
-  padding: clamp(8px, 3vw, 20px);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .ally-add-field {
