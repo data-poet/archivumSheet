@@ -5,6 +5,21 @@
   border-bottom: 3px solid var(--accent-attributes-fill);
 }
 
+.ally-link-row {
+  display: none;
+}
+
+.is-ally-draft .ally-link-row {
+  display: table-row;
+}
+
+.ally-link-control {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
 .char-selector-item-kind {
   align-self: flex-start;
   border-radius: var(--radius-sm);
