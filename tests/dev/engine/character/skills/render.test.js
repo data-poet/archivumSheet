@@ -44,6 +44,52 @@ describe("renderSkills — a purely player-selected skill (engine hasn't run yet
   });
 });
 
+describe("renderSkills — mobile card layout", () => {
+  test("opts the table into the stacked layout with labeled cells", () => {
+    const selected = {
+      skills: {
+        "SK-1": { base_value: 12, modifier: 2, isTrainedWithMaster: false },
+      },
+    };
+    const data = {
+      skills: [
+        {
+          skill_id: "SK-1",
+          skill_name: "Espada",
+          skill_base_attribute: "DX",
+          skill_difficulty: "M",
+        },
+      ],
+    };
+
+    renderSkills(selected, data, undefined);
+
+    expect(
+      parse().querySelector(".table-wrapper.table-wrapper--stack"),
+    ).not.toBeNull();
+    const row = parse().querySelector("tbody tr");
+    expect(row.querySelector(".col-title").textContent).toBe("Espada");
+    expect(
+      row.querySelector('[data-label="' + t("traits.attr") + '"]'),
+    ).not.toBeNull();
+    expect(
+      row.querySelector('[data-label="' + t("traits.diff") + '"]'),
+    ).not.toBeNull();
+    expect(
+      row.querySelector('[data-label="' + t("traits.base") + '"]'),
+    ).not.toBeNull();
+    expect(
+      row.querySelector('[data-label="' + t("traits.mod") + '"]'),
+    ).not.toBeNull();
+    expect(
+      row.querySelector('[data-label="' + t("traits.enchantment") + '"]'),
+    ).not.toBeNull();
+    expect(
+      row.querySelector('[data-label="' + t("traits.final") + '"]'),
+    ).not.toBeNull();
+  });
+});
+
 describe("renderSkills — engine has run (sheet present)", () => {
   test("reads the final value straight from the engine, not a local recompute", () => {
     const selected = {
