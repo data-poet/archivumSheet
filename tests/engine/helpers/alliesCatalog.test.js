@@ -16,6 +16,8 @@ describe("listAllies", () => {
         "name",
         "portrait",
         "race",
+        "subtype",
+        "type",
       ]);
     });
   });
@@ -31,6 +33,14 @@ describe("listAllies", () => {
     const ids = listAllies().map((e) => e.ally_id);
     expect(ids).toEqual([...ids].sort());
   });
+
+  test("exposes the folder nesting as type and optional subtype", () => {
+    const byId = Object.fromEntries(listAllies().map((e) => [e.ally_id, e]));
+
+    expect(byId.ALLY_HUMANOID_001).toMatchObject({ type: "humanoids", subtype: null });
+    expect(byId.ALLY_ANIMAL_001).toMatchObject({ type: "animals", subtype: null });
+    expect(byId.ALLY_ANIMAL_MOUNT_001).toMatchObject({ type: "animals", subtype: "mounts" });
+  });
 });
 
 describe("getAlly", () => {
@@ -38,6 +48,8 @@ describe("getAlly", () => {
     const ally = getAlly("ALLY_HUMANOID_001");
 
     expect(ally.ally_id).toBe("ALLY_HUMANOID_001");
+    expect(ally.type).toBe("humanoids");
+    expect(ally.subtype).toBeNull();
     expect(ally.pc).toBeDefined();
     expect(ally.race).toBeDefined();
     expect(ally.character).toBeDefined();
