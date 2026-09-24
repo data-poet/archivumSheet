@@ -117,14 +117,14 @@ export function renderSkills(selected, data, sheet) {
             });
 
             const baseCell = isEnchantment
-              ? `<td class="col-num">${base}</td>`
-              : `<td class="col-num">
+              ? `<td class="col-num" data-label="${t("traits.base")}">${base}</td>`
+              : `<td class="col-num" data-label="${t("traits.base")}">
                   ${numStepper("skill-input", `data-id="${id}" data-field="base_value"`, base)}
                 </td>`;
 
             const modCell = isEnchantment
-              ? `<td class="col-num">${mod}</td>`
-              : `<td class="col-num">
+              ? `<td class="col-num" data-label="${t("traits.mod")}">${mod}</td>`
+              : `<td class="col-num" data-label="${t("traits.mod")}">
                   ${numStepper("skill-input", `data-id="${id}" data-field="modifier"`, mod)}
                 </td>`;
 
@@ -139,13 +139,13 @@ export function renderSkills(selected, data, sheet) {
 
             return `
           <tr class="${isEnchantment ? "trait-enchantment" : ""}">
-            <td>${name}${enchantmentTag}</td>
-            <td class="col-center">${attr}</td>
-            <td class="col-center">${diff}</td>
+            <td class="col-title">${name}${enchantmentTag}</td>
+            <td class="col-center" data-label="${t("traits.attr")}">${attr}</td>
+            <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
             ${baseCell}
             ${modCell}
-            <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}">${enchantmentDisplay}</td>
-            <td class="col-num"><strong>${final}</strong></td>
+            <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}" data-label="${t("traits.enchantment")}">${enchantmentDisplay}</td>
+            <td class="col-num" data-label="${t("traits.final")}"><strong>${final}</strong></td>
             ${actionCell}
           </tr>
           ${detailRow(8, detailItems)}`;
@@ -155,7 +155,7 @@ export function renderSkills(selected, data, sheet) {
   setHTML(
     "skillList",
     `
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
