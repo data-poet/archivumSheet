@@ -4,7 +4,11 @@ import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
-import { customItemEditRow, escapeHtml } from "../../../shared/renderUtils.js";
+import {
+  customItemEditRow,
+  escapeHtml,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -58,7 +62,7 @@ function renderCustomInventorySection(location, entries, sheet) {
 
         return `
           <tr>
-            <td class="col-title">${escapeHtml(entry.name)}</td>
+            ${cardTitleCell(escapeHtml(entry.name))}
             <td class="col-num" data-label="${t("customInventory.qty")}">
               <div class="num-stepper">
                 <input

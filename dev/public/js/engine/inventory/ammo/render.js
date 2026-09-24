@@ -4,7 +4,11 @@ import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
-import { detailRow, formatRichText } from "../../../shared/renderUtils.js";
+import {
+  detailRow,
+  formatRichText,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import { state } from "../../../state.js";
 
@@ -208,7 +212,7 @@ function renderContainerSlot(
 
             return `
             <tr>
-              <td class="col-title">${getAmmoName(entry.ammo_id, ammoData)}</td>
+              ${cardTitleCell(getAmmoName(entry.ammo_id, ammoData))}
               <td class="col-num" data-label="${t("ammo.qty")}">
                 <div class="num-stepper">
                   <input
@@ -333,7 +337,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
 
         return `
           <tr>
-            <td class="col-title">${ammoName}</td>
+            ${cardTitleCell(ammoName)}
             <td class="col-num" data-label="${t("common.type")}">${ammoType}</td>
             <td class="col-num" data-label="${t("ammo.qty")}">
               <div class="num-stepper">

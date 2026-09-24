@@ -8,7 +8,11 @@ import {
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
-import { customFieldsBody, escapeHtml } from "../../../shared/renderUtils.js";
+import {
+  customFieldsBody,
+  escapeHtml,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import {
   equippedItemTabs,
@@ -162,7 +166,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
 
         return `
         <tr data-instance-id="${instanceId}">
-          <td class="col-title">${escapeHtml(displayName(inst, record))}</td>
+          ${cardTitleCell(escapeHtml(displayName(inst, record)))}
           <td class="col-num" data-label="${t("common.price")}">
             <input
               type="number"

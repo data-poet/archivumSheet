@@ -2,6 +2,7 @@ import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import { cardTitleCell } from "../../../shared/renderUtils.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -58,7 +59,7 @@ function renderCoinSection(location, coins, sheet) {
 
         return `
           <tr>
-            <td class="col-title">${coinLabel(entry.coin_type)}</td>
+            ${cardTitleCell(coinLabel(entry.coin_type))}
             <td class="col-num" data-label="${t("coinPurse.qty")}">
               <div class="num-stepper">
                 <input
