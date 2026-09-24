@@ -126,8 +126,8 @@ export function renderPopover() {
   `;
 }
 
-// Repo entries fork into a local draft first (decision #20 in ALLIES_FEATURE.md) — the
-// catalog file stays read-only. Local/already-forked entries jump straight to the editor.
+// Repo entries fork into a local draft first — the catalog file stays read-only.
+// Local/already-forked entries jump straight to the editor.
 async function _handleEdit(instanceId) {
   const entry = getRoster().find((e) => e._instanceId === instanceId);
   if (!entry) return;

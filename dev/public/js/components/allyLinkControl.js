@@ -1,6 +1,6 @@
-// Ally-edit page's "which character owns this ally" control (Part B, ALLIES_FEATURE.md item
-// 14). Renders nothing when the active entry isn't kind: "ally" — entryKind.js's `is-ally-draft`
-// body class (see entry-kind.css) is what actually hides the row; this only skips rebuilding it.
+// Ally-edit page's "which character owns this ally" control. Renders nothing when the active
+// entry isn't kind: "ally" — entryKind.js's `is-ally-draft` body class (see entry-kind.css) is
+// what actually hides the row; this only skips rebuilding it.
 
 import { t } from "../localization/pt-BR/index.js";
 import {

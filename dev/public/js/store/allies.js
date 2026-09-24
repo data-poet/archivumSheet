@@ -5,9 +5,9 @@
 // DOM, which doesn't exist on the allies page, and reaching that pipeline risks silently
 // overwriting the active character with a blank sheet.
 //
-// A roster entry is `{ _instanceId, ally_id, overrides }`, never an embedded payload (decision
-// #15 in ALLIES_FEATURE.md) — this keeps a later "local ally store" migration a two-function
-// change (resolveAlly/isRepoAlly) instead of a data migration.
+// A roster entry is `{ _instanceId, ally_id, overrides }`, never an embedded payload — this
+// keeps a later "local ally store" migration a two-function change (resolveAlly/isRepoAlly)
+// instead of a data migration.
 
 import { loadStore, saveStore, generateId } from "./characterStoreCore.js";
 import { getAlly as getRepoAlly, isRepoAlly } from "../allies/catalog.js";
@@ -59,7 +59,7 @@ export function listSwitchableCharacters() {
 }
 
 // Repo additions only — a local ally joins the roster by being linked to the character
-// (out of scope for this batch; see ALLIES_FEATURE.md Part B).
+// instead (see store/characters.js's linkAllyToCharacter).
 export function addRosterEntry(ally_id) {
   if (!isRepoAlly(ally_id)) return null;
 
@@ -126,7 +126,7 @@ function _setPath(target, path, value) {
 }
 
 // Repo allies only — a local ally's roster entry has no `overrides`, its record is edited
-// directly (decision #20 in ALLIES_FEATURE.md).
+// directly.
 export function patchOverride(instanceId, path, value) {
   _mutateActiveEntry((entry) => {
     entry.data.character.allies = _roster(entry).map((e) => {
@@ -147,9 +147,9 @@ export function resolveAlly(ally_id) {
 }
 
 // Bakes a repo ally's catalog values + overlay into a new local `kind: "ally"` entry, so
-// editing it in the real character editor never touches the shared catalog file (decision
-// #20 in ALLIES_FEATURE.md). The roster entry is rewritten in place to point at the new
-// local id, with `overrides` dropped — the overlay is now baked into the entry itself.
+// editing it in the real character editor never touches the shared catalog file. The roster
+// entry is rewritten in place to point at the new local id, with `overrides` dropped — the
+// overlay is now baked into the entry itself.
 export async function forkAllyToLocal(instanceId) {
   const store = loadStore();
   const entry = _activeEntry(store);
