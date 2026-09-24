@@ -1,6 +1,8 @@
-// R1: `mode: "ally"` renders a consult-only sheet. The load-bearing assertion is the
-// absence of stepper classes — the delegated handlers in engine/**/events.js match on
-// those, so an ally row that lacks them cannot dispatch a write to the PC's state.
+// R1: `mode: "ally"` renders a consult-only sheet for equipment/supplies, but full resume
+// parity with a PC otherwise (points, weight, value, alchemy, experience bar). The
+// load-bearing assertion for the consult-only part is the absence of equipment stepper
+// classes — the delegated handlers in engine/**/events.js match on those, so an ally row
+// that lacks them cannot dispatch a write to the PC's state.
 import {
   renderResume,
   RESUME_MODES,
@@ -193,14 +195,14 @@ describe("renderResume mode: ally", () => {
     ).toHaveLength(1);
   });
 
-  test("drops the experience bar and the point, weight, value and alchemy sections", () => {
+  test("renders the experience bar and the point, weight, value and alchemy sections, same as a PC's", () => {
     renderResume(FULL_SHEET, DATA, SELECTED, { mode: RESUME_MODES.ALLY });
 
-    expect(id("resume_weight_tbody").innerHTML).toBe("");
-    expect(id("resume_value_tbody").innerHTML).toBe("");
-    expect(id("resume_points_tbody").innerHTML).toBe("");
-    expect(id("resume_alchemy_container").innerHTML).toBe("");
-    expect(id("resume_bar_experience").innerHTML).toBe("");
+    expect(id("resume_weight_tbody").innerHTML).not.toBe("");
+    expect(id("resume_value_tbody").innerHTML).not.toBe("");
+    expect(id("resume_points_tbody").innerHTML).not.toBe("");
+    expect(id("resume_alchemy_container").hidden).toBe(false);
+    expect(id("resume_bar_experience").innerHTML).not.toBe("");
   });
 
   test("still renders the consult-only sections an ally does have", () => {

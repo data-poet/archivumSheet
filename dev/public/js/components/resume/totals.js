@@ -11,7 +11,9 @@ export function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
 
   const weightEl = el("weight");
-  const baseWeight = weightEl ? Number(weightEl.value) || 0 : 0;
+  const baseWeight = weightEl
+    ? Number(weightEl.value) || 0
+    : Number(sheet?.inventory?.weight) || 0;
 
   const armorWeight = sheet?.inventory?.armor?.carried_armor_weight || 0;
   const shieldWeight = sheet?.inventory?.shield?.carried_shield_weight || 0;
