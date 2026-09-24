@@ -176,6 +176,108 @@ describe("withOpenState", () => {
   });
 });
 
+describe("snapshotAll / restoreAll — mobile card expand state", () => {
+  test("an expanded card row is re-expanded after a full rebuild, aria-expanded included", () => {
+    document.body.innerHTML = `
+      <table id="skillList"><tbody>
+        <tr data-id="SK-1" class="is-card-expanded">
+          <td class="col-title">
+            <button class="card-toggle" aria-expanded="true">Espada</button>
+          </td>
+        </tr>
+      </tbody></table>
+    `;
+
+    const snapshot = snapshotAll();
+
+    document.querySelector("#skillList tbody").innerHTML = `
+      <tr data-id="SK-1">
+        <td class="col-title">
+          <button class="card-toggle" aria-expanded="false">Espada</button>
+        </td>
+      </tr>
+    `;
+
+    restoreAll(snapshot);
+
+    const row = document.querySelector("#skillList tr");
+    expect(row.classList.contains("is-card-expanded")).toBe(true);
+    expect(
+      row.querySelector(".card-toggle").getAttribute("aria-expanded"),
+    ).toBe("true");
+  });
+
+  test("a row that was collapsed stays collapsed after the rebuild", () => {
+    document.body.innerHTML = `
+      <table id="skillList"><tbody>
+        <tr data-id="SK-1"><td class="col-title"></td></tr>
+      </tbody></table>
+    `;
+
+    const snapshot = snapshotAll();
+
+    document.querySelector("#skillList tbody").innerHTML = `
+      <tr data-id="SK-1"><td class="col-title"></td></tr>
+    `;
+
+    restoreAll(snapshot);
+
+    expect(
+      document
+        .querySelector("#skillList tr")
+        .classList.contains("is-card-expanded"),
+    ).toBe(false);
+  });
+
+  test("a stale key (row removed) is dropped, not applied to an unrelated row", () => {
+    document.body.innerHTML = `
+      <table id="skillList"><tbody>
+        <tr data-id="SK-1" class="is-card-expanded"><td class="col-title"></td></tr>
+      </tbody></table>
+    `;
+
+    const snapshot = snapshotAll();
+
+    document.querySelector("#skillList tbody").innerHTML = `
+      <tr data-id="SK-2"><td class="col-title"></td></tr>
+    `;
+
+    expect(() => restoreAll(snapshot)).not.toThrow();
+    expect(
+      document
+        .querySelector("#skillList tr")
+        .classList.contains("is-card-expanded"),
+    ).toBe(false);
+  });
+
+  test("expand state and <details> open state are tracked independently in the same container", () => {
+    document.body.innerHTML = `
+      <table id="advList"><tbody>
+        <tr data-id="ADV-1" class="is-card-expanded"><td class="col-title"></td></tr>
+        <tr class="detail-row"><td><details open></details></td></tr>
+      </tbody></table>
+    `;
+
+    const snapshot = snapshotAll();
+
+    document.querySelector("#advList tbody").innerHTML = `
+      <tr data-id="ADV-1"><td class="col-title"></td></tr>
+      <tr class="detail-row"><td><details></details></td></tr>
+    `;
+
+    restoreAll(snapshot);
+
+    expect(
+      document
+        .querySelector("#advList tr")
+        .classList.contains("is-card-expanded"),
+    ).toBe(true);
+    expect(
+      document.querySelector("#advList details").hasAttribute("open"),
+    ).toBe(true);
+  });
+});
+
 describe("snapshotAll / restoreAll", () => {
   test("captures open state independently per managed container and restores each correctly", () => {
     document.body.innerHTML = `
@@ -322,6 +424,9 @@ describe("detailKeyFn", () => {
       ["data-id", "SKILL-9"],
       ["data-name", "Espada"],
       ["data-custom-item-id", "CUSTOM-3"],
+      ["data-consumable-id", "CONS-1"],
+      ["data-gear-id", "GEAR-1"],
+      ["data-coin-type", "gold"],
     ])("falls back to %s when data-instance-id is absent", (attr, value) => {
       const details = detailsAfter(`
         <tr ${attr}="${value}"></tr>

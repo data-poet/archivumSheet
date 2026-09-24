@@ -5,6 +5,7 @@ import {
   detailRow,
   numStepper,
   emptyRow,
+  cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
 // Categories that support isTrainedWithMaster and the actions formula
@@ -138,8 +139,8 @@ export function renderSkills(selected, data, sheet) {
               : "";
 
             return `
-          <tr class="${isEnchantment ? "trait-enchantment" : ""}">
-            <td class="col-title">${name}${enchantmentTag}</td>
+          <tr class="${isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+            ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td class="col-center" data-label="${t("traits.attr")}">${attr}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
             ${baseCell}

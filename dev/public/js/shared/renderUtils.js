@@ -43,7 +43,9 @@ export function formatRichText(raw) {
 
   return _splitIntoBlocks(raw.split("\n"))
     .map((block) =>
-      block.type === "table" ? _buildTable(block.rows) : _formatTextBlock(block.lines),
+      block.type === "table"
+        ? _buildTable(block.rows)
+        : _formatTextBlock(block.lines),
     )
     .join("");
 }
@@ -84,7 +86,11 @@ function _splitIntoBlocks(lines) {
       const rows = [_splitTableRow(lines[i])];
       i += 2; // header + separator
 
-      while (i < lines.length && lines[i].includes("|") && lines[i].trim() !== "") {
+      while (
+        i < lines.length &&
+        lines[i].includes("|") &&
+        lines[i].trim() !== ""
+      ) {
         rows.push(_splitTableRow(lines[i]));
         i++;
       }
@@ -108,8 +114,7 @@ function _buildTable(rows) {
   const body = bodyRows.length
     ? `<tbody>${bodyRows
         .map(
-          (row) =>
-            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`,
+          (row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`,
         )
         .join("")}</tbody>`
     : "";
@@ -205,6 +210,19 @@ export function detailRow(colspan, fields) {
 
 export function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
+}
+
+// The name cell doubles as the mobile card's collapse toggle (see tables.css's
+// table-wrapper--stack rules and shared/cardCollapse.js). The button is harmless on desktop —
+// it's just the name, unstyled — and the arrow is hidden entirely outside the mobile layout.
+export function cardTitleCell(content) {
+  return `
+    <td class="col-title">
+      <button class="card-toggle" type="button" aria-expanded="false">
+        <span class="card-title-text">${content}</span>
+        <span class="card-collapse-arrow" aria-hidden="true">›</span>
+      </button>
+    </td>`;
 }
 
 export function escapeHtml(raw) {

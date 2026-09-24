@@ -452,6 +452,25 @@ tr.detail-row details[open] summary {
   color: var(--color-text);
 }
 
+/* Baseline reset so the collapse-toggle button (col-title on Traits/Skills/Spells rows)
+   reads as plain text outside the mobile stacked layout — otherwise the browser's default
+   button chrome (border/background/padding) would show up in the desktop table. The arrow
+   only ever makes sense once fields can actually collapse, so it stays hidden here too. */
+.card-toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: inherit;
+}
+
+.card-collapse-arrow {
+  display: none;
+}
+
 /* Stacked cards for the inventory tables on phones. Their control columns (num-stepper,
    storage select, Equipar + ✕) can't shrink, so a 6-column row needs ~540px against ~345px
    of usable width and the whole table scrolls sideways. Opt-in per table: the numeric grids
@@ -520,6 +539,43 @@ tr.detail-row details[open] summary {
     order: -1;
     font-size: var(--fs-base);
     font-weight: 700;
+  }
+
+  /* Traits/Skills/Spells cards start collapsed — tapping the name reveals the rest
+     (see shared/cardCollapse.js). Inventory cards don't opt into this yet. */
+  .table-wrapper--stack .card-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    border: none;
+    background: none;
+    font: inherit;
+    text-align: left;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .table-wrapper--stack .card-collapse-arrow {
+    flex-shrink: 0;
+    display: inline-block;
+    color: var(--color-text-muted);
+    transition: transform 0.15s ease;
+  }
+
+  .table-wrapper--stack tr.is-card-expanded .card-collapse-arrow {
+    transform: rotate(90deg);
+  }
+
+  /* :has(.card-toggle) scopes this to rows that opted in, so inventory cards (no
+     .card-toggle yet) aren't collapsed with no way to reopen them. */
+  .table-wrapper--stack
+    tbody
+    tr:has(.card-toggle):not(.is-card-expanded)
+    > td:not(.col-title):not([colspan]) {
+    display: none;
   }
 
   .table-wrapper--stack td.col-action {

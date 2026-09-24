@@ -82,6 +82,25 @@ describe("renderAdvantages — a purely player-selected advantage (engine hasn't
       t("traits.type"),
     );
   });
+
+  // Collapsed by default: the name is a real button so it's keyboard-operable, and its
+  // state survives the section's full re-renders via shared/openState.js (see that module's
+  // tests) — here we just check the row is set up with a stable key and starts collapsed.
+  test("the name cell is a collapse-toggle button, collapsed by default", () => {
+    renderAdvantages(
+      { advantages: { "ADV-1": true } },
+      { advantages: [{ advantage_id: "ADV-1", advantage_box_name: "x" }] },
+      undefined,
+    );
+
+    const row = advList().querySelector("tbody tr");
+    expect(row.getAttribute("data-id")).toBe("ADV-1");
+    expect(row.classList.contains("is-card-expanded")).toBe(false);
+    const toggle = row.querySelector(".card-toggle");
+    expect(toggle).not.toBeNull();
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    expect(row.querySelector(".card-collapse-arrow")).not.toBeNull();
+  });
 });
 
 describe("renderAdvantages — engine has run (sheet present)", () => {
@@ -247,6 +266,26 @@ describe("renderDisadvantages — a purely player-selected disadvantage", () => 
     expect(row.querySelector(".col-num").getAttribute("data-label")).toBe(
       t("traits.cost"),
     );
+  });
+
+  test("the name cell is a collapse-toggle button, collapsed by default", () => {
+    renderDisadvantages(
+      { disadvantages: { "DIS-1": true } },
+      {
+        disadvantages: [
+          { disadvantage_id: "DIS-1", disadvantage_box_name: "x" },
+        ],
+      },
+      undefined,
+    );
+
+    const row = disList().querySelector("tbody tr");
+    expect(row.getAttribute("data-id")).toBe("DIS-1");
+    expect(row.classList.contains("is-card-expanded")).toBe(false);
+    expect(row.querySelector(".card-toggle")).not.toBeNull();
+    expect(
+      row.querySelector(".card-toggle").getAttribute("aria-expanded"),
+    ).toBe("false");
   });
 });
 

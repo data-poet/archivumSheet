@@ -1,6 +1,10 @@
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { formatRichText, detailRow } from "../../../shared/renderUtils.js";
+import {
+  formatRichText,
+  detailRow,
+  cardTitleCell,
+} from "../../../shared/renderUtils.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -44,8 +48,8 @@ export function renderAdvantages(selected, data, sheet) {
                 : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">✕</button></td>`;
 
             return `
-          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
-            <td class="col-title">${name}${innateTag}${enchantmentTag}</td>
+          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+            ${cardTitleCell(`${name}${innateTag}${enchantmentTag}`)}
             <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
             <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
@@ -115,8 +119,8 @@ export function renderDisadvantages(selected, data, sheet) {
                 : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">✕</button></td>`;
 
             return `
-          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
-            <td class="col-title">${name}${innateTag}${enchantmentTag}</td>
+          <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+            ${cardTitleCell(`${name}${innateTag}${enchantmentTag}`)}
             <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
             <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
