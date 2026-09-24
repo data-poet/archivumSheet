@@ -11,6 +11,7 @@
 
 import { loadStore, saveStore, generateId } from "./characterStoreCore.js";
 import { getAlly as getRepoAlly, isRepoAlly } from "../allies/catalog.js";
+import { applyOverlay } from "../allies/overlay.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 
 function _activeEntry(store) {
@@ -113,4 +114,40 @@ export function resolveAlly(ally_id) {
   const store = loadStore();
   const entry = store?.list.find((c) => c.id === ally_id);
   return Promise.resolve(entry ? { ally_id, ...entry.data } : null);
+}
+
+// Bakes a repo ally's catalog values + overlay into a new local `kind: "ally"` entry, so
+// editing it in the real character editor never touches the shared catalog file (decision
+// #20 in ALLIES_FEATURE.md). The roster entry is rewritten in place to point at the new
+// local id, with `overrides` dropped — the overlay is now baked into the entry itself.
+export async function forkAllyToLocal(instanceId) {
+  const store = loadStore();
+  const entry = _activeEntry(store);
+  const roster = _roster(entry).find((e) => e._instanceId === instanceId);
+  if (!roster || !isRepoAlly(roster.ally_id)) return null;
+
+  const resolved = await resolveAlly(roster.ally_id);
+  const overlaid = applyOverlay(resolved, roster.overrides);
+  if (!overlaid) return null;
+
+  const { version, pc, race, character, inventory } = overlaid;
+  const localId = generateId("c");
+
+  _mutateActiveEntry((activeEntry, activeStore) => {
+    activeStore.list.push({
+      id: localId,
+      name: pc?.character_name ?? "",
+      race: race?.race_sub_name || race?.race_name || "",
+      kind: ENTRY_KINDS.ALLY,
+      data: { version, pc, race, character, inventory },
+    });
+
+    activeEntry.data.character.allies = _roster(activeEntry).map((e) =>
+      e._instanceId === instanceId
+        ? { _instanceId: instanceId, ally_id: localId }
+        : e,
+    );
+  });
+
+  return localId;
 }

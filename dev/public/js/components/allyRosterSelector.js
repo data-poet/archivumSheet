@@ -7,12 +7,15 @@ import {
   getActiveAllyInstanceId,
   setActiveAllyInstanceId,
   removeRosterEntry,
+  forkAllyToLocal,
 } from "../store/allies.js";
-import { listAllies } from "../allies/catalog.js";
+import { listAllies, isRepoAlly } from "../allies/catalog.js";
+import { setActiveCharacterId } from "../store/characterStoreCore.js";
 import { showConfirm } from "./dialog.js";
 import { showToast } from "../shared/toast.js";
 import { escapeHtml } from "../shared/renderUtils.js";
 import { clickStartedInside } from "../shared/eventDispatch.js";
+import { navigateTo } from "../shared/navigate.js";
 
 let _onChange = () => {};
 let _index = [];
@@ -102,9 +105,19 @@ export function renderPopover() {
   popover.innerHTML = `<ul class="char-selector-list">${items}</ul>`;
 }
 
-// Wired to a no-op stub — real fork-on-edit logic lands in a later batch.
-function _handleEdit() {
-  showToast(t("allies.editNotAvailable"), "info");
+// Repo entries fork into a local draft first (decision #20 in ALLIES_FEATURE.md) — the
+// catalog file stays read-only. Local/already-forked entries jump straight to the editor.
+async function _handleEdit(instanceId) {
+  const entry = getRoster().find((e) => e._instanceId === instanceId);
+  if (!entry) return;
+
+  const editId = isRepoAlly(entry.ally_id)
+    ? await forkAllyToLocal(instanceId)
+    : entry.ally_id;
+  if (!editId) return;
+
+  setActiveCharacterId(editId);
+  navigateTo("/");
 }
 
 export function initAllyRosterSelector({ index = [], onChange = () => {} } = {}) {
@@ -154,7 +167,7 @@ export function initAllyRosterSelector({ index = [], onChange = () => {} } = {})
       }
 
       case "edit-ally": {
-        _handleEdit(id);
+        await _handleEdit(id);
         closeSelector({ restoreFocus: true });
         break;
       }
