@@ -211,6 +211,54 @@ export function listCharacters() {
   }));
 }
 
+// Same entries as listCharacters(), reordered so a forked local ally (kind: "ally") sits
+// right after the PC whose roster still references it (indented: true), for the selector to
+// visually group them. Ownership is derived from each PC's own roster ally_id, since forked
+// allies don't record their origin on themselves. An ally with no PC pointing at it anymore
+// (removed from the roster but never deleted, see removeRosterEntry in store/allies.js) just
+// keeps its own place in list order, un-indented.
+export function listCharactersGrouped() {
+  const list = getStore().list;
+
+  const ownerIdOf = new Map();
+  for (const entry of list) {
+    for (const roster of entry?.data?.character?.allies ?? []) {
+      ownerIdOf.set(roster.ally_id, entry.id);
+    }
+  }
+
+  const idsInStore = new Set(list.map((entry) => entry.id));
+  const childrenOf = new Map();
+  for (const entry of list) {
+    if (_kindOf(entry) !== ENTRY_KINDS.ALLY) continue;
+    const ownerId = ownerIdOf.get(entry.id);
+    if (ownerId && idsInStore.has(ownerId)) {
+      if (!childrenOf.has(ownerId)) childrenOf.set(ownerId, []);
+      childrenOf.get(ownerId).push(entry);
+    }
+  }
+
+  const toRow = (entry, indented) => ({
+    id: entry.id,
+    name: entry.name,
+    race: entry.race,
+    kind: _kindOf(entry),
+    indented,
+  });
+
+  const owned = new Set([...childrenOf.values()].flat().map((entry) => entry.id));
+  const result = [];
+  for (const entry of list) {
+    if (owned.has(entry.id)) continue;
+
+    result.push(toRow(entry, false));
+    for (const child of childrenOf.get(entry.id) ?? []) {
+      result.push(toRow(child, true));
+    }
+  }
+  return result;
+}
+
 export function getActiveKind() {
   const store = getStore();
   return _kindOf(store.list.find((c) => c.id === store.activeId));

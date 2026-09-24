@@ -8,6 +8,9 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   listCharacters: jest.fn(() => [
     { id: "c1", name: "Kael", race: "Humano", kind: "character" },
   ]),
+  listCharactersGrouped: jest.fn(() => [
+    { id: "c1", name: "Kael", race: "Humano", kind: "character" },
+  ]),
   getActiveCharacterId: jest.fn(() => "c1"),
   getActiveKind: jest.fn(() => "character"),
   loadCharacter: jest.fn(),

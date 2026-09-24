@@ -1,5 +1,6 @@
 jest.mock("dev/public/js/store/characters.js", () => ({
   listCharacters: jest.fn(),
+  listCharactersGrouped: jest.fn(),
   getActiveCharacterId: jest.fn(),
   loadCharacter: jest.fn(),
   addCharacter: jest.fn(),
@@ -24,6 +25,7 @@ jest.mock("dev/public/js/components/dialog.js", () => ({
 
 import {
   listCharacters,
+  listCharactersGrouped,
   getActiveCharacterId,
   loadCharacter,
   addCharacter,
@@ -82,6 +84,7 @@ beforeEach(() => {
   selectorDOM();
   jest.clearAllMocks();
   listCharacters.mockReturnValue(CHARS);
+  listCharactersGrouped.mockReturnValue(CHARS);
   getActiveCharacterId.mockReturnValue("c1");
 });
 
