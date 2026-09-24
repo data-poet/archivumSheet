@@ -50,6 +50,38 @@ describe("renderAdvantages — a purely player-selected advantage (engine hasn't
     expect(row.classList.contains("trait-innate")).toBe(false);
     expect(row.classList.contains("trait-enchantment")).toBe(false);
   });
+
+  // Mobile stacks each row into a card via .table-wrapper--stack + data-label per cell.
+  test("opts the table into the mobile card layout", () => {
+    renderAdvantages(
+      { advantages: { "ADV-1": true } },
+      {
+        advantages: [
+          {
+            advantage_id: "ADV-1",
+            advantage_box_name: "Visão Aguçada",
+            advantage_cost: 15,
+            advantage_type: "Físico",
+          },
+        ],
+      },
+      undefined,
+    );
+
+    expect(
+      advList().querySelector(".table-wrapper.table-wrapper--stack"),
+    ).not.toBeNull();
+    const row = advList().querySelector("tbody tr");
+    expect(row.querySelector(".col-title").textContent).toContain(
+      "Visão Aguçada",
+    );
+    expect(row.querySelector(".col-num").getAttribute("data-label")).toBe(
+      t("traits.cost"),
+    );
+    expect(row.querySelectorAll("td")[2].getAttribute("data-label")).toBe(
+      t("traits.type"),
+    );
+  });
 });
 
 describe("renderAdvantages — engine has run (sheet present)", () => {
@@ -189,6 +221,32 @@ describe("renderDisadvantages — a purely player-selected disadvantage", () => 
     expect(row.textContent).toContain("Coxeadura");
     expect(row.querySelector(".col-num").textContent).toBe("-10");
     expect(row.querySelector(".remove-dis")).not.toBeNull();
+  });
+
+  test("opts the table into the mobile card layout", () => {
+    renderDisadvantages(
+      { disadvantages: { "DIS-1": true } },
+      {
+        disadvantages: [
+          {
+            disadvantage_id: "DIS-1",
+            disadvantage_box_name: "Coxeadura",
+            disadvantage_cost: -10,
+            disadvantage_type: "Físico",
+          },
+        ],
+      },
+      undefined,
+    );
+
+    expect(
+      disList().querySelector(".table-wrapper.table-wrapper--stack"),
+    ).not.toBeNull();
+    const row = disList().querySelector("tbody tr");
+    expect(row.querySelector(".col-title").textContent).toContain("Coxeadura");
+    expect(row.querySelector(".col-num").getAttribute("data-label")).toBe(
+      t("traits.cost"),
+    );
   });
 });
 

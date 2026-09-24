@@ -45,9 +45,9 @@ export function renderAdvantages(selected, data, sheet) {
 
             return `
           <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
-            <td>${name}${innateTag}${enchantmentTag}</td>
-            <td class="col-num">${cost}</td>
-            <td>${type}</td>
+            <td class="col-title">${name}${innateTag}${enchantmentTag}</td>
+            <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
+            <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
           </tr>
           ${detailRow(4, [
@@ -63,7 +63,7 @@ export function renderAdvantages(selected, data, sheet) {
   setHTML(
     "advList",
     `
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
@@ -116,9 +116,9 @@ export function renderDisadvantages(selected, data, sheet) {
 
             return `
           <tr class="${isInnate ? "trait-innate" : isEnchantment ? "trait-enchantment" : ""}">
-            <td>${name}${innateTag}${enchantmentTag}</td>
-            <td class="col-num">${cost}</td>
-            <td>${type}</td>
+            <td class="col-title">${name}${innateTag}${enchantmentTag}</td>
+            <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
+            <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
           </tr>
           ${detailRow(4, [
@@ -134,7 +134,7 @@ export function renderDisadvantages(selected, data, sheet) {
   setHTML(
     "disList",
     `
-    <div class="table-wrapper"><table>
+    <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
           <th>${t("traits.name")}</th>
