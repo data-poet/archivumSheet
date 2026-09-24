@@ -36,6 +36,14 @@ function _pathsFromDisk() {
   return _pathsById;
 }
 
+// Folder nesting is `<type>/[<subtype>/]<id>.json` — one optional level. Derived from the file's
+// own path rather than stored in the JSON, so moving a file between folders is the only edit
+// needed to change its classification.
+function _typeSubtype(file) {
+  const segments = path.relative(ALLIES_DIR, file).split(path.sep).slice(0, -1);
+  return { type: segments[0] ?? "", subtype: segments[1] ?? null };
+}
+
 // Returns null rather than throwing for an unknown id, so the caller decides the status code.
 function getAlly(allyId) {
   // A traversal-safe id check, not cosmetic: allyId arrives straight from the URL.
@@ -44,7 +52,7 @@ function getAlly(allyId) {
   const file = _pathsFromDisk().get(allyId);
   if (!file) return null;
 
-  return { ally_id: allyId, ...loadJSON(file) };
+  return { ally_id: allyId, ..._typeSubtype(file), ...loadJSON(file) };
 }
 
 function listAllies() {
@@ -56,6 +64,8 @@ function listAllies() {
 
       return {
         ally_id: allyId,
+        type: ally.type,
+        subtype: ally.subtype,
         name: ally.pc?.character_name ?? "",
         race: ally.race?.race_sub_name || ally.race?.race_name || "",
         portrait: ally.portrait ?? "",
