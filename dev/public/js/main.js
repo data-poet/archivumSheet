@@ -14,45 +14,19 @@ import {
 } from "./ui.js";
 import { runEngine } from "./compute/index.js";
 import { initAutoRun } from "./compute/autorun.js";
-import { loadRaces } from "./engine/character/races/index.js";
 import { initCharacterImage } from "./engine/character/portrait/index.js";
-import { loadAdvantages } from "./engine/character/traits/advantages/index.js";
-import { loadDisadvantages } from "./engine/character/traits/disadvantages/index.js";
-import { loadSkills } from "./engine/character/skills/index.js";
-import { loadSpells } from "./engine/magic/spells/index.js";
-import { loadArmors } from "./engine/inventory/armor/index.js";
-import { loadShields } from "./engine/inventory/shield/index.js";
-import { loadMeleeWeapons } from "./engine/inventory/melee/index.js";
-import { loadRangedWeapons } from "./engine/inventory/ranged/index.js";
-import { loadFirearms } from "./engine/inventory/firearms/index.js";
-import { loadAmmo } from "./engine/inventory/ammo/index.js";
-import { loadAlchemy } from "./engine/inventory/alchemy/index.js";
-import { loadSurvivalGear } from "./engine/inventory/survivalGear/index.js";
-import { loadAccessories } from "./engine/inventory/accessories/index.js";
-import { loadMagicGear } from "./engine/inventory/magicGear/index.js";
-import { loadEnchantments } from "./engine/inventory/shared/enchantments/index.js";
-import { loadDualUseWeapons } from "./engine/inventory/shared/dualUseWeapons.js";
-import { loadMaterials } from "./engine/inventory/shared/materials.js";
-import { initCharacters } from "./store/characters.js";
+import { initCharacters, getActiveKind } from "./store/characters.js";
+import { reloadCatalogs } from "./store/catalogs.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 import { renderEntryKind } from "./components/entryKind.js";
 import { renderAllyLinkControl } from "./components/allies/allyLinkControl.js";
 import { initAllyAddControl } from "./components/allies/allyAddInline.js";
-import { getActiveKind } from "./store/characters.js";
 import { ENTRY_KINDS } from "./shared/constants.js";
 import { state } from "./state.js";
-import { setCatalogAudience, AUDIENCE } from "./shared/availability.js";
+import { AUDIENCE } from "./shared/availability.js";
 import { initCardCollapse } from "./shared/cardCollapse.js";
 
 export async function bootstrap() {
-  // Must precede every load*(): each one assigns its catalog and builds its add-form selectors in
-  // the same call, so there is no post-load moment left to filter in. Reading the kind here means
-  // the catalogs a draft sees are decided at load, so switching kind mid-session needs a reload
-  // before ally-only content appears.
-  setCatalogAudience(
-    getActiveKind() === ENTRY_KINDS.ALLY ? AUDIENCE.ALLY : AUDIENCE.PLAYER,
-  );
-
   mountResumePanel();
   initAutoRun(runEngine);
   bindUI();
@@ -70,26 +44,9 @@ export async function bootstrap() {
   // The load*() functions only fetch catalogs and populate their own add-form
   // selectors — none of them render. Rendering once here instead costs one DOM
   // sweep rather than one per catalog.
-  await Promise.all([
-    loadRaces(),
-    loadAdvantages(),
-    loadDisadvantages(),
-    loadSkills(),
-    loadSpells(),
-    loadMaterials(),
-    loadArmors(),
-    loadShields(),
-    loadMeleeWeapons(),
-    loadRangedWeapons(),
-    loadFirearms(),
-    loadAmmo(),
-    loadAlchemy(),
-    loadSurvivalGear(),
-    loadAccessories(),
-    loadMagicGear(),
-    loadEnchantments(),
-    loadDualUseWeapons(),
-  ]);
+  await reloadCatalogs(
+    getActiveKind() === ENTRY_KINDS.ALLY ? AUDIENCE.ALLY : AUDIENCE.PLAYER,
+  );
 
   // initCharacters() applies the active character, which ends in its own
   // renderListsPreserving + triggerAutoRun. Only render here when it couldn't

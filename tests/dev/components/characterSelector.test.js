@@ -23,6 +23,9 @@ jest.mock("dev/public/js/store/persistence.js", () => ({
 jest.mock("dev/public/js/components/dialog.js", () => ({
   showConfirm: jest.fn(),
 }));
+jest.mock("dev/public/js/store/catalogs.js", () => ({
+  reloadCatalogs: jest.fn(() => Promise.resolve()),
+}));
 
 import {
   listCharacters,
@@ -42,6 +45,7 @@ import {
 } from "dev/public/js/store/persistence.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
 import { renderEntryKind } from "dev/public/js/components/entryKind.js";
+import { reloadCatalogs } from "dev/public/js/store/catalogs.js";
 import {
   updateSelectorButton,
   openSelector,
@@ -92,6 +96,9 @@ beforeEach(() => {
   listCharacters.mockReturnValue(CHARS);
   listCharactersGrouped.mockReturnValue(CHARS);
   getActiveCharacterId.mockReturnValue("c1");
+  // jest.clearAllMocks() (above) resets call history but not a prior mockReturnValue —
+  // reassert the default here so no earlier test's override leaks into this one.
+  getActiveKind.mockReturnValue(ENTRY_KINDS.CHARACTER);
 });
 
 describe("updateSelectorButton", () => {
@@ -366,13 +373,14 @@ describe("initCharacterSelector — button + outside click", () => {
 });
 
 describe("initCharacterSelector — select-char", () => {
-  test("selecting the already-active character just closes the popover", () => {
+  test("selecting the already-active character just closes the popover", async () => {
     initCharacterSelector();
     openSelector();
 
     document
       .querySelector('.char-selector-item[data-id="c1"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(saveActiveCharacter).not.toHaveBeenCalled();
     expect(loadCharacter).not.toHaveBeenCalled();
@@ -383,13 +391,14 @@ describe("initCharacterSelector — select-char", () => {
     ).toBe(false);
   });
 
-  test("selecting a different character saves the current one, loads the new one, and closes", () => {
+  test("selecting a different character saves the current one, loads the new one, and closes", async () => {
     initCharacterSelector();
     openSelector();
 
     document
       .querySelector('.char-selector-item[data-id="c2"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(saveActiveCharacter).toHaveBeenCalledTimes(1);
     expect(loadCharacter).toHaveBeenCalledWith("c2");
@@ -398,6 +407,38 @@ describe("initCharacterSelector — select-char", () => {
         .getElementById("char-selector-popover")
         .classList.contains("is-open"),
     ).toBe(false);
+  });
+
+  // The two entries share a kind (both default to "character" here), so no catalog
+  // work is needed — this is the common case the no-reload rewrite optimizes for.
+  test("does not reload catalogs when the target character's kind matches the active one", async () => {
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('.char-selector-item[data-id="c2"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(reloadCatalogs).not.toHaveBeenCalled();
+  });
+
+  test("reloads catalogs for the new audience before loading the character, when kind differs", async () => {
+    listCharacters.mockReturnValue([
+      ...CHARS,
+      { id: "c3", name: "Bran", race: "", kind: ENTRY_KINDS.ALLY },
+    ]);
+    listCharactersGrouped.mockReturnValue(listCharacters());
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('.char-selector-item[data-id="c3"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(reloadCatalogs).toHaveBeenCalledWith("npc");
+    expect(loadCharacter).toHaveBeenCalledWith("c3");
   });
 });
 
@@ -408,7 +449,7 @@ describe("initCharacterSelector — add-char", () => {
   });
   afterEach(() => promptSpy.mockRestore());
 
-  test("cancelling the prompt (returns null) does not add a character", () => {
+  test("cancelling the prompt (returns null) does not add a character", async () => {
     promptSpy.mockReturnValue(null);
     initCharacterSelector();
     openSelector();
@@ -416,11 +457,12 @@ describe("initCharacterSelector — add-char", () => {
     document
       .querySelector('[data-action="add-char"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).not.toHaveBeenCalled();
   });
 
-  test("adds a character with the trimmed prompt value", () => {
+  test("adds a character with the trimmed prompt value", async () => {
     promptSpy.mockReturnValue("  Novo Herói  ");
     initCharacterSelector();
     openSelector();
@@ -428,13 +470,14 @@ describe("initCharacterSelector — add-char", () => {
     document
       .querySelector('[data-action="add-char"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).toHaveBeenCalledWith("Novo Herói");
   });
 
   // Kept blank rather than defaulted, so _displayName()'s name → race → "unnamed" fallback
   // has a real blank to fall through to once a race is picked.
-  test("keeps the name blank when the prompt is submitted blank", () => {
+  test("keeps the name blank when the prompt is submitted blank", async () => {
     promptSpy.mockReturnValue("   ");
     initCharacterSelector();
     openSelector();
@@ -442,8 +485,22 @@ describe("initCharacterSelector — add-char", () => {
     document
       .querySelector('[data-action="add-char"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).toHaveBeenCalledWith("");
+  });
+
+  test("does not reload catalogs — the active entry is already a character", async () => {
+    promptSpy.mockReturnValue("Novo Herói");
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="add-char"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(reloadCatalogs).not.toHaveBeenCalled();
   });
 });
 
@@ -454,7 +511,7 @@ describe("initCharacterSelector — add-ally", () => {
   });
   afterEach(() => promptSpy.mockRestore());
 
-  test("cancelling the prompt (returns null) does not add an ally draft", () => {
+  test("cancelling the prompt (returns null) does not add an ally draft", async () => {
     promptSpy.mockReturnValue(null);
     initCharacterSelector();
     openSelector();
@@ -462,11 +519,12 @@ describe("initCharacterSelector — add-ally", () => {
     document
       .querySelector('[data-action="add-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).not.toHaveBeenCalled();
   });
 
-  test("adds a draft with kind 'ally' and the trimmed prompt value", () => {
+  test("adds a draft with kind 'ally' and the trimmed prompt value", async () => {
     promptSpy.mockReturnValue("  Bran, o Batedor  ");
     initCharacterSelector();
     openSelector();
@@ -474,6 +532,7 @@ describe("initCharacterSelector — add-ally", () => {
     document
       .querySelector('[data-action="add-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).toHaveBeenCalledWith(
       "Bran, o Batedor",
@@ -484,7 +543,7 @@ describe("initCharacterSelector — add-ally", () => {
   // This is the case the sub-race fallback (_displayName) exists for: a hand-made ally left
   // unnamed shows its species/sub-race in the selector once one is picked, not a generic
   // "Novo Aliado" forever.
-  test("keeps the name blank when the prompt is submitted blank", () => {
+  test("keeps the name blank when the prompt is submitted blank", async () => {
     promptSpy.mockReturnValue("   ");
     initCharacterSelector();
     openSelector();
@@ -492,8 +551,24 @@ describe("initCharacterSelector — add-ally", () => {
     document
       .querySelector('[data-action="add-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
 
     expect(addCharacter).toHaveBeenCalledWith("", ENTRY_KINDS.ALLY);
+  });
+
+  // The active entry defaults to "character" in this suite, so drafting an ally always
+  // crosses a kind boundary and must re-filter races/advantages/disadvantages for it.
+  test("reloads catalogs for the ally audience before adding the draft", async () => {
+    promptSpy.mockReturnValue("Bran");
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="add-ally"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+
+    expect(reloadCatalogs).toHaveBeenCalledWith("npc");
   });
 });
 
@@ -650,11 +725,10 @@ describe("initCharacterSelector — file input handling", () => {
     );
   });
 
-  // An imported character lands in a slot whose kind may differ from the one on screen. That
-  // used to be patched up with a targeted renderEntryKind() call, but the catalog audience
-  // (shared/availability.js) is also only computed once, at bootstrap, so a full reload is
-  // now used instead — it's the only thing that refreshes both.
-  test("import mode no longer patches the entry-kind control in place (a reload handles it)", async () => {
+  // An imported character lands in a slot whose kind may differ from the one on screen —
+  // import mode always repaints the entry-kind control (and reloads catalogs first, if the
+  // kind actually changed) instead of reloading the whole page.
+  test("import mode refreshes the entry-kind control in place", async () => {
     initCharacterSelector();
     const input = setFile(fakeFile(VALID_PAYLOAD));
     input._mode = "import";
@@ -663,9 +737,31 @@ describe("initCharacterSelector — file input handling", () => {
     input.dispatchEvent(new Event("change"));
     await flush();
 
-    expect(renderEntryKind).not.toHaveBeenCalled();
+    expect(renderEntryKind).toHaveBeenCalled();
     expect(addCharacter).toHaveBeenCalled();
     expect(replaceActiveCharacter).toHaveBeenCalled();
+  });
+
+  test("reloads catalogs when the imported file's kind differs from the active one", async () => {
+    initCharacterSelector();
+    const input = setFile(
+      fakeFile(
+        JSON.stringify({
+          version: 1,
+          character: {},
+          inventory: {},
+          pc: { character_name: "Bran" },
+          portrait: "/images/allies/ally-0001-bran.png",
+        }),
+      ),
+    );
+    input._mode = "import";
+    reloadCatalogs.mockClear();
+
+    input.dispatchEvent(new Event("change"));
+    await flush();
+
+    expect(reloadCatalogs).toHaveBeenCalledWith("npc");
   });
 
   test("replace mode refreshes it too", async () => {

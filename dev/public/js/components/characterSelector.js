@@ -25,13 +25,35 @@ import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
 import { renderAllyLinkControl } from "./allies/allyLinkControl.js";
 import { renderPageSelector } from "./pageSelector.js";
+import { reloadCatalogs } from "../store/catalogs.js";
+import { AUDIENCE } from "../shared/availability.js";
+
+function _audienceFor(kind) {
+  return kind === ENTRY_KINDS.ALLY ? AUDIENCE.ALLY : AUDIENCE.PLAYER;
+}
+
+// Catalogs only need to change when the active entry's kind changes (races/advantages/
+// disadvantages carry ally-only rows) — same-kind switches can just repaint. Reloading
+// unconditionally would still be correct, just a pointless refetch of every catalog on
+// every character switch. Returns whether it actually reloaded, so a caller that already
+// applied the character's data against the old catalogs knows to reapply it.
+async function _reloadCatalogsIfKindChanged(previousKind, targetKind) {
+  if (targetKind === previousKind) return false;
+  await reloadCatalogs(_audienceFor(targetKind));
+  return true;
+}
+
+function _repaintChrome() {
+  updateSelectorButton();
+  renderEntryKind();
+  renderAllyLinkControl();
+  renderPageSelector();
+}
 
 // A typed name always wins; an untyped one falls back to the sub-race (e.g. a hand-made
 // "Elemental de Terra" with no name typed in yet shows its sub-race instead of "Sem nome").
 function _displayName(entry) {
-  return (
-    entry?.name?.trim() || entry?.race?.trim() || t("characters.unnamed")
-  );
+  return entry?.name?.trim() || entry?.race?.trim() || t("characters.unnamed");
 }
 
 export function updateSelectorButton() {
@@ -173,12 +195,17 @@ export function initCharacterSelector() {
           closeSelector({ restoreFocus: true });
           return;
         }
+        const previousKind = getActiveKind();
+        const targetKind =
+          listCharacters().find((c) => c.id === id)?.kind ??
+          ENTRY_KINDS.CHARACTER;
         saveActiveCharacter();
-        loadCharacter(id);
         closeSelector({ restoreFocus: true });
-        // Catalog audience (shared/availability.js) is only computed once, at bootstrap — a
-        // reload is the only way the newly active character's kind can re-filter races/etc.
-        window.location.reload();
+        // Catalogs must already match the new kind before loadCharacter() applies its data,
+        // or race restoration (store/characters.js's _applyData) runs against the old audience.
+        await _reloadCatalogsIfKindChanged(previousKind, targetKind);
+        loadCharacter(id);
+        _repaintChrome();
         break;
       }
 
@@ -188,12 +215,15 @@ export function initCharacterSelector() {
         // fallback below before it ever gets a chance to apply.
         const name = prompt(t("characters.namePrompt"));
         if (name === null) return;
+        await _reloadCatalogsIfKindChanged(
+          getActiveKind(),
+          ENTRY_KINDS.CHARACTER,
+        );
         // A blank name is kept blank (not defaulted to placeholder text) so
         // _displayName()'s name → race → "unnamed" fallback has a real blank to fall through.
         addCharacter(name.trim());
         closeSelector({ restoreFocus: true });
-        // See the select-char comment above — the new character becomes active immediately.
-        window.location.reload();
+        _repaintChrome();
         break;
       }
 
@@ -201,14 +231,13 @@ export function initCharacterSelector() {
         // See the add-char comment above — no pre-filled default value.
         const name = prompt(t("characters.namePrompt"));
         if (name === null) return;
+        await _reloadCatalogsIfKindChanged(getActiveKind(), ENTRY_KINDS.ALLY);
         // See the add-char comment above — an ally left unnamed falls through to its
         // sub-race in the selector once one is picked (this is the case that matters most:
         // a hand-made ally is often identified by species alone, e.g. "Elemental de Terra").
         addCharacter(name.trim(), ENTRY_KINDS.ALLY);
         closeSelector({ restoreFocus: true });
-        // See the select-char comment above — without this, ally-only catalog rows (e.g. a
-        // race with available_for: NPC) stay hidden because the audience is still "pc".
-        window.location.reload();
+        _repaintChrome();
         break;
       }
 
@@ -227,11 +256,18 @@ export function initCharacterSelector() {
           danger: true,
         });
         if (!confirmed) return;
+        const previousKind = getActiveKind();
         removeCharacter(getActiveCharacterId());
         closeSelector({ restoreFocus: true });
-        // See the select-char comment above — whichever character becomes active next may
-        // have a different kind than the one just removed.
-        window.location.reload();
+        // Whichever character becomes active next may have a different kind than the one
+        // just removed — removeCharacter() already repainted once against the old catalogs,
+        // so reapply if that turns out to have been wrong.
+        const reloaded = await _reloadCatalogsIfKindChanged(
+          previousKind,
+          getActiveKind(),
+        );
+        if (reloaded) loadCharacter(getActiveCharacterId());
+        _repaintChrome();
         break;
       }
 
@@ -288,10 +324,7 @@ export function initCharacterSelector() {
           if (payload.linked_allies) {
             recreateLinkedAllies(payload.linked_allies, getActiveCharacterId());
           }
-          updateSelectorButton();
-          renderEntryKind();
-          renderAllyLinkControl();
-          renderPageSelector();
+          _repaintChrome();
         } else {
           const text = await file.text();
           const payload = JSON.parse(text);
@@ -300,18 +333,25 @@ export function initCharacterSelector() {
           }
           const name =
             payload?.pc?.character_name?.trim() || t("characters.unnamed");
-          addCharacter(
-            name,
-            isAllyFile(payload) ? ENTRY_KINDS.ALLY : ENTRY_KINDS.CHARACTER,
-          );
+          const previousKind = getActiveKind();
+          const targetKind = isAllyFile(payload)
+            ? ENTRY_KINDS.ALLY
+            : ENTRY_KINDS.CHARACTER;
+          addCharacter(name, targetKind);
           // addCharacter loads a blank character; overwrite it with the imported data.
           replaceActiveCharacter(payload);
           if (payload.linked_allies) {
             recreateLinkedAllies(payload.linked_allies, getActiveCharacterId());
           }
-          // See the select-char comment in the popover handler above — the imported
-          // character's kind may differ from whatever was active before.
-          window.location.reload();
+          // The imported character's kind may differ from whatever was active before —
+          // addCharacter/replaceActiveCharacter above already applied it against the old
+          // catalogs, so reapply once they're reloaded for the right audience.
+          const reloaded = await _reloadCatalogsIfKindChanged(
+            previousKind,
+            targetKind,
+          );
+          if (reloaded) loadCharacter(getActiveCharacterId());
+          _repaintChrome();
           return;
         }
       } catch (err) {

@@ -435,7 +435,7 @@ DIS-052,FANFARRONICE | -10,FANFARRONICE,-10,Mental,"
 - Dependendo de sua personalidade e de sua posição, isto pode tomar a forma de agressões físicas, hostilidade intelectual ou “gelo” social.
 - Faça um teste de Vontade para tentar evitar uma bravata grosseira quando você sabe que não deveria, mas para representar seu personagem de maneira apropriada você precisa provocar a tantas pessoas, quantas puder.
 - Como ninguém gosta de um fanfarrão, seus testes de reação estarão submetidos a um redutor de -2.",Módulo Básico 3e,31,
-DIS-053,FURIA | -15,FURIA,-15,Mental,"
+DIS-053,FÚRIA | -15,FÚRIA,-15,Mental,"
 - Como o Mau Humor, só que pior.
 - O personagem tende a perder o controle de si próprio quando submetido a alguma tensão, passando a atacar freneticamente quem ou o que quer que creia ser a causa de seu problema. (Não se pode assumir as duas desvantagens, Fúria e Mau Humor.)
 - Sempre que ele for atingido por mais de 3 vezes numa rodada, deverá fazer um teste de Vontade.
@@ -1000,3 +1000,13 @@ DIS-140,FRÁGIL | INFLAMÁVEL | -10,FRÁGIL | INFLAMÁVEL,-10,Física,"
 DIS-141,FRÁGIL | NÃO NATURAL | -50,FRÁGIL | NÃO NATURAL,-50,Física,"
 - Você é uma criatura invocada, conjurada ou um ""constructo"" de magia ou ciência fantástica (por exemplo, demônio, golem ou morto-vivo).
 - Você falha automaticamente no teste de HT para permanecer vivo se seus PV caírem para um valor negativo ou zero, pois essa quantidade de dano rompe seus laços com a força que o anima.",Módulo Básico 4e,136,NPC
+DIS-142,REPROGRAMÁVEL | -10,REPROGRAMÁVEL,-10,Mental,"
+- Você pode ser programado para obedecer a um mestre.
+- Se você tiver a Mentalidade de Escravo (p. 154), deve obedecer de forma servil e ater-se estritamente à letra das ordens do seu mestre.
+- Se não tiver a Mentalidade de Escravo, pode interpretar as ordens dele de forma criativa, desde que se mantenha fiel à letra ou ao espírito delas (à sua escolha).
+- Se você não for senciente (IQ 0), não terá interesse em fazer nada além de seguir sua programação!
+- Você pode ter tanto Dever quanto Reprogramável.
+- Nesse caso, deve fazer o possível para cumprir ambas as obrigações.
+    - Caso entrem em conflito, sua programação sempre tem prioridade.
+- Essa característica é mais adequada para golens, mortos-vivos irracionais, robôs e autômatos semelhantes.
+",Módulo Básico 4e,150,NPC
