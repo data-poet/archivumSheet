@@ -162,6 +162,7 @@
 
 .resume-attr-mod-stepper input {
   width: 100%;
+  min-width: 0;
   font-size: var(--fs-xxs);
   text-align: center;
   padding: var(--space-1);
@@ -173,8 +174,10 @@
 
 .resume-attr-mod-stepper .stepper-btn {
   font-size: var(--fs-xxs);
-  padding: 0 var(--space-2);
+  padding: 0;
   line-height: 1.4;
+  flex: 0 0 auto;
+  width: 20px;
 }
 
 .resume-secondary-mod-stepper {
@@ -298,11 +301,14 @@
 .resume-limits-table {
   font-size: var(--fs-xxs);
   width: 100%;
+  table-layout: fixed;
 }
 .resume-limits-table th,
 .resume-limits-table td {
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-1);
   text-align: center;
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* legacy weight/value tables */
