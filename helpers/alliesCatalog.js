@@ -14,6 +14,11 @@ const { loadJSON } = require("./dataUtils.js");
 const ALLIES_DIR = path.join(__dirname, "../data/allies");
 const ALLY_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
+// Which named tier-label list (see localization's allies.tierLists) a type/subtype's
+// trailing _NN files resolve to. Subtype overrides type, which overrides the manifest's
+// own default — so a new subtype needs no entry at all to inherit its type's list.
+const TIER_LOGIC_CONFIG = require("../data/allies/tierLogic.config.json");
+
 // Allies are grouped into type subfolders (data/allies/animals/, data/allies/humanoids/, ...),
 // so the id alone doesn't say where the file lives. Built once and cached: a repo ally file
 // never moves within a running process.
@@ -44,6 +49,15 @@ function _typeSubtype(file) {
   return { type: segments[0] ?? "", subtype: segments[1] ?? null };
 }
 
+function _tierList(type, subtype) {
+  const bySubtypeKey = subtype ? `${type}/${subtype}` : null;
+  return (
+    (bySubtypeKey && TIER_LOGIC_CONFIG.bySubtype?.[bySubtypeKey]) ??
+    TIER_LOGIC_CONFIG.byType?.[type] ??
+    TIER_LOGIC_CONFIG.default
+  );
+}
+
 // Returns null rather than throwing for an unknown id, so the caller decides the status code.
 function getAlly(allyId) {
   // A traversal-safe id check, not cosmetic: allyId arrives straight from the URL.
@@ -52,7 +66,8 @@ function getAlly(allyId) {
   const file = _pathsFromDisk().get(allyId);
   if (!file) return null;
 
-  return { ally_id: allyId, ..._typeSubtype(file), ...loadJSON(file) };
+  const { type, subtype } = _typeSubtype(file);
+  return { ally_id: allyId, type, subtype, tierList: _tierList(type, subtype), ...loadJSON(file) };
 }
 
 function listAllies() {
@@ -66,6 +81,7 @@ function listAllies() {
         ally_id: allyId,
         type: ally.type,
         subtype: ally.subtype,
+        tierList: ally.tierList,
         name: ally.pc?.character_name ?? "",
         race: ally.race?.race_sub_name || ally.race?.race_name || "",
         portrait: ally.portrait ?? "",

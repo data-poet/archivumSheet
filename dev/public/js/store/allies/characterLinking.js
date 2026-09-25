@@ -140,7 +140,7 @@ export async function forkAndLinkAllyToCharacter(allyId, ownerCharacterId) {
   // that still has allyId, or it has nowhere left to come from once this is an ordinary local ally.
   const pcWithTier = pc?.character_name
     ? pc
-    : { ...pc, tier_label: tierLabel(allyId) };
+    : { ...pc, tier_label: tierLabel(resolved) };
 
   const store = getStore();
   store.list.push({

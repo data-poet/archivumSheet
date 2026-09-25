@@ -34,10 +34,18 @@ export const ALLIES = {
     mounts: "Montarias",
     earth: "Terra",
   },
-  // Display label for a file's trailing _NN, used instead of typeNames/subtypeNames' name
+  // Display labels for a file's trailing _NN, used instead of typeNames/subtypeNames' name
   // selector whenever a whole subtype's files carry no character_name (see allyAddInline.js's
-  // _isUnnamedGroup). Falls back to "tierLabel NN" if unlisted.
-  tierNames: {
-    "01": "Menor",
+  // _isUnnamedGroup). Which list applies to a given type/subtype is decided server-side (see
+  // data/allies/tierLogic.config.json) and shipped as each ally's tierList field. Falls back
+  // to "tierLabel NN" if the list or the number in it is unlisted.
+  tierLists: {
+    default: {
+      "01": "Menor",
+      "02": "Comum",
+      "03": "Maior",
+      "04": "Elite",
+      "05": "Lendário",
+    },
   },
 };
