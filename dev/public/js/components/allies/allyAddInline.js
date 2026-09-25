@@ -6,6 +6,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { listAllies } from "../../allies/catalog.js";
+import { tierOf, tierLabel } from "../../allies/tier.js";
 import {
   getActiveKind,
   getActiveCharacterId,
@@ -49,6 +50,14 @@ function _subtypeLabel(subtype) {
   return t(`allies.subtypeNames.${subtype}`, subtype);
 }
 
+// A group with no character_name at all (e.g. elementals/earth's size-tiered files) is
+// identified by its trailing _NN instead — a name selector would just show a column of
+// blanks. A group where every file carries a real name (e.g. a future mounts/horses) keeps
+// the ordinary name selector. Groups aren't expected to mix the two within one subtype.
+function _isUnnamedGroup(entries) {
+  return entries.length > 0 && entries.every((a) => !a.name);
+}
+
 function _optionsHtml(values, labelFor) {
   return values
     .map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(labelFor(v))}</option>`)
@@ -84,11 +93,27 @@ function _renderNames(mount) {
   const type = mount.querySelector("#ally-add-type")?.value;
   const subtype = mount.querySelector("#ally-add-subtype")?.value || null;
   const nameSelect = mount.querySelector("#ally-add-name");
+  const nameLabel = mount.querySelector("#ally-add-name-label");
   if (!nameSelect) return;
 
-  const names = _namesOf(_index, type, subtype);
-  nameSelect.innerHTML = names
-    .map((a) => `<option value="${escapeHtml(a.ally_id)}">${escapeHtml(a.name)}</option>`)
+  const entries = _namesOf(_index, type, subtype);
+  const byTier = _isUnnamedGroup(entries);
+
+  if (nameLabel) {
+    nameLabel.textContent = t(byTier ? "allies.tierLabel" : "allies.nameLabel");
+  }
+
+  const ordered = byTier
+    ? [...entries].sort(
+        (a, b) => Number(tierOf(a.ally_id) ?? 0) - Number(tierOf(b.ally_id) ?? 0),
+      )
+    : entries;
+
+  nameSelect.innerHTML = ordered
+    .map(
+      (a) =>
+        `<option value="${escapeHtml(a.ally_id)}">${escapeHtml(byTier ? tierLabel(a.ally_id) : a.name)}</option>`,
+    )
     .join("");
 }
 

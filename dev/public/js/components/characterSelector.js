@@ -26,6 +26,7 @@ import { isAllyFile } from "../store/allies/allyExport.js";
 import { getActiveKind } from "../store/characters.js";
 import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
 import { renderAllyLinkControl } from "./allies/allyLinkControl.js";
+import { renderAllyAddControl } from "./allies/allyAddInline.js";
 import { renderPageSelector } from "./pageSelector.js";
 import { reloadCatalogs } from "../store/catalogs.js";
 import { AUDIENCE } from "../shared/availability.js";
@@ -49,6 +50,7 @@ function _repaintChrome() {
   updateSelectorButton();
   renderEntryKind();
   renderAllyLinkControl();
+  renderAllyAddControl();
   renderPageSelector();
 }
 

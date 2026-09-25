@@ -109,6 +109,9 @@ function _applyData(data) {
     experience_points: pc.experience_points ?? null,
     ability_points:    pc.ability_points    ?? null,
     magic_points:      pc.magic_points      ?? null,
+    // Only ever set by forkAndLinkAllyToCharacter() for a nameless catalog ally — see
+    // allies/tier.js and components/resume/vitals.js's renderResumeHeader.
+    tier_label:        pc.tier_label        ?? "",
     image: pc.image ?? {
       uploaded:    false,
       data:        "",

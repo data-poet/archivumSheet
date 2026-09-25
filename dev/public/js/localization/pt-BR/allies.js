@@ -19,6 +19,7 @@ export const ALLIES = {
   subtypeLabel: "Subtipo",
   subtypeNone: "Nenhum",
   nameLabel: "Nome",
+  tierLabel: "Nível",
   add: "Adicionar",
   addError: "Erro ao adicionar aliado.",
 
@@ -27,8 +28,16 @@ export const ALLIES = {
   typeNames: {
     humanoids: "Humanoides",
     animals: "Animais",
+    elementals: "Elementais",
   },
   subtypeNames: {
     mounts: "Montarias",
+    earth: "Terra",
+  },
+  // Display label for a file's trailing _NN, used instead of typeNames/subtypeNames' name
+  // selector whenever a whole subtype's files carry no character_name (see allyAddInline.js's
+  // _isUnnamedGroup). Falls back to "tierLabel NN" if unlisted.
+  tierNames: {
+    "01": "Menor",
   },
 };

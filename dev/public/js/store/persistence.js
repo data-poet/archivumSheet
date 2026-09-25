@@ -143,6 +143,8 @@ function _applyImport(payload) {
     experience_points: pc?.experience_points ?? null,
     ability_points:    pc?.ability_points    ?? null,
     magic_points:      pc?.magic_points      ?? null,
+    // Mirrors characters.js's _applyData — see that whitelist entry's comment.
+    tier_label:        pc?.tier_label        ?? "",
     image: pc?.image ?? {
       uploaded:    false,
       data:        "",
