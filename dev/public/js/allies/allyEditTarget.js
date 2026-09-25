@@ -1,4 +1,4 @@
-// Where the allies page's attribute edits land. Mirrors PC_EDIT_TARGET's interface (see
+// Where an ally draft's attribute edits land. Mirrors PC_EDIT_TARGET's interface (see
 // shared/editTarget.js and engine/character/traits/pcEditTarget.js) so the shared resume
 // stepper markup/handler work unmodified on both pages.
 //

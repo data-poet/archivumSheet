@@ -26,6 +26,14 @@ import { renderEntryKind, warnAllyOnlyContent } from "./entryKind.js";
 import { renderAllyLinkControl } from "./allies/allyLinkControl.js";
 import { renderPageSelector } from "./pageSelector.js";
 
+// A typed name always wins; an untyped one falls back to the sub-race (e.g. a hand-made
+// "Elemental de Terra" with no name typed in yet shows its sub-race instead of "Sem nome").
+function _displayName(entry) {
+  return (
+    entry?.name?.trim() || entry?.race?.trim() || t("characters.unnamed")
+  );
+}
+
 export function updateSelectorButton() {
   const btn = document.getElementById("char-selector-btn");
   if (!btn) return;
@@ -34,12 +42,8 @@ export function updateSelectorButton() {
   const chars = listCharacters();
   const active = chars.find((c) => c.id === id);
 
-  const name = active?.name?.trim() || t("characters.unnamed");
-  const race = active?.race?.trim();
-
   btn.innerHTML = `
-    <span class="char-selector-btn-name">${escapeHtml(name)}</span>
-    ${race ? `<span class="char-selector-btn-race">${escapeHtml(race)}</span>` : ""}
+    <span class="char-selector-btn-name">${escapeHtml(_displayName(active))}</span>
     <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
   `;
 }
@@ -87,8 +91,6 @@ export function renderPopover() {
   const charItems = chars
     .map((c) => {
       const isActive = c.id === activeId;
-      const name = c.name?.trim() || t("characters.unnamed");
-      const race = c.race?.trim();
       const isAlly = c.kind === ENTRY_KINDS.ALLY;
       return `
       <li>
@@ -99,10 +101,9 @@ export function renderPopover() {
             ${isActive ? 'aria-current="true"' : ""}>
           <span class="char-selector-radio" aria-hidden="true">${isActive ? "⦿" : "○"}</span>
           <span class="char-selector-item-info">
-            <span class="char-selector-item-name">${escapeHtml(name)}</span>
-            ${race ? `<span class="char-selector-item-race">${escapeHtml(race)}</span>` : ""}
+            <span class="char-selector-item-name">${escapeHtml(_displayName(c))}</span>
           </span>
-          ${isAlly ? `<span class="char-selector-item-kind">${t("characters.kindBadge")}</span>` : ""}
+          ${isAlly ? `<span class="char-selector-item-kind" title="${t("characters.kindBadgeTitle")}">${t("characters.kindBadge")}</span>` : ""}
         </button>
       </li>`;
     })
@@ -128,11 +129,6 @@ export function renderPopover() {
       <li class="char-selector-divider" role="presentation"></li>
       ${actionItem("import-char", "⬆️", t("app.import"))}
       ${actionItem("export-char", "⬇️", t("app.export"))}
-      ${
-        getActiveKind() === ENTRY_KINDS.ALLY
-          ? actionItem("export-ally", "🤝", t("characters.exportAlly"))
-          : ""
-      }
       ${actionItem("replace-char", "🔄", t("characters.replace"))}
     </ul>
   `;
@@ -180,43 +176,39 @@ export function initCharacterSelector() {
         saveActiveCharacter();
         loadCharacter(id);
         closeSelector({ restoreFocus: true });
-        updateSelectorButton();
-        renderEntryKind();
-        renderAllyLinkControl();
-        renderPageSelector();
+        // Catalog audience (shared/availability.js) is only computed once, at bootstrap — a
+        // reload is the only way the newly active character's kind can re-filter races/etc.
+        window.location.reload();
         break;
       }
 
       case "add-char": {
-        const name = prompt(
-          t("characters.namePrompt"),
-          t("characters.newCharacter"),
-        );
+        // No pre-filled default value: prompt()'s second argument becomes the literal
+        // submitted text if the user just clicks OK, which would defeat the blank-name
+        // fallback below before it ever gets a chance to apply.
+        const name = prompt(t("characters.namePrompt"));
         if (name === null) return;
-        addCharacter(name.trim() || t("characters.newCharacter"));
+        // A blank name is kept blank (not defaulted to placeholder text) so
+        // _displayName()'s name → race → "unnamed" fallback has a real blank to fall through.
+        addCharacter(name.trim());
         closeSelector({ restoreFocus: true });
-        updateSelectorButton();
-        renderEntryKind();
-        renderAllyLinkControl();
-        renderPageSelector();
+        // See the select-char comment above — the new character becomes active immediately.
+        window.location.reload();
         break;
       }
 
       case "add-ally": {
-        const name = prompt(
-          t("characters.namePrompt"),
-          t("characters.newAllyDraft"),
-        );
+        // See the add-char comment above — no pre-filled default value.
+        const name = prompt(t("characters.namePrompt"));
         if (name === null) return;
-        addCharacter(
-          name.trim() || t("characters.newAllyDraft"),
-          ENTRY_KINDS.ALLY,
-        );
+        // See the add-char comment above — an ally left unnamed falls through to its
+        // sub-race in the selector once one is picked (this is the case that matters most:
+        // a hand-made ally is often identified by species alone, e.g. "Elemental de Terra").
+        addCharacter(name.trim(), ENTRY_KINDS.ALLY);
         closeSelector({ restoreFocus: true });
-        updateSelectorButton();
-        renderEntryKind();
-        renderAllyLinkControl();
-        renderPageSelector();
+        // See the select-char comment above — without this, ally-only catalog rows (e.g. a
+        // race with available_for: NPC) stay hidden because the audience is still "pc".
+        window.location.reload();
         break;
       }
 
@@ -237,22 +229,22 @@ export function initCharacterSelector() {
         if (!confirmed) return;
         removeCharacter(getActiveCharacterId());
         closeSelector({ restoreFocus: true });
-        updateSelectorButton();
-        renderEntryKind();
-        renderAllyLinkControl();
-        renderPageSelector();
+        // See the select-char comment above — whichever character becomes active next may
+        // have a different kind than the one just removed.
+        window.location.reload();
         break;
       }
 
       case "export-char": {
-        warnAllyOnlyContent();
-        exportSheet();
-        closeSelector({ restoreFocus: true });
-        break;
-      }
-
-      case "export-ally": {
-        exportAllySheet();
+        // An ally IS the ally file — there is no separate "plain" export for it. Exporting it
+        // the character way would drop the `portrait` marker isAllyFile() relies on, so
+        // re-importing it later would silently turn it back into a plain character.
+        if (getActiveKind() === ENTRY_KINDS.ALLY) {
+          exportAllySheet();
+        } else {
+          warnAllyOnlyContent();
+          exportSheet();
+        }
         closeSelector({ restoreFocus: true });
         break;
       }
@@ -317,10 +309,10 @@ export function initCharacterSelector() {
           if (payload.linked_allies) {
             recreateLinkedAllies(payload.linked_allies, getActiveCharacterId());
           }
-          updateSelectorButton();
-          renderEntryKind();
-          renderAllyLinkControl();
-          renderPageSelector();
+          // See the select-char comment in the popover handler above — the imported
+          // character's kind may differ from whatever was active before.
+          window.location.reload();
+          return;
         }
       } catch (err) {
         showToast(

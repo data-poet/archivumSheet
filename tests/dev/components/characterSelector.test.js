@@ -16,6 +16,7 @@ jest.mock("dev/public/js/components/entryKind.js", () => ({
 }));
 jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),
+  exportAllySheet: jest.fn(),
   importSheet: jest.fn(),
   showToast: jest.fn(),
 }));
@@ -32,8 +33,13 @@ import {
   removeCharacter,
   saveActiveCharacter,
   replaceActiveCharacter,
+  getActiveKind,
 } from "dev/public/js/store/characters.js";
-import { exportSheet, showToast } from "dev/public/js/store/persistence.js";
+import {
+  exportSheet,
+  exportAllySheet,
+  showToast,
+} from "dev/public/js/store/persistence.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
 import { renderEntryKind } from "dev/public/js/components/entryKind.js";
 import {
@@ -89,18 +95,15 @@ beforeEach(() => {
 });
 
 describe("updateSelectorButton", () => {
-  test("shows the active character's name and race", () => {
+  test("shows the active character's name, which wins over its race", () => {
     updateSelectorButton();
     const btn = document.getElementById("char-selector-btn");
     expect(btn.querySelector(".char-selector-btn-name").textContent).toBe(
       "Aria",
     );
-    expect(btn.querySelector(".char-selector-btn-race").textContent).toBe(
-      "Elfo",
-    );
   });
 
-  test("falls back to the 'unnamed' label when the active character's name is blank", () => {
+  test("falls back to the 'unnamed' label when both name and race are blank", () => {
     getActiveCharacterId.mockReturnValue("c2");
     updateSelectorButton();
     const btn = document.getElementById("char-selector-btn");
@@ -109,14 +112,16 @@ describe("updateSelectorButton", () => {
     );
   });
 
-  test("omits the race span entirely when there's no race", () => {
-    getActiveCharacterId.mockReturnValue("c2");
+  test("falls back to the sub-race when the name is blank but a race is set", () => {
+    listCharacters.mockReturnValue([
+      { id: "c3", name: "", race: "Elemental de Terra" },
+    ]);
+    getActiveCharacterId.mockReturnValue("c3");
     updateSelectorButton();
-    expect(
-      document
-        .getElementById("char-selector-btn")
-        .querySelector(".char-selector-btn-race"),
-    ).toBeNull();
+    const btn = document.getElementById("char-selector-btn");
+    expect(btn.querySelector(".char-selector-btn-name").textContent).toBe(
+      "Elemental de Terra",
+    );
   });
 
   test("does not throw when the button isn't in the DOM", () => {
@@ -142,13 +147,38 @@ describe("renderPopover", () => {
     );
   });
 
-  test("falls back to 'unnamed' and omits race for a blank-named character", () => {
+  test("falls back to 'unnamed' for a character with neither name nor race", () => {
     renderPopover();
     const secondItem = document.querySelectorAll(".char-selector-item")[1];
     expect(
       secondItem.querySelector(".char-selector-item-name").textContent,
     ).toBe(t("characters.unnamed"));
-    expect(secondItem.querySelector(".char-selector-item-race")).toBeNull();
+  });
+
+  test("falls back to the sub-race when the name is blank but a race is set", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c3", name: "", race: "Elemental de Terra" },
+    ]);
+    renderPopover();
+    const item = document.querySelector(".char-selector-item");
+    expect(item.querySelector(".char-selector-item-name").textContent).toBe(
+      "Elemental de Terra",
+    );
+  });
+
+  test("marks an ally-kind entry with a compact single-letter badge, full word in the tooltip", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c3", name: "Bran", kind: ENTRY_KINDS.ALLY },
+    ]);
+    renderPopover();
+    const badge = document.querySelector(".char-selector-item-kind");
+    expect(badge.textContent).toBe(t("characters.kindBadge"));
+    expect(badge.getAttribute("title")).toBe(t("characters.kindBadgeTitle"));
+  });
+
+  test("omits the kind badge for a plain character", () => {
+    renderPopover();
+    expect(document.querySelector(".char-selector-item-kind")).toBeNull();
   });
 
   test("renders all six action items with localized labels", () => {
@@ -402,7 +432,9 @@ describe("initCharacterSelector — add-char", () => {
     expect(addCharacter).toHaveBeenCalledWith("Novo Herói");
   });
 
-  test("falls back to the default name when the prompt is submitted blank", () => {
+  // Kept blank rather than defaulted, so _displayName()'s name → race → "unnamed" fallback
+  // has a real blank to fall through to once a race is picked.
+  test("keeps the name blank when the prompt is submitted blank", () => {
     promptSpy.mockReturnValue("   ");
     initCharacterSelector();
     openSelector();
@@ -411,7 +443,7 @@ describe("initCharacterSelector — add-char", () => {
       .querySelector('[data-action="add-char"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
-    expect(addCharacter).toHaveBeenCalledWith(t("characters.newCharacter"));
+    expect(addCharacter).toHaveBeenCalledWith("");
   });
 });
 
@@ -449,7 +481,10 @@ describe("initCharacterSelector — add-ally", () => {
     );
   });
 
-  test("falls back to the default ally name when the prompt is submitted blank", () => {
+  // This is the case the sub-race fallback (_displayName) exists for: a hand-made ally left
+  // unnamed shows its species/sub-race in the selector once one is picked, not a generic
+  // "Novo Aliado" forever.
+  test("keeps the name blank when the prompt is submitted blank", () => {
     promptSpy.mockReturnValue("   ");
     initCharacterSelector();
     openSelector();
@@ -458,10 +493,7 @@ describe("initCharacterSelector — add-ally", () => {
       .querySelector('[data-action="add-ally"]')
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
-    expect(addCharacter).toHaveBeenCalledWith(
-      t("characters.newAllyDraft"),
-      ENTRY_KINDS.ALLY,
-    );
+    expect(addCharacter).toHaveBeenCalledWith("", ENTRY_KINDS.ALLY);
   });
 });
 
@@ -525,11 +557,27 @@ describe("initCharacterSelector — export/import/replace buttons", () => {
       .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(exportSheet).toHaveBeenCalledTimes(1);
+    expect(exportAllySheet).not.toHaveBeenCalled();
     expect(
       document
         .getElementById("char-selector-popover")
         .classList.contains("is-open"),
     ).toBe(false);
+  });
+
+  // An ally has only one export action — it exports as an ally file, never the plain shape
+  // (which would drop the `portrait` marker isAllyFile() needs to recognize it on re-import).
+  test("export-char calls exportAllySheet instead, when the active character is an ally", () => {
+    getActiveKind.mockReturnValue(ENTRY_KINDS.ALLY);
+    initCharacterSelector();
+    openSelector();
+
+    document
+      .querySelector('[data-action="export-char"]')
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(exportAllySheet).toHaveBeenCalledTimes(1);
+    expect(exportSheet).not.toHaveBeenCalled();
   });
 
   test("import-char arms the file input in 'import' mode and clicks it", () => {
@@ -602,9 +650,11 @@ describe("initCharacterSelector — file input handling", () => {
     );
   });
 
-  // An imported character lands in a slot whose kind may differ from the one on screen, so the
-  // radio and the ally-draft topbar stripe have to be refreshed with it.
-  test("import mode refreshes the entry-kind control", async () => {
+  // An imported character lands in a slot whose kind may differ from the one on screen. That
+  // used to be patched up with a targeted renderEntryKind() call, but the catalog audience
+  // (shared/availability.js) is also only computed once, at bootstrap, so a full reload is
+  // now used instead — it's the only thing that refreshes both.
+  test("import mode no longer patches the entry-kind control in place (a reload handles it)", async () => {
     initCharacterSelector();
     const input = setFile(fakeFile(VALID_PAYLOAD));
     input._mode = "import";
@@ -613,7 +663,9 @@ describe("initCharacterSelector — file input handling", () => {
     input.dispatchEvent(new Event("change"));
     await flush();
 
-    expect(renderEntryKind).toHaveBeenCalled();
+    expect(renderEntryKind).not.toHaveBeenCalled();
+    expect(addCharacter).toHaveBeenCalled();
+    expect(replaceActiveCharacter).toHaveBeenCalled();
   });
 
   test("replace mode refreshes it too", async () => {

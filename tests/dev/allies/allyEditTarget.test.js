@@ -3,11 +3,7 @@ jest.mock("dev/public/js/allies/catalog.js", () => ({
   getAlly: jest.fn(),
 }));
 
-import {
-  addRosterEntry,
-  setActiveAllyInstanceId,
-  getRoster,
-} from "dev/public/js/store/allies/allies.js";
+import { getRoster } from "dev/public/js/store/allies/allies.js";
 import { createAllyEditTarget } from "dev/public/js/allies/allyEditTarget.js";
 
 const STORAGE_KEY = "archivum_characters";
@@ -34,11 +30,20 @@ beforeEach(() => {
 
 describe("createAllyEditTarget — repo ally", () => {
   function seedActiveRepoAlly() {
+    const instanceId = "ai-1";
     seedStore([
-      { id: "c-1", name: "Hero", kind: "character", data: { character: { allies: [], alliesActiveId: null } } },
+      {
+        id: "c-1",
+        name: "Hero",
+        kind: "character",
+        data: {
+          character: {
+            allies: [{ _instanceId: instanceId, ally_id: "ALLY_HUMANOID_001", overrides: {} }],
+            alliesActiveId: instanceId,
+          },
+        },
+      },
     ]);
-    const instanceId = addRosterEntry("ALLY_HUMANOID_001");
-    setActiveAllyInstanceId(instanceId);
     return instanceId;
   }
 

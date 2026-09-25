@@ -1,4 +1,4 @@
-// Switches between the app's pages (sheet / allies / reference). Mounted on every page.
+// Switches between the app's pages (sheet / reference). Mounted on every page.
 //
 // Navigation is same-tab and deliberately so: every engine rebuild persists the active
 // character (compute/index.js calls saveActiveCharacter), and that writer rebuilds the
@@ -11,8 +11,6 @@
 
 import { LABELS } from "../localization/pt-BR/index.js";
 import { clickStartedInside } from "../shared/eventDispatch.js";
-import { getActiveCharacterKind } from "../store/characterStoreCore.js";
-import { ENTRY_KINDS } from "../shared/constants.js";
 
 const TRIGGER_ID = "page-selector-btn";
 const POPOVER_ID = "page-selector-popover";
@@ -42,20 +40,10 @@ export function getCurrentPage(pathname = window.location.pathname) {
   );
 }
 
-// An ally can't have its own roster of allies (no nesting), so the "Aliados" page never
-// applies to one — it stays hidden here rather than letting bootstrapAllies() sort it out.
-function _visiblePages() {
-  const { items } = LABELS.pages;
-  return getActiveCharacterKind() === ENTRY_KINDS.ALLY
-    ? items.filter((page) => page.key !== "allies")
-    : items;
-}
-
 export function renderPageSelector() {
   const trigger = getTrigger();
   const popover = getPopover();
-  const { ariaLabel, triggerAria } = LABELS.pages;
-  const items = _visiblePages();
+  const { ariaLabel, triggerAria, items } = LABELS.pages;
   const current = getCurrentPage();
 
   if (trigger) {
