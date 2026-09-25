@@ -1,9 +1,52 @@
 const path = require("path");
-const {
-  getAlly,
-  listAllies,
-  ALLIES_DIR,
-} = require("../../../helpers/alliesCatalog.js");
+
+const ALLIES_DIR = path.join(__dirname, "../../../data/allies");
+
+const mockFixtureFiles = {
+  [path.join(ALLIES_DIR, "humanoids/ALLY_HUMANOID_001.json")]: {
+    pc: { character_name: "Bran" },
+    race: { race_name: "Humano" },
+    character: {},
+    inventory: {},
+    portrait: "",
+  },
+  [path.join(ALLIES_DIR, "animals/ALLY_ANIMAL_001.json")]: {
+    pc: { character_name: "Lobo" },
+    race: { race_name: "Animal" },
+    character: {},
+    inventory: {},
+    portrait: "",
+  },
+  [path.join(ALLIES_DIR, "animals/mounts/ALLY_ANIMAL_MOUNT_001.json")]: {
+    pc: { character_name: "Cavalo" },
+    race: { race_name: "Animal" },
+    character: {},
+    inventory: {},
+    portrait: "",
+  },
+};
+
+const mockDirEntries = {
+  [ALLIES_DIR]: ["humanoids", "animals"],
+  [path.join(ALLIES_DIR, "humanoids")]: ["ALLY_HUMANOID_001.json"],
+  [path.join(ALLIES_DIR, "animals")]: ["ALLY_ANIMAL_001.json", "mounts"],
+  [path.join(ALLIES_DIR, "animals/mounts")]: ["ALLY_ANIMAL_MOUNT_001.json"],
+};
+
+jest.mock("fs", () => ({
+  existsSync: jest.fn(() => true),
+  readdirSync: jest.fn((dir) =>
+    mockDirEntries[dir].map((name) => ({
+      name,
+      isDirectory: () => !name.endsWith(".json"),
+    })),
+  ),
+}));
+jest.mock("../../../helpers/dataUtils.js", () => ({
+  loadJSON: jest.fn((file) => mockFixtureFiles[file]),
+}));
+
+const { getAlly, listAllies, ALLIES_DIR: EXPORTED_ALLIES_DIR } = require("../../../helpers/alliesCatalog.js");
 
 describe("listAllies", () => {
   test("returns one lightweight entry per ally file in data/allies/", () => {
@@ -78,7 +121,7 @@ describe("getAlly", () => {
   });
 
   test("resolves inside data/allies/ and nowhere else", () => {
-    expect(path.basename(ALLIES_DIR)).toBe("allies");
-    expect(path.basename(path.dirname(ALLIES_DIR))).toBe("data");
+    expect(path.basename(EXPORTED_ALLIES_DIR)).toBe("allies");
+    expect(path.basename(path.dirname(EXPORTED_ALLIES_DIR))).toBe("data");
   });
 });
