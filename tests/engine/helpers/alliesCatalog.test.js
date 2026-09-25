@@ -60,6 +60,7 @@ describe("listAllies", () => {
         "portrait",
         "race",
         "subtype",
+        "tierList",
         "type",
       ]);
     });
@@ -83,6 +84,13 @@ describe("listAllies", () => {
     expect(byId.ALLY_HUMANOID_001).toMatchObject({ type: "humanoids", subtype: null });
     expect(byId.ALLY_ANIMAL_001).toMatchObject({ type: "animals", subtype: null });
     expect(byId.ALLY_ANIMAL_MOUNT_001).toMatchObject({ type: "animals", subtype: "mounts" });
+  });
+
+  test("resolves tierList to the manifest's default when no type/subtype override exists", () => {
+    const byId = Object.fromEntries(listAllies().map((e) => [e.ally_id, e]));
+
+    expect(byId.ALLY_HUMANOID_001.tierList).toBe("default");
+    expect(byId.ALLY_ANIMAL_MOUNT_001.tierList).toBe("default");
   });
 });
 

@@ -112,7 +112,7 @@ function _renderNames(mount) {
   nameSelect.innerHTML = ordered
     .map(
       (a) =>
-        `<option value="${escapeHtml(a.ally_id)}">${escapeHtml(byTier ? tierLabel(a.ally_id) : a.name)}</option>`,
+        `<option value="${escapeHtml(a.ally_id)}">${escapeHtml(byTier ? tierLabel(a) : a.name)}</option>`,
     )
     .join("");
 }
