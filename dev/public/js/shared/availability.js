@@ -102,7 +102,7 @@ export function resetAudienceRecord() {
 // dropdowns populated from unfiltered rows — invisible until someone spotted an elemental in the
 // race list.
 //
-// Unset means no filtering, which is what the allies page wants: it needs every row to resolve
+// Unset means no filtering, which is what ally rendering wants: it needs every row to resolve
 // names for display, including ally-only ones. An "author an ally" mode would set ALLY here.
 let _audience = null;
 

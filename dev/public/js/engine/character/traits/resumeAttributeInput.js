@@ -1,9 +1,8 @@
 // Parsing/clamping for the resume's primary-modifier and secondary-stat inputs. Split out of
-// events.js so the allies page (which never imports compute/*, see
-// tests/dev/allies/main.test.js) can wire the same resume markup without pulling in that
+// events.js so ally resume rendering can wire the same markup without pulling in that
 // file's compute/autorun.js / pcEditTarget.js dependencies. `target` is whatever
-// shared/editTarget.js currently resolves to — PC_EDIT_TARGET on the sheet, allyEditTarget on
-// the allies page.
+// shared/editTarget.js resolves to — PC_EDIT_TARGET until an ally edit target is
+// registered (see shared/editTarget.js for why this is a registration, not a page check).
 
 export function handleResumeAttributeInput(e, target) {
   if (e.target.classList.contains("resume-primary-mod-input")) {

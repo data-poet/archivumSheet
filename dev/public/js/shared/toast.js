@@ -1,7 +1,6 @@
 // Split out of store/persistence.js: that module imports compute/autorun.js for its
-// save/export flows, and the allies page's import graph is guarded against ever reaching
-// compute/* (see tests/dev/allies/main.test.js). This file stays a leaf so both pages can
-// show a toast.
+// save/export flows, and ally save/export flows must never pull in compute/*. This file
+// stays a leaf so both PC and ally flows can show a toast.
 
 const TOAST_ICONS = { success: "✓", error: "✕", info: "ℹ" };
 
