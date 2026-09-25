@@ -39,6 +39,8 @@ export async function runEngine() {
       experience_points: info.experience_points ?? null,
       ability_points: info.ability_points ?? null,
       magic_points: info.magic_points ?? null,
+      // Mirrors store/characters.js's _applyData — see that whitelist entry's comment.
+      tier_label: info.tier_label ?? "",
       image: info.image ?? {
         uploaded: false,
         data: "",

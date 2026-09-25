@@ -45,10 +45,17 @@ function _detachPortrait(pc = {}, portrait) {
   };
 }
 
-export function buildAllyFile(name, date = new Date()) {
+// type/subtype mirror the destination folder under data/allies/ (see helpers/alliesCatalog.js),
+// so a hand-placed file and its portrait agree on where they both live. Omit them for a flat
+// export — the caller decides the folder by hand on commit, same as the id itself.
+function _portraitDir(type, subtype) {
+  return [PORTRAIT_DIR, type, subtype].filter(Boolean).join("/");
+}
+
+export function buildAllyFile(name, date = new Date(), type, subtype) {
   const sheet = capturePersistedSheet();
   const allyId = allyIdFor(name, date);
-  const portrait = `${PORTRAIT_DIR}/${allyId}.png`;
+  const portrait = `${_portraitDir(type, subtype)}/${allyId}.png`;
 
   return {
     allyId,

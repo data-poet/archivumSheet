@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "portrait": "",
+  "pc": {
+    "player_name": "",
+    "character_name": "",
+    "character_sex": "",
+    "character_age": null,
+    "character_weight": null,
+    "starting_points": null,
+    "experience_points": null,
+    "ability_points": null,
+    "magic_points": null,
+    "image": {
+      "uploaded": false,
+      "data": "",
+      "background": "average",
+      "color": {
+        "r": 43,
+        "g": 41,
+        "b": 37
+      },
+      "orientation": "portrait",
+      "position": {
+        "x": 51.26,
+        "y": 62.61
+      },
+      "size": {
+        "width": 1500,
+        "height": 1800
+      },
+      "scale": 105,
+      "path": ""
+    }
+  },
+  "race": {
+    "race_id": "RACE-045",
+    "race_name": "Elemental",
+    "race_sub_name": "Elemental de Terra",
+    "race_physical_maturity": "-",
+    "race_mental_maturity": "-",
+    "race_life_expectancy": "-",
+    "modifiers": {
+      "ST": 10,
+      "DX": 2,
+      "IQ": 0,
+      "HT": 4
+    },
+    "elemental_modifiers": {
+      "Fire": 1,
+      "Water": 2,
+      "Air": 2,
+      "Electricity": 0.5,
+      "Earth": 0,
+      "Corrosion": 0.5,
+      "Necrotic": 1,
+      "Holy": 1,
+      "Void": 1,
+      "Arcane": 1
+    },
+    "innate_advantage_ids": [
+      "ADV-049",
+      "ADV-120",
+      "ADV-121",
+      "ADV-124",
+      "ADV-125",
+      "ADV-126",
+      "ADV-128",
+      "ADV-129"
+    ],
+    "innate_disadvantage_ids": ["DIS-141", "DIS-142"],
+    "innate_advantage_names": [
+      "HIPOALGIA",
+      "NÃO COME OU BEBE",
+      "NÃO DORME",
+      "SUPORTE PRESSÓRICO 3",
+      "INDOMÁVEL",
+      "INABALÁVEL",
+      "TOLERÂNCIA À DANOS | HOMOGÊNEO",
+      "TOLERÂNCIA À DANOS | SEM SANGUE"
+    ],
+    "innate_disadvantage_names": ["FRÁGIL | NÃO NATURAL", "REPROGRAMÁVEL"]
+  },
+  "character": {
+    "primary": {
+      "ST": {
+        "base_value": 10,
+        "modifier": 0
+      },
+      "DX": {
+        "base_value": 10,
+        "modifier": 0
+      },
+      "IQ": {
+        "base_value": 10,
+        "modifier": 0
+      },
+      "HT": {
+        "base_value": 10,
+        "modifier": 0
+      }
+    },
+    "secondary": {
+      "HP": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Mana": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Toxicity": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Will": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Vision": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Hearing": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Smell": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "BasicSpeed": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "DamageResistance": {
+        "bought": 0,
+        "modifier": 4
+      },
+      "Movement": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Dodge": {
+        "bought": 0,
+        "modifier": 0
+      }
+    },
+    "damage": {
+      "GDP": {
+        "modifier": 0
+      },
+      "BAL": {
+        "modifier": 0
+      }
+    },
+    "resistances": {
+      "Fire": {
+        "modifier": 0
+      },
+      "Water": {
+        "modifier": 0
+      },
+      "Air": {
+        "modifier": 0
+      },
+      "Electricity": {
+        "modifier": 0
+      },
+      "Earth": {
+        "modifier": 0
+      },
+      "Corrosion": {
+        "modifier": 0
+      },
+      "Necrotic": {
+        "modifier": 0
+      },
+      "Holy": {
+        "modifier": 0
+      },
+      "Void": {
+        "modifier": 0
+      },
+      "Arcane": {
+        "modifier": 0
+      }
+    },
+    "advantages": {},
+    "disadvantages": {},
+    "skills": {},
+    "spells": {},
+    "allies": [],
+    "alliesActiveId": null
+  },
+  "inventory": {
+    "weight": 0,
+    "armors": [],
+    "shields": [],
+    "melee_weapons": [],
+    "ranged_weapons": [],
+    "firearms": [],
+    "ammo_containers": [],
+    "loose_ammo": [],
+    "alchemy": [],
+    "survivalGear": [],
+    "accessories": [],
+    "magicGear": [],
+    "customInventory": [],
+    "coins": []
+  }
+}

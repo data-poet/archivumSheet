@@ -95,6 +95,7 @@ describe("buildSheet payload — pc", () => {
       experience_points: null,
       ability_points: null,
       magic_points: null,
+      tier_label: "",
       image: {
         uploaded: false,
         data: "",
