@@ -75,26 +75,28 @@ export function updateInventoryUI(sheet) {
   const limitsEl = el("carry_limits");
   if (limitsEl) {
     limitsEl.innerHTML = `
-      <table>
-        <thead>
-          <tr>
-            <th>${getCarryLimitLabel("none")}</th>
-            <th>${getCarryLimitLabel("light")}</th>
-            <th>${getCarryLimitLabel("medium")}</th>
-            <th>${getCarryLimitLabel("heavy")}</th>
-            <th>${getCarryLimitLabel("veryHeavy")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col-num">${carry.limits.none}</td>
-            <td class="col-num">${carry.limits.light}</td>
-            <td class="col-num">${carry.limits.medium}</td>
-            <td class="col-num">${carry.limits.heavy}</td>
-            <td class="col-num">${carry.limits.veryHeavy}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="resume-limits-table">
+          <thead>
+            <tr>
+              <th>${getCarryLimitLabel("none")}</th>
+              <th>${getCarryLimitLabel("light")}</th>
+              <th>${getCarryLimitLabel("medium")}</th>
+              <th>${getCarryLimitLabel("heavy")}</th>
+              <th>${getCarryLimitLabel("veryHeavy")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-num">${carry.limits.none}</td>
+              <td class="col-num">${carry.limits.light}</td>
+              <td class="col-num">${carry.limits.medium}</td>
+              <td class="col-num">${carry.limits.heavy}</td>
+              <td class="col-num">${carry.limits.veryHeavy}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     `;
   }
 }
