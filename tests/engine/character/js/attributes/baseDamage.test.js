@@ -85,7 +85,7 @@ describe("Damage System (GDP / BAL)", () => {
     });
   });
 
-  describe("Damage Table - Thresholds (ST 1 to 30)", () => {
+  describe("Damage Table - Canon table (ST 1 to 100)", () => {
     const table = [
       [1, "0d6", 0, "0d6", 0],
       [2, "0d6", 0, "0d6", 0],
@@ -117,6 +117,40 @@ describe("Damage System (GDP / BAL)", () => {
       [28, "3d6", -1, "5d6", 2],
       [29, "3d6", 0, "6d6", -1],
       [30, "3d6", 0, "6d6", 0],
+      [31, "3d6", 1, "6d6", -1],
+      [32, "3d6", 1, "6d6", -1],
+      [39, "4d6", 1, "7d6", -1],
+      [40, "4d6", 1, "7d6", -1],
+      [41, "4d6", 1, "7d6", -1],
+      [44, "4d6", 1, "7d6", -1],
+      [45, "5d6", 0, "7d6", 1],
+      [49, "5d6", 0, "7d6", 1],
+      [50, "5d6", 2, "8d6", -1],
+      [70, "8d6", 0, "10d6", 0],
+      [99, "10d6", 2, "12d6", 2],
+      [100, "11d6", 0, "13d6", 0],
+    ];
+
+    test.each(table)(
+      "ST %i → GDP %s (%i) | BAL %s (%i)",
+      (st, gdpDice, gdpMod, balDice, balMod) => {
+        const result = calculateDamage(st);
+
+        expect(result.GDP.dice).toBe(gdpDice);
+        expect(result.GDP.base_modifier).toBe(gdpMod);
+
+        expect(result.BAL.dice).toBe(balDice);
+        expect(result.BAL.base_modifier).toBe(balMod);
+      },
+    );
+  });
+
+  describe("Damage Table - Beyond ST 100 (linear rule)", () => {
+    const table = [
+      [101, "11d6", 0, "13d6", 0],
+      [109, "11d6", 0, "13d6", 0],
+      [110, "12d6", 0, "14d6", 0],
+      [300, "31d6", 0, "33d6", 0],
     ];
 
     test.each(table)(
