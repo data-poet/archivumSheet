@@ -1,8 +1,10 @@
 // Final value is floored at 0 but has no upper cap — a character can become arbitrarily weak against an element.
 const ELEMENTAL_TYPES = [
   "Fire",
-  "Ice",
+  "Water",
+  "Air",
   "Electricity",
+  "Earth",
   "Corrosion",
   "Necrotic",
   "Holy",

@@ -30,13 +30,13 @@ describe("toEngineRace", () => {
     const race = toEngineRace({
       race_id: "R1",
       race_fire_damage_multiplier: "0.5",
-      race_ice_damage_multiplier: "",
+      race_water_damage_multiplier: "",
       race_electricity_damage_multiplier: "not-a-number",
       race_corrossion_damage_multiplier: "0",
     });
 
     expect(race.elemental_modifiers.Fire).toBe(0.5);
-    expect(race.elemental_modifiers.Ice).toBe(1);
+    expect(race.elemental_modifiers.Water).toBe(1);
     expect(race.elemental_modifiers.Electricity).toBe(1);
     // A 0 multiplier means immune — `|| 1` would silently erase it.
     expect(race.elemental_modifiers.Corrosion).toBe(0);

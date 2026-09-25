@@ -249,14 +249,14 @@ describe("collectEquippedEnchantments", () => {
         enchantments: [
           enchantment({
             enchantment_effect_type: "fortify_resistance",
-            target: "Ice",
+            target: "Water",
             value: 0.1,
           }),
         ],
       },
     ]);
 
-    expect(result.elementalModifiers).toEqual({ Fire: 0.05, Ice: 0.1 });
+    expect(result.elementalModifiers).toEqual({ Fire: 0.05, Water: 0.1 });
   });
 
   test("Should not let item-intrinsic weight/damage-resistance enchantments produce any character-level effect", () => {

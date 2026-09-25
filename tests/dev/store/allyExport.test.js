@@ -167,7 +167,7 @@ describe("an exported ally file feeds the ally pipeline", () => {
         race_name: "Elemental",
         race_sub_name: "Elemental de Água",
         modifiers: { ST: 2, DX: 0, IQ: -1, HT: 1 },
-        elemental_modifiers: { Fire: 0.5, Ice: 0 },
+        elemental_modifiers: { Fire: 0.5, Water: 0 },
         innate_advantage_ids: ["ADV-086"],
         innate_disadvantage_ids: [],
       },

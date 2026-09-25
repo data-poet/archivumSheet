@@ -31,7 +31,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       character: {
         elemental_resistances: {
           Fire: entry(1),
-          Ice: entry(1),
+          Water: entry(1),
         },
       },
     });
@@ -49,7 +49,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       character: {
         elemental_resistances: {
           Fire: entry(0.5),
-          Ice: entry(1),
+          Water: entry(1),
           Arcane: entry(1.5),
         },
       },
@@ -71,7 +71,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       getElementalResistanceLabel("Arcane"),
     );
     expect(container.textContent).not.toContain(
-      getElementalResistanceLabel("Ice"),
+      getElementalResistanceLabel("Water"),
     );
   });
 
@@ -94,7 +94,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
       character: {
         elemental_resistances: {
           Necrotic: entry(2),
-          Ice: entry(0.5),
+          Water: entry(0.5),
         },
       },
     });

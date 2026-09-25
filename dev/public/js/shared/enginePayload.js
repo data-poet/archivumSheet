@@ -52,8 +52,10 @@ export function toEngineRace(raceRow) {
     },
     elemental_modifiers: {
       Fire: _raceMultiplier(raceRow.race_fire_damage_multiplier),
-      Ice: _raceMultiplier(raceRow.race_ice_damage_multiplier),
+      Water: _raceMultiplier(raceRow.race_water_damage_multiplier),
+      Air: _raceMultiplier(raceRow.race_air_damage_multiplier),
       Electricity: _raceMultiplier(raceRow.race_electricity_damage_multiplier),
+      Earth: _raceMultiplier(raceRow.race_earth_damage_multiplier),
       Corrosion: _raceMultiplier(raceRow.race_corrossion_damage_multiplier),
       Necrotic: _raceMultiplier(raceRow.race_necrotic_damage_multiplier),
       Holy: _raceMultiplier(raceRow.race_holy_damage_multiplier),

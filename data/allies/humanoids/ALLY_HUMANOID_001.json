@@ -32,8 +32,10 @@
     "modifiers": { "ST": 0, "DX": 0, "IQ": 0, "HT": 0 },
     "elemental_modifiers": {
       "Fire": 1,
-      "Ice": 1,
+      "Water": 1,
+      "Air": 1,
       "Electricity": 1,
+      "Earth": 1,
       "Corrosion": 1,
       "Necrotic": 1,
       "Holy": 1,
