@@ -37,6 +37,7 @@ import { initCharacters } from "./store/characters.js";
 import { initCharacterSelector } from "./components/characterSelector.js";
 import { renderEntryKind } from "./components/entryKind.js";
 import { renderAllyLinkControl } from "./components/allies/allyLinkControl.js";
+import { initAllyAddControl } from "./components/allies/allyAddInline.js";
 import { getActiveKind } from "./store/characters.js";
 import { ENTRY_KINDS } from "./shared/constants.js";
 import { state } from "./state.js";
@@ -100,6 +101,7 @@ export async function bootstrap() {
   initCharacterSelector();
   renderEntryKind();
   renderAllyLinkControl();
+  await initAllyAddControl();
   initCharacterImage();
 }
 

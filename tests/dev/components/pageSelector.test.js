@@ -28,7 +28,6 @@ describe("getCurrentPage", () => {
   test.each([
     ["/", "sheet"],
     ["/index.html", "sheet"],
-    ["/allies.html", "allies"],
     ["/reference.html", "reference"],
   ])("%s resolves to the %s page", (pathname, key) => {
     expect(getCurrentPage(pathname).key).toBe(key);
@@ -39,7 +38,7 @@ describe("getCurrentPage", () => {
   });
 
   test("a trailing slash is normalized away", () => {
-    expect(getCurrentPage("/allies.html/").key).toBe("allies");
+    expect(getCurrentPage("/reference.html/").key).toBe("reference");
   });
 
   // "/" must stay matched — the static server answers it with index.html.
@@ -95,12 +94,12 @@ describe("renderPageSelector", () => {
   });
 
   test("the current page's row is marked active and aria-current", () => {
-    setPath("/allies.html");
+    setPath("/reference.html");
 
     renderPageSelector();
 
     const active = document.querySelector("#page-selector-popover a.is-active");
-    expect(active.dataset.page).toBe("allies");
+    expect(active.dataset.page).toBe("reference");
     expect(active.getAttribute("aria-current")).toBe("page");
     expect(
       document.querySelectorAll("#page-selector-popover a.is-active"),
@@ -204,12 +203,12 @@ describe("initPageSelector", () => {
   });
 
   test("a click inside leaves it open", () => {
-    setPath("/allies.html");
+    setPath("/reference.html");
     initPageSelector();
     openPageSelector();
 
     // A row other than the current page — choosing the current one closes it by design.
-    document.querySelector('[data-page="reference"]').click();
+    document.querySelector('[data-page="sheet"]').click();
 
     expect(
       document.getElementById("page-selector-popover").classList,
@@ -218,11 +217,11 @@ describe("initPageSelector", () => {
 
   // Reloading the page you're already on re-fetches every catalog for nothing.
   test("choosing the current page is prevented and just closes the popover", () => {
-    setPath("/allies.html");
+    setPath("/reference.html");
     initPageSelector();
     openPageSelector();
 
-    const currentRow = document.querySelector('[data-page="allies"]');
+    const currentRow = document.querySelector('[data-page="reference"]');
     const event = new MouseEvent("click", { bubbles: true, cancelable: true });
     currentRow.dispatchEvent(event);
 
@@ -233,11 +232,11 @@ describe("initPageSelector", () => {
   });
 
   test("choosing a different page is allowed to navigate", () => {
-    setPath("/allies.html");
+    setPath("/reference.html");
     initPageSelector();
     openPageSelector();
 
-    const otherRow = document.querySelector('[data-page="reference"]');
+    const otherRow = document.querySelector('[data-page="sheet"]');
     const event = new MouseEvent("click", { bubbles: true, cancelable: true });
     otherRow.dispatchEvent(event);
 

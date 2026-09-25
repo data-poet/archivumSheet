@@ -1,9 +1,6 @@
 // Shared localStorage primitives for the character store. Extracted out of characters.js so that
-// allies-page code can read/write the same store without importing characters.js itself — the
-// allies import graph is guarded (tests/dev/allies/catalogBuild.test.js) against ever reaching
-// compute/* or store/characters.js, since both are built around the sheet page's single live DOM.
-
-import { ENTRY_KINDS } from "../shared/constants.js";
+// ally-roster code (store/allies/allies.js, allyEditTarget.js) can read/write the same store
+// without importing characters.js itself, which assumes the sheet page's live DOM.
 
 export const STORAGE_KEY = "archivum_characters";
 
@@ -25,23 +22,4 @@ export function saveStore(store) {
   } catch (err) {
     console.error("[characterStoreCore] localStorage write failed:", err);
   }
-}
-
-// Raw reads/writes only — no store-initialization fallback. Callers that need a guaranteed store
-// (the sheet page, on first run) go through characters.js's getStore() instead.
-export function getActiveCharacterId() {
-  return loadStore()?.activeId ?? null;
-}
-
-export function setActiveCharacterId(id) {
-  const store = loadStore();
-  if (!store) return;
-  store.activeId = id;
-  saveStore(store);
-}
-
-export function getActiveCharacterKind() {
-  const store = loadStore();
-  const entry = store?.list.find((c) => c.id === store.activeId);
-  return entry?.kind === ENTRY_KINDS.ALLY ? ENTRY_KINDS.ALLY : ENTRY_KINDS.CHARACTER;
 }

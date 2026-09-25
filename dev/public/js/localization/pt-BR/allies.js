@@ -20,6 +20,7 @@ export const ALLIES = {
   subtypeNone: "Nenhum",
   nameLabel: "Nome",
   add: "Adicionar",
+  addError: "Erro ao adicionar aliado.",
 
   // Display labels for each data/allies/ subfolder — folder name is the source of truth,
   // this map just makes it presentable. Falls back to the raw folder name if unlisted.

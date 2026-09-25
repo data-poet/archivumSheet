@@ -105,6 +105,9 @@ jest.mock("dev/public/js/components/entryKind.js", () => ({
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   initCharacterSelector: jest.fn(),
 }));
+jest.mock("dev/public/js/components/allies/allyAddInline.js", () => ({
+  initAllyAddControl: jest.fn(() => Promise.resolve()),
+}));
 
 import { bindUI } from "dev/public/js/events/index.js";
 import { initNav } from "dev/public/js/components/nav.js";

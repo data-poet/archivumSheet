@@ -10,6 +10,7 @@ import { resetInstanceCounters } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
 import { generateId, loadStore, saveStore } from "./characterStoreCore.js";
+import { getAlly } from "../allies/catalog.js";
 
 function _generateId() {
   return generateId("c");
@@ -321,9 +322,8 @@ export function unlinkAlly(allyEntryId) {
 }
 
 // Links a standalone local ally draft to a character by pushing an ordinary roster entry — this
-// is what listCharactersGrouped()'s roster scan then picks up for nesting, and what allies.html's
-// roster reads, with no separate wiring needed on either side.
-// Refuses linking when the target is itself an ally — no allies-of-allies.
+// is what listCharactersGrouped()'s roster scan then picks up for nesting, with no separate
+// wiring needed. Refuses linking when the target is itself an ally — no allies-of-allies.
 export function linkAllyToCharacter(allyEntryId, characterId) {
   const store = getStore();
   const allyEntry = store.list.find((c) => c.id === allyEntryId);
@@ -344,6 +344,31 @@ export function linkAllyToCharacter(allyEntryId, characterId) {
   ];
 
   _save(freshStore);
+}
+
+// Bakes a fresh repo-catalog ally straight into a new local `kind: "ally"` entry and links it
+// under ownerCharacterId in one step — the character editor's "Adicionar aliado" entry point.
+// No overlay to apply here: this is a brand new fork with no prior overrides to carry over.
+export async function forkAndLinkAllyToCharacter(allyId, ownerCharacterId) {
+  const resolved = await getAlly(allyId);
+  if (!resolved) return null;
+
+  const { version, pc, race, character, inventory } = resolved;
+  const localId = _generateId();
+
+  const store = getStore();
+  store.list.push({
+    id: localId,
+    name: pc?.character_name ?? "",
+    race: race?.race_sub_name || race?.race_name || "",
+    kind: ENTRY_KINDS.ALLY,
+    data: { version, pc, race, character, inventory },
+  });
+  _save(store);
+
+  linkAllyToCharacter(localId, ownerCharacterId);
+
+  return localId;
 }
 
 // Roster entries on characterId whose ally_id resolves to a local (kind: "ally") entry still
@@ -396,8 +421,10 @@ export function saveActiveCharacter() {
   const data = capturePersistedSheet();
   store.list[idx].data = data;
 
-  const charName = state.selected.character?.character_name?.trim();
-  if (charName) store.list[idx].name = charName;
+  // Unconditional, not `if (charName)` — clearing the name field back to blank must clear
+  // the stored display name too, or the selector's name → race → "unnamed" fallback
+  // (characterSelector.js's _displayName) never gets a real blank to fall through to.
+  store.list[idx].name = state.selected.character?.character_name?.trim() || "";
 
   const raceId = state.selected.character?.race_id;
   if (raceId) {
@@ -468,8 +495,8 @@ export function replaceActiveCharacter(payload) {
 
   store.list[idx].data = payload;
 
-  const charName = payload?.pc?.character_name?.trim();
-  if (charName) store.list[idx].name = charName;
+  // Unconditional — see the identical comment in saveActiveCharacter().
+  store.list[idx].name = payload?.pc?.character_name?.trim() || "";
 
   const raceId = payload?.race?.race_id;
   if (raceId) {

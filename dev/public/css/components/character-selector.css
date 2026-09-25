@@ -35,16 +35,6 @@
   font-weight: 700;
 }
 
-/* Secondary to the name, and the name is what has to stay legible when the mobile topbar runs out of room. */
-.char-selector-btn-race {
-  display: none;
-  font-size: var(--fs-xs);
-  opacity: 0.8;
-  font-weight: 400;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .char-selector-btn-chevron {
   font-size: 16px;
   line-height: 1;
@@ -147,14 +137,6 @@
   text-overflow: ellipsis;
 }
 
-.char-selector-item-race {
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .char-selector-divider {
   height: 1px;
   background: var(--color-border);
@@ -225,8 +207,26 @@
   .is-view-mode .view-mode-resume {
     padding: clamp(12px, 2vw, 20px);
   }
+}
 
-  .char-selector-btn-race {
-    display: inline;
-  }
+/* Cascading type/subtype/name add-ally form, used by the character editor's inline
+   "Adicionar aliado" box. Padding comes from box-card.css's `details > *:not(summary)` rule —
+   this only lays out the fields themselves. */
+.ally-add-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-5);
+}
+
+.ally-add-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 160px;
+}
+
+.ally-add-field label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
 }

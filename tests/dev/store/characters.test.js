@@ -11,6 +11,9 @@ jest.mock("dev/public/js/engine/character/portrait/portrait.js", () => ({
   renderCharacterImage: jest.fn(),
   renderResumeImage: jest.fn(),
 }));
+jest.mock("dev/public/js/allies/catalog.js", () => ({
+  getAlly: jest.fn(),
+}));
 
 import { renderListsPreserving } from "dev/public/js/ui.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
@@ -39,7 +42,9 @@ import {
   unlinkAlly,
   getLinkedAllies,
   recreateLinkedAllies,
+  forkAndLinkAllyToCharacter,
 } from "dev/public/js/store/characters.js";
+import { getAlly } from "dev/public/js/allies/catalog.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
@@ -170,9 +175,12 @@ describe("saveActiveCharacter", () => {
     expect(listCharacters()[0].name).toBe("Aria Nightshade");
   });
 
-  test("does not overwrite the display name when the current character name is blank", () => {
+  // Unconditional, not "leave whatever was there" — a name cleared back to blank must clear
+  // the display name too, or the selector's name → race → "unnamed" fallback
+  // (characterSelector.js's _displayName) never gets a real blank to fall through to.
+  test("clears the display name when the current character name is blank", () => {
     saveActiveCharacter();
-    expect(listCharacters()[0].name).toBe("Personagem 1");
+    expect(listCharacters()[0].name).toBe("");
   });
 
   test("updates the display race, preferring race_sub_name over race_name", () => {
@@ -560,6 +568,47 @@ describe("ally linking", () => {
     const newAlly = store.list.find((c) => c.id === roster[0].ally_id);
     expect(newAlly.kind).toBe("ally");
     expect(newAlly.name).toBe("Fido");
+  });
+
+  describe("forkAndLinkAllyToCharacter", () => {
+    test("forks a catalog ally into a new local entry and links it under the owner", async () => {
+      seedStore([
+        { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+      ]);
+      getAlly.mockResolvedValue({
+        version: 1,
+        pc: { character_name: "Wolf" },
+        race: { race_name: "Beast" },
+        character: {},
+        inventory: {},
+      });
+
+      const newId = await forkAndLinkAllyToCharacter("ALLY_WOLF", "pc-1");
+
+      expect(newId).toEqual(expect.any(String));
+      const store = getStore();
+      const newAlly = store.list.find((c) => c.id === newId);
+      expect(newAlly.kind).toBe("ally");
+      expect(newAlly.name).toBe("Wolf");
+
+      const roster = store.list.find((c) => c.id === "pc-1").data.character.allies;
+      expect(roster).toEqual([
+        { _instanceId: expect.any(String), ally_id: newId, overrides: {} },
+      ]);
+      expect(getAllyOwnerId(newId)).toBe("pc-1");
+    });
+
+    test("returns null when the ally id doesn't resolve", async () => {
+      seedStore([
+        { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+      ]);
+      getAlly.mockResolvedValue(null);
+
+      const newId = await forkAndLinkAllyToCharacter("ALLY_MISSING", "pc-1");
+
+      expect(newId).toBeNull();
+      expect(getStore().list).toHaveLength(1);
+    });
   });
 });
 

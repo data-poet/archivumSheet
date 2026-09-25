@@ -14,12 +14,6 @@ export const PAGES = {
       match: ["/", "/index.html"],
     },
     {
-      key: "allies",
-      label: "Aliados",
-      href: "/allies.html",
-      match: ["/allies.html"],
-    },
-    {
       key: "reference",
       label: "Referência",
       href: "/reference.html",
