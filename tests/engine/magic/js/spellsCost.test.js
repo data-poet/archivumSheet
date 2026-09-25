@@ -54,6 +54,16 @@ describe("SPELL COST SYSTEM", () => {
   });
 
   describe("Invalid Inputs", () => {
+    let warnSpy;
+
+    beforeEach(() => {
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
     test("Should return 0 for invalid difficulty", () => {
       expect(
         getSpellCost({
@@ -62,6 +72,7 @@ describe("SPELL COST SYSTEM", () => {
           difficulty: "INVALID",
         }),
       ).toBe(0);
+      expect(warnSpy).toHaveBeenCalled();
     });
 
     test("Should return 0 for invalid attribute", () => {
@@ -73,6 +84,7 @@ describe("SPELL COST SYSTEM", () => {
           difficulty: "F",
         }),
       ).toBe(0);
+      expect(warnSpy).toHaveBeenCalled();
     });
   });
 

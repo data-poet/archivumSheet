@@ -45,10 +45,15 @@ describe("renderResumeHeader", () => {
   });
 
   test("is a no-op when the header element is missing", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     id("resume_header_name").remove();
     expect(() =>
       renderResume({ pc: { character_name: "Aria" } }),
     ).not.toThrow();
+    expect(warnSpy).toHaveBeenCalledWith(
+      "[dom] Element #resume_header_name not found",
+    );
+    warnSpy.mockRestore();
   });
 });
 

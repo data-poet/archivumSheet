@@ -106,6 +106,16 @@ describe("skillsCost", () => {
   });
 
   describe("edge cases", () => {
+    let warnSpy;
+
+    beforeEach(() => {
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
     it("Should return 0 for invalid attribute", () => {
       const cost = getSkillCost({
         attribute: "STRANGE",
@@ -115,6 +125,9 @@ describe("skillsCost", () => {
       });
 
       expect(cost).toBe(0);
+      expect(warnSpy).toHaveBeenCalledWith(
+        "[getSkillCost] Unknown attribute/difficulty combination: STRANGE/F",
+      );
     });
 
     it("Should return 0 for invalid difficulty", () => {
@@ -126,6 +139,9 @@ describe("skillsCost", () => {
       });
 
       expect(cost).toBe(0);
+      expect(warnSpy).toHaveBeenCalledWith(
+        "[getSkillCost] Unknown attribute/difficulty combination: DX/UNKNOWN",
+      );
     });
 
     it("Should clamp extreme values safely", () => {
