@@ -17,7 +17,7 @@ export const ALLIES = {
 
   typeLabel: "Tipo",
   subtypeLabel: "Subtipo",
-  subtypeNone: "Nenhum",
+  subtypeNone: "-",
   nameLabel: "Nome",
   tierLabel: "Nível",
   add: "Adicionar",
