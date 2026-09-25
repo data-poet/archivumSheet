@@ -104,6 +104,16 @@ describe("SPELL RESOLVER", () => {
   });
 
   describe("Failure Cases", () => {
+    let warnSpy;
+
+    beforeEach(() => {
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
     test("Should return empty if spell not found", () => {
       const result = resolveSpells({
         selectedSpells: {
@@ -114,6 +124,10 @@ describe("SPELL RESOLVER", () => {
       });
 
       expect(Object.keys(result).length).toBe(0);
+      expect(warnSpy).toHaveBeenCalledWith(
+        "SPELL NOT FOUND:",
+        expect.objectContaining({ input: "Spell Inexistente" }),
+      );
     });
 
     test("Should return empty if tier not found", () => {
@@ -126,6 +140,10 @@ describe("SPELL RESOLVER", () => {
       });
 
       expect(Object.keys(result).length).toBe(0);
+      expect(warnSpy).toHaveBeenCalledWith(
+        "SPELL NOT FOUND:",
+        expect.objectContaining({ input: "Moldar Mana", tier: "Mestre" }),
+      );
     });
   });
 
