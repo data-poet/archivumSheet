@@ -1,6 +1,5 @@
 jest.mock("dev/public/js/store/characters.js", () => ({
   listCharacters: jest.fn(),
-  listCharactersGrouped: jest.fn(),
   getActiveCharacterId: jest.fn(),
   loadCharacter: jest.fn(),
   addCharacter: jest.fn(),
@@ -9,6 +8,14 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   replaceActiveCharacter: jest.fn(),
   getActiveKind: jest.fn(() => "character"),
   setActiveKind: jest.fn(),
+}));
+jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
+  listCharactersGrouped: jest.fn(),
+  recreateLinkedAllies: jest.fn(),
+  getAllyOwnerId: jest.fn(() => null),
+  linkAllyToCharacter: jest.fn(),
+  unlinkAlly: jest.fn(),
+  forkAndLinkAllyToCharacter: jest.fn(),
 }));
 jest.mock("dev/public/js/components/entryKind.js", () => ({
   renderEntryKind: jest.fn(),
@@ -29,7 +36,6 @@ jest.mock("dev/public/js/store/catalogs.js", () => ({
 
 import {
   listCharacters,
-  listCharactersGrouped,
   getActiveCharacterId,
   loadCharacter,
   addCharacter,
@@ -38,6 +44,7 @@ import {
   replaceActiveCharacter,
   getActiveKind,
 } from "dev/public/js/store/characters.js";
+import { listCharactersGrouped } from "dev/public/js/store/allies/characterLinking.js";
 import {
   exportSheet,
   exportAllySheet,

@@ -3,6 +3,8 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveCharacterId: jest.fn(() => "pc-1"),
   saveActiveCharacter: jest.fn(),
   loadCharacter: jest.fn(),
+}));
+jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
   forkAndLinkAllyToCharacter: jest.fn(),
 }));
 jest.mock("dev/public/js/allies/catalog.js", () => ({
@@ -17,8 +19,8 @@ import {
   getActiveCharacterId,
   saveActiveCharacter,
   loadCharacter,
-  forkAndLinkAllyToCharacter,
 } from "dev/public/js/store/characters.js";
+import { forkAndLinkAllyToCharacter } from "dev/public/js/store/allies/characterLinking.js";
 import { listAllies } from "dev/public/js/allies/catalog.js";
 import { showToast } from "dev/public/js/shared/toast.js";
 import {

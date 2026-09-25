@@ -2,6 +2,8 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   getActiveKind: jest.fn(() => "character"),
   getActiveCharacterId: jest.fn(() => "c-ally-1"),
   listCharacters: jest.fn(() => []),
+}));
+jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
   getAllyOwnerId: jest.fn(() => null),
   linkAllyToCharacter: jest.fn(),
   unlinkAlly: jest.fn(),
@@ -11,10 +13,12 @@ import {
   getActiveKind,
   getActiveCharacterId,
   listCharacters,
+} from "dev/public/js/store/characters.js";
+import {
   getAllyOwnerId,
   linkAllyToCharacter,
   unlinkAlly,
-} from "dev/public/js/store/characters.js";
+} from "dev/public/js/store/allies/characterLinking.js";
 import { renderAllyLinkControl } from "dev/public/js/components/allies/allyLinkControl.js";
 
 beforeEach(() => {

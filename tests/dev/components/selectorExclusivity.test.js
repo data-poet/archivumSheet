@@ -8,9 +8,6 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   listCharacters: jest.fn(() => [
     { id: "c1", name: "Kael", race: "Humano", kind: "character" },
   ]),
-  listCharactersGrouped: jest.fn(() => [
-    { id: "c1", name: "Kael", race: "Humano", kind: "character" },
-  ]),
   getActiveCharacterId: jest.fn(() => "c1"),
   getActiveKind: jest.fn(() => "character"),
   loadCharacter: jest.fn(),
@@ -18,6 +15,16 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   removeCharacter: jest.fn(),
   saveActiveCharacter: jest.fn(),
   replaceActiveCharacter: jest.fn(),
+}));
+jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
+  listCharactersGrouped: jest.fn(() => [
+    { id: "c1", name: "Kael", race: "Humano", kind: "character" },
+  ]),
+  recreateLinkedAllies: jest.fn(),
+  getAllyOwnerId: jest.fn(() => null),
+  linkAllyToCharacter: jest.fn(),
+  unlinkAlly: jest.fn(),
+  forkAndLinkAllyToCharacter: jest.fn(),
 }));
 jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),

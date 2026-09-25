@@ -1,7 +1,8 @@
 import { state } from "../state.js";
 import { capturePersistedSheet } from "./persistedSheet.js";
 import { buildAllyFile } from "./allies/allyExport.js";
-import { getActiveCharacterId, getLinkedAllies } from "./characters.js";
+import { getActiveCharacterId } from "./characters.js";
+import { getLinkedAllies } from "./allies/characterLinking.js";
 import { loadStore } from "./characterStoreCore.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
@@ -15,7 +16,7 @@ export { showToast };
 // A linked local ally is another row in this same browser's store, keyed by an id that only
 // means something here — the file has to carry its full data so importing elsewhere (or later,
 // once the ids may already be reused) can recreate it under a fresh id (see
-// characters.js's recreateLinkedAllies()).
+// characterLinking.js's recreateLinkedAllies()).
 function _linkedAlliesPayload() {
   const characterId = getActiveCharacterId();
   const linked = getLinkedAllies(characterId);
