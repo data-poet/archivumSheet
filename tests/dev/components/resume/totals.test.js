@@ -61,9 +61,12 @@ describe("renderResumeWeight", () => {
   });
 
   test("treats a missing #weight input and missing per-type fields as 0", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     id("weight").remove();
     renderResume({ inventory: { carry_weight: carry() } });
     expect(id("total_weight").textContent).toBe("0");
+    expect(warnSpy).toHaveBeenCalledWith("[dom] Element #weight not found");
+    warnSpy.mockRestore();
   });
 
   test("renders the per-type weight breakdown table with localized labels", () => {

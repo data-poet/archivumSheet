@@ -89,6 +89,9 @@ describe("renderAllyAddControl", () => {
   });
 
   test("clicking add forks the selected ally under the active character and switches to it", async () => {
+    // jsdom has no real navigation and logs a "not implemented" error for reload() — location.reload
+    // itself isn't stubbable (jsdom defines it as non-configurable), so swallow just that console.error.
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     forkAndLinkAllyToCharacter.mockResolvedValue("c-new-ally");
     await initAllyAddControl();
 
@@ -101,6 +104,7 @@ describe("renderAllyAddControl", () => {
       "pc-1",
     );
     expect(loadCharacter).toHaveBeenCalledWith("c-new-ally");
+    errorSpy.mockRestore();
   });
 
   test("shows an error toast and does not switch when forking fails", async () => {
