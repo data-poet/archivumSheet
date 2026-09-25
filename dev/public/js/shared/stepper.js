@@ -1,6 +1,6 @@
 // Generic +/- click handling for `.num-stepper` widgets. Split out of events/index.js
-// so the allies page (which never imports compute/*, see tests/dev/allies/main.test.js)
-// can wire the same steppers without pulling in that file's engine/inventory imports.
+// so ally resume rendering can wire the same steppers without pulling in that file's
+// engine/inventory imports.
 
 export function bindStepperButtons() {
   document.addEventListener("click", (e) => {

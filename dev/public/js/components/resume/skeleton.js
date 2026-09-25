@@ -1,5 +1,5 @@
-// The resume panel's static markup, extracted from index.html so the sheet page, the
-// allies page, and tests/dev/helpers/resumeDomFixture.js all mount one source instead of
+// The resume panel's static markup, extracted from index.html so PC rendering, ally
+// rendering, and tests/dev/helpers/resumeDomFixture.js all mount one source instead of
 // keeping hand-synced copies. Containers are empty on purpose — every renderer in this
 // folder writes into them by id.
 
@@ -152,8 +152,9 @@ export const RESUME_PANEL_HTML = `
   </div>
 `;
 
-// Sheet page also sets these via initAppShell() in index.html — duplicated here so the
-// allies page (which never runs initAppShell()) gets them too. Harmless to set twice.
+// The PC sheet also sets these via initAppShell() in index.html — duplicated here so a
+// dynamically mounted ally resume panel (which never runs initAppShell()) gets them too.
+// Harmless to set twice.
 function applyResumeStaticLabels() {
   const setText = (id, text) => {
     const elem = document.getElementById(id);

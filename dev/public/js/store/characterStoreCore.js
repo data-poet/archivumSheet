@@ -1,6 +1,6 @@
-// Shared localStorage primitives for the character store. Extracted out of characters.js so that
-// ally-roster code (store/allies/allies.js, allyEditTarget.js) can read/write the same store
-// without importing characters.js itself, which assumes the sheet page's live DOM.
+// Shared localStorage primitives for the character store. Extracted out of characters.js so
+// that other store modules (e.g. persistence.js) can read/write the same store without
+// importing characters.js itself, which assumes the sheet page's live DOM.
 
 export const STORAGE_KEY = "archivum_characters";
 

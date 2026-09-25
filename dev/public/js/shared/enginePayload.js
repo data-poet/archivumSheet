@@ -4,7 +4,7 @@
 // its own (`primaryAttributes`, `armor`, `survival_gear`). This module is the only place
 // that knows both.
 //
-// Pure on purpose: the sheet feeds it live state, the allies page feeds it a catalog file,
+// Pure on purpose: the sheet feeds it live state, ally rendering feeds it a catalog file,
 // and neither path may end up with a private copy of these key names.
 
 // Not `Number(x) || 1` — a literal 0 (immune to this element) is a real value that `||` would erase.

@@ -1,7 +1,6 @@
 // Split out of portrait.js on purpose: portrait.js imports compute/autorun.js for its
-// editor-side handlers, and the allies page's import graph is guarded against ever
-// reaching compute/* (see tests/dev/allies/main.test.js) since it shares the resume
-// renderer with the sheet page. This file stays a leaf so both pages can use it.
+// editor-side handlers, and ally resume rendering must never reach compute/* since it
+// shares this renderer with the PC sheet. This file stays a leaf so both can use it.
 
 import { state } from "../../../state.js";
 import { escapeAttr } from "../../../shared/renderUtils.js";

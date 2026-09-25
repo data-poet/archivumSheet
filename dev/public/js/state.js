@@ -73,8 +73,9 @@ export const state = {
     secondary: {},
     damage: {},
     resistances: {},
-    // Roster data owned by the allies page (store/allies/allies.js) — the sheet page never reads or
-    // writes these, it just round-trips them through save/load so a PC's roster survives autosave.
+    // Roster data owned by store/characters.js's ally-linking helpers — the sheet rendering
+    // never reads or writes these, it just round-trips them through save/load so a PC's
+    // roster survives autosave.
     allies: [],
     alliesActiveId: null,
     armors: [],
