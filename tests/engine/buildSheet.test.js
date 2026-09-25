@@ -173,7 +173,7 @@ describe("BUILD SHEET", () => {
       expect(character.elemental_resistances.Fire.final).toBe(0.5);
       expect(character.elemental_resistances.Necrotic.race_base).toBe(2);
       // Untouched types stay at the default
-      expect(character.elemental_resistances.Ice.race_base).toBe(1);
+      expect(character.elemental_resistances.Water.race_base).toBe(1);
     });
 
     it("Should combine the race base with a player-entered modifier from character.secondaryAttributes.elementalResistances", () => {
@@ -462,8 +462,8 @@ describe("BUILD SHEET", () => {
         result.character.elemental_resistances.Fire.has_enchantment_modifier,
       ).toBe(true);
       // No spillover into an unrelated element
-      expect(result.character.elemental_resistances.Ice.final).toBe(
-        baseline.character.elemental_resistances.Ice.final,
+      expect(result.character.elemental_resistances.Water.final).toBe(
+        baseline.character.elemental_resistances.Water.final,
       );
     });
 
