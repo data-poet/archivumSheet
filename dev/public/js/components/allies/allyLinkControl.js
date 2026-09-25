@@ -7,10 +7,12 @@ import {
   getActiveKind,
   getActiveCharacterId,
   listCharacters,
+} from "../../store/characters.js";
+import {
   getAllyOwnerId,
   linkAllyToCharacter,
   unlinkAlly,
-} from "../../store/characters.js";
+} from "../../store/allies/characterLinking.js";
 import { ENTRY_KINDS } from "../../shared/constants.js";
 import { escapeHtml } from "../../shared/renderUtils.js";
 

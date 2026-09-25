@@ -75,6 +75,7 @@ describe("custom inventory name", () => {
 describe("character selector", () => {
   test("a hostile character name renders as inert text in the button and the popover", async () => {
     const characters = await import("dev/public/js/store/characters.js");
+    const characterLinking = await import("dev/public/js/store/allies/characterLinking.js");
     const { updateSelectorButton, renderPopover } =
       await import("dev/public/js/components/characterSelector.js");
 
@@ -87,7 +88,7 @@ describe("character selector", () => {
       .spyOn(characters, "listCharacters")
       .mockReturnValue([{ id: "c-1", name: HOSTILE, race: HOSTILE }]);
     jest
-      .spyOn(characters, "listCharactersGrouped")
+      .spyOn(characterLinking, "listCharactersGrouped")
       .mockReturnValue([{ id: "c-1", name: HOSTILE, race: HOSTILE }]);
     jest.spyOn(characters, "getActiveCharacterId").mockReturnValue("c-1");
 

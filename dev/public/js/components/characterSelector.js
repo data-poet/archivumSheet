@@ -1,14 +1,16 @@
 import { t } from "../localization/pt-BR/index.js";
 import {
   listCharacters,
-  listCharactersGrouped,
   getActiveCharacterId,
   loadCharacter,
   addCharacter,
   removeCharacter,
   saveActiveCharacter,
-  recreateLinkedAllies,
 } from "../store/characters.js";
+import {
+  listCharactersGrouped,
+  recreateLinkedAllies,
+} from "../store/allies/characterLinking.js";
 import {
   exportSheet,
   exportAllySheet,

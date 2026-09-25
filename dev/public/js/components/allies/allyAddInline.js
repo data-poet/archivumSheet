@@ -1,8 +1,8 @@
 // "Add ally" box embedded in the character editor. Forking a repo-catalog ally straight into a
 // full local kind:"ally" character, linked under whoever is currently being edited, is what makes
-// it immediately editable — see store/characters.js's forkAndLinkAllyToCharacter. Hidden while
-// editing an ally itself: allies can't have their own roster (decision #24), same rule
-// allyLinkControl.js's counterpart gate and pageSelector.js's nav-hiding already enforce.
+// it immediately editable — see store/allies/characterLinking.js's forkAndLinkAllyToCharacter.
+// Hidden while editing an ally itself: allies can't have their own roster (decision #24), same
+// rule allyLinkControl.js's counterpart gate and pageSelector.js's nav-hiding already enforce.
 
 import { t } from "../../localization/pt-BR/index.js";
 import { listAllies } from "../../allies/catalog.js";
@@ -11,8 +11,8 @@ import {
   getActiveCharacterId,
   saveActiveCharacter,
   loadCharacter,
-  forkAndLinkAllyToCharacter,
 } from "../../store/characters.js";
+import { forkAndLinkAllyToCharacter } from "../../store/allies/characterLinking.js";
 import { ENTRY_KINDS } from "../../shared/constants.js";
 import { showToast } from "../../shared/toast.js";
 import { escapeHtml } from "../../shared/renderUtils.js";
