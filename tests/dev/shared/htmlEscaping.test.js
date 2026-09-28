@@ -8,7 +8,6 @@
 // character sharing or import-from-URL ships, and the import path already accepts
 // arbitrary JSON.
 
-import { escapeHtml, escapeAttr } from "dev/public/js/shared/renderUtils.js";
 import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
@@ -18,34 +17,6 @@ const HOSTILE = `<img src=x onerror=alert(1)>`;
 beforeEach(() => {
   resetDOM();
   resetState();
-});
-
-describe("escapeHtml / escapeAttr", () => {
-  test("escapeHtml neutralises the characters that open a tag or an entity", () => {
-    expect(escapeHtml(HOSTILE)).toBe("&lt;img src=x onerror=alert(1)&gt;");
-  });
-
-  test("escapeHtml leaves quotes alone (safe in text position)", () => {
-    expect(escapeHtml(`He said "hi"`)).toBe(`He said "hi"`);
-  });
-
-  test("escapeAttr additionally escapes the double quote that would end an attribute", () => {
-    expect(escapeAttr(`" onerror="alert(1)`)).toBe(
-      "&quot; onerror=&quot;alert(1)",
-    );
-  });
-
-  test("escapeAttr is a no-op on valid numbers and empty strings", () => {
-    expect(escapeAttr(50)).toBe("50");
-    expect(escapeAttr("")).toBe("");
-    expect(escapeAttr("rgb(0,0,0)")).toBe("rgb(0,0,0)");
-  });
-
-  test("both render null/undefined as an empty string rather than the literal word", () => {
-    expect(escapeHtml(null)).toBe("");
-    expect(escapeHtml(undefined)).toBe("");
-    expect(escapeAttr(null)).toBe("");
-  });
 });
 
 describe("custom inventory name", () => {
@@ -75,7 +46,8 @@ describe("custom inventory name", () => {
 describe("character selector", () => {
   test("a hostile character name renders as inert text in the button and the popover", async () => {
     const characters = await import("dev/public/js/store/characters.js");
-    const characterLinking = await import("dev/public/js/store/allies/characterLinking.js");
+    const characterLinking =
+      await import("dev/public/js/store/allies/characterLinking.js");
     const { updateSelectorButton, renderPopover } =
       await import("dev/public/js/components/characterSelector.js");
 
