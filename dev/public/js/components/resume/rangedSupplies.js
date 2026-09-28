@@ -2,90 +2,37 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
-import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 import {
   collapsibleHeader,
   bindCollapse,
-  hpStepperCell,
-  roundsStepperCell,
   quantityStepperCell,
+  roundsStepperCell,
+  renderResumeWeaponTable,
 } from "./shared.js";
 
 export function renderResumeFirearms(sheet, { editable = true } = {}) {
-  const equipped = sheet?.inventory?.firearms?.equipped ?? [];
-  const container = el("resume_firearms_container");
-  if (!container) return;
-
-  if (equipped.length === 0) {
-    container.hidden = true;
-    return;
-  }
-  container.hidden = false;
-
-  const rows = equipped
-    .map((w) => {
-      const baseMaxHp = w.weapon_final_hit_points ?? 0;
-      const modifier = w.hit_points_modifier ?? 0;
-      const actualHp = calcActualHp(baseMaxHp, modifier);
-      const instanceId = w._instanceId ?? "";
-
-      const hpCell =
-        baseMaxHp > 0
-          ? hpStepperCell({
-              cssClass: "resume-firearm-hp",
-              dataAttrs: `data-instance-id="${instanceId}"`,
-              maxHp: baseMaxHp,
-              modifier,
-              actualHp,
-              editable,
-            })
-          : `<td></td>`;
-
-      const magazineSize = w.weapon_final_magazine_size ?? 0;
-      const roundsLoaded = w.rounds_loaded ?? 0;
-
-      const roundsCell = roundsStepperCell({
+  renderResumeWeaponTable({
+    containerId: "resume_firearms_container",
+    title: t("sections.firearms"),
+    weapons: sheet?.inventory?.firearms?.equipped ?? [],
+    hpCssClass: "resume-firearm-hp",
+    computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
+    editable,
+    columns: [
+      { header: t("ranged.tr"), cell: (w) => w.weapon_final_tr ?? "—" },
+      { header: t("ranged.prec"), cell: (w) => w.weapon_final_prec ?? "—" },
+      { header: t("ranged.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },
+    ],
+    extraHeader: `<th class="col-num">${t("firearms.magazine")}</th>`,
+    extraCell: (w, instanceId) =>
+      roundsStepperCell({
         cssClass: "resume-firearm-rounds",
         dataAttrs: `data-instance-id="${instanceId}"`,
-        magazineSize,
-        roundsLoaded,
+        magazineSize: w.weapon_final_magazine_size ?? 0,
+        roundsLoaded: w.rounds_loaded ?? 0,
         editable,
-      });
-
-      return `
-        <tr>
-          <td>${w.weapon_name ?? "—"}</td>
-          <td class="col-num">${w.weapon_final_tr ?? "—"}</td>
-          <td class="col-num">${w.weapon_final_prec ?? "—"}</td>
-          <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
-          ${hpCell}
-          ${roundsCell}
-        </tr>
-      `;
-    })
-    .join("");
-
-  container.innerHTML = `
-    ${collapsibleHeader(t("sections.firearms"))}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("ranged.tr")}</th>
-              <th class="col-num">${t("ranged.prec")}</th>
-              <th class="col-num">${t("ranged.gdpDmg")}</th>
-              <th class="col-num">${t("armor.hp")}</th>
-              <th class="col-num">${t("firearms.magazine")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
-  bindCollapse(container);
+      }),
+  });
 }
 
 // Quantities are aggregated across all equipped containers per ammo_id; the stepper
