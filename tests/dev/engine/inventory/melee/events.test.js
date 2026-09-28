@@ -30,24 +30,12 @@ import {
   handleAddMelee,
 } from "dev/public/js/engine/inventory/melee/events.js";
 import { state } from "dev/public/js/state.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import {
+  resetDOM,
+  elWithClass,
+  selectWithValue,
+} from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
-
-function elWithClass(tag, className, dataset = {}) {
-  const el = document.createElement(tag);
-  className.split(" ").forEach((c) => el.classList.add(c));
-  Object.entries(dataset).forEach(([k, v]) => (el.dataset[k] = v));
-  return el;
-}
-
-function selectWithValue(className, dataset, value) {
-  const select = elWithClass("select", className, dataset);
-  const option = document.createElement("option");
-  option.value = value;
-  select.appendChild(option);
-  select.value = value;
-  return select;
-}
 
 beforeEach(() => {
   resetDOM();

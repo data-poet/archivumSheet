@@ -29,25 +29,12 @@ import {
   handleAddCustomItem,
 } from "dev/public/js/engine/inventory/customInventory/events.js";
 import { state } from "dev/public/js/state.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import {
+  resetDOM,
+  elWithClass,
+  selectWithValue,
+} from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
-
-function elWithClass(tag, className, dataset = {}) {
-  const el = document.createElement(tag);
-  className.split(" ").forEach((c) => el.classList.add(c));
-  Object.entries(dataset).forEach(([k, v]) => (el.dataset[k] = v));
-  return el;
-}
-
-// jsdom won't accept select.value = "x" unless a matching <option> exists.
-function selectWithValue(className, dataset, value) {
-  const select = elWithClass("select", className, dataset);
-  const option = document.createElement("option");
-  option.value = value;
-  select.appendChild(option);
-  select.value = value;
-  return select;
-}
 
 beforeEach(() => {
   resetDOM("<div></div>");
@@ -71,7 +58,6 @@ beforeEach(() => {
 afterEach(() => {
   jest.useRealTimers();
 });
-
 
 describe("handleCustomInventoryClick", () => {
   test("clicking .remove-custom-item removes the item and returns true", () => {
@@ -181,7 +167,6 @@ describe("handleCustomInventoryClick", () => {
   });
 });
 
-
 describe("handleCustomInventoryInput", () => {
   test("typing a valid quantity into .custom-item-qty updates it and returns true", () => {
     const target = elWithClass("input", "custom-item-qty", {
@@ -239,7 +224,6 @@ describe("handleCustomInventoryInput", () => {
   });
 });
 
-
 describe("handleCustomInventoryChange", () => {
   test("changing .custom-item-location-select moves the item and returns true", () => {
     const target = selectWithValue(
@@ -259,7 +243,6 @@ describe("handleCustomInventoryChange", () => {
     expect(model.moveCustomItem).not.toHaveBeenCalled();
   });
 });
-
 
 describe("handleAddCustomItem", () => {
   function setUpForm({
