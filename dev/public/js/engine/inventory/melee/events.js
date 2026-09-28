@@ -112,8 +112,7 @@ export function handleMeleeClick(e) {
 // ─── Input ────────────────────────────────────────────────────────────────────
 
 // A dual-use pair is one physical weapon, so damage taken on the melee side shows
-// up on the ranged side too. (Ranged's own HP inputs do NOT mirror back — only
-// equip/storage moves do, which is pre-existing app behavior.)
+// up on the ranged side too — mirrors ranged/events.js's _mirrorHpToLinkedMelee.
 function _mirrorHpToLinkedRanged(meleeInstance) {
   const linked = _findLinkedRanged(meleeInstance);
   if (linked) linked.hit_points_modifier = meleeInstance.hit_points_modifier;
@@ -151,13 +150,20 @@ const _handleMeleeWeaponChange = createWeaponChangeHandler({
   catalog: () => data.melee_weapons,
   findByInstanceId: findMeleeByInstanceId,
   move: moveMelee,
-  renderAfterMaterial: () => _renderMeleeLists(),
+  renderAfterMaterial: () => _renderMeleeAndRangedLists(),
   renderAfterMove: () => _renderMeleeAndRangedLists(),
   onMoved: (meleeInstance) => {
     const linked = _findLinkedRanged(meleeInstance);
     if (linked) {
       linked.is_equipped = meleeInstance.is_equipped;
       linked.storedAt = meleeInstance.storedAt;
+    }
+  },
+  onMaterialChanged: (meleeInstance) => {
+    const linked = _findLinkedRanged(meleeInstance);
+    if (linked) {
+      linked.material_id = meleeInstance.material_id;
+      linked.hit_points_modifier = 0;
     }
   },
 });

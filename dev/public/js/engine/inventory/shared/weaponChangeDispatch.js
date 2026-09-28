@@ -8,8 +8,9 @@
 
 import { triggerAutoRun } from "../../../compute/autorun.js";
 
-// onMoved runs after is_equipped/storedAt are written — melee and ranged use it to
-// mirror the move onto a dual-use counterpart.
+// onMoved runs after is_equipped/storedAt are written, and onMaterialChanged after
+// material_id/hit_points_modifier are — melee and ranged use both to mirror the change
+// onto a dual-use counterpart (one physical weapon shares one material either way).
 export function createWeaponChangeHandler({
   classPrefix,
   catalog,
@@ -18,6 +19,7 @@ export function createWeaponChangeHandler({
   renderAfterMaterial,
   renderAfterMove,
   onMoved = () => {},
+  onMaterialChanged = () => {},
 }) {
   const NAME = `equipped-${classPrefix}-name`;
   const TIER = `equipped-${classPrefix}-tier`;
@@ -83,6 +85,7 @@ export function createWeaponChangeHandler({
 
       instance.material_id = e.target.value;
       instance.hit_points_modifier = 0;
+      onMaterialChanged(instance);
       renderAfterMaterial();
       triggerAutoRun();
       return true;

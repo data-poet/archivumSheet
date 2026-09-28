@@ -41,8 +41,8 @@ const _renderRangedLists = createListRenderer(
   renderStoredRanged,
 );
 
-// Also re-renders melee's lists, for the equipped-ranged-move handler that mirrors
-// equip/storedAt onto a linked melee instance via _linkedInstanceId.
+// Also re-renders melee's lists: the equipped-ranged-move handler mirrors equip/storedAt
+// onto a linked melee instance via _linkedInstanceId, and HP-modifier inputs mirror too.
 const _renderRangedAndMeleeLists = createListRenderer(
   renderEquippedRanged,
   renderStoredRanged,
@@ -50,7 +50,8 @@ const _renderRangedAndMeleeLists = createListRenderer(
   renderStoredMelee,
 );
 
-const _deferRender = createDeferredRender(() => _renderRangedLists());
+// HP-modifier inputs mirror to the linked melee counterpart, so this always uses the ranged+melee variant.
+const _deferRender = createDeferredRender(() => _renderRangedAndMeleeLists());
 
 function _findLinkedMelee(rangedInstance) {
   return findLinkedCounterpart(rangedInstance, selected.melee_weapons);
@@ -107,9 +108,13 @@ export function handleRangedClick(e) {
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 
-// Unlike melee's HP inputs (which mirror onto a linked ranged counterpart), ranged's
-// do NOT mirror back onto a linked melee — only equip/storage moves do. Pre-existing
-// app behavior, hence no onApplied here.
+// A dual-use pair is one physical weapon, so damage taken on the ranged side shows
+// up on the melee side too — mirrors melee/events.js's _mirrorHpToLinkedRanged.
+function _mirrorHpToLinkedMelee(rangedInstance) {
+  const linked = _findLinkedMelee(rangedInstance);
+  if (linked) linked.hit_points_modifier = rangedInstance.hit_points_modifier;
+}
+
 export const handleRangedInput = createHpInputHandler({
   variants: [
     {
@@ -132,6 +137,7 @@ export const handleRangedInput = createHpInputHandler({
   catalogIdField: "weapon_id",
   baseHpField: "weapon_hit_points",
   deferRender: _deferRender,
+  onApplied: _mirrorHpToLinkedMelee,
 });
 
 // ─── Change ───────────────────────────────────────────────────────────────────
@@ -141,13 +147,20 @@ const _handleRangedWeaponChange = createWeaponChangeHandler({
   catalog: () => data.ranged_weapons,
   findByInstanceId: findRangedByInstanceId,
   move: moveRanged,
-  renderAfterMaterial: () => _renderRangedLists(),
+  renderAfterMaterial: () => _renderRangedAndMeleeLists(),
   renderAfterMove: () => _renderRangedAndMeleeLists(),
   onMoved: (rangedInstance) => {
     const linked = _findLinkedMelee(rangedInstance);
     if (linked) {
       linked.is_equipped = rangedInstance.is_equipped;
       linked.storedAt = rangedInstance.storedAt;
+    }
+  },
+  onMaterialChanged: (rangedInstance) => {
+    const linked = _findLinkedMelee(rangedInstance);
+    if (linked) {
+      linked.material_id = rangedInstance.material_id;
+      linked.hit_points_modifier = 0;
     }
   },
 });
