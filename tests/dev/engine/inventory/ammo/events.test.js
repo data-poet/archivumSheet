@@ -27,33 +27,20 @@ import {
   handleAddLooseAmmo,
 } from "dev/public/js/engine/inventory/ammo/events.js";
 import { state } from "dev/public/js/state.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import {
+  resetDOM,
+  elWithClass,
+  selectWithValue,
+} from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
 // shared/openState.js is intentionally not mocked — events.js's real ammoDetailKeyFn composes the open-panel snapshot around renderListsPreserving(), which is worth exercising for real here.
-
-function elWithClass(tag, className, dataset = {}) {
-  const el = document.createElement(tag);
-  className.split(" ").forEach((c) => el.classList.add(c));
-  Object.entries(dataset).forEach(([k, v]) => (el.dataset[k] = v));
-  return el;
-}
-
-function selectWithValue(className, dataset, value) {
-  const select = elWithClass("select", className, dataset);
-  const option = document.createElement("option");
-  option.value = value;
-  select.appendChild(option);
-  select.value = value;
-  return select;
-}
 
 beforeEach(() => {
   resetDOM("<div></div>");
   resetState();
   jest.clearAllMocks();
 });
-
 
 describe("handleAmmoClick", () => {
   test("clicking .remove-ammo-container removes the container and returns true", () => {
@@ -152,7 +139,6 @@ describe("handleAmmoClick", () => {
   });
 });
 
-
 describe("handleAmmoInput — .ammo-qty-in-container", () => {
   test("a valid quantity updates the container entry and returns true", () => {
     const target = elWithClass("input", "ammo-qty-in-container", {
@@ -247,7 +233,6 @@ describe("handleAmmoInput — an unrelated input target", () => {
     expect(handleAmmoInput({ target })).toBe(false);
   });
 });
-
 
 describe("handleAmmoInput — .resume-ammo-qty aggregate stepper", () => {
   beforeEach(() => {
@@ -378,7 +363,6 @@ describe("handleAmmoInput — .resume-ammo-qty aggregate stepper", () => {
   });
 });
 
-
 describe("handleAmmoChange", () => {
   test("changing .ammo-container-storage-select moves the container and returns true", () => {
     const target = selectWithValue(
@@ -461,7 +445,6 @@ describe("handleAmmoChange", () => {
   });
 });
 
-
 describe("handleAddContainer", () => {
   test("adds a container with the selected id and storage location", () => {
     resetDOM(`
@@ -492,7 +475,6 @@ describe("handleAddContainer", () => {
     expect(model.addContainer).not.toHaveBeenCalled();
   });
 });
-
 
 describe("handleAddLooseAmmo", () => {
   test("adds loose ammo with the selected id/quantity/location and resets the quantity field", () => {

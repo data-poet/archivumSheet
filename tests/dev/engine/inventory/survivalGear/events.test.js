@@ -15,25 +15,12 @@ import {
   handleAddSurvivalGear,
 } from "dev/public/js/engine/inventory/survivalGear/events.js";
 import { state } from "dev/public/js/state.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import {
+  resetDOM,
+  elWithClass,
+  selectWithValue,
+} from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
-
-function elWithClass(tag, className, dataset = {}) {
-  const el = document.createElement(tag);
-  className.split(" ").forEach((c) => el.classList.add(c));
-  Object.entries(dataset).forEach(([k, v]) => (el.dataset[k] = v));
-  return el;
-}
-
-// jsdom won't accept select.value = "x" unless a matching <option> exists.
-function selectWithValue(className, dataset, value) {
-  const select = elWithClass("select", className, dataset);
-  const option = document.createElement("option");
-  option.value = value;
-  select.appendChild(option);
-  select.value = value;
-  return select;
-}
 
 beforeEach(() => {
   resetDOM("<div></div>");
@@ -48,7 +35,6 @@ beforeEach(() => {
     },
   ];
 });
-
 
 describe("handleSurvivalGearClick", () => {
   test("clicking .remove-survival-gear removes that entry and returns true", () => {
@@ -68,7 +54,6 @@ describe("handleSurvivalGearClick", () => {
     expect(model.removeSurvivalGear).not.toHaveBeenCalled();
   });
 });
-
 
 describe("handleSurvivalGearInput", () => {
   test("typing a valid quantity into .survival-gear-qty updates it and returns true", () => {
@@ -139,7 +124,6 @@ describe("handleSurvivalGearInput", () => {
   });
 });
 
-
 describe("handleSurvivalGearChange", () => {
   test("changing .survival-gear-location-select moves the entry and returns true", () => {
     const target = selectWithValue(
@@ -170,7 +154,6 @@ describe("handleSurvivalGearChange", () => {
     expect(handleSurvivalGearChange({ target })).toBe(false);
   });
 });
-
 
 describe("handleAddSurvivalGear", () => {
   function setUpForm({

@@ -34,3 +34,19 @@ export function silenceConsoleWarn() {
   const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
   return spy;
 }
+
+export function elWithClass(tag, className, dataset = {}) {
+  const el = document.createElement(tag);
+  className.split(" ").forEach((c) => el.classList.add(c));
+  Object.entries(dataset).forEach(([k, v]) => (el.dataset[k] = v));
+  return el;
+}
+
+export function selectWithValue(className, dataset, value) {
+  const select = elWithClass("select", className, dataset);
+  const option = document.createElement("option");
+  option.value = value;
+  select.appendChild(option);
+  select.value = value;
+  return select;
+}
