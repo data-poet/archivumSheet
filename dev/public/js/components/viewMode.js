@@ -24,7 +24,11 @@ function applyMode(viewMode) {
 
   const btn = document.getElementById(BTN_ID);
   if (btn) {
-    btn.textContent = viewMode ? t("viewMode.btnEdit") : t("viewMode.btnView");
+    const icon = viewMode ? t("viewMode.iconEdit") : t("viewMode.iconView");
+    const label = viewMode ? t("viewMode.btnEdit") : t("viewMode.btnView");
+    // The label collapses on mobile (see navigation.css) so the icon alone must stay
+    // meaningful — it's still wrapped for layout, not just inlined as text.
+    btn.innerHTML = `<span class="view-mode-btn-icon" aria-hidden="true">${icon}</span><span class="view-mode-btn-label">${label}</span>`;
     btn.setAttribute(
       "aria-label",
       viewMode ? t("viewMode.ariaEdit") : t("viewMode.ariaView"),
