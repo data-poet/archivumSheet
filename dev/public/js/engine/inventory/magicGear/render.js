@@ -16,7 +16,10 @@ import {
   escapeHtml,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  findInstance,
+} from "../shared/inventoryRenderUtils.js";
 import {
   equippedItemTabs,
   itemTabsDetailRow,
@@ -37,17 +40,14 @@ function displayName(inst, record) {
   return inst.magic_gear_custom_name || record.magic_gear_name;
 }
 
-// Mirrors resolvedAccessory in renderAccessories.js.
 function resolvedMagicGear(sheet, instanceId) {
   const inv = sheet?.inventory?.magicGear;
   if (!inv) return null;
 
-  for (const bucket of [inv.equipped, inv.stash, inv.camp, inv.backpack]) {
-    const found = (bucket || []).find((g) => g._instanceId === instanceId);
-    if (found) return found;
-  }
-
-  return null;
+  return findInstance(
+    [inv.equipped, inv.stash, inv.camp, inv.backpack],
+    instanceId,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

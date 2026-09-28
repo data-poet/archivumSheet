@@ -9,6 +9,7 @@ import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   renderStorageLocationBlock,
+  findInstance,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -31,25 +32,18 @@ import {
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 
 function resolvedArmor(sheet, instanceId) {
-  if (!sheet?.inventory?.armor) return null;
-  const inv = sheet.inventory.armor;
-  for (const bucket of [
-    inv.equipped,
-    ...Object.values(inv.backpack || {}),
-    ...Object.values(inv.stash || {}),
-    ...Object.values(inv.camp || {}),
-  ]) {
-    const items = Array.isArray(bucket) ? bucket : bucket ? [bucket] : [];
-    const found = items.find((p) => p && p._instanceId === instanceId);
-    if (found) return found;
-  }
-  if (inv.equipped) {
-    const piece = Object.values(inv.equipped).find(
-      (p) => p && p._instanceId === instanceId,
-    );
-    if (piece) return piece;
-  }
-  return null;
+  const inv = sheet?.inventory?.armor;
+  if (!inv) return null;
+
+  return findInstance(
+    [
+      ...Object.values(inv.equipped || {}),
+      ...Object.values(inv.backpack || {}),
+      ...Object.values(inv.stash || {}),
+      ...Object.values(inv.camp || {}),
+    ],
+    instanceId,
+  );
 }
 
 // Pre-fills the shared withEnchantmentBadge's title with armor's own localized string.
