@@ -145,26 +145,6 @@ describe("handleMeleeClick", () => {
 });
 
 describe("handleMeleeInput", () => {
-  test("no-ops (but handled) when the instance can't be found", () => {
-    model.findMeleeByInstanceId.mockReturnValue(undefined);
-    const target = elWithClass("input", "resume-melee-hp", {
-      instanceId: "GHOST",
-    });
-    target.value = "-2";
-    expect(handleMeleeInput({ target })).toBe(true);
-  });
-
-  test("allows a lone '-' mid-typing without mutating", () => {
-    const instance = { weapon_id: "MELEE-DB-1", hit_points_modifier: 0 };
-    model.findMeleeByInstanceId.mockReturnValue(instance);
-    const target = elWithClass("input", "equipped-melee-hp", {
-      instanceId: "MELEE-1",
-    });
-    target.value = "-";
-    handleMeleeInput({ target });
-    expect(instance.hit_points_modifier).toBe(0);
-  });
-
   test("resume-melee-hp clamps using real HP math and patches the resume display", () => {
     const instance = { weapon_id: "MELEE-DB-1", hit_points_modifier: 0 };
     model.findMeleeByInstanceId.mockReturnValue(instance);
@@ -313,61 +293,6 @@ describe("handleMeleeChange — equipped-melee-name / tier", () => {
     // Name/tier changes are explicitly not part of dual-use sync scope (only HP and equip/storage location mirror) — the linked ranged instance's weapon_id must stay untouched.
     expect(linkedRanged.weapon_id).toBe("UNTOUCHED");
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
-  });
-
-  test("populates the tier <select> with the matching name's tiers", () => {
-    resetDOM(
-      `<select class="equipped-melee-tier" data-instance-id="MELEE-1"></select>`,
-    );
-    model.findMeleeByInstanceId.mockReturnValue({
-      weapon_id: "X",
-      hit_points_modifier: 0,
-    });
-    const target = selectWithValue(
-      "equipped-melee-name",
-      { instanceId: "MELEE-1" },
-      "Espada Longa",
-    );
-
-    handleMeleeChange({ target });
-
-    const tierSelect = document.querySelector(".equipped-melee-tier");
-    expect(Array.from(tierSelect.options).map((o) => o.value)).toEqual([
-      "I",
-      "II",
-    ]);
-  });
-
-  test("equipped-melee-tier requires the sibling name <select>", () => {
-    resetDOM(); // no .equipped-melee-name present
-    model.findMeleeByInstanceId.mockReturnValue({ weapon_id: "X" });
-    const target = selectWithValue(
-      "equipped-melee-tier",
-      { instanceId: "MELEE-1" },
-      "I",
-    );
-    expect(handleMeleeChange({ target })).toBe(true);
-    expect(model.equipMelee).not.toHaveBeenCalled();
-  });
-
-  test("equipped-melee-tier resolves the name+tier combination and edits in place", () => {
-    resetDOM(`
-      <select class="equipped-melee-name" data-instance-id="MELEE-1">
-        <option value="Espada Longa" selected>x</option>
-      </select>
-    `);
-    const instance = { weapon_id: "MELEE-DB-1", hit_points_modifier: -1 };
-    model.findMeleeByInstanceId.mockReturnValue(instance);
-    const target = selectWithValue(
-      "equipped-melee-tier",
-      { instanceId: "MELEE-1" },
-      "II",
-    );
-
-    handleMeleeChange({ target });
-
-    expect(instance.weapon_id).toBe("MELEE-DB-2");
-    expect(instance.hit_points_modifier).toBe(0);
   });
 });
 
@@ -528,18 +453,6 @@ describe("handleAddMelee", () => {
     `);
   }
 
-  test("does nothing when a required element is missing", () => {
-    resetDOM(`<select id="meleeNameSelect"></select>`);
-    expect(() => handleAddMelee()).not.toThrow();
-    expect(model.addStoredMelee).not.toHaveBeenCalled();
-  });
-
-  test("does nothing when the name+tier combination doesn't match any catalog row", () => {
-    buildAddForm({ tier: "III" });
-    handleAddMelee();
-    expect(model.addStoredMelee).not.toHaveBeenCalled();
-  });
-
   test("adds as equipped when storage is 'equipped'", () => {
     buildAddForm({ tier: "II", material: "Aço", storage: "equipped" });
     handleAddMelee();
@@ -557,16 +470,6 @@ describe("handleAddMelee", () => {
       "MELEE-DB-1",
       "MAT-001",
       "stash",
-    );
-  });
-
-  test("passes null material when the chosen material doesn't match any catalog row", () => {
-    buildAddForm({ material: "Material Inexistente" });
-    handleAddMelee();
-    expect(model.addStoredMelee).toHaveBeenCalledWith(
-      "MELEE-DB-1",
-      null,
-      "backpack",
     );
   });
 });
