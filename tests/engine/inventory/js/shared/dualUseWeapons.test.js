@@ -9,62 +9,26 @@ const {
 } = require("engine/inventory/js/shared/dualUseWeapons");
 
 describe("DUAL-USE WEAPONS", () => {
-  describe("Lança de Mão", () => {
+  // Lança de Mão, Lança de Arremesso, Machadinha, Machado de Arremesso — 4 dual-use
+  // weapons × 5 tiers each. Same two assertions per pair regardless of weapon family,
+  // so one parameterized run covers all of them instead of one describe block each.
+  describe("Dual-use weapon pairs", () => {
     const TIERS = [
       ["MELEE-215", "RANGED-050"],
       ["MELEE-216", "RANGED-051"],
       ["MELEE-217", "RANGED-052"],
       ["MELEE-218", "RANGED-053"],
       ["MELEE-219", "RANGED-054"],
-    ];
-
-    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
-      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-    });
-
-    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
-      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-    });
-  });
-
-  describe("Lança de Arremesso", () => {
-    const TIERS = [
       ["MELEE-220", "RANGED-055"],
       ["MELEE-221", "RANGED-056"],
       ["MELEE-222", "RANGED-057"],
       ["MELEE-223", "RANGED-058"],
       ["MELEE-224", "RANGED-059"],
-    ];
-
-    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
-      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-    });
-
-    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
-      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-    });
-  });
-
-  describe("Machadinha", () => {
-    const TIERS = [
       ["MELEE-280", "RANGED-005"],
       ["MELEE-281", "RANGED-006"],
       ["MELEE-282", "RANGED-007"],
       ["MELEE-283", "RANGED-008"],
       ["MELEE-284", "RANGED-009"],
-    ];
-
-    test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
-      expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
-    });
-
-    test.each(TIERS)("ranged %s maps back to melee %s", (meleeId, rangedId) => {
-      expect(RANGED_TO_MELEE[rangedId]).toBe(meleeId);
-    });
-  });
-
-  describe("Machado de Arremesso", () => {
-    const TIERS = [
       ["MELEE-285", "RANGED-010"],
       ["MELEE-286", "RANGED-011"],
       ["MELEE-287", "RANGED-012"],

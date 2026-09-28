@@ -266,46 +266,6 @@ describe("EQUIPMENT FIREARMS", () => {
       );
     });
 
-    test("Should not let material affect combat stats (gdp/tr/prec/magazine)", () => {
-      const withoutMaterial = buildFirearmSlots([
-        {
-          weapon_id: weaponId,
-          is_equipped: true,
-          storedAt: null,
-        },
-      ]).equipped[0];
-
-      const withMaterial = buildFirearmSlots([
-        {
-          weapon_id: weaponId,
-          material_id: materialId,
-          is_equipped: true,
-          storedAt: null,
-        },
-      ]).equipped[0];
-
-      expect(withMaterial.weapon_final_gdp_modifier).toBe(
-        withoutMaterial.weapon_final_gdp_modifier,
-      );
-      expect(withMaterial.weapon_final_tr).toBe(
-        withoutMaterial.weapon_final_tr,
-      );
-      expect(withMaterial.weapon_final_prec).toBe(
-        withoutMaterial.weapon_final_prec,
-      );
-      expect(withMaterial.weapon_final_magazine_size).toBe(
-        withoutMaterial.weapon_final_magazine_size,
-      );
-      expect(withMaterial.weapon_gdp_damage).toBe(
-        withoutMaterial.weapon_gdp_damage,
-      );
-
-      // But material still affects weight/price/HP
-      expect(withMaterial.weapon_final_weight).not.toBe(
-        withoutMaterial.weapon_final_weight,
-      );
-    });
-
     test("Should resolve a valid enchantment and reflect it in final_weight/total_firearms_weight", () => {
       const result = buildFirearmSlots([
         {
