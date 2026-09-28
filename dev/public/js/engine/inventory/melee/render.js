@@ -16,7 +16,6 @@ import {
   storageOptions,
 } from "../shared/equipmentSelectors.js";
 import {
-  formatRichText,
   customFieldsBody,
   withEnchantmentBadge,
   cardTitleCell,
@@ -26,9 +25,14 @@ import {
   itemTabsDetailRow,
   statsTabContent,
 } from "../../../shared/itemTabs.js";
-import { decimalToPercent } from "../../../components/resistances.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMeleeItemCategory } from "../shared/enchantments/model.js";
+import {
+  weaponTypeSkillFields,
+  weaponWeightPriceFields,
+  weaponMaterialEffectField,
+  weaponDescriptionField,
+} from "../shared/weaponDetailFields.js";
 
 function resolvedMelee(sheet, instanceId) {
   const inv = sheet?.inventory?.melee;
@@ -54,8 +58,7 @@ function meleeDetailFields(resolved, weaponData) {
   const length = Number(weaponData?.weapon_length) || 0;
   const reach = length < 1 ? 1 : Math.floor((length + 1) / 2) + 1;
   return [
-    { label: t("common.type"), value: src.weapon_type ?? "—" },
-    { label: t("common.skill"), value: src.weapon_skill ?? "—" },
+    ...weaponTypeSkillFields(src),
     {
       label: t("melee.balMod"),
       value:
@@ -66,25 +69,7 @@ function meleeDetailFields(resolved, weaponData) {
       value:
         resolved?.weapon_final_gdp_modifier ?? src.weapon_gdp_modifier ?? "—",
     },
-    {
-      label: t("common.weight"),
-      value: resolved
-        ? withMeleeEnchantmentBadge(
-            resolved.final_weight,
-            decimalToPercent(resolved.enchantment_weight_modifier),
-            "%",
-          )
-        : (src.weapon_weight ?? "—"),
-    },
-    {
-      label: t("common.price"),
-      value: resolved
-        ? withMeleeEnchantmentBadge(
-            resolved.total_value,
-            resolved.enchantments_total_price,
-          )
-        : (src.weapon_price ?? "—"),
-    },
+    ...weaponWeightPriceFields(resolved, src, withMeleeEnchantmentBadge),
     { label: t("melee.reach"), value: resolved?.weapon_reach ?? reach },
     { label: t("melee.minST"), value: src.weapon_min_strength ?? "—" },
     { label: t("melee.damageType"), value: src.weapon_damage_type ?? "—" },
@@ -94,20 +79,8 @@ function meleeDetailFields(resolved, weaponData) {
     ...(resolved?.weapon_bal_damage != null
       ? [{ label: t("melee.balDmg"), value: resolved.weapon_bal_damage }]
       : []),
-    ...(resolved?.material_atk_effect
-      ? [
-          {
-            label: t("common.materialEffect"),
-            value: formatRichText(resolved.material_atk_effect),
-            rich: true,
-          },
-        ]
-      : []),
-    {
-      label: t("common.description"),
-      value: formatRichText(weaponData?.weapon_description),
-      rich: true,
-    },
+    ...weaponMaterialEffectField(resolved),
+    weaponDescriptionField(weaponData),
   ];
 }
 
