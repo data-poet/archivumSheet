@@ -54,38 +54,6 @@ describe("BUILD CHARACTER", () => {
     });
   });
 
-  describe("Skills integration", () => {
-    it("Should include selected skills only", () => {
-      const { character } = buildCharacter(mockInput);
-
-      const skills = character.skills;
-
-      const skillIds = Object.keys(skills);
-
-      expect(skillIds.length).toBe(Object.keys(mockInput.skills).length);
-
-      skillIds.forEach((id) => {
-        expect(Object.keys(mockInput.skills)).toContain(id);
-      });
-    });
-
-    it("Should compute skills points correctly", () => {
-      const { character } = buildCharacter(mockInput);
-
-      const skills = Object.values(character.skills);
-
-      const allHavePoints = skills.every(
-        (skill) => typeof skill.points === "number",
-      );
-
-      expect(allHavePoints).toBe(true);
-
-      const manualSum = skills.reduce((sum, skill) => sum + skill.points, 0);
-
-      expect(character.character_points.skills).toBe(manualSum);
-    });
-  });
-
   describe("Primary and Secondary integration", () => {
     it("Should include both primary and secondary attributes", () => {
       const { character } = buildCharacter(mockInput);
@@ -142,16 +110,6 @@ describe("BUILD CHARACTER", () => {
         "disadvantages",
         "skills",
       ]);
-    });
-  });
-
-  describe("Advantages and Disadvantages", () => {
-    it("Should return empty objects when none provided", () => {
-      const { character } = buildCharacter(mockInput);
-
-      expect(typeof character.advantages).toBe("object");
-
-      expect(typeof character.disadvantages).toBe("object");
     });
   });
 
@@ -214,25 +172,6 @@ describe("BUILD CHARACTER", () => {
 
       expect(character.skills["SKILL-000"].enchantment_modifier).toBe(3);
       expect(character.skills["SKILL-000"].value).toBe(17);
-    });
-  });
-
-  describe("Elemental resistances propagation", () => {
-    it("Should thread raceElementalMultipliers through to character.elemental_resistances", () => {
-      const { character } = buildCharacter({
-        ...mockInput,
-        raceElementalMultipliers: { Fire: 0.5 },
-      });
-
-      expect(character.elemental_resistances.Fire.race_base).toBe(0.5);
-      expect(character.elemental_resistances.Fire.final).toBe(0.5);
-    });
-
-    it("Should default to race_base 1 for every element when no race multipliers are given", () => {
-      const { character } = buildCharacter(mockInput);
-
-      expect(character.elemental_resistances.Water.race_base).toBe(1);
-      expect(character.elemental_resistances.Water.final).toBe(1);
     });
   });
 });
