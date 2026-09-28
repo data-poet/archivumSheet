@@ -1,3 +1,6 @@
+// ESM on purpose: shared by tests/dev/, which jest.config.js babel-transforms.
+// tests/helpers/ is the CommonJS counterpart, for tests/engine/'s plain-CJS suite.
+
 // Deliberately not a copy of index.html — only the ids/classes tests actually query, so a missing element fails loudly instead of hiding behind real markup.
 const DEFAULT_SKELETON = `
   <div id="smoke-test-target"></div>
