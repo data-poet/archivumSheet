@@ -1,7 +1,4 @@
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("../shared/enchantmentMath.js");
 
 function resolveCustomInventoryItem(instance) {
   const total_weight = round2(instance.weight * instance.quantity);
