@@ -372,7 +372,7 @@ describe("handleMeleeChange — equipped-melee-name / tier", () => {
 });
 
 describe("handleMeleeChange — equipped-melee-material", () => {
-  test("sets material, resets HP modifier, re-renders melee only (not ranged)", () => {
+  test("sets material, resets HP modifier, re-renders both melee and ranged", () => {
     const instance = { material_id: "MAT-OLD", hit_points_modifier: -3 };
     model.findMeleeByInstanceId.mockReturnValue(instance);
     const target = selectWithValue(
@@ -387,8 +387,58 @@ describe("handleMeleeChange — equipped-melee-material", () => {
     expect(instance.material_id).toBe("MAT-001");
     expect(instance.hit_points_modifier).toBe(0);
     expect(meleeRender.renderEquippedMelee).toHaveBeenCalledTimes(1);
-    expect(rangedRender.renderEquippedRanged).not.toHaveBeenCalled();
+    expect(rangedRender.renderEquippedRanged).toHaveBeenCalledTimes(1);
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
+  });
+
+  test("mirrors the material change onto a linked ranged instance, resetting its HP modifier too", () => {
+    const instance = {
+      _instanceId: "MELEE-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    model.findMeleeByInstanceId.mockReturnValue(instance);
+    const linkedRanged = {
+      _linkedInstanceId: "MELEE-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    state.selected.ranged_weapons = [linkedRanged];
+    const target = selectWithValue(
+      "equipped-melee-material",
+      { instanceId: "MELEE-1" },
+      "MAT-001",
+    );
+
+    handleMeleeChange({ target });
+
+    expect(linkedRanged.material_id).toBe("MAT-001");
+    expect(linkedRanged.hit_points_modifier).toBe(0);
+  });
+
+  test("does not touch ranged_weapons when there's no link at all", () => {
+    const instance = {
+      _instanceId: "MELEE-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    model.findMeleeByInstanceId.mockReturnValue(instance);
+    const unrelatedRanged = {
+      _instanceId: "RANGED-9",
+      material_id: "MAT-OLD",
+      hit_points_modifier: 5,
+    };
+    state.selected.ranged_weapons = [unrelatedRanged];
+    const target = selectWithValue(
+      "equipped-melee-material",
+      { instanceId: "MELEE-1" },
+      "MAT-001",
+    );
+
+    handleMeleeChange({ target });
+
+    expect(unrelatedRanged.material_id).toBe("MAT-OLD"); // untouched
+    expect(unrelatedRanged.hit_points_modifier).toBe(5); // untouched
   });
 });
 

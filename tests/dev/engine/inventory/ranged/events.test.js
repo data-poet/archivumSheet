@@ -187,9 +187,12 @@ describe("handleRangedInput", () => {
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
 
-  test("[documented asymmetry] does NOT mirror the HP modifier to a linked melee instance", () => {
-    // Per ranged/events.js's own comment: only equip/storage moves mirror bidirectionally; HP-modifier inputs are melee -> ranged only, never the reverse — pre-existing, intentional behavior.
-    const rangedInstance = { weapon_id: "RANGED-DB-1", hit_points_modifier: 0 };
+  test("mirrors the HP modifier to a linked melee instance found via m._linkedInstanceId (melee points at us)", () => {
+    const rangedInstance = {
+      _instanceId: "RANGED-1",
+      weapon_id: "RANGED-DB-1",
+      hit_points_modifier: 0,
+    };
     model.findRangedByInstanceId.mockReturnValue(rangedInstance);
     const linkedMelee = {
       _linkedInstanceId: "RANGED-1",
@@ -204,10 +207,48 @@ describe("handleRangedInput", () => {
     handleRangedInput({ target });
 
     expect(rangedInstance.hit_points_modifier).toBe(-3);
-    expect(linkedMelee.hit_points_modifier).toBe(0); // untouched
+    expect(linkedMelee.hit_points_modifier).toBe(-3);
   });
 
-  test("debounces the eventual re-render, of ranged lists ONLY (not melee)", () => {
+  test("mirrors the HP modifier via rangedInstance._linkedInstanceId (we point at melee)", () => {
+    const rangedInstance = {
+      weapon_id: "RANGED-DB-1",
+      hit_points_modifier: 0,
+      _linkedInstanceId: "MELEE-1",
+    };
+    model.findRangedByInstanceId.mockReturnValue(rangedInstance);
+    const linkedMelee = { _instanceId: "MELEE-1", hit_points_modifier: 0 };
+    state.selected.melee_weapons = [linkedMelee];
+    const target = elWithClass("input", "equipped-ranged-hp", {
+      instanceId: "RANGED-1",
+    });
+    target.value = "-2";
+
+    handleRangedInput({ target });
+
+    expect(linkedMelee.hit_points_modifier).toBe(-2);
+  });
+
+  test("does not touch melee_weapons when there's no link at all", () => {
+    const rangedInstance = {
+      _instanceId: "RANGED-1",
+      weapon_id: "RANGED-DB-1",
+      hit_points_modifier: 0,
+    };
+    model.findRangedByInstanceId.mockReturnValue(rangedInstance);
+    const unrelatedMelee = { _instanceId: "MELEE-9", hit_points_modifier: 5 };
+    state.selected.melee_weapons = [unrelatedMelee];
+    const target = elWithClass("input", "equipped-ranged-hp", {
+      instanceId: "RANGED-1",
+    });
+    target.value = "-2";
+
+    handleRangedInput({ target });
+
+    expect(unrelatedMelee.hit_points_modifier).toBe(5); // untouched
+  });
+
+  test("debounces the eventual re-render (of BOTH ranged and melee lists) by 300ms", () => {
     const instance = { weapon_id: "RANGED-DB-1", hit_points_modifier: 0 };
     model.findRangedByInstanceId.mockReturnValue(instance);
     const target = elWithClass("input", "stored-ranged-hp", {
@@ -216,13 +257,15 @@ describe("handleRangedInput", () => {
     target.value = "-1";
 
     handleRangedInput({ target });
+    expect(rangedRender.renderEquippedRanged).not.toHaveBeenCalled();
+
     jest.advanceTimersByTime(300);
     jest.advanceTimersToNextFrame();
 
     expect(rangedRender.renderEquippedRanged).toHaveBeenCalledTimes(1);
     expect(rangedRender.renderStoredRanged).toHaveBeenCalledTimes(1);
-    expect(meleeRender.renderEquippedMelee).not.toHaveBeenCalled();
-    expect(meleeRender.renderStoredMelee).not.toHaveBeenCalled();
+    expect(meleeRender.renderEquippedMelee).toHaveBeenCalledTimes(1);
+    expect(meleeRender.renderStoredMelee).toHaveBeenCalledTimes(1);
   });
 
   test("an unrelated input target is not handled", () => {
@@ -307,7 +350,7 @@ describe("handleRangedChange — equipped-ranged-name / tier", () => {
 });
 
 describe("handleRangedChange — equipped-ranged-material", () => {
-  test("sets material, resets HP modifier, re-renders ranged only (not melee)", () => {
+  test("sets material, resets HP modifier, re-renders both ranged and melee", () => {
     const instance = { material_id: "MAT-OLD", hit_points_modifier: -3 };
     model.findRangedByInstanceId.mockReturnValue(instance);
     const target = selectWithValue(
@@ -322,8 +365,58 @@ describe("handleRangedChange — equipped-ranged-material", () => {
     expect(instance.material_id).toBe("MAT-001");
     expect(instance.hit_points_modifier).toBe(0);
     expect(rangedRender.renderEquippedRanged).toHaveBeenCalledTimes(1);
-    expect(meleeRender.renderEquippedMelee).not.toHaveBeenCalled();
+    expect(meleeRender.renderEquippedMelee).toHaveBeenCalledTimes(1);
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
+  });
+
+  test("mirrors the material change onto a linked melee instance, resetting its HP modifier too", () => {
+    const instance = {
+      _instanceId: "RANGED-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    model.findRangedByInstanceId.mockReturnValue(instance);
+    const linkedMelee = {
+      _linkedInstanceId: "RANGED-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    state.selected.melee_weapons = [linkedMelee];
+    const target = selectWithValue(
+      "equipped-ranged-material",
+      { instanceId: "RANGED-1" },
+      "MAT-001",
+    );
+
+    handleRangedChange({ target });
+
+    expect(linkedMelee.material_id).toBe("MAT-001");
+    expect(linkedMelee.hit_points_modifier).toBe(0);
+  });
+
+  test("does not touch melee_weapons when there's no link at all", () => {
+    const instance = {
+      _instanceId: "RANGED-1",
+      material_id: "MAT-OLD",
+      hit_points_modifier: -3,
+    };
+    model.findRangedByInstanceId.mockReturnValue(instance);
+    const unrelatedMelee = {
+      _instanceId: "MELEE-9",
+      material_id: "MAT-OLD",
+      hit_points_modifier: 5,
+    };
+    state.selected.melee_weapons = [unrelatedMelee];
+    const target = selectWithValue(
+      "equipped-ranged-material",
+      { instanceId: "RANGED-1" },
+      "MAT-001",
+    );
+
+    handleRangedChange({ target });
+
+    expect(unrelatedMelee.material_id).toBe("MAT-OLD"); // untouched
+    expect(unrelatedMelee.hit_points_modifier).toBe(5); // untouched
   });
 });
 
