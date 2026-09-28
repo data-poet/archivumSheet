@@ -2,6 +2,7 @@
 // that haven't migrated to .item-detail* yet still work.
 
 import { t } from "../localization/pt-BR/index.js";
+import { el } from "./dom.js";
 
 // ± buttons are wired globally in events/index.js, which reads data-step/data-min/data-max
 // off the input — pass bounds via dataAttrs, not native min/max/step (input is type="text").
@@ -210,6 +211,27 @@ export function detailRow(colspan, fields) {
 
 export function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
+}
+
+// Renders a label/value tbody plus its total cell, returning the total.
+// Pass `total` when the caller derives it differently than a plain sum (e.g. rounding rules).
+export function renderSumTable(rows, { tbodyId, totalCellId, total: given }) {
+  const total = given ?? rows.reduce((sum, { value }) => sum + value, 0);
+
+  const tbody = el(tbodyId);
+  if (tbody) {
+    tbody.innerHTML = rows
+      .map(
+        ({ label, value }) =>
+          `<tr><td>${label}</td><td class="col-num">${value}</td></tr>`,
+      )
+      .join("");
+  }
+
+  const totalCell = el(totalCellId);
+  if (totalCell) totalCell.innerHTML = `<strong>${total}</strong>`;
+
+  return total;
 }
 
 // The name cell doubles as the mobile card's collapse toggle (see tables.css's
