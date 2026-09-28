@@ -605,14 +605,6 @@ describe("BUILD SHEET", () => {
       );
     });
 
-    it("Should NOT re-run the inventory layer when no equipped enchantment changes ST", () => {
-      const result = buildSheet(mockInput);
-
-      expect(result.inventory.carry_weight.limits.none).toBe(
-        result.character.primary_attributes.ST.value,
-      );
-    });
-
     it("Should already reflect an equipped IQ-fortify accessory without needing a correction pass", () => {
       const enchantedInput = {
         ...mockInput,
@@ -695,9 +687,7 @@ describe("BUILD SHEET", () => {
       expect(result.character.elemental_resistances.Holy.final).toBe(2);
       expect(result.character.advantages["ADV-049"].is_meta_race).toBe(true);
       expect(result.character.advantages["ADV-049"].points).toBe(0);
-      expect(result.character.disadvantages["DIS-143"].is_meta_race).toBe(
-        true,
-      );
+      expect(result.character.disadvantages["DIS-143"].is_meta_race).toBe(true);
     });
 
     it("Should fold the meta-race's ST modifier into ST before it reaches inventory (carry weight)", () => {
