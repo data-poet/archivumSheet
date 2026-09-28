@@ -8,11 +8,11 @@ import {
 import { state } from "../../../state.js";
 import { renderCustomInventory } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
+import { readCustomItemEditorValues } from "../../../shared/renderUtils.js";
 import {
-  openCustomFieldsEditor,
-  closeCustomFieldsEditor,
-  readCustomItemEditorValues,
-} from "../../../shared/renderUtils.js";
+  createCustomFieldsClickHandler,
+  withPreservedOpenState,
+} from "../shared/customFieldsDispatch.js";
 
 // Re-renders only the custom-inventory list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderCustomInventoryLists() {
@@ -24,6 +24,23 @@ function _renderCustomInventoryLists() {
   });
 }
 
+function _findCustomItemById(customItemId) {
+  return (
+    state.selected.customInventory.find(
+      (e) => e.custom_item_id === customItemId,
+    ) ?? null
+  );
+}
+
+const _handleCustomInventoryCustomFieldsClick = createCustomFieldsClickHandler({
+  classPrefix: "custom-item",
+  idAttr: "customItemId",
+  findByInstanceId: _findCustomItemById,
+  readValues: readCustomItemEditorValues,
+  saveCustomFields: withPreservedOpenState(saveCustomItemFields),
+  render: _renderCustomInventoryLists,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleCustomInventoryClick(e) {
@@ -32,35 +49,8 @@ export function handleCustomInventoryClick(e) {
     return true;
   }
 
-  if (e.target.classList.contains("custom-item-edit-btn")) {
-    openCustomFieldsEditor(e.target.dataset.customItemId);
-    _renderCustomInventoryLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-item-cancel-btn")) {
-    closeCustomFieldsEditor(e.target.dataset.customItemId);
-    _renderCustomInventoryLists();
-    return true;
-  }
-
-  if (e.target.classList.contains("custom-item-save-btn")) {
-    const customItemId = e.target.dataset.customItemId;
-    const values = readCustomItemEditorValues(customItemId);
-    if (!values) {
-      closeCustomFieldsEditor(customItemId);
-      _renderCustomInventoryLists();
-      return true;
-    }
-
-    const ok = saveCustomItemFields(customItemId, values);
-    if (ok) {
-      closeCustomFieldsEditor(customItemId);
-    }
-    // If invalid, deliberately leave the editor open and skip re-rendering — a re-render would pull
-    // fresh markup from committed state and revert what the user just typed.
-    return true;
-  }
+  // Delegated to the shared factory — see armorEvents.js for the full rationale.
+  if (_handleCustomInventoryCustomFieldsClick(e)) return true;
 
   return false;
 }
@@ -84,7 +74,7 @@ export function handleCustomInventoryInput(e) {
 export function handleCustomInventoryChange(e) {
   if (e.target.classList.contains("custom-item-location-select")) {
     const customItemId = e.target.dataset.customItemId;
-    const toLoc        = e.target.value;
+    const toLoc = e.target.value;
     moveCustomItem(customItemId, toLoc);
     return true;
   }
@@ -94,29 +84,38 @@ export function handleCustomInventoryChange(e) {
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddCustomItem() {
-  const nameEl        = document.getElementById("customItemName");
-  const weightEl      = document.getElementById("customItemWeight");
-  const priceEl       = document.getElementById("customItemPrice");
-  const qtyEl         = document.getElementById("customItemQty");
+  const nameEl = document.getElementById("customItemName");
+  const weightEl = document.getElementById("customItemWeight");
+  const priceEl = document.getElementById("customItemPrice");
+  const qtyEl = document.getElementById("customItemQty");
   const descriptionEl = document.getElementById("customItemDescription");
-  const storageEl     = document.getElementById("customItemStorage");
+  const storageEl = document.getElementById("customItemStorage");
 
   if (!nameEl || !weightEl || !priceEl || !qtyEl || !storageEl) return;
 
-  const name        = nameEl.value.trim();
-  const weight      = parseFloat(weightEl.value);
-  const price       = parseFloat(priceEl.value);
-  const quantity    = parseInt(qtyEl.value, 10);
+  const name = nameEl.value.trim();
+  const weight = parseFloat(weightEl.value);
+  const price = parseFloat(priceEl.value);
+  const quantity = parseInt(qtyEl.value, 10);
   const description = descriptionEl?.value.trim() || null;
-  const storedAt    = storageEl.value;
+  const storedAt = storageEl.value;
 
-  if (!name || isNaN(weight) || weight < 0 || isNaN(price) || price < 0 || isNaN(quantity) || quantity <= 0) return;
+  if (
+    !name ||
+    isNaN(weight) ||
+    weight < 0 ||
+    isNaN(price) ||
+    price < 0 ||
+    isNaN(quantity) ||
+    quantity <= 0
+  )
+    return;
 
   addCustomItem({ name, weight, price, quantity, description, storedAt });
 
-  nameEl.value   = "";
+  nameEl.value = "";
   weightEl.value = "0";
-  priceEl.value  = "0";
-  qtyEl.value    = "1";
+  priceEl.value = "0";
+  qtyEl.value = "1";
   if (descriptionEl) descriptionEl.value = "";
 }

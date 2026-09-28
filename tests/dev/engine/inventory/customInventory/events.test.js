@@ -139,7 +139,7 @@ describe("handleCustomInventoryClick", () => {
       );
     });
 
-    test("with invalid values that fail to save, does NOT close the editor or re-render — preserves the user's in-progress input", () => {
+    test("with invalid values that fail to save, reopens the editor and does not re-render — preserves the user's in-progress input", () => {
       const values = { name: "", weight: -1, price: 5 };
       renderUtils.readCustomItemEditorValues.mockReturnValue(values);
       model.saveCustomItemFields.mockReturnValue(false);
@@ -152,10 +152,18 @@ describe("handleCustomInventoryClick", () => {
         "CUSTOM-1",
         values,
       );
-      expect(renderUtils.closeCustomFieldsEditor).not.toHaveBeenCalled();
-      // No re-render was scheduled either — snapshotAll wasn't even called
-      // for this branch (no _renderCustomInventoryLists() call at all).
-      expect(openStateModule.snapshotAll).not.toHaveBeenCalled();
+      // Closed first (so a would-be internal render reflects read-only state), then
+      // reopened since the save failed — net effect: the editor stays open with the
+      // user's typed values.
+      expect(renderUtils.closeCustomFieldsEditor).toHaveBeenCalledWith(
+        "CUSTOM-1",
+      );
+      expect(renderUtils.openCustomFieldsEditor).toHaveBeenCalledWith(
+        "CUSTOM-1",
+      );
+      // No re-render was scheduled either — the factory's render() only fires on the
+      // read-failure and edit/cancel branches, never after a failed save.
+      expect(render.renderCustomInventory).not.toHaveBeenCalled();
     });
   });
 

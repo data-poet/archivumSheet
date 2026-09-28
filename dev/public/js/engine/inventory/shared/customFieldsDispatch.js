@@ -13,11 +13,14 @@ import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 // The saveXCustomFields model functions render internally via the global
 // renderListsPreserving (unwrapped), which would collapse open <details>
 // elsewhere on the page; this snapshots/restores synchronously around them.
+// Returns whatever saveCustomFields returns, so a validating caller (customInventory)
+// can still signal failure through the wrapper.
 export function withPreservedOpenState(saveCustomFields) {
   return function saveCustomFieldsPreserving(instanceId, values) {
     const snapshots = snapshotAll();
-    saveCustomFields(instanceId, values);
+    const result = saveCustomFields(instanceId, values);
     restoreAll(snapshots);
+    return result;
   };
 }
 
@@ -26,15 +29,26 @@ export function withPreservedOpenState(saveCustomFields) {
 // runWithOpenState is only needed when open-state preservation must happen outside render/
 // saveCustomFields themselves (e.g. accessories/magicGear's per-container withOpenState, which
 // needs the triggering event to know which container was clicked).
+// classPrefix/idAttr let customInventory reuse this for its own "custom-item-*"/customItemId
+// markup, which differs from every other equipment type's "custom-fields-*"/instanceId shape.
+// readValues likewise differs there: custom items have no "effect" field, so they read via
+// readCustomItemEditorValues instead of readCustomFieldsEditorValues.
 export function createCustomFieldsClickHandler({
+  classPrefix = "custom-fields",
+  idAttr = "instanceId",
   findByInstanceId,
+  readValues = readCustomFieldsEditorValues,
   saveCustomFields,
   render,
   runWithOpenState = (e, fn) => fn(),
 }) {
+  const EDIT = `${classPrefix}-edit-btn`;
+  const CANCEL = `${classPrefix}-cancel-btn`;
+  const SAVE = `${classPrefix}-save-btn`;
+
   return function handleCustomFieldsClick(e) {
-    if (e.target.classList.contains("custom-fields-edit-btn")) {
-      const instanceId = e.target.dataset.instanceId;
+    if (e.target.classList.contains(EDIT)) {
+      const instanceId = e.target.dataset[idAttr];
       if (!findByInstanceId(instanceId)) return false;
 
       runWithOpenState(e, () => {
@@ -44,8 +58,8 @@ export function createCustomFieldsClickHandler({
       return true;
     }
 
-    if (e.target.classList.contains("custom-fields-cancel-btn")) {
-      const instanceId = e.target.dataset.instanceId;
+    if (e.target.classList.contains(CANCEL)) {
+      const instanceId = e.target.dataset[idAttr];
       if (!findByInstanceId(instanceId)) return false;
 
       runWithOpenState(e, () => {
@@ -55,20 +69,29 @@ export function createCustomFieldsClickHandler({
       return true;
     }
 
-    if (e.target.classList.contains("custom-fields-save-btn")) {
-      const instanceId = e.target.dataset.instanceId;
+    if (e.target.classList.contains(SAVE)) {
+      const instanceId = e.target.dataset[idAttr];
       if (!findByInstanceId(instanceId)) return false;
 
-      const values = readCustomFieldsEditorValues(instanceId);
+      const values = readValues(instanceId);
 
       runWithOpenState(e, () => {
-        // Close first so the single render below (whichever branch fires)
-        // reflects the read-only view with the saved values, not the form.
-        closeCustomFieldsEditor(instanceId);
-        if (values) {
-          saveCustomFields(instanceId, values);
-        } else {
+        if (!values) {
+          // Close first so the render below reflects the read-only view, not the form.
+          closeCustomFieldsEditor(instanceId);
           render();
+          return;
+        }
+
+        // Close first so a save that renders internally (every current caller does, via
+        // renderListsPreserving) reflects the read-only view with the saved values, not the form.
+        closeCustomFieldsEditor(instanceId);
+        const ok = saveCustomFields(instanceId, values);
+        if (ok === false) {
+          // Invalid input (customInventory only): reopen so the user's typed values stay
+          // visible, and skip re-rendering — a re-render would pull fresh markup from
+          // committed state and revert what the user just typed.
+          openCustomFieldsEditor(instanceId);
         }
       });
       return true;
