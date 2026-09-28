@@ -1,6 +1,5 @@
 const {
   buildCustomInventorySlots,
-  VALID_STORED_AT,
 } = require("engine/inventory/js/customInventory/customInventory");
 
 describe("CUSTOM INVENTORY", () => {
@@ -13,12 +12,6 @@ describe("CUSTOM INVENTORY", () => {
     description: "Encontrada nas ruínas.",
     storedAt: "backpack",
     ...overrides,
-  });
-
-  describe("Constants", () => {
-    test("Should export VALID_STORED_AT", () => {
-      expect(VALID_STORED_AT).toEqual(["stash", "camp", "backpack"]);
-    });
   });
 
   describe("buildCustomInventorySlots — empty input", () => {
@@ -55,7 +48,9 @@ describe("CUSTOM INVENTORY", () => {
     });
 
     test("Should place item in backpack bucket", () => {
-      const result = buildCustomInventorySlots([item({ storedAt: "backpack" })]);
+      const result = buildCustomInventorySlots([
+        item({ storedAt: "backpack" }),
+      ]);
       expect(result.backpack.length).toBe(1);
       expect(result.stash.length).toBe(0);
       expect(result.camp.length).toBe(0);
@@ -105,8 +100,18 @@ describe("CUSTOM INVENTORY", () => {
 
     test("Should sum carried weight across multiple backpack items", () => {
       const result = buildCustomInventorySlots([
-        item({ custom_item_id: "a", weight: 1, quantity: 2, storedAt: "backpack" }),
-        item({ custom_item_id: "b", weight: 0.5, quantity: 4, storedAt: "backpack" }),
+        item({
+          custom_item_id: "a",
+          weight: 1,
+          quantity: 2,
+          storedAt: "backpack",
+        }),
+        item({
+          custom_item_id: "b",
+          weight: 0.5,
+          quantity: 4,
+          storedAt: "backpack",
+        }),
       ]);
       expect(result.carried_custom_inventory_weight).toBe(4);
     });
@@ -120,9 +125,24 @@ describe("CUSTOM INVENTORY", () => {
 
     test("Should only count backpack when items span all locations", () => {
       const result = buildCustomInventorySlots([
-        item({ custom_item_id: "a", weight: 10, quantity: 1, storedAt: "stash" }),
-        item({ custom_item_id: "b", weight: 10, quantity: 1, storedAt: "camp" }),
-        item({ custom_item_id: "c", weight: 2, quantity: 3, storedAt: "backpack" }),
+        item({
+          custom_item_id: "a",
+          weight: 10,
+          quantity: 1,
+          storedAt: "stash",
+        }),
+        item({
+          custom_item_id: "b",
+          weight: 10,
+          quantity: 1,
+          storedAt: "camp",
+        }),
+        item({
+          custom_item_id: "c",
+          weight: 2,
+          quantity: 3,
+          storedAt: "backpack",
+        }),
       ]);
       expect(result.carried_custom_inventory_weight).toBe(6);
     });
@@ -157,21 +177,21 @@ describe("CUSTOM INVENTORY", () => {
 
   describe("buildCustomInventorySlots — validation errors", () => {
     test("Should throw for invalid instance shape", () => {
-      expect(() =>
-        buildCustomInventorySlots([item({ quantity: 0 })]),
-      ).toThrow("[buildCustomInventorySlots] Invalid customInventory");
+      expect(() => buildCustomInventorySlots([item({ quantity: 0 })])).toThrow(
+        "[buildCustomInventorySlots] Invalid customInventory",
+      );
     });
 
     test("Should throw for missing name", () => {
-      expect(() =>
-        buildCustomInventorySlots([item({ name: "" })]),
-      ).toThrow("[buildCustomInventorySlots] Invalid customInventory");
+      expect(() => buildCustomInventorySlots([item({ name: "" })])).toThrow(
+        "[buildCustomInventorySlots] Invalid customInventory",
+      );
     });
 
     test("Should throw for negative weight", () => {
-      expect(() =>
-        buildCustomInventorySlots([item({ weight: -1 })]),
-      ).toThrow("[buildCustomInventorySlots] Invalid customInventory");
+      expect(() => buildCustomInventorySlots([item({ weight: -1 })])).toThrow(
+        "[buildCustomInventorySlots] Invalid customInventory",
+      );
     });
 
     test("Should throw for invalid storedAt", () => {

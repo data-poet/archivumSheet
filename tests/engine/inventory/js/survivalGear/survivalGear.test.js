@@ -1,6 +1,5 @@
 const {
   buildSurvivalGearSlots,
-  VALID_STORED_AT,
   _getSurvivalGearDB,
 } = require("engine/inventory/js/survivalGear/survivalGear.js");
 
@@ -8,12 +7,6 @@ describe("SURVIVAL GEAR", () => {
   const db = _getSurvivalGearDB();
 
   const gearId = Object.keys(db)[0];
-
-  describe("Constants", () => {
-    test("Should export VALID_STORED_AT", () => {
-      expect(VALID_STORED_AT).toEqual(["stash", "camp", "backpack"]);
-    });
-  });
 
   describe("getSurvivalGearDB", () => {
     test("Should load adventure gear database", () => {
