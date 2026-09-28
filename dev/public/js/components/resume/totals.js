@@ -6,6 +6,7 @@ import {
   getCarryLimitLabel,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { renderSumTable } from "../../shared/renderUtils.js";
 
 export function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
@@ -64,26 +65,32 @@ export function renderResumeWeight(sheet) {
     ? `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`
     : "—";
 
-  const weightTbody = el("resume_weight_tbody");
-  if (weightTbody) {
-    weightTbody.innerHTML = `
-      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorWeight}</td></tr>
-      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldWeight}</td></tr>
-      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeWeight}</td></tr>
-      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedWeight}</td></tr>
-      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsWeight}</td></tr>
-      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoWeight}</td></tr>
-      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyWeight}</td></tr>
-      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearWeight}</td></tr>
-      <tr><td>${t("magicGear.magicGearWeight")}</td><td class="col-num">${magicGearWeight}</td></tr>
-      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customWeight}</td></tr>
-      <tr><td>${t("coinPurse.coinPurseWeight")}</td><td class="col-num">${coinPurseWeight}</td></tr>
-    `;
-  }
-
-  const totalWeightCell = el("resume_total_weight_cell");
-  if (totalWeightCell)
-    totalWeightCell.innerHTML = `<strong>${totalWeight}</strong>`;
+  renderSumTable(
+    [
+      { label: t("resume.armorWeight"), value: armorWeight },
+      { label: t("resume.shieldWeight"), value: shieldWeight },
+      { label: t("resume.meleeWeight"), value: meleeWeight },
+      { label: t("resume.rangedWeight"), value: rangedWeight },
+      { label: t("sections.firearms"), value: firearmsWeight },
+      { label: t("ammo.ammoWeight"), value: ammoWeight },
+      { label: t("alchemy.alchemyWeight"), value: alchemyWeight },
+      {
+        label: t("survivalGear.survivalGearWeight"),
+        value: survivalGearWeight,
+      },
+      { label: t("magicGear.magicGearWeight"), value: magicGearWeight },
+      {
+        label: t("customInventory.customInventoryWeight"),
+        value: customWeight,
+      },
+      { label: t("coinPurse.coinPurseWeight"), value: coinPurseWeight },
+    ],
+    {
+      tbodyId: "resume_weight_tbody",
+      totalCellId: "resume_total_weight_cell",
+      total: totalWeight,
+    },
+  );
 
   const set = (id, val) => {
     const e = el(id);
@@ -149,39 +156,22 @@ export function renderResumeValue(sheet) {
   const customValue =
     sheet?.inventory?.customInventory?.carried_custom_inventory_value || 0;
 
-  const totalValue =
-    armorValue +
-    shieldValue +
-    meleeValue +
-    rangedValue +
-    firearmsValue +
-    ammoValue +
-    alchemyValue +
-    survivalGearValue +
-    accessoryValue +
-    magicGearValue +
-    customValue;
-
-  const valueTbody = el("resume_value_tbody");
-  if (valueTbody) {
-    valueTbody.innerHTML = `
-      <tr><td>${t("resume.armorWeight")}</td><td class="col-num">${armorValue}</td></tr>
-      <tr><td>${t("resume.shieldWeight")}</td><td class="col-num">${shieldValue}</td></tr>
-      <tr><td>${t("resume.meleeWeight")}</td><td class="col-num">${meleeValue}</td></tr>
-      <tr><td>${t("resume.rangedWeight")}</td><td class="col-num">${rangedValue}</td></tr>
-      <tr><td>${t("sections.firearms")}</td><td class="col-num">${firearmsValue}</td></tr>
-      <tr><td>${t("ammo.ammoWeight")}</td><td class="col-num">${ammoValue}</td></tr>
-      <tr><td>${t("alchemy.alchemyWeight")}</td><td class="col-num">${alchemyValue}</td></tr>
-      <tr><td>${t("survivalGear.survivalGearWeight")}</td><td class="col-num">${survivalGearValue}</td></tr>
-      <tr><td>${t("sections.accessories")}</td><td class="col-num">${accessoryValue}</td></tr>
-      <tr><td>${t("magicGear.title")}</td><td class="col-num">${magicGearValue}</td></tr>
-      <tr><td>${t("customInventory.customInventoryWeight")}</td><td class="col-num">${customValue}</td></tr>
-    `;
-  }
-
-  const totalValueCell = el("resume_total_value_cell");
-  if (totalValueCell)
-    totalValueCell.innerHTML = `<strong>${totalValue}</strong>`;
+  const totalValue = renderSumTable(
+    [
+      { label: t("resume.armorWeight"), value: armorValue },
+      { label: t("resume.shieldWeight"), value: shieldValue },
+      { label: t("resume.meleeWeight"), value: meleeValue },
+      { label: t("resume.rangedWeight"), value: rangedValue },
+      { label: t("sections.firearms"), value: firearmsValue },
+      { label: t("ammo.ammoWeight"), value: ammoValue },
+      { label: t("alchemy.alchemyWeight"), value: alchemyValue },
+      { label: t("survivalGear.survivalGearWeight"), value: survivalGearValue },
+      { label: t("sections.accessories"), value: accessoryValue },
+      { label: t("magicGear.title"), value: magicGearValue },
+      { label: t("customInventory.customInventoryWeight"), value: customValue },
+    ],
+    { tbodyId: "resume_value_tbody", totalCellId: "resume_total_value_cell" },
+  );
 
   const backpackCoins = sheet?.inventory?.coinPurse?.backpack ?? [];
   const totalCoins = backpackCoins.reduce(
@@ -209,27 +199,18 @@ export function renderResumePoints(sheet) {
   const skillsPoints = sheet?.character?.character_points?.skills ?? 0;
   const spellsPoints = sheet?.character?.character_points?.spells ?? 0;
 
-  const totalPoints =
-    primaryAttributesPoints +
-    secondaryAttributesPoints +
-    advantagesPoints +
-    disadvantagesPoints +
-    skillsPoints +
-    spellsPoints;
-
-  const pointsTbody = el("resume_points_tbody");
-  if (pointsTbody) {
-    pointsTbody.innerHTML = `
-      <tr><td>${t("resume.primaryAttributes")}</td><td class="col-num">${primaryAttributesPoints}</td></tr>
-      <tr><td>${t("resume.secondaryAttributes")}</td><td class="col-num">${secondaryAttributesPoints}</td></tr>
-      <tr><td>${t("resume.advantages")}</td><td class="col-num">${advantagesPoints}</td></tr>
-      <tr><td>${t("resume.disadvantages")}</td><td class="col-num">${disadvantagesPoints}</td></tr>
-      <tr><td>${t("resume.skills")}</td><td class="col-num">${skillsPoints}</td></tr>
-      <tr><td>${t("resume.spells")}</td><td class="col-num">${spellsPoints}</td></tr>
-    `;
-  }
-
-  const totalPointsCell = el("resume_total_points_cell");
-  if (totalPointsCell)
-    totalPointsCell.innerHTML = `<strong>${totalPoints}</strong>`;
+  renderSumTable(
+    [
+      { label: t("resume.primaryAttributes"), value: primaryAttributesPoints },
+      {
+        label: t("resume.secondaryAttributes"),
+        value: secondaryAttributesPoints,
+      },
+      { label: t("resume.advantages"), value: advantagesPoints },
+      { label: t("resume.disadvantages"), value: disadvantagesPoints },
+      { label: t("resume.skills"), value: skillsPoints },
+      { label: t("resume.spells"), value: spellsPoints },
+    ],
+    { tbodyId: "resume_points_tbody", totalCellId: "resume_total_points_cell" },
+  );
 }
