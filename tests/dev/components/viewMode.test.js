@@ -4,10 +4,7 @@ jest.mock("dev/public/js/store/viewModeState.js", () => ({
 }));
 
 import { isViewMode, setViewMode } from "dev/public/js/store/viewModeState.js";
-import {
-  initViewMode,
-  syncViewMode,
-} from "dev/public/js/components/viewMode.js";
+import { initViewMode } from "dev/public/js/components/viewMode.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
@@ -36,7 +33,9 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(false);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(t("viewMode.iconView") + t("viewMode.btnView"));
+    expect(btn.textContent).toBe(
+      t("viewMode.iconView") + t("viewMode.btnView"),
+    );
     expect(btn.getAttribute("aria-label")).toBe(t("viewMode.ariaView"));
     expect(btn.getAttribute("aria-pressed")).toBe("false");
     expect(
@@ -53,7 +52,9 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(true);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(t("viewMode.iconEdit") + t("viewMode.btnEdit"));
+    expect(btn.textContent).toBe(
+      t("viewMode.iconEdit") + t("viewMode.btnEdit"),
+    );
     expect(btn.getAttribute("aria-pressed")).toBe("true");
     expect(
       document
@@ -106,12 +107,5 @@ describe("initViewMode — toggle button", () => {
         .getElementById("view-mode-resume")
         .contains(document.getElementById("tab-char-resume")),
     ).toBe(true);
-  });
-});
-
-describe("syncViewMode", () => {
-  test("is a no-op kept only for call-site compatibility", () => {
-    expect(() => syncViewMode()).not.toThrow();
-    expect(syncViewMode()).toBeUndefined();
   });
 });
