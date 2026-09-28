@@ -161,6 +161,15 @@ describe("toEngineCharacter", () => {
     expect(character.skills).toEqual([]);
     expect(character.spells).toEqual({});
     expect(character.primaryAttributes).toEqual({});
+    expect(character.meta_race_ids).toEqual([]);
+  });
+
+  test("passes meta_race_ids through untouched", () => {
+    const character = toEngineCharacter({
+      meta_race_ids: ["META-000"],
+    });
+
+    expect(character.meta_race_ids).toEqual(["META-000"]);
   });
 });
 

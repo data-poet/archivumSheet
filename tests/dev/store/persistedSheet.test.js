@@ -110,6 +110,7 @@ describe("capturePersistedSheet", () => {
       "alliesActiveId",
       "damage",
       "disadvantages",
+      "meta_race_ids",
       "primary",
       "resistances",
       "secondary",

@@ -153,4 +153,61 @@ describe("BUILD CHARACTER PRIMARY", () => {
       expect(result.advantages["ADV-002"].points).toBe(0);
     });
   });
+
+  describe("Meta-race integration", () => {
+    it("Should add metaRaceAttributeModifiers on top of raceModifiers into the attribute's value, without affecting points", () => {
+      const result = buildCharacterPrimary({
+        ...mockInput,
+        raceModifiers: { ST: 1 },
+        metaRaceAttributeModifiers: { ST: 2 },
+      });
+
+      const withoutMetaRace = buildCharacterPrimary({
+        ...mockInput,
+        raceModifiers: { ST: 1 },
+      });
+
+      expect(result.primary_attributes.ST.value).toBe(
+        withoutMetaRace.primary_attributes.ST.value + 2,
+      );
+      expect(result.character_points.primary_attributes.ST).toBe(
+        withoutMetaRace.character_points.primary_attributes.ST,
+      );
+    });
+
+    it("Should merge metaRaceAdvantageIds into the resolved advantages with is_meta_race true and 0 cost", () => {
+      const result = buildCharacterPrimary({
+        ...mockInput,
+        metaRaceAdvantageIds: ["ADV-002"],
+      });
+
+      expect(result.advantages["ADV-002"]).toBeDefined();
+      expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
+      expect(result.advantages["ADV-002"].points).toBe(0);
+      expect(result.character_points.advantages).toBe(0);
+    });
+
+    it("Should merge metaRaceDisadvantageIds into the resolved disadvantages with is_meta_race true and 0 cost", () => {
+      const result = buildCharacterPrimary({
+        ...mockInput,
+        metaRaceDisadvantageIds: ["DIS-000"],
+      });
+
+      expect(result.disadvantages["DIS-000"]).toBeDefined();
+      expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
+      expect(result.disadvantages["DIS-000"].points).toBe(0);
+    });
+
+    it("Should let is_meta_race take priority over is_enchantment when an id is both", () => {
+      const result = buildCharacterPrimary({
+        ...mockInput,
+        metaRaceAdvantageIds: ["ADV-002"],
+        enchantmentAdvantageIds: ["ADV-002"],
+      });
+
+      expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
+      expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+      expect(result.advantages["ADV-002"].points).toBe(0);
+    });
+  });
 });

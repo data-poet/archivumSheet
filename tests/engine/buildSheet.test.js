@@ -680,4 +680,65 @@ describe("BUILD SHEET", () => {
       expect(result.character.elemental_resistances.Fire.final).toBe(1);
     });
   });
+
+  describe("Meta-race integration (character.meta_race_ids)", () => {
+    it("Should resolve META-000 (Zumbi) end-to-end: immune to Necrotic, double weak to Holy, innate traits free", () => {
+      const result = buildSheet({
+        ...mockInput,
+        character: {
+          ...mockInput.character,
+          meta_race_ids: ["META-000"],
+        },
+      });
+
+      expect(result.character.elemental_resistances.Necrotic.final).toBe(0);
+      expect(result.character.elemental_resistances.Holy.final).toBe(2);
+      expect(result.character.advantages["ADV-049"].is_meta_race).toBe(true);
+      expect(result.character.advantages["ADV-049"].points).toBe(0);
+      expect(result.character.disadvantages["DIS-143"].is_meta_race).toBe(
+        true,
+      );
+    });
+
+    it("Should fold the meta-race's ST modifier into ST before it reaches inventory (carry weight)", () => {
+      const baseline = buildSheet(mockInput);
+      const zombified = buildSheet({
+        ...mockInput,
+        character: { ...mockInput.character, meta_race_ids: ["META-000"] },
+      });
+
+      expect(zombified.character.primary_attributes.ST.value).toBe(
+        baseline.character.primary_attributes.ST.value + 2,
+      );
+      expect(zombified.inventory.carry_weight.limits.none).toBe(
+        zombified.character.primary_attributes.ST.value,
+      );
+    });
+
+    it("Should default to no effect at all when meta_race_ids is omitted", () => {
+      const result = buildSheet(mockInput);
+
+      for (const type of ["Fire", "Holy", "Necrotic"]) {
+        expect(result.character.elemental_resistances[type].final).toBe(1);
+      }
+    });
+
+    it("Should multiply two stacked meta-races' elemental multipliers together", () => {
+      const single = buildSheet({
+        ...mockInput,
+        character: { ...mockInput.character, meta_race_ids: ["META-000"] },
+      });
+      const stacked = buildSheet({
+        ...mockInput,
+        character: {
+          ...mockInput.character,
+          meta_race_ids: ["META-000", "META-001"],
+        },
+      });
+
+      expect(stacked.character.elemental_resistances.Holy.final).toBe(
+        single.character.elemental_resistances.Holy.final ** 2,
+      );
+    });
+  });
 });

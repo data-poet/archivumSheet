@@ -28,6 +28,13 @@
   box-sizing: border-box;
 }
 
+.field-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
 .race-selects {
   display: flex;
   flex-direction: column;

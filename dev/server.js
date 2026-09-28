@@ -107,6 +107,17 @@ app.get("/api/races", (req, res) => {
 });
 
 /* -----------------------
+   META-RACES
+------------------------ */
+app.get("/api/meta-races", (req, res) => {
+  const data = loadCSV(
+    path.join(__dirname, "../data/db_yrth_meta_races.csv"),
+  );
+
+  res.json(data);
+});
+
+/* -----------------------
    MATERIALS
 ------------------------ */
 app.get("/api/materials", (req, res) => {

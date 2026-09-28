@@ -56,4 +56,26 @@ describe("DISADVANTAGES", () => {
     expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
     expect(result.disadvantages["DIS-000"].points).not.toBe(0);
   });
+
+  test("Should mark meta-race-granted disadvantages with is_meta_race and cost 0", () => {
+    const result = buildDisadvantages(["DIS-000"], [], [], ["DIS-000"]);
+
+    expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
+    expect(result.disadvantages["DIS-000"].is_race_innate).toBe(false);
+    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
+    expect(result.disadvantages["DIS-000"].points).toBe(0);
+  });
+
+  test("Should let is_meta_race take priority over is_enchantment", () => {
+    const result = buildDisadvantages(
+      ["DIS-000"],
+      [],
+      ["DIS-000"],
+      ["DIS-000"],
+    );
+
+    expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
+    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
+    expect(result.disadvantages["DIS-000"].points).toBe(0);
+  });
 });

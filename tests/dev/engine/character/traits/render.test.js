@@ -139,6 +139,45 @@ describe("renderAdvantages — race-innate entries", () => {
   });
 });
 
+describe("renderAdvantages — meta-race-granted entries", () => {
+  test("forces cost to 0, tags as meta-race, and omits the remove button", () => {
+    const selected = {
+      advantages: { "ADV-1": { is_meta_race: true, name: "Não Respira" } },
+    };
+    const data = { advantages: [] };
+
+    renderAdvantages(selected, data, undefined);
+
+    const row = advList().querySelector("tbody tr");
+    expect(row.classList.contains("trait-meta-race")).toBe(true);
+    expect(row.textContent).toContain(t("character.metaRace"));
+    expect(row.querySelector(".col-num").textContent).toBe("0");
+    expect(row.querySelector(".remove-adv")).toBeNull();
+  });
+
+  test("always shows the generic domain label, even with meta-race catalog data present — attribution to a specific stacked meta-race is left to the meta-race list itself", () => {
+    const selected = {
+      advantages: { "ADV-1": { is_meta_race: true, name: "Não Respira" } },
+      meta_race_ids: ["META-000"],
+    };
+    const data = {
+      advantages: [],
+      metaRaces: [
+        {
+          meta_race_id: "META-000",
+          meta_race_name: "Morto-Vivo",
+          meta_race_sub_name: "Zumbi",
+        },
+      ],
+    };
+
+    renderAdvantages(selected, data, undefined);
+
+    const row = advList().querySelector("tbody tr");
+    expect(row.textContent).toContain(t("character.metaRace"));
+  });
+});
+
 describe("renderAdvantages — item-enchantment-granted entries", () => {
   test("forces cost to 0, tags as enchanted, and omits the remove button", () => {
     const selected = {
@@ -318,6 +357,22 @@ describe("renderDisadvantages — race-innate and enchantment-granted entries", 
     const row = disList().querySelector("tbody tr");
     expect(row.classList.contains("trait-enchantment")).toBe(true);
     expect(row.textContent).toContain(t("character.enchanted"));
+    expect(row.querySelector(".remove-dis")).toBeNull();
+  });
+
+  test("meta-race: forces cost to 0, tags as meta-race, omits the remove button", () => {
+    renderDisadvantages(
+      {
+        disadvantages: {
+          "DIS-1": { is_meta_race: true, name: "Monstruoso" },
+        },
+      },
+      { disadvantages: [] },
+      undefined,
+    );
+    const row = disList().querySelector("tbody tr");
+    expect(row.classList.contains("trait-meta-race")).toBe(true);
+    expect(row.textContent).toContain(t("character.metaRace"));
     expect(row.querySelector(".remove-dis")).toBeNull();
   });
 });

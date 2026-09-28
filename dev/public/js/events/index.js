@@ -11,6 +11,9 @@ import {
   handleCharacterImageClick,
   handleCharacterImageChange,
   handleCharacterImageInput,
+  filterSubMetaRacesByName,
+  addMetaRace,
+  handleMetaRaceClick,
 } from "../engine/character/index.js";
 
 import {
@@ -133,6 +136,7 @@ const DELEGATED_EVENT_TYPES = ["click", "input", "change"];
 // false when it isn't theirs — see customFieldsDispatch.js.
 const DELEGATED_DOMAINS = [
   { input: handleCharacterInput, change: handleCharacterChange },
+  { click: handleMetaRaceClick },
   { click: handleTraitClick, input: handleTraitInput },
   {
     click: handleSkillClick,
@@ -206,6 +210,10 @@ const DELEGATED_DOMAINS = [
 export function bindUI() {
   on("raceNameSelect", "change", filterSubRacesByName);
   on("raceSubSelect", "change", selectSubRace);
+
+  on("metaRaceNameSelect", "change", filterSubMetaRacesByName);
+  on("metaRaceSubSelect", "change", () => {}); // keeps select reactive
+  on("addMetaRaceBtn", "click", addMetaRace);
 
   on("advTypeSelect", "change", filterAdvByType);
   on("advSelect", "change", () => {}); // keeps select reactive

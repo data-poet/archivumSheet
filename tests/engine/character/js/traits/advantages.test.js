@@ -72,4 +72,41 @@ describe("ADVANTAGES", () => {
     expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
     expect(result.advantages["ADV-002"].points).toBe(0);
   });
+
+  test("Should mark meta-race-granted advantages with is_meta_race and cost 0", () => {
+    const result = buildAdvantages(["ADV-002"], [], [], ["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.character_points.advantages).toBe(0);
+  });
+
+  test("Should default is_meta_race to false for a normally-purchased advantage", () => {
+    const result = buildAdvantages(["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_meta_race).toBe(false);
+  });
+
+  test("Should let is_race_innate take priority over is_meta_race", () => {
+    const result = buildAdvantages(["ADV-002"], ["ADV-002"], [], ["ADV-002"]);
+
+    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
+    expect(result.advantages["ADV-002"].is_meta_race).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+  });
+
+  test("Should let is_meta_race take priority over is_enchantment", () => {
+    const result = buildAdvantages(
+      ["ADV-002"],
+      [],
+      ["ADV-002"],
+      ["ADV-002"],
+    );
+
+    expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
+    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
+    expect(result.advantages["ADV-002"].points).toBe(0);
+  });
 });

@@ -370,5 +370,17 @@ describe("BUILD CHARACTER SECONDARY", () => {
       expect(elemental_resistances.Holy.enchantment_modifier).toBe(0);
       expect(elemental_resistances.Fire.has_enchantment_modifier).toBe(false);
     });
+
+    it("Multiplies metaRaceElementalMultipliers into race_base alongside raceElementalMultipliers", () => {
+      const { elemental_resistances } = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        raceElementalMultipliers: { Holy: 1 },
+        metaRaceElementalMultipliers: { Holy: 2, Necrotic: 0 },
+      });
+
+      expect(elemental_resistances.Holy.race_base).toBe(2);
+      expect(elemental_resistances.Necrotic.race_base).toBe(0);
+      expect(elemental_resistances.Fire.race_base).toBe(1);
+    });
   });
 });

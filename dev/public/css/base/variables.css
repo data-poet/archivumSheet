@@ -116,6 +116,8 @@
   --color-innate-tag: #78716c;
   --color-enchantment-bg: #f2eefb;
   --color-enchantment-tag: #7c5cbf;
+  --color-meta-race-bg: #f0f5f2;
+  --color-meta-race-tag: #2f7a5c;
 }
 
 /* [data-theme="dark"] is set synchronously pre-paint by an inline script, kept in sync by ui/theme.js. Bar colors are unchanged — they're decorative fills with no text on them. */
@@ -164,6 +166,8 @@ html[data-theme="dark"] {
   --color-innate-tag: #a8a296;
   --color-enchantment-bg: #262038;
   --color-enchantment-tag: #b39ddb;
+  --color-meta-race-bg: #1c2622;
+  --color-meta-race-tag: #6bbf9c;
 }
 
 *,

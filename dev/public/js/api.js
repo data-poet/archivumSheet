@@ -50,6 +50,10 @@ export async function fetchRaces() {
   return getJSON("/api/races");
 }
 
+export async function fetchMetaRaces() {
+  return getJSON("/api/meta-races");
+}
+
 export async function fetchMaterials() {
   return getJSON("/api/materials");
 }

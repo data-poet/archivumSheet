@@ -30,6 +30,7 @@ function buildCharacterSecondary({
   effects = {},
   advantages = {},
   raceElementalMultipliers = {},
+  metaRaceElementalMultipliers = {},
   enchantmentAttributeModifiers = {},
   enchantmentElementalModifiers = {},
   enchantmentSkillGrants = {},
@@ -59,6 +60,7 @@ function buildCharacterSecondary({
   const elementalResistances = calculateElementalResistances(
     raceElementalMultipliers,
     elementalWithEnchantments,
+    metaRaceElementalMultipliers,
   );
 
   const normalizedSkills = Array.isArray(skills)

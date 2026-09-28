@@ -2,6 +2,7 @@ import {
   renderAdvantages,
   renderDisadvantages,
 } from "../engine/character/traits/render.js";
+import { renderMetaRaces } from "../engine/character/metaRaces/render.js";
 import { renderSkills } from "../engine/character/skills/render.js";
 import { renderSpells } from "../engine/magic/spells/render.js";
 import { renderArmorSlots, renderStoredArmors } from "../engine/inventory/armor/render.js";
@@ -19,6 +20,7 @@ import { renderCoinPurse } from "../engine/inventory/coinPurse/render.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";
 
 export function renderLists(selected, data, sheet) {
+  renderMetaRaces(selected, data, sheet);
   renderAdvantages(selected, data, sheet);
   renderDisadvantages(selected, data, sheet);
   renderSkills(selected, data, sheet);

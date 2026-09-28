@@ -20,8 +20,13 @@ function buildCharacter({
   enchantmentDisadvantageIds = [],
   enchantmentSkillGrants = {},
   enchantmentSkillModifiers = {},
+  metaRaceAttributeModifiers = {},
+  metaRaceElementalMultipliers = {},
+  metaRaceAdvantageIds = [],
+  metaRaceDisadvantageIds = [],
 }) {
   // enchantment* args come from collectEquippedEnchantments() on resolved equipped items, computed by buildSheet.js before this call.
+  // metaRace* args come from resolveMetaRaces() on the character's selected meta_race_ids, computed by buildSheet.js the same way.
   const primary = buildCharacterPrimary({
     advantages,
     disadvantages,
@@ -32,6 +37,9 @@ function buildCharacter({
     enchantmentAttributeModifiers,
     enchantmentAdvantageIds,
     enchantmentDisadvantageIds,
+    metaRaceAttributeModifiers,
+    metaRaceAdvantageIds,
+    metaRaceDisadvantageIds,
   });
 
   const effects = buildTraitsEffects({
@@ -54,6 +62,7 @@ function buildCharacter({
     advantages: primary.advantages,
 
     raceElementalMultipliers,
+    metaRaceElementalMultipliers,
 
     enchantmentAttributeModifiers,
     enchantmentElementalModifiers,

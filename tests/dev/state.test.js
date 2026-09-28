@@ -42,6 +42,7 @@ describe("state.data shape", () => {
         "magicGearEquipLimits",
         "materials",
         "melee_weapons",
+        "metaRaces",
         "races",
         "ranged_weapons",
         "shields",
@@ -131,6 +132,7 @@ describe("state.selected shape", () => {
         "coins",
         "allies",
         "alliesActiveId",
+        "meta_race_ids",
       ].sort(),
     );
   });

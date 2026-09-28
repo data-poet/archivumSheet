@@ -60,6 +60,7 @@ function _blankData() {
       spells: {},
       allies: [],
       alliesActiveId: null,
+      meta_race_ids: [],
     },
     inventory: {
       weight: 0,
@@ -174,6 +175,7 @@ function _applyData(data) {
   selected.spells          = character.spells         ?? {};
   selected.allies          = character.allies         ?? [];
   selected.alliesActiveId  = character.alliesActiveId ?? null;
+  selected.meta_race_ids   = character.meta_race_ids  ?? [];
   selected.armors          = inventory.armors         ?? [];
   selected.shields         = inventory.shields        ?? [];
   selected.melee_weapons   = inventory.melee_weapons  ?? [];

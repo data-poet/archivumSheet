@@ -44,6 +44,11 @@ tr.trait-enchantment td {
   color: var(--color-text-muted);
 }
 
+tr.trait-meta-race td {
+  background: var(--color-meta-race-bg);
+  color: var(--color-text-muted);
+}
+
 .trait-innate-tag {
   display: inline-block;
   margin-left: var(--space-3);
@@ -67,6 +72,21 @@ tr.trait-enchantment td {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-enchantment-tag);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 var(--space-2);
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+.trait-meta-race-tag {
+  display: inline-block;
+  margin-left: var(--space-3);
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-meta-race-tag);
   border: 1px solid currentColor;
   border-radius: 3px;
   padding: 0 var(--space-2);

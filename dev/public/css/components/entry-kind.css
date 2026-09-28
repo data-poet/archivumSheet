@@ -20,6 +20,17 @@
   padding-top: var(--space-2);
 }
 
+/* Meta-races (e.g. Undead) are ally/monster-only for now — see
+   docs/proposals/meta-race-templates.md's "Audience" decision. */
+.meta-race-row {
+  display: none;
+}
+
+.is-ally-draft .meta-race-row {
+  display: block;
+  margin-top: var(--space-2);
+}
+
 .char-selector-item-kind {
   align-self: flex-start;
   border-radius: var(--radius-sm);

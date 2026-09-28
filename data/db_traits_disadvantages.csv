@@ -1010,3 +1010,15 @@ DIS-142,REPROGRAMÁVEL | -10,REPROGRAMÁVEL,-10,Mental,"
     - Caso entrem em conflito, sua programação sempre tem prioridade.
 - Essa característica é mais adequada para golens, mortos-vivos irracionais, robôs e autômatos semelhantes.
 ",Módulo Básico 4e,150,NPC
+DIS-143,MONSTRUOSO | -25,MONSTRUOSO,-25,Física,"
+- Você é indescritivelmente monstruoso ou indizivelmente hediondo, e não consegue interagir com mortais comuns.
+- Isso impõe uma penalidade de -6 nos testes de reação.",Módulo Básico 4e,21,NPC
+DIS-144,SEM RECUPERAÇÃO | PARCIAL | ,SEM RECUPERAÇÃO | PARCIAL,-20,Física,"
+- Você não consegue se curar naturalmente. Você não faz testes diários de HT para recuperar PV perdidos, e não consegue se recuperar de ferimentos debilitantes por conta própria.
+- A perícia Primeiros Socorros pode estancar sua hemorragia, mas nem ela nem a perícia Médico conseguem restaurar PV perdidos.
+- Você pode se curar naturalmente se uma condição rara for atendida (por exemplo, quando você está imerso em sangue ou banhado em lava).
+- Você também pode se curar roubando PV de outros usando Mordida Vampírica, magia ou psiônica.",Módulo Básico 4e,160,NPC
+DIS-145,SEM RECUPERAÇÃO | TOTAL | ,SEM RECUPERAÇÃO | TOTAL,-30,Física,"
+- Você não consegue se curar naturalmente. Você não faz testes diários de HT para recuperar PV perdidos, e não consegue se recuperar de ferimentos debilitantes por conta própria.
+- A perícia Primeiros Socorros pode estancar sua hemorragia, mas nem ela nem a perícia Médico conseguem restaurar PV perdidos.
+- Você nunca consegue se curar naturalmente, e não pode roubar PV de outros.",Módulo Básico 4e,160,NPC

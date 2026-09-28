@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { setCatalogAudience } from "../shared/availability.js";
 import { loadRaces } from "../engine/character/races/index.js";
+import { loadMetaRaces } from "../engine/character/metaRaces/index.js";
 import { loadAdvantages } from "../engine/character/traits/advantages/index.js";
 import { loadDisadvantages } from "../engine/character/traits/disadvantages/index.js";
 import { loadSkills } from "../engine/character/skills/index.js";
@@ -30,6 +31,7 @@ export async function reloadCatalogs(audience) {
 
   await Promise.all([
     loadRaces(),
+    loadMetaRaces(),
     loadAdvantages(),
     loadDisadvantages(),
     loadSkills(),

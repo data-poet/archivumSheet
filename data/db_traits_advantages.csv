@@ -816,41 +816,44 @@ ADV-126,INABALÁVEL | 15,INABALÁVEL,15,Mental,"
 - Você deve interpretar essa vantagem plenamente; caso contrário, o Mestre pode declarar que ela foi perdida.
 - Em uma campanha onde Testes de Pavor ocorrem a cada hora, o Mestre pode cobrar 20 pontos – ou mais! – ou proibir totalmente.
 - Essa vantagem é incompatível com todas as Fobias.",Módulo Básico 4e,95,NPC
-ADV-127,TOLERÂNCIA À DANOS | DIFUSO | 100,TOLERÂNCIA À DANOS | DIFUSO,100,Físico,"
+ADV-127,TOLERÂNCIA À FERIMENTOS | DIFUSO | 100,TOLERÂNCIA À FERIMENTOS | DIFUSO,100,Físico,"
 - Seu corpo é fluido ou particulado, composto por um enxame de entidades menores, ou talvez feito de energia pura.
 - Isso o torna imune a ferimentos incapacitantes e reduz o dano sofrido com a maioria dos golpes físicos.
 - A maioria dos oponentes (decisão do Mestre) não consegue realizar investidas ou agarrá-lo!
 - A categoria Difuso inclui todos os benefícios de Sem Sangue, Sem Cérebro e Sem Órgãos Vitais.",Módulo Básico 4e,60,NPC
-ADV-128,TOLERÂNCIA À DANOS | HOMOGÊNEO | 40,TOLERÂNCIA À DANOS | HOMOGÊNEO,40,Físico,"
+ADV-128,TOLERÂNCIA À FERIMENTOS | HOMOGÊNEO | 40,TOLERÂNCIA À FERIMENTOS | HOMOGÊNEO,40,Físico,"
 - Seu corpo não possui órgãos internos, ossos, músculos ou outros mecanismos vulneráveis.
 - Como resultado, você é menos suscetível a ataques de perfuração e empalamento.
 - A categoria Homogêneo inclui os benefícios de Sem Cérebro e Sem Órgãos Vitais.
 - Esta característica destina-se a entidades como golens de ferro, árvores e geleias.",Módulo Básico 4e,60,NPC
-ADV-129,TOLERÂNCIA À DANOS | SEM SANGUE | 5,TOLERÂNCIA À DANOS | SEM SANGUE,5,Físico,"
+ADV-129,TOLERÂNCIA À FERIMENTOS | SEM SANGUE | 5,TOLERÂNCIA À FERIMENTOS | SEM SANGUE,5,Físico,"
 - Você não depende de um fluido corporal vital (como sangue) para sobreviver.
 - Você não sangra, não é afetado por toxinas transmitidas pelo sangue e é imune a ata- ques que dependem de interromper o fluxo sanguíneo para alguma parte do seu corpo.",Módulo Básico 4e,60,NPC
-ADV-130,TOLERÂNCIA À DANOS | SEM CÉREBRO | 5,TOLERÂNCIA À DANOS | SEM CÉREBRO,5,Físico,"
+ADV-130,TOLERÂNCIA À FERIMENTOS | SEM CÉREBRO | 5,TOLERÂNCIA À FERIMENTOS | SEM CÉREBRO,5,Físico,"
 - Seu cérebro — se você tiver um — está distribuído por todo o seu corpo, ou não é a sua verdadeira sede da consciência.
 - Seus oponentes não podem visá-lo para causar dano extra.
 - Você pode ter cabeça, mas um golpe no crânio ou no olho não é tratado de forma diferente de um golpe no rosto (exceto pelo fato de que uma lesão no olho ainda pode inutilizá-lo). ",Módulo Básico 4e,60,NPC
-ADV-131,TOLERÂNCIA À DANOS | SEM OLHOS | 5,TOLERÂNCIA À DANOS | SEM OLHOS,5,Físico,"
+ADV-131,TOLERÂNCIA À FERIMENTOS | SEM OLHOS | 5,TOLERÂNCIA À FERIMENTOS | SEM OLHOS,5,Físico,"
 - Você não possui olhos ou outros órgãos de visão vulneráveis, mas consegue enxergar mesmo assim (a menos, é claro, que sofra da condição Cegueira, p. 124).
 - Como você não tem olhos, eles não podem ser atacados.
 - Você também é imune a ataques que causem cegueira.",Módulo Básico 4e,60,NPC
-ADV-132,TOLERÂNCIA À DANOS | SEM CABEÇA | 7,TOLERÂNCIA À DANOS | SEM CABEÇA,7,Físico,"
+ADV-132,TOLERÂNCIA À FERIMENTOS | SEM CABEÇA | 7,TOLERÂNCIA À FERIMENTOS | SEM CABEÇA,7,Físico,"
 - Você não possui cabeça alguma.
 - Isso inclui os benefícios da característica ""Sem Cérebro"".
 - Além disso, você não possui as áreas de acerto ""crânio"" e ""rosto"", e não precisa de armadura para a cabeça.
 - Você ainda consegue ver, falar, ouvir, sentir cheiros, sentir sabores, etc., a menos que adquira as desvantagens apropriadas.
 - Especifique como você faz isso (sobrenaturalmente, tecnologicamente, por meio de órgãos no tronco, etc.).
 - É comum — embora não obrigatório — que aqueles que possuem a característica ""Sem Cabeça"" também tenham ""Sem Pescoço"", ""Sem Olhos"" ou ambos.",Módulo Básico 4e,60,NPC
-ADV-133,TOLERÂNCIA À DANOS | SEM PESCOÇO | 5,TOLERÂNCIA À DANOS | SEM PESCOÇO,5,Físico,"
+ADV-133,TOLERÂNCIA À FERIMENTOS | SEM PESCOÇO | 5,TOLERÂNCIA À FERIMENTOS | SEM PESCOÇO,5,Físico,"
 - Você não tem pescoço.
 - Como resultado, você não possui um local de acerto ""pescoço"" e não pode ser decapitado, sufocado ou estrangulado.",Módulo Básico 4e,60,NPC
-ADV-134,TOLERÂNCIA À DANOS | SEM VITAIS | 5,TOLERÂNCIA À DANOS | SEM VITAIS,5,Físico,"
+ADV-134,TOLERÂNCIA À FERIMENTOS | SEM VITAIS | 5,TOLERÂNCIA À FERIMENTOS | SEM VITAIS,5,Físico,"
 - Você não possui órgãos vitais (como coração ou motor) que os atacantes possam visar para causar dano adicional.
 - Considere acertos nos “órgãos vitais” ou na “virilha” como acertos no tronco.",Módulo Básico 4e,60,NPC
-ADV-135,TOLERÂNCIA À DANOS | SEM CARNE | 20,TOLERÂNCIA À DANOS | SEM CARNE,20,Físico,"
+ADV-135,TOLERÂNCIA À FERIMENTOS | SEM CARNE | 20,TOLERÂNCIA À FERIMENTOS | SEM CARNE,20,Físico,"
 - Seu corpo não é composto de carne viva.
 - Você sofre dano reduzido de ataques de perfuração e empalamento, mas não é tão resistente quanto seria se fosse Homogêneo.
 - Esta característica destina-se principalmente a máquinas e mortos-vivos corpóreos.",Módulo Básico 4e,60,NPC
+ADV-136,NÃO RESPIRA | 20,NÃO RESPIRA,20,Físico,"
+- Você não respira nem precisa de oxigênio.
+- Tentativas de asfixia ou estrangulamento não podem lhe causar dano (ou silenciá-lo!), e você é imune a toxinas inaladas.",Módulo Básico 4e,49,NPC

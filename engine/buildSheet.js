@@ -1,4 +1,5 @@
 const { buildCharacter } = require("./character/buildCharacter");
+const { resolveMetaRaces } = require("./character/js/traits/metaRaces");
 const { buildInventory } = require("./inventory/buildInventory");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
@@ -17,6 +18,18 @@ function buildSheet({
 } = {}) {
   /**
    * ───────────────────────────────────────────────────────────────────────────
+   * 0. META-RACE RESOLUTION
+   * ───────────────────────────────────────────────────────────────────────────
+   *
+   * Resolves character.meta_race_ids (e.g. Undead) against db_yrth_meta_races.csv before either
+   * character build — same rationale as race: attribute modifiers can shift ST, which the
+   * inventory layer needs, so this can't wait until step 2.5 like equipped enchantments do.
+   */
+
+  const metaRaces = resolveMetaRaces(character.meta_race_ids || []);
+
+  /**
+   * ───────────────────────────────────────────────────────────────────────────
    * 1. INITIAL CHARACTER BUILD
    * ───────────────────────────────────────────────────────────────────────────
    */
@@ -32,6 +45,10 @@ function buildSheet({
     raceElementalMultipliers: race.elemental_modifiers || {},
     innateAdvantageIds: race.innate_advantage_ids || [],
     innateDisadvantageIds: race.innate_disadvantage_ids || [],
+    metaRaceAttributeModifiers: metaRaces.attributeModifiers,
+    metaRaceElementalMultipliers: metaRaces.elementalMultipliers,
+    metaRaceAdvantageIds: metaRaces.innateAdvantageIds,
+    metaRaceDisadvantageIds: metaRaces.innateDisadvantageIds,
   });
 
   const initialCharacter = initialCharacterResult.character;
@@ -130,6 +147,10 @@ function buildSheet({
       enchantmentDisadvantageIds: enchantmentEffects.disadvantageIds,
       enchantmentSkillGrants: enchantmentEffects.skillGrants,
       enchantmentSkillModifiers: enchantmentEffects.skillModifiers,
+      metaRaceAttributeModifiers: metaRaces.attributeModifiers,
+      metaRaceElementalMultipliers: metaRaces.elementalMultipliers,
+      metaRaceAdvantageIds: metaRaces.innateAdvantageIds,
+      metaRaceDisadvantageIds: metaRaces.innateDisadvantageIds,
     });
   }
 
