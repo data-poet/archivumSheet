@@ -189,7 +189,7 @@
   border: 2px solid var(--color-border);
   background: var(--color-btn-bg);
   position: relative;
-  transition: border-color 0.15s;
+  transition: border-color var(--transition-fast);
   flex-shrink: 0;
 }
 
@@ -199,7 +199,7 @@
   inset: 3px;
   border-radius: 50%;
   background: transparent;
-  transition: background 0.15s;
+  transition: background var(--transition-fast);
 }
 
 .charimg-radio-wrap.is-active .charimg-radio-btn {
@@ -243,4 +243,3 @@
   user-select: none;
   pointer-events: none;
 }
-

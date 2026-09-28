@@ -84,6 +84,11 @@
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
 
+  /* Shared button feedback: quick fade on hover, a slight press on tap/click. */
+  --transition-fast: 0.15s;
+  --press-scale: 0.98;
+  --hover-darken-pct: 85%;
+
   --topbar-h: clamp(48px, 1vw + 44px, 64px);
   --bottomnav-h: clamp(52px, 1vw + 48px, 64px);
 

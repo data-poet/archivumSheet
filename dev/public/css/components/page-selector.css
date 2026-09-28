@@ -16,12 +16,16 @@
 }
 
 .page-selector-btn:hover {
-  background: color-mix(in srgb, var(--selector-page-fill) 85%, #000);
+  background: color-mix(
+    in srgb,
+    var(--selector-page-fill) var(--hover-darken-pct),
+    #000
+  );
   color: var(--color-on-accent);
 }
 
 .page-selector-btn:active {
-  transform: scale(0.98);
+  transform: scale(var(--press-scale));
 }
 
 .page-selector-btn-chevron {

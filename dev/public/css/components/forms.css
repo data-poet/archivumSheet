@@ -60,7 +60,7 @@ button:hover {
   background: var(--color-btn-hover);
 }
 button:active {
-  transform: scale(0.98);
+  transform: scale(var(--press-scale));
 }
 
 button.btn-remove {
@@ -88,4 +88,3 @@ button.btn-danger {
 button.btn-danger:hover {
   background: var(--color-remove-hover);
 }
-

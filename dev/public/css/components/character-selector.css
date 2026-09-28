@@ -15,16 +15,20 @@
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
-  transition: background 0.15s;
+  transition: background var(--transition-fast);
   min-height: 36px;
 }
 
 .char-selector-btn:hover {
-  background: color-mix(in srgb, var(--selector-character-fill) 85%, #000);
+  background: color-mix(
+    in srgb,
+    var(--selector-character-fill) var(--hover-darken-pct),
+    #000
+  );
 }
 
 .char-selector-btn:active {
-  transform: scale(0.98);
+  transform: scale(var(--press-scale));
 }
 
 .char-selector-btn-name {
