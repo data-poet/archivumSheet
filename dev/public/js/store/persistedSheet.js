@@ -38,6 +38,7 @@ export function capturePersistedSheet() {
       spells: selected.spells,
       allies: selected.allies,
       alliesActiveId: selected.alliesActiveId,
+      meta_race_ids: selected.meta_race_ids,
     },
     inventory: {
       weight: Number(document.getElementById("weight")?.value) || 0,

@@ -35,6 +35,9 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
 jest.mock("dev/public/js/engine/character/races/index.js", () => ({
   loadRaces: jest.fn(() => Promise.resolve()),
 }));
+jest.mock("dev/public/js/engine/character/metaRaces/index.js", () => ({
+  loadMetaRaces: jest.fn(() => Promise.resolve()),
+}));
 jest.mock("dev/public/js/engine/character/portrait/index.js", () => ({
   initCharacterImage: jest.fn(),
 }));

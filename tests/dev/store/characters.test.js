@@ -199,6 +199,16 @@ describe("loadCharacter", () => {
     expect(restoreRaceSelection).toHaveBeenCalledWith("R1");
   });
 
+  test("restores meta_race_ids for rendering when the character had any applied (hydration goes through the normal list re-render, not a dedicated restore call)", () => {
+    state.selected.meta_race_ids = ["META-000"];
+    saveActiveCharacter();
+    state.selected.meta_race_ids = [];
+
+    loadCharacter(getStore().activeId);
+
+    expect(state.selected.meta_race_ids).toEqual(["META-000"]);
+  });
+
   test("is a no-op for an unknown id", () => {
     loadCharacter("does-not-exist");
     expect(renderListsPreserving).not.toHaveBeenCalled();

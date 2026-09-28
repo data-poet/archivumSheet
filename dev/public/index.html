@@ -224,6 +224,7 @@
 
               <!-- Right: Race -->
               <div class="character-race">
+                <div class="field-title" id="lbl-race-title"></div>
                 <div class="race-selects">
                   <select id="raceNameSelect" style="display: none">
                     <option value="" id="opt-race-none"></option>
@@ -237,6 +238,24 @@
                   class="race-modifiers"
                   style="display: none"
                 ></div>
+
+                <!-- Meta-races (e.g. Undead) are ally/monster-only for now — see
+                     docs/proposals/meta-race-templates.md's "Audience" decision. -->
+                <div class="meta-race-row" id="meta-race-row">
+                  <div class="field-title" id="lbl-metaRace-title"></div>
+                  <div class="race-selects">
+                    <select id="metaRaceNameSelect" style="display: none">
+                      <option value="" id="opt-meta-race-none"></option>
+                    </select>
+                    <select id="metaRaceSubSelect" style="display: none">
+                      <option value="" id="opt-meta-subrace-none"></option>
+                    </select>
+                  </div>
+                  <div class="controls-row">
+                    <button id="addMetaRaceBtn"></button>
+                  </div>
+                  <div id="metaRaceList"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1608,8 +1627,14 @@
         setText("opt-sex-f", L.character.sexFemale);
 
         // Race
+        setText("lbl-race-title", L.character.race);
         setText("opt-race-none", L.character.selectRace);
         setText("opt-subrace-none", L.character.selectSubRace);
+
+        // Meta-races
+        setText("lbl-metaRace-title", L.character.metaRace);
+        setText("opt-meta-race-none", L.character.selectMetaRace);
+        setText("opt-meta-subrace-none", L.character.selectSubMetaRace);
 
         // Resume labels
         setText("sec-resume-weight", L.resume.weightTitle);
@@ -1653,6 +1678,7 @@
           const b = document.getElementById(id);
           if (b) b.textContent = text;
         };
+        btn("addMetaRaceBtn", L.character.addMetaRace);
         btn("addAdvBtn", L.traits.addAdvantage);
         btn("addDisBtn", L.traits.addDisadvantage);
         btn("addSkillBtn", L.traits.addSkill);

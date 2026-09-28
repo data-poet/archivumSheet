@@ -91,4 +91,42 @@ describe("Elemental Damage Resistances", () => {
     expect(result.Unobtainium).toBeUndefined();
     expect(Object.keys(result)).toHaveLength(ELEMENTAL_TYPES.length);
   });
+
+  test("defaults metaRaceMultipliers to 1 (no change) when omitted", () => {
+    const result = calculateElementalResistances({ Holy: 1 }, {});
+
+    expect(result.Holy.race_base).toBe(1);
+  });
+
+  test("multiplies race and meta-race multipliers together into race_base", () => {
+    const result = calculateElementalResistances(
+      { Holy: 1 },
+      {},
+      { Holy: 2 },
+    );
+
+    expect(result.Holy.race_base).toBe(2);
+    expect(result.Holy.final).toBe(2);
+  });
+
+  test("a meta-race multiplier of 0 (immune) overrides any race multiplier", () => {
+    const result = calculateElementalResistances(
+      { Necrotic: 3 },
+      {},
+      { Necrotic: 0 },
+    );
+
+    expect(result.Necrotic.race_base).toBe(0);
+    expect(result.Necrotic.final).toBe(0);
+  });
+
+  test("stacked meta-race multipliers compose multiplicatively (resolveMetaRaces already pre-multiplies them, this covers the composition itself)", () => {
+    const result = calculateElementalResistances(
+      { Holy: 1 },
+      {},
+      { Holy: 2 * 2 },
+    );
+
+    expect(result.Holy.race_base).toBe(4);
+  });
 });

@@ -6,6 +6,8 @@ import { t } from "../localization/pt-BR/index.js";
 const SELECT_LABELS = {
   raceNameSelect: ["character.race"],
   raceSubSelect: ["character.subRace"],
+  metaRaceNameSelect: ["character.metaRace"],
+  metaRaceSubSelect: ["character.subMetaRace"],
 
   advTypeSelect: ["common.type", "tabs.traits.advantages"],
   advSelect: ["common.name", "tabs.traits.advantages"],

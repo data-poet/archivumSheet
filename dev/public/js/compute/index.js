@@ -69,6 +69,7 @@ export async function runEngine() {
           resistances: selected.resistances,
           skills: selected.skills,
           spells: selected.spells,
+          meta_race_ids: selected.meta_race_ids,
         },
         getPrimaryAttributes(),
       ),

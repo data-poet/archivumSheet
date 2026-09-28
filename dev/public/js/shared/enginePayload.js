@@ -75,6 +75,7 @@ export function toEngineCharacter(character = {}, primary = character.primary) {
   return {
     advantages: Object.keys(character.advantages ?? {}),
     disadvantages: Object.keys(character.disadvantages ?? {}),
+    meta_race_ids: character.meta_race_ids ?? [],
     primaryAttributes: primary ?? {},
 
     secondaryAttributes: {

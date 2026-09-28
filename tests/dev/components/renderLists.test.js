@@ -2,6 +2,9 @@ jest.mock("dev/public/js/engine/character/traits/render.js", () => ({
   renderAdvantages: jest.fn(),
   renderDisadvantages: jest.fn(),
 }));
+jest.mock("dev/public/js/engine/character/metaRaces/render.js", () => ({
+  renderMetaRaces: jest.fn(),
+}));
 jest.mock("dev/public/js/engine/character/skills/render.js", () => ({
   renderSkills: jest.fn(),
 }));

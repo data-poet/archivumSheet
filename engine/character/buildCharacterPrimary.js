@@ -15,20 +15,30 @@ function buildCharacterPrimary({
   enchantmentAttributeModifiers = {},
   enchantmentAdvantageIds = [],
   enchantmentDisadvantageIds = [],
+  metaRaceAttributeModifiers = {},
+  metaRaceAdvantageIds = [],
+  metaRaceDisadvantageIds = [],
 }) {
   // has_enchantment_modifier is presence-based (item touches attribute), not magnitude-based (nonzero sum) — see collectEquippedEnchantments.js.
+  // race_modifier folds in the meta-race attribute delta too — the two are shown as one combined
+  // number in the UI (see docs/proposals/meta-race-templates.md), not as separate fields.
   const attributesWithRace = withEnchantmentModifier(
     primaryAttributes,
     enchantmentAttributeModifiers,
     ["ST", "DX", "IQ", "HT"],
-    (attr) => ({ race_modifier: raceModifiers[attr] ?? 0 }),
+    (attr) => ({
+      race_modifier:
+        (raceModifiers[attr] ?? 0) + (metaRaceAttributeModifiers[attr] ?? 0),
+    }),
   );
 
-  // buildAdvantages/buildDisadvantages derive cost (0 if innate/enchantment-granted) and is_race_innate/is_enchantment from the innate/enchantment id lists.
+  // buildAdvantages/buildDisadvantages derive cost (0 if innate/meta-race/enchantment-granted) and
+  // is_race_innate/is_meta_race/is_enchantment from the respective id lists.
   const allAdvantageIds = [
     ...new Set([
       ...advantages,
       ...innateAdvantageIds,
+      ...metaRaceAdvantageIds,
       ...enchantmentAdvantageIds,
     ]),
   ];
@@ -36,6 +46,7 @@ function buildCharacterPrimary({
     ...new Set([
       ...disadvantages,
       ...innateDisadvantageIds,
+      ...metaRaceDisadvantageIds,
       ...enchantmentDisadvantageIds,
     ]),
   ];
@@ -44,11 +55,13 @@ function buildCharacterPrimary({
     allAdvantageIds,
     innateAdvantageIds,
     enchantmentAdvantageIds,
+    metaRaceAdvantageIds,
   );
   const disadvantagesResult = buildDisadvantages(
     allDisadvantageIds,
     innateDisadvantageIds,
     enchantmentDisadvantageIds,
+    metaRaceDisadvantageIds,
   );
   const primaryAttributesResult = buildPrimaryAttributes(attributesWithRace);
 

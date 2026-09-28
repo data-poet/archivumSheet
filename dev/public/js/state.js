@@ -11,6 +11,7 @@ export const state = {
     firearms: [],
     materials: [],
     races: [],
+    metaRaces: [],
     ammo: [],
     ammo_containers: [],
     alchemy: [],
@@ -78,6 +79,7 @@ export const state = {
     // roster survives autosave.
     allies: [],
     alliesActiveId: null,
+    meta_race_ids: [],
     armors: [],
     shields: [],
     melee_weapons: [],
