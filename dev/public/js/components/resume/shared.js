@@ -1,7 +1,9 @@
 // Cross-section resume helpers: the collapsible-section machinery and the two
 // stepper cells reused by the equipment and supplies sections.
 
+import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 
 const _collapseOpen = new Map();
 
@@ -122,6 +124,89 @@ export function bindCollapse(container) {
   btn.setAttribute("aria-expanded", String(isOpen));
   const arrow = btn.querySelector(".resume-expander-arrow");
   if (arrow) arrow.classList.toggle("resume-expander-arrow--open", isOpen);
+}
+
+// Shared shape for melee/ranged/firearms' equipped-weapon tables: a name column, caller-supplied
+// stat columns, an HP stepper (maxHp computed per weapon type — melee alone falls back to a
+// derived value when weapon_final_hit_points is absent, so that stays a per-caller function
+// rather than a fixed field name), and an optional extra column (firearms' loaded-rounds stepper).
+export function renderResumeWeaponTable({
+  containerId,
+  title,
+  weapons,
+  columns,
+  hpCssClass,
+  computeMaxHp,
+  editable,
+  extraHeader = "",
+  extraCell = null,
+}) {
+  const container = el(containerId);
+  if (!container) return;
+
+  if (weapons.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+
+  const rows = weapons
+    .map((w) => {
+      const maxHp = computeMaxHp(w);
+      const modifier = w.hit_points_modifier ?? 0;
+      const actualHp = calcActualHp(maxHp, modifier);
+      const instanceId = w._instanceId ?? "";
+
+      const hpCell =
+        maxHp > 0
+          ? hpStepperCell({
+              cssClass: hpCssClass,
+              dataAttrs: `data-instance-id="${instanceId}"`,
+              maxHp,
+              modifier,
+              actualHp,
+              editable,
+            })
+          : `<td></td>`;
+
+      const statCells = columns
+        .map((col) => `<td class="col-num">${col.cell(w)}</td>`)
+        .join("");
+
+      return `
+        <tr>
+          <td>${w.weapon_name ?? "—"}</td>
+          ${statCells}
+          ${hpCell}
+          ${extraCell ? extraCell(w, instanceId) : ""}
+        </tr>
+      `;
+    })
+    .join("");
+
+  const headerCells = columns
+    .map((col) => `<th class="col-num">${col.header}</th>`)
+    .join("");
+
+  container.innerHTML = `
+    ${collapsibleHeader(title)}
+    <div class="resume-collapse-body">
+      <div class="table-wrapper">
+        <table class="resume-table">
+          <thead>
+            <tr>
+              <th>${t("common.name")}</th>
+              ${headerCells}
+              <th class="col-num">${t("armor.hp")}</th>
+              ${extraHeader}
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  bindCollapse(container);
 }
 
 export function renderCollapsibleNameList(containerId, entries, title) {

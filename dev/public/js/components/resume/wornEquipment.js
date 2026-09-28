@@ -4,7 +4,12 @@
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
-import { collapsibleHeader, bindCollapse, hpStepperCell } from "./shared.js";
+import {
+  collapsibleHeader,
+  bindCollapse,
+  hpStepperCell,
+  renderResumeWeaponTable,
+} from "./shared.js";
 
 const ARMOR_SLOTS = [
   { key: "head", label: "Cabeça" },
@@ -130,135 +135,43 @@ export function renderResumeShield(sheet, { editable = true } = {}) {
   bindCollapse(container);
 }
 
+// Melee alone falls back to a derived max HP (final_hit_points minus the modifier) when
+// weapon_final_hit_points is absent; ranged/firearms only ever trust weapon_final_hit_points.
+function meleeMaxHp(w) {
+  if (w.weapon_final_hit_points != null) return w.weapon_final_hit_points;
+  return w.final_hit_points != null
+    ? w.final_hit_points - (w.hit_points_modifier ?? 0)
+    : 0;
+}
+
 export function renderResumeMelee(sheet, { editable = true } = {}) {
-  const equipped = sheet?.inventory?.melee?.equipped ?? [];
-  const container = el("resume_melee_container");
-  if (!container) return;
-
-  if (equipped.length === 0) {
-    container.hidden = true;
-    return;
-  }
-  container.hidden = false;
-
-  const rows = equipped
-    .map((w) => {
-      const maxHp =
-        w.final_hit_points != null
-          ? w.final_hit_points - (w.hit_points_modifier ?? 0)
-          : 0;
-      // Prefer weapon_final_hit_points from the resolver over the derived maxHp when available.
-      const baseMaxHp = w.weapon_final_hit_points ?? maxHp;
-      const modifier = w.hit_points_modifier ?? 0;
-      const actualHp = calcActualHp(baseMaxHp, modifier);
-      const instanceId = w._instanceId ?? "";
-
-      const hpCell =
-        baseMaxHp > 0
-          ? hpStepperCell({
-              cssClass: "resume-melee-hp",
-              dataAttrs: `data-instance-id="${instanceId}"`,
-              maxHp: baseMaxHp,
-              modifier,
-              actualHp,
-              editable,
-            })
-          : `<td></td>`;
-
-      return `
-        <tr>
-          <td>${w.weapon_name ?? "—"}</td>
-          <td class="col-num">${w.weapon_reach ?? "—"}</td>
-          <td class="col-num">${w.weapon_bal_damage ?? "—"}</td>
-          <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
-          ${hpCell}
-        </tr>
-      `;
-    })
-    .join("");
-
-  container.innerHTML = `
-    ${collapsibleHeader(t("sections.melee"))}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("melee.reach")}</th>
-              <th class="col-num">${t("melee.balDmg")}</th>
-              <th class="col-num">${t("melee.gdpDmg")}</th>
-              <th class="col-num">${t("armor.hp")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
-  bindCollapse(container);
+  renderResumeWeaponTable({
+    containerId: "resume_melee_container",
+    title: t("sections.melee"),
+    weapons: sheet?.inventory?.melee?.equipped ?? [],
+    hpCssClass: "resume-melee-hp",
+    computeMaxHp: meleeMaxHp,
+    editable,
+    columns: [
+      { header: t("melee.reach"), cell: (w) => w.weapon_reach ?? "—" },
+      { header: t("melee.balDmg"), cell: (w) => w.weapon_bal_damage ?? "—" },
+      { header: t("melee.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },
+    ],
+  });
 }
 
 export function renderResumeRanged(sheet, { editable = true } = {}) {
-  const equipped = sheet?.inventory?.ranged?.equipped ?? [];
-  const container = el("resume_ranged_container");
-  if (!container) return;
-
-  if (equipped.length === 0) {
-    container.hidden = true;
-    return;
-  }
-  container.hidden = false;
-
-  const rows = equipped
-    .map((w) => {
-      const baseMaxHp = w.weapon_final_hit_points ?? 0;
-      const modifier = w.hit_points_modifier ?? 0;
-      const actualHp = calcActualHp(baseMaxHp, modifier);
-      const instanceId = w._instanceId ?? "";
-
-      const hpCell =
-        baseMaxHp > 0
-          ? hpStepperCell({
-              cssClass: "resume-ranged-hp",
-              dataAttrs: `data-instance-id="${instanceId}"`,
-              maxHp: baseMaxHp,
-              modifier,
-              actualHp,
-              editable,
-            })
-          : `<td></td>`;
-
-      return `
-        <tr>
-          <td>${w.weapon_name ?? "—"}</td>
-          <td class="col-num">${w.weapon_tr ?? "—"}</td>
-          <td class="col-num">${w.weapon_prec ?? "—"}</td>
-          <td class="col-num">${w.weapon_gdp_damage ?? "—"}</td>
-          ${hpCell}
-        </tr>
-      `;
-    })
-    .join("");
-
-  container.innerHTML = `
-    ${collapsibleHeader(t("sections.ranged"))}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("ranged.tr")}</th>
-              <th class="col-num">${t("ranged.prec")}</th>
-              <th class="col-num">${t("ranged.gdpDmg")}</th>
-              <th class="col-num">${t("armor.hp")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
-  bindCollapse(container);
+  renderResumeWeaponTable({
+    containerId: "resume_ranged_container",
+    title: t("sections.ranged"),
+    weapons: sheet?.inventory?.ranged?.equipped ?? [],
+    hpCssClass: "resume-ranged-hp",
+    computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
+    editable,
+    columns: [
+      { header: t("ranged.tr"), cell: (w) => w.weapon_tr ?? "—" },
+      { header: t("ranged.prec"), cell: (w) => w.weapon_prec ?? "—" },
+      { header: t("ranged.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },
+    ],
+  });
 }
