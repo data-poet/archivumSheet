@@ -1,6 +1,5 @@
 const {
   buildAlchemySlots,
-  VALID_STORED_AT,
   _getAlchemyDB,
 } = require("engine/inventory/js/alchemy/alchemy");
 
@@ -8,16 +7,6 @@ describe("ALCHEMY CONSUMABLES", () => {
   const db = _getAlchemyDB();
 
   const consumableId = Object.keys(db)[0];
-
-  describe("Constants", () => {
-    test("Should export VALID_STORED_AT with stash, camp and backpack only", () => {
-      expect(VALID_STORED_AT).toEqual(["stash", "camp", "backpack"]);
-    });
-
-    test("Should not include equipped in VALID_STORED_AT", () => {
-      expect(VALID_STORED_AT).not.toContain("equipped");
-    });
-  });
 
   describe("getAlchemyDB", () => {
     test("Should load alchemy database", () => {

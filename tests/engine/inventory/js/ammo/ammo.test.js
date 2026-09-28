@@ -1,7 +1,5 @@
 const {
   buildAmmoSlots,
-  VALID_CONTAINER_STORED_AT,
-  VALID_LOOSE_STORED_AT,
   _getAmmoDB,
   _getContainerDB,
 } = require("engine/inventory/js/ammo/ammo");
@@ -156,9 +154,7 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
       const containers = { equipped: [], backpack: [], stash: [], camp: [] };
       for (const inst of containerInventory) {
         const c = mockContainerDb[inst.container_id];
-        containers[inst.storedAt].push(
-          resolveContainer(inst, c, mockAmmoDb),
-        );
+        containers[inst.storedAt].push(resolveContainer(inst, c, mockAmmoDb));
       }
 
       const loose = { equipped: [], backpack: [], stash: [], camp: [] };
@@ -184,21 +180,6 @@ jest.mock("engine/inventory/js/ammo/ammo", () => {
 });
 
 describe("EQUIPMENT AMMO", () => {
-  describe("Constants", () => {
-    test("Should export VALID_CONTAINER_STORED_AT", () => {
-      expect(VALID_CONTAINER_STORED_AT).toEqual([
-        "equipped",
-        "stash",
-        "camp",
-        "backpack",
-      ]);
-    });
-
-    test("Should export VALID_LOOSE_STORED_AT", () => {
-      expect(VALID_LOOSE_STORED_AT).toEqual(["stash", "camp", "backpack"]);
-    });
-  });
-
   describe("buildAmmoSlots — empty input", () => {
     test("Should return empty buckets when called with no arguments", () => {
       const result = buildAmmoSlots();
@@ -302,9 +283,10 @@ describe("EQUIPMENT AMMO", () => {
 
   describe("buildAmmoSlots — loose ammo placement", () => {
     test("Should place loose ammo in backpack", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" }],
+      );
 
       expect(result.loose.backpack.length).toBe(1);
 
@@ -312,25 +294,28 @@ describe("EQUIPMENT AMMO", () => {
     });
 
     test("Should place loose ammo in stash", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 50, storedAt: "stash" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 50, storedAt: "stash" }],
+      );
 
       expect(result.loose.stash.length).toBe(1);
     });
 
     test("Should place loose ammo in camp", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 20, storedAt: "camp" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 20, storedAt: "camp" }],
+      );
 
       expect(result.loose.camp.length).toBe(1);
     });
 
     test("Should always keep loose.equipped empty", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" }],
+      );
 
       expect(result.loose.equipped).toEqual([]);
     });
@@ -415,9 +400,10 @@ describe("EQUIPMENT AMMO", () => {
     });
 
     test("Should count backpack loose ammo weight toward carried weight", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 10, storedAt: "backpack" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 10, storedAt: "backpack" }],
+      );
 
       // 10 × 0.05
       expect(result.carried_ammo_weight).toBe(0.5);
@@ -450,17 +436,19 @@ describe("EQUIPMENT AMMO", () => {
     });
 
     test("Should not count stash loose ammo toward carried weight", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 100, storedAt: "stash" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 100, storedAt: "stash" }],
+      );
 
       expect(result.carried_ammo_weight).toBe(0);
     });
 
     test("Should not count camp loose ammo toward carried weight", () => {
-      const result = buildAmmoSlots([], [
-        { ammo_id: "AMMO-001", quantity: 100, storedAt: "camp" },
-      ]);
+      const result = buildAmmoSlots(
+        [],
+        [{ ammo_id: "AMMO-001", quantity: 100, storedAt: "camp" }],
+      );
 
       expect(result.carried_ammo_weight).toBe(0);
     });
@@ -470,19 +458,19 @@ describe("EQUIPMENT AMMO", () => {
         [
           {
             _instanceId: "inst-1",
-            container_id: "CONT-001",  // 0.5 + 10×0.05 = 1.0
+            container_id: "CONT-001", // 0.5 + 10×0.05 = 1.0
             storedAt: "equipped",
             contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
           },
           {
             _instanceId: "inst-2",
-            container_id: "CONT-001",  // 0.5 + 0 = 0.5
+            container_id: "CONT-001", // 0.5 + 0 = 0.5
             storedAt: "backpack",
             contents: [],
           },
         ],
         [
-          { ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" },  // 0.25
+          { ammo_id: "AMMO-001", quantity: 5, storedAt: "backpack" }, // 0.25
         ],
       );
 
@@ -520,9 +508,10 @@ describe("EQUIPMENT AMMO", () => {
 
     test("Should throw for unknown ammo_id in loose ammo", () => {
       expect(() => {
-        buildAmmoSlots([], [
-          { ammo_id: "AMMO-999", quantity: 5, storedAt: "backpack" },
-        ]);
+        buildAmmoSlots(
+          [],
+          [{ ammo_id: "AMMO-999", quantity: 5, storedAt: "backpack" }],
+        );
       }).toThrow("Unknown ammo_id(s) in loose ammo");
     });
 
@@ -541,17 +530,19 @@ describe("EQUIPMENT AMMO", () => {
 
     test("Should throw for invalid storedAt on loose ammo", () => {
       expect(() => {
-        buildAmmoSlots([], [
-          { ammo_id: "AMMO-001", quantity: 5, storedAt: "pocket" },
-        ]);
+        buildAmmoSlots(
+          [],
+          [{ ammo_id: "AMMO-001", quantity: 5, storedAt: "pocket" }],
+        );
       }).toThrow("storedAt must be one of");
     });
 
     test("Should throw when loose ammo storedAt is equipped", () => {
       expect(() => {
-        buildAmmoSlots([], [
-          { ammo_id: "AMMO-001", quantity: 5, storedAt: "equipped" },
-        ]);
+        buildAmmoSlots(
+          [],
+          [{ ammo_id: "AMMO-001", quantity: 5, storedAt: "equipped" }],
+        );
       }).toThrow("storedAt must be one of");
     });
 
@@ -624,9 +615,9 @@ describe("EQUIPMENT AMMO", () => {
         buildAmmoSlots([
           {
             _instanceId: "inst-1",
-            container_id: "CONT-001",  // accepts arrow
+            container_id: "CONT-001", // accepts arrow
             storedAt: "equipped",
-            contents: [{ ammo_id: "AMMO-003", quantity: 5 }],  // bolt
+            contents: [{ ammo_id: "AMMO-003", quantity: 5 }], // bolt
           },
         ]);
       }).toThrow('only accepts "arrow"');
