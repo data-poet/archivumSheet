@@ -8,6 +8,40 @@ const _collapseOpen = new Map();
 // A consult-only cell deliberately carries neither an <input> nor the stepper's class:
 // the delegated handlers in engine/**/events.js match on that class, so omitting it makes
 // an unwritable sheet (an ally) structurally unable to dispatch a write, not just guarded.
+function stepperCell({
+  tdClass = "",
+  wrapped = true,
+  cssClass,
+  dataAttrs,
+  inputAttrs = "",
+  inputStyle = "",
+  value,
+  suffix = "",
+}) {
+  const stepper = `
+        <div class="num-stepper">
+          <input
+            type="text"
+            inputmode="numeric"
+            class="${cssClass}"
+            ${dataAttrs}
+            ${inputAttrs}
+            value="${value}"
+            ${inputStyle ? `style="${inputStyle}"` : ""}
+          />
+          <div class="stepper-btns">
+            <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+            <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+          </div>
+        </div>`;
+
+  const body = wrapped
+    ? `<div class="hp-modifier">${stepper}${suffix}</div>`
+    : stepper;
+
+  return `<td${tdClass ? ` class="${tdClass}"` : ""}>${body}</td>`;
+}
+
 export function hpStepperCell({
   cssClass,
   dataAttrs,
@@ -16,36 +50,13 @@ export function hpStepperCell({
   actualHp,
   editable = true,
 }) {
+  const actual = `<strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>`;
+
   if (!editable) {
-    return `
-    <td>
-      <div class="hp-modifier">
-        <strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>
-      </div>
-    </td>
-  `;
+    return `<td><div class="hp-modifier">${actual}</div></td>`;
   }
 
-  return `
-    <td>
-      <div class="hp-modifier">
-        <div class="num-stepper">
-          <input
-            type="text"
-            inputmode="numeric"
-            class="${cssClass}"
-            ${dataAttrs}
-            value="${modifier}"
-          />
-          <div class="stepper-btns">
-            <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-            <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-          </div>
-        </div>
-        <strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>
-      </div>
-    </td>
-  `;
+  return stepperCell({ cssClass, dataAttrs, value: modifier, suffix: actual });
 }
 
 export function roundsStepperCell({
@@ -55,38 +66,19 @@ export function roundsStepperCell({
   roundsLoaded,
   editable = true,
 }) {
+  const suffix = `/ <strong>${magazineSize}</strong>`;
+
   if (!editable) {
-    return `
-    <td>
-      <div class="hp-modifier">
-        <strong>${roundsLoaded}</strong> / <strong>${magazineSize}</strong>
-      </div>
-    </td>
-  `;
+    return `<td><div class="hp-modifier"><strong>${roundsLoaded}</strong> ${suffix}</div></td>`;
   }
 
-  return `
-    <td>
-      <div class="hp-modifier">
-        <div class="num-stepper">
-          <input
-            type="text"
-            inputmode="numeric"
-            class="${cssClass}"
-            ${dataAttrs}
-            data-min="0"
-            data-max="${magazineSize}"
-            value="${roundsLoaded}"
-          />
-          <div class="stepper-btns">
-            <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-            <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-          </div>
-        </div>
-        / <strong>${magazineSize}</strong>
-      </div>
-    </td>
-  `;
+  return stepperCell({
+    cssClass,
+    dataAttrs,
+    inputAttrs: `data-min="0" data-max="${magazineSize}"`,
+    value: roundsLoaded,
+    suffix,
+  });
 }
 
 export function quantityStepperCell({
@@ -99,24 +91,14 @@ export function quantityStepperCell({
     return `<td class="col-num">${quantity}</td>`;
   }
 
-  return `
-    <td class="col-num">
-      <div class="num-stepper">
-        <input
-          type="text"
-          inputmode="numeric"
-          class="${cssClass}"
-          ${dataAttrs}
-          value="${quantity}"
-          style="width:50px"
-        />
-        <div class="stepper-btns">
-          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-        </div>
-      </div>
-    </td>
-  `;
+  return stepperCell({
+    tdClass: "col-num",
+    wrapped: false,
+    cssClass,
+    dataAttrs,
+    inputStyle: "width:50px",
+    value: quantity,
+  });
 }
 
 export function collapsibleHeader(title) {
