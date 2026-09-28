@@ -1,53 +1,18 @@
 const { VALID_STORED_AT } = require("./armorConstants");
 
 const {
-  validateEnchantmentEntryShape,
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
+const {
+  validateEquippableInstance,
+} = require("../shared/equippableValidation.js");
 
 function validateArmorInstance(instance, index) {
-  const errors = [];
-
-  const prefix = `armorInventory[${index}]`;
-
-  if (!instance || typeof instance !== "object") {
-    return [`${prefix}: must be an object`];
-  }
-
-  if (typeof instance.armor_id !== "string" || !instance.armor_id) {
-    errors.push(`${prefix}: armor_id is required`);
-  }
-
-  if (typeof instance.is_equipped !== "boolean") {
-    errors.push(`${prefix}: is_equipped must be a boolean`);
-  }
-
-  if (instance.is_equipped === true && instance.storedAt !== null) {
-    errors.push(`${prefix}: storedAt must be null when is_equipped is true`);
-  }
-
-  if (
-    instance.is_equipped === false &&
-    !VALID_STORED_AT.includes(instance.storedAt)
-  ) {
-    errors.push(
-      `${prefix}: storedAt must be one of [${VALID_STORED_AT.join(", ")}] when not equipped`,
-    );
-  }
-
-  if (instance.enchantments !== undefined) {
-    if (!Array.isArray(instance.enchantments)) {
-      errors.push(`${prefix}: enchantments must be an array when present`);
-    } else {
-      instance.enchantments.forEach((entry, entryIndex) => {
-        errors.push(
-          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
-        );
-      });
-    }
-  }
-
-  return errors;
+  return validateEquippableInstance(instance, index, {
+    idField: "armor_id",
+    prefix: `armorInventory[${index}]`,
+    validStoredAt: VALID_STORED_AT,
+  });
 }
 
 // Unlike accessories' single fixed category, armor's itemCategory is per-instance (each piece's own armor_piece_location) — a helmet enchantment isn't necessarily allowed on boots.
