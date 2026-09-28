@@ -1,16 +1,15 @@
-jest.mock("dev/public/js/ui.js", () => ({
-  renderListsPreserving: jest.fn(),
-}));
-jest.mock("dev/public/js/compute/autorun.js", () => ({
-  triggerAutoRun: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/races/model.js", () => ({
-  restoreRaceSelection: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/portrait/portrait.js", () => ({
-  renderCharacterImage: jest.fn(),
-  renderResumeImage: jest.fn(),
-}));
+jest.mock("dev/public/js/ui.js", () =>
+  require("tests/dev/helpers/mocks/uiMock.js"),
+);
+jest.mock("dev/public/js/compute/autorun.js", () =>
+  require("tests/dev/helpers/mocks/autorunMock.js"),
+);
+jest.mock("dev/public/js/engine/character/races/model.js", () =>
+  require("tests/dev/helpers/mocks/racesModelMock.js"),
+);
+jest.mock("dev/public/js/engine/character/portrait/portrait.js", () =>
+  require("tests/dev/helpers/mocks/portraitMock.js"),
+);
 
 import { renderListsPreserving } from "dev/public/js/ui.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
@@ -284,7 +283,9 @@ describe("exportSheet", () => {
             kind: "character",
             data: {
               character: {
-                allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} }],
+                allies: [
+                  { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
+                ],
               },
             },
           },
@@ -293,7 +294,12 @@ describe("exportSheet", () => {
             name: "Fido",
             race: "",
             kind: "ally",
-            data: { pc: { character_name: "Fido" }, race: {}, character: {}, inventory: {} },
+            data: {
+              pc: { character_name: "Fido" },
+              race: {},
+              character: {},
+              inventory: {},
+            },
           },
         ],
       }),
@@ -306,7 +312,12 @@ describe("exportSheet", () => {
     const parsed = JSON.parse(text);
 
     expect(parsed.linked_allies).toEqual({
-      "c-ally-1": { pc: { character_name: "Fido" }, race: {}, character: {}, inventory: {} },
+      "c-ally-1": {
+        pc: { character_name: "Fido" },
+        race: {},
+        character: {},
+        inventory: {},
+      },
     });
   });
 

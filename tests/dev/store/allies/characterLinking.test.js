@@ -1,16 +1,15 @@
-jest.mock("dev/public/js/ui.js", () => ({
-  renderListsPreserving: jest.fn(),
-}));
-jest.mock("dev/public/js/compute/autorun.js", () => ({
-  triggerAutoRun: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/races/model.js", () => ({
-  restoreRaceSelection: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/portrait/portrait.js", () => ({
-  renderCharacterImage: jest.fn(),
-  renderResumeImage: jest.fn(),
-}));
+jest.mock("dev/public/js/ui.js", () =>
+  require("tests/dev/helpers/mocks/uiMock.js"),
+);
+jest.mock("dev/public/js/compute/autorun.js", () =>
+  require("tests/dev/helpers/mocks/autorunMock.js"),
+);
+jest.mock("dev/public/js/engine/character/races/model.js", () =>
+  require("tests/dev/helpers/mocks/racesModelMock.js"),
+);
+jest.mock("dev/public/js/engine/character/portrait/portrait.js", () =>
+  require("tests/dev/helpers/mocks/portraitMock.js"),
+);
 jest.mock("dev/public/js/allies/catalog.js", () => ({
   getAlly: jest.fn(),
 }));
@@ -50,7 +49,9 @@ describe("listCharactersGrouped", () => {
         name: "Aria",
         race: "",
         kind: "character",
-        data: { character: { allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1" }] } },
+        data: {
+          character: { allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1" }] },
+        },
       },
       {
         id: "c-ally-1",
@@ -59,19 +60,43 @@ describe("listCharactersGrouped", () => {
         kind: "ally",
         data: { character: {} },
       },
-      { id: "pc-2", name: "Borin", race: "", kind: "character", data: { character: {} } },
+      {
+        id: "pc-2",
+        name: "Borin",
+        race: "",
+        kind: "character",
+        data: { character: {} },
+      },
     ]);
 
     expect(listCharactersGrouped()).toEqual([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", indented: false },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        indented: false,
+      },
       { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: true },
-      { id: "pc-2", name: "Borin", race: "", kind: "character", indented: false },
+      {
+        id: "pc-2",
+        name: "Borin",
+        race: "",
+        kind: "character",
+        indented: false,
+      },
     ]);
   });
 
   test("leaves an ally un-indented once no PC's roster references it anymore", () => {
     seedStore([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [] } },
+      },
       {
         id: "c-ally-1",
         name: "Fido",
@@ -82,7 +107,13 @@ describe("listCharactersGrouped", () => {
     ]);
 
     expect(listCharactersGrouped()).toEqual([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", indented: false },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        indented: false,
+      },
       { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: false },
     ]);
   });
@@ -91,13 +122,26 @@ describe("listCharactersGrouped", () => {
 describe("ally linking", () => {
   test("linkAllyToCharacter pushes an ordinary roster entry onto the target", () => {
     seedStore([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
     ]);
 
     linkAllyToCharacter("c-ally-1", "pc-1");
 
-    const roster = getStore().list.find((c) => c.id === "pc-1").data.character.allies;
+    const roster = getStore().list.find((c) => c.id === "pc-1").data.character
+      .allies;
     expect(roster).toEqual([
       { _instanceId: expect.any(String), ally_id: "c-ally-1", overrides: {} },
     ]);
@@ -106,8 +150,20 @@ describe("ally linking", () => {
 
   test("refuses to link when the target is itself an ally (decision #24)", () => {
     seedStore([
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
-      { id: "c-ally-2", name: "Rex", race: "", kind: "ally", data: { character: { allies: [] } } },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+      {
+        id: "c-ally-2",
+        name: "Rex",
+        race: "",
+        kind: "ally",
+        data: { character: { allies: [] } },
+      },
     ]);
 
     linkAllyToCharacter("c-ally-1", "c-ally-2");
@@ -117,15 +173,35 @@ describe("ally linking", () => {
 
   test("re-linking to a different character moves the roster entry rather than duplicating it", () => {
     seedStore([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
-      { id: "pc-2", name: "Borin", race: "", kind: "character", data: { character: { allies: [] } } },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [] } },
+      },
+      {
+        id: "pc-2",
+        name: "Borin",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
     ]);
 
     linkAllyToCharacter("c-ally-1", "pc-1");
     linkAllyToCharacter("c-ally-1", "pc-2");
 
-    expect(getStore().list.find((c) => c.id === "pc-1").data.character.allies).toEqual([]);
+    expect(
+      getStore().list.find((c) => c.id === "pc-1").data.character.allies,
+    ).toEqual([]);
     expect(
       getStore().list.find((c) => c.id === "pc-2").data.character.allies,
     ).toHaveLength(1);
@@ -141,12 +217,20 @@ describe("ally linking", () => {
         kind: "character",
         data: {
           character: {
-            allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} }],
+            allies: [
+              { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
+            ],
             alliesActiveId: "ai-1",
           },
         },
       },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
     ]);
 
     unlinkAlly("c-ally-1");
@@ -159,8 +243,20 @@ describe("ally linking", () => {
 
   test("unlinkAlly is a no-op when the ally isn't currently linked", () => {
     seedStore([
-      { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
     ]);
 
     expect(() => unlinkAlly("c-ally-1")).not.toThrow();
@@ -182,7 +278,13 @@ describe("ally linking", () => {
           },
         },
       },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", data: { character: {} } },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
     ]);
 
     expect(getLinkedAllies("pc-1")).toEqual([
@@ -199,19 +301,29 @@ describe("ally linking", () => {
         kind: "character",
         data: {
           character: {
-            allies: [{ _instanceId: "ai-1", ally_id: "old-ally-id", overrides: {} }],
+            allies: [
+              { _instanceId: "ai-1", ally_id: "old-ally-id", overrides: {} },
+            ],
           },
         },
       },
     ]);
 
     recreateLinkedAllies(
-      { "old-ally-id": { pc: { character_name: "Fido" }, race: {}, character: {}, inventory: {} } },
+      {
+        "old-ally-id": {
+          pc: { character_name: "Fido" },
+          race: {},
+          character: {},
+          inventory: {},
+        },
+      },
       "pc-1",
     );
 
     const store = getStore();
-    const roster = store.list.find((c) => c.id === "pc-1").data.character.allies;
+    const roster = store.list.find((c) => c.id === "pc-1").data.character
+      .allies;
     expect(roster).toHaveLength(1);
     expect(roster[0].ally_id).not.toBe("old-ally-id");
 
@@ -223,7 +335,13 @@ describe("ally linking", () => {
   describe("forkAndLinkAllyToCharacter", () => {
     test("forks a catalog ally into a new local entry and links it under the owner", async () => {
       seedStore([
-        { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+        {
+          id: "pc-1",
+          name: "Aria",
+          race: "",
+          kind: "character",
+          data: { character: { allies: [] } },
+        },
       ]);
       getAlly.mockResolvedValue({
         version: 1,
@@ -241,7 +359,8 @@ describe("ally linking", () => {
       expect(newAlly.kind).toBe("ally");
       expect(newAlly.name).toBe("Wolf");
 
-      const roster = store.list.find((c) => c.id === "pc-1").data.character.allies;
+      const roster = store.list.find((c) => c.id === "pc-1").data.character
+        .allies;
       expect(roster).toEqual([
         { _instanceId: expect.any(String), ally_id: newId, overrides: {} },
       ]);
@@ -250,7 +369,13 @@ describe("ally linking", () => {
 
     test("returns null when the ally id doesn't resolve", async () => {
       seedStore([
-        { id: "pc-1", name: "Aria", race: "", kind: "character", data: { character: { allies: [] } } },
+        {
+          id: "pc-1",
+          name: "Aria",
+          race: "",
+          kind: "character",
+          data: { character: { allies: [] } },
+        },
       ]);
       getAlly.mockResolvedValue(null);
 

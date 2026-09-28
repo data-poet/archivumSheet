@@ -1,16 +1,15 @@
-jest.mock("dev/public/js/ui.js", () => ({
-  renderListsPreserving: jest.fn(),
-}));
-jest.mock("dev/public/js/compute/autorun.js", () => ({
-  triggerAutoRun: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/races/model.js", () => ({
-  restoreRaceSelection: jest.fn(),
-}));
-jest.mock("dev/public/js/engine/character/portrait/portrait.js", () => ({
-  renderCharacterImage: jest.fn(),
-  renderResumeImage: jest.fn(),
-}));
+jest.mock("dev/public/js/ui.js", () =>
+  require("tests/dev/helpers/mocks/uiMock.js"),
+);
+jest.mock("dev/public/js/compute/autorun.js", () =>
+  require("tests/dev/helpers/mocks/autorunMock.js"),
+);
+jest.mock("dev/public/js/engine/character/races/model.js", () =>
+  require("tests/dev/helpers/mocks/racesModelMock.js"),
+);
+jest.mock("dev/public/js/engine/character/portrait/portrait.js", () =>
+  require("tests/dev/helpers/mocks/portraitMock.js"),
+);
 
 import { renderListsPreserving } from "dev/public/js/ui.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
