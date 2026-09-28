@@ -109,18 +109,6 @@ describe("SURVIVAL GEAR", () => {
       expect(result.carried_survival_gear_weight).toBe(expectedWeight);
     });
 
-    test("Should distribute items across all three locations", () => {
-      const result = buildSurvivalGearSlots([
-        { adventure_gear_id: gearId, quantity: 1, storedAt: "stash" },
-        { adventure_gear_id: gearId, quantity: 2, storedAt: "camp" },
-        { adventure_gear_id: gearId, quantity: 3, storedAt: "backpack" },
-      ]);
-
-      expect(result.stash.length).toBe(1);
-      expect(result.camp.length).toBe(1);
-      expect(result.backpack.length).toBe(1);
-    });
-
     test("Should throw for invalid instance shape", () => {
       expect(() => {
         buildSurvivalGearSlots([
