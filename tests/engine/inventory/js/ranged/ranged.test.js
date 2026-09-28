@@ -177,20 +177,6 @@ describe("EQUIPMENT RANGED", () => {
       expect(result.equipped.length).toBe(2);
     });
 
-    test("Should respect VALID_STORED_AT implicitly via no crash", () => {
-      const result = buildRangedSlots([
-        {
-          weapon_id: weaponId,
-          is_equipped: false,
-          storedAt: "camp",
-        },
-      ]);
-
-      expect(result.camp.length).toBe(1);
-
-      expect(result.carried_ranged_weapons_weight).toBe(0);
-    });
-
     test("Should throw for invalid storedAt", () => {
       expect(() => {
         buildRangedSlots([

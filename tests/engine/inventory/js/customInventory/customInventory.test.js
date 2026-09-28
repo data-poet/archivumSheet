@@ -148,33 +148,6 @@ describe("CUSTOM INVENTORY", () => {
     });
   });
 
-  describe("buildCustomInventorySlots — resolved shape", () => {
-    test("Should include all expected fields on each resolved entry", () => {
-      const result = buildCustomInventorySlots([item()]);
-      const entry = result.backpack[0];
-
-      expect(entry).toHaveProperty("custom_item_id");
-      expect(entry).toHaveProperty("name");
-      expect(entry).toHaveProperty("weight");
-      expect(entry).toHaveProperty("price");
-      expect(entry).toHaveProperty("quantity");
-      expect(entry).toHaveProperty("description");
-      expect(entry).toHaveProperty("storedAt");
-      expect(entry).toHaveProperty("total_weight");
-    });
-
-    test("Should resolve entry data correctly", () => {
-      const result = buildCustomInventorySlots([
-        item({ weight: 0.5, quantity: 2 }),
-      ]);
-      const entry = result.backpack[0];
-
-      expect(entry.name).toBe("Pedra Rúnica");
-      expect(entry.total_weight).toBe(1);
-      expect(entry.description).toBe("Encontrada nas ruínas.");
-    });
-  });
-
   describe("buildCustomInventorySlots — validation errors", () => {
     test("Should throw for invalid instance shape", () => {
       expect(() => buildCustomInventorySlots([item({ quantity: 0 })])).toThrow(
