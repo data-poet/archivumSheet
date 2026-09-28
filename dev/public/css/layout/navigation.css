@@ -81,6 +81,12 @@
   font-size: 14px;
 }
 
+/* Mobile topbar is the tightest layout in the app; the icon alone (plus its aria-label)
+   is enough to identify the view/edit toggle, so the wordmark waits for desktop. */
+.view-mode-btn-label {
+  display: none;
+}
+
 /* icon-only, to keep the already-tight mobile topbar from getting any tighter */
 .topbar-btn-icon-only {
   padding: var(--space-3) var(--space-4);
@@ -191,6 +197,11 @@
   .l-topbar--sheet .topbar-logo-name {
     display: block;
   }
+
+  .view-mode-btn-label {
+    display: inline;
+  }
+
   .l-bottomnav {
     display: none;
   }

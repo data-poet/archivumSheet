@@ -36,7 +36,7 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(false);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(t("viewMode.btnView"));
+    expect(btn.textContent).toBe(t("viewMode.iconView") + t("viewMode.btnView"));
     expect(btn.getAttribute("aria-label")).toBe(t("viewMode.ariaView"));
     expect(btn.getAttribute("aria-pressed")).toBe("false");
     expect(
@@ -53,7 +53,7 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(true);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(t("viewMode.btnEdit"));
+    expect(btn.textContent).toBe(t("viewMode.iconEdit") + t("viewMode.btnEdit"));
     expect(btn.getAttribute("aria-pressed")).toBe("true");
     expect(
       document
