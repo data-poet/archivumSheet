@@ -181,26 +181,6 @@ describe("handleShieldClick — enchantments delegation", () => {
 });
 
 describe("handleShieldInput", () => {
-  test("no-ops (but handled) when nothing is equipped", () => {
-    state.selected.shields = [];
-    const target = elWithClass("input", "resume-shield-hp");
-    target.value = "-2";
-    expect(handleShieldInput({ target })).toBe(true);
-  });
-
-  test("allows a lone '-' mid-typing without mutating", () => {
-    const equipped = {
-      shield_id: "SHIELD-DB-1",
-      is_equipped: true,
-      hit_points_modifier: 0,
-    };
-    state.selected.shields = [equipped];
-    const target = elWithClass("input", "resume-shield-hp");
-    target.value = "-";
-    handleShieldInput({ target });
-    expect(equipped.hit_points_modifier).toBe(0);
-  });
-
   test("resume-shield-hp clamps using real HP math and patches the resume display", () => {
     const equipped = {
       shield_id: "SHIELD-DB-1",

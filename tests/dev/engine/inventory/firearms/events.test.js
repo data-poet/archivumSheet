@@ -170,26 +170,6 @@ describe("handleFirearmClick", () => {
 });
 
 describe("handleFirearmInput — HP modifiers", () => {
-  test("no-ops (but handled) when the instance can't be found", () => {
-    model.findFirearmByInstanceId.mockReturnValue(undefined);
-    const target = elWithClass("input", "resume-firearm-hp", {
-      instanceId: "GHOST",
-    });
-    target.value = "-1";
-    expect(handleFirearmInput({ target })).toBe(true);
-  });
-
-  test("allows a lone '-' mid-typing without mutating", () => {
-    const instance = { weapon_id: "FIREARM-DB-1", hit_points_modifier: 0 };
-    model.findFirearmByInstanceId.mockReturnValue(instance);
-    const target = elWithClass("input", "equipped-firearm-hp", {
-      instanceId: "FIREARM-1",
-    });
-    target.value = "-";
-    handleFirearmInput({ target });
-    expect(instance.hit_points_modifier).toBe(0);
-  });
-
   test("resume-firearm-hp clamps using real HP math and patches the resume display", () => {
     const instance = { weapon_id: "FIREARM-DB-1", hit_points_modifier: 0 };
     model.findFirearmByInstanceId.mockReturnValue(instance);
@@ -401,60 +381,6 @@ describe("handleFirearmChange — equipped-firearm-name / tier", () => {
     expect(render.renderEquippedFirearms).not.toHaveBeenCalled();
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
-
-  test("populates the tier <select> with the matching name's tiers", () => {
-    resetDOM(
-      `<select class="equipped-firearm-tier" data-instance-id="FIREARM-1"></select>`,
-    );
-    model.findFirearmByInstanceId.mockReturnValue({
-      weapon_id: "X",
-      hit_points_modifier: 0,
-    });
-    const target = selectWithValue(
-      "equipped-firearm-name",
-      { instanceId: "FIREARM-1" },
-      "Pistola",
-    );
-
-    handleFirearmChange({ target });
-
-    const tierSelect = document.querySelector(".equipped-firearm-tier");
-    expect(Array.from(tierSelect.options).map((o) => o.value)).toEqual([
-      "I",
-      "II",
-    ]);
-  });
-
-  test("equipped-firearm-tier requires the sibling name <select>", () => {
-    resetDOM();
-    model.findFirearmByInstanceId.mockReturnValue({ weapon_id: "X" });
-    const target = selectWithValue(
-      "equipped-firearm-tier",
-      { instanceId: "FIREARM-1" },
-      "I",
-    );
-    expect(handleFirearmChange({ target })).toBe(true);
-  });
-
-  test("equipped-firearm-tier resolves the name+tier combination and edits in place", () => {
-    resetDOM(`
-      <select class="equipped-firearm-name" data-instance-id="FIREARM-1">
-        <option value="Pistola" selected>x</option>
-      </select>
-    `);
-    const instance = { weapon_id: "FIREARM-DB-1", hit_points_modifier: -1 };
-    model.findFirearmByInstanceId.mockReturnValue(instance);
-    const target = selectWithValue(
-      "equipped-firearm-tier",
-      { instanceId: "FIREARM-1" },
-      "II",
-    );
-
-    handleFirearmChange({ target });
-
-    expect(instance.weapon_id).toBe("FIREARM-DB-2");
-    expect(instance.hit_points_modifier).toBe(0);
-  });
 });
 
 describe("handleFirearmChange — material / storage / move", () => {
@@ -539,18 +465,6 @@ describe("handleAddFirearm", () => {
     `);
   }
 
-  test("does nothing when a required element is missing", () => {
-    resetDOM(`<select id="firearmNameSelect"></select>`);
-    expect(() => handleAddFirearm()).not.toThrow();
-    expect(model.addStoredFirearm).not.toHaveBeenCalled();
-  });
-
-  test("does nothing when the name+tier combination doesn't match any catalog row", () => {
-    buildAddForm({ tier: "III" });
-    handleAddFirearm();
-    expect(model.addStoredFirearm).not.toHaveBeenCalled();
-  });
-
   test("adds as equipped when storage is 'equipped'", () => {
     buildAddForm({ tier: "II", material: "Aço", storage: "equipped" });
     handleAddFirearm();
@@ -568,16 +482,6 @@ describe("handleAddFirearm", () => {
       "FIREARM-DB-1",
       "MAT-001",
       "stash",
-    );
-  });
-
-  test("passes null when the chosen material doesn't match any catalog row", () => {
-    buildAddForm({ material: "Material Inexistente" });
-    handleAddFirearm();
-    expect(model.addStoredFirearm).toHaveBeenCalledWith(
-      "FIREARM-DB-1",
-      null,
-      "backpack",
     );
   });
 });

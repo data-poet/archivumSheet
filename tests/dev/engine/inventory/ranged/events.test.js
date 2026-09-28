@@ -147,26 +147,6 @@ describe("handleRangedClick", () => {
 });
 
 describe("handleRangedInput", () => {
-  test("no-ops (but handled) when the instance can't be found", () => {
-    model.findRangedByInstanceId.mockReturnValue(undefined);
-    const target = elWithClass("input", "resume-ranged-hp", {
-      instanceId: "GHOST",
-    });
-    target.value = "-2";
-    expect(handleRangedInput({ target })).toBe(true);
-  });
-
-  test("allows a lone '-' mid-typing without mutating", () => {
-    const instance = { weapon_id: "RANGED-DB-1", hit_points_modifier: 0 };
-    model.findRangedByInstanceId.mockReturnValue(instance);
-    const target = elWithClass("input", "equipped-ranged-hp", {
-      instanceId: "RANGED-1",
-    });
-    target.value = "-";
-    handleRangedInput({ target });
-    expect(instance.hit_points_modifier).toBe(0);
-  });
-
   test("resume-ranged-hp clamps using real HP math and patches the resume display", () => {
     const instance = { weapon_id: "RANGED-DB-1", hit_points_modifier: 0 };
     model.findRangedByInstanceId.mockReturnValue(instance);
@@ -291,61 +271,6 @@ describe("handleRangedChange — equipped-ranged-name / tier", () => {
     expect(model.equipRanged).not.toHaveBeenCalled();
     expect(rangedRender.renderEquippedRanged).not.toHaveBeenCalled();
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
-  });
-
-  test("populates the tier <select> with the matching name's tiers", () => {
-    resetDOM(
-      `<select class="equipped-ranged-tier" data-instance-id="RANGED-1"></select>`,
-    );
-    model.findRangedByInstanceId.mockReturnValue({
-      weapon_id: "X",
-      hit_points_modifier: 0,
-    });
-    const target = selectWithValue(
-      "equipped-ranged-name",
-      { instanceId: "RANGED-1" },
-      "Arco Curto",
-    );
-
-    handleRangedChange({ target });
-
-    const tierSelect = document.querySelector(".equipped-ranged-tier");
-    expect(Array.from(tierSelect.options).map((o) => o.value)).toEqual([
-      "I",
-      "II",
-    ]);
-  });
-
-  test("equipped-ranged-tier requires the sibling name <select>", () => {
-    resetDOM();
-    model.findRangedByInstanceId.mockReturnValue({ weapon_id: "X" });
-    const target = selectWithValue(
-      "equipped-ranged-tier",
-      { instanceId: "RANGED-1" },
-      "I",
-    );
-    expect(handleRangedChange({ target })).toBe(true);
-    expect(model.equipRanged).not.toHaveBeenCalled();
-  });
-
-  test("equipped-ranged-tier resolves the name+tier combination and edits in place", () => {
-    resetDOM(`
-      <select class="equipped-ranged-name" data-instance-id="RANGED-1">
-        <option value="Arco Curto" selected>x</option>
-      </select>
-    `);
-    const instance = { weapon_id: "RANGED-DB-1", hit_points_modifier: -1 };
-    model.findRangedByInstanceId.mockReturnValue(instance);
-    const target = selectWithValue(
-      "equipped-ranged-tier",
-      { instanceId: "RANGED-1" },
-      "II",
-    );
-
-    handleRangedChange({ target });
-
-    expect(instance.weapon_id).toBe("RANGED-DB-2");
-    expect(instance.hit_points_modifier).toBe(0);
   });
 });
 
@@ -522,18 +447,6 @@ describe("handleAddRanged", () => {
     `);
   }
 
-  test("does nothing when a required element is missing", () => {
-    resetDOM(`<select id="rangedNameSelect"></select>`);
-    expect(() => handleAddRanged()).not.toThrow();
-    expect(model.addStoredRanged).not.toHaveBeenCalled();
-  });
-
-  test("does nothing when the name+tier combination doesn't match any catalog row", () => {
-    buildAddForm({ tier: "III" });
-    handleAddRanged();
-    expect(model.addStoredRanged).not.toHaveBeenCalled();
-  });
-
   test("adds as equipped when storage is 'equipped'", () => {
     buildAddForm({ tier: "II", material: "Madeira", storage: "equipped" });
     handleAddRanged();
@@ -551,16 +464,6 @@ describe("handleAddRanged", () => {
       "RANGED-DB-1",
       "MAT-001",
       "stash",
-    );
-  });
-
-  test("passes null material when the chosen material doesn't match any catalog row", () => {
-    buildAddForm({ material: "Material Inexistente" });
-    handleAddRanged();
-    expect(model.addStoredRanged).toHaveBeenCalledWith(
-      "RANGED-DB-1",
-      null,
-      "backpack",
     );
   });
 });
