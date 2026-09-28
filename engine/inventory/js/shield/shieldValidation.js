@@ -1,55 +1,21 @@
 const { VALID_STORED_AT } = require("./shieldConstants");
 
 const {
-  validateEnchantmentEntryShape,
   validateEnchantmentEntryApplication,
 } = require("../shared/enchantmentsValidation.js");
+const {
+  validateEquippableInstance,
+} = require("../shared/equippableValidation.js");
 
 // Shields have no slot system, so this is one fixed constant rather than a per-instance lookup like armor's armor_piece_location.
 const SHIELD_ITEM_CATEGORY = "Escudos";
 
 function validateShieldInstance(instance, index) {
-  const errors = [];
-  const prefix = `shieldInventory[${index}]`;
-
-  if (!instance || typeof instance !== "object") {
-    return [`${prefix}: must be an object`];
-  }
-
-  if (typeof instance.shield_id !== "string" || !instance.shield_id) {
-    errors.push(`${prefix}: shield_id is required`);
-  }
-
-  if (typeof instance.is_equipped !== "boolean") {
-    errors.push(`${prefix}: is_equipped must be a boolean`);
-  }
-
-  if (instance.is_equipped === true && instance.storedAt !== null) {
-    errors.push(`${prefix}: storedAt must be null when is_equipped is true`);
-  }
-
-  if (
-    instance.is_equipped === false &&
-    !VALID_STORED_AT.includes(instance.storedAt)
-  ) {
-    errors.push(
-      `${prefix}: storedAt must be one of [${VALID_STORED_AT.join(", ")}] when not equipped`,
-    );
-  }
-
-  if (instance.enchantments !== undefined) {
-    if (!Array.isArray(instance.enchantments)) {
-      errors.push(`${prefix}: enchantments must be an array when present`);
-    } else {
-      instance.enchantments.forEach((entry, entryIndex) => {
-        errors.push(
-          ...validateEnchantmentEntryShape(entry, entryIndex, prefix),
-        );
-      });
-    }
-  }
-
-  return errors;
+  return validateEquippableInstance(instance, index, {
+    idField: "shield_id",
+    prefix: `shieldInventory[${index}]`,
+    validStoredAt: VALID_STORED_AT,
+  });
 }
 
 function validateShieldEnchantments(
