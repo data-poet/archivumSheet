@@ -138,7 +138,11 @@ describe("buildSheet payload — race", () => {
     expect(buildSheet.mock.calls[0][0].race).toEqual({});
   });
 
-  test("resolves the full race row, coercing modifiers to numbers", async () => {
+  // Coercion rules (modifiers to numbers, elemental multiplier defaulting, comma-split
+  // innate ids) are exhaustively covered directly against toEngineRace in
+  // enginePayload.test.js; this only confirms data.races actually reaches buildSheet
+  // through that mapper.
+  test("resolves the full race row and passes toEngineRace's output through to buildSheet", async () => {
     selected.character.race_id = "R1";
     state.data.races = [
       {
@@ -146,11 +150,6 @@ describe("buildSheet payload — race", () => {
         race_name: "Elfo",
         race_sub_name: "Elfo Silvestre",
         race_st_modifier: "-1",
-        race_dx_modifier: "2",
-        race_iq_modifier: "",
-        race_ht_modifier: "0",
-        race_innate_advantage_id: "ADV-001, ADV-002",
-        race_innate_advantage_name: "Visão Noturna, Ágil",
       },
     ];
 
@@ -159,45 +158,7 @@ describe("buildSheet payload — race", () => {
     const { race } = buildSheet.mock.calls[0][0];
     expect(race.race_id).toBe("R1");
     expect(race.race_sub_name).toBe("Elfo Silvestre");
-    expect(race.modifiers).toEqual({ ST: -1, DX: 2, IQ: 0, HT: 0 });
-    expect(race.innate_advantage_ids).toEqual(["ADV-001", "ADV-002"]);
-    expect(race.innate_advantage_names).toEqual(["Visão Noturna", "Ágil"]);
-    expect(race.innate_disadvantage_ids).toEqual([]);
-  });
-
-  test("resolves elemental_modifiers, defaulting blank/missing/non-numeric cells to 1 while preserving a literal 0", async () => {
-    selected.character.race_id = "R1";
-    state.data.races = [
-      {
-        race_id: "R1",
-        race_name: "Elfo",
-        race_fire_damage_multiplier: "0.5",
-        race_water_damage_multiplier: "",
-        race_electricity_damage_multiplier: "not-a-number",
-        // A literal 0 ("immune") must survive, not collapse to the 1 default a naive `Number(x) || 1` would give.
-        race_corrossion_damage_multiplier: "0",
-        race_necrotic_damage_multiplier: "2",
-        race_holy_damage_multiplier: "1",
-        race_void_damage_multiplier: "1",
-        race_arcane_damage_multiplier: "1.5",
-      },
-    ];
-
-    await runEngine();
-
-    const { race } = buildSheet.mock.calls[0][0];
-    expect(race.elemental_modifiers).toEqual({
-      Fire: 0.5,
-      Water: 1,
-      Air: 1,
-      Electricity: 1,
-      Earth: 1,
-      Corrosion: 0,
-      Necrotic: 2,
-      Holy: 1,
-      Void: 1,
-      Arcane: 1.5,
-    });
+    expect(race.modifiers.ST).toBe(-1);
   });
 });
 

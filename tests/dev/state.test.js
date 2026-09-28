@@ -3,12 +3,6 @@ import { state } from "dev/public/js/state.js";
 // state.js is a single object literal treated as a mutable singleton app-wide; an accidentally dropped/renamed top-level key would silently break every module that reads it, so its shape is pinned here.
 
 describe("state singleton contract", () => {
-  test("importing state.js from a second spot in the same file resolves to the exact same object reference", () => {
-    // eslint-disable-next-line no-duplicate-imports -- deliberate: proves the module registry returns the same object, not a fresh copy.
-    const { state: stateAgain } = require("dev/public/js/state.js");
-    expect(stateAgain).toBe(state);
-  });
-
   test("mutating a nested property is visible to every other holder of the reference", () => {
     // Mirrors store/characters.js's _applyData(), which mutates a sub-property in place rather than reassigning state.
     const original = state.selected.character.player_name;

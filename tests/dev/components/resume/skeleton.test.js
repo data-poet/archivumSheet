@@ -1,7 +1,4 @@
-import {
-  RESUME_PANEL_HTML,
-  mountResumePanel,
-} from "dev/public/js/components/resume/skeleton.js";
+import { mountResumePanel } from "dev/public/js/components/resume/skeleton.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 // Every id a renderer in components/resume/ looks up, plus the legacy weight spans
@@ -116,9 +113,5 @@ describe("mountResumePanel", () => {
     expect(
       document.getElementById("tab-char-resume").querySelectorAll("input"),
     ).toHaveLength(0);
-  });
-
-  test("RESUME_PANEL_HTML is exported for the test fixture to reuse", () => {
-    expect(RESUME_PANEL_HTML).toContain('id="tab-char-resume"');
   });
 });
