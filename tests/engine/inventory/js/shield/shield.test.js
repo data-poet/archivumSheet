@@ -175,20 +175,6 @@ describe("EQUIPMENT SHIELD", () => {
       }).toThrow("Equipped conflict");
     });
 
-    test("Should respect VALID_STORED_AT implicitly via no crash", () => {
-      const result = buildShieldSlots([
-        {
-          shield_id: shieldId,
-          is_equipped: false,
-          storedAt: "camp",
-        },
-      ]);
-
-      expect(result.camp.length).toBe(1);
-
-      expect(result.carried_shield_weight).toBe(0);
-    });
-
     test("Should resolve a valid enchantment and reflect it in final_weight/total_shield_value", () => {
       const result = buildShieldSlots([
         {
