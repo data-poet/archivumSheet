@@ -1,7 +1,4 @@
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("../shared/enchantmentMath.js");
 
 function resolveAlchemyConsumable(instance, consumable) {
   const total_weight = round2(consumable.consumable_weight * instance.quantity);

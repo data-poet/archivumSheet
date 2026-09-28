@@ -1,10 +1,7 @@
 const {
   resolveItemEnchantments,
 } = require("../shared/enchantmentsResolver.js");
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("../shared/enchantmentMath.js");
 
 // Unlike accessories, price/weight are entirely DB-driven — no user-input price field.
 function resolveMagicGearItem(

@@ -6,10 +6,7 @@ const {
   FLAT_EFFECT_TYPES,
   DIFFICULTY_TIER,
 } = require("./enchantmentsConstants.js");
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("./enchantmentMath.js");
 
 // value/extraPoints are signed (positive fortify, negative weaken) but price only cares about magnitude, so a weaken costs the same as the equivalent-strength fortify.
 // disadvantage_cost is stored negative in the DB, hence the abs() on advantage/disadvantage pricing.

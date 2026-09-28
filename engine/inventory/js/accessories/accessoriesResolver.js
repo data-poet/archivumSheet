@@ -1,10 +1,7 @@
 const {
   resolveItemEnchantments,
 } = require("../shared/enchantmentsResolver.js");
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("../shared/enchantmentMath.js");
 
 // Accessories have no DB-driven price (it's entirely user-input, since it's highly variable per item) but enchantment price is DB-driven and counts toward total_value regardless of equip state.
 function resolveAccessoryItem(

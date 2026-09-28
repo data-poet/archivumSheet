@@ -1,8 +1,5 @@
 const { COIN_WEIGHT, COIN_VALUE } = require("./coinPurseConstants");
-
-function round2(value) {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
+const { round2 } = require("../shared/enchantmentMath.js");
 
 function resolveCoin(instance) {
   const coin_weight = COIN_WEIGHT[instance.coin_type];
