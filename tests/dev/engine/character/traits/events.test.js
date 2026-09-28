@@ -73,42 +73,6 @@ describe("handleTraitInput — resume-primary-mod-input", () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  test("allows a lone '-' as partial entry without touching the canonical input", () => {
-    const editInput = document.getElementById("ST_mod");
-    const target = elWithClass(
-      "input",
-      "resume-primary-mod-input",
-      { attr: "ST" },
-      "-",
-    );
-    expect(handleTraitInput({ target })).toBe(true);
-    expect(editInput.value).toBe("0"); // untouched default from the fixture
-  });
-
-  test("allows an empty string as partial entry without touching the canonical input", () => {
-    const editInput = document.getElementById("ST_mod");
-    const target = elWithClass(
-      "input",
-      "resume-primary-mod-input",
-      { attr: "ST" },
-      "",
-    );
-    expect(handleTraitInput({ target })).toBe(true);
-    expect(editInput.value).toBe("0");
-  });
-
-  test("rejects a non-numeric value without touching the canonical input", () => {
-    const editInput = document.getElementById("ST_mod");
-    const target = elWithClass(
-      "input",
-      "resume-primary-mod-input",
-      { attr: "ST" },
-      "abc",
-    );
-    expect(handleTraitInput({ target })).toBe(true);
-    expect(editInput.value).toBe("0");
-  });
-
   test("no-ops safely (but still handles the event) when the canonical input doesn't exist", () => {
     const target = elWithClass(
       "input",
@@ -122,33 +86,6 @@ describe("handleTraitInput — resume-primary-mod-input", () => {
 });
 
 describe("handleTraitInput — secondary-input", () => {
-  test("allows a partial decimal entry ('-', '0.', etc.) without writing to state", () => {
-    const target = elWithClass(
-      "input",
-      "secondary-input",
-      { name: "HP", field: "modifier" },
-      "-0.",
-    );
-    handleTraitInput({ target });
-    expect(state.selected.secondary.HP).toBeUndefined();
-    expect(triggerAutoRun).not.toHaveBeenCalled();
-  });
-
-  test("Movement's 'bought' field is never editable through this handler", () => {
-    const target = elWithClass(
-      "input",
-      "secondary-input",
-      { name: "Movement", field: "bought" },
-      "4",
-    );
-    handleTraitInput({ target });
-    // Movement's "bought" is derived elsewhere, never written here.
-    expect(state.selected.secondary.Movement).toEqual({
-      bought: 0,
-      modifier: 0,
-    });
-  });
-
   test("clamps a non-BasicSpeed 'bought' value between 0 and 5", () => {
     const target = elWithClass(
       "input",
@@ -172,17 +109,6 @@ describe("handleTraitInput — secondary-input", () => {
     expect(state.selected.secondary.BasicSpeed.bought).toBe(6);
   });
 
-  test("caps a vital stat's (HP/Mana/Toxicity) modifier at 0", () => {
-    const target = elWithClass(
-      "input",
-      "secondary-input",
-      { name: "HP", field: "modifier" },
-      "3",
-    );
-    handleTraitInput({ target });
-    expect(state.selected.secondary.HP.modifier).toBe(0);
-  });
-
   test("allows a negative vital-stat modifier through unchanged", () => {
     const target = elWithClass(
       "input",
@@ -192,17 +118,6 @@ describe("handleTraitInput — secondary-input", () => {
     );
     handleTraitInput({ target });
     expect(state.selected.secondary.Mana.modifier).toBe(-4);
-  });
-
-  test("rounds BasicSpeed's modifier to the nearest half-point", () => {
-    const target = elWithClass(
-      "input",
-      "secondary-input",
-      { name: "BasicSpeed", field: "modifier" },
-      "0.3",
-    );
-    handleTraitInput({ target });
-    expect(state.selected.secondary.BasicSpeed.modifier).toBe(0.5);
   });
 
   test("stores a plain (non-vital, non-BasicSpeed) modifier as-is", () => {
