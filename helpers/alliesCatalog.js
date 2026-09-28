@@ -21,8 +21,9 @@ const TIER_LOGIC_CONFIG = require("../data/allies/tierLogic.config.json");
 
 // Allies are grouped into type subfolders (data/allies/animals/, data/allies/humanoids/, ...),
 // so the id alone doesn't say where the file lives. Built once and cached: a repo ally file
-// never moves within a running process.
+// never moves (or changes content) within a running process.
 let _pathsById = null;
+let _alliesById = null;
 
 function _walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -30,7 +31,11 @@ function _walk(dir) {
     if (entry.isDirectory()) return _walk(full);
     if (!entry.name.endsWith(".json")) return [];
 
-    return [[path.basename(entry.name, ".json"), full]];
+    // Excludes non-ally JSON living alongside ally files, e.g. tierLogic.config.json.
+    const id = path.basename(entry.name, ".json");
+    if (!ALLY_ID_PATTERN.test(id)) return [];
+
+    return [[id, full]];
   });
 }
 
@@ -58,36 +63,49 @@ function _tierList(type, subtype) {
   );
 }
 
+function _loadAlly(allyId, file) {
+  const { type, subtype } = _typeSubtype(file);
+  return {
+    ally_id: allyId,
+    type,
+    subtype,
+    tierList: _tierList(type, subtype),
+    ...loadJSON(file),
+  };
+}
+
+function _alliesFromDisk() {
+  if (_alliesById) return _alliesById;
+
+  _alliesById = new Map(
+    [..._pathsFromDisk()].map(([allyId, file]) => [
+      allyId,
+      _loadAlly(allyId, file),
+    ]),
+  );
+  return _alliesById;
+}
+
 // Returns null rather than throwing for an unknown id, so the caller decides the status code.
 function getAlly(allyId) {
   // A traversal-safe id check, not cosmetic: allyId arrives straight from the URL.
   if (!allyId || !ALLY_ID_PATTERN.test(allyId)) return null;
 
-  const file = _pathsFromDisk().get(allyId);
-  if (!file) return null;
-
-  const { type, subtype } = _typeSubtype(file);
-  return { ally_id: allyId, type, subtype, tierList: _tierList(type, subtype), ...loadJSON(file) };
+  return _alliesFromDisk().get(allyId) ?? null;
 }
 
 function listAllies() {
-  return [..._pathsFromDisk().keys()]
-    .sort()
-    .map((allyId) => {
-      const ally = getAlly(allyId);
-      if (!ally) return null;
-
-      return {
-        ally_id: allyId,
-        type: ally.type,
-        subtype: ally.subtype,
-        tierList: ally.tierList,
-        name: ally.pc?.character_name ?? "",
-        race: ally.race?.race_sub_name || ally.race?.race_name || "",
-        portrait: ally.portrait ?? "",
-      };
-    })
-    .filter(Boolean);
+  return [..._alliesFromDisk().values()]
+    .map((ally) => ({
+      ally_id: ally.ally_id,
+      type: ally.type,
+      subtype: ally.subtype,
+      tierList: ally.tierList,
+      name: ally.pc?.character_name ?? "",
+      race: ally.race?.race_sub_name || ally.race?.race_name || "",
+      portrait: ally.portrait ?? "",
+    }))
+    .sort((a, b) => a.ally_id.localeCompare(b.ally_id));
 }
 
 module.exports = {
