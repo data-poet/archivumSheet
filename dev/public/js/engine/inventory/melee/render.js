@@ -8,6 +8,7 @@ import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   renderStorageLocationBlock,
+  findInstance,
 } from "../shared/inventoryRenderUtils.js";
 import {
   materialOptions,
@@ -30,17 +31,13 @@ import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMeleeItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedMelee(sheet, instanceId) {
-  if (!sheet?.inventory?.melee) return null;
-  const inv = sheet.inventory.melee;
-  for (const bucket of [
-    ...(inv.equipped || []),
-    ...(inv.backpack || []),
-    ...(inv.stash || []),
-    ...(inv.camp || []),
-  ]) {
-    if (bucket && bucket._instanceId === instanceId) return bucket;
-  }
-  return null;
+  const inv = sheet?.inventory?.melee;
+  if (!inv) return null;
+
+  return findInstance(
+    [inv.equipped, inv.backpack, inv.stash, inv.camp],
+    instanceId,
+  );
 }
 
 // Melee-local wrapper around withEnchantmentBadge — same relationship shield/render.js's withShieldEnchantmentBadge has with it.

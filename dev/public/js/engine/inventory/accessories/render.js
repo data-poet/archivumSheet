@@ -13,7 +13,10 @@ import {
   escapeHtml,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  findInstance,
+} from "../shared/inventoryRenderUtils.js";
 import {
   equippedItemTabs,
   itemTabsDetailRow,
@@ -47,17 +50,14 @@ function displayName(inst, record) {
   return inst.accessory_custom_name || record.accessory_name;
 }
 
-// Mirrors resolvedArmor/resolvedMelee in their respective render files.
 function resolvedAccessory(sheet, instanceId) {
   const inv = sheet?.inventory?.accessories;
   if (!inv) return null;
 
-  for (const bucket of [inv.equipped, inv.stash, inv.camp, inv.backpack]) {
-    const found = (bucket || []).find((a) => a._instanceId === instanceId);
-    if (found) return found;
-  }
-
-  return null;
+  return findInstance(
+    [inv.equipped, inv.stash, inv.camp, inv.backpack],
+    instanceId,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

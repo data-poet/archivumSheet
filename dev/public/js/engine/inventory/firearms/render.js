@@ -9,6 +9,7 @@ import {
   hpModifierBlock,
   statModifierBlock,
   renderStorageLocationBlock,
+  findInstance,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -42,18 +43,14 @@ function withFirearmEnchantmentBadge(finalValue, delta, suffix = "") {
   });
 }
 
-export function resolvedFirearm(sheet, instanceId) {
-  if (!sheet?.inventory?.firearms) return null;
-  const inv = sheet.inventory.firearms;
-  for (const bucket of [
-    ...(inv.equipped || []),
-    ...(inv.backpack || []),
-    ...(inv.stash || []),
-    ...(inv.camp || []),
-  ]) {
-    if (bucket && bucket._instanceId === instanceId) return bucket;
-  }
-  return null;
+function resolvedFirearm(sheet, instanceId) {
+  const inv = sheet?.inventory?.firearms;
+  if (!inv) return null;
+
+  return findInstance(
+    [inv.equipped, inv.backpack, inv.stash, inv.camp],
+    instanceId,
+  );
 }
 
 function firearmDetailFields(resolved, weaponData) {

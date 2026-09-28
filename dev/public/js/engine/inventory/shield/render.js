@@ -8,6 +8,7 @@ import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   renderStorageLocationBlock,
+  findInstance,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -31,18 +32,14 @@ import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getShieldItemCategory } from "../shared/enchantments/model.js";
 
 function resolvedShield(sheet, instanceId) {
-  if (!sheet?.inventory?.shield) return null;
-  const inv = sheet.inventory.shield;
-  // equipped is a single object, storage buckets are arrays
-  for (const bucket of [
-    inv.equipped,
-    ...(inv.backpack || []),
-    ...(inv.stash || []),
-    ...(inv.camp || []),
-  ]) {
-    if (bucket && bucket._instanceId === instanceId) return bucket;
-  }
-  return null;
+  const inv = sheet?.inventory?.shield;
+  if (!inv) return null;
+
+  // equipped is a single object, storage buckets are arrays — findInstance handles both.
+  return findInstance(
+    [inv.equipped, inv.backpack, inv.stash, inv.camp],
+    instanceId,
+  );
 }
 
 function withShieldEnchantmentBadge(finalValue, delta, suffix = "") {

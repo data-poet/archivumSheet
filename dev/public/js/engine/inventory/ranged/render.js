@@ -8,6 +8,7 @@ import { resolveMaterial } from "../shared/durabilityUtils.js";
 import {
   hpModifierBlock,
   renderStorageLocationBlock,
+  findInstance,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -38,17 +39,13 @@ function withRangedEnchantmentBadge(finalValue, delta, suffix = "") {
 }
 
 function resolvedRanged(sheet, instanceId) {
-  if (!sheet?.inventory?.ranged) return null;
-  const inv = sheet.inventory.ranged;
-  for (const bucket of [
-    ...(inv.equipped || []),
-    ...(inv.backpack || []),
-    ...(inv.stash || []),
-    ...(inv.camp || []),
-  ]) {
-    if (bucket && bucket._instanceId === instanceId) return bucket;
-  }
-  return null;
+  const inv = sheet?.inventory?.ranged;
+  if (!inv) return null;
+
+  return findInstance(
+    [inv.equipped, inv.backpack, inv.stash, inv.camp],
+    instanceId,
+  );
 }
 
 function rangedDetailFields(resolved, weaponData) {
