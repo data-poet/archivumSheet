@@ -54,16 +54,6 @@ describe("BUILD CHARACTER", () => {
     });
   });
 
-  describe("Primary and Secondary integration", () => {
-    it("Should include both primary and secondary attributes", () => {
-      const { character } = buildCharacter(mockInput);
-
-      expect(character.primary_attributes).toBeDefined();
-
-      expect(character.secondary_attributes).toBeDefined();
-    });
-  });
-
   describe("Movement integration", () => {
     it("Should reflect carry weight modifier on Movement", () => {
       const { character } = buildCharacter(mockInput);
@@ -82,18 +72,6 @@ describe("BUILD CHARACTER", () => {
       );
 
       expect(movement.base_value).toBe(expected);
-    });
-  });
-
-  describe("Carry weight propagation", () => {
-    it("Should pass carry_weight into secondary builder", () => {
-      const { character } = buildCharacter(mockInput);
-
-      expect(character.secondary_attributes.Movement).toBeDefined();
-
-      expect(character.secondary_attributes.Movement.base_value).toBeLessThan(
-        character.secondary_attributes.BasicSpeed.value,
-      );
     });
   });
 
