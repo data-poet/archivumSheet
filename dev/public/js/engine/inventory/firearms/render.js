@@ -11,14 +11,12 @@ import {
   renderStorageLocationBlock,
   findInstance,
 } from "../shared/inventoryRenderUtils.js";
-import { decimalToPercent } from "../../../components/resistances.js";
 import {
   materialOptions,
   equippedMoveSelect,
   storageOptions,
 } from "../shared/equipmentSelectors.js";
 import {
-  formatRichText,
   customFieldsBody,
   withEnchantmentBadge,
   cardTitleCell,
@@ -30,6 +28,12 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getFirearmsItemCategory } from "../shared/enchantments/model.js";
+import {
+  weaponTypeSkillFields,
+  weaponWeightPriceFields,
+  weaponMaterialEffectField,
+  weaponDescriptionField,
+} from "../shared/weaponDetailFields.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -57,28 +61,9 @@ function firearmDetailFields(resolved, weaponData) {
   const src = resolved ?? weaponData;
   if (!src) return [];
   return [
-    { label: t("common.type"), value: src.weapon_type ?? "—" },
-    { label: t("common.skill"), value: src.weapon_skill ?? "—" },
+    ...weaponTypeSkillFields(src),
     { label: t("firearms.cdt"), value: src.weapon_cdt ?? "—" },
-    {
-      label: t("common.weight"),
-      value: resolved
-        ? withFirearmEnchantmentBadge(
-            resolved.final_weight,
-            decimalToPercent(resolved.enchantment_weight_modifier),
-            "%",
-          )
-        : (src.weapon_weight ?? "—"),
-    },
-    {
-      label: t("common.price"),
-      value: resolved
-        ? withFirearmEnchantmentBadge(
-            resolved.total_value,
-            resolved.enchantments_total_price,
-          )
-        : (src.weapon_price ?? "—"),
-    },
+    ...weaponWeightPriceFields(resolved, src, withFirearmEnchantmentBadge),
     { label: t("ranged.minST"), value: src.weapon_min_strength ?? "—" },
     { label: t("ranged.damageType"), value: src.weapon_damage_type ?? "—" },
     ...(resolved?.weapon_gdp_damage != null
@@ -97,20 +82,8 @@ function firearmDetailFields(resolved, weaponData) {
         resolved?.weapon_max_distance ?? weaponData?.weapon_max_distance ?? "—",
     },
     { label: t("ranged.reload"), value: src.weapon_reload_speed ?? "—" },
-    ...(resolved?.material_atk_effect
-      ? [
-          {
-            label: t("common.materialEffect"),
-            value: formatRichText(resolved.material_atk_effect),
-            rich: true,
-          },
-        ]
-      : []),
-    {
-      label: t("common.description"),
-      value: formatRichText(weaponData?.weapon_description),
-      rich: true,
-    },
+    ...weaponMaterialEffectField(resolved),
+    weaponDescriptionField(weaponData),
   ];
 }
 
