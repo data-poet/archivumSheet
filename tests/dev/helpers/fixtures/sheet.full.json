@@ -1,0 +1,647 @@
+{
+  "version": 1,
+  "pc": {
+    "player_name": "Test",
+    "character_name": "York",
+    "character_sex": "M",
+    "character_age": 22,
+    "character_weight": 98,
+    "starting_points": 100,
+    "experience_points": 20,
+    "ability_points": null,
+    "magic_points": 60,
+    "tier_label": "",
+    "image": {
+      "uploaded": true,
+      "data": "data:image/jpeg;base64,PLACEHOLDER",
+      "background": "black",
+      "color": {
+        "r": 132,
+        "g": 137,
+        "b": 148
+      },
+      "orientation": "landscape",
+      "position": {
+        "x": 31.1,
+        "y": 51.27
+      },
+      "size": {
+        "width": 1080,
+        "height": 870
+      },
+      "scale": 154
+    }
+  },
+  "race": {
+    "race_id": "RACE-003",
+    "race_name": "Draconato",
+    "race_sub_name": "Draconto Vermelho",
+    "race_physical_maturity": "15",
+    "race_mental_maturity": "30",
+    "race_life_expectancy": "120",
+    "modifiers": {
+      "ST": 2,
+      "DX": 0,
+      "IQ": 0,
+      "HT": 0
+    },
+    "elemental_modifiers": {
+      "Fire": 0.5,
+      "Water": 2,
+      "Air": 1,
+      "Electricity": 1,
+      "Earth": 1,
+      "Corrosion": 1,
+      "Necrotic": 1,
+      "Holy": 1,
+      "Void": 1,
+      "Arcane": 1
+    },
+    "innate_advantage_ids": ["ADV-104"],
+    "innate_disadvantage_ids": ["DIS-120"],
+    "innate_advantage_names": ["RESISTÊNCIA NATURAL A FOGO"],
+    "innate_disadvantage_names": ["VUNERABILIDADE NATURAL A GELO"]
+  },
+  "character": {
+    "primary": {
+      "ST": {
+        "base_value": 12,
+        "modifier": 0
+      },
+      "DX": {
+        "base_value": 12,
+        "modifier": 0
+      },
+      "IQ": {
+        "base_value": 10,
+        "modifier": 0
+      },
+      "HT": {
+        "base_value": 12,
+        "modifier": 0
+      }
+    },
+    "secondary": {
+      "HP": {
+        "bought": 2,
+        "modifier": 0
+      },
+      "Mana": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Toxicity": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Will": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Vision": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Hearing": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Smell": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "BasicSpeed": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Movement": {
+        "bought": 0,
+        "modifier": 0
+      },
+      "Dodge": {
+        "bought": 1,
+        "modifier": 0
+      },
+      "DamageResistance": {
+        "bought": 0,
+        "modifier": 0
+      }
+    },
+    "damage": {
+      "GDP": {
+        "modifier": 0
+      },
+      "BAL": {
+        "modifier": 0
+      }
+    },
+    "resistances": {
+      "Fire": {
+        "modifier": 0
+      },
+      "Water": {
+        "modifier": 0
+      },
+      "Air": {
+        "modifier": 0
+      },
+      "Electricity": {
+        "modifier": 0
+      },
+      "Earth": {
+        "modifier": 0
+      },
+      "Corrosion": {
+        "modifier": 0
+      },
+      "Necrotic": {
+        "modifier": 0
+      },
+      "Holy": {
+        "modifier": 0
+      },
+      "Void": {
+        "modifier": 0
+      },
+      "Arcane": {
+        "modifier": 0
+      }
+    },
+    "advantages": {
+      "ADV-055": true
+    },
+    "disadvantages": {
+      "DIS-053": true
+    },
+    "skills": {
+      "SKILL-037": {
+        "base_value": 16,
+        "modifier": 0,
+        "isTrainedWithMaster": false
+      },
+      "SKILL-038": {
+        "base_value": 14,
+        "modifier": 0,
+        "isTrainedWithMaster": false
+      },
+      "SKILL-082": {
+        "base_value": 16,
+        "modifier": 0,
+        "isTrainedWithMaster": false
+      },
+      "SKILL-049": {
+        "base_value": 14,
+        "modifier": 0,
+        "isTrainedWithMaster": false
+      },
+      "SKILL-255": {
+        "base_value": 12,
+        "modifier": 0,
+        "isTrainedWithMaster": false
+      }
+    },
+    "spells": {
+      "Moldar Mana": {
+        "base_value": 12,
+        "modifier": 0
+      },
+      "Buscar Terra": {
+        "base_value": 12,
+        "modifier": 0
+      },
+      "Míssil de Pedra": {
+        "base_value": 12,
+        "modifier": 0
+      }
+    },
+    "allies": [
+      {
+        "_instanceId": "ai-1790681660356-1p2qw",
+        "ally_id": "c-1790681660355-fhil0",
+        "overrides": {}
+      }
+    ],
+    "alliesActiveId": null,
+    "meta_race_ids": []
+  },
+  "inventory": {
+    "weight": 0,
+    "armors": [
+      {
+        "_instanceId": "armor-inst-1",
+        "armor_id": "ARMOR-000",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "armor-inst-3",
+        "armor_id": "ARMOR-020",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "armor-inst-4",
+        "armor_id": "ARMOR-035",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "armor-inst-5",
+        "armor_id": "ARMOR-050",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "armor-inst-6",
+        "armor_id": "ARMOR-065",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "armor-inst-7",
+        "armor_id": "ARMOR-080",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      }
+    ],
+    "shields": [
+      {
+        "_instanceId": "shield-inst-1",
+        "shield_id": "SHIELD-005",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      }
+    ],
+    "melee_weapons": [
+      {
+        "_instanceId": "melee-inst-1",
+        "weapon_id": "MELEE-275",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      },
+      {
+        "_instanceId": "melee-inst-2",
+        "_linkedInstanceId": "ranged-inst-1",
+        "weapon_id": "MELEE-280",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      }
+    ],
+    "ranged_weapons": [
+      {
+        "_instanceId": "ranged-inst-1",
+        "weapon_id": "RANGED-005",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "is_equipped": true,
+        "storedAt": null
+      }
+    ],
+    "firearms": [
+      {
+        "_instanceId": "firearm-inst-1",
+        "weapon_id": "FIREARM-005",
+        "material_id": "MAT-000",
+        "hit_points_modifier": 0,
+        "gdp_modifier": 0,
+        "tr_modifier": 0,
+        "prec_modifier": 1,
+        "magazine_size_modifier": 0,
+        "rounds_loaded": 0,
+        "is_equipped": true,
+        "storedAt": null,
+        "weapon_custom_name": "Ebony",
+        "weapon_custom_description": null,
+        "weapon_custom_effect": null,
+        "enchantments": []
+      }
+    ],
+    "ammo_containers": [
+      {
+        "_instanceId": "ammo-cont-inst-2",
+        "container_id": "CONTAINER-014",
+        "storedAt": "equipped",
+        "contents": [
+          {
+            "ammo_id": "AMMO-022",
+            "quantity": 16
+          }
+        ]
+      }
+    ],
+    "loose_ammo": [],
+    "alchemy": [
+      {
+        "consumable_id": "POTION-005",
+        "quantity": 5,
+        "storedAt": "backpack"
+      }
+    ],
+    "survivalGear": [
+      {
+        "adventure_gear_id": "GEAR-008",
+        "quantity": 1,
+        "storedAt": "backpack"
+      }
+    ],
+    "accessories": [
+      {
+        "_instanceId": "accessory-inst-1",
+        "accessory_id": "ACCESSORY-001",
+        "price": 0,
+        "is_equipped": true,
+        "storedAt": null,
+        "accessory_custom_name": null,
+        "accessory_custom_description": null,
+        "accessory_custom_effect": null,
+        "enchantments": [
+          {
+            "_instanceId": "enchantment-inst-2",
+            "enchantment_id": "ENCHANTMENT-006",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "magicGear": [
+      {
+        "_instanceId": "magic-gear-inst-1",
+        "magic_gear_id": "MAGIC_GEAR-003",
+        "is_equipped": true,
+        "storedAt": null,
+        "magic_gear_custom_name": null,
+        "magic_gear_custom_description": null,
+        "magic_gear_custom_effect": null,
+        "enchantments": [
+          {
+            "_instanceId": "enchantment-inst-1",
+            "enchantment_id": "ENCHANTMENT-010",
+            "value": 16
+          }
+        ]
+      }
+    ],
+    "customInventory": [
+      {
+        "custom_item_id": "custom-1790681653235-eddwn",
+        "name": "Diário",
+        "weight": 0,
+        "price": 0,
+        "quantity": 1,
+        "description": null,
+        "storedAt": "backpack"
+      }
+    ],
+    "coins": [
+      {
+        "coin_type": "gold",
+        "quantity": 1,
+        "storedAt": "backpack"
+      },
+      {
+        "coin_type": "silver",
+        "quantity": 3,
+        "storedAt": "backpack"
+      },
+      {
+        "coin_type": "copper",
+        "quantity": 50,
+        "storedAt": "backpack"
+      }
+    ]
+  },
+  "linked_allies": {
+    "c-1790681660355-fhil0": {
+      "version": 1,
+      "pc": {
+        "player_name": "",
+        "character_name": "",
+        "character_sex": "",
+        "character_age": null,
+        "character_weight": null,
+        "starting_points": null,
+        "experience_points": null,
+        "ability_points": null,
+        "magic_points": null,
+        "tier_label": "Menor",
+        "image": {
+          "uploaded": false,
+          "data": "",
+          "background": "average",
+          "color": {
+            "r": 43,
+            "g": 41,
+            "b": 37
+          },
+          "orientation": "portrait",
+          "position": {
+            "x": 51.26,
+            "y": 62.61
+          },
+          "size": {
+            "width": 1500,
+            "height": 1800
+          },
+          "scale": 105,
+          "path": ""
+        }
+      },
+      "race": {
+        "race_id": "RACE-045",
+        "race_name": "Elemental",
+        "race_sub_name": "Elemental de Terra",
+        "race_physical_maturity": "-",
+        "race_mental_maturity": "-",
+        "race_life_expectancy": "-",
+        "modifiers": {
+          "ST": 10,
+          "DX": 2,
+          "IQ": 0,
+          "HT": 4
+        },
+        "elemental_modifiers": {
+          "Fire": 1,
+          "Water": 2,
+          "Air": 2,
+          "Electricity": 0.5,
+          "Earth": 0,
+          "Corrosion": 0.5,
+          "Necrotic": 1,
+          "Holy": 1,
+          "Void": 1,
+          "Arcane": 1
+        },
+        "innate_advantage_ids": [
+          "ADV-049",
+          "ADV-120",
+          "ADV-121",
+          "ADV-124",
+          "ADV-125",
+          "ADV-126",
+          "ADV-128",
+          "ADV-129"
+        ],
+        "innate_disadvantage_ids": ["DIS-141", "DIS-142"],
+        "innate_advantage_names": [
+          "HIPOALGIA",
+          "NÃO COME OU BEBE",
+          "NÃO DORME",
+          "SUPORTE PRESSÓRICO 3",
+          "INDOMÁVEL",
+          "INABALÁVEL",
+          "TOLERÂNCIA À DANOS | HOMOGÊNEO",
+          "TOLERÂNCIA À DANOS | SEM SANGUE"
+        ],
+        "innate_disadvantage_names": ["FRÁGIL | NÃO NATURAL", "REPROGRAMÁVEL"]
+      },
+      "character": {
+        "primary": {
+          "ST": {
+            "base_value": 10,
+            "modifier": 0
+          },
+          "DX": {
+            "base_value": 10,
+            "modifier": 0
+          },
+          "IQ": {
+            "base_value": 10,
+            "modifier": 0
+          },
+          "HT": {
+            "base_value": 10,
+            "modifier": 0
+          }
+        },
+        "secondary": {
+          "HP": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Mana": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Toxicity": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Will": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Vision": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Hearing": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Smell": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "BasicSpeed": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "DamageResistance": {
+            "bought": 0,
+            "modifier": 4
+          },
+          "Movement": {
+            "bought": 0,
+            "modifier": 0
+          },
+          "Dodge": {
+            "bought": 0,
+            "modifier": 0
+          }
+        },
+        "damage": {
+          "GDP": {
+            "modifier": 0
+          },
+          "BAL": {
+            "modifier": 0
+          }
+        },
+        "resistances": {
+          "Fire": {
+            "modifier": 0
+          },
+          "Water": {
+            "modifier": 0
+          },
+          "Air": {
+            "modifier": 0
+          },
+          "Electricity": {
+            "modifier": 0
+          },
+          "Earth": {
+            "modifier": 0
+          },
+          "Corrosion": {
+            "modifier": 0
+          },
+          "Necrotic": {
+            "modifier": 0
+          },
+          "Holy": {
+            "modifier": 0
+          },
+          "Void": {
+            "modifier": 0
+          },
+          "Arcane": {
+            "modifier": 0
+          }
+        },
+        "advantages": {},
+        "disadvantages": {},
+        "skills": {},
+        "spells": {},
+        "allies": [],
+        "alliesActiveId": null,
+        "meta_race_ids": []
+      },
+      "inventory": {
+        "weight": 0,
+        "armors": [],
+        "shields": [],
+        "melee_weapons": [],
+        "ranged_weapons": [],
+        "firearms": [],
+        "ammo_containers": [],
+        "loose_ammo": [],
+        "alchemy": [],
+        "survivalGear": [],
+        "accessories": [],
+        "magicGear": [],
+        "customInventory": [],
+        "coins": []
+      }
+    }
+  },
+  "exportedAt": "2026-09-29T11:35:09.170Z"
+}

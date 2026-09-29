@@ -378,6 +378,37 @@ describe("importSheet", () => {
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
   });
 
+  // validPayload() above is a minimal, hand-built shape. This is a real exported file with
+  // every inventory bucket populated and a linked dual-use weapon pair, guarding against
+  // _applyImport dropping or mis-mapping a bucket that a minimal payload can't exercise.
+  test("hydrates every inventory bucket from a real exported sheet", async () => {
+    const fixture = require("tests/dev/helpers/fixtures/sheet.full.json");
+
+    await importSheet(jsonFile(fixture));
+
+    expect(state.selected.character.character_name).toBe(
+      fixture.pc.character_name,
+    );
+    expect(state.selected.armors).toEqual(fixture.inventory.armors);
+    expect(state.selected.melee_weapons).toEqual(
+      fixture.inventory.melee_weapons,
+    );
+    expect(state.selected.ranged_weapons).toEqual(
+      fixture.inventory.ranged_weapons,
+    );
+    expect(state.selected.ammo_containers).toEqual(
+      fixture.inventory.ammo_containers,
+    );
+    expect(state.selected.accessories).toEqual(fixture.inventory.accessories);
+    expect(state.selected.magicGear).toEqual(fixture.inventory.magicGear);
+    expect(state.selected.coins).toEqual(fixture.inventory.coins);
+
+    const melee = state.selected.melee_weapons.find(
+      (w) => w._instanceId === "melee-inst-2",
+    );
+    expect(melee._linkedInstanceId).toBe("ranged-inst-1");
+  });
+
   test("hydrates elemental resistances from the payload", async () => {
     await importSheet(
       jsonFile(
