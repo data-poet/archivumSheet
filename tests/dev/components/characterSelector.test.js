@@ -44,7 +44,10 @@ import {
   replaceActiveCharacter,
   getActiveKind,
 } from "dev/public/js/store/characters.js";
-import { listCharactersGrouped } from "dev/public/js/store/allies/characterLinking.js";
+import {
+  listCharactersGrouped,
+  recreateLinkedAllies,
+} from "dev/public/js/store/allies/characterLinking.js";
 import {
   exportSheet,
   exportAllySheet,
@@ -843,6 +846,38 @@ describe("initCharacterSelector — file input handling", () => {
     expect(addCharacter).not.toHaveBeenCalled();
     expect(replaceActiveCharacter).toHaveBeenCalledWith(
       JSON.parse(VALID_PAYLOAD),
+    );
+  });
+
+  // recreateLinkedAllies is fully mocked above, so nothing else in this file proves import
+  // actually wires payload.linked_allies through to it.
+  test("import mode recreates linked allies bundled in the payload", async () => {
+    const fixture = require("tests/dev/helpers/fixtures/sheet.full.json");
+    initCharacterSelector();
+    const input = setFile(fakeFile(JSON.stringify(fixture)));
+    input._mode = "import";
+
+    input.dispatchEvent(new Event("change"));
+    await flush();
+
+    expect(recreateLinkedAllies).toHaveBeenCalledWith(
+      fixture.linked_allies,
+      "c1",
+    );
+  });
+
+  test("replace mode recreates linked allies bundled in the payload", async () => {
+    const fixture = require("tests/dev/helpers/fixtures/sheet.full.json");
+    initCharacterSelector();
+    const input = setFile(fakeFile(JSON.stringify(fixture)));
+    input._mode = "replace";
+
+    input.dispatchEvent(new Event("change"));
+    await flush();
+
+    expect(recreateLinkedAllies).toHaveBeenCalledWith(
+      fixture.linked_allies,
+      "c1",
     );
   });
 
