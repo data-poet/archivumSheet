@@ -13,3 +13,21 @@ export function ensureInstanceIds(entries) {
   }
   return entries;
 }
+
+// Explodes legacy aggregated rows (no id, quantity > 1) into one id'd row per
+// unit — used for categories that moved from a single stacked row per
+// item+location to one row per unit. Rows that already have an id are assumed
+// to already be in the per-unit shape and pass through untouched.
+export function explodeToUnitRows(entries) {
+  const result = [];
+  for (const entry of entries) {
+    if (entry.id) {
+      result.push(entry);
+      continue;
+    }
+    for (let i = 0; i < entry.quantity; i++) {
+      result.push({ ...entry, quantity: 1, id: generateInstanceId() });
+    }
+  }
+  return result;
+}

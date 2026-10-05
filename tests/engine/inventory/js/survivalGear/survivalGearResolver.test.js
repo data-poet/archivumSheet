@@ -23,6 +23,7 @@ describe("survivalGearResolver", () => {
       const result = resolveSurvivalGearItem(instance, mockGear);
 
       expect(result).toEqual({
+        id: null,
         adventure_gear_id: "GEAR-000",
         adventure_gear_name: "Ração",
         adventure_gear_type: "Alimentos",
