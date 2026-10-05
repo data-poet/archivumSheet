@@ -56,6 +56,7 @@ function resolveLooseAmmo(instance, ammo) {
   const total_value = round2(ammo.ammo_price * instance.quantity);
 
   return {
+    id: instance.id ?? null,
     ammo_id: ammo.ammo_id,
     ammo_name: ammo.ammo_name,
     ammo_type: ammo.ammo_type,

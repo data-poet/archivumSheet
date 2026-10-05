@@ -523,7 +523,9 @@ describe("round trip: save → switch away → switch back", () => {
         id: expect.any(String),
       },
     ]);
-    expect(state.selected.coins).toEqual([{ type: "gold", amount: 42 }]);
+    expect(state.selected.coins).toEqual([
+      { type: "gold", amount: 42, id: expect.any(String) },
+    ]);
     expect(document.getElementById("ST_base").value).toBe("15");
     expect(document.getElementById("ST_mod").value).toBe("2");
   });

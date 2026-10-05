@@ -1,6 +1,7 @@
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 
 const selected = state.selected;
 
@@ -26,7 +27,12 @@ export function addCoins(coinType, quantity, storedAt = "backpack") {
   if (existing) {
     existing.quantity += quantity;
   } else {
-    selected.coins.push({ coin_type: coinType, quantity, storedAt });
+    selected.coins.push({
+      id: generateInstanceId(),
+      coin_type: coinType,
+      quantity,
+      storedAt,
+    });
   }
 
   renderListsPreserving(selected, state.data);
@@ -56,7 +62,8 @@ export function updateCoinQuantity(coinType, storedAt, quantity) {
 // MOVE
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Merges into the destination if an entry already exists there. */
+/** Merges into the destination if an entry already exists there — the destination row's
+ * id wins and the source row's id is discarded on merge. */
 export function moveCoins(coinType, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 
@@ -73,7 +80,12 @@ export function moveCoins(coinType, fromLocation, toLocation) {
   if (dest) {
     dest.quantity += qty;
   } else {
-    selected.coins.push({ coin_type: coinType, quantity: qty, storedAt: toLocation });
+    selected.coins.push({
+      id: source.id,
+      coin_type: coinType,
+      quantity: qty,
+      storedAt: toLocation,
+    });
   }
 
   renderListsPreserving(selected, state.data);

@@ -180,13 +180,13 @@ function _applyData(data) {
   selected.ranged_weapons  = ensureInstanceIds(inventory.ranged_weapons ?? []);
   selected.firearms        = ensureInstanceIds(inventory.firearms       ?? []);
   selected.ammo_containers = ensureInstanceIds(inventory.ammo_containers ?? []);
-  selected.loose_ammo      = inventory.loose_ammo     ?? [];
+  selected.loose_ammo      = ensureInstanceIds(inventory.loose_ammo     ?? []);
   selected.alchemy         = explodeToUnitRows(inventory.alchemy        ?? []);
   selected.survivalGear    = explodeToUnitRows(inventory.survivalGear   ?? []);
   selected.accessories     = ensureInstanceIds(inventory.accessories    ?? []);
   selected.magicGear       = ensureInstanceIds(inventory.magicGear      ?? []);
   selected.customInventory = ensureInstanceIds(inventory.customInventory ?? []);
-  selected.coins           = inventory.coins          ?? [];
+  selected.coins           = ensureInstanceIds(inventory.coins          ?? []);
 
   renderListsPreserving(selected, state.data);
   renderCharacterImage();
