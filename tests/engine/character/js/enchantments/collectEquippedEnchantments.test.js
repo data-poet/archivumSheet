@@ -11,7 +11,7 @@ function enchantment(overrides) {
     value: null,
     extraPoints: null,
     price: 0,
-    _instanceId: null,
+    id: null,
     ...overrides,
   };
 }

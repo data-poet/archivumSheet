@@ -204,12 +204,12 @@ describe("renderResumeMelee", () => {
             {
               weapon_name: "A",
               weapon_final_hit_points: 5,
-              _instanceId: "inst-a",
+              id: "inst-a",
             },
             {
               weapon_name: "B",
               weapon_final_hit_points: 5,
-              _instanceId: "inst-b",
+              id: "inst-b",
             },
           ],
         },

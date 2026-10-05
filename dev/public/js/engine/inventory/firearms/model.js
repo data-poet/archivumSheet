@@ -3,7 +3,7 @@ import { fetchFirearms } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { nextFirearmInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -131,7 +131,7 @@ export function equipFirearm(instanceId, weaponId, materialId = null) {
 
 function _newFirearmInstance(weaponId, materialId, isEquipped, storedAt) {
   return {
-    _instanceId: nextFirearmInstanceId(),
+    id: generateInstanceId(),
     weapon_id: weaponId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -192,7 +192,7 @@ export function removeFirearm(instanceId) {
   const before = structuredClone(selected.firearms);
 
   selected.firearms = selected.firearms.filter(
-    (w) => w._instanceId !== instanceId,
+    (w) => w.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
@@ -339,5 +339,5 @@ export function removeFirearmEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findFirearmByInstanceId(instanceId) {
-  return selected.firearms.find((w) => w._instanceId === instanceId) || null;
+  return selected.firearms.find((w) => w.id === instanceId) || null;
 }

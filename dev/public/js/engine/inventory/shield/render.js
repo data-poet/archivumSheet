@@ -123,7 +123,7 @@ export function renderEquippedShield(selected, data, sheet) {
 
   const material = resolveMaterial(equippedInstance, data.materials);
   const resolved = equippedInstance
-    ? resolvedShield(sheet, equippedInstance._instanceId)
+    ? resolvedShield(sheet, equippedInstance.id)
     : null;
   const fields = equippedInstance
     ? shieldDetailFields(resolved, equippedShield)
@@ -161,12 +161,12 @@ export function renderEquippedShield(selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-shield-move")}
-        ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance.id}">✕</button>` : ""}
       </div>
     </div>
     ${
       equippedInstance
-        ? equippedItemTabs(equippedInstance._instanceId, [
+        ? equippedItemTabs(equippedInstance.id, [
             {
               key: "details",
               label: t("common.technical"),
@@ -176,7 +176,7 @@ export function renderEquippedShield(selected, data, sheet) {
               key: "customize",
               label: t("common.customize"),
               content: customFieldsBody({
-                instanceId: equippedInstance._instanceId,
+                instanceId: equippedInstance.id,
                 name: equippedInstance.shield_custom_name,
                 description: equippedInstance.shield_custom_description,
                 effect: equippedInstance.shield_custom_effect,
@@ -186,7 +186,7 @@ export function renderEquippedShield(selected, data, sheet) {
               key: "enchantments",
               label: t("enchantments.title"),
               content: enchantmentsBody({
-                instanceId: equippedInstance._instanceId,
+                instanceId: equippedInstance.id,
                 entries: equippedInstance.enchantments || [],
                 itemCategory: getShieldItemCategory(),
                 resolvedEntries: resolved?.enchantments,
@@ -225,8 +225,8 @@ function renderStorageSection(location, stored, data, sheet) {
         );
         if (!shieldData) return "";
         const material = resolveMaterial(inst, data.materials);
-        const resolved = resolvedShield(sheet, inst._instanceId);
-        const instanceId = inst._instanceId;
+        const resolved = resolvedShield(sheet, inst.id);
+        const instanceId = inst.id;
 
         return `
         <tr>

@@ -4,7 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import { nextShieldInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -101,7 +101,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   }
 
   selected.shields.push({
-    _instanceId: nextShieldInstanceId(),
+    id: generateInstanceId(),
     shield_id: shieldId,
     material_id: preservedMaterialId,
     hit_points_modifier: 0,
@@ -129,7 +129,7 @@ export function addStoredShield(
   if (!shieldId) return;
 
   selected.shields.push({
-    _instanceId: nextShieldInstanceId(),
+    id: generateInstanceId(),
     shield_id: shieldId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -159,7 +159,7 @@ export function moveShield(instanceId, storedAt) {
 export function removeShield(instanceId) {
   const before = structuredClone(selected.shields);
   selected.shields = selected.shields.filter(
-    (s) => s._instanceId !== instanceId,
+    (s) => s.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
@@ -274,5 +274,5 @@ export function removeShieldEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findShieldByInstanceId(instanceId) {
-  return selected.shields.find((s) => s._instanceId === instanceId) || null;
+  return selected.shields.find((s) => s.id === instanceId) || null;
 }

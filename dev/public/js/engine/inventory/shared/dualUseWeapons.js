@@ -42,16 +42,16 @@ export function findLinkedCounterpart(instance, counterparts) {
   // Both id comparisons are guarded against null/undefined: an unlinked
   // counterpart has no _linkedInstanceId, so an unset id on either side would
   // otherwise match it via undefined === undefined.
-  if (instance._instanceId) {
+  if (instance.id) {
     const pointingAtUs = counterparts.find(
-      (c) => c._linkedInstanceId === instance._instanceId,
+      (c) => c._linkedInstanceId === instance.id,
     );
     if (pointingAtUs) return pointingAtUs;
   }
 
   if (instance._linkedInstanceId) {
     return (
-      counterparts.find((c) => c._instanceId === instance._linkedInstanceId) ??
+      counterparts.find((c) => c.id === instance._linkedInstanceId) ??
       null
     );
   }

@@ -16,10 +16,10 @@ function validateContainerInstance(instance, index) {
   }
 
   if (
-    typeof instance._instanceId !== "string" ||
-    !instance._instanceId
+    typeof instance.id !== "string" ||
+    !instance.id
   ) {
-    errors.push(`${prefix}: _instanceId is required`);
+    errors.push(`${prefix}: id is required`);
   }
 
   if (!VALID_CONTAINER_STORED_AT.includes(instance.storedAt)) {

@@ -262,7 +262,7 @@ export function escapeAttr(raw) {
 // Kept generic (not accessory-specific) for adoption by other equipment types once they gain
 // the same custom_* fields. Edit form is detached/uncontrolled — nothing writes to state on
 // keystroke, only "Salvar"/"Cancelar" — and open/closed editor state is tracked module-level
-// (keyed by _instanceId) so it survives re-renders triggered by unrelated actions.
+// (keyed by id) so it survives re-renders triggered by unrelated actions.
 const _openCustomFieldEditors = new Set();
 
 export function openCustomFieldsEditor(instanceId) {

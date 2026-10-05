@@ -155,7 +155,7 @@ export function renderResumeWeaponTable({
       const maxHp = computeMaxHp(w);
       const modifier = w.hit_points_modifier ?? 0;
       const actualHp = calcActualHp(maxHp, modifier);
-      const instanceId = w._instanceId ?? "";
+      const instanceId = w.id ?? "";
 
       const hpCell =
         maxHp > 0

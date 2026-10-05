@@ -29,7 +29,7 @@ function resolveContainer(instance, container, ammoDb) {
   const total_value = round2(container.container_price + contents_value);
 
   return {
-    _instanceId: instance._instanceId,
+    id: instance.id,
     container_id: container.container_id,
     container_name: container.container_name,
     container_box_name: container.container_box_name,

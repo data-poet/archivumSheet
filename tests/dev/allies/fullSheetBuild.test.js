@@ -27,10 +27,10 @@ test("resolves every purchased skill and spell", () => {
 
 test("resolves the dual-use melee/ranged pair as two distinct, linked instances", () => {
   const melee = sheet.inventory.melee.equipped.find(
-    (w) => w._instanceId === "melee-inst-2",
+    (w) => w.id === "melee-inst-2",
   );
   const ranged = sheet.inventory.ranged.equipped.find(
-    (w) => w._instanceId === "ranged-inst-1",
+    (w) => w.id === "ranged-inst-1",
   );
 
   expect(melee).toBeDefined();

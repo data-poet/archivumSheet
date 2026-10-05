@@ -4,10 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import {
-  nextRangedInstanceId,
-  nextMeleeInstanceId,
-} from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import {
   getMeleeCounterpart,
   findLinkedCounterpart,
@@ -171,7 +168,7 @@ function _syncMeleeCounterpart(
   if (alreadyLinked) return;
 
   selected.melee_weapons.push({
-    _instanceId: nextMeleeInstanceId(),
+    id: generateInstanceId(),
     _linkedInstanceId: rangedInstanceId,
     weapon_id: meleeWeaponId,
     material_id: materialId,
@@ -193,17 +190,17 @@ function _removeMeleeCounterpart(rangedInstance) {
   const linked = _findLinkedMelee(rangedInstance);
   if (!linked) return;
   selected.melee_weapons = selected.melee_weapons.filter(
-    (m) => m._instanceId !== linked._instanceId,
+    (m) => m.id !== linked.id,
   );
 }
 
 export function addEquippedRanged(weaponId, materialId = null) {
   if (!weaponId) return;
 
-  const instanceId = nextRangedInstanceId();
+  const instanceId = generateInstanceId();
 
   selected.ranged_weapons.push({
-    _instanceId: instanceId,
+    id: instanceId,
     weapon_id: weaponId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -228,10 +225,10 @@ export function addStoredRanged(
 ) {
   if (!rangedId) return;
 
-  const instanceId = nextRangedInstanceId();
+  const instanceId = generateInstanceId();
 
   selected.ranged_weapons.push({
-    _instanceId: instanceId,
+    id: instanceId,
     weapon_id: rangedId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -275,7 +272,7 @@ export function removeRanged(instanceId) {
   _removeMeleeCounterpart(ranged);
 
   selected.ranged_weapons = selected.ranged_weapons.filter(
-    (w) => w._instanceId !== instanceId,
+    (w) => w.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
@@ -412,6 +409,6 @@ export function removeRangedEnchantment(instanceId, entryInstanceId) {
 
 export function findRangedByInstanceId(instanceId) {
   return (
-    selected.ranged_weapons.find((w) => w._instanceId === instanceId) || null
+    selected.ranged_weapons.find((w) => w.id === instanceId) || null
   );
 }

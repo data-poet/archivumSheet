@@ -118,7 +118,7 @@ function resolveArmorPiece(
     is_equipped: instance.is_equipped,
 
     storedAt: instance.storedAt,
-    _instanceId: instance._instanceId ?? null,
+    id: instance.id ?? null,
   };
 }
 

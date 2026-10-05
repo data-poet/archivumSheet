@@ -87,7 +87,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
   const record = accessoryRecord(inst.accessory_id, data);
   if (!record) return "";
 
-  const instanceId = inst._instanceId;
+  const instanceId = inst.id;
   const resolved = resolvedAccessory(sheet, instanceId);
 
   return `
@@ -160,7 +160,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
         const record = accessoryRecord(inst.accessory_id, data);
         if (!record) return "";
 
-        const instanceId = inst._instanceId;
+        const instanceId = inst.id;
         const atLimit = isAtLimit(inst.accessory_id, selected, data);
         const resolved = resolvedAccessory(sheet, instanceId);
 

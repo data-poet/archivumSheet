@@ -3,7 +3,7 @@ import { fetchAmmo, fetchAmmoContainers } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { nextAmmoContainerInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 
@@ -116,7 +116,7 @@ export function addContainer(containerId, storedAt = "equipped") {
   if (!containerId) return;
 
   selected.ammo_containers.push({
-    _instanceId: nextAmmoContainerInstanceId(),
+    id: generateInstanceId(),
     container_id: containerId,
     storedAt,
     contents: [],
@@ -139,7 +139,7 @@ export function moveContainer(instanceId, storedAt) {
 export function removeContainer(instanceId) {
   const before = structuredClone(selected.ammo_containers);
   selected.ammo_containers = selected.ammo_containers.filter(
-    (c) => c._instanceId !== instanceId,
+    (c) => c.id !== instanceId,
   );
   renderListsPreserving(selected, data);
   triggerAutoRun();
@@ -355,6 +355,6 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
 
 export function findContainerByInstanceId(instanceId) {
   return (
-    selected.ammo_containers.find((c) => c._instanceId === instanceId) || null
+    selected.ammo_containers.find((c) => c.id === instanceId) || null
   );
 }

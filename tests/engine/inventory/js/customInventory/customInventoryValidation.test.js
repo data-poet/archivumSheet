@@ -4,7 +4,7 @@ const {
 
 describe("CUSTOM INVENTORY VALIDATION", () => {
   const validInstance = {
-    custom_item_id: "abc-123",
+    id: "abc-123",
     name: "Pedra Rúnica",
     weight: 0.5,
     price: 10,
@@ -58,29 +58,29 @@ describe("CUSTOM INVENTORY VALIDATION", () => {
     });
   });
 
-  describe("custom_item_id", () => {
-    test("Should return error if custom_item_id is missing", () => {
-      const { custom_item_id, ...instance } = validInstance;
+  describe("id", () => {
+    test("Should return error if id is missing", () => {
+      const { id, ...instance } = validInstance;
       const errors = validateCustomInventoryInstance(instance, 0);
-      expect(errors.some((e) => e.includes("custom_item_id"))).toBe(true);
+      expect(errors.some((e) => e.includes("id"))).toBe(true);
     });
 
-    test("Should return error if custom_item_id is an empty string", () => {
-      const instance = { ...validInstance, custom_item_id: "" };
+    test("Should return error if id is an empty string", () => {
+      const instance = { ...validInstance, id: "" };
       const errors = validateCustomInventoryInstance(instance, 0);
-      expect(errors.some((e) => e.includes("custom_item_id"))).toBe(true);
+      expect(errors.some((e) => e.includes("id"))).toBe(true);
     });
 
-    test("Should return error if custom_item_id is whitespace only", () => {
-      const instance = { ...validInstance, custom_item_id: "   " };
+    test("Should return error if id is whitespace only", () => {
+      const instance = { ...validInstance, id: "   " };
       const errors = validateCustomInventoryInstance(instance, 0);
-      expect(errors.some((e) => e.includes("custom_item_id"))).toBe(true);
+      expect(errors.some((e) => e.includes("id"))).toBe(true);
     });
 
-    test("Should return error if custom_item_id is a number", () => {
-      const instance = { ...validInstance, custom_item_id: 123 };
+    test("Should return error if id is a number", () => {
+      const instance = { ...validInstance, id: 123 };
       const errors = validateCustomInventoryInstance(instance, 0);
-      expect(errors.some((e) => e.includes("custom_item_id"))).toBe(true);
+      expect(errors.some((e) => e.includes("id"))).toBe(true);
     });
   });
 
@@ -215,7 +215,7 @@ describe("CUSTOM INVENTORY VALIDATION", () => {
   describe("multiple errors", () => {
     test("Should collect all errors in a single call", () => {
       const instance = {
-        custom_item_id: "",
+        id: "",
         name: "",
         weight: -1,
         price: -1,

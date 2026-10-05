@@ -239,17 +239,17 @@ describe("handleAmmoInput — .resume-ammo-qty aggregate stepper", () => {
     // Two equipped containers holding ARROW-1 (5 + 3 = 8 total), plus one backpack (non-equipped) container excluded from the aggregate.
     state.selected.ammo_containers = [
       {
-        _instanceId: "C1",
+        id: "C1",
         storedAt: "equipped",
         contents: [{ ammo_id: "ARROW-1", quantity: 5 }],
       },
       {
-        _instanceId: "C2",
+        id: "C2",
         storedAt: "equipped",
         contents: [{ ammo_id: "ARROW-1", quantity: 3 }],
       },
       {
-        _instanceId: "C3",
+        id: "C3",
         storedAt: "backpack",
         contents: [{ ammo_id: "ARROW-1", quantity: 10 }],
       },

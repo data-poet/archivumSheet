@@ -5,7 +5,7 @@ const {
 
 describe("customInventoryResolver", () => {
   const validInstance = {
-    custom_item_id: "abc-123",
+    id: "abc-123",
     name: "Pedra Rúnica",
     weight: 0.5,
     price: 10,
@@ -19,7 +19,7 @@ describe("customInventoryResolver", () => {
       const result = resolveCustomInventoryItem(validInstance);
 
       expect(result).toEqual({
-        custom_item_id: "abc-123",
+        id: "abc-123",
         name: "Pedra Rúnica",
         weight: 0.5,
         price: 10,

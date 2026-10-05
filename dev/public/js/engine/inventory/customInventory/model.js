@@ -2,16 +2,9 @@ import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { offerUndo } from "../../../components/undo.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 
 const selected = state.selected;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
-function generateId() {
-  return `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STORAGE OPERATIONS
@@ -22,7 +15,7 @@ export function addCustomItem({ name, weight, price, quantity, description, stor
   if (!name?.trim() || quantity <= 0 || weight < 0 || price < 0) return;
 
   selected.customInventory.push({
-    custom_item_id: generateId(),
+    id: generateInstanceId(),
     name:        name.trim(),
     weight:      weight,
     price:       price,
@@ -42,7 +35,7 @@ export function updateCustomItemQuantity(customItemId, quantity) {
   }
 
   const entry = selected.customInventory.find(
-    (e) => e.custom_item_id === customItemId,
+    (e) => e.id === customItemId,
   );
   if (entry) entry.quantity = quantity;
 
@@ -53,7 +46,7 @@ export function updateCustomItemQuantity(customItemId, quantity) {
 export function removeCustomItem(customItemId) {
   const before = structuredClone(selected.customInventory);
   selected.customInventory = selected.customInventory.filter(
-    (e) => e.custom_item_id !== customItemId,
+    (e) => e.id !== customItemId,
   );
 
   renderListsPreserving(selected, state.data, state.sheet);
@@ -66,10 +59,10 @@ export function removeCustomItem(customItemId) {
   });
 }
 
-// Unique per custom_item_id, so no merging is needed.
+// Unique per id, so no merging is needed.
 export function moveCustomItem(customItemId, toLocation) {
   const entry = selected.customInventory.find(
-    (e) => e.custom_item_id === customItemId,
+    (e) => e.id === customItemId,
   );
   if (!entry || entry.storedAt === toLocation) return;
 
@@ -87,7 +80,7 @@ export function moveCustomItem(customItemId, toLocation) {
 // rather than silently discarded. Returns true if updated, false if rejected.
 export function saveCustomItemFields(customItemId, { name, weight, price, description }) {
   const entry = selected.customInventory.find(
-    (e) => e.custom_item_id === customItemId,
+    (e) => e.id === customItemId,
   );
   if (!entry) return false;
 

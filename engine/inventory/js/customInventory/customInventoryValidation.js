@@ -9,10 +9,10 @@ function validateCustomInventoryInstance(instance, index) {
   }
 
   if (
-    typeof instance.custom_item_id !== "string" ||
-    instance.custom_item_id.trim() === ""
+    typeof instance.id !== "string" ||
+    instance.id.trim() === ""
   ) {
-    errors.push(`${prefix}: custom_item_id must be a non-empty string`);
+    errors.push(`${prefix}: id must be a non-empty string`);
   }
 
   if (typeof instance.name !== "string" || instance.name.trim() === "") {

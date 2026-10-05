@@ -37,7 +37,7 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
 
   if (delta > 0) {
     const firstContainer = selected.ammo_containers.find(
-      (c) => c._instanceId === firstInstanceId,
+      (c) => c.id === firstInstanceId,
     );
     if (!firstContainer) return;
     const entry = firstContainer.contents.find((e) => e.ammo_id === ammoId);
@@ -57,7 +57,7 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
       if (!entry || entry.quantity <= 0) continue;
       const toRemove = Math.min(remaining, entry.quantity);
       updateContainerAmmoQuantity(
-        cont._instanceId,
+        cont.id,
         ammoId,
         entry.quantity - toRemove,
       );

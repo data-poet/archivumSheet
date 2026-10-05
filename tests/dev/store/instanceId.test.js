@@ -1,62 +1,40 @@
-import {
-  nextArmorInstanceId,
-  nextShieldInstanceId,
-  nextMeleeInstanceId,
-  nextRangedInstanceId,
-  nextFirearmInstanceId,
-  nextAmmoContainerInstanceId,
-  nextLooseAmmoInstanceId,
-  nextAlchemyInstanceId,
-  nextAccessoryInstanceId,
-  nextMagicGearInstanceId,
-  nextEnchantmentInstanceId,
-  resetInstanceCounters,
-} from "dev/public/js/store/instanceId.js";
+import { generateInstanceId, ensureInstanceIds } from "dev/public/js/store/instanceId.js";
 
-// Counters are module-level singletons — reset before every test so none of
-// them leak state between tests.
-beforeEach(() => resetInstanceCounters());
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-describe("per-type instance id generators", () => {
-  test.each([
-    ["armor", nextArmorInstanceId, "armor-inst-"],
-    ["shield", nextShieldInstanceId, "shield-inst-"],
-    ["melee", nextMeleeInstanceId, "melee-inst-"],
-    ["ranged", nextRangedInstanceId, "ranged-inst-"],
-    ["firearm", nextFirearmInstanceId, "firearm-inst-"],
-    ["ammo container", nextAmmoContainerInstanceId, "ammo-cont-inst-"],
-    ["loose ammo", nextLooseAmmoInstanceId, "loose-ammo-inst-"],
-    ["alchemy", nextAlchemyInstanceId, "alchemy-inst-"],
-    ["accessory", nextAccessoryInstanceId, "accessory-inst-"],
-    ["magic gear", nextMagicGearInstanceId, "magic-gear-inst-"],
-    ["enchantment", nextEnchantmentInstanceId, "enchantment-inst-"],
-  ])("%s ids start at 1 and increment on each call", (_label, fn, prefix) => {
-    expect(fn()).toBe(`${prefix}1`);
-    expect(fn()).toBe(`${prefix}2`);
-    expect(fn()).toBe(`${prefix}3`);
+describe("generateInstanceId", () => {
+  test("returns a UUID", () => {
+    expect(generateInstanceId()).toMatch(UUID_RE);
   });
 
-  test("counters for different types are independent of one another", () => {
-    nextArmorInstanceId();
-    nextArmorInstanceId();
-    expect(nextShieldInstanceId()).toBe("shield-inst-1");
-    expect(nextArmorInstanceId()).toBe("armor-inst-3");
+  test("returns a different id on each call", () => {
+    expect(generateInstanceId()).not.toBe(generateInstanceId());
   });
 });
 
-describe("resetInstanceCounters", () => {
-  test("resets every counter back to 1, independently", () => {
-    nextArmorInstanceId();
-    nextArmorInstanceId();
-    nextShieldInstanceId();
-    nextEnchantmentInstanceId();
-    nextEnchantmentInstanceId();
-    nextEnchantmentInstanceId();
+describe("ensureInstanceIds", () => {
+  test("assigns an id to entries missing one", () => {
+    const entries = [{ name: "a" }, { name: "b" }];
+    ensureInstanceIds(entries);
 
-    resetInstanceCounters();
+    expect(entries[0].id).toMatch(UUID_RE);
+    expect(entries[1].id).toMatch(UUID_RE);
+    expect(entries[0].id).not.toBe(entries[1].id);
+  });
 
-    expect(nextArmorInstanceId()).toBe("armor-inst-1");
-    expect(nextShieldInstanceId()).toBe("shield-inst-1");
-    expect(nextEnchantmentInstanceId()).toBe("enchantment-inst-1");
+  test("leaves an existing id untouched", () => {
+    const entries = [{ name: "a", id: "existing-id" }];
+    ensureInstanceIds(entries);
+
+    expect(entries[0].id).toBe("existing-id");
+  });
+
+  test("handles an empty array", () => {
+    expect(ensureInstanceIds([])).toEqual([]);
+  });
+
+  test("returns the same array reference it was given", () => {
+    const entries = [{ name: "a" }];
+    expect(ensureInstanceIds(entries)).toBe(entries);
   });
 });

@@ -421,7 +421,7 @@ describe("enchantmentsResolver", () => {
       };
 
       const entry = {
-        _instanceId: "ench-1",
+        id: "ench-1",
         enchantment_id: "ENCHANTMENT-000",
         value: 2,
       };
@@ -436,7 +436,7 @@ describe("enchantmentsResolver", () => {
         value: 2,
         extraPoints: null,
         price: 10000,
-        _instanceId: "ench-1",
+        id: "ench-1",
       });
     });
 
@@ -473,7 +473,7 @@ describe("enchantmentsResolver", () => {
       };
 
       const entry = {
-        _instanceId: "ench-1",
+        id: "ench-1",
         enchantment_id: "ENCHANTMENT-040",
         value: 0.05,
       };
@@ -512,8 +512,8 @@ describe("enchantmentsResolver", () => {
 
     test("Should resolve multiple applications and sum their price", () => {
       const entries = [
-        { _instanceId: "ench-1", enchantment_id: "ENCHANTMENT-000", value: 1 },
-        { _instanceId: "ench-2", enchantment_id: "ENCHANTMENT-002", value: 2 },
+        { id: "ench-1", enchantment_id: "ENCHANTMENT-000", value: 1 },
+        { id: "ench-2", enchantment_id: "ENCHANTMENT-002", value: 2 },
       ];
 
       const { resolved, total_price } = resolveItemEnchantments(
@@ -540,8 +540,8 @@ describe("enchantmentsResolver", () => {
 
     test("Should allow the same enchantment applied twice with different values", () => {
       const entries = [
-        { _instanceId: "ench-1", enchantment_id: "ENCHANTMENT-000", value: 1 },
-        { _instanceId: "ench-2", enchantment_id: "ENCHANTMENT-000", value: 3 },
+        { id: "ench-1", enchantment_id: "ENCHANTMENT-000", value: 1 },
+        { id: "ench-2", enchantment_id: "ENCHANTMENT-000", value: 3 },
       ];
 
       const { resolved, total_price } = resolveItemEnchantments(

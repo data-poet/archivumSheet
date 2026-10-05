@@ -217,14 +217,14 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-000",
                   value: 2,
                 },
@@ -256,14 +256,14 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: false,
               storedAt: "backpack",
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-000",
                   value: 2,
                 },
@@ -291,14 +291,14 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-028",
                   target: "ADV-000",
                 },
@@ -320,13 +320,13 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           magic_gear: [
             {
-              _instanceId: "mg-1",
+              id: "mg-1",
               magic_gear_id: "MAGIC_GEAR-001",
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-010",
                   value: 2,
                 },
@@ -354,13 +354,13 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           magic_gear: [
             {
-              _instanceId: "mg-1",
+              id: "mg-1",
               magic_gear_id: "MAGIC_GEAR-001",
               is_equipped: false,
               storedAt: "backpack",
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-010",
                   value: 2,
                 },
@@ -388,14 +388,14 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-000",
                   value: 1,
                 },
@@ -404,13 +404,13 @@ describe("BUILD SHEET", () => {
           ],
           magic_gear: [
             {
-              _instanceId: "mg-1",
+              id: "mg-1",
               magic_gear_id: "MAGIC_GEAR-001",
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
-                  _instanceId: "ench-2",
+                  id: "ench-2",
                   enchantment_id: "ENCHANTMENT-010",
                   value: 1,
                 },
@@ -437,13 +437,13 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           armor: [
             {
-              _instanceId: "arm-1",
+              id: "arm-1",
               armor_id: "ARMOR-000",
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-040",
                   value: 0.05,
                 },
@@ -474,13 +474,13 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           armor: [
             {
-              _instanceId: "arm-1",
+              id: "arm-1",
               armor_id: "ARMOR-000",
               is_equipped: false,
               storedAt: "backpack",
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-040",
                   value: 0.05,
                 },
@@ -507,7 +507,7 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           ranged: [
             {
-              _instanceId: "rng-1",
+              id: "rng-1",
               weapon_id: "RANGED-001",
               is_equipped: true,
               storedAt: null,
@@ -515,14 +515,14 @@ describe("BUILD SHEET", () => {
           ],
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-000",
                   value: 2,
                 },
@@ -572,14 +572,14 @@ describe("BUILD SHEET", () => {
       const enchanted = buildSheet(
         withWeight([
           {
-            _instanceId: "acc-1",
+            id: "acc-1",
             accessory_id: "ACCESSORY-000",
             is_equipped: true,
             storedAt: null,
             price: 0,
             enchantments: [
               {
-                _instanceId: "ench-1",
+                id: "ench-1",
                 enchantment_id: "ENCHANTMENT-000",
                 value: 2,
               },
@@ -612,14 +612,14 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           accessories: [
             {
-              _instanceId: "acc-1",
+              id: "acc-1",
               accessory_id: "ACCESSORY-000",
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-004",
                   value: 2,
                 },
@@ -647,13 +647,13 @@ describe("BUILD SHEET", () => {
           ...mockInput.inventory,
           armor: [
             {
-              _instanceId: "arm-1",
+              id: "arm-1",
               armor_id: "ARMOR-000",
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
-                  _instanceId: "ench-1",
+                  id: "ench-1",
                   enchantment_id: "ENCHANTMENT-038",
                   value: 1,
                 },

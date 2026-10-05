@@ -4,7 +4,7 @@ const {
 
 describe("CUSTOM INVENTORY", () => {
   const item = (overrides = {}) => ({
-    custom_item_id: "abc-123",
+    id: "abc-123",
     name: "Pedra Rúnica",
     weight: 0.5,
     price: 10,
@@ -58,9 +58,9 @@ describe("CUSTOM INVENTORY", () => {
 
     test("Should distribute items across all three buckets", () => {
       const result = buildCustomInventorySlots([
-        item({ custom_item_id: "a", storedAt: "stash" }),
-        item({ custom_item_id: "b", storedAt: "camp" }),
-        item({ custom_item_id: "c", storedAt: "backpack" }),
+        item({ id: "a", storedAt: "stash" }),
+        item({ id: "b", storedAt: "camp" }),
+        item({ id: "c", storedAt: "backpack" }),
       ]);
       expect(result.stash.length).toBe(1);
       expect(result.camp.length).toBe(1);
@@ -69,8 +69,8 @@ describe("CUSTOM INVENTORY", () => {
 
     test("Should place multiple items in the same bucket", () => {
       const result = buildCustomInventorySlots([
-        item({ custom_item_id: "a", storedAt: "backpack" }),
-        item({ custom_item_id: "b", storedAt: "backpack" }),
+        item({ id: "a", storedAt: "backpack" }),
+        item({ id: "b", storedAt: "backpack" }),
       ]);
       expect(result.backpack.length).toBe(2);
     });
@@ -101,13 +101,13 @@ describe("CUSTOM INVENTORY", () => {
     test("Should sum carried weight across multiple backpack items", () => {
       const result = buildCustomInventorySlots([
         item({
-          custom_item_id: "a",
+          id: "a",
           weight: 1,
           quantity: 2,
           storedAt: "backpack",
         }),
         item({
-          custom_item_id: "b",
+          id: "b",
           weight: 0.5,
           quantity: 4,
           storedAt: "backpack",
@@ -126,19 +126,19 @@ describe("CUSTOM INVENTORY", () => {
     test("Should only count backpack when items span all locations", () => {
       const result = buildCustomInventorySlots([
         item({
-          custom_item_id: "a",
+          id: "a",
           weight: 10,
           quantity: 1,
           storedAt: "stash",
         }),
         item({
-          custom_item_id: "b",
+          id: "b",
           weight: 10,
           quantity: 1,
           storedAt: "camp",
         }),
         item({
-          custom_item_id: "c",
+          id: "c",
           weight: 2,
           quantity: 3,
           storedAt: "backpack",
@@ -177,7 +177,7 @@ describe("CUSTOM INVENTORY", () => {
       expect(() =>
         buildCustomInventorySlots([
           item({ quantity: 0 }),
-          item({ custom_item_id: "valid", name: "" }),
+          item({ id: "valid", name: "" }),
         ]),
       ).toThrow("[buildCustomInventorySlots] Invalid customInventory");
     });

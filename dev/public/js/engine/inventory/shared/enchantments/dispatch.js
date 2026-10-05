@@ -13,7 +13,7 @@ import {
 
 // Reads a not-yet-committed enchantment form straight out of the DOM (uncontrolled inputs —
 // nothing writes to state until "Adicionar"/"Salvar" is pressed). formKey is either the parent
-// item's instanceId (add-form) or an entry's own _instanceId (edit-form) — same shared markup.
+// item's instanceId (add-form) or an entry's own id (edit-form) — same shared markup.
 export function readEnchantmentFormParams(formKey) {
   const form = document.querySelector(
     `.enchantment-form[data-form-key="${formKey}"]`,
@@ -53,7 +53,7 @@ export function createEnchantmentsHandlers({
   function ownsFormKey(formKey) {
     if (findByInstanceId(formKey)) return true;
     return getItems().some((item) =>
-      (getEnchantments(item) || []).some((entry) => entry._instanceId === formKey),
+      (getEnchantments(item) || []).some((entry) => entry.id === formKey),
     );
   }
 
@@ -64,7 +64,7 @@ export function createEnchantmentsHandlers({
       if (!findByInstanceId(instanceId)) return false;
 
       // Drop any in-progress edit-form selection for this entry — its
-      // _instanceId won't be reused, but there's no reason to keep it around.
+      // id won't be reused, but there's no reason to keep it around.
       clearEnchantmentAddFormSelection(entryInstanceId);
 
       runWithOpenState(e, () => {

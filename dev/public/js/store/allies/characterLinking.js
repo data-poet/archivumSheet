@@ -93,7 +93,7 @@ export function unlinkAlly(allyEntryId) {
   const roster = owner.data.character.allies ?? [];
   const removed = roster.find((r) => r.ally_id === allyEntryId);
   owner.data.character.allies = roster.filter((r) => r.ally_id !== allyEntryId);
-  if (removed && owner.data.character.alliesActiveId === removed._instanceId) {
+  if (removed && owner.data.character.alliesActiveId === removed.id) {
     owner.data.character.alliesActiveId = null;
   }
 
@@ -119,7 +119,7 @@ export function linkAllyToCharacter(allyEntryId, characterId) {
   if (!freshTarget.data.character) freshTarget.data.character = {};
   freshTarget.data.character.allies = [
     ...(freshTarget.data.character.allies ?? []),
-    { _instanceId: generateId("ai"), ally_id: allyEntryId, overrides: {} },
+    { id: generateId("ai"), ally_id: allyEntryId, overrides: {} },
   ];
 
   _save(freshStore);

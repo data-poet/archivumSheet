@@ -77,7 +77,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
   const record = magicGearRecord(inst.magic_gear_id, data);
   if (!record) return "";
 
-  const instanceId = inst._instanceId;
+  const instanceId = inst.id;
   const resolved = resolvedMagicGear(sheet, instanceId);
 
   return `
@@ -140,7 +140,7 @@ function renderStorageSection(location, stored, data, sheet) {
         const record = magicGearRecord(inst.magic_gear_id, data);
         if (!record) return "";
 
-        const instanceId = inst._instanceId;
+        const instanceId = inst.id;
         const resolved = resolvedMagicGear(sheet, instanceId);
         // Per-item, not per-section: each magic_gear_type has its own equip cap.
         const atLimit = isMagicGearAtEquipLimit(inst.magic_gear_id);

@@ -114,7 +114,7 @@ describe("meleeResolver", () => {
         weapon_custom_description: "Uma espada gasta pelo tempo.",
         weapon_custom_effect: "+1 em testes de intimidação ao desembainhar.",
 
-        _instanceId: null,
+        id: null,
         is_equipped: true,
         storedAt: null,
         total_value: 165,
@@ -186,7 +186,7 @@ describe("meleeResolver", () => {
         weapon_custom_description: null,
         weapon_custom_effect: null,
 
-        _instanceId: null,
+        id: null,
         is_equipped: false,
         storedAt: "stash",
         total_value: 150,
@@ -275,7 +275,7 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         ],
       };
 
@@ -297,9 +297,9 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
           {
-            _instanceId: "e2",
+            id: "e2",
             enchantment_id: "ENCHANTMENT-037",
             value: -0.1,
           },
@@ -323,7 +323,7 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
         ],
       };
 
@@ -343,7 +343,7 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
         ],
       };
 
@@ -363,8 +363,8 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-061", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-061", value: -1 },
         ],
       };
 
@@ -384,9 +384,9 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-056", value: 1 },
-          { _instanceId: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-056", value: 1 },
+          { id: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
         ],
       };
 
@@ -408,7 +408,7 @@ describe("meleeResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-056", value: 1 },
         ],
       };
 

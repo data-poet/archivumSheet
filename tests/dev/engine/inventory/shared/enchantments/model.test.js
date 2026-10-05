@@ -575,11 +575,10 @@ describe("entry mutation", () => {
       expect(entry.extraPoints).toBe(-1);
     });
 
-    test("assigns a fresh _instanceId and keeps the enchantment_id", () => {
+    test("assigns a fresh id and keeps the enchantment_id", () => {
       const entry = addEnchantmentEntry([], "SKILL-1");
-      expect(entry._instanceId).toEqual(
-        expect.stringContaining("enchantment-inst-"),
-      );
+      expect(typeof entry.id).toBe("string");
+      expect(entry.id.length).toBeGreaterThan(0);
       expect(entry.enchantment_id).toBe("SKILL-1");
     });
   });
@@ -588,12 +587,12 @@ describe("entry mutation", () => {
     function existingEntries() {
       return [
         {
-          _instanceId: "enchantment-inst-1",
+          id: "enchantment-inst-1",
           enchantment_id: "ATTR-1",
           value: 2,
         },
         {
-          _instanceId: "enchantment-inst-2",
+          id: "enchantment-inst-2",
           enchantment_id: "POINT-1",
           target: "DX",
         },
@@ -616,7 +615,7 @@ describe("entry mutation", () => {
       ).toBeNull();
     });
 
-    test("replaces the entry in place, keeping its _instanceId but swapping fields", () => {
+    test("replaces the entry in place, keeping its id but swapping fields", () => {
       const entries = existingEntries();
       const updated = updateEnchantmentEntry(
         entries,
@@ -625,7 +624,7 @@ describe("entry mutation", () => {
         { target: "SK-002" },
       );
 
-      expect(updated._instanceId).toBe("enchantment-inst-1");
+      expect(updated.id).toBe("enchantment-inst-1");
       expect(updated.enchantment_id).toBe("SKILL-1");
       expect(updated.target).toBe("SK-002");
       expect(entries[0]).toBe(updated); // same index, same array position
@@ -636,15 +635,15 @@ describe("entry mutation", () => {
   describe("removeEnchantmentEntry", () => {
     test("removes the matching entry", () => {
       const entries = [
-        { _instanceId: "enchantment-inst-1" },
-        { _instanceId: "enchantment-inst-2" },
+        { id: "enchantment-inst-1" },
+        { id: "enchantment-inst-2" },
       ];
       removeEnchantmentEntry(entries, "enchantment-inst-1");
-      expect(entries.map((e) => e._instanceId)).toEqual(["enchantment-inst-2"]);
+      expect(entries.map((e) => e.id)).toEqual(["enchantment-inst-2"]);
     });
 
     test("is a no-op for an unknown entryInstanceId", () => {
-      const entries = [{ _instanceId: "enchantment-inst-1" }];
+      const entries = [{ id: "enchantment-inst-1" }];
       removeEnchantmentEntry(entries, "ghost");
       expect(entries).toHaveLength(1);
     });

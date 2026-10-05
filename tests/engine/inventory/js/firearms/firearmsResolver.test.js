@@ -133,7 +133,7 @@ describe("firearmsResolver", () => {
         weapon_custom_description: "Um revólver com o cano gravado à mão.",
         weapon_custom_effect: "+1 em testes de Intimidação ao sacá-lo.",
 
-        _instanceId: null,
+        id: null,
         is_equipped: true,
         storedAt: null,
         total_value: 2200,
@@ -345,7 +345,7 @@ describe("firearmsResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         ],
       };
 
@@ -367,8 +367,8 @@ describe("firearmsResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-037", value: -0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-037", value: -0.1 },
         ],
       };
 
@@ -389,7 +389,7 @@ describe("firearmsResolver", () => {
         ...baseInstance,
         gdp_modifier: 1,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
         ],
       };
 
@@ -410,8 +410,8 @@ describe("firearmsResolver", () => {
         ...baseInstance,
         gdp_modifier: 1,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-059", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-059", value: -1 },
         ],
       };
 
@@ -431,7 +431,7 @@ describe("firearmsResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
         ],
       };
 
@@ -452,7 +452,7 @@ describe("firearmsResolver", () => {
         ...baseInstance,
         prec_modifier: 1,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-062", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-062", value: 1 },
         ],
       };
 
@@ -473,7 +473,7 @@ describe("firearmsResolver", () => {
         ...baseInstance,
         tr_modifier: -1,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-064", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-064", value: 1 },
         ],
       };
 
@@ -493,11 +493,11 @@ describe("firearmsResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-058", value: 1 },
-          { _instanceId: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
-          { _instanceId: "e4", enchantment_id: "ENCHANTMENT-062", value: 1 },
-          { _instanceId: "e5", enchantment_id: "ENCHANTMENT-064", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
+          { id: "e4", enchantment_id: "ENCHANTMENT-062", value: 1 },
+          { id: "e5", enchantment_id: "ENCHANTMENT-064", value: 1 },
         ],
       };
 
@@ -520,7 +520,7 @@ describe("firearmsResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
         ],
       };
 

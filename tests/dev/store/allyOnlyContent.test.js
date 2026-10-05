@@ -70,7 +70,7 @@ describe("with ally-only rows recorded", () => {
   test("finds an ally-only item nested in an inventory entry", () => {
     state.selected.armors = [
       {
-        _instanceId: "armor-1",
+        id: "armor-1",
         armor_id: "ARMOR-ALLY-1",
         material_id: "MAT-000",
       },
@@ -91,8 +91,8 @@ describe("with ally-only rows recorded", () => {
 
   test("reports each offender once even when held twice", () => {
     state.selected.armors = [
-      { _instanceId: "armor-1", armor_id: "ARMOR-ALLY-1" },
-      { _instanceId: "armor-2", armor_id: "ARMOR-ALLY-1" },
+      { id: "armor-1", armor_id: "ARMOR-ALLY-1" },
+      { id: "armor-2", armor_id: "ARMOR-ALLY-1" },
     ];
 
     expect(findAllyOnlyContent()).toHaveLength(1);

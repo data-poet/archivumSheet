@@ -216,7 +216,7 @@
     },
     "allies": [
       {
-        "_instanceId": "ai-1790681660356-1p2qw",
+        "id": "ai-1790681660356-1p2qw",
         "ally_id": "c-1790681660355-fhil0",
         "overrides": {}
       }
@@ -228,7 +228,7 @@
     "weight": 0,
     "armors": [
       {
-        "_instanceId": "armor-inst-1",
+        "id": "armor-inst-1",
         "armor_id": "ARMOR-000",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -236,7 +236,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "armor-inst-3",
+        "id": "armor-inst-3",
         "armor_id": "ARMOR-020",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -244,7 +244,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "armor-inst-4",
+        "id": "armor-inst-4",
         "armor_id": "ARMOR-035",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -252,7 +252,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "armor-inst-5",
+        "id": "armor-inst-5",
         "armor_id": "ARMOR-050",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -260,7 +260,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "armor-inst-6",
+        "id": "armor-inst-6",
         "armor_id": "ARMOR-065",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -268,7 +268,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "armor-inst-7",
+        "id": "armor-inst-7",
         "armor_id": "ARMOR-080",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -278,7 +278,7 @@
     ],
     "shields": [
       {
-        "_instanceId": "shield-inst-1",
+        "id": "shield-inst-1",
         "shield_id": "SHIELD-005",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -288,7 +288,7 @@
     ],
     "melee_weapons": [
       {
-        "_instanceId": "melee-inst-1",
+        "id": "melee-inst-1",
         "weapon_id": "MELEE-275",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -296,7 +296,7 @@
         "storedAt": null
       },
       {
-        "_instanceId": "melee-inst-2",
+        "id": "melee-inst-2",
         "_linkedInstanceId": "ranged-inst-1",
         "weapon_id": "MELEE-280",
         "material_id": "MAT-000",
@@ -307,7 +307,7 @@
     ],
     "ranged_weapons": [
       {
-        "_instanceId": "ranged-inst-1",
+        "id": "ranged-inst-1",
         "weapon_id": "RANGED-005",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -317,7 +317,7 @@
     ],
     "firearms": [
       {
-        "_instanceId": "firearm-inst-1",
+        "id": "firearm-inst-1",
         "weapon_id": "FIREARM-005",
         "material_id": "MAT-000",
         "hit_points_modifier": 0,
@@ -336,7 +336,7 @@
     ],
     "ammo_containers": [
       {
-        "_instanceId": "ammo-cont-inst-2",
+        "id": "ammo-cont-inst-2",
         "container_id": "CONTAINER-014",
         "storedAt": "equipped",
         "contents": [
@@ -364,7 +364,7 @@
     ],
     "accessories": [
       {
-        "_instanceId": "accessory-inst-1",
+        "id": "accessory-inst-1",
         "accessory_id": "ACCESSORY-001",
         "price": 0,
         "is_equipped": true,
@@ -374,7 +374,7 @@
         "accessory_custom_effect": null,
         "enchantments": [
           {
-            "_instanceId": "enchantment-inst-2",
+            "id": "enchantment-inst-2",
             "enchantment_id": "ENCHANTMENT-006",
             "value": 1
           }
@@ -383,7 +383,7 @@
     ],
     "magicGear": [
       {
-        "_instanceId": "magic-gear-inst-1",
+        "id": "magic-gear-inst-1",
         "magic_gear_id": "MAGIC_GEAR-003",
         "is_equipped": true,
         "storedAt": null,
@@ -392,7 +392,7 @@
         "magic_gear_custom_effect": null,
         "enchantments": [
           {
-            "_instanceId": "enchantment-inst-1",
+            "id": "enchantment-inst-1",
             "enchantment_id": "ENCHANTMENT-010",
             "value": 16
           }
@@ -401,7 +401,7 @@
     ],
     "customInventory": [
       {
-        "custom_item_id": "custom-1790681653235-eddwn",
+        "id": "custom-1790681653235-eddwn",
         "name": "Diário",
         "weight": 0,
         "price": 0,

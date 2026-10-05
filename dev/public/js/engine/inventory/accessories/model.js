@@ -3,7 +3,7 @@ import { fetchAccessories } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { nextAccessoryInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -99,7 +99,7 @@ export function isAccessoryAtEquipLimit(accessoryId) {
 
 function _newAccessoryInstance(accessoryId, price, isEquipped, storedAt) {
   return {
-    _instanceId: nextAccessoryInstanceId(),
+    id: generateInstanceId(),
     accessory_id: accessoryId,
     price: Number(price) || 0,
     is_equipped: isEquipped,
@@ -188,7 +188,7 @@ export function removeAccessory(instanceId) {
   const before = structuredClone(selected.accessories);
 
   selected.accessories = selected.accessories.filter(
-    (a) => a._instanceId !== instanceId,
+    (a) => a.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   updateAccessoryEquipOptionAvailability();
@@ -264,7 +264,7 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-// Edits an entry in place, keeping its own _instanceId so list position and price-lookup identity survive the edit.
+// Edits an entry in place, keeping its own id so list position and price-lookup identity survive the edit.
 export function updateAccessoryEnchantment(
   instanceId,
   entryInstanceId,
@@ -317,5 +317,5 @@ export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findAccessoryByInstanceId(instanceId) {
-  return selected.accessories.find((a) => a._instanceId === instanceId) || null;
+  return selected.accessories.find((a) => a.id === instanceId) || null;
 }

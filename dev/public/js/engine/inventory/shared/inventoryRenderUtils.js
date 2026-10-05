@@ -52,7 +52,7 @@ export function renderStorageLocationBlock(location, label, tableHtml) {
 }
 
 /**
- * Find an instance by _instanceId across an item type's storage buckets. Buckets may be a
+ * Find an instance by id across an item type's storage buckets. Buckets may be a
  * single equipped object, a flat array (backpack/stash/camp), or (armor) an array of per-slot
  * arrays — falsy and non-array buckets are normalized to a one-item array before searching.
  */
@@ -60,7 +60,7 @@ export function findInstance(buckets, instanceId) {
   for (const bucket of buckets) {
     if (!bucket) continue;
     const items = Array.isArray(bucket) ? bucket : [bucket];
-    const found = items.find((item) => item && item._instanceId === instanceId);
+    const found = items.find((item) => item && item.id === instanceId);
     if (found) return found;
   }
   return null;
