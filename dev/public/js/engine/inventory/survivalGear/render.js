@@ -72,8 +72,28 @@ export function renderSurvivalGear(selected, data, sheet) {
   setHTML("survivalGearList", sections);
 }
 
+// Each gear item is stored as one row per unit; group them back into one display
+// row per adventure_gear_id so the qty stepper still shows a single combined count.
+function groupByGear(sectionEntries) {
+  const groups = new Map();
+  for (const entry of sectionEntries) {
+    const group = groups.get(entry.adventure_gear_id);
+    if (group) {
+      group.quantity += entry.quantity;
+    } else {
+      groups.set(entry.adventure_gear_id, {
+        adventure_gear_id: entry.adventure_gear_id,
+        quantity: entry.quantity,
+      });
+    }
+  }
+  return [...groups.values()];
+}
+
 function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
-  const sectionEntries = entries.filter((e) => e.storedAt === location);
+  const sectionEntries = groupByGear(
+    entries.filter((e) => e.storedAt === location),
+  );
 
   let bodyRows = "";
 
@@ -85,10 +105,15 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
         const record = getGearRecord(entry.adventure_gear_id, survivalGearData);
         const name = record?.adventure_gear_name ?? entry.adventure_gear_id;
         const resolvedBucket = sheet?.inventory?.survivalGear?.[location];
-        const resolvedEntry = resolvedBucket?.find(
-          (e) => e.adventure_gear_id === entry.adventure_gear_id,
-        );
-        const totalWeight = resolvedEntry?.total_weight ?? "—";
+        const totalWeight = resolvedBucket
+          ? Math.round(
+              (resolvedBucket
+                .filter((e) => e.adventure_gear_id === entry.adventure_gear_id)
+                .reduce((sum, e) => sum + e.total_weight, 0) +
+                Number.EPSILON) *
+                100,
+            ) / 100
+          : "—";
 
         return `
           <tr>
