@@ -26,7 +26,7 @@ describe("custom inventory name", () => {
     resetDOM(`<div id="customInventoryList"></div>`);
     state.selected.customInventory = [
       {
-        custom_item_id: "CUSTOM-1",
+        id: "CUSTOM-1",
         name: HOSTILE,
         quantity: 1,
         weight: 0,
