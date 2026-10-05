@@ -176,6 +176,7 @@ describe("ammoResolver — resolveLooseAmmo", () => {
     const result = resolveLooseAmmo(instance, mockAmmoDb["AMMO-001"]);
 
     expect(result).toEqual({
+      id: null,
       ammo_id: "AMMO-001",
       ammo_name: "Broadhead Arrow",
       ammo_type: "arrow",

@@ -9,6 +9,7 @@ function resolveCoin(instance) {
   const total_value = coin_value * instance.quantity;
 
   return {
+    id: instance.id ?? null,
     coin_type: instance.coin_type,
     quantity: instance.quantity,
     storedAt: instance.storedAt,

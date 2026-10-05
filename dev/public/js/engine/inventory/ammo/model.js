@@ -239,7 +239,12 @@ export function addLooseAmmo(ammoId, quantity, storedAt = "backpack") {
   if (existing) {
     existing.quantity += quantity;
   } else {
-    selected.loose_ammo.push({ ammo_id: ammoId, quantity, storedAt });
+    selected.loose_ammo.push({
+      id: generateInstanceId(),
+      ammo_id: ammoId,
+      quantity,
+      storedAt,
+    });
   }
 
   renderListsPreserving(selected, data);
@@ -277,7 +282,8 @@ export function removeLooseAmmo(ammoId, storedAt) {
   });
 }
 
-/** Merges into an existing entry at the destination for the same ammo_id, if any. */
+/** Merges into an existing entry at the destination for the same ammo_id, if any — the
+ * destination row's id wins and the source row's id is discarded on merge. */
 export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 
@@ -297,6 +303,7 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
     dest.quantity += qty;
   } else {
     selected.loose_ammo.push({
+      id: source.id,
       ammo_id: ammoId,
       quantity: qty,
       storedAt: toLocation,

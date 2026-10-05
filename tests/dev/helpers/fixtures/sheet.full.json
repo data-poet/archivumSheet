@@ -414,17 +414,20 @@
       {
         "coin_type": "gold",
         "quantity": 1,
-        "storedAt": "backpack"
+        "storedAt": "backpack",
+        "id": "coin-gold-fixture"
       },
       {
         "coin_type": "silver",
         "quantity": 3,
-        "storedAt": "backpack"
+        "storedAt": "backpack",
+        "id": "coin-silver-fixture"
       },
       {
         "coin_type": "copper",
         "quantity": 50,
-        "storedAt": "backpack"
+        "storedAt": "backpack",
+        "id": "coin-copper-fixture"
       }
     ]
   },
