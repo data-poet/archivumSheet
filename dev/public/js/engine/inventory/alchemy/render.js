@@ -90,8 +90,28 @@ export function renderAlchemy(selected, data, sheet) {
   setHTML("alchemyList", sections);
 }
 
+// Each consumable is stored as one row per unit; group them back into one display
+// row per consumable_id so the qty stepper still shows a single combined count.
+function groupByConsumable(sectionEntries) {
+  const groups = new Map();
+  for (const entry of sectionEntries) {
+    const group = groups.get(entry.consumable_id);
+    if (group) {
+      group.quantity += entry.quantity;
+    } else {
+      groups.set(entry.consumable_id, {
+        consumable_id: entry.consumable_id,
+        quantity: entry.quantity,
+      });
+    }
+  }
+  return [...groups.values()];
+}
+
 function renderAlchemySection(location, entries, alchemyData, sheet) {
-  const sectionEntries = entries.filter((e) => e.storedAt === location);
+  const sectionEntries = groupByConsumable(
+    entries.filter((e) => e.storedAt === location),
+  );
 
   let bodyRows = "";
 
@@ -104,10 +124,15 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
         const name = record?.consumable_name ?? entry.consumable_id;
         const tier = record?.consumable_tier ?? "—";
         const resolvedBucket = sheet?.inventory?.alchemy?.[location];
-        const resolvedEntry = resolvedBucket?.find(
-          (e) => e.consumable_id === entry.consumable_id,
-        );
-        const totalWeight = resolvedEntry?.total_weight ?? "—";
+        const totalWeight = resolvedBucket
+          ? Math.round(
+              (resolvedBucket
+                .filter((e) => e.consumable_id === entry.consumable_id)
+                .reduce((sum, e) => sum + e.total_weight, 0) +
+                Number.EPSILON) *
+                100,
+            ) / 100
+          : "—";
 
         return `
           <tr>
