@@ -4,6 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { offerUndo } from "../../../components/undo.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -70,35 +71,55 @@ export function updateSurvivalGearNameOptions() {
 // ─────────────────────────────────────────────────────────────────────────────
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
+//
+// Each gear item in storage is its own row (quantity always 1, its own id) so a
+// single unit can one day move independently (e.g. to a shared camp). The qty
+// stepper in the UI groups same adventure_gear_id+storedAt rows and operates on
+// the group by adding/removing whole rows, matching rows found by `matchingRows`.
 
-// Merges quantity when the same id+location entry already exists.
+function matchingRows(gearId, storedAt) {
+  return selected.survivalGear.filter(
+    (e) => e.adventure_gear_id === gearId && e.storedAt === storedAt,
+  );
+}
+
+function pushSurvivalGearUnit(gearId, storedAt) {
+  selected.survivalGear.push({
+    id: generateInstanceId(),
+    adventure_gear_id: gearId,
+    quantity: 1,
+    storedAt,
+  });
+}
+
+/** Adds `quantity` individual gear rows. */
 export function addSurvivalGear(gearId, quantity, storedAt = "backpack") {
   if (!gearId || quantity <= 0) return;
 
-  const existing = selected.survivalGear.find(
-    (e) => e.adventure_gear_id === gearId && e.storedAt === storedAt,
-  );
-
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    selected.survivalGear.push({ adventure_gear_id: gearId, quantity, storedAt });
-  }
+  for (let i = 0; i < quantity; i++) pushSurvivalGearUnit(gearId, storedAt);
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
+/** Grows or shrinks the group of rows for this gear+location to match `quantity`. */
 export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
+  const rows = matchingRows(gearId, storedAt);
+
   if (quantity <= 0) {
-    selected.survivalGear = selected.survivalGear.filter(
-      (e) => !(e.adventure_gear_id === gearId && e.storedAt === storedAt),
+    removeSurvivalGear(gearId, storedAt);
+    return;
+  }
+
+  if (quantity > rows.length) {
+    for (let i = 0; i < quantity - rows.length; i++) {
+      pushSurvivalGearUnit(gearId, storedAt);
+    }
+  } else if (quantity < rows.length) {
+    const idsToRemove = new Set(
+      rows.slice(0, rows.length - quantity).map((r) => r.id),
     );
-  } else {
-    const entry = selected.survivalGear.find(
-      (e) => e.adventure_gear_id === gearId && e.storedAt === storedAt,
-    );
-    if (entry) entry.quantity = quantity;
+    selected.survivalGear = selected.survivalGear.filter((e) => !idsToRemove.has(e.id));
   }
 
   renderListsPreserving(selected, data);
@@ -120,27 +141,18 @@ export function removeSurvivalGear(gearId, storedAt) {
   });
 }
 
-// Merges quantities if the destination already has the same adventure_gear_id.
+/** Moves every row of this gear from one location to the other, keeping each row's id. */
 export function moveSurvivalGear(gearId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 
-  const source = selected.survivalGear.find(
-    (e) => e.adventure_gear_id === gearId && e.storedAt === fromLocation,
-  );
-  if (!source) return;
-
-  const qty = source.quantity;
-  selected.survivalGear = selected.survivalGear.filter(
-    (e) => !(e.adventure_gear_id === gearId && e.storedAt === fromLocation),
-  );
-  const dest = selected.survivalGear.find(
-    (e) => e.adventure_gear_id === gearId && e.storedAt === toLocation,
-  );
-  if (dest) {
-    dest.quantity += qty;
-  } else {
-    selected.survivalGear.push({ adventure_gear_id: gearId, quantity: qty, storedAt: toLocation });
+  let moved = false;
+  for (const entry of selected.survivalGear) {
+    if (entry.adventure_gear_id === gearId && entry.storedAt === fromLocation) {
+      entry.storedAt = toLocation;
+      moved = true;
+    }
   }
+  if (!moved) return;
 
   renderListsPreserving(selected, data);
   triggerAutoRun();

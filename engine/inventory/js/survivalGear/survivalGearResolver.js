@@ -4,6 +4,7 @@ function resolveSurvivalGearItem(instance, gear) {
   const total_weight = round2(gear.adventure_gear_weight * instance.quantity);
 
   return {
+    id: instance.id ?? null,
     adventure_gear_id: gear.adventure_gear_id,
     adventure_gear_name: gear.adventure_gear_name,
     adventure_gear_type: gear.adventure_gear_type,

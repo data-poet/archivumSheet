@@ -4,6 +4,7 @@ function resolveAlchemyConsumable(instance, consumable) {
   const total_weight = round2(consumable.consumable_weight * instance.quantity);
 
   return {
+    id: instance.id ?? null,
     consumable_id: consumable.consumable_id,
     consumable_name: consumable.consumable_name,
     consumable_box_name: consumable.consumable_box_name,

@@ -4,6 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { offerUndo } from "../../../components/undo.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -98,35 +99,55 @@ export function updateAlchemyTierOptions() {
 // ─────────────────────────────────────────────────────────────────────────────
 // STORAGE OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
+//
+// Each consumable in storage is its own row (quantity always 1, its own id) so a
+// single unit can one day move independently (e.g. to a shared camp). The qty
+// stepper in the UI groups same consumable_id+storedAt rows and operates on the
+// group by adding/removing whole rows, matching rows found by `matchingRows`.
 
-/** Add a consumable to storage, merging quantity when same id+location exists. */
+function matchingRows(consumableId, storedAt) {
+  return selected.alchemy.filter(
+    (e) => e.consumable_id === consumableId && e.storedAt === storedAt,
+  );
+}
+
+function pushAlchemyUnit(consumableId, storedAt) {
+  selected.alchemy.push({
+    id: generateInstanceId(),
+    consumable_id: consumableId,
+    quantity: 1,
+    storedAt,
+  });
+}
+
+/** Adds `quantity` individual consumable rows. */
 export function addAlchemy(consumableId, quantity, storedAt = "backpack") {
   if (!consumableId || quantity <= 0) return;
 
-  const existing = selected.alchemy.find(
-    (e) => e.consumable_id === consumableId && e.storedAt === storedAt,
-  );
-
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    selected.alchemy.push({ consumable_id: consumableId, quantity, storedAt });
-  }
+  for (let i = 0; i < quantity; i++) pushAlchemyUnit(consumableId, storedAt);
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
 
+/** Grows or shrinks the group of rows for this consumable+location to match `quantity`. */
 export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
+  const rows = matchingRows(consumableId, storedAt);
+
   if (quantity <= 0) {
-    selected.alchemy = selected.alchemy.filter(
-      (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
+    removeAlchemy(consumableId, storedAt);
+    return;
+  }
+
+  if (quantity > rows.length) {
+    for (let i = 0; i < quantity - rows.length; i++) {
+      pushAlchemyUnit(consumableId, storedAt);
+    }
+  } else if (quantity < rows.length) {
+    const idsToRemove = new Set(
+      rows.slice(0, rows.length - quantity).map((r) => r.id),
     );
-  } else {
-    const entry = selected.alchemy.find(
-      (e) => e.consumable_id === consumableId && e.storedAt === storedAt,
-    );
-    if (entry) entry.quantity = quantity;
+    selected.alchemy = selected.alchemy.filter((e) => !idsToRemove.has(e.id));
   }
 
   renderListsPreserving(selected, data);
@@ -148,27 +169,18 @@ export function removeAlchemy(consumableId, storedAt) {
   });
 }
 
-/** Moves an entry between locations, merging quantities if the destination already has the same consumable_id. */
+/** Moves every row of this consumable from one location to the other, keeping each row's id. */
 export function moveAlchemy(consumableId, fromLocation, toLocation) {
   if (fromLocation === toLocation) return;
 
-  const source = selected.alchemy.find(
-    (e) => e.consumable_id === consumableId && e.storedAt === fromLocation,
-  );
-  if (!source) return;
-
-  const qty = source.quantity;
-  selected.alchemy = selected.alchemy.filter(
-    (e) => !(e.consumable_id === consumableId && e.storedAt === fromLocation),
-  );
-  const dest = selected.alchemy.find(
-    (e) => e.consumable_id === consumableId && e.storedAt === toLocation,
-  );
-  if (dest) {
-    dest.quantity += qty;
-  } else {
-    selected.alchemy.push({ consumable_id: consumableId, quantity: qty, storedAt: toLocation });
+  let moved = false;
+  for (const entry of selected.alchemy) {
+    if (entry.consumable_id === consumableId && entry.storedAt === fromLocation) {
+      entry.storedAt = toLocation;
+      moved = true;
+    }
   }
+  if (!moved) return;
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
