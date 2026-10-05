@@ -141,12 +141,12 @@ describe("createEnchantmentsHandlers", () => {
       expect(ownsFormKey("ITEM-1")).toBe(true);
     });
 
-    test("true when the key matches a nested enchantment entry's _instanceId", () => {
+    test("true when the key matches a nested enchantment entry's id", () => {
       const { ownsFormKey } = createEnchantmentsHandlers(
         makeConfig({
           findByInstanceId: jest.fn(() => undefined),
           getItems: jest.fn(() => [
-            { enchantments: [{ _instanceId: "ENTRY-1" }] },
+            { enchantments: [{ id: "ENTRY-1" }] },
           ]),
         }),
       );
@@ -168,7 +168,7 @@ describe("createEnchantmentsHandlers", () => {
         makeConfig({
           findByInstanceId: jest.fn(() => undefined),
           getItems: jest.fn(() => [
-            { magicalEffects: [{ _instanceId: "E1" }] },
+            { magicalEffects: [{ id: "E1" }] },
           ]),
           getEnchantments: (item) => item.magicalEffects,
         }),

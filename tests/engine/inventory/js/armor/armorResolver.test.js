@@ -115,7 +115,7 @@ describe("equipmentArmorUtils", () => {
         armor_custom_description: "Um capuz remendado com retalhos escuros.",
         armor_custom_effect: "+1 em testes de furtividade à noite.",
 
-        _instanceId: null,
+        id: null,
         is_equipped: true,
 
         storedAt: "backpack",
@@ -223,7 +223,7 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         ],
       };
 
@@ -245,9 +245,9 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
           {
-            _instanceId: "e2",
+            id: "e2",
             enchantment_id: "ENCHANTMENT-037",
             value: -0.1,
           },
@@ -271,7 +271,7 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-038", value: 2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-038", value: 2 },
         ],
       };
 
@@ -292,8 +292,8 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-038", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-038", value: 1 },
         ],
       };
 
@@ -313,7 +313,7 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-040", value: 0.05 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-040", value: 0.05 },
         ],
       };
 
@@ -341,7 +341,7 @@ describe("equipmentArmorUtils", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-038", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-038", value: 1 },
         ],
       };
 

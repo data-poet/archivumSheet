@@ -3,7 +3,7 @@ import { fetchMagicGear, fetchMagicGearEquipLimits } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { nextMagicGearInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -136,7 +136,7 @@ export function isMagicGearAtEquipLimit(magicGearId) {
 
 function _newMagicGearInstance(magicGearId, isEquipped, storedAt) {
   return {
-    _instanceId: nextMagicGearInstanceId(),
+    id: generateInstanceId(),
     magic_gear_id: magicGearId,
     is_equipped: isEquipped,
     storedAt,
@@ -214,7 +214,7 @@ export function removeMagicGear(instanceId) {
   const before = structuredClone(selected.magicGear);
 
   selected.magicGear = selected.magicGear.filter(
-    (g) => g._instanceId !== instanceId,
+    (g) => g.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   updateMagicGearEquipOptionAvailability();
@@ -281,7 +281,7 @@ export function addMagicGearEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-// Keeps the entry's own _instanceId so its list position and price-lookup identity survive the edit.
+// Keeps the entry's own id so its list position and price-lookup identity survive the edit.
 export function updateMagicGearEnchantment(
   instanceId,
   entryInstanceId,
@@ -334,5 +334,5 @@ export function removeMagicGearEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findMagicGearByInstanceId(instanceId) {
-  return selected.magicGear.find((g) => g._instanceId === instanceId) || null;
+  return selected.magicGear.find((g) => g.id === instanceId) || null;
 }

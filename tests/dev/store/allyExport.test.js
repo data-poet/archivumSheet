@@ -150,7 +150,7 @@ describe("an exported ally file feeds the ally pipeline", () => {
     };
     state.selected.armors = [
       {
-        _instanceId: "armor-1",
+        id: "armor-1",
         armor_id: "ARMOR-015",
         material_id: "MAT-000",
         hit_points_modifier: 0,

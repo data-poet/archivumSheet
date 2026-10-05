@@ -187,7 +187,7 @@ describe("MAGIC GEAR", () => {
           storedAt: null,
           enchantments: [
             {
-              _instanceId: "ench-1",
+              id: "ench-1",
               enchantment_id: "ENCHANTMENT-010",
               value: 1,
             },

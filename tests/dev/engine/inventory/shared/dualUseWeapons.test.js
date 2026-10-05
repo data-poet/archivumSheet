@@ -63,30 +63,30 @@ describe("before load completes", () => {
 
 describe("findLinkedCounterpart", () => {
   test("finds the counterpart that points at us (they were created second)", () => {
-    const instance = { _instanceId: "MELEE-1" };
-    const linked = { _instanceId: "RANGED-1", _linkedInstanceId: "MELEE-1" };
+    const instance = { id: "MELEE-1" };
+    const linked = { id: "RANGED-1", _linkedInstanceId: "MELEE-1" };
 
-    expect(findLinkedCounterpart(instance, [{ _instanceId: "X" }, linked])).toBe(
+    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(
       linked,
     );
   });
 
   test("finds the counterpart we point at (we were created second)", () => {
-    const instance = { _instanceId: "MELEE-1", _linkedInstanceId: "RANGED-1" };
-    const linked = { _instanceId: "RANGED-1" };
+    const instance = { id: "MELEE-1", _linkedInstanceId: "RANGED-1" };
+    const linked = { id: "RANGED-1" };
 
-    expect(findLinkedCounterpart(instance, [{ _instanceId: "X" }, linked])).toBe(
+    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(
       linked,
     );
   });
 
   test("prefers the counterpart pointing at us when both directions could match", () => {
-    const instance = { _instanceId: "MELEE-1", _linkedInstanceId: "RANGED-2" };
+    const instance = { id: "MELEE-1", _linkedInstanceId: "RANGED-2" };
     const pointsAtUs = {
-      _instanceId: "RANGED-1",
+      id: "RANGED-1",
       _linkedInstanceId: "MELEE-1",
     };
-    const wePointAt = { _instanceId: "RANGED-2" };
+    const wePointAt = { id: "RANGED-2" };
 
     expect(findLinkedCounterpart(instance, [pointsAtUs, wePointAt])).toBe(
       pointsAtUs,
@@ -94,17 +94,17 @@ describe("findLinkedCounterpart", () => {
   });
 
   test("returns null when nothing is linked in either direction", () => {
-    const instance = { _instanceId: "MELEE-1" };
+    const instance = { id: "MELEE-1" };
 
     expect(
-      findLinkedCounterpart(instance, [{ _instanceId: "RANGED-1" }]),
+      findLinkedCounterpart(instance, [{ id: "RANGED-1" }]),
     ).toBeNull();
   });
 
   // Guards the undefined === undefined trap: an unlinked counterpart has no
-  // _linkedInstanceId, so an instance with no _instanceId must not match it.
-  test("does not match an unlinked counterpart when the instance has no _instanceId", () => {
-    expect(findLinkedCounterpart({}, [{ _instanceId: "RANGED-1" }])).toBeNull();
+  // _linkedInstanceId, so an instance with no id must not match it.
+  test("does not match an unlinked counterpart when the instance has no id", () => {
+    expect(findLinkedCounterpart({}, [{ id: "RANGED-1" }])).toBeNull();
   });
 
   test("does not match when both sides are missing their ids entirely", () => {
@@ -112,11 +112,11 @@ describe("findLinkedCounterpart", () => {
   });
 
   test("returns null for a missing instance or a missing collection", () => {
-    expect(findLinkedCounterpart(null, [{ _instanceId: "R" }])).toBeNull();
-    expect(findLinkedCounterpart({ _instanceId: "M" }, null)).toBeNull();
+    expect(findLinkedCounterpart(null, [{ id: "R" }])).toBeNull();
+    expect(findLinkedCounterpart({ id: "M" }, null)).toBeNull();
   });
 
   test("returns null on an empty collection", () => {
-    expect(findLinkedCounterpart({ _instanceId: "MELEE-1" }, [])).toBeNull();
+    expect(findLinkedCounterpart({ id: "MELEE-1" }, [])).toBeNull();
   });
 });

@@ -4,7 +4,7 @@ import {
   fetchEnchantmentEffectTypes,
   fetchItemCategories,
 } from "../../../../api.js";
-import { nextEnchantmentInstanceId } from "../../../../store/instanceId.js";
+import { generateInstanceId } from "../../../../store/instanceId.js";
 import {
   decimalToPercent,
   percentToDecimal,
@@ -170,7 +170,7 @@ export function getUniqueSpellRows() {
   return rows;
 }
 
-// Tracked module-level, keyed by item instance _instanceId, so selections survive re-renders triggered by unrelated actions elsewhere on the sheet.
+// Tracked module-level, keyed by item instance id, so selections survive re-renders triggered by unrelated actions elsewhere on the sheet.
 const _addFormSelection = new Map();
 
 const _addFormTargetFilter = new Map();
@@ -279,7 +279,7 @@ export function addEnchantmentEntry(entries, enchantmentId, params = {}) {
   if (!record) return null;
 
   const entry = {
-    _instanceId: nextEnchantmentInstanceId(),
+    id: generateInstanceId(),
     enchantment_id: enchantmentId,
     ..._buildEntryFields(record, params),
   };
@@ -288,7 +288,7 @@ export function addEnchantmentEntry(entries, enchantmentId, params = {}) {
   return entry;
 }
 
-// Keeps the entry's own _instanceId so its position and price-lookup identity survive a swap mid-render.
+// Keeps the entry's own id so its position and price-lookup identity survive a swap mid-render.
 export function updateEnchantmentEntry(
   entries,
   entryInstanceId,
@@ -298,11 +298,11 @@ export function updateEnchantmentEntry(
   const record = getEnchantmentRecord(enchantmentId);
   if (!record) return null;
 
-  const index = entries.findIndex((e) => e._instanceId === entryInstanceId);
+  const index = entries.findIndex((e) => e.id === entryInstanceId);
   if (index === -1) return null;
 
   const entry = {
-    _instanceId: entryInstanceId,
+    id: entryInstanceId,
     enchantment_id: enchantmentId,
     ..._buildEntryFields(record, params),
   };
@@ -312,7 +312,7 @@ export function updateEnchantmentEntry(
 }
 
 export function removeEnchantmentEntry(entries, entryInstanceId) {
-  const index = entries.findIndex((e) => e._instanceId === entryInstanceId);
+  const index = entries.findIndex((e) => e.id === entryInstanceId);
   if (index === -1) return;
   entries.splice(index, 1);
 }

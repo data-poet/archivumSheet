@@ -68,7 +68,7 @@ export function renderResumeAmmo(
           ammo_id: item.ammo_id,
           name,
           quantity: item.quantity,
-          instanceId: firstInst?._instanceId ?? "",
+          instanceId: firstInst?.id ?? "",
         });
       }
     }

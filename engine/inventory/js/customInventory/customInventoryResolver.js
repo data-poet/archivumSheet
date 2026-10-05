@@ -4,7 +4,7 @@ function resolveCustomInventoryItem(instance) {
   const total_weight = round2(instance.weight * instance.quantity);
 
   return {
-    custom_item_id: instance.custom_item_id,
+    id: instance.id,
     name: instance.name.trim(),
     weight: instance.weight,
     price: instance.price,

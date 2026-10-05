@@ -185,7 +185,7 @@ describe("handleMeleeInput", () => {
 
   test("mirrors the HP modifier to a linked ranged instance found via r._linkedInstanceId (ranged points at us)", () => {
     const meleeInstance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       weapon_id: "MELEE-DB-1",
       hit_points_modifier: 0,
     };
@@ -212,7 +212,7 @@ describe("handleMeleeInput", () => {
       _linkedInstanceId: "RANGED-1",
     };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
-    const linkedRanged = { _instanceId: "RANGED-1", hit_points_modifier: 0 };
+    const linkedRanged = { id: "RANGED-1", hit_points_modifier: 0 };
     state.selected.ranged_weapons = [linkedRanged];
     const target = elWithClass("input", "equipped-melee-hp", {
       instanceId: "MELEE-1",
@@ -226,12 +226,12 @@ describe("handleMeleeInput", () => {
 
   test("does not touch ranged_weapons when there's no link at all", () => {
     const meleeInstance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       weapon_id: "MELEE-DB-1",
       hit_points_modifier: 0,
     };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
-    const unrelatedRanged = { _instanceId: "RANGED-9", hit_points_modifier: 5 };
+    const unrelatedRanged = { id: "RANGED-9", hit_points_modifier: 5 };
     state.selected.ranged_weapons = [unrelatedRanged];
     const target = elWithClass("input", "equipped-melee-hp", {
       instanceId: "MELEE-1",
@@ -318,7 +318,7 @@ describe("handleMeleeChange — equipped-melee-material", () => {
 
   test("mirrors the material change onto a linked ranged instance, resetting its HP modifier too", () => {
     const instance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       material_id: "MAT-OLD",
       hit_points_modifier: -3,
     };
@@ -343,13 +343,13 @@ describe("handleMeleeChange — equipped-melee-material", () => {
 
   test("does not touch ranged_weapons when there's no link at all", () => {
     const instance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       material_id: "MAT-OLD",
       hit_points_modifier: -3,
     };
     model.findMeleeByInstanceId.mockReturnValue(instance);
     const unrelatedRanged = {
-      _instanceId: "RANGED-9",
+      id: "RANGED-9",
       material_id: "MAT-OLD",
       hit_points_modifier: 5,
     };
@@ -380,7 +380,7 @@ describe("handleMeleeChange — storage / move", () => {
 
   test("equipped-melee-move mirrors is_equipped/storedAt onto the linked ranged instance and renders both", () => {
     const meleeInstance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       is_equipped: true,
       storedAt: null,
     };
@@ -410,13 +410,13 @@ describe("handleMeleeChange — storage / move", () => {
 
   test("equipped-melee-move with no link leaves ranged_weapons untouched", () => {
     const meleeInstance = {
-      _instanceId: "MELEE-1",
+      id: "MELEE-1",
       is_equipped: true,
       storedAt: null,
     };
     model.findMeleeByInstanceId.mockReturnValue(meleeInstance);
     const unrelatedRanged = {
-      _instanceId: "RANGED-9",
+      id: "RANGED-9",
       is_equipped: true,
       storedAt: null,
     };

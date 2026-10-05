@@ -60,7 +60,7 @@ function skillName(id) {
 
 function resolvedPrice(resolvedEntries, entryInstanceId) {
   const resolved = resolvedEntries?.find(
-    (r) => r._instanceId === entryInstanceId,
+    (r) => r.id === entryInstanceId,
   );
   return resolved ? resolved.price : null;
 }
@@ -181,7 +181,7 @@ function targetPickerKind(type) {
   return null;
 }
 
-// formKey: add-form's parent instanceId, or an existing entry's own _instanceId when editing/swapping.
+// formKey: add-form's parent instanceId, or an existing entry's own id when editing/swapping.
 function renderTargetPicker(formKey, type, currentEntry) {
   const kind = targetPickerKind(type);
   const config = TARGET_PICKER_CONFIG[kind];
@@ -381,9 +381,9 @@ function renderAddForm(instanceId, itemCategory) {
   });
 }
 
-// formKey is the entry's own _instanceId, so its in-progress selection is tracked independently of the item's add-form and other entries.
+// formKey is the entry's own id, so its in-progress selection is tracked independently of the item's add-form and other entries.
 function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
-  const formKey = entry._instanceId;
+  const formKey = entry.id;
   const selectedId = getEnchantmentEditFormSelection(
     formKey,
     itemCategory,
@@ -424,14 +424,14 @@ function renderEnchantmentEntry(
 
   const targetLabel = entryTargetLabel(record, entry);
   const magnitudeLabel = entryMagnitudeLabel(record, entry);
-  const price = resolvedPrice(resolvedEntries, entry._instanceId);
+  const price = resolvedPrice(resolvedEntries, entry.id);
 
   const parts = [record.enchantment_name];
   if (targetLabel) parts.push(escapeHtml(targetLabel));
   if (magnitudeLabel) parts.push(magnitudeLabel);
 
   return `
-    <details class="enchantment-entry" data-detail-kind="entry:${entry._instanceId}">
+    <details class="enchantment-entry" data-detail-kind="entry:${entry.id}">
       <summary class="enchantment-entry-summary">
         <span class="enchantment-entry-label">${parts.join(": ")}</span>
         <span class="enchantment-entry-price">${price != null ? price : "—"}</span>
@@ -450,7 +450,7 @@ function enchantmentsSubtotal(entries, resolvedEntries) {
   let hasResolvedPrice = false;
 
   for (const entry of entries) {
-    const price = resolvedPrice(resolvedEntries, entry._instanceId);
+    const price = resolvedPrice(resolvedEntries, entry.id);
     if (price != null) {
       total += price;
       hasResolvedPrice = true;

@@ -73,7 +73,7 @@ function resolveEnchantmentEntry(entry, enchantment, targetsDb) {
 
     price,
 
-    _instanceId: entry._instanceId ?? null,
+    id: entry.id ?? null,
   };
 }
 

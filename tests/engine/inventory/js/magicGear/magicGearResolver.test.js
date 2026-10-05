@@ -15,7 +15,7 @@ describe("magicGearResolver", () => {
   describe("resolveMagicGearItem", () => {
     test("Should resolve a fully populated equipped magic gear item", () => {
       const instance = {
-        _instanceId: "magic-gear-inst-1",
+        id: "magic-gear-inst-1",
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: true,
         storedAt: null,
@@ -40,13 +40,13 @@ describe("magicGearResolver", () => {
         magic_gear_custom_effect: "+1 NH em feitiços de Piromancia.",
         is_equipped: true,
         storedAt: null,
-        _instanceId: "magic-gear-inst-1",
+        id: "magic-gear-inst-1",
       });
     });
 
     test("Should pull price and weight from the DB record, not the instance", () => {
       const instance = {
-        _instanceId: "magic-gear-inst-2",
+        id: "magic-gear-inst-2",
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: false,
         storedAt: "backpack",
@@ -65,7 +65,7 @@ describe("magicGearResolver", () => {
 
     test("Should normalize blank custom fields to null", () => {
       const instance = {
-        _instanceId: "magic-gear-inst-3",
+        id: "magic-gear-inst-3",
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: false,
         storedAt: "stash",
@@ -83,7 +83,7 @@ describe("magicGearResolver", () => {
 
     test("Should trim custom fields", () => {
       const instance = {
-        _instanceId: "magic-gear-inst-4",
+        id: "magic-gear-inst-4",
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: false,
         storedAt: "camp",
@@ -95,7 +95,7 @@ describe("magicGearResolver", () => {
       expect(result.magic_gear_custom_name).toBe("Varinha Suja");
     });
 
-    test("Should default _instanceId to null when missing", () => {
+    test("Should default id to null when missing", () => {
       const instance = {
         magic_gear_id: "MAGIC_GEAR-001",
         is_equipped: false,
@@ -104,7 +104,7 @@ describe("magicGearResolver", () => {
 
       const result = resolveMagicGearItem(instance, mockMagicGear);
 
-      expect(result._instanceId).toBeNull();
+      expect(result.id).toBeNull();
     });
   });
 
@@ -160,7 +160,7 @@ describe("magicGearResolver", () => {
         storedAt: null,
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-010",
             value: 1,
           },
@@ -185,7 +185,7 @@ describe("magicGearResolver", () => {
         storedAt: null,
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-010",
             value: 1,
           },
@@ -209,7 +209,7 @@ describe("magicGearResolver", () => {
         storedAt: "stash",
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-010",
             value: 1,
           },

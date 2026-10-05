@@ -4,10 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import {
-  nextMeleeInstanceId,
-  nextRangedInstanceId,
-} from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import {
   getRangedCounterpart,
   findLinkedCounterpart,
@@ -175,7 +172,7 @@ function _syncRangedCounterpart(
   if (alreadyLinked) return;
 
   selected.ranged_weapons.push({
-    _instanceId: nextRangedInstanceId(),
+    id: generateInstanceId(),
     _linkedInstanceId: meleeInstanceId,
     weapon_id: rangedWeaponId,
     material_id: materialId,
@@ -193,17 +190,17 @@ function _removeRangedCounterpart(meleeInstance) {
   const linked = _findLinkedRanged(meleeInstance);
   if (!linked) return;
   selected.ranged_weapons = selected.ranged_weapons.filter(
-    (r) => r._instanceId !== linked._instanceId,
+    (r) => r.id !== linked.id,
   );
 }
 
 export function addEquippedMelee(weaponId, materialId = null) {
   if (!weaponId) return;
 
-  const instanceId = nextMeleeInstanceId();
+  const instanceId = generateInstanceId();
 
   selected.melee_weapons.push({
-    _instanceId: instanceId,
+    id: instanceId,
     weapon_id: weaponId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -228,10 +225,10 @@ export function addStoredMelee(
 ) {
   if (!meleeId) return;
 
-  const instanceId = nextMeleeInstanceId();
+  const instanceId = generateInstanceId();
 
   selected.melee_weapons.push({
-    _instanceId: instanceId,
+    id: instanceId,
     weapon_id: meleeId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -275,7 +272,7 @@ export function removeMelee(instanceId) {
   _removeRangedCounterpart(melee);
 
   selected.melee_weapons = selected.melee_weapons.filter(
-    (w) => w._instanceId !== instanceId,
+    (w) => w.id !== instanceId,
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
@@ -358,7 +355,7 @@ export function addMeleeEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-// Keeps the entry's own _instanceId so its list position and price-lookup identity survive the edit.
+// Keeps the entry's own id so its list position and price-lookup identity survive the edit.
 export function updateMeleeEnchantment(
   instanceId,
   entryInstanceId,
@@ -420,6 +417,6 @@ export function removeMeleeEnchantment(instanceId, entryInstanceId) {
 
 export function findMeleeByInstanceId(instanceId) {
   return (
-    selected.melee_weapons.find((w) => w._instanceId === instanceId) || null
+    selected.melee_weapons.find((w) => w.id === instanceId) || null
   );
 }

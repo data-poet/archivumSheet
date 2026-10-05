@@ -121,7 +121,7 @@ describe("rangedResolver", () => {
         weapon_custom_description: "Um arco entalhado com runas desgastadas.",
         weapon_custom_effect: "+1 em testes de percepção contra o vento.",
 
-        _instanceId: null,
+        id: null,
         is_equipped: true,
         storedAt: null,
         total_value: 132,
@@ -196,7 +196,7 @@ describe("rangedResolver", () => {
         weapon_custom_description: null,
         weapon_custom_effect: null,
 
-        _instanceId: null,
+        id: null,
         is_equipped: false,
         storedAt: "stash",
         total_value: 120,
@@ -336,7 +336,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         ],
       };
 
@@ -359,9 +359,9 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
           {
-            _instanceId: "e2",
+            id: "e2",
             enchantment_id: "ENCHANTMENT-037",
             value: -0.1,
           },
@@ -386,7 +386,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
         ],
       };
 
@@ -409,8 +409,8 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-059", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-059", value: -1 },
         ],
       };
 
@@ -431,8 +431,8 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-061", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-060", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-061", value: -1 },
         ],
       };
 
@@ -453,7 +453,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-062", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-062", value: 1 },
         ],
       };
 
@@ -475,8 +475,8 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-062", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-063", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-062", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-063", value: -1 },
         ],
       };
 
@@ -497,7 +497,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-064", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-064", value: 1 },
         ],
       };
 
@@ -519,8 +519,8 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-064", value: 2 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-065", value: -1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-064", value: 2 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-065", value: -1 },
         ],
       };
 
@@ -541,11 +541,11 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-058", value: 1 },
-          { _instanceId: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
-          { _instanceId: "e4", enchantment_id: "ENCHANTMENT-062", value: 1 },
-          { _instanceId: "e5", enchantment_id: "ENCHANTMENT-064", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e3", enchantment_id: "ENCHANTMENT-060", value: 1 },
+          { id: "e4", enchantment_id: "ENCHANTMENT-062", value: 1 },
+          { id: "e5", enchantment_id: "ENCHANTMENT-064", value: 1 },
         ],
       };
 
@@ -569,7 +569,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-058", value: 1 },
         ],
       };
 
@@ -589,7 +589,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-066" },
+          { id: "e1", enchantment_id: "ENCHANTMENT-066" },
         ],
       };
 
@@ -609,7 +609,7 @@ describe("rangedResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-066" },
+          { id: "e1", enchantment_id: "ENCHANTMENT-066" },
         ],
       };
 

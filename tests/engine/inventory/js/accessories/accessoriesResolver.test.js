@@ -13,7 +13,7 @@ describe("accessoriesResolver", () => {
   describe("resolveAccessoryItem", () => {
     test("Should resolve a fully populated equipped accessory", () => {
       const instance = {
-        _instanceId: "accessory-inst-1",
+        id: "accessory-inst-1",
         accessory_id: "ACCESSORY-000",
         price: 150,
         is_equipped: true,
@@ -38,13 +38,13 @@ describe("accessoriesResolver", () => {
         accessory_custom_effect: "+1 em testes de Vontade.",
         is_equipped: true,
         storedAt: null,
-        _instanceId: "accessory-inst-1",
+        id: "accessory-inst-1",
       });
     });
 
     test("Should default missing/invalid price to 0", () => {
       const instance = {
-        _instanceId: "accessory-inst-2",
+        id: "accessory-inst-2",
         accessory_id: "ACCESSORY-000",
         is_equipped: false,
         storedAt: "backpack",
@@ -58,7 +58,7 @@ describe("accessoriesResolver", () => {
 
     test("Should normalize blank custom fields to null", () => {
       const instance = {
-        _instanceId: "accessory-inst-3",
+        id: "accessory-inst-3",
         accessory_id: "ACCESSORY-000",
         price: 0,
         is_equipped: false,
@@ -77,7 +77,7 @@ describe("accessoriesResolver", () => {
 
     test("Should trim custom fields", () => {
       const instance = {
-        _instanceId: "accessory-inst-4",
+        id: "accessory-inst-4",
         accessory_id: "ACCESSORY-000",
         price: 0,
         is_equipped: false,
@@ -90,7 +90,7 @@ describe("accessoriesResolver", () => {
       expect(result.accessory_custom_name).toBe("Anel Sujo");
     });
 
-    test("Should default _instanceId to null when missing", () => {
+    test("Should default id to null when missing", () => {
       const instance = {
         accessory_id: "ACCESSORY-000",
         price: 0,
@@ -100,7 +100,7 @@ describe("accessoriesResolver", () => {
 
       const result = resolveAccessoryItem(instance, mockAccessory);
 
-      expect(result._instanceId).toBeNull();
+      expect(result.id).toBeNull();
     });
 
     test("Should never include a weight field", () => {
@@ -170,7 +170,7 @@ describe("accessoriesResolver", () => {
         storedAt: null,
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-000",
             value: 1,
           },
@@ -196,12 +196,12 @@ describe("accessoriesResolver", () => {
         storedAt: null,
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-000",
             value: 1,
           },
           {
-            _instanceId: "ench-2",
+            id: "ench-2",
             enchantment_id: "ENCHANTMENT-026",
             target: "ADV-000",
           },
@@ -229,7 +229,7 @@ describe("accessoriesResolver", () => {
         storedAt: "stash",
         enchantments: [
           {
-            _instanceId: "ench-1",
+            id: "ench-1",
             enchantment_id: "ENCHANTMENT-000",
             value: 1,
           },

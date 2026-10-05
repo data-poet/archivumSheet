@@ -31,7 +31,7 @@ describe("renderResumeFirearms", () => {
               hit_points_modifier: -1,
               weapon_final_magazine_size: 12,
               rounds_loaded: 9,
-              _instanceId: "inst-1",
+              id: "inst-1",
             },
           ],
         },
@@ -70,7 +70,7 @@ describe("renderResumeFirearms", () => {
               hit_points_modifier: 0,
               weapon_final_magazine_size: 12,
               rounds_loaded: 9,
-              _instanceId: "inst-1",
+              id: "inst-1",
             },
           ],
         },
@@ -173,12 +173,12 @@ describe("renderResumeAmmo", () => {
         ammo_containers: [
           {
             storedAt: "stash",
-            _instanceId: "wrong-scope",
+            id: "wrong-scope",
             contents: [{ ammo_id: "AMMO-1" }],
           },
           {
             storedAt: "equipped",
-            _instanceId: "right-one",
+            id: "right-one",
             contents: [{ ammo_id: "AMMO-1" }],
           },
         ],

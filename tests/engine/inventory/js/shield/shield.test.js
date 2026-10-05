@@ -184,7 +184,7 @@ describe("EQUIPMENT SHIELD", () => {
           storedAt: null,
           enchantments: [
             {
-              _instanceId: "e1",
+              id: "e1",
               enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Escudos
               value: 0.1,
             },
@@ -210,7 +210,7 @@ describe("EQUIPMENT SHIELD", () => {
             is_equipped: true,
             storedAt: null,
             enchantments: [
-              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-000" },
+              { id: "e1", enchantment_id: "ENCHANTMENT-000" },
             ],
           },
         ]);

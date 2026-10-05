@@ -4,7 +4,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
-import { nextArmorInstanceId } from "../../../store/instanceId.js";
+import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -125,7 +125,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   }
 
   selected.armors.push({
-    _instanceId: nextArmorInstanceId(),
+    id: generateInstanceId(),
     armor_id: armorId,
     material_id: preservedMaterialId,
     hit_points_modifier: 0,
@@ -153,7 +153,7 @@ export function addStoredArmor(
   if (!armorId) return;
 
   selected.armors.push({
-    _instanceId: nextArmorInstanceId(),
+    id: generateInstanceId(),
     armor_id: armorId,
     material_id: materialId,
     hit_points_modifier: 0,
@@ -182,7 +182,7 @@ export function moveArmor(instanceId, storedAt) {
 
 export function removeArmor(instanceId) {
   const before = structuredClone(selected.armors);
-  selected.armors = selected.armors.filter((a) => a._instanceId !== instanceId);
+  selected.armors = selected.armors.filter((a) => a.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
@@ -246,7 +246,7 @@ export function addArmorEnchantment(instanceId, enchantmentId, params) {
   }, t("common.added"));
 }
 
-// Edits an entry in place, keeping its own _instanceId so list position and price-lookup identity survive the edit.
+// Edits an entry in place, keeping its own id so list position and price-lookup identity survive the edit.
 export function updateArmorEnchantment(
   instanceId,
   entryInstanceId,
@@ -307,5 +307,5 @@ export function findEquippedArmorInSlot(slot) {
 }
 
 export function findArmorByInstanceId(instanceId) {
-  return selected.armors.find((a) => a._instanceId === instanceId) || null;
+  return selected.armors.find((a) => a.id === instanceId) || null;
 }

@@ -119,8 +119,8 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
     .map((w) => w.weapon_tier);
 
   const material = resolveMaterial(inst, data.materials);
-  const resolved = resolvedMelee(sheet, inst._instanceId);
-  const instanceId = inst._instanceId;
+  const resolved = resolvedMelee(sheet, inst.id);
+  const instanceId = inst.id;
 
   return `
     <div class="equipped-slot-grid">
@@ -212,8 +212,8 @@ function renderStorageSection(location, stored, data, sheet) {
         );
         if (!weaponData) return "";
         const material = resolveMaterial(inst, data.materials);
-        const resolved = resolvedMelee(sheet, inst._instanceId);
-        const instanceId = inst._instanceId;
+        const resolved = resolvedMelee(sheet, inst.id);
+        const instanceId = inst.id;
 
         return `
         <tr>

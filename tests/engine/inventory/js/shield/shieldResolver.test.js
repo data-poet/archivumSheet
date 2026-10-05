@@ -103,7 +103,7 @@ describe("shieldResolver", () => {
         shield_custom_description: "Um escudo com brasão apagado pelo tempo.",
         shield_custom_effect: "+1 em testes de Intimidação ao erguê-lo.",
 
-        _instanceId: null,
+        id: null,
         is_equipped: true,
         storedAt: "backpack",
         total_value: 110,
@@ -171,7 +171,7 @@ describe("shieldResolver", () => {
         shield_custom_description: null,
         shield_custom_effect: null,
 
-        _instanceId: null,
+        id: null,
         is_equipped: false,
         storedAt: "stash",
         total_value: 100,
@@ -237,7 +237,7 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
         ],
       };
 
@@ -259,9 +259,9 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.2 },
           {
-            _instanceId: "e2",
+            id: "e2",
             enchantment_id: "ENCHANTMENT-037",
             value: -0.1,
           },
@@ -285,7 +285,7 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-038", value: 2 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-038", value: 2 },
         ],
       };
 
@@ -306,8 +306,8 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
-          { _instanceId: "e2", enchantment_id: "ENCHANTMENT-038", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-036", value: 0.1 },
+          { id: "e2", enchantment_id: "ENCHANTMENT-038", value: 1 },
         ],
       };
 
@@ -327,7 +327,7 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-040", value: 0.05 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-040", value: 0.05 },
         ],
       };
 
@@ -355,7 +355,7 @@ describe("shieldResolver", () => {
       const instance = {
         ...baseInstance,
         enchantments: [
-          { _instanceId: "e1", enchantment_id: "ENCHANTMENT-038", value: 1 },
+          { id: "e1", enchantment_id: "ENCHANTMENT-038", value: 1 },
         ],
       };
 

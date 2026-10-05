@@ -44,7 +44,7 @@ beforeEach(() => {
 
   state.selected.customInventory = [
     {
-      custom_item_id: "CUSTOM-1",
+      id: "CUSTOM-1",
       name: "Amuleto Estranho",
       weight: 0.5,
       price: 10,

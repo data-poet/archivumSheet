@@ -6,7 +6,7 @@ import { capturePersistedSheet, SCHEMA_VERSION } from "./persistedSheet.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
-import { resetInstanceCounters } from "./instanceId.js";
+import { ensureInstanceIds } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
 import { generateId, loadStore, saveStore, kindOf } from "./characterStoreCore.js";
@@ -164,8 +164,6 @@ function _applyData(data) {
   const weightEl = document.getElementById("weight");
   if (weightEl) weightEl.value = inventory.weight ?? 0;
 
-  resetInstanceCounters();
-
   selected.secondary       = character.secondary      ?? {};
   selected.damage          = character.damage         ?? {};
   selected.resistances     = character.resistances    ?? {};
@@ -176,18 +174,18 @@ function _applyData(data) {
   selected.allies          = character.allies         ?? [];
   selected.alliesActiveId  = character.alliesActiveId ?? null;
   selected.meta_race_ids   = character.meta_race_ids  ?? [];
-  selected.armors          = inventory.armors         ?? [];
-  selected.shields         = inventory.shields        ?? [];
-  selected.melee_weapons   = inventory.melee_weapons  ?? [];
-  selected.ranged_weapons  = inventory.ranged_weapons ?? [];
-  selected.firearms        = inventory.firearms       ?? [];
-  selected.ammo_containers = inventory.ammo_containers ?? [];
+  selected.armors          = ensureInstanceIds(inventory.armors         ?? []);
+  selected.shields         = ensureInstanceIds(inventory.shields        ?? []);
+  selected.melee_weapons   = ensureInstanceIds(inventory.melee_weapons  ?? []);
+  selected.ranged_weapons  = ensureInstanceIds(inventory.ranged_weapons ?? []);
+  selected.firearms        = ensureInstanceIds(inventory.firearms       ?? []);
+  selected.ammo_containers = ensureInstanceIds(inventory.ammo_containers ?? []);
   selected.loose_ammo      = inventory.loose_ammo     ?? [];
   selected.alchemy         = inventory.alchemy        ?? [];
   selected.survivalGear    = inventory.survivalGear   ?? [];
-  selected.accessories     = inventory.accessories    ?? [];
-  selected.magicGear       = inventory.magicGear      ?? [];
-  selected.customInventory = inventory.customInventory ?? [];
+  selected.accessories     = ensureInstanceIds(inventory.accessories    ?? []);
+  selected.magicGear       = ensureInstanceIds(inventory.magicGear      ?? []);
+  selected.customInventory = ensureInstanceIds(inventory.customInventory ?? []);
   selected.coins           = inventory.coins          ?? [];
 
   renderListsPreserving(selected, state.data);

@@ -507,7 +507,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       ammoContainerInventory: [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -527,7 +527,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       ammoContainerInventory: [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
@@ -557,7 +557,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       ammoContainerInventory: [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "stash",
           contents: [{ ammo_id: "AMMO-001", quantity: 50 }],
@@ -590,7 +590,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       ammoContainerInventory: [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-001", quantity: 20 }],

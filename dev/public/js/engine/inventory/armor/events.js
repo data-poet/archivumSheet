@@ -155,7 +155,7 @@ export function handleArmorChange(e) {
     const firstArmor = availableArmors[0];
     if (!firstArmor) return true;
 
-    // Edit in place to preserve _instanceId and armor_custom_* fields (matches melee/ranged/firearms/shield) —
+    // Edit in place to preserve id and armor_custom_* fields (matches melee/ranged/firearms/shield) —
     // equipArmor() would otherwise unequip-and-recreate, resetting customizations on a same-slot tier/name swap.
     const currentEquipped = findEquippedArmorInSlot(slot);
     if (currentEquipped) {

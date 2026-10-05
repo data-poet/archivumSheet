@@ -19,7 +19,6 @@ import {
   renderResumeImage,
 } from "dev/public/js/engine/character/portrait/portrait.js";
 import { state } from "dev/public/js/state.js";
-import { nextArmorInstanceId } from "dev/public/js/store/instanceId.js";
 import {
   getStore,
   getActiveKind,
@@ -174,15 +173,6 @@ describe("loadCharacter", () => {
     loadCharacter(getStore().activeId);
 
     expect(document.getElementById("playerNameInput").value).toBe("Player One");
-  });
-
-  test("resets instance id counters so imported ids don't collide with new ones", () => {
-    nextArmorInstanceId(); // armor-inst-1
-    nextArmorInstanceId(); // armor-inst-2
-
-    loadCharacter(getStore().activeId);
-
-    expect(nextArmorInstanceId()).toBe("armor-inst-1");
   });
 
   test("restores race selection when the character has a race_id and races are loaded", () => {
@@ -460,7 +450,9 @@ describe("replaceActiveCharacter", () => {
     replaceActiveCharacter(payload);
 
     expect(state.selected.character.character_name).toBe("Replaced Hero");
-    expect(state.selected.armors).toEqual([{ instance_id: "armor-inst-1" }]);
+    expect(state.selected.armors).toEqual([
+      { instance_id: "armor-inst-1", id: expect.any(String) },
+    ]);
     expect(renderListsPreserving).toHaveBeenCalledTimes(1);
   });
 
@@ -517,10 +509,19 @@ describe("round trip: save → switch away → switch back", () => {
       Fire: { modifier: -0.5 },
     });
     expect(state.selected.armors).toEqual([
-      { instance_id: "armor-inst-1", armor_id: "ARM-001", enchantments: [] },
+      {
+        instance_id: "armor-inst-1",
+        armor_id: "ARM-001",
+        enchantments: [],
+        id: expect.any(String),
+      },
     ]);
     expect(state.selected.melee_weapons).toEqual([
-      { instance_id: "melee-inst-1", weapon_id: "MEL-001" },
+      {
+        instance_id: "melee-inst-1",
+        weapon_id: "MEL-001",
+        id: expect.any(String),
+      },
     ]);
     expect(state.selected.coins).toEqual([{ type: "gold", amount: 42 }]);
     expect(document.getElementById("ST_base").value).toBe("15");

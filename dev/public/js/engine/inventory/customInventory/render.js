@@ -56,7 +56,7 @@ function renderCustomInventorySection(location, entries, sheet) {
       .map((entry) => {
         const resolvedBucket = sheet?.inventory?.customInventory?.[location];
         const resolvedEntry = resolvedBucket?.find(
-          (e) => e.custom_item_id === entry.custom_item_id,
+          (e) => e.id === entry.id,
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";
 
@@ -69,7 +69,7 @@ function renderCustomInventorySection(location, entries, sheet) {
                   type="text"
                   inputmode="numeric"
                   class="custom-item-qty"
-                  data-custom-item-id="${entry.custom_item_id}"
+                  data-custom-item-id="${entry.id}"
                   value="${entry.quantity}"
                   style="width:50px"
                 />
@@ -81,15 +81,15 @@ function renderCustomInventorySection(location, entries, sheet) {
             </td>
             <td class="col-num" data-label="${t("common.weight")}">${totalWeight}</td>
             <td class="col-action">
-              ${customItemLocationSelect(entry.custom_item_id, location)}
+              ${customItemLocationSelect(entry.id, location)}
               <button
                 class="btn-remove remove-custom-item"
-                data-custom-item-id="${entry.custom_item_id}"
+                data-custom-item-id="${entry.id}"
               >✕</button>
             </td>
           </tr>
           ${customItemEditRow(4, {
-            customItemId: entry.custom_item_id,
+            customItemId: entry.id,
             name: entry.name,
             weight: entry.weight,
             price: entry.price,

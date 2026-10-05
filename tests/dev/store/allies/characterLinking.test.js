@@ -50,7 +50,7 @@ describe("listCharactersGrouped", () => {
         race: "",
         kind: "character",
         data: {
-          character: { allies: [{ _instanceId: "ai-1", ally_id: "c-ally-1" }] },
+          character: { allies: [{ id: "ai-1", ally_id: "c-ally-1" }] },
         },
       },
       {
@@ -143,7 +143,7 @@ describe("ally linking", () => {
     const roster = getStore().list.find((c) => c.id === "pc-1").data.character
       .allies;
     expect(roster).toEqual([
-      { _instanceId: expect.any(String), ally_id: "c-ally-1", overrides: {} },
+      { id: expect.any(String), ally_id: "c-ally-1", overrides: {} },
     ]);
     expect(getAllyOwnerId("c-ally-1")).toBe("pc-1");
   });
@@ -218,7 +218,7 @@ describe("ally linking", () => {
         data: {
           character: {
             allies: [
-              { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
+              { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
             ],
             alliesActiveId: "ai-1",
           },
@@ -272,8 +272,8 @@ describe("ally linking", () => {
         data: {
           character: {
             allies: [
-              { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
-              { _instanceId: "ai-2", ally_id: "ALLY_WOLF", overrides: {} },
+              { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
+              { id: "ai-2", ally_id: "ALLY_WOLF", overrides: {} },
             ],
           },
         },
@@ -288,7 +288,7 @@ describe("ally linking", () => {
     ]);
 
     expect(getLinkedAllies("pc-1")).toEqual([
-      { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
+      { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
     ]);
   });
 
@@ -302,7 +302,7 @@ describe("ally linking", () => {
         data: {
           character: {
             allies: [
-              { _instanceId: "ai-1", ally_id: "old-ally-id", overrides: {} },
+              { id: "ai-1", ally_id: "old-ally-id", overrides: {} },
             ],
           },
         },
@@ -362,7 +362,7 @@ describe("ally linking", () => {
       const roster = store.list.find((c) => c.id === "pc-1").data.character
         .allies;
       expect(roster).toEqual([
-        { _instanceId: expect.any(String), ally_id: newId, overrides: {} },
+        { id: expect.any(String), ally_id: newId, overrides: {} },
       ]);
       expect(getAllyOwnerId(newId)).toBe("pc-1");
     });

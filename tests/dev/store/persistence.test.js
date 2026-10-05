@@ -284,7 +284,7 @@ describe("exportSheet", () => {
             data: {
               character: {
                 allies: [
-                  { _instanceId: "ai-1", ally_id: "c-ally-1", overrides: {} },
+                  { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
                 ],
               },
             },
@@ -372,7 +372,9 @@ describe("importSheet", () => {
     await importSheet(jsonFile(validPayload()));
 
     expect(state.selected.character.character_name).toBe("Imported Hero");
-    expect(state.selected.armors).toEqual([{ instance_id: "armor-inst-1" }]);
+    expect(state.selected.armors).toEqual([
+      { instance_id: "armor-inst-1", id: expect.any(String) },
+    ]);
     expect(state.selected.advantages).toEqual({ "ADV-001": { level: 2 } });
     expect(renderListsPreserving).toHaveBeenCalledTimes(1);
     expect(triggerAutoRun).toHaveBeenCalledTimes(1);
@@ -404,7 +406,7 @@ describe("importSheet", () => {
     expect(state.selected.coins).toEqual(fixture.inventory.coins);
 
     const melee = state.selected.melee_weapons.find(
-      (w) => w._instanceId === "melee-inst-2",
+      (w) => w.id === "melee-inst-2",
     );
     expect(melee._linkedInstanceId).toBe("ranged-inst-1");
   });

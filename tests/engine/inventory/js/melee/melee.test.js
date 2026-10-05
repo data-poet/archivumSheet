@@ -198,7 +198,7 @@ describe("EQUIPMENT MELEE", () => {
           storedAt: null,
           enchantments: [
             {
-              _instanceId: "e1",
+              id: "e1",
               enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas Corpo a Corpo
               value: 0.1,
             },
@@ -226,7 +226,7 @@ describe("EQUIPMENT MELEE", () => {
             is_equipped: true,
             storedAt: null,
             enchantments: [
-              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-000" },
+              { id: "e1", enchantment_id: "ENCHANTMENT-000" },
             ],
           },
         ]);

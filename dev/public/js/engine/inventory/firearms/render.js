@@ -179,8 +179,8 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     .map((w) => w.weapon_tier);
 
   const material = resolveMaterial(inst, data.materials);
-  const resolved = resolvedFirearm(sheet, inst._instanceId);
-  const instanceId = inst._instanceId;
+  const resolved = resolvedFirearm(sheet, inst.id);
+  const instanceId = inst.id;
 
   const finalMagazineSize =
     resolved?.weapon_final_magazine_size ??
@@ -293,8 +293,8 @@ function renderStorageSection(location, stored, data, sheet) {
         );
         if (!weaponData) return "";
         const material = resolveMaterial(inst, data.materials);
-        const resolved = resolvedFirearm(sheet, inst._instanceId);
-        const instanceId = inst._instanceId;
+        const resolved = resolvedFirearm(sheet, inst.id);
+        const instanceId = inst.id;
 
         const finalMagazineSize =
           resolved?.weapon_final_magazine_size ??

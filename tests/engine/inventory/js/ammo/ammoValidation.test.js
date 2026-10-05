@@ -81,7 +81,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid equipped container", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -95,7 +95,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid backpack container", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-2",
+        id: "inst-2",
         container_id: "CONT-001",
         storedAt: "backpack",
         contents: [],
@@ -109,7 +109,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid stash container", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-3",
+        id: "inst-3",
         container_id: "CONT-003",
         storedAt: "stash",
         contents: [],
@@ -123,7 +123,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid camp container", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-4",
+        id: "inst-4",
         container_id: "CONT-003",
         storedAt: "camp",
         contents: [],
@@ -143,7 +143,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when container_id is missing", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         storedAt: "equipped",
         contents: [],
       },
@@ -155,7 +155,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
     );
   });
 
-  test("Should fail when _instanceId is missing", () => {
+  test("Should fail when id is missing", () => {
     const errors = validateContainerInstance(
       {
         container_id: "CONT-001",
@@ -166,14 +166,14 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
     );
 
     expect(errors).toContain(
-      "ammoContainerInventory[0]: _instanceId is required",
+      "ammoContainerInventory[0]: id is required",
     );
   });
 
   test("Should fail when storedAt is invalid", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "wallet",
         contents: [],
@@ -189,7 +189,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when contents is not an array", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: null,
@@ -205,7 +205,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when a contents entry has no ammo_id", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: [{ quantity: 5 }],
@@ -221,7 +221,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when a contents entry has zero quantity", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: [{ ammo_id: "AMMO-001", quantity: 0 }],
@@ -237,7 +237,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when a contents entry has a negative quantity", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: [{ ammo_id: "AMMO-001", quantity: -3 }],
@@ -253,7 +253,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should fail when a contents entry has a float quantity", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-1",
+        id: "inst-1",
         container_id: "CONT-001",
         storedAt: "equipped",
         contents: [{ ammo_id: "AMMO-001", quantity: 2.5 }],
@@ -269,7 +269,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should use correct index in error prefix", () => {
     const errors = validateContainerInstance(
       {
-        _instanceId: "inst-3",
+        id: "inst-3",
         storedAt: "stash",
         contents: [],
       },
@@ -395,7 +395,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -412,7 +412,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
@@ -429,7 +429,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "stash",
           contents: [],
@@ -446,7 +446,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "camp",
           contents: [],
@@ -463,7 +463,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "equipped",
           contents: [],
@@ -482,7 +482,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "backpack",
           contents: [],
@@ -501,13 +501,13 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [],
@@ -526,13 +526,13 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
@@ -551,19 +551,19 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "stash",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "stash",
           contents: [],
         },
         {
-          _instanceId: "inst-3",
+          id: "inst-3",
           container_id: "CONT-001",
           storedAt: "stash",
           contents: [],
@@ -580,13 +580,13 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "camp",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "camp",
           contents: [],
@@ -603,13 +603,13 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
@@ -626,7 +626,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",    // accepts "arrow"
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-003", quantity: 5 }],  // bolt
@@ -645,7 +645,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",    // accepts "arrow"
           storedAt: "equipped",
           contents: [
@@ -665,7 +665,7 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
     const errors = validateContainerCrossRules(
       [
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-999",
           storedAt: "equipped",
           contents: [],

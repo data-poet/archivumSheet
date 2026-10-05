@@ -243,8 +243,8 @@ describe("enchantmentsExpander — structure", () => {
 
 describe("enchantmentsExpander — subtotal", () => {
   const entries = [
-    { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
-    { _instanceId: "E2", enchantment_id: "ENCH-DIS", target: "DIS-001" },
+    { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
+    { id: "E2", enchantment_id: "ENCH-DIS", target: "DIS-001" },
   ];
 
   test("sums resolved prices across every entry", () => {
@@ -254,8 +254,8 @@ describe("enchantmentsExpander — subtotal", () => {
         entries,
         itemCategory: "Cabeça",
         resolvedEntries: [
-          { _instanceId: "E1", price: 10 },
-          { _instanceId: "E2", price: 5 },
+          { id: "E1", price: 10 },
+          { id: "E2", price: 5 },
         ],
       }),
     );
@@ -270,7 +270,7 @@ describe("enchantmentsExpander — subtotal", () => {
         instanceId: "ITEM-1",
         entries,
         itemCategory: "Cabeça",
-        resolvedEntries: [{ _instanceId: "E1", price: 10 }], // E2 unresolved
+        resolvedEntries: [{ id: "E1", price: 10 }], // E2 unresolved
       }),
     );
     expect(el.querySelector(".enchantments-subtotal").textContent).toContain(
@@ -297,10 +297,10 @@ describe("enchantmentsExpander — entry list", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
+          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
         ],
         itemCategory: "Cabeça",
-        resolvedEntries: [{ _instanceId: "E1", price: 10 }],
+        resolvedEntries: [{ id: "E1", price: 10 }],
       }),
     );
     const summary = el.querySelector(".enchantment-entry-summary");
@@ -317,7 +317,7 @@ describe("enchantmentsExpander — entry list", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
+          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
         ],
         itemCategory: "Cabeça",
         resolvedEntries: [],
@@ -330,7 +330,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [{ _instanceId: "E1", enchantment_id: "ENCH-ATTR", value: 3 }],
+        entries: [{ id: "E1", enchantment_id: "ENCH-ATTR", value: 3 }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -345,7 +345,7 @@ describe("enchantmentsExpander — entry list", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 },
+          { id: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 },
         ],
         itemCategory: "Cabeça",
         resolvedEntries: [],
@@ -360,7 +360,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [{ _instanceId: "E1", enchantment_id: "ENCH-DR", value: 2 }],
+        entries: [{ id: "E1", enchantment_id: "ENCH-DR", value: 2 }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -376,7 +376,7 @@ describe("enchantmentsExpander — entry list", () => {
         instanceId: "ITEM-1",
         entries: [
           {
-            _instanceId: "E1",
+            id: "E1",
             enchantment_id: "ENCH-RESIST-FIRE",
             value: 0.05,
           },
@@ -394,7 +394,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [{ _instanceId: "E1", enchantment_id: "ENCH-BAL", value: 2 }],
+        entries: [{ id: "E1", enchantment_id: "ENCH-BAL", value: 2 }],
         itemCategory: "Armas Corpo a Corpo",
         resolvedEntries: [],
       }),
@@ -410,7 +410,7 @@ describe("enchantmentsExpander — entry list", () => {
         instanceId: "ITEM-1",
         entries: [
           {
-            _instanceId: "E1",
+            id: "E1",
             enchantment_id: "ENCH-MIN-STRENGTH",
             value: 1,
           },
@@ -430,7 +430,7 @@ describe("enchantmentsExpander — entry list", () => {
         instanceId: "ITEM-1",
         entries: [
           {
-            _instanceId: "E1",
+            id: "E1",
             enchantment_id: "ENCH-SKILL",
             target: "SK-001",
             extraPoints: 2,
@@ -449,7 +449,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [{ _instanceId: "E1", enchantment_id: "GHOST" }],
+        entries: [{ id: "E1", enchantment_id: "GHOST" }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -462,7 +462,7 @@ describe("enchantmentsExpander — entry list", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "GHOST-ID" },
+          { id: "E1", enchantment_id: "ENCH-ADV", target: "GHOST-ID" },
         ],
         itemCategory: "Cabeça",
         resolvedEntries: [],
@@ -567,7 +567,7 @@ describe("add-form", () => {
 
 describe("edit-form", () => {
   const entry = {
-    _instanceId: "ENTRY-1",
+    id: "ENTRY-1",
     enchantment_id: "ENCH-ATTR",
     value: 5,
   };
@@ -621,9 +621,9 @@ describe("edit-form", () => {
     expect(input.getAttribute("value")).toBe("-2");
   });
 
-  test("each entry's form is scoped by its own _instanceId as formKey, independent of other entries", () => {
+  test("each entry's form is scoped by its own id as formKey, independent of other entries", () => {
     const secondEntry = {
-      _instanceId: "ENTRY-2",
+      id: "ENTRY-2",
       enchantment_id: "ENCH-ATTR",
       value: 9,
     };
@@ -726,7 +726,7 @@ describe("valueInput bounds", () => {
 
   test("a percentage-flagged type pre-fills the entry's current decimal value converted to percent", () => {
     const entry = {
-      _instanceId: "ENTRY-PCT-1",
+      id: "ENTRY-PCT-1",
       enchantment_id: "ENCH-WEIGHT",
       value: 0.3,
     };
@@ -871,7 +871,7 @@ describe("HTML escaping", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-ADV", target: "ADV-XSS" },
+          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-XSS" },
         ],
         itemCategory: "Cabeça",
         resolvedEntries: [],
@@ -896,7 +896,7 @@ describe("HTML escaping", () => {
       enchantmentsExpander({
         instanceId: "ITEM-1",
         entries: [
-          { _instanceId: "E1", enchantment_id: "ENCH-XSS", target: "ADV-001" },
+          { id: "E1", enchantment_id: "ENCH-XSS", target: "ADV-001" },
         ],
         itemCategory: "Cabeça",
         resolvedEntries: [],

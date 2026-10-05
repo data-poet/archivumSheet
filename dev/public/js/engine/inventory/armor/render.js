@@ -141,7 +141,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
 
   const material = resolveMaterial(equippedInstance, data.materials);
   const resolved = equippedInstance
-    ? resolvedArmor(sheet, equippedInstance._instanceId)
+    ? resolvedArmor(sheet, equippedInstance.id)
     : null;
   const fields = equippedInstance
     ? armorDetailFields(resolved, equippedArmorData)
@@ -178,12 +178,12 @@ function renderArmorSlot(slot, selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-armor-move", `data-slot="${slot}"`)}
-        ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance._instanceId}">✕</button>` : ""}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance.id}">✕</button>` : ""}
       </div>
     </div>
     ${
       equippedInstance
-        ? equippedItemTabs(equippedInstance._instanceId, [
+        ? equippedItemTabs(equippedInstance.id, [
             {
               key: "details",
               label: t("common.technical"),
@@ -193,7 +193,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
               key: "customize",
               label: t("common.customize"),
               content: customFieldsBody({
-                instanceId: equippedInstance._instanceId,
+                instanceId: equippedInstance.id,
                 name: equippedInstance.armor_custom_name,
                 description: equippedInstance.armor_custom_description,
                 effect: equippedInstance.armor_custom_effect,
@@ -203,7 +203,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
               key: "enchantments",
               label: t("enchantments.title"),
               content: enchantmentsBody({
-                instanceId: equippedInstance._instanceId,
+                instanceId: equippedInstance.id,
                 entries: equippedInstance.enchantments || [],
                 itemCategory: slot,
                 resolvedEntries: resolved?.enchantments,
@@ -239,8 +239,8 @@ function renderStorageSection(location, storedArmors, data, sheet) {
         const armorData = data.armors.find((a) => a.armor_id === inst.armor_id);
         if (!armorData) return "";
         const material = resolveMaterial(inst, data.materials);
-        const resolved = resolvedArmor(sheet, inst._instanceId);
-        const instanceId = inst._instanceId;
+        const resolved = resolvedArmor(sheet, inst.id);
+        const instanceId = inst.id;
 
         return `
         <tr>

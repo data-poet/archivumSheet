@@ -59,7 +59,7 @@ const FULL_SHEET = {
     melee: {
       equipped: [
         {
-          _instanceId: "m1",
+          id: "m1",
           weapon_name: "Espada",
           weapon_final_hit_points: 18,
           hit_points_modifier: -2,
@@ -68,13 +68,13 @@ const FULL_SHEET = {
     },
     ranged: {
       equipped: [
-        { _instanceId: "r1", weapon_name: "Arco", weapon_final_hit_points: 12 },
+        { id: "r1", weapon_name: "Arco", weapon_final_hit_points: 12 },
       ],
     },
     firearms: {
       equipped: [
         {
-          _instanceId: "f1",
+          id: "f1",
           weapon_name: "Mosquete",
           weapon_final_hit_points: 15,
           weapon_final_magazine_size: 6,
@@ -86,7 +86,7 @@ const FULL_SHEET = {
       containers: {
         equipped: [
           {
-            _instanceId: "c1",
+            id: "c1",
             contents: [{ ammo_id: "AMMO-001", quantity: 12 }],
           },
         ],
@@ -104,7 +104,7 @@ const DATA = { ammo: [{ ammo_id: "AMMO-001", ammo_name: "Flecha" }] };
 const SELECTED = {
   ammo_containers: [
     {
-      _instanceId: "c1",
+      id: "c1",
       storedAt: "equipped",
       contents: [{ ammo_id: "AMMO-001", quantity: 12 }],
     },

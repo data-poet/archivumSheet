@@ -210,7 +210,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should place an equipped container in containers.equipped", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [],
@@ -225,7 +225,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should place a backpack container in containers.backpack", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [],
@@ -238,7 +238,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should place a stash container in containers.stash", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "stash",
           contents: [],
@@ -251,7 +251,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should place a camp container in containers.camp", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "camp",
           contents: [],
@@ -264,13 +264,13 @@ describe("EQUIPMENT AMMO", () => {
     test("Should allow multiple containers of the same id in stash", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "stash",
           contents: [],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-001",
           storedAt: "stash",
           contents: [],
@@ -325,7 +325,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should compute total_equipped_ammo from equipped containers", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [
@@ -341,13 +341,13 @@ describe("EQUIPMENT AMMO", () => {
     test("Should aggregate across multiple equipped containers of different types", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
         },
         {
-          _instanceId: "inst-2",
+          id: "inst-2",
           container_id: "CONT-002",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-003", quantity: 12 }],
@@ -360,7 +360,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should not include backpack containers in total_equipped_ammo", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [{ ammo_id: "AMMO-001", quantity: 20 }],
@@ -375,7 +375,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should count equipped container weight toward carried weight", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "equipped",
           contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -389,7 +389,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should count backpack container weight toward carried weight", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-001",
           storedAt: "backpack",
           contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -412,7 +412,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should not count stash container weight toward carried weight", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "stash",
           contents: [{ ammo_id: "AMMO-001", quantity: 50 }],
@@ -425,7 +425,7 @@ describe("EQUIPMENT AMMO", () => {
     test("Should not count camp container weight toward carried weight", () => {
       const result = buildAmmoSlots([
         {
-          _instanceId: "inst-1",
+          id: "inst-1",
           container_id: "CONT-003",
           storedAt: "camp",
           contents: [{ ammo_id: "AMMO-001", quantity: 50 }],
@@ -457,13 +457,13 @@ describe("EQUIPMENT AMMO", () => {
       const result = buildAmmoSlots(
         [
           {
-            _instanceId: "inst-1",
+            id: "inst-1",
             container_id: "CONT-001", // 0.5 + 10×0.05 = 1.0
             storedAt: "equipped",
             contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
           },
           {
-            _instanceId: "inst-2",
+            id: "inst-2",
             container_id: "CONT-001", // 0.5 + 0 = 0.5
             storedAt: "backpack",
             contents: [],
@@ -484,7 +484,7 @@ describe("EQUIPMENT AMMO", () => {
       expect(() => {
         buildAmmoSlots([
           {
-            _instanceId: "inst-1",
+            id: "inst-1",
             container_id: "CONT-999",
             storedAt: "stash",
             contents: [],
@@ -497,7 +497,7 @@ describe("EQUIPMENT AMMO", () => {
       expect(() => {
         buildAmmoSlots([
           {
-            _instanceId: "inst-1",
+            id: "inst-1",
             container_id: "CONT-001",
             storedAt: "equipped",
             contents: [{ ammo_id: "AMMO-999", quantity: 5 }],

@@ -275,7 +275,7 @@ describe("EQUIPMENT FIREARMS", () => {
           storedAt: null,
           enchantments: [
             {
-              _instanceId: "e1",
+              id: "e1",
               enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas de Fogo
               value: 0.1,
             },
@@ -304,7 +304,7 @@ describe("EQUIPMENT FIREARMS", () => {
             is_equipped: true,
             storedAt: null,
             enchantments: [
-              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056" },
+              { id: "e1", enchantment_id: "ENCHANTMENT-056" },
             ],
           },
         ]);

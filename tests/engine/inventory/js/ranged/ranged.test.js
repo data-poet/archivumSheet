@@ -222,7 +222,7 @@ describe("EQUIPMENT RANGED", () => {
           storedAt: null,
           enchantments: [
             {
-              _instanceId: "e1",
+              id: "e1",
               enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas de Longo Alcance
               value: 0.1,
             },
@@ -250,7 +250,7 @@ describe("EQUIPMENT RANGED", () => {
             is_equipped: true,
             storedAt: null,
             enchantments: [
-              { _instanceId: "e1", enchantment_id: "ENCHANTMENT-056" },
+              { id: "e1", enchantment_id: "ENCHANTMENT-056" },
             ],
           },
         ]);

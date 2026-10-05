@@ -218,7 +218,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
           price: 0,
           enchantments: [
             {
-              _instanceId: "ench-1",
+              id: "ench-1",
               enchantment_id: "ENCHANTMENT-000",
               value: 1,
             },
@@ -241,7 +241,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
           price: 0,
           enchantments: [
             {
-              _instanceId: "ench-1",
+              id: "ench-1",
               enchantment_id: "ENCHANTMENT-028",
               target: "ADV-000",
             },

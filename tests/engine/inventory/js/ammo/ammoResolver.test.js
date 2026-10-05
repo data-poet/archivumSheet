@@ -52,7 +52,7 @@ const mockContainer = {
 describe("ammoResolver — resolveContainer", () => {
   test("Should resolve a fully populated equipped container correctly", () => {
     const instance = {
-      _instanceId: "inst-1",
+      id: "inst-1",
       container_id: "CONT-001",
       storedAt: "equipped",
       contents: [
@@ -64,7 +64,7 @@ describe("ammoResolver — resolveContainer", () => {
     const result = resolveContainer(instance, mockContainer, mockAmmoDb);
 
     expect(result).toEqual({
-      _instanceId: "inst-1",
+      id: "inst-1",
       container_id: "CONT-001",
       container_name: "Quiver",
       container_box_name: "Quivers",
@@ -91,7 +91,7 @@ describe("ammoResolver — resolveContainer", () => {
 
   test("Should resolve an empty container correctly", () => {
     const instance = {
-      _instanceId: "inst-2",
+      id: "inst-2",
       container_id: "CONT-001",
       storedAt: "backpack",
       contents: [],
@@ -110,7 +110,7 @@ describe("ammoResolver — resolveContainer", () => {
 
   test("Should compute remaining_capacity correctly when partially filled", () => {
     const instance = {
-      _instanceId: "inst-3",
+      id: "inst-3",
       container_id: "CONT-001",
       storedAt: "stash",
       contents: [{ ammo_id: "AMMO-001", quantity: 5 }],
@@ -125,7 +125,7 @@ describe("ammoResolver — resolveContainer", () => {
 
   test("Should compute total_weight as container_weight + contents_weight", () => {
     const instance = {
-      _instanceId: "inst-4",
+      id: "inst-4",
       container_id: "CONT-001",
       storedAt: "equipped",
       contents: [{ ammo_id: "AMMO-001", quantity: 10 }],
@@ -139,7 +139,7 @@ describe("ammoResolver — resolveContainer", () => {
 
   test("Should compute weight per contents entry correctly", () => {
     const instance = {
-      _instanceId: "inst-5",
+      id: "inst-5",
       container_id: "CONT-001",
       storedAt: "equipped",
       contents: [{ ammo_id: "AMMO-001", quantity: 7 }],
@@ -152,7 +152,7 @@ describe("ammoResolver — resolveContainer", () => {
 
   test("Should propagate storedAt from the instance", () => {
     const instance = {
-      _instanceId: "inst-6",
+      id: "inst-6",
       container_id: "CONT-001",
       storedAt: "camp",
       contents: [],

@@ -59,7 +59,7 @@ describe("stored inventory tables opt into the stacked card layout", () => {
       {
         melee_weapons: [
           {
-            _instanceId: "MELEE-1",
+            id: "MELEE-1",
             weapon_id: "MELEE-DB-1",
             material_id: "MAT-001",
             storedAt: "backpack",
@@ -95,7 +95,7 @@ describe("stored inventory tables opt into the stacked card layout", () => {
       {
         armors: [
           {
-            _instanceId: "ARMOR-1",
+            id: "ARMOR-1",
             armor_id: "ARMOR-DB-1",
             material_id: "MAT-001",
             storedAt: "backpack",
@@ -136,7 +136,7 @@ describe("stored inventory tables opt into the stacked card layout", () => {
       {
         firearms: [
           {
-            _instanceId: "FIREARM-1",
+            id: "FIREARM-1",
             weapon_id: "FIREARM-DB-1",
             material_id: "MAT-001",
             storedAt: "backpack",

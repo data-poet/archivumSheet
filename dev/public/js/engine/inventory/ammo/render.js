@@ -27,7 +27,7 @@ const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = STORAGE_LOCATIONS.filter(
 function resolvedContainer(sheet, instanceId) {
   if (!sheet?.inventory?.ammo?.containers) return null;
   for (const bucket of Object.values(sheet.inventory.ammo.containers)) {
-    const found = bucket.find((c) => c._instanceId === instanceId);
+    const found = bucket.find((c) => c.id === instanceId);
     if (found) return found;
   }
   return null;
@@ -151,8 +151,8 @@ function renderContainerSlot(
   allContainers,
 ) {
   const containerRecord = getContainerRecord(inst.container_id, containerData);
-  const resolved = resolvedContainer(sheet, inst._instanceId);
-  const instanceId = inst._instanceId;
+  const resolved = resolvedContainer(sheet, inst.id);
+  const instanceId = inst.id;
 
   const displayName = containerRecord?.container_box_name ?? inst.container_id;
   const capacity = containerRecord?.container_capacity
@@ -188,7 +188,7 @@ function renderContainerSlot(
 
             const moveSelectHtml = (() => {
               const other = allContainers.filter((c) => {
-                if (c._instanceId === instanceId) return false;
+                if (c.id === instanceId) return false;
                 const rec = getContainerRecord(c.container_id, containerData);
                 return rec?.container_ammo_type === ammoType;
               });
@@ -197,7 +197,7 @@ function renderContainerSlot(
                 .map((c) => {
                   const rec = getContainerRecord(c.container_id, containerData);
                   const name = rec?.container_box_name ?? c.container_id;
-                  return `<option value="${c._instanceId}">${name}</option>`;
+                  return `<option value="${c.id}">${name}</option>`;
                 })
                 .join("");
               return `<select
