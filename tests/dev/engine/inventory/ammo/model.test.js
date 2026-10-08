@@ -4,16 +4,22 @@ jest.mock("dev/public/js/ui.js", () =>
 jest.mock("dev/public/js/compute/autorun.js", () =>
   require("tests/dev/helpers/mocks/autorunMock.js"),
 );
+jest.mock("dev/public/js/store/characters.js", () => ({
+  withCharacterInventory: jest.fn(),
+}));
 
 import { state } from "dev/public/js/state.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { withCharacterInventory } from "dev/public/js/store/characters.js";
 import {
   addLooseAmmo,
   moveLooseAmmo,
+  sendContainerToAlly,
 } from "dev/public/js/engine/inventory/ammo/model.js";
 
 beforeEach(() => {
   resetState();
+  jest.clearAllMocks();
   state.selected.loose_ammo = [];
 });
 
@@ -66,5 +72,71 @@ describe("moveLooseAmmo", () => {
     expect(dest.quantity).toBe(26);
     expect(dest.id).toBe(destId);
     expect(findEntry("ARROW-1", "backpack")).toBeUndefined();
+  });
+});
+
+describe("sendContainerToAlly", () => {
+  beforeEach(() => {
+    state.selected.ammo_containers = [
+      {
+        id: "container-1",
+        container_id: "BOX-1",
+        storedAt: "backpack",
+        contents: [{ ammo_id: "ARROW-1", quantity: 10 }],
+      },
+    ];
+  });
+
+  test("moves the container and its contents to the destination, and removes it from the source", () => {
+    let destinationContainers;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationContainers = [];
+      mutator({ ammo_containers: destinationContainers });
+      return true;
+    });
+
+    const ok = sendContainerToAlly("container-1", "ally-1", "stash");
+
+    expect(ok).toBe(true);
+    expect(state.selected.ammo_containers).toHaveLength(0);
+    expect(destinationContainers).toHaveLength(1);
+    expect(destinationContainers[0]).toMatchObject({
+      container_id: "BOX-1",
+      storedAt: "stash",
+      contents: [{ ammo_id: "ARROW-1", quantity: 10 }],
+    });
+    expect(destinationContainers[0].id).not.toBe("container-1");
+  });
+
+  test("moves an empty container without contents", () => {
+    state.selected.ammo_containers[0].contents = [];
+    let destinationContainers;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationContainers = [];
+      mutator({ ammo_containers: destinationContainers });
+      return true;
+    });
+
+    const ok = sendContainerToAlly("container-1", "ally-1");
+
+    expect(ok).toBe(true);
+    expect(destinationContainers[0].contents).toEqual([]);
+  });
+
+  test("returns false and leaves the source untouched for an unknown instance id", () => {
+    const ok = sendContainerToAlly("ghost", "ally-1");
+
+    expect(ok).toBe(false);
+    expect(state.selected.ammo_containers).toHaveLength(1);
+    expect(withCharacterInventory).not.toHaveBeenCalled();
+  });
+
+  test("leaves the source untouched when the destination write fails", () => {
+    withCharacterInventory.mockReturnValue(false);
+
+    const ok = sendContainerToAlly("container-1", "does-not-exist");
+
+    expect(ok).toBe(false);
+    expect(state.selected.ammo_containers).toHaveLength(1);
   });
 });
