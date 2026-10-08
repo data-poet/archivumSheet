@@ -5,6 +5,11 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { offerUndo } from "../../../components/undo.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
+import { t } from "../../../localization/pt-BR/index.js";
+import {
+  transferStackQuantity,
+  undoTransferStackQuantity,
+} from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -156,4 +161,36 @@ export function moveSurvivalGear(gearId, fromLocation, toLocation) {
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+export function sendSurvivalGearToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+  const before = structuredClone(selected.survivalGear);
+
+  const result = transferStackQuantity({
+    sourceArray: selected.survivalGear,
+    instanceId,
+    amount,
+    destinationCharacterId,
+    destinationInventoryKey: "survivalGear",
+    destinationStoredAt: storedAt,
+    matchKeyFields: ["adventure_gear_id"],
+  });
+  if (!result) return false;
+
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferStackQuantity({
+      destinationCharacterId,
+      destinationInventoryKey: "survivalGear",
+      destinationRowId: result.destinationRowId,
+      amount: result.amount,
+    });
+    selected.survivalGear = before;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }

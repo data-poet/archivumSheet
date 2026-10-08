@@ -15,6 +15,7 @@ import {
   addLooseAmmo,
   moveLooseAmmo,
   sendContainerToAlly,
+  sendLooseAmmoToAlly,
 } from "dev/public/js/engine/inventory/ammo/model.js";
 
 beforeEach(() => {
@@ -138,5 +139,58 @@ describe("sendContainerToAlly", () => {
 
     expect(ok).toBe(false);
     expect(state.selected.ammo_containers).toHaveLength(1);
+  });
+});
+
+describe("sendLooseAmmoToAlly", () => {
+  beforeEach(() => {
+    addLooseAmmo("ARROW-1", 20, "backpack");
+  });
+
+  test("sends a partial amount, decrementing the source row", () => {
+    const instanceId = findEntry("ARROW-1", "backpack").id;
+    let destinationAmmo;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationAmmo = [];
+      mutator({ loose_ammo: destinationAmmo });
+      return true;
+    });
+
+    const ok = sendLooseAmmoToAlly(instanceId, "ally-1", 5, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("ARROW-1", "backpack").quantity).toBe(15);
+    expect(destinationAmmo[0]).toMatchObject({ ammo_id: "ARROW-1", quantity: 5 });
+  });
+
+  test("removes the source row entirely on a full send", () => {
+    const instanceId = findEntry("ARROW-1", "backpack").id;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator({ loose_ammo: [] });
+      return true;
+    });
+
+    const ok = sendLooseAmmoToAlly(instanceId, "ally-1", 20, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("ARROW-1", "backpack")).toBeUndefined();
+  });
+
+  test("returns false and leaves the source untouched for an unknown instance id", () => {
+    const ok = sendLooseAmmoToAlly("ghost", "ally-1", 5);
+
+    expect(ok).toBe(false);
+    expect(findEntry("ARROW-1", "backpack").quantity).toBe(20);
+    expect(withCharacterInventory).not.toHaveBeenCalled();
+  });
+
+  test("leaves the source untouched when the destination write fails", () => {
+    const instanceId = findEntry("ARROW-1", "backpack").id;
+    withCharacterInventory.mockReturnValue(false);
+
+    const ok = sendLooseAmmoToAlly(instanceId, "does-not-exist", 5);
+
+    expect(ok).toBe(false);
+    expect(findEntry("ARROW-1", "backpack").quantity).toBe(20);
   });
 });

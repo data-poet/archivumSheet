@@ -6,7 +6,12 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import {
+  transferInstance,
+  undoTransferInstance,
+  transferStackQuantity,
+  undoTransferStackQuantity,
+} from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -385,6 +390,38 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+export function sendLooseAmmoToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+  const before = structuredClone(selected.loose_ammo);
+
+  const result = transferStackQuantity({
+    sourceArray: selected.loose_ammo,
+    instanceId,
+    amount,
+    destinationCharacterId,
+    destinationInventoryKey: "loose_ammo",
+    destinationStoredAt: storedAt,
+    matchKeyFields: ["ammo_id"],
+  });
+  if (!result) return false;
+
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferStackQuantity({
+      destinationCharacterId,
+      destinationInventoryKey: "loose_ammo",
+      destinationRowId: result.destinationRowId,
+      amount: result.amount,
+    });
+    selected.loose_ammo = before;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
