@@ -7,20 +7,30 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { getActiveCharacterId, getStore } from "../../../store/characters.js";
+import { getAllyOwnerId } from "../../../store/allies/characterLinking.js";
 import { escapeHtml } from "../../../shared/renderUtils.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { showToast } from "../../../shared/toast.js";
 
-// Only characters in the active character's own ally roster are valid send destinations.
+// Valid send destinations: characters in the active sheet's own ally roster (owner → ally),
+// plus whoever owns the active sheet when it's itself an ally (ally → owner). Both can apply
+// if a nested ally someday gets its own roster, so neither is exclusive of the other.
 function getLinkedAllyOptions(characterId) {
   const store = getStore();
   const owner = store.list.find((c) => c.id === characterId);
   const roster = owner?.data?.character?.allies ?? [];
 
-  return roster
+  const destinations = roster
     .map((r) => store.list.find((c) => c.id === r.ally_id))
-    .filter(Boolean)
-    .map((c) => ({ id: c.id, name: c.name?.trim() || t("characters.unnamed") }));
+    .filter(Boolean);
+
+  const ownerEntry = store.list.find((c) => c.id === getAllyOwnerId(characterId));
+  if (ownerEntry) destinations.push(ownerEntry);
+
+  return destinations.map((c) => ({
+    id: c.id,
+    name: c.name?.trim() || c.race?.trim() || t("characters.unnamed"),
+  }));
 }
 
 export function sendToAllyRowHTML(instanceId, { needsQuantity = false, maxQuantity = 1 } = {}) {
