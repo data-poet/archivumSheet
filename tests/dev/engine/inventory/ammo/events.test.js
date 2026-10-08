@@ -13,6 +13,7 @@ jest.mock("dev/public/js/engine/inventory/ammo/model.js", () => ({
   updateLooseAmmoOptions: jest.fn(),
   updateLooseAmmoTypeFilter: jest.fn(),
   sendContainerToAlly: jest.fn(),
+  sendLooseAmmoToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/ui.js", () => ({
   renderListsPreserving: jest.fn(),
@@ -158,6 +159,7 @@ describe("handleAmmoClick — send container to ally", () => {
   }
 
   test("sends the container and re-renders on success", () => {
+    state.selected.ammo_containers = [{ id: "C1", contents: [] }];
     model.sendContainerToAlly.mockReturnValue(true);
     const button = sendRow("C1", "ally-1");
 
@@ -167,8 +169,55 @@ describe("handleAmmoClick — send container to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.ammo_containers = [{ id: "C1", contents: [] }];
     model.sendContainerToAlly.mockReturnValue(false);
     const button = sendRow("C1", "ally-1");
+
+    expect(handleAmmoClick({ target: button })).toBe(true);
+    expect(ui.renderListsPreserving).not.toHaveBeenCalled();
+  });
+});
+
+describe("handleAmmoClick — send loose ammo to ally", () => {
+  function sendRow(instanceId, destinationId, quantity) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const qtyInput = elWithClass("input", "send-to-ally-quantity", {
+      instanceId,
+    });
+    qtyInput.value = String(quantity);
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(qtyInput);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the chosen quantity and re-renders on success", () => {
+    state.selected.loose_ammo = [{ id: "AMMO-1", ammo_id: "ARROW-1" }];
+    model.sendLooseAmmoToAlly.mockReturnValue(true);
+    const button = sendRow("AMMO-1", "ally-1", 20);
+
+    expect(handleAmmoClick({ target: button })).toBe(true);
+    expect(model.sendLooseAmmoToAlly).toHaveBeenCalledWith(
+      "AMMO-1",
+      "ally-1",
+      20,
+    );
+    expect(ui.renderListsPreserving).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    state.selected.loose_ammo = [{ id: "AMMO-1", ammo_id: "ARROW-1" }];
+    model.sendLooseAmmoToAlly.mockReturnValue(false);
+    const button = sendRow("AMMO-1", "ally-1", 20);
 
     expect(handleAmmoClick({ target: button })).toBe(true);
     expect(ui.renderListsPreserving).not.toHaveBeenCalled();

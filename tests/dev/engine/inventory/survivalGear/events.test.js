@@ -5,9 +5,14 @@ jest.mock("dev/public/js/engine/inventory/survivalGear/model.js", () => ({
   moveSurvivalGear: jest.fn(),
   updateSurvivalGearTypeOptions: jest.fn(),
   updateSurvivalGearNameOptions: jest.fn(),
+  sendSurvivalGearToAlly: jest.fn(),
+}));
+jest.mock("dev/public/js/ui.js", () => ({
+  renderListsPreserving: jest.fn(),
 }));
 
 import * as model from "dev/public/js/engine/inventory/survivalGear/model.js";
+import * as ui from "dev/public/js/ui.js";
 import {
   handleSurvivalGearClick,
   handleSurvivalGearInput,
@@ -52,6 +57,50 @@ describe("handleSurvivalGearClick", () => {
 
     expect(handleSurvivalGearClick({ target })).toBe(false);
     expect(model.removeSurvivalGear).not.toHaveBeenCalled();
+  });
+});
+
+describe("handleSurvivalGearClick — send to ally", () => {
+  function sendRow(instanceId, destinationId, quantity) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const qtyInput = elWithClass("input", "send-to-ally-quantity", {
+      instanceId,
+    });
+    qtyInput.value = String(quantity);
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(qtyInput);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the chosen quantity and re-renders on success", () => {
+    model.sendSurvivalGearToAlly.mockReturnValue(true);
+    const button = sendRow("GEAR-ROW-1", "ally-1", 2);
+
+    expect(handleSurvivalGearClick({ target: button })).toBe(true);
+    expect(model.sendSurvivalGearToAlly).toHaveBeenCalledWith(
+      "GEAR-ROW-1",
+      "ally-1",
+      2,
+    );
+    expect(ui.renderListsPreserving).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendSurvivalGearToAlly.mockReturnValue(false);
+    const button = sendRow("GEAR-ROW-1", "ally-1", 2);
+
+    expect(handleSurvivalGearClick({ target: button })).toBe(true);
+    expect(ui.renderListsPreserving).not.toHaveBeenCalled();
   });
 });
 

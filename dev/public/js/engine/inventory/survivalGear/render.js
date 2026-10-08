@@ -10,6 +10,7 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -118,6 +119,10 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 data-gear-id="${entry.adventure_gear_id}"
                 data-stored-at="${location}"
               >✕</button>
+              ${sendToAllyRowHTML(entry.id, {
+                needsQuantity: true,
+                maxQuantity: entry.quantity,
+              })}
             </td>
           </tr>
           ${detailRow(4, gearDetailFields(record))}`;

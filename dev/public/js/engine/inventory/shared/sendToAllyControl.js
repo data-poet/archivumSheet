@@ -46,11 +46,17 @@ export function sendToAllyRowHTML(instanceId, { needsQuantity = false, maxQuanti
 
 // Matches the handleXClick(e) => boolean signature used across every category's events.js,
 // so it can be chained into the same delegated click dispatch without special-casing.
-export function createSendToAllyHandler({ sendFn, render }) {
+// `canHandle(instanceId)` is only needed when a single events.js chains more than one
+// send-to-ally handler (e.g. ammo containers + loose ammo both live in ammo/events.js) —
+// without it, the first handler in the chain would claim every send click regardless of
+// which collection actually owns the instanceId.
+export function createSendToAllyHandler({ sendFn, render, canHandle }) {
   return function handleSendToAllyClick(e) {
     if (!e.target.classList.contains("send-to-ally-button")) return false;
 
     const instanceId = e.target.dataset.instanceId;
+    if (canHandle && !canHandle(instanceId)) return false;
+
     const row = e.target.closest(".send-to-ally-row");
     const destinationCharacterId = row?.querySelector(".send-to-ally-select")?.value;
     if (!destinationCharacterId) return true;

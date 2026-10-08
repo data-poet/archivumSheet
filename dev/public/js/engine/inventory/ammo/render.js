@@ -366,6 +366,10 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
                 data-ammo-id="${entry.ammo_id}"
                 data-stored-at="${location}"
               >✕</button>
+              ${sendToAllyRowHTML(entry.id, {
+                needsQuantity: true,
+                maxQuantity: entry.quantity,
+              })}
             </td>
           </tr>
           ${detailRow(5, ammoDetailFields(ammoRecord))}`;

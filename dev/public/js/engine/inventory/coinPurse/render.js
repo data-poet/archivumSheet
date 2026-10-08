@@ -3,6 +3,7 @@ import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import { cardTitleCell } from "../../../shared/renderUtils.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -86,6 +87,10 @@ function renderCoinSection(location, coins, sheet) {
                 data-coin-type="${entry.coin_type}"
                 data-stored-at="${location}"
               >✕</button>
+              ${sendToAllyRowHTML(entry.id, {
+                needsQuantity: true,
+                maxQuantity: entry.quantity,
+              })}
             </td>
           </tr>`;
       })

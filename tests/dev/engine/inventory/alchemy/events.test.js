@@ -6,9 +6,14 @@ jest.mock("dev/public/js/engine/inventory/alchemy/model.js", () => ({
   updateAlchemyTypeOptions: jest.fn(),
   updateAlchemyNameOptions: jest.fn(),
   updateAlchemyTierOptions: jest.fn(),
+  sendAlchemyToAlly: jest.fn(),
+}));
+jest.mock("dev/public/js/ui.js", () => ({
+  renderListsPreserving: jest.fn(),
 }));
 
 import * as model from "dev/public/js/engine/inventory/alchemy/model.js";
+import * as ui from "dev/public/js/ui.js";
 import {
   handleAlchemyClick,
   handleAlchemyInput,
@@ -54,6 +59,50 @@ describe("handleAlchemyClick", () => {
 
     expect(handleAlchemyClick({ target })).toBe(false);
     expect(model.removeAlchemy).not.toHaveBeenCalled();
+  });
+});
+
+describe("handleAlchemyClick — send to ally", () => {
+  function sendRow(instanceId, destinationId, quantity) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const qtyInput = elWithClass("input", "send-to-ally-quantity", {
+      instanceId,
+    });
+    qtyInput.value = String(quantity);
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(qtyInput);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the chosen quantity and re-renders on success", () => {
+    model.sendAlchemyToAlly.mockReturnValue(true);
+    const button = sendRow("POTION-ROW-1", "ally-1", 3);
+
+    expect(handleAlchemyClick({ target: button })).toBe(true);
+    expect(model.sendAlchemyToAlly).toHaveBeenCalledWith(
+      "POTION-ROW-1",
+      "ally-1",
+      3,
+    );
+    expect(ui.renderListsPreserving).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendAlchemyToAlly.mockReturnValue(false);
+    const button = sendRow("POTION-ROW-1", "ally-1", 3);
+
+    expect(handleAlchemyClick({ target: button })).toBe(true);
+    expect(ui.renderListsPreserving).not.toHaveBeenCalled();
   });
 });
 

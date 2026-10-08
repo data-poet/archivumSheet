@@ -1,9 +1,17 @@
 import { state } from "../../../state.js";
+import { renderListsPreserving } from "../../../ui.js";
 import {
   addCoins,
   updateCoinQuantity,
   moveCoins,
+  sendCoinsToAlly,
 } from "./model.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
+
+const _handleSendCoinsToAllyClick = createSendToAllyHandler({
+  sendFn: sendCoinsToAlly,
+  render: () => renderListsPreserving(state.selected, state.data),
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CLICK
@@ -20,6 +28,8 @@ export function handleCoinPurseClick(e) {
     handleAddCoins();
     return true;
   }
+
+  if (_handleSendCoinsToAllyClick(e)) return true;
 
   return false;
 }

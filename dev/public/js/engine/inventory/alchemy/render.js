@@ -10,6 +10,7 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -138,6 +139,10 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
                 data-consumable-id="${entry.consumable_id}"
                 data-stored-at="${location}"
               >✕</button>
+              ${sendToAllyRowHTML(entry.id, {
+                needsQuantity: true,
+                maxQuantity: entry.quantity,
+              })}
             </td>
           </tr>
           ${detailRow(5, consumableDetailFields(record))}`;
