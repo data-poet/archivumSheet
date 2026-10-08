@@ -6,12 +6,10 @@ beforeEach(() => {
 });
 
 describe("renderAlchemy", () => {
-  test("groups per-unit rows of the same consumable+location into one display row", () => {
+  test("renders one row per consumable+location entry", () => {
     const selected = {
       alchemy: [
-        { id: "a1", consumable_id: "POTION-1", quantity: 1, storedAt: "backpack" },
-        { id: "a2", consumable_id: "POTION-1", quantity: 1, storedAt: "backpack" },
-        { id: "a3", consumable_id: "POTION-1", quantity: 1, storedAt: "backpack" },
+        { id: "a1", consumable_id: "POTION-1", quantity: 3, storedAt: "backpack" },
       ],
     };
     const data = {

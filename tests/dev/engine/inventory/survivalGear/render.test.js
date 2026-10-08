@@ -6,11 +6,10 @@ beforeEach(() => {
 });
 
 describe("renderSurvivalGear", () => {
-  test("groups per-unit rows of the same gear+location into one display row", () => {
+  test("renders one row per gear+location entry", () => {
     const selected = {
       survivalGear: [
-        { id: "g1", adventure_gear_id: "GEAR-1", quantity: 1, storedAt: "backpack" },
-        { id: "g2", adventure_gear_id: "GEAR-1", quantity: 1, storedAt: "backpack" },
+        { id: "g1", adventure_gear_id: "GEAR-1", quantity: 2, storedAt: "backpack" },
       ],
     };
     const data = {
