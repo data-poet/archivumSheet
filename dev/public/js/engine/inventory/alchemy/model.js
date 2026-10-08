@@ -5,6 +5,11 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { offerUndo } from "../../../components/undo.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
+import { t } from "../../../localization/pt-BR/index.js";
+import {
+  transferStackQuantity,
+  undoTransferStackQuantity,
+} from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -184,4 +189,36 @@ export function moveAlchemy(consumableId, fromLocation, toLocation) {
 
   renderListsPreserving(selected, data);
   triggerAutoRun();
+}
+
+export function sendAlchemyToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+  const before = structuredClone(selected.alchemy);
+
+  const result = transferStackQuantity({
+    sourceArray: selected.alchemy,
+    instanceId,
+    amount,
+    destinationCharacterId,
+    destinationInventoryKey: "alchemy",
+    destinationStoredAt: storedAt,
+    matchKeyFields: ["consumable_id"],
+  });
+  if (!result) return false;
+
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferStackQuantity({
+      destinationCharacterId,
+      destinationInventoryKey: "alchemy",
+      destinationRowId: result.destinationRowId,
+      amount: result.amount,
+    });
+    selected.alchemy = before;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }

@@ -4,18 +4,24 @@ jest.mock("dev/public/js/ui.js", () =>
 jest.mock("dev/public/js/compute/autorun.js", () =>
   require("tests/dev/helpers/mocks/autorunMock.js"),
 );
+jest.mock("dev/public/js/store/characters.js", () => ({
+  withCharacterInventory: jest.fn(),
+}));
 
 import { state } from "dev/public/js/state.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { withCharacterInventory } from "dev/public/js/store/characters.js";
 import {
   addSurvivalGear,
   updateSurvivalGearQuantity,
   removeSurvivalGear,
   moveSurvivalGear,
+  sendSurvivalGearToAlly,
 } from "dev/public/js/engine/inventory/survivalGear/model.js";
 
 beforeEach(() => {
   resetState();
+  jest.clearAllMocks();
   state.selected.survivalGear = [];
 });
 
@@ -105,5 +111,61 @@ describe("moveSurvivalGear", () => {
     moveSurvivalGear("GEAR-1", "backpack", "backpack");
 
     expect(findEntry("GEAR-1", "backpack").quantity).toBe(2);
+  });
+});
+
+describe("sendSurvivalGearToAlly", () => {
+  beforeEach(() => {
+    addSurvivalGear("GEAR-1", 10, "backpack");
+  });
+
+  test("sends a partial amount, decrementing the source row", () => {
+    const instanceId = findEntry("GEAR-1", "backpack").id;
+    let destinationGear;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationGear = [];
+      mutator({ survivalGear: destinationGear });
+      return true;
+    });
+
+    const ok = sendSurvivalGearToAlly(instanceId, "ally-1", 4, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("GEAR-1", "backpack").quantity).toBe(6);
+    expect(destinationGear[0]).toMatchObject({
+      adventure_gear_id: "GEAR-1",
+      quantity: 4,
+    });
+  });
+
+  test("removes the source row entirely on a full send", () => {
+    const instanceId = findEntry("GEAR-1", "backpack").id;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator({ survivalGear: [] });
+      return true;
+    });
+
+    const ok = sendSurvivalGearToAlly(instanceId, "ally-1", 10, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("GEAR-1", "backpack")).toBeUndefined();
+  });
+
+  test("returns false and leaves the source untouched for an unknown instance id", () => {
+    const ok = sendSurvivalGearToAlly("ghost", "ally-1", 4);
+
+    expect(ok).toBe(false);
+    expect(findEntry("GEAR-1", "backpack").quantity).toBe(10);
+    expect(withCharacterInventory).not.toHaveBeenCalled();
+  });
+
+  test("leaves the source untouched when the destination write fails", () => {
+    const instanceId = findEntry("GEAR-1", "backpack").id;
+    withCharacterInventory.mockReturnValue(false);
+
+    const ok = sendSurvivalGearToAlly(instanceId, "does-not-exist", 4);
+
+    expect(ok).toBe(false);
+    expect(findEntry("GEAR-1", "backpack").quantity).toBe(10);
   });
 });

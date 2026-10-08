@@ -4,18 +4,24 @@ jest.mock("dev/public/js/ui.js", () =>
 jest.mock("dev/public/js/compute/autorun.js", () =>
   require("tests/dev/helpers/mocks/autorunMock.js"),
 );
+jest.mock("dev/public/js/store/characters.js", () => ({
+  withCharacterInventory: jest.fn(),
+}));
 
 import { state } from "dev/public/js/state.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { withCharacterInventory } from "dev/public/js/store/characters.js";
 import {
   addAlchemy,
   updateAlchemyQuantity,
   removeAlchemy,
   moveAlchemy,
+  sendAlchemyToAlly,
 } from "dev/public/js/engine/inventory/alchemy/model.js";
 
 beforeEach(() => {
   resetState();
+  jest.clearAllMocks();
   state.selected.alchemy = [];
 });
 
@@ -116,5 +122,61 @@ describe("moveAlchemy", () => {
     moveAlchemy("POTION-1", "backpack", "backpack");
 
     expect(findEntry("POTION-1", "backpack").quantity).toBe(2);
+  });
+});
+
+describe("sendAlchemyToAlly", () => {
+  beforeEach(() => {
+    addAlchemy("POTION-1", 10, "backpack");
+  });
+
+  test("sends a partial amount, decrementing the source row", () => {
+    const instanceId = findEntry("POTION-1", "backpack").id;
+    let destinationAlchemy;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationAlchemy = [];
+      mutator({ alchemy: destinationAlchemy });
+      return true;
+    });
+
+    const ok = sendAlchemyToAlly(instanceId, "ally-1", 4, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("POTION-1", "backpack").quantity).toBe(6);
+    expect(destinationAlchemy[0]).toMatchObject({
+      consumable_id: "POTION-1",
+      quantity: 4,
+    });
+  });
+
+  test("removes the source row entirely on a full send", () => {
+    const instanceId = findEntry("POTION-1", "backpack").id;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator({ alchemy: [] });
+      return true;
+    });
+
+    const ok = sendAlchemyToAlly(instanceId, "ally-1", 10, "backpack");
+
+    expect(ok).toBe(true);
+    expect(findEntry("POTION-1", "backpack")).toBeUndefined();
+  });
+
+  test("returns false and leaves the source untouched for an unknown instance id", () => {
+    const ok = sendAlchemyToAlly("ghost", "ally-1", 4);
+
+    expect(ok).toBe(false);
+    expect(findEntry("POTION-1", "backpack").quantity).toBe(10);
+    expect(withCharacterInventory).not.toHaveBeenCalled();
+  });
+
+  test("leaves the source untouched when the destination write fails", () => {
+    const instanceId = findEntry("POTION-1", "backpack").id;
+    withCharacterInventory.mockReturnValue(false);
+
+    const ok = sendAlchemyToAlly(instanceId, "does-not-exist", 4);
+
+    expect(ok).toBe(false);
+    expect(findEntry("POTION-1", "backpack").quantity).toBe(10);
   });
 });

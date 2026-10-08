@@ -2,6 +2,12 @@ import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
+import { offerUndo } from "../../../components/undo.js";
+import { t } from "../../../localization/pt-BR/index.js";
+import {
+  transferStackQuantity,
+  undoTransferStackQuantity,
+} from "../shared/transfer.js";
 
 const selected = state.selected;
 
@@ -90,4 +96,40 @@ export function moveCoins(coinType, fromLocation, toLocation) {
 
   renderListsPreserving(selected, state.data);
   triggerAutoRun();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SEND TO ALLY
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function sendCoinsToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+  const before = structuredClone(selected.coins);
+
+  const result = transferStackQuantity({
+    sourceArray: selected.coins,
+    instanceId,
+    amount,
+    destinationCharacterId,
+    destinationInventoryKey: "coins",
+    destinationStoredAt: storedAt,
+    matchKeyFields: ["coin_type"],
+  });
+  if (!result) return false;
+
+  renderListsPreserving(selected, state.data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferStackQuantity({
+      destinationCharacterId,
+      destinationInventoryKey: "coins",
+      destinationRowId: result.destinationRowId,
+      amount: result.amount,
+    });
+    selected.coins = before;
+    renderListsPreserving(selected, state.data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
