@@ -10,6 +10,7 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 import { state } from "../../../state.js";
 
 const CONTAINER_STORAGE_LOCATIONS_CARRIABLE = [
@@ -262,6 +263,7 @@ function renderContainerSlot(
             ${containerStorageOptions(inst.storedAt, isCarriable)}
           </select>
           <button class="btn-remove remove-ammo-container" data-instance-id="${instanceId}">✕</button>
+          ${sendToAllyRowHTML(instanceId)}
         </div>
         <div class="ammo-container-meta">
           <span>${t("ammo.capacity")}: ${usedCap}/${capacity}</span>

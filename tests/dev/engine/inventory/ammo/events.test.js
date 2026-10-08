@@ -12,6 +12,7 @@ jest.mock("dev/public/js/engine/inventory/ammo/model.js", () => ({
   moveAmmoInContainer: jest.fn(),
   updateLooseAmmoOptions: jest.fn(),
   updateLooseAmmoTypeFilter: jest.fn(),
+  sendContainerToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/ui.js", () => ({
   renderListsPreserving: jest.fn(),
@@ -136,6 +137,41 @@ describe("handleAmmoClick", () => {
     const target = document.createElement("div");
 
     expect(handleAmmoClick({ target })).toBe(false);
+  });
+});
+
+describe("handleAmmoClick — send container to ally", () => {
+  function sendRow(instanceId, destinationId) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the container and re-renders on success", () => {
+    model.sendContainerToAlly.mockReturnValue(true);
+    const button = sendRow("C1", "ally-1");
+
+    expect(handleAmmoClick({ target: button })).toBe(true);
+    expect(model.sendContainerToAlly).toHaveBeenCalledWith("C1", "ally-1");
+    expect(ui.renderListsPreserving).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendContainerToAlly.mockReturnValue(false);
+    const button = sendRow("C1", "ally-1");
+
+    expect(handleAmmoClick({ target: button })).toBe(true);
+    expect(ui.renderListsPreserving).not.toHaveBeenCalled();
   });
 });
 
