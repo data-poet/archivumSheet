@@ -15,4 +15,9 @@ export const INVENTORY = {
     veryHeavy: "Muito Pesada",
   },
   comingSoon: "Em desenvolvimento — Poções serão adicionadas aqui.",
+  sendToAlly: {
+    send: "Enviar",
+    noAllies: "Nenhum aliado vinculado",
+    failed: "Não foi possível enviar o item",
+  },
 };
