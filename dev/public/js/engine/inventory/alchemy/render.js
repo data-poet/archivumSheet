@@ -97,7 +97,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
   let bodyRows = "";
 
   if (sectionEntries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
@@ -139,13 +139,13 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
                 data-consumable-id="${entry.consumable_id}"
                 data-stored-at="${location}"
               >✕</button>
-              ${sendToAllyRowHTML(entry.id, {
-                needsQuantity: true,
-                maxQuantity: entry.quantity,
-              })}
             </td>
+            <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
+              needsQuantity: true,
+              maxQuantity: entry.quantity,
+            })}</td>
           </tr>
-          ${detailRow(5, consumableDetailFields(record))}`;
+          ${detailRow(6, consumableDetailFields(record))}`;
       })
       .join("");
   }
@@ -161,6 +161,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
           <th>${t("alchemy.qty")}</th>
           <th>${t("common.weight")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

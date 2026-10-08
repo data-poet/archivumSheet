@@ -49,7 +49,7 @@ function renderCoinSection(location, coins, sheet) {
   let bodyRows = "";
 
   if (entries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = entries
       .map((entry) => {
@@ -87,11 +87,11 @@ function renderCoinSection(location, coins, sheet) {
                 data-coin-type="${entry.coin_type}"
                 data-stored-at="${location}"
               >✕</button>
-              ${sendToAllyRowHTML(entry.id, {
-                needsQuantity: true,
-                maxQuantity: entry.quantity,
-              })}
             </td>
+            <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
+              needsQuantity: true,
+              maxQuantity: entry.quantity,
+            })}</td>
           </tr>`;
       })
       .join("");
@@ -108,6 +108,7 @@ function renderCoinSection(location, coins, sheet) {
           <th class="col-num">${t("coinPurse.weight")}</th>
           <th class="col-num">${t("coinPurse.value")}</th>
           <th class="col-action">${t("common.storage")}</th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

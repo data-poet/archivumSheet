@@ -16,6 +16,7 @@ export const INVENTORY = {
   },
   comingSoon: "Em desenvolvimento — Poções serão adicionadas aqui.",
   sendToAlly: {
+    header: "Enviar a Aliado",
     send: "Enviar",
     noAllies: "Nenhum aliado vinculado",
     failed: "Não foi possível enviar o item",
