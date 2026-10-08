@@ -6,6 +6,7 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -149,6 +150,36 @@ export function removeContainer(instanceId) {
     renderListsPreserving(selected, data);
     triggerAutoRun();
   });
+}
+
+// contents[] rides along for free via the default clone's structuredClone.
+export function sendContainerToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+  const before = structuredClone(selected.ammo_containers);
+
+  const clone = transferInstance({
+    sourceArray: selected.ammo_containers,
+    instanceId,
+    destinationCharacterId,
+    destinationInventoryKey: "ammo_containers",
+    destinationStoredAt: storedAt,
+  });
+  if (!clone) return false;
+
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "ammo_containers",
+      cloneId: clone.id,
+    });
+    selected.ammo_containers = before;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 function getContainerCapacity(containerId) {
