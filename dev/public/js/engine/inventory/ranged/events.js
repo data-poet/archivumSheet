@@ -10,6 +10,7 @@ import {
   addRangedEnchantment,
   updateRangedEnchantment,
   removeRangedEnchantment,
+  sendRangedToAlly,
 } from "./model.js";
 import { renderEquippedRanged, renderStoredRanged } from "./render.js";
 import { renderEquippedMelee, renderStoredMelee } from "../melee/render.js";
@@ -18,6 +19,7 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -74,6 +76,11 @@ const _rangedEnchantments = createEnchantmentsHandlers({
   render: () => _renderRangedAndMeleeLists(state.sheet),
 });
 
+const _handleSendRangedToAllyClick = createSendToAllyHandler({
+  sendFn: sendRangedToAlly,
+  render: _renderRangedAndMeleeLists,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleRangedClick(e) {
@@ -102,6 +109,8 @@ export function handleRangedClick(e) {
   if (_handleRangedCustomFieldsClick(e)) return true;
 
   if (_rangedEnchantments.handleClick(e)) return true;
+
+  if (_handleSendRangedToAllyClick(e)) return true;
 
   return false;
 }

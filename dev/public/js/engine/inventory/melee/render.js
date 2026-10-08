@@ -33,6 +33,7 @@ import {
   weaponMaterialEffectField,
   weaponDescriptionField,
 } from "../shared/weaponDetailFields.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 function resolvedMelee(sheet, instanceId) {
   const inv = sheet?.inventory?.melee;
@@ -237,6 +238,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-melee" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-melee" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(6, instanceId, [

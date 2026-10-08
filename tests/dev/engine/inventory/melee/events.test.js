@@ -6,6 +6,7 @@ jest.mock("dev/public/js/engine/inventory/melee/model.js", () => ({
   removeMelee: jest.fn(),
   findMeleeByInstanceId: jest.fn(),
   saveMeleeCustomFields: jest.fn(),
+  sendMeleeToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/melee/render.js", () => ({
   renderEquippedMelee: jest.fn(),
@@ -141,6 +142,47 @@ describe("handleMeleeClick", () => {
   test("an unrelated click target is not handled", () => {
     const target = elWithClass("button", "something-else");
     expect(handleMeleeClick({ target })).toBe(false);
+  });
+});
+
+describe("handleMeleeClick — send to ally", () => {
+  function sendRow(instanceId, destinationId) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the item and re-renders both melee and ranged lists on success (linked pair moves together)", () => {
+    model.sendMeleeToAlly.mockReturnValue(true);
+    const button = sendRow("MELEE-1", "ally-1");
+
+    expect(handleMeleeClick({ target: button })).toBe(true);
+    expect(model.sendMeleeToAlly).toHaveBeenCalledWith("MELEE-1", "ally-1");
+    jest.advanceTimersToNextFrame();
+    expect(meleeRender.renderEquippedMelee).toHaveBeenCalled();
+    expect(meleeRender.renderStoredMelee).toHaveBeenCalled();
+    expect(rangedRender.renderEquippedRanged).toHaveBeenCalled();
+    expect(rangedRender.renderStoredRanged).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendMeleeToAlly.mockReturnValue(false);
+    const button = sendRow("MELEE-1", "ally-1");
+
+    expect(handleMeleeClick({ target: button })).toBe(true);
+    jest.advanceTimersToNextFrame();
+    expect(meleeRender.renderEquippedMelee).not.toHaveBeenCalled();
+    expect(rangedRender.renderEquippedRanged).not.toHaveBeenCalled();
   });
 });
 

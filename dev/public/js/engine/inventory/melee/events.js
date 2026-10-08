@@ -10,6 +10,7 @@ import {
   addMeleeEnchantment,
   updateMeleeEnchantment,
   removeMeleeEnchantment,
+  sendMeleeToAlly,
 } from "./model.js";
 import { renderEquippedMelee, renderStoredMelee } from "./render.js";
 import { renderEquippedRanged, renderStoredRanged } from "../ranged/render.js";
@@ -18,6 +19,7 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -76,6 +78,11 @@ const _meleeEnchantments = createEnchantmentsHandlers({
   render: () => _renderMeleeAndRangedLists(state.sheet),
 });
 
+const _handleSendMeleeToAllyClick = createSendToAllyHandler({
+  sendFn: sendMeleeToAlly,
+  render: _renderMeleeAndRangedLists,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleMeleeClick(e) {
@@ -105,6 +112,8 @@ export function handleMeleeClick(e) {
 
   // Delegated to the shared factory, which ownership-checks the instanceId the same way as the custom-fields factory above.
   if (_meleeEnchantments.handleClick(e)) return true;
+
+  if (_handleSendMeleeToAllyClick(e)) return true;
 
   return false;
 }

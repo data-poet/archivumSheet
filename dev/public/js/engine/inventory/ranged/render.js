@@ -33,6 +33,7 @@ import {
   weaponMaterialEffectField,
   weaponDescriptionField,
 } from "../shared/weaponDetailFields.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // Ranged-local wrapper around withEnchantmentBadge — same relationship melee/render.js's withMeleeEnchantmentBadge has with it.
 function withRangedEnchantmentBadge(finalValue, delta, suffix = "") {
@@ -241,6 +242,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-ranged" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-ranged" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(6, instanceId, [

@@ -13,9 +13,11 @@ import {
   moveAmmoInContainer,
   updateLooseAmmoOptions,
   updateLooseAmmoTypeFilter,
+  sendContainerToAlly,
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { detailKeyFn } from "../../../shared/openState.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const selected = state.selected;
 const data = state.data;
@@ -105,9 +107,16 @@ function _renderAll() {
   _restore(snap);
 }
 
+const _handleSendContainerToAllyClick = createSendToAllyHandler({
+  sendFn: sendContainerToAlly,
+  render: _renderAll,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleAmmoClick(e) {
+  if (_handleSendContainerToAllyClick(e)) return true;
+
   if (e.target.classList.contains("remove-ammo-container")) {
     removeContainer(e.target.dataset.instanceId);
     return true;
