@@ -11,6 +11,7 @@ jest.mock("dev/public/js/engine/inventory/accessories/model.js", () => ({
   addAccessoryEnchantment: jest.fn(),
   updateAccessoryEnchantment: jest.fn(),
   removeAccessoryEnchantment: jest.fn(),
+  sendAccessoryToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/accessories/render.js", () => ({
   renderEquippedAccessories: jest.fn(),
@@ -72,6 +73,29 @@ describe("handleAccessoryClick — remove/equip", () => {
   test("an unrelated click target is not handled", () => {
     const target = elWithClass("button", "something-else");
     expect(handleAccessoryClick({ target })).toBe(false);
+  });
+
+  test("sends the item and re-renders on success", () => {
+    model.sendAccessoryToAlly.mockReturnValue(true);
+    const row = elWithClass("span", "send-to-ally-row", {
+      instanceId: "ACC-1",
+    });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId: "ACC-1" },
+      "ally-1",
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId: "ACC-1",
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+
+    expect(handleAccessoryClick({ target: button })).toBe(true);
+    expect(model.sendAccessoryToAlly).toHaveBeenCalledWith("ACC-1", "ally-1");
+    expect(render.renderEquippedAccessories).toHaveBeenCalled();
+    expect(render.renderStoredAccessories).toHaveBeenCalled();
   });
 });
 

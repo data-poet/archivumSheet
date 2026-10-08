@@ -23,6 +23,7 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getAccessoryItemCategory } from "../shared/enchantments/model.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -191,6 +192,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
               title="${atLimit ? t("accessories.limitReached") : ""}"
             >${t("common.equip")}</button>
             <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(4, instanceId, [

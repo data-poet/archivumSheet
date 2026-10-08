@@ -30,6 +30,7 @@ import {
   statsTabContent,
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 function resolvedArmor(sheet, instanceId) {
   const inv = sheet?.inventory?.armor;
@@ -265,6 +266,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-armor" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(7, instanceId, [

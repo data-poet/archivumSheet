@@ -10,6 +10,7 @@ jest.mock("dev/public/js/engine/inventory/firearms/model.js", () => ({
   computeFinalMagazineSize: jest.requireActual(
     "dev/public/js/engine/inventory/firearms/model.js",
   ).computeFinalMagazineSize,
+  sendFirearmToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/firearms/render.js", () => ({
   renderEquippedFirearms: jest.fn(),
@@ -166,6 +167,33 @@ describe("handleFirearmClick", () => {
   test("an unrelated click target is not handled", () => {
     const target = elWithClass("button", "something-else");
     expect(handleFirearmClick({ target })).toBe(false);
+  });
+
+  test("sends the item and re-renders on success", () => {
+    model.sendFirearmToAlly.mockReturnValue(true);
+    const row = elWithClass("span", "send-to-ally-row", {
+      instanceId: "FIREARM-1",
+    });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId: "FIREARM-1" },
+      "ally-1",
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId: "FIREARM-1",
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+
+    expect(handleFirearmClick({ target: button })).toBe(true);
+    expect(model.sendFirearmToAlly).toHaveBeenCalledWith(
+      "FIREARM-1",
+      "ally-1",
+    );
+    jest.advanceTimersToNextFrame();
+    expect(render.renderEquippedFirearms).toHaveBeenCalled();
+    expect(render.renderStoredFirearms).toHaveBeenCalled();
   });
 });
 

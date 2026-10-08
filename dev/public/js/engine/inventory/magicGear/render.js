@@ -27,6 +27,7 @@ import {
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMagicGearItemCategory } from "../shared/enchantments/model.js";
 import { isMagicGearAtEquipLimit } from "./model.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -168,6 +169,7 @@ function renderStorageSection(location, stored, data, sheet) {
               title="${limitLabel}"
             >${t("common.equip")}</button>
             <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(4, instanceId, [

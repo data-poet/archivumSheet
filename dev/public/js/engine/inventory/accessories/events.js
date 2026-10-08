@@ -12,12 +12,14 @@ import {
   addAccessoryEnchantment,
   updateAccessoryEnchantment,
   removeAccessoryEnchantment,
+  sendAccessoryToAlly,
 } from "./model.js";
 import {
   renderEquippedAccessories,
   renderStoredAccessories,
 } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
@@ -59,6 +61,11 @@ const _accessoryEnchantments = createEnchantmentsHandlers({
   runWithOpenState: _withPreservedOpenState,
 });
 
+const _handleSendAccessoryToAllyClick = createSendToAllyHandler({
+  sendFn: sendAccessoryToAlly,
+  render: () => _renderAccessoryLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleAccessoryClick(e) {
@@ -84,6 +91,9 @@ export function handleAccessoryClick(e) {
   // Delegated to the shared factory, same ownership-check as custom fields above.
 
   if (_accessoryEnchantments.handleClick(e)) return true;
+
+  // ── Send to ally ────────────────────────────────────────────────────────────
+  if (_handleSendAccessoryToAllyClick(e)) return true;
 
   return false;
 }

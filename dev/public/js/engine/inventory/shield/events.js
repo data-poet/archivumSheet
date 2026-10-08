@@ -10,6 +10,7 @@ import {
   addShieldEnchantment,
   updateShieldEnchantment,
   removeShieldEnchantment,
+  sendShieldToAlly,
 } from "./model.js";
 import { renderEquippedShield, renderStoredShields } from "./render.js";
 import {
@@ -17,6 +18,7 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -56,6 +58,11 @@ const _shieldEnchantments = createEnchantmentsHandlers({
   render: () => _renderShieldLists(state.sheet),
 });
 
+const _handleSendShieldToAllyClick = createSendToAllyHandler({
+  sendFn: sendShieldToAlly,
+  render: _renderShieldLists,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleShieldClick(e) {
@@ -89,6 +96,8 @@ export function handleShieldClick(e) {
   if (_handleShieldCustomFieldsClick(e)) return true;
 
   if (_shieldEnchantments.handleClick(e)) return true;
+
+  if (_handleSendShieldToAllyClick(e)) return true;
 
   return false;
 }

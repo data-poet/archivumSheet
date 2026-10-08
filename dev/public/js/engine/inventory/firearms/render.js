@@ -28,6 +28,7 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getFirearmsItemCategory } from "../shared/enchantments/model.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 import {
   weaponTypeSkillFields,
   weaponWeightPriceFields,
@@ -323,6 +324,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-firearm" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-firearm" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         <tr class="magazine-row" data-instance-id="${instanceId}">
