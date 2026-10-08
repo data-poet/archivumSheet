@@ -10,6 +10,7 @@
 
 import { state } from "../../../state.js";
 import { fetchDualUseWeapons } from "../../../api.js";
+import { withCharacterInventory } from "../../../store/characters.js";
 
 const data = state.data;
 
@@ -57,4 +58,33 @@ export function findLinkedCounterpart(instance, counterparts) {
   }
 
   return null;
+}
+
+// Each clone carries over its source instance's stale _linkedInstanceId (pointing at an id that
+// no longer exists once removed from the source array), so the link is dropped and rebuilt on
+// the destination's fresh ids, preserving whichever side originally pointed at the other.
+export function relinkDualUsePair({
+  destinationCharacterId,
+  primaryClone,
+  primaryKey,
+  counterpartClone,
+  counterpartKey,
+  counterpartPointsAtPrimary,
+}) {
+  withCharacterInventory(destinationCharacterId, (inventory) => {
+    const destPrimary = inventory[primaryKey].find((w) => w.id === primaryClone.id);
+    const destCounterpart = inventory[counterpartKey].find(
+      (w) => w.id === counterpartClone.id,
+    );
+    if (!destPrimary || !destCounterpart) return;
+
+    delete destPrimary._linkedInstanceId;
+    delete destCounterpart._linkedInstanceId;
+
+    if (counterpartPointsAtPrimary) {
+      destCounterpart._linkedInstanceId = destPrimary.id;
+    } else {
+      destPrimary._linkedInstanceId = destCounterpart.id;
+    }
+  });
 }
