@@ -11,6 +11,7 @@ import {
   addArmorEnchantment,
   updateArmorEnchantment,
   removeArmorEnchantment,
+  sendArmorToAlly,
 } from "./model.js";
 import { renderArmorSlots, renderStoredArmors } from "./render.js";
 import {
@@ -18,6 +19,7 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -55,6 +57,11 @@ const _armorEnchantments = createEnchantmentsHandlers({
   updateEnchantment: updateArmorEnchantment,
   removeEnchantment: removeArmorEnchantment,
   render: () => _renderArmorLists(state.sheet),
+});
+
+const _handleSendArmorToAllyClick = createSendToAllyHandler({
+  sendFn: sendArmorToAlly,
+  render: _renderArmorLists,
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────
@@ -99,6 +106,9 @@ export function handleArmorClick(e) {
 
   // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
   if (_armorEnchantments.handleClick(e)) return true;
+
+  // ── Send to ally ────────────────────────────────────────────────────────────
+  if (_handleSendArmorToAllyClick(e)) return true;
 
   return false;
 }

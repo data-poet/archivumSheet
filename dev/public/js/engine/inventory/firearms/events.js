@@ -12,6 +12,7 @@ import {
   addFirearmEnchantment,
   updateFirearmEnchantment,
   removeFirearmEnchantment,
+  sendFirearmToAlly,
 } from "./model.js";
 import { renderEquippedFirearms, renderStoredFirearms } from "./render.js";
 import {
@@ -19,6 +20,7 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -70,6 +72,11 @@ const _firearmEnchantments = createEnchantmentsHandlers({
   render: () => _renderFirearmLists(state.sheet),
 });
 
+const _handleSendFirearmToAllyClick = createSendToAllyHandler({
+  sendFn: sendFirearmToAlly,
+  render: _renderFirearmLists,
+});
+
 const TUNING_FIELDS = {
   "equipped-firearm-gdp": {
     field: "gdp_modifier",
@@ -119,6 +126,8 @@ export function handleFirearmClick(e) {
   if (_handleFirearmCustomFieldsClick(e)) return true;
 
   if (_firearmEnchantments.handleClick(e)) return true;
+
+  if (_handleSendFirearmToAllyClick(e)) return true;
 
   return false;
 }

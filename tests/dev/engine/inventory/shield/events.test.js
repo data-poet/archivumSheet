@@ -8,6 +8,7 @@ jest.mock("dev/public/js/engine/inventory/shield/model.js", () => ({
   addShieldEnchantment: jest.fn(),
   updateShieldEnchantment: jest.fn(),
   removeShieldEnchantment: jest.fn(),
+  sendShieldToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/shield/render.js", () => ({
   renderEquippedShield: jest.fn(),
@@ -135,6 +136,44 @@ describe("handleShieldClick — custom fields (real shared dispatch)", () => {
       description: "Leve",
       effect: "+1 Bloqueio",
     });
+  });
+});
+
+describe("handleShieldClick — send to ally", () => {
+  function sendRow(instanceId, destinationId) {
+    const row = elWithClass("span", "send-to-ally-row", { instanceId });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the item and re-renders on success", () => {
+    model.sendShieldToAlly.mockReturnValue(true);
+    const button = sendRow("SHIELD-1", "ally-1");
+
+    expect(handleShieldClick({ target: button })).toBe(true);
+    expect(model.sendShieldToAlly).toHaveBeenCalledWith("SHIELD-1", "ally-1");
+    jest.advanceTimersToNextFrame();
+    expect(render.renderEquippedShield).toHaveBeenCalled();
+    expect(render.renderStoredShields).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendShieldToAlly.mockReturnValue(false);
+    const button = sendRow("SHIELD-1", "ally-1");
+
+    expect(handleShieldClick({ target: button })).toBe(true);
+    jest.advanceTimersToNextFrame();
+    expect(render.renderEquippedShield).not.toHaveBeenCalled();
   });
 });
 

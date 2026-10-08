@@ -10,6 +10,7 @@ jest.mock("dev/public/js/engine/inventory/magicGear/model.js", () => ({
   addMagicGearEnchantment: jest.fn(),
   updateMagicGearEnchantment: jest.fn(),
   removeMagicGearEnchantment: jest.fn(),
+  sendMagicGearToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/magicGear/render.js", () => ({
   renderEquippedMagicGear: jest.fn(),
@@ -123,6 +124,29 @@ describe("handleMagicGearClick", () => {
   test("an unrelated click target is not handled", () => {
     const target = elWithClass("button", "something-else");
     expect(handleMagicGearClick({ target })).toBe(false);
+  });
+
+  test("sends the item and re-renders on success", () => {
+    model.sendMagicGearToAlly.mockReturnValue(true);
+    const row = elWithClass("span", "send-to-ally-row", {
+      instanceId: "MG-1",
+    });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId: "MG-1" },
+      "ally-1",
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId: "MG-1",
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+
+    expect(handleMagicGearClick({ target: button })).toBe(true);
+    expect(model.sendMagicGearToAlly).toHaveBeenCalledWith("MG-1", "ally-1");
+    expect(render.renderEquippedMagicGear).toHaveBeenCalled();
+    expect(render.renderStoredMagicGear).toHaveBeenCalled();
   });
 });
 

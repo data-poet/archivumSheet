@@ -10,6 +10,7 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -86,6 +87,7 @@ function renderCustomInventorySection(location, entries, sheet) {
                 class="btn-remove remove-custom-item"
                 data-custom-item-id="${entry.id}"
               >✕</button>
+              ${sendToAllyRowHTML(entry.id)}
             </td>
           </tr>
           ${customItemEditRow(4, {

@@ -11,12 +11,14 @@ import {
   addMagicGearEnchantment,
   updateMagicGearEnchantment,
   removeMagicGearEnchantment,
+  sendMagicGearToAlly,
 } from "./model.js";
 import {
   renderEquippedMagicGear,
   renderStoredMagicGear,
 } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
@@ -53,6 +55,11 @@ const _magicGearEnchantments = createEnchantmentsHandlers({
   runWithOpenState: _withPreservedOpenState,
 });
 
+const _handleSendMagicGearToAllyClick = createSendToAllyHandler({
+  sendFn: sendMagicGearToAlly,
+  render: () => _renderMagicGearLists(state.sheet),
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleMagicGearClick(e) {
@@ -74,6 +81,8 @@ export function handleMagicGearClick(e) {
 
   // Delegated to the shared factory — see accessoriesEvents.js for the full rationale.
   if (_magicGearEnchantments.handleClick(e)) return true;
+
+  if (_handleSendMagicGearToAllyClick(e)) return true;
 
   return false;
 }

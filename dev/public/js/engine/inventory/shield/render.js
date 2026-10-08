@@ -30,6 +30,7 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getShieldItemCategory } from "../shared/enchantments/model.js";
+import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
 
 function resolvedShield(sheet, instanceId) {
   const inv = sheet?.inventory?.shield;
@@ -250,6 +251,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-shield" data-instance-id="${instanceId}">${t("common.equip")}</button>
             <button class="btn-remove remove-shield" data-instance-id="${instanceId}">✕</button>
+            ${sendToAllyRowHTML(instanceId)}
           </td>
         </tr>
         ${itemTabsDetailRow(6, instanceId, [

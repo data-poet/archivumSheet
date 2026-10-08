@@ -4,6 +4,7 @@ jest.mock("dev/public/js/engine/inventory/customInventory/model.js", () => ({
   removeCustomItem: jest.fn(),
   moveCustomItem: jest.fn(),
   saveCustomItemFields: jest.fn(),
+  sendCustomItemToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/customInventory/render.js", () => ({
   renderCustomInventory: jest.fn(),
@@ -172,6 +173,32 @@ describe("handleCustomInventoryClick", () => {
 
     expect(handleCustomInventoryClick({ target })).toBe(false);
     expect(model.removeCustomItem).not.toHaveBeenCalled();
+  });
+
+  test("sends the item and re-renders on success", () => {
+    model.sendCustomItemToAlly.mockReturnValue(true);
+    const row = elWithClass("span", "send-to-ally-row", {
+      instanceId: "CUSTOM-1",
+    });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId: "CUSTOM-1" },
+      "ally-1",
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId: "CUSTOM-1",
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+
+    expect(handleCustomInventoryClick({ target: button })).toBe(true);
+    expect(model.sendCustomItemToAlly).toHaveBeenCalledWith(
+      "CUSTOM-1",
+      "ally-1",
+    );
+    jest.advanceTimersToNextFrame();
+    expect(render.renderCustomInventory).toHaveBeenCalled();
   });
 });
 

@@ -4,6 +4,7 @@ import {
   removeCustomItem,
   moveCustomItem,
   saveCustomItemFields,
+  sendCustomItemToAlly,
 } from "./model.js";
 import { state } from "../../../state.js";
 import { renderCustomInventory } from "./render.js";
@@ -13,6 +14,7 @@ import {
   createCustomFieldsClickHandler,
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 // Re-renders only the custom-inventory list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderCustomInventoryLists() {
@@ -41,6 +43,11 @@ const _handleCustomInventoryCustomFieldsClick = createCustomFieldsClickHandler({
   render: _renderCustomInventoryLists,
 });
 
+const _handleSendCustomItemToAllyClick = createSendToAllyHandler({
+  sendFn: sendCustomItemToAlly,
+  render: _renderCustomInventoryLists,
+});
+
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleCustomInventoryClick(e) {
@@ -51,6 +58,8 @@ export function handleCustomInventoryClick(e) {
 
   // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleCustomInventoryCustomFieldsClick(e)) return true;
+
+  if (_handleSendCustomItemToAllyClick(e)) return true;
 
   return false;
 }

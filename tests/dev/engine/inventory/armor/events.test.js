@@ -9,6 +9,7 @@ jest.mock("dev/public/js/engine/inventory/armor/model.js", () => ({
   addArmorEnchantment: jest.fn(),
   updateArmorEnchantment: jest.fn(),
   removeArmorEnchantment: jest.fn(),
+  sendArmorToAlly: jest.fn(),
 }));
 jest.mock("dev/public/js/engine/inventory/armor/render.js", () => ({
   renderArmorSlots: jest.fn(),
@@ -224,6 +225,46 @@ describe("handleArmorClick — enchantments delegation", () => {
       entryInstanceId: "ENTRY-1",
     });
     handleArmorClick({ target });
+    expect(render.renderArmorSlots).not.toHaveBeenCalled();
+  });
+});
+
+describe("handleArmorClick — send to ally", () => {
+  function sendRow(instanceId, destinationId) {
+    const row = elWithClass("span", "send-to-ally-row", {
+      instanceId,
+    });
+    const select = selectWithValue(
+      "send-to-ally-select",
+      { instanceId },
+      destinationId,
+    );
+    const button = elWithClass("button", "send-to-ally-button", {
+      instanceId,
+    });
+    row.appendChild(select);
+    row.appendChild(button);
+    document.body.appendChild(row);
+    return button;
+  }
+
+  test("sends the item and re-renders on success", () => {
+    model.sendArmorToAlly.mockReturnValue(true);
+    const button = sendRow("ARMOR-1", "ally-1");
+
+    expect(handleArmorClick({ target: button })).toBe(true);
+    expect(model.sendArmorToAlly).toHaveBeenCalledWith("ARMOR-1", "ally-1");
+    jest.advanceTimersToNextFrame();
+    expect(render.renderArmorSlots).toHaveBeenCalled();
+    expect(render.renderStoredArmors).toHaveBeenCalled();
+  });
+
+  test("does not render when the send fails", () => {
+    model.sendArmorToAlly.mockReturnValue(false);
+    const button = sendRow("ARMOR-1", "ally-1");
+
+    expect(handleArmorClick({ target: button })).toBe(true);
+    jest.advanceTimersToNextFrame();
     expect(render.renderArmorSlots).not.toHaveBeenCalled();
   });
 });
