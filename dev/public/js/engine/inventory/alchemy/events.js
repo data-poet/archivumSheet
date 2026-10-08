@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { renderListsPreserving } from "../../../ui.js";
 import {
   addAlchemy,
   updateAlchemyQuantity,
@@ -7,10 +8,17 @@ import {
   updateAlchemyTypeOptions,
   updateAlchemyNameOptions,
   updateAlchemyTierOptions,
+  sendAlchemyToAlly,
 } from "./model.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const data = state.data;
 const selected = state.selected;
+
+const _handleSendAlchemyToAllyClick = createSendToAllyHandler({
+  sendFn: sendAlchemyToAlly,
+  render: () => renderListsPreserving(selected, data),
+});
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -22,6 +30,9 @@ export function handleAlchemyClick(e) {
     );
     return true;
   }
+
+  if (_handleSendAlchemyToAllyClick(e)) return true;
+
   return false;
 }
 

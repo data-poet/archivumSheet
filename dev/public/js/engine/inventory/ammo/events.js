@@ -14,6 +14,7 @@ import {
   updateLooseAmmoOptions,
   updateLooseAmmoTypeFilter,
   sendContainerToAlly,
+  sendLooseAmmoToAlly,
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { detailKeyFn } from "../../../shared/openState.js";
@@ -110,12 +111,23 @@ function _renderAll() {
 const _handleSendContainerToAllyClick = createSendToAllyHandler({
   sendFn: sendContainerToAlly,
   render: _renderAll,
+  canHandle: (instanceId) =>
+    selected.ammo_containers.some((c) => c.id === instanceId),
+});
+
+const _handleSendLooseAmmoToAllyClick = createSendToAllyHandler({
+  sendFn: sendLooseAmmoToAlly,
+  render: _renderAll,
+  canHandle: (instanceId) =>
+    selected.loose_ammo.some((e) => e.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleAmmoClick(e) {
   if (_handleSendContainerToAllyClick(e)) return true;
+
+  if (_handleSendLooseAmmoToAllyClick(e)) return true;
 
   if (e.target.classList.contains("remove-ammo-container")) {
     removeContainer(e.target.dataset.instanceId);

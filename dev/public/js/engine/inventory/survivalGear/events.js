@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { renderListsPreserving } from "../../../ui.js";
 import {
   addSurvivalGear,
   updateSurvivalGearQuantity,
@@ -6,9 +7,17 @@ import {
   moveSurvivalGear,
   updateSurvivalGearTypeOptions,
   updateSurvivalGearNameOptions,
+  sendSurvivalGearToAlly,
 } from "./model.js";
+import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const data = state.data;
+const selected = state.selected;
+
+const _handleSendSurvivalGearToAllyClick = createSendToAllyHandler({
+  sendFn: sendSurvivalGearToAlly,
+  render: () => renderListsPreserving(selected, data),
+});
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
@@ -20,6 +29,9 @@ export function handleSurvivalGearClick(e) {
     );
     return true;
   }
+
+  if (_handleSendSurvivalGearToAllyClick(e)) return true;
+
   return false;
 }
 

@@ -142,4 +142,45 @@ describe("createSendToAllyHandler", () => {
     expect(render).not.toHaveBeenCalled();
     expect(showToast).toHaveBeenCalledWith(expect.any(String), "error");
   });
+
+  test("defers to the next handler when canHandle rejects the instance id", () => {
+    setStore({ activeId: "char-1", allies: [{ id: "ally-1", name: "Rook" }] });
+    document.getElementById("root").innerHTML = sendToAllyRowHTML("item-1");
+
+    const sendFn = jest.fn().mockReturnValue(true);
+    const render = jest.fn();
+    const handler = createSendToAllyHandler({
+      sendFn,
+      render,
+      canHandle: () => false,
+    });
+
+    const handled = handler({
+      target: document.querySelector(".send-to-ally-button"),
+    });
+
+    expect(handled).toBe(false);
+    expect(sendFn).not.toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
+  });
+
+  test("handles the click when canHandle accepts the instance id", () => {
+    setStore({ activeId: "char-1", allies: [{ id: "ally-1", name: "Rook" }] });
+    document.getElementById("root").innerHTML = sendToAllyRowHTML("item-1");
+
+    const sendFn = jest.fn().mockReturnValue(true);
+    const render = jest.fn();
+    const handler = createSendToAllyHandler({
+      sendFn,
+      render,
+      canHandle: (instanceId) => instanceId === "item-1",
+    });
+
+    const handled = handler({
+      target: document.querySelector(".send-to-ally-button"),
+    });
+
+    expect(handled).toBe(true);
+    expect(sendFn).toHaveBeenCalledWith("item-1", "ally-1");
+  });
 });
