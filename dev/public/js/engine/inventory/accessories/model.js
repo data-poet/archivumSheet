@@ -12,6 +12,7 @@ import {
   removeEnchantmentEntry,
   clearEnchantmentAddFormSelection,
 } from "../shared/enchantments/model.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -201,6 +202,38 @@ export function removeAccessory(instanceId) {
     renderListsPreserving(selected, data);
     triggerAutoRun();
   });
+}
+
+export function sendAccessoryToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+  const before = structuredClone(selected.accessories);
+
+  const clone = transferInstance({
+    sourceArray: selected.accessories,
+    instanceId,
+    destinationCharacterId,
+    destinationInventoryKey: "accessories",
+    destinationStoredAt: storedAt,
+  });
+  if (!clone) return false;
+
+  clearEnchantmentAddFormSelection(instanceId);
+  updateAccessoryEquipOptionAvailability();
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "accessories",
+      cloneId: clone.id,
+    });
+    selected.accessories = before;
+    updateAccessoryEquipOptionAvailability();
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
