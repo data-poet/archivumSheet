@@ -23,7 +23,11 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getAccessoryItemCategory } from "../shared/enchantments/model.js";
-import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
+import {
+  sendToAllyRowHTML,
+  hasLinkedAllies,
+} from "../shared/sendToAllyControl.js";
+import { getActiveCharacterId } from "../../../store/characters.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -151,10 +155,12 @@ export function renderStoredAccessories(selected, data, sheet) {
 
 function renderStorageSection(location, stored, selected, data, sheet) {
   const accessories = stored.filter((a) => a.storedAt === location);
+  const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
+  const colCount = showSendToAlly ? 5 : 4;
 
   let bodyRows;
   if (accessories.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="${colCount}">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = accessories
       .map((inst) => {
@@ -193,9 +199,9 @@ function renderStorageSection(location, stored, selected, data, sheet) {
               title="${atLimit ? t("accessories.limitReached") : ""}"
             >${t("common.equip")}</button>
           </td>
-          <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>
+          ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>` : ""}
         </tr>
-        ${itemTabsDetailRow(5, instanceId, [
+        ${itemTabsDetailRow(colCount, instanceId, [
           {
             key: "customize",
             label: t("common.customize"),
@@ -232,7 +238,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
           <th>${t("common.price")}</th>
           <th>${t("common.storage")}</th>
           <th class="col-action"></th>
-          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
+          ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

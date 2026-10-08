@@ -19,6 +19,7 @@ import { showToast } from "dev/public/js/shared/toast.js";
 import {
   sendToAllyRowHTML,
   createSendToAllyHandler,
+  hasLinkedAllies,
 } from "dev/public/js/engine/inventory/shared/sendToAllyControl.js";
 
 function setStore({ activeId, allies, otherEntries = [] }) {
@@ -126,6 +127,31 @@ describe("sendToAllyRowHTML", () => {
     const withoutQuantity = sendToAllyRowHTML("item-1");
     document.getElementById("root").innerHTML = withoutQuantity;
     expect(document.querySelector(".send-to-ally-quantity")).toBeNull();
+  });
+});
+
+describe("hasLinkedAllies", () => {
+  test("returns true when the character has a linked ally", () => {
+    setStore({ activeId: "char-1", allies: [{ id: "ally-1", name: "Rook" }] });
+
+    expect(hasLinkedAllies("char-1")).toBe(true);
+  });
+
+  test("returns false when the character has no linked allies", () => {
+    setStore({ activeId: "char-1", allies: [] });
+
+    expect(hasLinkedAllies("char-1")).toBe(false);
+  });
+
+  test("returns true when the character is itself an ally with an owner", () => {
+    setStore({
+      activeId: "ally-1",
+      allies: [],
+      otherEntries: [{ id: "owner-1", name: "Hero" }],
+    });
+    getAllyOwnerId.mockReturnValue("owner-1");
+
+    expect(hasLinkedAllies("ally-1")).toBe(true);
   });
 });
 

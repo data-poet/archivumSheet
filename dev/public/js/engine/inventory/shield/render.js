@@ -30,7 +30,11 @@ import {
 } from "../../../shared/itemTabs.js";
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getShieldItemCategory } from "../shared/enchantments/model.js";
-import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
+import {
+  sendToAllyRowHTML,
+  hasLinkedAllies,
+} from "../shared/sendToAllyControl.js";
+import { getActiveCharacterId } from "../../../store/characters.js";
 
 function resolvedShield(sheet, instanceId) {
   const inv = sheet?.inventory?.shield;
@@ -214,10 +218,12 @@ export function renderStoredShields(selected, data, sheet) {
 
 function renderStorageSection(location, stored, data, sheet) {
   const shields = stored.filter((s) => s.storedAt === location);
+  const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
+  const colCount = showSendToAlly ? 7 : 6;
 
   let bodyRows = "";
   if (shields.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="7">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="${colCount}">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = shields
       .map((inst) => {
@@ -252,9 +258,9 @@ function renderStorageSection(location, stored, data, sheet) {
           <td class="col-action">
             <button class="equip-stored-shield" data-instance-id="${instanceId}">${t("common.equip")}</button>
           </td>
-          <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>
+          ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>` : ""}
         </tr>
-        ${itemTabsDetailRow(7, instanceId, [
+        ${itemTabsDetailRow(colCount, instanceId, [
           {
             key: "details",
             label: t("common.technical"),
@@ -292,7 +298,7 @@ function renderStorageSection(location, stored, data, sheet) {
       <thead>
         <tr>
           <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
-          <th>${t("shield.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th><th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
+          <th>${t("shield.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
