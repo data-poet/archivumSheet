@@ -8,6 +8,7 @@ import { generateInstanceId } from "../../../store/instanceId.js";
 import {
   getRangedCounterpart,
   findLinkedCounterpart,
+  relinkDualUsePair,
 } from "../shared/dualUseWeapons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -17,6 +18,7 @@ import {
   removeEnchantmentEntry,
   clearEnchantmentAddFormSelection,
 } from "../shared/enchantments/model.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -284,6 +286,81 @@ export function removeMelee(instanceId) {
     renderListsPreserving(selected, data);
     triggerAutoRun();
   });
+}
+
+// A dual-use pair is one physical weapon: sending the melee side without its linked ranged
+// counterpart would leave half of it behind, so both legs move together or neither does.
+export function sendMeleeToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+  const instance = findMeleeByInstanceId(instanceId);
+  if (!instance) return false;
+
+  const linked = _findLinkedRanged(instance);
+  const beforeMelee = structuredClone(selected.melee_weapons);
+  const beforeRanged = structuredClone(selected.ranged_weapons);
+
+  const meleeClone = transferInstance({
+    sourceArray: selected.melee_weapons,
+    instanceId,
+    destinationCharacterId,
+    destinationInventoryKey: "melee_weapons",
+    destinationStoredAt: storedAt,
+  });
+  if (!meleeClone) return false;
+
+  let rangedClone = null;
+  if (linked) {
+    rangedClone = transferInstance({
+      sourceArray: selected.ranged_weapons,
+      instanceId: linked.id,
+      destinationCharacterId,
+      destinationInventoryKey: "ranged_weapons",
+      destinationStoredAt: storedAt,
+    });
+
+    if (!rangedClone) {
+      undoTransferInstance({
+        destinationCharacterId,
+        destinationInventoryKey: "melee_weapons",
+        cloneId: meleeClone.id,
+      });
+      selected.melee_weapons = beforeMelee;
+      return false;
+    }
+
+    relinkDualUsePair({
+      destinationCharacterId,
+      primaryClone: meleeClone,
+      primaryKey: "melee_weapons",
+      counterpartClone: rangedClone,
+      counterpartKey: "ranged_weapons",
+      counterpartPointsAtPrimary: linked._linkedInstanceId === instance.id,
+    });
+  }
+
+  clearEnchantmentAddFormSelection(instanceId);
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "melee_weapons",
+      cloneId: meleeClone.id,
+    });
+    if (rangedClone) {
+      undoTransferInstance({
+        destinationCharacterId,
+        destinationInventoryKey: "ranged_weapons",
+        cloneId: rangedClone.id,
+      });
+    }
+    selected.melee_weapons = beforeMelee;
+    selected.ranged_weapons = beforeRanged;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
