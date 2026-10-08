@@ -3,6 +3,8 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { offerUndo } from "../../../components/undo.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { t } from "../../../localization/pt-BR/index.js";
 
 const selected = state.selected;
 
@@ -57,6 +59,35 @@ export function removeCustomItem(customItemId) {
     renderListsPreserving(selected, state.data, state.sheet);
     triggerAutoRun();
   });
+}
+
+export function sendCustomItemToAlly(customItemId, destinationCharacterId, storedAt = "backpack") {
+  const before = structuredClone(selected.customInventory);
+
+  const clone = transferInstance({
+    sourceArray: selected.customInventory,
+    instanceId: customItemId,
+    destinationCharacterId,
+    destinationInventoryKey: "customInventory",
+    destinationStoredAt: storedAt,
+  });
+  if (!clone) return false;
+
+  renderListsPreserving(selected, state.data, state.sheet);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "customInventory",
+      cloneId: clone.id,
+    });
+    selected.customInventory = before;
+    renderListsPreserving(selected, state.data, state.sheet);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // Unique per id, so no merging is needed.

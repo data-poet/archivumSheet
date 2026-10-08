@@ -13,6 +13,7 @@ import {
   removeEnchantmentEntry,
   clearEnchantmentAddFormSelection,
 } from "../shared/enchantments/model.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -192,6 +193,36 @@ export function removeArmor(instanceId) {
     renderListsPreserving(selected, data);
     triggerAutoRun();
   });
+}
+
+export function sendArmorToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+  const before = structuredClone(selected.armors);
+
+  const clone = transferInstance({
+    sourceArray: selected.armors,
+    instanceId,
+    destinationCharacterId,
+    destinationInventoryKey: "armors",
+    destinationStoredAt: storedAt,
+  });
+  if (!clone) return false;
+
+  clearEnchantmentAddFormSelection(instanceId);
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "armors",
+      cloneId: clone.id,
+    });
+    selected.armors = before;
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

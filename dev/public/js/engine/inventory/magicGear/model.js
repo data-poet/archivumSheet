@@ -12,6 +12,7 @@ import {
   removeEnchantmentEntry,
   clearEnchantmentAddFormSelection,
 } from "../shared/enchantments/model.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -227,6 +228,38 @@ export function removeMagicGear(instanceId) {
     renderListsPreserving(selected, data);
     triggerAutoRun();
   });
+}
+
+export function sendMagicGearToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+  const before = structuredClone(selected.magicGear);
+
+  const clone = transferInstance({
+    sourceArray: selected.magicGear,
+    instanceId,
+    destinationCharacterId,
+    destinationInventoryKey: "magicGear",
+    destinationStoredAt: storedAt,
+  });
+  if (!clone) return false;
+
+  clearEnchantmentAddFormSelection(instanceId);
+  updateMagicGearEquipOptionAvailability();
+  renderListsPreserving(selected, data);
+  triggerAutoRun();
+
+  offerUndo(() => {
+    undoTransferInstance({
+      destinationCharacterId,
+      destinationInventoryKey: "magicGear",
+      cloneId: clone.id,
+    });
+    selected.magicGear = before;
+    updateMagicGearEquipOptionAvailability();
+    renderListsPreserving(selected, data);
+    triggerAutoRun();
+  }, t("undo.sentMessage"));
+
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
