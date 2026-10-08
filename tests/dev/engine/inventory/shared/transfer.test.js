@@ -6,6 +6,8 @@ import { withCharacterInventory } from "dev/public/js/store/characters.js";
 import {
   transferInstance,
   undoTransferInstance,
+  transferStackQuantity,
+  undoTransferStackQuantity,
 } from "dev/public/js/engine/inventory/shared/transfer.js";
 
 beforeEach(() => {
@@ -171,5 +173,181 @@ describe("undoTransferInstance", () => {
       expect.any(Function),
     );
     expect(inventory.armors.map((a) => a.id)).toEqual(["clone-2"]);
+  });
+});
+
+describe("transferStackQuantity", () => {
+  function makeSource() {
+    return [
+      { id: "coin-1", coin_type: "gold", quantity: 20, storedAt: "backpack" },
+    ];
+  }
+
+  test("moves a partial amount, decrementing the source row", () => {
+    const sourceArray = makeSource();
+    let destinationCoins;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationCoins = [];
+      mutator({ coins: destinationCoins });
+      return true;
+    });
+
+    const result = transferStackQuantity({
+      sourceArray,
+      instanceId: "coin-1",
+      amount: 5,
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      destinationStoredAt: "backpack",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(result.amount).toBe(5);
+    expect(sourceArray[0].quantity).toBe(15);
+    expect(destinationCoins).toHaveLength(1);
+    expect(destinationCoins[0]).toMatchObject({ coin_type: "gold", quantity: 5 });
+    expect(result.destinationRowId).toBe(destinationCoins[0].id);
+  });
+
+  test("removes the source row entirely on a full send", () => {
+    const sourceArray = makeSource();
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator({ coins: [] });
+      return true;
+    });
+
+    transferStackQuantity({
+      sourceArray,
+      instanceId: "coin-1",
+      amount: 20,
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(sourceArray).toHaveLength(0);
+  });
+
+  test("clamps an over-amount to what's available", () => {
+    const sourceArray = makeSource();
+    let destinationCoins;
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      destinationCoins = [];
+      mutator({ coins: destinationCoins });
+      return true;
+    });
+
+    const result = transferStackQuantity({
+      sourceArray,
+      instanceId: "coin-1",
+      amount: 999,
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(result.amount).toBe(20);
+    expect(sourceArray).toHaveLength(0);
+    expect(destinationCoins[0].quantity).toBe(20);
+  });
+
+  test("merges into an existing matching destination row instead of duplicating", () => {
+    const sourceArray = makeSource();
+    const inventory = {
+      coins: [{ id: "dest-1", coin_type: "gold", quantity: 10, storedAt: "backpack" }],
+    };
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator(inventory);
+      return true;
+    });
+
+    const result = transferStackQuantity({
+      sourceArray,
+      instanceId: "coin-1",
+      amount: 5,
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      destinationStoredAt: "backpack",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(inventory.coins).toHaveLength(1);
+    expect(inventory.coins[0].quantity).toBe(15);
+    expect(result.destinationRowId).toBe("dest-1");
+  });
+
+  test("returns null and leaves the source untouched for an unknown instance id", () => {
+    const sourceArray = makeSource();
+
+    const result = transferStackQuantity({
+      sourceArray,
+      instanceId: "ghost",
+      amount: 5,
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(result).toBeNull();
+    expect(sourceArray).toHaveLength(1);
+    expect(withCharacterInventory).not.toHaveBeenCalled();
+  });
+
+  test("leaves the source row's exact pre-call quantity when the destination write fails", () => {
+    const sourceArray = makeSource();
+    withCharacterInventory.mockReturnValue(false);
+
+    const result = transferStackQuantity({
+      sourceArray,
+      instanceId: "coin-1",
+      amount: 5,
+      destinationCharacterId: "does-not-exist",
+      destinationInventoryKey: "coins",
+      matchKeyFields: ["coin_type"],
+    });
+
+    expect(result).toBeNull();
+    expect(sourceArray[0].quantity).toBe(20);
+  });
+});
+
+describe("undoTransferStackQuantity", () => {
+  test("decrements the destination row and removes it if that empties it", () => {
+    const inventory = {
+      coins: [{ id: "dest-1", coin_type: "gold", quantity: 5, storedAt: "backpack" }],
+    };
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator(inventory);
+      return true;
+    });
+
+    undoTransferStackQuantity({
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      destinationRowId: "dest-1",
+      amount: 5,
+    });
+
+    expect(inventory.coins).toHaveLength(0);
+  });
+
+  test("decrements without removing a row that existed before the transfer (merge case)", () => {
+    const inventory = {
+      coins: [{ id: "dest-1", coin_type: "gold", quantity: 15, storedAt: "backpack" }],
+    };
+    withCharacterInventory.mockImplementation((characterId, mutator) => {
+      mutator(inventory);
+      return true;
+    });
+
+    undoTransferStackQuantity({
+      destinationCharacterId: "ally-1",
+      destinationInventoryKey: "coins",
+      destinationRowId: "dest-1",
+      amount: 5,
+    });
+
+    expect(inventory.coins).toHaveLength(1);
+    expect(inventory.coins[0].quantity).toBe(10);
   });
 });
