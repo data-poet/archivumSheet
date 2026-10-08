@@ -75,6 +75,7 @@ const _firearmEnchantments = createEnchantmentsHandlers({
 const _handleSendFirearmToAllyClick = createSendToAllyHandler({
   sendFn: sendFirearmToAlly,
   render: _renderFirearmLists,
+  canHandle: (instanceId) => selected.firearms.some((f) => f.id === instanceId),
 });
 
 const TUNING_FIELDS = {

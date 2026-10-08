@@ -157,6 +157,7 @@ describe("handleShieldClick — send to ally", () => {
   }
 
   test("sends the item and re-renders on success", () => {
+    state.selected.shields = [{ id: "SHIELD-1" }];
     model.sendShieldToAlly.mockReturnValue(true);
     const button = sendRow("SHIELD-1", "ally-1");
 
@@ -168,6 +169,7 @@ describe("handleShieldClick — send to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.shields = [{ id: "SHIELD-1" }];
     model.sendShieldToAlly.mockReturnValue(false);
     const button = sendRow("SHIELD-1", "ally-1");
 

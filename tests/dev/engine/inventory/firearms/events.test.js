@@ -170,6 +170,7 @@ describe("handleFirearmClick", () => {
   });
 
   test("sends the item and re-renders on success", () => {
+    state.selected.firearms = [{ id: "FIREARM-1" }];
     model.sendFirearmToAlly.mockReturnValue(true);
     const row = elWithClass("span", "send-to-ally-row", {
       instanceId: "FIREARM-1",

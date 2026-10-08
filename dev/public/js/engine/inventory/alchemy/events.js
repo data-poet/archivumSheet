@@ -18,6 +18,7 @@ const selected = state.selected;
 const _handleSendAlchemyToAllyClick = createSendToAllyHandler({
   sendFn: sendAlchemyToAlly,
   render: () => renderListsPreserving(selected, data),
+  canHandle: (instanceId) => selected.alchemy.some((a) => a.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

@@ -85,6 +85,7 @@ describe("handleAlchemyClick — send to ally", () => {
   }
 
   test("sends the chosen quantity and re-renders on success", () => {
+    state.selected.alchemy = [{ id: "POTION-ROW-1" }];
     model.sendAlchemyToAlly.mockReturnValue(true);
     const button = sendRow("POTION-ROW-1", "ally-1", 3);
 
@@ -98,6 +99,7 @@ describe("handleAlchemyClick — send to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.alchemy = [{ id: "POTION-ROW-1" }];
     model.sendAlchemyToAlly.mockReturnValue(false);
     const button = sendRow("POTION-ROW-1", "ally-1", 3);
 

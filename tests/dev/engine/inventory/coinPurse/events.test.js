@@ -22,6 +22,7 @@ import {
   selectWithValue,
 } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { state } from "dev/public/js/state.js";
 
 beforeEach(() => {
   resetDOM("<div></div>");
@@ -89,6 +90,7 @@ describe("handleCoinPurseClick — send to ally", () => {
   }
 
   test("sends the chosen quantity and re-renders on success", () => {
+    state.selected.coins = [{ id: "COIN-1" }];
     model.sendCoinsToAlly.mockReturnValue(true);
     const button = sendRow("COIN-1", "ally-1", 5);
 
@@ -98,6 +100,7 @@ describe("handleCoinPurseClick — send to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.coins = [{ id: "COIN-1" }];
     model.sendCoinsToAlly.mockReturnValue(false);
     const button = sendRow("COIN-1", "ally-1", 5);
 

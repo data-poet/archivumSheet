@@ -46,6 +46,8 @@ const _handleCustomInventoryCustomFieldsClick = createCustomFieldsClickHandler({
 const _handleSendCustomItemToAllyClick = createSendToAllyHandler({
   sendFn: sendCustomItemToAlly,
   render: _renderCustomInventoryLists,
+  canHandle: (instanceId) =>
+    state.selected.customInventory.some((c) => c.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

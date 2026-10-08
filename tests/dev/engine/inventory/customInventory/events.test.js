@@ -176,6 +176,7 @@ describe("handleCustomInventoryClick", () => {
   });
 
   test("sends the item and re-renders on success", () => {
+    state.selected.customInventory = [{ id: "CUSTOM-1" }];
     model.sendCustomItemToAlly.mockReturnValue(true);
     const row = elWithClass("span", "send-to-ally-row", {
       instanceId: "CUSTOM-1",

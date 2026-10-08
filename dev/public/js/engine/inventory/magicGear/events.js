@@ -58,6 +58,7 @@ const _magicGearEnchantments = createEnchantmentsHandlers({
 const _handleSendMagicGearToAllyClick = createSendToAllyHandler({
   sendFn: sendMagicGearToAlly,
   render: () => _renderMagicGearLists(state.sheet),
+  canHandle: (instanceId) => selected.magicGear.some((m) => m.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

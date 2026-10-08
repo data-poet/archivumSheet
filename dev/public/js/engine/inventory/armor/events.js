@@ -62,6 +62,7 @@ const _armorEnchantments = createEnchantmentsHandlers({
 const _handleSendArmorToAllyClick = createSendToAllyHandler({
   sendFn: sendArmorToAlly,
   render: _renderArmorLists,
+  canHandle: (instanceId) => selected.armors.some((a) => a.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

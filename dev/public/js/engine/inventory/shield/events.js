@@ -61,6 +61,7 @@ const _shieldEnchantments = createEnchantmentsHandlers({
 const _handleSendShieldToAllyClick = createSendToAllyHandler({
   sendFn: sendShieldToAlly,
   render: _renderShieldLists,
+  canHandle: (instanceId) => selected.shields.some((s) => s.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

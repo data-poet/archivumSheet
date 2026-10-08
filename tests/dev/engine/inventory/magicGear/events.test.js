@@ -31,6 +31,7 @@ import {
   selectWithValue,
 } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { state } from "dev/public/js/state.js";
 
 beforeEach(() => {
   resetDOM();
@@ -127,6 +128,7 @@ describe("handleMagicGearClick", () => {
   });
 
   test("sends the item and re-renders on success", () => {
+    state.selected.magicGear = [{ id: "MG-1" }];
     model.sendMagicGearToAlly.mockReturnValue(true);
     const row = elWithClass("span", "send-to-ally-row", {
       instanceId: "MG-1",
