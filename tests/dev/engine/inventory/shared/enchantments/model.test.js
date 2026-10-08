@@ -44,6 +44,7 @@ import {
   addEnchantmentEntry,
   updateEnchantmentEntry,
   removeEnchantmentEntry,
+  cloneEnchantmentsWithFreshIds,
 } from "dev/public/js/engine/inventory/shared/enchantments/model.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
@@ -646,6 +647,34 @@ describe("entry mutation", () => {
       const entries = [{ id: "enchantment-inst-1" }];
       removeEnchantmentEntry(entries, "ghost");
       expect(entries).toHaveLength(1);
+    });
+  });
+
+  describe("cloneEnchantmentsWithFreshIds", () => {
+    test("gives every entry a new id, independent of the source's", () => {
+      const entries = [
+        { id: "enchantment-inst-1", enchantment_id: "ATTR-1", value: 5 },
+        { id: "enchantment-inst-2", enchantment_id: "POINT-1", target: "ST" },
+      ];
+
+      const cloned = cloneEnchantmentsWithFreshIds(entries);
+
+      expect(cloned).toHaveLength(2);
+      cloned.forEach((entry, i) => {
+        expect(entry.id).toEqual(expect.any(String));
+        expect(entry.id).not.toBe(entries[i].id);
+        expect(entry.enchantment_id).toBe(entries[i].enchantment_id);
+      });
+    });
+
+    test("does not mutate the source entries", () => {
+      const entries = [{ id: "enchantment-inst-1", enchantment_id: "ATTR-1" }];
+      cloneEnchantmentsWithFreshIds(entries);
+      expect(entries[0].id).toBe("enchantment-inst-1");
+    });
+
+    test("handles an empty array", () => {
+      expect(cloneEnchantmentsWithFreshIds([])).toEqual([]);
     });
   });
 });

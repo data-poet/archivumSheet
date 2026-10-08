@@ -316,3 +316,9 @@ export function removeEnchantmentEntry(entries, entryInstanceId) {
   if (index === -1) return;
   entries.splice(index, 1);
 }
+
+// Used when an item instance is cloned (e.g. sent to an ally) so the clone's enchantments
+// don't share ids with the source's — editing one copy must never touch the other's entries.
+export function cloneEnchantmentsWithFreshIds(entries) {
+  return entries.map((entry) => ({ ...entry, id: generateInstanceId() }));
+}
