@@ -33,6 +33,10 @@ function getLinkedAllyOptions(characterId) {
   }));
 }
 
+export function hasLinkedAllies(characterId) {
+  return getLinkedAllyOptions(characterId).length > 0;
+}
+
 export function sendToAllyRowHTML(instanceId, { needsQuantity = false, maxQuantity = 1 } = {}) {
   const allies = getLinkedAllyOptions(getActiveCharacterId());
   if (allies.length === 0) return "";

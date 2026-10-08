@@ -27,7 +27,11 @@ import {
 import { enchantmentsBody } from "../shared/enchantments/render.js";
 import { getMagicGearItemCategory } from "../shared/enchantments/model.js";
 import { isMagicGearAtEquipLimit } from "./model.js";
-import { sendToAllyRowHTML } from "../shared/sendToAllyControl.js";
+import {
+  sendToAllyRowHTML,
+  hasLinkedAllies,
+} from "../shared/sendToAllyControl.js";
+import { getActiveCharacterId } from "../../../store/characters.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -131,10 +135,12 @@ export function renderStoredMagicGear(selected, data, sheet) {
 
 function renderStorageSection(location, stored, data, sheet) {
   const items = stored.filter((g) => g.storedAt === location);
+  const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
+  const colCount = showSendToAlly ? 5 : 4;
 
   let bodyRows;
   if (items.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="${colCount}">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = items
       .map((inst) => {
@@ -170,9 +176,9 @@ function renderStorageSection(location, stored, data, sheet) {
               title="${limitLabel}"
             >${t("common.equip")}</button>
           </td>
-          <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>
+          ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>` : ""}
         </tr>
-        ${itemTabsDetailRow(5, instanceId, [
+        ${itemTabsDetailRow(colCount, instanceId, [
           {
             key: "customize",
             label: t("common.customize"),
@@ -209,7 +215,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <th>${t("common.price")}</th>
           <th>${t("common.storage")}</th>
           <th class="col-action"></th>
-          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
+          ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
