@@ -19,21 +19,30 @@ beforeEach(() => {
   state.selected.alchemy = [];
 });
 
-function rowsFor(consumableId, storedAt) {
-  return state.selected.alchemy.filter(
+function findEntry(consumableId, storedAt) {
+  return state.selected.alchemy.find(
     (e) => e.consumable_id === consumableId && e.storedAt === storedAt,
   );
 }
 
 describe("addAlchemy", () => {
-  test("pushes one row per unit of quantity, each with its own id", () => {
+  test("creates a new row with its own id", () => {
     addAlchemy("POTION-1", 3, "backpack");
 
-    const rows = rowsFor("POTION-1", "backpack");
-    expect(rows).toHaveLength(3);
-    expect(rows.every((r) => r.quantity === 1)).toBe(true);
-    const ids = new Set(rows.map((r) => r.id));
-    expect(ids.size).toBe(3);
+    const entry = findEntry("POTION-1", "backpack");
+    expect(entry.quantity).toBe(3);
+    expect(typeof entry.id).toBe("string");
+  });
+
+  test("merging into an existing stack bumps quantity and keeps the same id", () => {
+    addAlchemy("POTION-1", 3, "backpack");
+    const originalId = findEntry("POTION-1", "backpack").id;
+
+    addAlchemy("POTION-1", 2, "backpack");
+
+    const entry = findEntry("POTION-1", "backpack");
+    expect(entry.quantity).toBe(5);
+    expect(entry.id).toBe(originalId);
   });
 
   test("does nothing for a non-positive quantity", () => {
@@ -43,29 +52,18 @@ describe("addAlchemy", () => {
 });
 
 describe("updateAlchemyQuantity", () => {
-  test("grows the group by pushing new rows", () => {
+  test("sets the entry's quantity", () => {
     addAlchemy("POTION-1", 2, "backpack");
     updateAlchemyQuantity("POTION-1", "backpack", 5);
 
-    expect(rowsFor("POTION-1", "backpack")).toHaveLength(5);
+    expect(findEntry("POTION-1", "backpack").quantity).toBe(5);
   });
 
-  test("shrinks the group by removing rows, preserving the rest", () => {
-    addAlchemy("POTION-1", 5, "backpack");
-    const keptId = rowsFor("POTION-1", "backpack").at(-1).id;
-
-    updateAlchemyQuantity("POTION-1", "backpack", 1);
-
-    const rows = rowsFor("POTION-1", "backpack");
-    expect(rows).toHaveLength(1);
-    expect(rows[0].id).toBe(keptId);
-  });
-
-  test("removes the group entirely when quantity drops to 0", () => {
+  test("removes the entry entirely when quantity drops to 0", () => {
     addAlchemy("POTION-1", 2, "backpack");
     updateAlchemyQuantity("POTION-1", "backpack", 0);
 
-    expect(rowsFor("POTION-1", "backpack")).toHaveLength(0);
+    expect(findEntry("POTION-1", "backpack")).toBeUndefined();
   });
 
   test("does not disturb rows of a different consumable or location", () => {
@@ -75,40 +73,48 @@ describe("updateAlchemyQuantity", () => {
 
     updateAlchemyQuantity("POTION-1", "backpack", 0);
 
-    expect(rowsFor("POTION-2", "backpack")).toHaveLength(2);
-    expect(rowsFor("POTION-1", "stash")).toHaveLength(1);
+    expect(findEntry("POTION-2", "backpack").quantity).toBe(2);
+    expect(findEntry("POTION-1", "stash").quantity).toBe(1);
   });
 });
 
 describe("removeAlchemy", () => {
-  test("removes every row for that consumable+location", () => {
+  test("removes the entry for that consumable+location", () => {
     addAlchemy("POTION-1", 3, "backpack");
     removeAlchemy("POTION-1", "backpack");
 
-    expect(rowsFor("POTION-1", "backpack")).toHaveLength(0);
+    expect(findEntry("POTION-1", "backpack")).toBeUndefined();
   });
 });
 
 describe("moveAlchemy", () => {
-  test("moves every matching row, keeping each row's id", () => {
+  test("carries the source row's id over when there is no destination stack", () => {
     addAlchemy("POTION-1", 2, "backpack");
-    const idsBefore = rowsFor("POTION-1", "backpack")
-      .map((r) => r.id)
-      .sort();
+    const originalId = findEntry("POTION-1", "backpack").id;
 
     moveAlchemy("POTION-1", "backpack", "camp");
 
-    expect(rowsFor("POTION-1", "backpack")).toHaveLength(0);
-    const idsAfter = rowsFor("POTION-1", "camp")
-      .map((r) => r.id)
-      .sort();
-    expect(idsAfter).toEqual(idsBefore);
+    expect(findEntry("POTION-1", "backpack")).toBeUndefined();
+    expect(findEntry("POTION-1", "camp").id).toBe(originalId);
+  });
+
+  test("merging into an existing destination stack keeps the destination's id", () => {
+    addAlchemy("POTION-1", 2, "backpack");
+    addAlchemy("POTION-1", 1, "camp");
+    const destId = findEntry("POTION-1", "camp").id;
+
+    moveAlchemy("POTION-1", "backpack", "camp");
+
+    const dest = findEntry("POTION-1", "camp");
+    expect(dest.quantity).toBe(3);
+    expect(dest.id).toBe(destId);
+    expect(findEntry("POTION-1", "backpack")).toBeUndefined();
   });
 
   test("is a no-op when source and destination are the same", () => {
     addAlchemy("POTION-1", 2, "backpack");
     moveAlchemy("POTION-1", "backpack", "backpack");
 
-    expect(rowsFor("POTION-1", "backpack")).toHaveLength(2);
+    expect(findEntry("POTION-1", "backpack").quantity).toBe(2);
   });
 });

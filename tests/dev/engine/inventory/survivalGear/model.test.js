@@ -19,21 +19,30 @@ beforeEach(() => {
   state.selected.survivalGear = [];
 });
 
-function rowsFor(gearId, storedAt) {
-  return state.selected.survivalGear.filter(
+function findEntry(gearId, storedAt) {
+  return state.selected.survivalGear.find(
     (e) => e.adventure_gear_id === gearId && e.storedAt === storedAt,
   );
 }
 
 describe("addSurvivalGear", () => {
-  test("pushes one row per unit of quantity, each with its own id", () => {
+  test("creates a new row with its own id", () => {
     addSurvivalGear("GEAR-1", 3, "backpack");
 
-    const rows = rowsFor("GEAR-1", "backpack");
-    expect(rows).toHaveLength(3);
-    expect(rows.every((r) => r.quantity === 1)).toBe(true);
-    const ids = new Set(rows.map((r) => r.id));
-    expect(ids.size).toBe(3);
+    const entry = findEntry("GEAR-1", "backpack");
+    expect(entry.quantity).toBe(3);
+    expect(typeof entry.id).toBe("string");
+  });
+
+  test("merging into an existing stack bumps quantity and keeps the same id", () => {
+    addSurvivalGear("GEAR-1", 3, "backpack");
+    const originalId = findEntry("GEAR-1", "backpack").id;
+
+    addSurvivalGear("GEAR-1", 2, "backpack");
+
+    const entry = findEntry("GEAR-1", "backpack");
+    expect(entry.quantity).toBe(5);
+    expect(entry.id).toBe(originalId);
   });
 
   test("does nothing for a non-positive quantity", () => {
@@ -43,61 +52,58 @@ describe("addSurvivalGear", () => {
 });
 
 describe("updateSurvivalGearQuantity", () => {
-  test("grows the group by pushing new rows", () => {
+  test("sets the entry's quantity", () => {
     addSurvivalGear("GEAR-1", 2, "backpack");
     updateSurvivalGearQuantity("GEAR-1", "backpack", 5);
 
-    expect(rowsFor("GEAR-1", "backpack")).toHaveLength(5);
+    expect(findEntry("GEAR-1", "backpack").quantity).toBe(5);
   });
 
-  test("shrinks the group by removing rows, preserving the rest", () => {
-    addSurvivalGear("GEAR-1", 5, "backpack");
-    const keptId = rowsFor("GEAR-1", "backpack").at(-1).id;
-
-    updateSurvivalGearQuantity("GEAR-1", "backpack", 1);
-
-    const rows = rowsFor("GEAR-1", "backpack");
-    expect(rows).toHaveLength(1);
-    expect(rows[0].id).toBe(keptId);
-  });
-
-  test("removes the group entirely when quantity drops to 0", () => {
+  test("removes the entry entirely when quantity drops to 0", () => {
     addSurvivalGear("GEAR-1", 2, "backpack");
     updateSurvivalGearQuantity("GEAR-1", "backpack", 0);
 
-    expect(rowsFor("GEAR-1", "backpack")).toHaveLength(0);
+    expect(findEntry("GEAR-1", "backpack")).toBeUndefined();
   });
 });
 
 describe("removeSurvivalGear", () => {
-  test("removes every row for that gear+location", () => {
+  test("removes the entry for that gear+location", () => {
     addSurvivalGear("GEAR-1", 3, "backpack");
     removeSurvivalGear("GEAR-1", "backpack");
 
-    expect(rowsFor("GEAR-1", "backpack")).toHaveLength(0);
+    expect(findEntry("GEAR-1", "backpack")).toBeUndefined();
   });
 });
 
 describe("moveSurvivalGear", () => {
-  test("moves every matching row, keeping each row's id", () => {
+  test("carries the source row's id over when there is no destination stack", () => {
     addSurvivalGear("GEAR-1", 2, "backpack");
-    const idsBefore = rowsFor("GEAR-1", "backpack")
-      .map((r) => r.id)
-      .sort();
+    const originalId = findEntry("GEAR-1", "backpack").id;
 
     moveSurvivalGear("GEAR-1", "backpack", "camp");
 
-    expect(rowsFor("GEAR-1", "backpack")).toHaveLength(0);
-    const idsAfter = rowsFor("GEAR-1", "camp")
-      .map((r) => r.id)
-      .sort();
-    expect(idsAfter).toEqual(idsBefore);
+    expect(findEntry("GEAR-1", "backpack")).toBeUndefined();
+    expect(findEntry("GEAR-1", "camp").id).toBe(originalId);
+  });
+
+  test("merging into an existing destination stack keeps the destination's id", () => {
+    addSurvivalGear("GEAR-1", 2, "backpack");
+    addSurvivalGear("GEAR-1", 1, "camp");
+    const destId = findEntry("GEAR-1", "camp").id;
+
+    moveSurvivalGear("GEAR-1", "backpack", "camp");
+
+    const dest = findEntry("GEAR-1", "camp");
+    expect(dest.quantity).toBe(3);
+    expect(dest.id).toBe(destId);
+    expect(findEntry("GEAR-1", "backpack")).toBeUndefined();
   });
 
   test("is a no-op when source and destination are the same", () => {
     addSurvivalGear("GEAR-1", 2, "backpack");
     moveSurvivalGear("GEAR-1", "backpack", "backpack");
 
-    expect(rowsFor("GEAR-1", "backpack")).toHaveLength(2);
+    expect(findEntry("GEAR-1", "backpack").quantity).toBe(2);
   });
 });
