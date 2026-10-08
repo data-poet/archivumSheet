@@ -64,6 +64,7 @@ const _accessoryEnchantments = createEnchantmentsHandlers({
 const _handleSendAccessoryToAllyClick = createSendToAllyHandler({
   sendFn: sendAccessoryToAlly,
   render: () => _renderAccessoryLists(state.sheet),
+  canHandle: (instanceId) => selected.accessories.some((a) => a.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

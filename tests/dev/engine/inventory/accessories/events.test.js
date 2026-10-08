@@ -32,6 +32,7 @@ import {
   selectWithValue,
 } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { state } from "dev/public/js/state.js";
 
 beforeEach(() => {
   resetDOM();
@@ -76,6 +77,7 @@ describe("handleAccessoryClick — remove/equip", () => {
   });
 
   test("sends the item and re-renders on success", () => {
+    state.selected.accessories = [{ id: "ACC-1" }];
     model.sendAccessoryToAlly.mockReturnValue(true);
     const row = elWithClass("span", "send-to-ally-row", {
       instanceId: "ACC-1",

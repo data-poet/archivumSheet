@@ -17,6 +17,7 @@ const selected = state.selected;
 const _handleSendSurvivalGearToAllyClick = createSendToAllyHandler({
   sendFn: sendSurvivalGearToAlly,
   render: () => renderListsPreserving(selected, data),
+  canHandle: (instanceId) => selected.survivalGear.some((g) => g.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

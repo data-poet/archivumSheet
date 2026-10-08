@@ -163,6 +163,7 @@ describe("handleMeleeClick — send to ally", () => {
   }
 
   test("sends the item and re-renders both melee and ranged lists on success (linked pair moves together)", () => {
+    state.selected.melee_weapons = [{ id: "MELEE-1" }];
     model.sendMeleeToAlly.mockReturnValue(true);
     const button = sendRow("MELEE-1", "ally-1");
 
@@ -176,6 +177,7 @@ describe("handleMeleeClick — send to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.melee_weapons = [{ id: "MELEE-1" }];
     model.sendMeleeToAlly.mockReturnValue(false);
     const button = sendRow("MELEE-1", "ally-1");
 

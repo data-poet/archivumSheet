@@ -165,6 +165,7 @@ describe("handleRangedClick — send to ally", () => {
   }
 
   test("sends the item and re-renders both ranged and melee lists on success (linked pair moves together)", () => {
+    state.selected.ranged_weapons = [{ id: "RANGED-1" }];
     model.sendRangedToAlly.mockReturnValue(true);
     const button = sendRow("RANGED-1", "ally-1");
 
@@ -178,6 +179,7 @@ describe("handleRangedClick — send to ally", () => {
   });
 
   test("does not render when the send fails", () => {
+    state.selected.ranged_weapons = [{ id: "RANGED-1" }];
     model.sendRangedToAlly.mockReturnValue(false);
     const button = sendRow("RANGED-1", "ally-1");
 

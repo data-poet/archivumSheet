@@ -11,6 +11,7 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 const _handleSendCoinsToAllyClick = createSendToAllyHandler({
   sendFn: sendCoinsToAlly,
   render: () => renderListsPreserving(state.selected, state.data),
+  canHandle: (instanceId) => state.selected.coins.some((c) => c.id === instanceId),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
