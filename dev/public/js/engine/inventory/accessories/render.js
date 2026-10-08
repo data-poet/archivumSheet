@@ -154,7 +154,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
 
   let bodyRows;
   if (accessories.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="4">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = accessories
       .map((inst) => {
@@ -179,10 +179,11 @@ function renderStorageSection(location, stored, selected, data, sheet) {
               style="width:80px"
             />
           </td>
-          <td data-label="${t("common.storage")}">
+          <td class="col-storage" data-label="${t("common.storage")}">
             <select class="accessory-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
+            <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
           </td>
           <td class="col-action">
             <button
@@ -191,11 +192,10 @@ function renderStorageSection(location, stored, selected, data, sheet) {
               ${atLimit ? "disabled" : ""}
               title="${atLimit ? t("accessories.limitReached") : ""}"
             >${t("common.equip")}</button>
-            <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
-            ${sendToAllyRowHTML(instanceId)}
           </td>
+          <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>
         </tr>
-        ${itemTabsDetailRow(4, instanceId, [
+        ${itemTabsDetailRow(5, instanceId, [
           {
             key: "customize",
             label: t("common.customize"),
@@ -232,6 +232,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
           <th>${t("common.price")}</th>
           <th>${t("common.storage")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

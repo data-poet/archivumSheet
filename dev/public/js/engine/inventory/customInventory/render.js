@@ -51,7 +51,7 @@ function renderCustomInventorySection(location, entries, sheet) {
   let bodyRows = "";
 
   if (sectionEntries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="4">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
@@ -87,10 +87,10 @@ function renderCustomInventorySection(location, entries, sheet) {
                 class="btn-remove remove-custom-item"
                 data-custom-item-id="${entry.id}"
               >✕</button>
-              ${sendToAllyRowHTML(entry.id)}
             </td>
+            <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id)}</td>
           </tr>
-          ${customItemEditRow(4, {
+          ${customItemEditRow(5, {
             customItemId: entry.id,
             name: entry.name,
             weight: entry.weight,
@@ -111,6 +111,7 @@ function renderCustomInventorySection(location, entries, sheet) {
           <th>${t("customInventory.qty")}</th>
           <th>${t("common.weight")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

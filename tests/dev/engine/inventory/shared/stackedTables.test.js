@@ -38,6 +38,7 @@ function expectEveryCellLabelled(row) {
     (td) =>
       !td.classList.contains("col-title") &&
       !td.classList.contains("col-action") &&
+      !td.classList.contains("col-send-ally") &&
       !td.hasAttribute("data-label"),
   );
   expect(unlabelled.map((td) => td.outerHTML)).toEqual([]);

@@ -324,7 +324,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
 
   let bodyRows = "";
   if (entries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="6">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = entries
       .map((entry) => {
@@ -366,13 +366,13 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
                 data-ammo-id="${entry.ammo_id}"
                 data-stored-at="${location}"
               >✕</button>
-              ${sendToAllyRowHTML(entry.id, {
-                needsQuantity: true,
-                maxQuantity: entry.quantity,
-              })}
             </td>
+            <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
+              needsQuantity: true,
+              maxQuantity: entry.quantity,
+            })}</td>
           </tr>
-          ${detailRow(5, ammoDetailFields(ammoRecord))}`;
+          ${detailRow(6, ammoDetailFields(ammoRecord))}`;
       })
       .join("");
   }
@@ -388,6 +388,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
           <th>${t("ammo.qty")}</th>
           <th>${t("common.weight")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

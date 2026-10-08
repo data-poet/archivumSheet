@@ -70,6 +70,17 @@ td.col-action {
   text-align: center;
   width: 60px;
 }
+td.col-send-ally {
+  text-align: center;
+}
+
+.send-to-ally-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
 
 table input[type="number"],
 table input[type="text"] {
@@ -533,6 +544,13 @@ tr.detail-row details[open] summary {
     color: var(--color-text-muted);
   }
 
+  /* row-direction cells (col-storage, col-send-ally) still want their label on its own
+     line above the controls, not squeezed inline before the first select/button */
+  .table-wrapper--stack td.col-storage[data-label]::before,
+  .table-wrapper--stack td.col-send-ally[data-label]::before {
+    flex-basis: 100%;
+  }
+
   /* `order` rather than DOM position: armor leads with the body slot, not the name */
   .table-wrapper--stack td.col-title {
     grid-column: 1 / -1;
@@ -585,7 +603,26 @@ tr.detail-row details[open] summary {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  .table-wrapper--stack td.col-send-ally {
+    grid-column: 1 / -1;
+    order: 2;
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  /* storage select + its remove button sit on one line, label (if any) still stacked above */
+  .table-wrapper--stack td.col-storage {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-3);
   }
 
@@ -593,7 +630,9 @@ tr.detail-row details[open] summary {
     max-width: 100%;
     width: 100%;
   }
-  .table-wrapper--stack td.col-action select {
+  .table-wrapper--stack td.col-action select,
+  .table-wrapper--stack td.col-send-ally select,
+  .table-wrapper--stack td.col-storage select {
     width: auto;
   }
 

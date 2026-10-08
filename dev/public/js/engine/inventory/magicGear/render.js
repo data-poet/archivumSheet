@@ -134,7 +134,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
   let bodyRows;
   if (items.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="4">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = items
       .map((inst) => {
@@ -156,10 +156,11 @@ function renderStorageSection(location, stored, data, sheet) {
         <tr data-instance-id="${instanceId}">
           ${cardTitleCell(escapeHtml(displayName(inst, record)))}
           <td class="col-num" data-label="${t("common.price")}">${resolved?.total_value ?? record.magic_gear_price}</td>
-          <td data-label="${t("common.storage")}">
+          <td class="col-storage" data-label="${t("common.storage")}">
             <select class="magic-gear-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
+            <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
           </td>
           <td class="col-action">
             <button
@@ -168,11 +169,10 @@ function renderStorageSection(location, stored, data, sheet) {
               ${atLimit ? "disabled" : ""}
               title="${limitLabel}"
             >${t("common.equip")}</button>
-            <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
-            ${sendToAllyRowHTML(instanceId)}
           </td>
+          <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>
         </tr>
-        ${itemTabsDetailRow(4, instanceId, [
+        ${itemTabsDetailRow(5, instanceId, [
           {
             key: "customize",
             label: t("common.customize"),
@@ -209,6 +209,7 @@ function renderStorageSection(location, stored, data, sheet) {
           <th>${t("common.price")}</th>
           <th>${t("common.storage")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>

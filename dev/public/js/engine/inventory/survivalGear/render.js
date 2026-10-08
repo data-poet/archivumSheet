@@ -79,7 +79,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
   let bodyRows = "";
 
   if (sectionEntries.length === 0) {
-    bodyRows = `<tr class="empty-row"><td colspan="4">${t("common.empty")}</td></tr>`;
+    bodyRows = `<tr class="empty-row"><td colspan="5">${t("common.empty")}</td></tr>`;
   } else {
     bodyRows = sectionEntries
       .map((entry) => {
@@ -119,13 +119,13 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 data-gear-id="${entry.adventure_gear_id}"
                 data-stored-at="${location}"
               >✕</button>
-              ${sendToAllyRowHTML(entry.id, {
-                needsQuantity: true,
-                maxQuantity: entry.quantity,
-              })}
             </td>
+            <td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
+              needsQuantity: true,
+              maxQuantity: entry.quantity,
+            })}</td>
           </tr>
-          ${detailRow(4, gearDetailFields(record))}`;
+          ${detailRow(5, gearDetailFields(record))}`;
       })
       .join("");
   }
@@ -140,6 +140,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
           <th>${t("survivalGear.qty")}</th>
           <th>${t("common.weight")}</th>
           <th class="col-action"></th>
+          <th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>
         </tr>
       </thead>
       <tbody>${bodyRows}</tbody>
