@@ -25,6 +25,8 @@ import {
   setActiveKind,
   listCharacters,
   getActiveCharacterId,
+  getCharacterData,
+  withCharacterInventory,
   saveActiveCharacter,
   loadCharacter,
   addCharacter,
@@ -76,6 +78,79 @@ describe("listCharacters / getActiveCharacterId", () => {
   test("returns the active character's id", () => {
     const store = getStore();
     expect(getActiveCharacterId()).toBe(store.activeId);
+  });
+});
+
+describe("getCharacterData / withCharacterInventory", () => {
+  test("getCharacterData reads a non-active entry's data without disturbing state.selected", () => {
+    const secondId = addCharacter("Second Character");
+    const firstId = getStore().list.find((c) => c.id !== secondId).id;
+    state.selected.character.character_name = "Still Active One";
+
+    const data = getCharacterData(firstId);
+
+    expect(data).not.toBeNull();
+    expect(getActiveCharacterId()).toBe(secondId);
+    expect(state.selected.character.character_name).toBe("Still Active One");
+  });
+
+  test("getCharacterData returns null for an unknown id", () => {
+    expect(getCharacterData("does-not-exist")).toBeNull();
+  });
+
+  test("withCharacterInventory mutates and persists a non-active entry's inventory", () => {
+    const secondId = addCharacter("Second Character");
+    const firstId = getStore().list.find((c) => c.id !== secondId).id;
+
+    const ok = withCharacterInventory(firstId, (inventory) => {
+      inventory.armors.push({ id: "armor-1" });
+    });
+
+    expect(ok).toBe(true);
+    expect(getActiveCharacterId()).toBe(secondId);
+    expect(getCharacterData(firstId).inventory.armors).toEqual([
+      { id: "armor-1" },
+    ]);
+  });
+
+  test("withCharacterInventory returns false and writes nothing for an unknown id", () => {
+    const before = JSON.stringify(getStore());
+
+    const ok = withCharacterInventory("does-not-exist", (inventory) => {
+      inventory.armors.push({ id: "armor-1" });
+    });
+
+    expect(ok).toBe(false);
+    expect(JSON.stringify(getStore())).toBe(before);
+  });
+
+  test("backfills a missing inventory with all categories before mutating", () => {
+    const secondId = addCharacter("Second Character");
+    const firstId = getStore().list.find((c) => c.id !== secondId).id;
+    const store = getStore();
+    const entry = store.list.find((c) => c.id === firstId);
+    delete entry.data.inventory;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
+    withCharacterInventory(firstId, (inventory) => {
+      expect(Object.keys(inventory)).toEqual(
+        expect.arrayContaining([
+          "armors",
+          "shields",
+          "melee_weapons",
+          "ranged_weapons",
+          "firearms",
+          "ammo_containers",
+          "loose_ammo",
+          "alchemy",
+          "survivalGear",
+          "accessories",
+          "magicGear",
+          "customInventory",
+          "coins",
+        ]),
+      );
+    });
   });
 });
 

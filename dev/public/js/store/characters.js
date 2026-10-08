@@ -229,6 +229,23 @@ export function getActiveCharacterId() {
   return getStore().activeId;
 }
 
+export function getCharacterData(characterId) {
+  return getStore().list.find((c) => c.id === characterId)?.data ?? null;
+}
+
+// For reading/writing a non-active entry (e.g. an ally) without touching state.selected or
+// store.activeId — those stay bound to whichever entry is currently loaded into the sheet.
+export function withCharacterInventory(characterId, mutator) {
+  const store = getStore();
+  const entry = store.list.find((c) => c.id === characterId);
+  if (!entry) return false;
+
+  entry.data.inventory = { ..._blankData().inventory, ...entry.data.inventory };
+  mutator(entry.data.inventory, entry.data);
+  _save(store);
+  return true;
+}
+
 export function saveActiveCharacter() {
   const store = getStore();
   const idx = store.list.findIndex((c) => c.id === store.activeId);
