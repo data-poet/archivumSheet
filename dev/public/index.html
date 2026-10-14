@@ -97,1491 +97,1113 @@
          MAIN CONTENT
          ═══════════════════════════════════════════════════════════════════════ -->
     <main class="l-main" id="main-content">
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: PERSONAGEM — tabs: Personagem · Resumo
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-character"
-        class="l-section"
-        data-section="section-character"
-      >
-        <div class="box box--character">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-character">
-            <button
-              class="tab-btn"
-              data-tab="tab-char-info"
-              id="tab-btn-char-info"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-char-points"
-              id="tab-btn-char-points"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-char-image"
-              id="tab-btn-char-image"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
+      <!-- Panel markup only — js/layout/buildSheetLayout.js moves each panel into its
+           section from js/layout/sheetLayout.js, then removes this pool. -->
+      <div id="sheet-panels" hidden>
+        <!-- Panel: Personagem (info + race) -->
+        <div class="tab-panel" id="tab-char-info">
+          <div class="character-panel-grid">
+            <!-- Left: Info -->
+            <div class="character-info">
+              <table class="character-info-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <label for="playerNameInput" id="lbl-playerName"></label>
+                    </td>
+                    <td>
+                      <input
+                        id="playerNameInput"
+                        type="text"
+                        class="character-input"
+                        data-field="player_name"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label
+                        for="characterNameInput"
+                        id="lbl-characterName"
+                      ></label>
+                    </td>
+                    <td>
+                      <input
+                        id="characterNameInput"
+                        type="text"
+                        class="character-input"
+                        data-field="character_name"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="characterSexSelect" id="lbl-sex"></label>
+                    </td>
+                    <td>
+                      <select
+                        id="characterSexSelect"
+                        class="character-input"
+                        data-field="character_sex"
+                      >
+                        <option value="" id="opt-sex-none"></option>
+                        <option value="M" id="opt-sex-m"></option>
+                        <option value="F" id="opt-sex-f"></option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="characterAgeInput" id="lbl-age"></label>
+                    </td>
+                    <td>
+                      <input
+                        id="characterAgeInput"
+                        type="number"
+                        min="0"
+                        step="1"
+                        class="character-input"
+                        data-field="character_age"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="characterWeightInput" id="lbl-weight"></label>
+                    </td>
+                    <td>
+                      <input
+                        id="characterWeightInput"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        class="character-input"
+                        data-field="character_weight"
+                      />
+                    </td>
+                  </tr>
+                  <tr class="ally-link-row" id="ally-link-row">
+                    <td colspan="2" id="ally-link-control"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-          <!-- Panel: Personagem (info + race) -->
-          <div class="tab-panel" id="tab-char-info">
-            <div class="character-panel-grid">
-              <!-- Left: Info -->
-              <div class="character-info">
-                <table class="character-info-table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <label
-                          for="playerNameInput"
-                          id="lbl-playerName"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          id="playerNameInput"
-                          type="text"
-                          class="character-input"
-                          data-field="player_name"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label
-                          for="characterNameInput"
-                          id="lbl-characterName"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          id="characterNameInput"
-                          type="text"
-                          class="character-input"
-                          data-field="character_name"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="characterSexSelect" id="lbl-sex"></label>
-                      </td>
-                      <td>
-                        <select
-                          id="characterSexSelect"
-                          class="character-input"
-                          data-field="character_sex"
-                        >
-                          <option value="" id="opt-sex-none"></option>
-                          <option value="M" id="opt-sex-m"></option>
-                          <option value="F" id="opt-sex-f"></option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="characterAgeInput" id="lbl-age"></label>
-                      </td>
-                      <td>
-                        <input
-                          id="characterAgeInput"
-                          type="number"
-                          min="0"
-                          step="1"
-                          class="character-input"
-                          data-field="character_age"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label
-                          for="characterWeightInput"
-                          id="lbl-weight"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          id="characterWeightInput"
-                          type="number"
-                          min="0"
-                          step="0.1"
-                          class="character-input"
-                          data-field="character_weight"
-                        />
-                      </td>
-                    </tr>
-                    <tr class="ally-link-row" id="ally-link-row">
-                      <td colspan="2" id="ally-link-control"></td>
-                    </tr>
-                  </tbody>
-                </table>
+            <!-- Right: Race -->
+            <div class="character-race">
+              <div class="field-title" id="lbl-race-title"></div>
+              <div class="race-selects">
+                <select id="raceNameSelect" style="display: none">
+                  <option value="" id="opt-race-none"></option>
+                </select>
+                <select id="raceSubSelect" style="display: none">
+                  <option value="" id="opt-subrace-none"></option>
+                </select>
               </div>
+              <div
+                id="raceModifiers"
+                class="race-modifiers"
+                style="display: none"
+              ></div>
 
-              <!-- Right: Race -->
-              <div class="character-race">
-                <div class="field-title" id="lbl-race-title"></div>
+              <!-- Meta-races (e.g. Undead) are ally/monster-only for now — see
+                   docs/proposals/meta-race-templates.md's "Audience" decision. -->
+              <div class="meta-race-row" id="meta-race-row">
+                <div class="field-title" id="lbl-metaRace-title"></div>
                 <div class="race-selects">
-                  <select id="raceNameSelect" style="display: none">
-                    <option value="" id="opt-race-none"></option>
+                  <select id="metaRaceNameSelect" style="display: none">
+                    <option value="" id="opt-meta-race-none"></option>
                   </select>
-                  <select id="raceSubSelect" style="display: none">
-                    <option value="" id="opt-subrace-none"></option>
+                  <select id="metaRaceSubSelect" style="display: none">
+                    <option value="" id="opt-meta-subrace-none"></option>
                   </select>
                 </div>
-                <div
-                  id="raceModifiers"
-                  class="race-modifiers"
+                <div class="controls-row">
+                  <button id="addMetaRaceBtn"></button>
+                </div>
+                <div id="metaRaceList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Pontos do Personagem -->
+        <div class="tab-panel" id="tab-char-points">
+          <div class="character-points-xp-block">
+            <div id="resume_bar_experience"></div>
+          </div>
+
+          <div class="character-panel-grid character-points-grid">
+            <div class="character-points-block">
+              <table class="character-info-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <label
+                        for="startingPointsInput"
+                        id="lbl-startingPoints"
+                      ></label>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        id="startingPointsInput"
+                        class="character-input"
+                        data-field="starting_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label
+                        for="experiencePointsInput"
+                        id="lbl-experiencePoints"
+                      ></label>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        id="experiencePointsInput"
+                        class="character-input"
+                        data-field="experience_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label
+                        for="abilityPointsInput"
+                        id="lbl-abilityPoints"
+                      ></label>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        id="abilityPointsInput"
+                        class="character-input"
+                        data-field="ability_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label
+                        for="magicPointsInput"
+                        id="lbl-magicPoints"
+                      ></label>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        id="magicPointsInput"
+                        class="character-input"
+                        data-field="magic_points"
+                        min="0"
+                        step="1"
+                        placeholder="0"
+                      />
+                    </td>
+                  </tr>
+                  <tr class="character-points-total-row">
+                    <td>
+                      <label id="lbl-totalAvailablePoints"></label>
+                    </td>
+                    <td>
+                      <span id="totalAvailablePointsValue">0</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Points spent breakdown (moved from resume view) -->
+            <table class="resume-table">
+              <tbody>
+                <tr
+                  class="resume-expander-row"
+                  data-tbody-target="resume_points_tbody"
+                >
+                  <td colspan="2">
+                    <button class="resume-expander-btn" aria-expanded="false">
+                      <span class="resume-expander-arrow">&#8250;</span>
+                      <span id="sec-resume-points-detail"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+
+              <tbody
+                id="resume_points_tbody"
+                class="resume-collapsible"
+                hidden
+              ></tbody>
+
+              <tbody>
+                <tr class="resume-total-row">
+                  <td><strong id="lbl-resume-totalPoints"></strong></td>
+                  <td class="col-num" id="resume_total_points_cell">
+                    <strong>0</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: Imagem do Personagem -->
+        <div class="tab-panel" id="tab-char-image">
+          <div class="charimg-editor">
+            <!-- Left: circular preview (drag-to-reposition) -->
+            <div class="charimg-preview-col">
+              <div class="charimg-bg" id="charimg-bg">
+                <div class="charimg-preview" id="charimg-preview">
+                  <!-- .charimg-img injected by JS when uploaded -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: controls stacked -->
+            <div class="charimg-controls-col">
+              <!-- Section label "Imagem" (mirrors reference left label) -->
+              <p class="charimg-section-label" id="charimg-section-lbl"></p>
+
+              <!-- Upload + Clear -->
+              <div class="charimg-row">
+                <label
+                  class="charimg-upload-btn"
+                  for="charimg-file-input"
+                  id="charimg-upload-lbl"
+                ></label>
+                <input
+                  id="charimg-file-input"
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                   style="display: none"
-                ></div>
-
-                <!-- Meta-races (e.g. Undead) are ally/monster-only for now — see
-                     docs/proposals/meta-race-templates.md's "Audience" decision. -->
-                <div class="meta-race-row" id="meta-race-row">
-                  <div class="field-title" id="lbl-metaRace-title"></div>
-                  <div class="race-selects">
-                    <select id="metaRaceNameSelect" style="display: none">
-                      <option value="" id="opt-meta-race-none"></option>
-                    </select>
-                    <select id="metaRaceSubSelect" style="display: none">
-                      <option value="" id="opt-meta-subrace-none"></option>
-                    </select>
-                  </div>
-                  <div class="controls-row">
-                    <button id="addMetaRaceBtn"></button>
-                  </div>
-                  <div id="metaRaceList"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel: Pontos do Personagem -->
-          <div class="tab-panel" id="tab-char-points">
-            <div class="character-points-xp-block">
-              <div id="resume_bar_experience"></div>
-            </div>
-
-            <div class="character-panel-grid character-points-grid">
-              <div class="character-points-block">
-                <table class="character-info-table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <label
-                          for="startingPointsInput"
-                          id="lbl-startingPoints"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          id="startingPointsInput"
-                          class="character-input"
-                          data-field="starting_points"
-                          min="0"
-                          step="1"
-                          placeholder="0"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label
-                          for="experiencePointsInput"
-                          id="lbl-experiencePoints"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          id="experiencePointsInput"
-                          class="character-input"
-                          data-field="experience_points"
-                          min="0"
-                          step="1"
-                          placeholder="0"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label
-                          for="abilityPointsInput"
-                          id="lbl-abilityPoints"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          id="abilityPointsInput"
-                          class="character-input"
-                          data-field="ability_points"
-                          min="0"
-                          step="1"
-                          placeholder="0"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label
-                          for="magicPointsInput"
-                          id="lbl-magicPoints"
-                        ></label>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          id="magicPointsInput"
-                          class="character-input"
-                          data-field="magic_points"
-                          min="0"
-                          step="1"
-                          placeholder="0"
-                        />
-                      </td>
-                    </tr>
-                    <tr class="character-points-total-row">
-                      <td>
-                        <label id="lbl-totalAvailablePoints"></label>
-                      </td>
-                      <td>
-                        <span id="totalAvailablePointsValue">0</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Points spent breakdown (moved from resume view) -->
-              <table class="resume-table">
-                <tbody>
-                  <tr
-                    class="resume-expander-row"
-                    data-tbody-target="resume_points_tbody"
-                  >
-                    <td colspan="2">
-                      <button class="resume-expander-btn" aria-expanded="false">
-                        <span class="resume-expander-arrow">&#8250;</span>
-                        <span id="sec-resume-points-detail"></span>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-
-                <tbody
-                  id="resume_points_tbody"
-                  class="resume-collapsible"
-                  hidden
-                ></tbody>
-
-                <tbody>
-                  <tr class="resume-total-row">
-                    <td><strong id="lbl-resume-totalPoints"></strong></td>
-                    <td class="col-num" id="resume_total_points_cell">
-                      <strong>0</strong>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Panel: Imagem do Personagem -->
-          <div class="tab-panel" id="tab-char-image">
-            <div class="charimg-editor">
-              <!-- Left: circular preview (drag-to-reposition) -->
-              <div class="charimg-preview-col">
-                <div class="charimg-bg" id="charimg-bg">
-                  <div class="charimg-preview" id="charimg-preview">
-                    <!-- .charimg-img injected by JS when uploaded -->
-                  </div>
-                </div>
-              </div>
-
-              <!-- Right: controls stacked -->
-              <div class="charimg-controls-col">
-                <!-- Section label "Imagem" (mirrors reference left label) -->
-                <p class="charimg-section-label" id="charimg-section-lbl"></p>
-
-                <!-- Upload + Clear -->
-                <div class="charimg-row">
-                  <label
-                    class="charimg-upload-btn"
-                    for="charimg-file-input"
-                    id="charimg-upload-lbl"
-                  ></label>
-                  <input
-                    id="charimg-file-input"
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                    style="display: none"
-                  />
-                  <button
-                    class="charimg-clear-btn"
-                    id="charimg-clear-btn"
-                    type="button"
-                  ></button>
-                </div>
-
-                <!-- Drag hint -->
-                <p class="charimg-drag-hint" id="charimg-drag-hint"></p>
-
-                <!-- Size & Position label -->
-                <p class="charimg-group-label" id="charimg-size-pos-lbl"></p>
-
-                <!-- Scale slider + presets on same row -->
-                <div class="charimg-row charimg-row--scale">
-                  <input
-                    id="charimg-scale"
-                    type="range"
-                    min="10"
-                    max="400"
-                    step="1"
-                    value="100"
-                  />
-                  <button
-                    class="charimg-preset-btn"
-                    data-size="cover"
-                    id="charimg-preset-cover"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-size="contain"
-                    id="charimg-preset-contain"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-pos="center"
-                    id="charimg-pos-center"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-pos="top"
-                    id="charimg-pos-top"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-pos="bottom"
-                    id="charimg-pos-bottom"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-pos="left"
-                    id="charimg-pos-left"
-                  ></button>
-                  <button
-                    class="charimg-preset-btn"
-                    data-pos="right"
-                    id="charimg-pos-right"
-                  ></button>
-                </div>
-
-                <!-- Background label -->
-                <p class="charimg-group-label" id="charimg-bg-lbl"></p>
-
-                <!-- Background radios -->
-                <div class="charimg-row charimg-row--bg">
-                  <button
-                    class="charimg-radio-wrap"
-                    data-bg="average"
-                    id="charimg-bg-average"
-                    type="button"
-                  >
-                    <span class="charimg-radio-btn" aria-hidden="true"></span>
-                    <span
-                      class="charimg-radio-label"
-                      id="charimg-bg-average-lbl"
-                    ></span>
-                  </button>
-                  <button
-                    class="charimg-radio-wrap"
-                    data-bg="black"
-                    id="charimg-bg-black"
-                    type="button"
-                  >
-                    <span class="charimg-radio-btn" aria-hidden="true"></span>
-                    <span
-                      class="charimg-radio-label"
-                      id="charimg-bg-black-lbl"
-                    ></span>
-                  </button>
-                  <button
-                    class="charimg-radio-wrap"
-                    data-bg="white"
-                    id="charimg-bg-white"
-                    type="button"
-                  >
-                    <span class="charimg-radio-btn" aria-hidden="true"></span>
-                    <span
-                      class="charimg-radio-label"
-                      id="charimg-bg-white-lbl"
-                    ></span>
-                  </button>
-                </div>
-              </div>
-              <!-- /.charimg-controls-col -->
-            </div>
-            <!-- /.charimg-editor -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: ATRIBUTOS — tabs: Primários · Secundários · Dano Base
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-attributes"
-        class="l-section"
-        data-section="section-attributes"
-      >
-        <div class="box box--attr">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-attributes">
-            <button
-              class="tab-btn"
-              data-tab="tab-attr-primary"
-              id="tab-btn-attr-primary"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-attr-secondary"
-              id="tab-btn-attr-secondary"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-attr-damage"
-              id="tab-btn-attr-damage"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-attr-resistances"
-              id="tab-btn-attr-resistances"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Primários -->
-          <div class="tab-panel" id="tab-attr-primary">
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th id="th-attr-attribute"></th>
-                    <th class="col-num" id="th-attr-base"></th>
-                    <th class="col-num" id="th-attr-race"></th>
-                    <th class="col-num" id="th-attr-modifier"></th>
-                    <th class="col-num" id="th-attr-enchantment"></th>
-                    <th class="col-num" id="th-attr-actual"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>ST</strong></td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="ST_base"
-                          type="text"
-                          inputmode="numeric"
-                          data-min="5"
-                          value="10"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="col-num" id="ST_race">0</td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="ST_mod"
-                          type="text"
-                          inputmode="numeric"
-                          value="0"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      class="col-num enchantment-mod-cell"
-                      id="ST_enchantment"
-                    ></td>
-                    <td class="col-num" id="ST_actual">10</td>
-                  </tr>
-                  <tr>
-                    <td><strong>DX</strong></td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="DX_base"
-                          type="text"
-                          inputmode="numeric"
-                          data-min="5"
-                          value="10"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="col-num" id="DX_race">0</td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="DX_mod"
-                          type="text"
-                          inputmode="numeric"
-                          value="0"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      class="col-num enchantment-mod-cell"
-                      id="DX_enchantment"
-                    ></td>
-                    <td class="col-num" id="DX_actual">10</td>
-                  </tr>
-                  <tr>
-                    <td><strong>IQ</strong></td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="IQ_base"
-                          type="text"
-                          inputmode="numeric"
-                          data-min="5"
-                          value="10"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="col-num" id="IQ_race">0</td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="IQ_mod"
-                          type="text"
-                          inputmode="numeric"
-                          value="0"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      class="col-num enchantment-mod-cell"
-                      id="IQ_enchantment"
-                    ></td>
-                    <td class="col-num" id="IQ_actual">10</td>
-                  </tr>
-                  <tr>
-                    <td><strong>HT</strong></td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="HT_base"
-                          type="text"
-                          inputmode="numeric"
-                          data-min="5"
-                          value="10"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="col-num" id="HT_race">0</td>
-                    <td class="col-num">
-                      <div class="num-stepper">
-                        <input
-                          id="HT_mod"
-                          type="text"
-                          inputmode="numeric"
-                          value="0"
-                        />
-                        <div class="stepper-btns">
-                          <button
-                            class="stepper-btn stepper-inc"
-                            tabindex="-1"
-                            aria-label="+"
-                          >
-                            +
-                          </button>
-                          <button
-                            class="stepper-btn stepper-dec"
-                            tabindex="-1"
-                            aria-label="−"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      class="col-num enchantment-mod-cell"
-                      id="HT_enchantment"
-                    ></td>
-                    <td class="col-num" id="HT_actual">10</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Panel: Secundários -->
-          <div class="tab-panel" id="tab-attr-secondary">
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th id="th-sec-attribute"></th>
-                    <th class="col-num" id="th-sec-base"></th>
-                    <th class="col-num" id="th-sec-bought"></th>
-                    <th class="col-num" id="th-sec-modifier"></th>
-                    <th class="col-num" id="th-sec-enchantment"></th>
-                    <th class="col-num" id="th-sec-final"></th>
-                  </tr>
-                </thead>
-                <tbody id="secondaryTable"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Panel: Dano Base -->
-          <div class="tab-panel" id="tab-attr-damage">
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th id="th-dmg-type"></th>
-                    <th class="col-num" id="th-dmg-dice"></th>
-                    <th class="col-num" id="th-dmg-baseMod"></th>
-                    <th class="col-num" id="th-dmg-modifier"></th>
-                    <th class="col-num" id="th-dmg-final"></th>
-                  </tr>
-                </thead>
-                <tbody id="damageTable"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Panel: Resistências -->
-          <div class="tab-panel" id="tab-attr-resistances">
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th id="th-res-type"></th>
-                    <th class="col-num" id="th-res-race"></th>
-                    <th class="col-num" id="th-res-modifier"></th>
-                    <th class="col-num" id="th-res-enchantment"></th>
-                    <th class="col-num" id="th-res-final"></th>
-                  </tr>
-                </thead>
-                <tbody id="resistancesTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: TRAÇOS — tabs: Vantagens · Desvantagens
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-traits"
-        class="l-section"
-        data-section="section-traits"
-      >
-        <div class="box box--trait">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-traits">
-            <button
-              class="tab-btn"
-              data-tab="tab-traits-advantages"
-              id="tab-btn-traits-advantages"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-traits-disadvantages"
-              id="tab-btn-traits-disadvantages"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Vantagens -->
-          <div class="tab-panel" id="tab-traits-advantages">
-            <div class="controls-row">
-              <select id="advTypeSelect">
-                <option value="" id="opt-adv-type"></option>
-              </select>
-              <select id="advSelect"></select>
-              <button id="addAdvBtn"></button>
-            </div>
-            <div id="advList"></div>
-          </div>
-
-          <!-- Panel: Desvantagens -->
-          <div class="tab-panel" id="tab-traits-disadvantages">
-            <div class="controls-row">
-              <select id="disTypeSelect">
-                <option value="" id="opt-dis-type"></option>
-              </select>
-              <select id="disSelect"></select>
-              <button id="addDisBtn"></button>
-            </div>
-            <div id="disList"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: PERÍCIAS — tab: Perícias
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-skills"
-        class="l-section"
-        data-section="section-skills"
-      >
-        <div class="box box--trait">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-skills">
-            <button
-              class="tab-btn"
-              data-tab="tab-skills-list"
-              id="tab-btn-skills-list"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Perícias -->
-          <div class="tab-panel" id="tab-skills-list">
-            <div class="controls-row">
-              <select id="skillCategorySelect">
-                <option value="" id="opt-skill-cat"></option>
-              </select>
-              <select id="skillSelect"></select>
-              <button id="addSkillBtn"></button>
-            </div>
-            <div id="skillList"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: MAGIA — tab: Magias
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-magic"
-        class="l-section"
-        data-section="section-magic"
-      >
-        <div class="box box--magic">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-magic">
-            <button
-              class="tab-btn"
-              data-tab="tab-magic-spells"
-              id="tab-btn-magic-spells"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Magias -->
-          <div class="tab-panel" id="tab-magic-spells">
-            <div class="controls-row">
-              <select id="spellSchoolSelect">
-                <option value="" id="opt-school"></option>
-              </select>
-              <select id="spellSelect"></select>
-              <button id="addSpellBtn"></button>
-            </div>
-            <div id="spellList"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: DEFESA — tabs: Armaduras · Escudos
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-defense"
-        class="l-section"
-        data-section="section-defense"
-      >
-        <div class="box box--equip">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-defense">
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-armor"
-              id="tab-btn-equip-armor"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-shields"
-              id="tab-btn-equip-shields"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Armaduras -->
-          <div class="tab-panel" id="tab-equip-armor">
-            <div class="controls-row">
-              <select id="armorSlotSelect"></select>
-              <select id="armorNameSelect"></select>
-              <select id="armorTierSelect"></select>
-              <select id="armorMaterialSelect"></select>
-              <select id="armorStorage"></select>
-              <button id="addArmorBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-armor-equipped"></summary>
-                <div id="armorSlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-armor-stored"></summary>
-                <div id="armorStorageList"></div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Panel: Escudos -->
-          <div class="tab-panel" id="tab-equip-shields">
-            <div class="controls-row">
-              <select id="shieldNameSelect"></select>
-              <select id="shieldTierSelect"></select>
-              <select id="shieldMaterialSelect"></select>
-              <select id="shieldStorage"></select>
-              <button id="addShieldBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-shield-equipped"></summary>
-                <div id="shieldSlot"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-shield-stored"></summary>
-                <div id="shieldStorageList"></div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: ARMAS — tabs: Corpo a Corpo · À Distância · Armas de Fogo · Munição
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-weapons"
-        class="l-section"
-        data-section="section-weapons"
-      >
-        <div class="box box--equip">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-weapons">
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-melee"
-              id="tab-btn-equip-melee"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-ranged"
-              id="tab-btn-equip-ranged"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-firearms"
-              id="tab-btn-equip-firearms"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-equip-ammo"
-              id="tab-btn-equip-ammo"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Corpo a Corpo -->
-          <div class="tab-panel" id="tab-equip-melee">
-            <div class="controls-row">
-              <select id="meleeTypeFilter"></select>
-              <select id="meleeNameSelect"></select>
-              <select id="meleeTierSelect"></select>
-              <select id="meleeMaterialSelect"></select>
-              <select id="meleeStorage"></select>
-              <button id="addMeleeBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-melee-equipped"></summary>
-                <div id="meleeSlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-melee-stored"></summary>
-                <div id="meleeStorageList"></div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Panel: À Distância -->
-          <div class="tab-panel" id="tab-equip-ranged">
-            <div class="controls-row">
-              <select id="rangedTypeFilter"></select>
-              <select id="rangedNameSelect"></select>
-              <select id="rangedTierSelect"></select>
-              <select id="rangedMaterialSelect"></select>
-              <select id="rangedStorage"></select>
-              <button id="addRangedBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-ranged-equipped"></summary>
-                <div id="rangedSlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-ranged-stored"></summary>
-                <div id="rangedStorageList"></div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Panel: Armas de Fogo -->
-          <div class="tab-panel" id="tab-equip-firearms">
-            <div class="controls-row">
-              <select id="firearmTypeFilter"></select>
-              <select id="firearmNameSelect"></select>
-              <select id="firearmTierSelect"></select>
-              <select id="firearmMaterialSelect"></select>
-              <select id="firearmStorage"></select>
-              <button id="addFirearmBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-firearm-equipped"></summary>
-                <div id="firearmSlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-firearm-stored"></summary>
-                <div id="firearmStorageList"></div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Panel: Munição -->
-          <div class="tab-panel" id="tab-equip-ammo">
-            <div class="equip-sub">
-              <!-- Sub-section: Containers (Aljavas) -->
-              <details>
-                <summary id="sec-ammo-containers"></summary>
-                <div class="controls-row">
-                  <select id="ammoContainerTypeFilter">
-                    <option value="" id="opt-ammo-container-type"></option>
-                  </select>
-                  <select id="ammoContainerSelect"></select>
-                  <select id="ammoContainerStorage"></select>
-                  <button id="addAmmoContainerBtn"></button>
-                </div>
-                <div id="ammoContainerList"></div>
-              </details>
-
-              <!-- Sub-section: Loose Ammo -->
-              <details>
-                <summary id="sec-ammo-loose"></summary>
-                <div class="controls-row">
-                  <select id="looseAmmoTypeFilter"></select>
-                  <select id="looseAmmoSelect"></select>
-                  <input
-                    id="looseAmmoQty"
-                    type="number"
-                    min="1"
-                    value="1"
-                    style="width: 64px"
-                  />
-                  <select id="looseAmmoStorage"></select>
-                  <button id="addLooseAmmoBtn"></button>
-                </div>
-                <div id="looseAmmoList"></div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: MÁGICOS & ACESSÓRIOS — tabs: Instrumentos Mágicos · Acessórios
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-magic-gear"
-        class="l-section"
-        data-section="section-magic-gear"
-      >
-        <div class="box box--equip">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-magic-gear">
-            <button
-              class="tab-btn"
-              data-tab="tab-magic-gear"
-              id="tab-btn-magic-gear"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-inv-accessories"
-              id="tab-btn-inv-accessories"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Instrumentos Mágicos -->
-          <div class="tab-panel" id="tab-magic-gear">
-            <div class="controls-row">
-              <select id="magicGearTypeFilter">
-                <option value="" id="opt-magic-gear-type"></option>
-              </select>
-              <select id="magicGearNameSelect"></select>
-              <select id="magicGearStorage"></select>
-              <button id="addMagicGearBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-magic-gear-equipped"></summary>
-                <div id="magicGearSlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-magic-gear-stored"></summary>
-                <div id="magicGearStorageList"></div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Panel: Acessórios -->
-          <div class="tab-panel" id="tab-inv-accessories">
-            <div class="controls-row">
-              <select id="accessoryNameSelect"></select>
-              <input
-                id="accessoryPriceInput"
-                type="number"
-                min="0"
-                step="0.01"
-                value="0"
-                style="width: 80px"
-              />
-              <select id="accessoryStorage"></select>
-              <button id="addAccessoryBtn"></button>
-            </div>
-            <div class="equip-sub">
-              <details>
-                <summary id="sec-accessory-equipped"></summary>
-                <div id="accessorySlots"></div>
-              </details>
-              <details class="storage-group">
-                <summary id="sec-accessory-stored"></summary>
-                <div id="accessoryStorageList"></div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: CONSUMÍVEIS — tabs: Alquimia · Sobrevivência
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-consumables"
-        class="l-section"
-        data-section="section-consumables"
-      >
-        <div class="box box--inv">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-consumables">
-            <button
-              class="tab-btn"
-              data-tab="tab-inv-alchemy"
-              id="tab-btn-inv-alchemy"
-            ></button>
-            <button
-              class="tab-btn"
-              data-tab="tab-inv-survival"
-              id="tab-btn-inv-survival"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Alquimia -->
-          <div class="tab-panel" id="tab-inv-alchemy">
-            <div class="controls-row">
-              <select id="alchemyTypeFilter"></select>
-              <select id="alchemyNameSelect"></select>
-              <select id="alchemyTierSelect"></select>
-              <input
-                id="alchemyQty"
-                type="number"
-                min="1"
-                value="1"
-                style="width: 64px"
-              />
-              <select id="alchemyStorage"></select>
-              <button id="addAlchemyBtn"></button>
-            </div>
-            <div id="alchemyList" class="storage-list-card"></div>
-          </div>
-
-          <!-- Panel: Equipamento de Sobrevivência -->
-          <div class="tab-panel" id="tab-inv-survival">
-            <div class="controls-row">
-              <select id="survivalGearTypeFilter"></select>
-              <select id="survivalGearNameSelect"></select>
-              <input
-                id="survivalGearQty"
-                type="number"
-                min="1"
-                value="1"
-                style="width: 64px"
-              />
-              <select id="survivalGearStorage"></select>
-              <button id="addSurvivalGearBtn"></button>
-            </div>
-            <div id="survivalGearList" class="storage-list-card"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: MOEDAS — tab: Bolsa de Moedas
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-coins"
-        class="l-section"
-        data-section="section-coins"
-      >
-        <div class="box box--inv">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-coins">
-            <button
-              class="tab-btn"
-              data-tab="tab-inv-coin"
-              id="tab-btn-inv-coin"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Bolsa de Moedas -->
-          <div class="tab-panel" id="tab-inv-coin">
-            <div id="coinPurseList" class="storage-list-card"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────────────────────────────────────────────────
-           SECTION: ITENS LIVRES — tab: Itens Livres
-           ─────────────────────────────────────────────────────────────────── -->
-      <section
-        id="section-custom-items"
-        class="l-section"
-        data-section="section-custom-items"
-      >
-        <div class="box box--inv">
-          <!-- Tab strip -->
-          <nav class="tab-strip" data-section="section-custom-items">
-            <button
-              class="tab-btn"
-              data-tab="tab-inv-custom"
-              id="tab-btn-inv-custom"
-            ></button>
-            <button
-              class="tab-strip-collapse"
-              aria-expanded="false"
-              aria-label="Expandir seção"
-              type="button"
-            >
-              &#8250;
-            </button>
-          </nav>
-
-          <!-- Panel: Inventário Personalizado -->
-          <div class="tab-panel" id="tab-inv-custom">
-            <!-- Peso Base (moved here from Resumo for organisation) -->
-            <div class="controls-row resume-base-weight-row">
-              <label for="weight">
-                <strong id="lbl-baseWeight"></strong>
-              </label>
-              <input id="weight" type="number" value="0" style="width: 70px" />
-            </div>
-            <div class="controls-row controls-row--labeled">
-              <label
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  gap: 2px;
-                  font-size: 0.75em;
-                "
-              >
-                Nome
-                <input
-                  id="customItemName"
-                  type="text"
-                  style="flex: 2; min-width: 120px"
                 />
-              </label>
-              <label
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  gap: 2px;
-                  font-size: 0.75em;
-                "
-              >
-                Peso
+                <button
+                  class="charimg-clear-btn"
+                  id="charimg-clear-btn"
+                  type="button"
+                ></button>
+              </div>
+
+              <!-- Drag hint -->
+              <p class="charimg-drag-hint" id="charimg-drag-hint"></p>
+
+              <!-- Size & Position label -->
+              <p class="charimg-group-label" id="charimg-size-pos-lbl"></p>
+
+              <!-- Scale slider + presets on same row -->
+              <div class="charimg-row charimg-row--scale">
                 <input
-                  id="customItemWeight"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value="0"
-                  style="width: 70px"
+                  id="charimg-scale"
+                  type="range"
+                  min="10"
+                  max="400"
+                  step="1"
+                  value="100"
                 />
-              </label>
-              <label
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  gap: 2px;
-                  font-size: 0.75em;
-                "
-              >
-                Preço
+                <button
+                  class="charimg-preset-btn"
+                  data-size="cover"
+                  id="charimg-preset-cover"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-size="contain"
+                  id="charimg-preset-contain"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-pos="center"
+                  id="charimg-pos-center"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-pos="top"
+                  id="charimg-pos-top"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-pos="bottom"
+                  id="charimg-pos-bottom"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-pos="left"
+                  id="charimg-pos-left"
+                ></button>
+                <button
+                  class="charimg-preset-btn"
+                  data-pos="right"
+                  id="charimg-pos-right"
+                ></button>
+              </div>
+
+              <!-- Background label -->
+              <p class="charimg-group-label" id="charimg-bg-lbl"></p>
+
+              <!-- Background radios -->
+              <div class="charimg-row charimg-row--bg">
+                <button
+                  class="charimg-radio-wrap"
+                  data-bg="average"
+                  id="charimg-bg-average"
+                  type="button"
+                >
+                  <span class="charimg-radio-btn" aria-hidden="true"></span>
+                  <span
+                    class="charimg-radio-label"
+                    id="charimg-bg-average-lbl"
+                  ></span>
+                </button>
+                <button
+                  class="charimg-radio-wrap"
+                  data-bg="black"
+                  id="charimg-bg-black"
+                  type="button"
+                >
+                  <span class="charimg-radio-btn" aria-hidden="true"></span>
+                  <span
+                    class="charimg-radio-label"
+                    id="charimg-bg-black-lbl"
+                  ></span>
+                </button>
+                <button
+                  class="charimg-radio-wrap"
+                  data-bg="white"
+                  id="charimg-bg-white"
+                  type="button"
+                >
+                  <span class="charimg-radio-btn" aria-hidden="true"></span>
+                  <span
+                    class="charimg-radio-label"
+                    id="charimg-bg-white-lbl"
+                  ></span>
+                </button>
+              </div>
+            </div>
+            <!-- /.charimg-controls-col -->
+          </div>
+          <!-- /.charimg-editor -->
+        </div>
+
+        <!-- Panel: Primários -->
+        <div class="tab-panel" id="tab-attr-primary">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th id="th-attr-attribute"></th>
+                  <th class="col-num" id="th-attr-base"></th>
+                  <th class="col-num" id="th-attr-race"></th>
+                  <th class="col-num" id="th-attr-modifier"></th>
+                  <th class="col-num" id="th-attr-enchantment"></th>
+                  <th class="col-num" id="th-attr-actual"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ST</strong></td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="ST_base"
+                        type="text"
+                        inputmode="numeric"
+                        data-min="5"
+                        value="10"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="col-num" id="ST_race">0</td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="ST_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="col-num enchantment-mod-cell"
+                    id="ST_enchantment"
+                  ></td>
+                  <td class="col-num" id="ST_actual">10</td>
+                </tr>
+                <tr>
+                  <td><strong>DX</strong></td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="DX_base"
+                        type="text"
+                        inputmode="numeric"
+                        data-min="5"
+                        value="10"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="col-num" id="DX_race">0</td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="DX_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="col-num enchantment-mod-cell"
+                    id="DX_enchantment"
+                  ></td>
+                  <td class="col-num" id="DX_actual">10</td>
+                </tr>
+                <tr>
+                  <td><strong>IQ</strong></td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="IQ_base"
+                        type="text"
+                        inputmode="numeric"
+                        data-min="5"
+                        value="10"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="col-num" id="IQ_race">0</td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="IQ_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="col-num enchantment-mod-cell"
+                    id="IQ_enchantment"
+                  ></td>
+                  <td class="col-num" id="IQ_actual">10</td>
+                </tr>
+                <tr>
+                  <td><strong>HT</strong></td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="HT_base"
+                        type="text"
+                        inputmode="numeric"
+                        data-min="5"
+                        value="10"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="col-num" id="HT_race">0</td>
+                  <td class="col-num">
+                    <div class="num-stepper">
+                      <input
+                        id="HT_mod"
+                        type="text"
+                        inputmode="numeric"
+                        value="0"
+                      />
+                      <div class="stepper-btns">
+                        <button
+                          class="stepper-btn stepper-inc"
+                          tabindex="-1"
+                          aria-label="+"
+                        >
+                          +
+                        </button>
+                        <button
+                          class="stepper-btn stepper-dec"
+                          tabindex="-1"
+                          aria-label="−"
+                        >
+                          −
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="col-num enchantment-mod-cell"
+                    id="HT_enchantment"
+                  ></td>
+                  <td class="col-num" id="HT_actual">10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: Secundários -->
+        <div class="tab-panel" id="tab-attr-secondary">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th id="th-sec-attribute"></th>
+                  <th class="col-num" id="th-sec-base"></th>
+                  <th class="col-num" id="th-sec-bought"></th>
+                  <th class="col-num" id="th-sec-modifier"></th>
+                  <th class="col-num" id="th-sec-enchantment"></th>
+                  <th class="col-num" id="th-sec-final"></th>
+                </tr>
+              </thead>
+              <tbody id="secondaryTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: Dano Base -->
+        <div class="tab-panel" id="tab-attr-damage">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th id="th-dmg-type"></th>
+                  <th class="col-num" id="th-dmg-dice"></th>
+                  <th class="col-num" id="th-dmg-baseMod"></th>
+                  <th class="col-num" id="th-dmg-modifier"></th>
+                  <th class="col-num" id="th-dmg-final"></th>
+                </tr>
+              </thead>
+              <tbody id="damageTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: Resistências -->
+        <div class="tab-panel" id="tab-attr-resistances">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th id="th-res-type"></th>
+                  <th class="col-num" id="th-res-race"></th>
+                  <th class="col-num" id="th-res-modifier"></th>
+                  <th class="col-num" id="th-res-enchantment"></th>
+                  <th class="col-num" id="th-res-final"></th>
+                </tr>
+              </thead>
+              <tbody id="resistancesTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: Vantagens -->
+        <div class="tab-panel" id="tab-traits-advantages">
+          <div class="controls-row">
+            <select id="advTypeSelect">
+              <option value="" id="opt-adv-type"></option>
+            </select>
+            <select id="advSelect"></select>
+            <button id="addAdvBtn"></button>
+          </div>
+          <div id="advList"></div>
+        </div>
+
+        <!-- Panel: Desvantagens -->
+        <div class="tab-panel" id="tab-traits-disadvantages">
+          <div class="controls-row">
+            <select id="disTypeSelect">
+              <option value="" id="opt-dis-type"></option>
+            </select>
+            <select id="disSelect"></select>
+            <button id="addDisBtn"></button>
+          </div>
+          <div id="disList"></div>
+        </div>
+
+        <!-- Panel: Perícias -->
+        <div class="tab-panel" id="tab-skills-list">
+          <div class="controls-row">
+            <select id="skillCategorySelect">
+              <option value="" id="opt-skill-cat"></option>
+            </select>
+            <select id="skillSelect"></select>
+            <button id="addSkillBtn"></button>
+          </div>
+          <div id="skillList"></div>
+        </div>
+
+        <!-- Panel: Magias -->
+        <div class="tab-panel" id="tab-magic-spells">
+          <div class="controls-row">
+            <select id="spellSchoolSelect">
+              <option value="" id="opt-school"></option>
+            </select>
+            <select id="spellSelect"></select>
+            <button id="addSpellBtn"></button>
+          </div>
+          <div id="spellList"></div>
+        </div>
+
+        <!-- Panel: Armaduras -->
+        <div class="tab-panel" id="tab-equip-armor">
+          <div class="controls-row">
+            <select id="armorSlotSelect"></select>
+            <select id="armorNameSelect"></select>
+            <select id="armorTierSelect"></select>
+            <select id="armorMaterialSelect"></select>
+            <select id="armorStorage"></select>
+            <button id="addArmorBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-armor-equipped"></summary>
+              <div id="armorSlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-armor-stored"></summary>
+              <div id="armorStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Escudos -->
+        <div class="tab-panel" id="tab-equip-shields">
+          <div class="controls-row">
+            <select id="shieldNameSelect"></select>
+            <select id="shieldTierSelect"></select>
+            <select id="shieldMaterialSelect"></select>
+            <select id="shieldStorage"></select>
+            <button id="addShieldBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-shield-equipped"></summary>
+              <div id="shieldSlot"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-shield-stored"></summary>
+              <div id="shieldStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Corpo a Corpo -->
+        <div class="tab-panel" id="tab-equip-melee">
+          <div class="controls-row">
+            <select id="meleeTypeFilter"></select>
+            <select id="meleeNameSelect"></select>
+            <select id="meleeTierSelect"></select>
+            <select id="meleeMaterialSelect"></select>
+            <select id="meleeStorage"></select>
+            <button id="addMeleeBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-melee-equipped"></summary>
+              <div id="meleeSlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-melee-stored"></summary>
+              <div id="meleeStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: À Distância -->
+        <div class="tab-panel" id="tab-equip-ranged">
+          <div class="controls-row">
+            <select id="rangedTypeFilter"></select>
+            <select id="rangedNameSelect"></select>
+            <select id="rangedTierSelect"></select>
+            <select id="rangedMaterialSelect"></select>
+            <select id="rangedStorage"></select>
+            <button id="addRangedBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-ranged-equipped"></summary>
+              <div id="rangedSlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-ranged-stored"></summary>
+              <div id="rangedStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Armas de Fogo -->
+        <div class="tab-panel" id="tab-equip-firearms">
+          <div class="controls-row">
+            <select id="firearmTypeFilter"></select>
+            <select id="firearmNameSelect"></select>
+            <select id="firearmTierSelect"></select>
+            <select id="firearmMaterialSelect"></select>
+            <select id="firearmStorage"></select>
+            <button id="addFirearmBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-firearm-equipped"></summary>
+              <div id="firearmSlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-firearm-stored"></summary>
+              <div id="firearmStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Munição -->
+        <div class="tab-panel" id="tab-equip-ammo">
+          <div class="equip-sub">
+            <!-- Sub-section: Containers (Aljavas) -->
+            <details>
+              <summary id="sec-ammo-containers"></summary>
+              <div class="controls-row">
+                <select id="ammoContainerTypeFilter">
+                  <option value="" id="opt-ammo-container-type"></option>
+                </select>
+                <select id="ammoContainerSelect"></select>
+                <select id="ammoContainerStorage"></select>
+                <button id="addAmmoContainerBtn"></button>
+              </div>
+              <div id="ammoContainerList"></div>
+            </details>
+
+            <!-- Sub-section: Loose Ammo -->
+            <details>
+              <summary id="sec-ammo-loose"></summary>
+              <div class="controls-row">
+                <select id="looseAmmoTypeFilter"></select>
+                <select id="looseAmmoSelect"></select>
                 <input
-                  id="customItemPrice"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value="0"
-                  style="width: 70px"
-                />
-              </label>
-              <label
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  gap: 2px;
-                  font-size: 0.75em;
-                "
-              >
-                Qtd.
-                <input
-                  id="customItemQty"
+                  id="looseAmmoQty"
                   type="number"
                   min="1"
                   value="1"
                   style="width: 64px"
                 />
-              </label>
-              <select id="customItemStorage"></select>
-              <button id="addCustomItemBtn"></button>
-            </div>
-            <div class="controls-row">
-              <input id="customItemDescription" type="text" style="flex: 1" />
-            </div>
-            <div id="customInventoryList" class="storage-list-card"></div>
+                <select id="looseAmmoStorage"></select>
+                <button id="addLooseAmmoBtn"></button>
+              </div>
+              <div id="looseAmmoList"></div>
+            </details>
           </div>
         </div>
-      </section>
 
-      <!-- ───────────────────────────────────────────────────────────────────
-           ALLIES (add)
-           ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-allies" class="l-section">
+        <!-- Panel: Instrumentos Mágicos -->
+        <div class="tab-panel" id="tab-magic-gear">
+          <div class="controls-row">
+            <select id="magicGearTypeFilter">
+              <option value="" id="opt-magic-gear-type"></option>
+            </select>
+            <select id="magicGearNameSelect"></select>
+            <select id="magicGearStorage"></select>
+            <button id="addMagicGearBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-magic-gear-equipped"></summary>
+              <div id="magicGearSlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-magic-gear-stored"></summary>
+              <div id="magicGearStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Acessórios -->
+        <div class="tab-panel" id="tab-inv-accessories">
+          <div class="controls-row">
+            <select id="accessoryNameSelect"></select>
+            <input
+              id="accessoryPriceInput"
+              type="number"
+              min="0"
+              step="0.01"
+              value="0"
+              style="width: 80px"
+            />
+            <select id="accessoryStorage"></select>
+            <button id="addAccessoryBtn"></button>
+          </div>
+          <div class="equip-sub">
+            <details>
+              <summary id="sec-accessory-equipped"></summary>
+              <div id="accessorySlots"></div>
+            </details>
+            <details class="storage-group">
+              <summary id="sec-accessory-stored"></summary>
+              <div id="accessoryStorageList"></div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Panel: Alquimia -->
+        <div class="tab-panel" id="tab-inv-alchemy">
+          <div class="controls-row">
+            <select id="alchemyTypeFilter"></select>
+            <select id="alchemyNameSelect"></select>
+            <select id="alchemyTierSelect"></select>
+            <input
+              id="alchemyQty"
+              type="number"
+              min="1"
+              value="1"
+              style="width: 64px"
+            />
+            <select id="alchemyStorage"></select>
+            <button id="addAlchemyBtn"></button>
+          </div>
+          <div id="alchemyList" class="storage-list-card"></div>
+        </div>
+
+        <!-- Panel: Equipamento de Sobrevivência -->
+        <div class="tab-panel" id="tab-inv-survival">
+          <div class="controls-row">
+            <select id="survivalGearTypeFilter"></select>
+            <select id="survivalGearNameSelect"></select>
+            <input
+              id="survivalGearQty"
+              type="number"
+              min="1"
+              value="1"
+              style="width: 64px"
+            />
+            <select id="survivalGearStorage"></select>
+            <button id="addSurvivalGearBtn"></button>
+          </div>
+          <div id="survivalGearList" class="storage-list-card"></div>
+        </div>
+
+        <!-- Panel: Bolsa de Moedas -->
+        <div class="tab-panel" id="tab-inv-coin">
+          <div id="coinPurseList" class="storage-list-card"></div>
+        </div>
+
+        <!-- Panel: Inventário Personalizado -->
+        <div class="tab-panel" id="tab-inv-custom">
+          <!-- Peso Base (moved here from Resumo for organisation) -->
+          <div class="controls-row resume-base-weight-row">
+            <label for="weight">
+              <strong id="lbl-baseWeight"></strong>
+            </label>
+            <input id="weight" type="number" value="0" style="width: 70px" />
+          </div>
+          <div class="controls-row controls-row--labeled">
+            <label
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 0.75em;
+              "
+            >
+              Nome
+              <input
+                id="customItemName"
+                type="text"
+                style="flex: 2; min-width: 120px"
+              />
+            </label>
+            <label
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 0.75em;
+              "
+            >
+              Peso
+              <input
+                id="customItemWeight"
+                type="number"
+                min="0"
+                step="0.01"
+                value="0"
+                style="width: 70px"
+              />
+            </label>
+            <label
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 0.75em;
+              "
+            >
+              Preço
+              <input
+                id="customItemPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                value="0"
+                style="width: 70px"
+              />
+            </label>
+            <label
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 0.75em;
+              "
+            >
+              Qtd.
+              <input
+                id="customItemQty"
+                type="number"
+                min="1"
+                value="1"
+                style="width: 64px"
+              />
+            </label>
+            <select id="customItemStorage"></select>
+            <button id="addCustomItemBtn"></button>
+          </div>
+          <div class="controls-row">
+            <input id="customItemDescription" type="text" style="flex: 1" />
+          </div>
+          <div id="customInventoryList" class="storage-list-card"></div>
+        </div>
+
+        <!-- Allies (add) -->
         <div id="ally-add-control"></div>
-      </section>
 
-      <!-- ───────────────────────────────────────────────────────────────────
-           OUTPUT (debug)
-           ─────────────────────────────────────────────────────────────────── -->
-      <section id="section-output" class="l-section">
-        <div class="box box--output">
+        <!-- Output (debug) -->
+        <div class="box box--output" id="output-box">
           <details>
             <summary id="sec-output"></summary>
             <pre id="out"></pre>
           </details>
         </div>
-      </section>
+      </div>
     </main>
 
     <!-- ─────────────────────────────────────────────────────────────────────────
@@ -1659,43 +1281,8 @@
         // Top bar (the page selector hydrates itself — see components/pageSelector.js)
         setText("topbar-title", L.app.title);
 
-        // Nav labels are now rendered by nav.js (initNav) from LABELS.nav
-
-        // Tab button labels
-        // section-character
-        setText("tab-btn-char-info", L.tabs.character.info);
-        setText("tab-btn-char-points", L.tabs.character.points);
-        setText("tab-btn-char-image", L.tabs.character.image);
-        // section-attributes
-        setText("tab-btn-attr-primary", L.tabs.attributes.primary);
-        setText("tab-btn-attr-secondary", L.tabs.attributes.secondary);
-        setText("tab-btn-attr-damage", L.tabs.attributes.baseDamage);
-        setText("tab-btn-attr-resistances", L.tabs.attributes.resistances);
-        // section-traits
-        setText("tab-btn-traits-advantages", L.tabs.traits.advantages);
-        setText("tab-btn-traits-disadvantages", L.tabs.traits.disadvantages);
-        // section-skills
-        setText("tab-btn-skills-list", L.tabs.skills.skills);
-        // section-magic
-        setText("tab-btn-magic-spells", L.tabs.magic.spells);
-        // section-defense
-        setText("tab-btn-equip-armor", L.tabs.equipment.armor);
-        setText("tab-btn-equip-shields", L.tabs.equipment.shields);
-        // section-weapons
-        setText("tab-btn-equip-melee", L.tabs.equipment.melee);
-        setText("tab-btn-equip-ranged", L.tabs.equipment.ranged);
-        setText("tab-btn-equip-firearms", L.tabs.equipment.firearms);
-        setText("tab-btn-equip-ammo", L.tabs.equipment.ammo);
-        // section-magic-gear
-        setText("tab-btn-magic-gear", L.tabs.magic.gear);
-        setText("tab-btn-inv-accessories", L.tabs.inventory.accessories);
-        // section-consumables
-        setText("tab-btn-inv-alchemy", L.tabs.inventory.alchemy);
-        setText("tab-btn-inv-survival", L.tabs.inventory.survivalGear);
-        // section-coins
-        setText("tab-btn-inv-coin", L.tabs.inventory.coinPurse);
-        // section-custom-items
-        setText("tab-btn-inv-custom", L.tabs.inventory.customInventory);
+        // Nav, group and tab labels are rendered by js/layout/buildSheetLayout.js,
+        // nav.js and groupNav.js from LABELS
 
         // Sub-section summaries still in use (equip sub-details, output)
         EQUIP_SECTION_PREFIXES.forEach((prefix) => {

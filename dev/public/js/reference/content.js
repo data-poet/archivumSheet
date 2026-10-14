@@ -1,5 +1,5 @@
-// Reference sections are DOM-generated (unlike the main sheet's hand-written index.html)
-// since they're uniform (title, tabs, prose), making a new section config-only. Reuses the
+// Reference sections are DOM-generated since they're uniform (title, tabs, prose), making a new
+// section config-only — the sheet does the same via js/layout/buildSheetLayout.js. Reuses the
 // main sheet's section classes so styling and the [data-section] accent mechanism apply free.
 import { LABELS } from "../localization/pt-BR/index.js";
 

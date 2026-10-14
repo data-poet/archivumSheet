@@ -3,6 +3,7 @@ import {
   renderSidebarSections,
 } from "dev/public/js/components/nav.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
+import { LAYOUT_SECTIONS } from "dev/public/js/layout/sheetLayout.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import {
   installMockFetch,
@@ -47,23 +48,21 @@ beforeEach(() => {
 });
 
 describe("initNav — building the nav bars", () => {
-  test("renders one sidebar link per LABELS.nav entry, first one active, with icon/label/data-section", () => {
+  test("renders one sidebar link per layout section, first one active, with icon/label/data-section/accent", () => {
     initNav();
 
     const links = document.querySelectorAll("#sidebar .sidebar-link");
-    expect(links).toHaveLength(LABELS.nav.length);
+    expect(links).toHaveLength(LAYOUT_SECTIONS.length);
     expect(links[0].classList.contains("is-active")).toBe(true);
     expect(links[1].classList.contains("is-active")).toBe(false);
 
-    const first = LABELS.nav[0];
-    expect(links[0].dataset.section).toBe(first.key);
-    expect(links[0].getAttribute("href")).toBe(`#${first.key}`);
-    expect(links[0].querySelector(".sidebar-icon").textContent).toBe(
-      first.icon,
-    );
-    expect(links[0].querySelector(".sidebar-label").textContent).toBe(
-      first.label,
-    );
+    const first = LAYOUT_SECTIONS[0];
+    const { label, icon } = LABELS.nav.sections[first.id];
+    expect(links[0].dataset.section).toBe(first.id);
+    expect(links[0].dataset.accent).toBe(first.accent);
+    expect(links[0].getAttribute("href")).toBe(`#${first.id}`);
+    expect(links[0].querySelector(".sidebar-icon").textContent).toBe(icon);
+    expect(links[0].querySelector(".sidebar-label").textContent).toBe(label);
   });
 
   test("does not throw when #sidebar is missing", () => {
@@ -76,20 +75,20 @@ describe("initNav — building the nav bars", () => {
     initNav();
     expect(document.querySelectorAll("#sidebar .sidebar-nav")).toHaveLength(1);
     expect(document.querySelectorAll("#sidebar .sidebar-link")).toHaveLength(
-      LABELS.nav.length,
+      LAYOUT_SECTIONS.length,
     );
   });
 });
 
 describe("renderSidebarSections", () => {
-  test("renders only the given sections, in LABELS.nav order, first one active", () => {
+  test("renders only the given sections, in the given order, first one active", () => {
     initNav();
-    renderSidebarSections([LABELS.nav[3].key, LABELS.nav[1].key]);
+    renderSidebarSections([LAYOUT_SECTIONS[1], LAYOUT_SECTIONS[3]]);
 
     const links = document.querySelectorAll("#sidebar .sidebar-link");
     expect(Array.from(links, (l) => l.dataset.section)).toEqual([
-      LABELS.nav[1].key,
-      LABELS.nav[3].key,
+      LAYOUT_SECTIONS[1].id,
+      LAYOUT_SECTIONS[3].id,
     ]);
     expect(links[0].classList.contains("is-active")).toBe(true);
     expect(document.querySelectorAll("#sidebar .sidebar-nav")).toHaveLength(1);
@@ -104,7 +103,7 @@ describe("initNav — click highlighting", () => {
 
   test("clicking a sidebar link prevents default, scrolls to the target section, and marks it active", () => {
     initNav();
-    sectionDOM(LABELS.nav[1].key);
+    sectionDOM(LAYOUT_SECTIONS[1].id);
 
     const link = document.querySelectorAll("#sidebar .sidebar-link")[1];
     const event = new MouseEvent("click", { bubbles: true, cancelable: true });
@@ -126,7 +125,7 @@ describe("initNav — click highlighting", () => {
   test("scrolls without animation when the OS reduce-motion setting is on", () => {
     window.matchMedia = jest.fn(() => ({ matches: true }));
     initNav();
-    sectionDOM(LABELS.nav[1].key);
+    sectionDOM(LAYOUT_SECTIONS[1].id);
 
     document
       .querySelectorAll("#sidebar .sidebar-link")[1]
@@ -187,7 +186,7 @@ describe("initNav — sidebar version", () => {
 describe("initNav — scroll-driven highlighting", () => {
   test("observes every .l-section with a 0.25 threshold", () => {
     initNav();
-    sectionDOM(LABELS.nav[0].key, LABELS.nav[1].key);
+    sectionDOM(LAYOUT_SECTIONS[0].id, LAYOUT_SECTIONS[1].id);
     // Re-init: the observer is set up once over whatever .l-section elements exist at call time.
     initNav();
 
@@ -197,31 +196,31 @@ describe("initNav — scroll-driven highlighting", () => {
   });
 
   test("marks a section's nav link active when it intersects the viewport", () => {
-    sectionDOM(LABELS.nav[3].key);
+    sectionDOM(LAYOUT_SECTIONS[3].id);
     initNav();
 
     const observer = MockIntersectionObserver.instances.at(-1);
     observer.callback([
-      { isIntersecting: true, target: { id: LABELS.nav[3].key } },
+      { isIntersecting: true, target: { id: LAYOUT_SECTIONS[3].id } },
     ]);
 
     const link = document.querySelector(
-      `#sidebar .sidebar-link[data-section="${LABELS.nav[3].key}"]`,
+      `#sidebar .sidebar-link[data-section="${LAYOUT_SECTIONS[3].id}"]`,
     );
     expect(link.classList.contains("is-active")).toBe(true);
   });
 
   test("ignores entries that are not currently intersecting", () => {
-    sectionDOM(LABELS.nav[4].key);
+    sectionDOM(LAYOUT_SECTIONS[4].id);
     initNav();
 
     const observer = MockIntersectionObserver.instances.at(-1);
     observer.callback([
-      { isIntersecting: false, target: { id: LABELS.nav[4].key } },
+      { isIntersecting: false, target: { id: LAYOUT_SECTIONS[4].id } },
     ]);
 
     const link = document.querySelector(
-      `#sidebar .sidebar-link[data-section="${LABELS.nav[4].key}"]`,
+      `#sidebar .sidebar-link[data-section="${LAYOUT_SECTIONS[4].id}"]`,
     );
     expect(link.classList.contains("is-active")).toBe(false);
   });

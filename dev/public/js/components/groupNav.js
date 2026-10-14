@@ -2,6 +2,7 @@
 // as tabs.js, so element IDs and event wiring survive group switches.
 // initGroupNav() must run after initNav() (it rescopes the sidebar) and before initTabs().
 import { LABELS } from "../localization/pt-BR/index.js";
+import { SHEET_LAYOUT } from "../layout/sheetLayout.js";
 import { getActiveGroup, setActiveGroup } from "../store/groupState.js";
 import { renderSidebarSections } from "./nav.js";
 
@@ -9,8 +10,7 @@ const NAV_ID = "groupnav";
 
 // A stored key can outlive its group (renamed or removed), so unknown keys fall back.
 function _resolveGroup(key) {
-  const { items } = LABELS.groups;
-  return items.find((group) => group.key === key) ?? items[0];
+  return SHEET_LAYOUT.find(({ group }) => group === key) ?? SHEET_LAYOUT[0];
 }
 
 function _getButtons() {
@@ -21,13 +21,12 @@ function _buildGroupNav() {
   const nav = document.getElementById(NAV_ID);
   if (!nav) return;
 
-  const { ariaLabel, items } = LABELS.groups;
-  nav.setAttribute("aria-label", ariaLabel);
+  nav.setAttribute("aria-label", LABELS.nav.groupsAriaLabel);
   nav.innerHTML = `
     <div class="groupnav-list" role="tablist">
-      ${items
-        .map(
-          ({ key, label, icon }) => `
+      ${SHEET_LAYOUT.map(({ group: key }) => {
+        const { label, icon } = LABELS.nav.groups[key] ?? {};
+        return `
         <button
           type="button"
           class="groupnav-btn"
@@ -36,37 +35,36 @@ function _buildGroupNav() {
           aria-selected="false"
           tabindex="-1"
         >
-          <span class="groupnav-icon" aria-hidden="true">${icon}</span>
-          <span class="groupnav-label">${label}</span>
-        </button>`,
-        )
-        .join("")}
+          <span class="groupnav-icon" aria-hidden="true">${icon ?? ""}</span>
+          <span class="groupnav-label">${label ?? ""}</span>
+        </button>`;
+      }).join("")}
     </div>`;
 }
 
 export function activateGroup(key) {
-  const group = _resolveGroup(key);
-  const members = new Set(group.sections);
+  const { group, sections } = _resolveGroup(key);
+  const members = new Set(sections.map(({ id }) => id));
 
   document.querySelectorAll(".l-section").forEach((section) => {
     section.hidden = !members.has(section.id);
   });
 
   _getButtons().forEach((btn) => {
-    const isActive = btn.dataset.group === group.key;
+    const isActive = btn.dataset.group === group;
     btn.classList.toggle("is-active", isActive);
     btn.setAttribute("aria-selected", String(isActive));
     btn.tabIndex = isActive ? 0 : -1;
     if (isActive) btn.scrollIntoView?.({ block: "nearest", inline: "nearest" });
   });
 
-  renderSidebarSections(group.sections);
-  setActiveGroup(group.key);
-  return group.key;
+  renderSidebarSections(sections);
+  setActiveGroup(group);
+  return group;
 }
 
 function _switchTo(key) {
-  const previous = _resolveGroup(getActiveGroup()).key;
+  const previous = _resolveGroup(getActiveGroup()).group;
   if (activateGroup(key) !== previous) window.scrollTo({ top: 0 });
 }
 

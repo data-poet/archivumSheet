@@ -136,32 +136,29 @@
   border-top-color: var(--_section-accent, var(--accent-character));
 }
 
-/* shared --_section-accent block, consumed by bottomnav, sidebar and <section> elements */
-[data-section="section-character"] {
+/* --_section-accent for sheet sections and their sidebar links; data-accent comes from js/layout/sheetLayout.js */
+[data-accent="character"] {
   --_section-accent: var(--accent-character);
 }
-[data-section="section-attributes"] {
+[data-accent="attributes"] {
   --_section-accent: var(--accent-attributes);
 }
-[data-section="section-traits"] {
+[data-accent="traits"] {
   --_section-accent: var(--accent-traits);
 }
-[data-section="section-skills"] {
+[data-accent="skills"] {
   --_section-accent: var(--accent-skills);
 }
-[data-section="section-magic"] {
+[data-accent="magic"] {
   --_section-accent: var(--accent-magic);
 }
-[data-section="section-defense"],
-[data-section="section-weapons"],
-[data-section="section-magic-gear"] {
+[data-accent="equipment"] {
   --_section-accent: var(--accent-equipment);
 }
-[data-section="section-consumables"],
-[data-section="section-coins"],
-[data-section="section-custom-items"] {
+[data-accent="inventory"] {
   --_section-accent: var(--accent-inventory);
 }
+/* reference page sections still key off data-section (js/reference/content.js) */
 [data-section="section-combat"] {
   --_section-accent: var(--accent-combat);
 }

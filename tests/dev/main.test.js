@@ -6,6 +6,9 @@ jest.mock("dev/public/js/events/index.js", () => ({
 jest.mock("dev/public/js/components/nav.js", () => ({
   initNav: jest.fn(),
 }));
+jest.mock("dev/public/js/layout/buildSheetLayout.js", () => ({
+  buildSheetLayout: jest.fn(),
+}));
 jest.mock("dev/public/js/components/groupNav.js", () => ({
   initGroupNav: jest.fn(),
 }));
@@ -117,6 +120,7 @@ jest.mock("dev/public/js/components/allies/allyAddInline.js", () => ({
 
 import { bindUI } from "dev/public/js/events/index.js";
 import { initNav } from "dev/public/js/components/nav.js";
+import { buildSheetLayout } from "dev/public/js/layout/buildSheetLayout.js";
 import { initGroupNav } from "dev/public/js/components/groupNav.js";
 import { initTabs } from "dev/public/js/components/tabs.js";
 import { initViewMode } from "dev/public/js/components/viewMode.js";
@@ -182,16 +186,23 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
     expect(updateActualValues).toHaveBeenCalledTimes(1);
   });
 
-  // initGroupNav() rescopes the sidebar initNav() built, and hides sections before tabs init.
-  test("initializes the group nav after the nav and before the tabs", async () => {
+  // The layout builds the section shells every nav/tab init queries; initGroupNav() then
+  // rescopes the sidebar initNav() built, and hides sections before tabs init.
+  test("builds the layout first, then nav, group nav and tabs in that order", async () => {
     const order = [];
+    buildSheetLayout.mockImplementation(() => order.push("buildSheetLayout"));
     initNav.mockImplementation(() => order.push("initNav"));
     initGroupNav.mockImplementation(() => order.push("initGroupNav"));
     initTabs.mockImplementation(() => order.push("initTabs"));
 
     await bootstrap();
 
-    expect(order).toEqual(["initNav", "initGroupNav", "initTabs"]);
+    expect(order).toEqual([
+      "buildSheetLayout",
+      "initNav",
+      "initGroupNav",
+      "initTabs",
+    ]);
   });
 
   // Order matters: initViewMode() moves #tab-char-resume and updateActualValues() reads
