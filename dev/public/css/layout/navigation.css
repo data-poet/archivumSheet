@@ -152,10 +152,14 @@
 [data-section="section-magic"] {
   --_section-accent: var(--accent-magic);
 }
-[data-section="section-equipment"] {
+[data-section="section-defense"],
+[data-section="section-weapons"],
+[data-section="section-magic-gear"] {
   --_section-accent: var(--accent-equipment);
 }
-[data-section="section-inventory"] {
+[data-section="section-consumables"],
+[data-section="section-coins"],
+[data-section="section-custom-items"] {
   --_section-accent: var(--accent-inventory);
 }
 [data-section="section-combat"] {

@@ -153,6 +153,17 @@ describe("initGroupNav — interaction", () => {
 });
 
 describe("GROUPS config", () => {
+  test("every .l-section in index.html belongs to a group, and every grouped section exists there", () => {
+    const html = require("fs").readFileSync("dev/public/index.html", "utf8");
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const pageSections = Array.from(
+      doc.querySelectorAll(".l-section"),
+      (s) => s.id,
+    );
+
+    expect([...pageSections].sort()).toEqual([...ALL_SECTIONS].sort());
+  });
+
   test("every grouped section has a nav entry and belongs to exactly one group", () => {
     const navKeys = new Set(LABELS.nav.map((item) => item.key));
     ALL_SECTIONS.forEach((key) => expect(navKeys.has(key)).toBe(true));
