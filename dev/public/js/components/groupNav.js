@@ -25,18 +25,20 @@ function _buildGroupNav() {
   nav.innerHTML = `
     <div class="groupnav-list" role="tablist">
       ${SHEET_LAYOUT.map(({ group: key }) => {
-        const { label, icon } = LABELS.nav.groups[key] ?? {};
+        const { label, short, icon } = LABELS.nav.groups[key] ?? {};
         return `
         <button
           type="button"
           class="groupnav-btn"
           role="tab"
           data-group="${key}"
+          aria-label="${label ?? ""}"
           aria-selected="false"
           tabindex="-1"
         >
           <span class="groupnav-icon" aria-hidden="true">${icon ?? ""}</span>
-          <span class="groupnav-label">${label ?? ""}</span>
+          <span class="groupnav-label" aria-hidden="true">${label ?? ""}</span>
+          <span class="groupnav-label-short" aria-hidden="true">${short ?? label ?? ""}</span>
         </button>`;
       }).join("")}
     </div>`;

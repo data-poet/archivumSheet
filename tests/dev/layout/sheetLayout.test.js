@@ -62,9 +62,14 @@ describe("SHEET_LAYOUT shape", () => {
 });
 
 describe("SHEET_LAYOUT ↔ localization", () => {
-  test("every group, section and tab has a label", () => {
+  test("every group (with its mobile short label), section and tab has a label", () => {
     SHEET_LAYOUT.forEach(({ group }) =>
-      expect(LABELS.nav.groups[group]?.label).toBeTruthy(),
+      expect(LABELS.nav.groups[group]).toEqual(
+        expect.objectContaining({
+          label: expect.any(String),
+          short: expect.any(String),
+        }),
+      ),
     );
     LAYOUT_SECTIONS.forEach(({ id, tabs = [] }) => {
       expect(LABELS.nav.sections[id]?.label).toBeTruthy();

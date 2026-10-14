@@ -1,4 +1,5 @@
-/* Replaces the bottom nav on the sheet: fixed under the topbar, scrolls sideways once the groups outgrow the viewport. */
+/* Replaces the bottom nav on the sheet, fixed under the topbar. Mobile stacks the icon over a short
+   label so all groups fit a 320px screen; sideways scroll is only a fallback. */
 .l-groupnav {
   position: fixed;
   top: var(--topbar-h);
@@ -33,21 +34,23 @@
 }
 
 .groupnav-btn {
-  flex: 1 0 auto;
+  flex: 1 0 0;
+  min-width: max-content; /* equal widths while they fit; overflow scrolls instead of clipping labels */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
   background: none;
   border: none;
   border-radius: var(--radius);
   color: var(--color-text-muted);
   font-family: inherit;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  padding: 0 clamp(10px, 3vw, 18px);
+  padding: 0 var(--space-1);
   cursor: pointer;
   scroll-snap-align: start;
   transition:
@@ -70,6 +73,10 @@
 .groupnav-icon {
   font-size: 16px;
   line-height: 1;
+}
+
+.groupnav-label {
+  display: none;
 }
 
 body.has-groupnav {
@@ -96,7 +103,18 @@ body.has-groupnav {
   }
 
   .groupnav-btn {
-    flex: 1 1 0;
+    flex-direction: row;
+    gap: var(--space-3);
+    font-size: var(--fs-sm);
+    padding: 0 clamp(10px, 3vw, 18px);
+  }
+
+  .groupnav-label {
+    display: inline;
+  }
+
+  .groupnav-label-short {
+    display: none;
   }
 
   .has-groupnav .l-section {
