@@ -5,8 +5,12 @@ import {
   setCollapsed,
 } from "dev/public/js/store/sectionCollapseState.js";
 
-// viewModeState.js and themeState.js: persisted to localStorage.
+// viewModeState.js, groupState.js and themeState.js: persisted to localStorage.
 import { isViewMode, setViewMode } from "dev/public/js/store/viewModeState.js";
+import {
+  getActiveGroup,
+  setActiveGroup,
+} from "dev/public/js/store/groupState.js";
 import {
   getTheme,
   setTheme,
@@ -64,6 +68,18 @@ describe("viewModeState", () => {
     setViewMode(true);
     setViewMode(false);
     expect(isViewMode()).toBe(false);
+  });
+});
+
+describe("groupState", () => {
+  test("returns null when no group has been persisted", () => {
+    expect(getActiveGroup()).toBeNull();
+  });
+
+  test("persists the active group across reads", () => {
+    setActiveGroup("equipment");
+    expect(getActiveGroup()).toBe("equipment");
+    expect(localStorage.getItem("archivum:activeGroup")).toBe("equipment");
   });
 });
 

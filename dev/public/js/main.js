@@ -1,5 +1,6 @@
 import { bindUI } from "./events/index.js";
 import { initNav } from "./components/nav.js";
+import { initGroupNav } from "./components/groupNav.js";
 import { initPageSelector } from "./components/pageSelector.js";
 import { initSelectLabels } from "./components/selectLabels.js";
 import { initTabs } from "./components/tabs.js";
@@ -31,6 +32,7 @@ export async function bootstrap() {
   initAutoRun(runEngine);
   bindUI();
   initNav();
+  initGroupNav();
   initPageSelector();
   initTabs();
   initViewMode();

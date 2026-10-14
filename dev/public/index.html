@@ -33,7 +33,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
   </head>
 
-  <body>
+  <body class="has-groupnav">
     <!-- ═══════════════════════════════════════════════════════════════════════
          MOBILE: Top bar
          All visible text here is set by initAppShell() from the localization file
@@ -87,6 +87,11 @@
          DESKTOP: Sidebar nav
          ═══════════════════════════════════════════════════════════════════════ -->
     <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Section groups bar (built by components/groupNav.js)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <nav class="l-groupnav" id="groupnav"></nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MAIN CONTENT
@@ -1503,11 +1508,6 @@
          viewMode.js moves the panel between this host and #view-mode-resume.
          Panel markup is mounted by components/resume/skeleton.js. -->
     <div id="resume-panel-host" style="display: none" aria-hidden="true"></div>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         MOBILE: Bottom tab navigation
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
 
     <!-- Page selector popover (built by components/pageSelector.js) -->
     <div

@@ -1,4 +1,4 @@
-// initNav() must run before initTabs().
+// initNav() must run before initGroupNav(), which scopes the sidebar to the active group.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { scrollToSection } from "../shared/motion.js";
 import { fetchAppInfo } from "../api.js";
@@ -50,36 +50,17 @@ function _renderSidebarVersion() {
     });
 }
 
-function _buildBottomNav(items) {
-  const nav = document.getElementById("bottomnav");
-  if (!nav) return;
-
-  nav.innerHTML = items
-    .map(
-      ({ key, label, icon }, i) => `
-      <a
-        href="#${key}"
-        class="bottomnav-link${i === 0 ? " is-active" : ""}"
-        data-section="${key}"
-      >
-        <span class="bottomnav-icon" aria-hidden="true">${icon}</span>
-        <span>${label}</span>
-      </a>`,
-    )
-    .join("");
-}
-
 function _initActiveHighlight() {
   function setActiveNav(sectionId) {
     document
-      .querySelectorAll(".sidebar-link, .bottomnav-link")
+      .querySelectorAll(".sidebar-link")
       .forEach((l) =>
         l.classList.toggle("is-active", l.dataset.section === sectionId),
       );
   }
 
   document.addEventListener("click", (e) => {
-    const link = e.target.closest(".sidebar-link, .bottomnav-link");
+    const link = e.target.closest(".sidebar-link");
     if (!link) return;
     e.preventDefault();
     const target = document.getElementById(link.dataset.section);
@@ -99,10 +80,13 @@ function _initActiveHighlight() {
   sections.forEach((s) => observer.observe(s));
 }
 
+export function renderSidebarSections(sectionKeys) {
+  const keys = new Set(sectionKeys);
+  _buildSidebar(LABELS.nav.filter(({ key }) => keys.has(key)));
+}
+
 export function initNav() {
-  const items = LABELS.nav;
-  _buildSidebar(items);
-  _buildBottomNav(items);
+  _buildSidebar(LABELS.nav);
   _initActiveHighlight();
   _renderSidebarVersion();
 }
