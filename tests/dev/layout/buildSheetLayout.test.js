@@ -4,6 +4,7 @@ import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 const tabbed = LAYOUT_SECTIONS.find((s) => s.tabs?.length > 1);
+const single = LAYOUT_SECTIONS.find((s) => s.tabs?.length === 1);
 const plain = LAYOUT_SECTIONS.find((s) => s.content);
 
 function poolDOM({ extra = "" } = {}) {
@@ -60,6 +61,32 @@ describe("buildSheetLayout", () => {
     expect(
       Array.from(box.querySelectorAll(":scope > .tab-panel"), (p) => p.id),
     ).toEqual(tabbed.tabs);
+  });
+
+  test("single-tab sections get a section-title heading instead of a tab button, with the panel pre-activated", () => {
+    poolDOM();
+    buildSheetLayout();
+
+    const strip = document.querySelector(`#${single.id} .tab-strip`);
+    expect(strip.querySelector(".tab-btn")).toBeNull();
+    expect(strip.querySelector(".tab-strip-title").textContent).toBe(
+      LABELS.nav.sections[single.id].label,
+    );
+    expect(strip.querySelector(".tab-strip-collapse")).not.toBeNull();
+    expect(
+      document.getElementById(single.tabs[0]).classList.contains("is-active"),
+    ).toBe(true);
+  });
+
+  test("multi-tab panels are left for initTabs() to activate", () => {
+    poolDOM();
+    buildSheetLayout();
+
+    tabbed.tabs.forEach((id) =>
+      expect(document.getElementById(id).classList.contains("is-active")).toBe(
+        false,
+      ),
+    );
   });
 
   test("content sections wrap their element directly, without a box or strip", () => {

@@ -98,6 +98,20 @@
   border-bottom-color: var(--_section-accent, var(--accent-character));
 }
 
+/* Heading for single-tab sections: same metrics and accent as an active .tab-btn, not interactive. */
+.tab-strip-title {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 clamp(12px, 3vw, 20px);
+  color: var(--_section-accent, var(--accent-character));
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 .tab-panel {
   display: none;
   padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 16px);
@@ -121,4 +135,3 @@
       transparent
     );
 }
-
