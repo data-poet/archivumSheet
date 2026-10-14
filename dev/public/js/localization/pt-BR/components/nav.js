@@ -1,11 +1,11 @@
 export const NAV = {
   groupsAriaLabel: "Grupos de seções",
   groups: {
-    character: { label: "Personagem", icon: "🧙" },
-    abilities: { label: "Habilidades", icon: "✨" },
-    equipment: { label: "Equipamento", icon: "🛡️" },
-    inventory: { label: "Inventário", icon: "🎒" },
-    misc: { label: "Misc", icon: "⚙️" },
+    character: { label: "Personagem", short: "Pers.", icon: "🧙" },
+    abilities: { label: "Habilidades", short: "Habil.", icon: "✨" },
+    equipment: { label: "Equipamento", short: "Equip.", icon: "🛡️" },
+    inventory: { label: "Inventário", short: "Invent.", icon: "🎒" },
+    misc: { label: "Misc", short: "Misc", icon: "⚙️" },
   },
   sections: {
     "section-character": { label: "Personagem", icon: "👤" },

@@ -62,6 +62,16 @@ describe("initGroupNav — rendering", () => {
     );
   });
 
+  test("renders the short label for mobile and keeps the full name as the accessible name", () => {
+    initGroupNav();
+
+    const button = document.querySelector("#groupnav .groupnav-btn");
+    expect(button.querySelector(".groupnav-label-short").textContent).toBe(
+      GROUPS[0].short,
+    );
+    expect(button.getAttribute("aria-label")).toBe(GROUPS[0].label);
+  });
+
   test("starts on the first group when nothing is stored", () => {
     initGroupNav();
 
