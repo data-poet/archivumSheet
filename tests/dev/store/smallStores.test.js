@@ -38,8 +38,8 @@ describe("tabState", () => {
 });
 
 describe("sectionCollapseState", () => {
-  test("a section that has never been toggled defaults to expanded (false)", () => {
-    expect(isCollapsed("section-never-touched")).toBe(false);
+  test("a section that has never been toggled defaults to collapsed (true)", () => {
+    expect(isCollapsed("section-never-touched")).toBe(true);
   });
 
   test("records and returns the collapsed state per section", () => {
@@ -48,8 +48,8 @@ describe("sectionCollapseState", () => {
   });
 
   test("sections are tracked independently", () => {
-    setCollapsed("section-traits", true);
-    expect(isCollapsed("section-inventory")).toBe(false);
+    setCollapsed("section-traits", false);
+    expect(isCollapsed("section-inventory")).toBe(true);
   });
 });
 
