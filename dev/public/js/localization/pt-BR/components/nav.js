@@ -1,55 +1,25 @@
-export const NAV = [
-  { key: "section-character", label: "Personagem", icon: "👤" },
-  { key: "section-attributes", label: "Atributos", icon: "💪" },
-  { key: "section-traits", label: "Traços", icon: "🧬" },
-  { key: "section-skills", label: "Perícias", icon: "🎯" },
-  { key: "section-magic", label: "Magia", icon: "🔮" },
-  { key: "section-defense", label: "Defesa", icon: "🛡️" },
-  { key: "section-weapons", label: "Armas", icon: "⚔️" },
-  { key: "section-magic-gear", label: "Mágicos & Acessórios", icon: "💍" },
-  { key: "section-consumables", label: "Consumíveis", icon: "🧪" },
-  { key: "section-coins", label: "Moedas", icon: "🪙" },
-  { key: "section-custom-items", label: "Itens Livres", icon: "📦" },
-  { key: "section-allies", label: "Aliados", icon: "🤝" },
-  { key: "section-output", label: "Saída do app", icon: "🧾" },
-];
-
-export const GROUPS = {
-  ariaLabel: "Grupos de seções",
-  items: [
-    {
-      key: "character",
-      label: "Personagem",
-      icon: "🧙",
-      sections: ["section-character", "section-attributes", "section-traits"],
-    },
-    {
-      key: "abilities",
-      label: "Habilidades",
-      icon: "✨",
-      sections: ["section-skills", "section-magic"],
-    },
-    {
-      key: "equipment",
-      label: "Equipamento",
-      icon: "🛡️",
-      sections: ["section-defense", "section-weapons", "section-magic-gear"],
-    },
-    {
-      key: "inventory",
-      label: "Inventário",
-      icon: "🎒",
-      sections: [
-        "section-consumables",
-        "section-coins",
-        "section-custom-items",
-      ],
-    },
-    {
-      key: "misc",
-      label: "Misc",
-      icon: "⚙️",
-      sections: ["section-allies", "section-output"],
-    },
-  ],
+export const NAV = {
+  groupsAriaLabel: "Grupos de seções",
+  groups: {
+    character: { label: "Personagem", icon: "🧙" },
+    abilities: { label: "Habilidades", icon: "✨" },
+    equipment: { label: "Equipamento", icon: "🛡️" },
+    inventory: { label: "Inventário", icon: "🎒" },
+    misc: { label: "Misc", icon: "⚙️" },
+  },
+  sections: {
+    "section-character": { label: "Personagem", icon: "👤" },
+    "section-attributes": { label: "Atributos", icon: "💪" },
+    "section-traits": { label: "Traços", icon: "🧬" },
+    "section-skills": { label: "Perícias", icon: "🎯" },
+    "section-magic": { label: "Magia", icon: "🔮" },
+    "section-defense": { label: "Defesa", icon: "🛡️" },
+    "section-weapons": { label: "Armas", icon: "⚔️" },
+    "section-magic-gear": { label: "Mágicos & Acessórios", icon: "💍" },
+    "section-consumables": { label: "Consumíveis", icon: "🧪" },
+    "section-coins": { label: "Moedas", icon: "🪙" },
+    "section-custom-items": { label: "Itens Livres", icon: "📦" },
+    "section-allies": { label: "Aliados", icon: "🤝" },
+    "section-output": { label: "Saída do app", icon: "🧾" },
+  },
 };

@@ -8,7 +8,7 @@ import { ATTRIBUTES, SECONDARY_ATTRIBUTES } from "./components/attributes.js";
 import { CHARACTERS } from "./components/characterSelector.js";
 import { DIALOG } from "./components/dialog.js";
 import { INVENTORY } from "./components/inventory.js";
-import { NAV, GROUPS } from "./components/nav.js";
+import { NAV } from "./components/nav.js";
 import { PAGES } from "./components/pageSelector.js";
 import { OUTPUT } from "./components/output.js";
 import { ELEMENTAL_RESISTANCES } from "./components/resistances.js";
@@ -51,7 +51,6 @@ export const LABELS = {
   dialog: DIALOG,
   characterImage: CHARACTER_IMAGE,
   nav: NAV,
-  groups: GROUPS,
   pages: PAGES,
   tabs: TABS,
   sections: SECTIONS,

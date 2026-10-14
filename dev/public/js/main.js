@@ -1,4 +1,5 @@
 import { bindUI } from "./events/index.js";
+import { buildSheetLayout } from "./layout/buildSheetLayout.js";
 import { initNav } from "./components/nav.js";
 import { initGroupNav } from "./components/groupNav.js";
 import { initPageSelector } from "./components/pageSelector.js";
@@ -28,6 +29,7 @@ import { AUDIENCE } from "./shared/availability.js";
 import { initCardCollapse } from "./shared/cardCollapse.js";
 
 export async function bootstrap() {
+  buildSheetLayout();
   mountResumePanel();
   initAutoRun(runEngine);
   bindUI();

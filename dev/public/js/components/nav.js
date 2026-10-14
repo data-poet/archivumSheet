@@ -2,26 +2,29 @@
 import { LABELS } from "../localization/pt-BR/index.js";
 import { scrollToSection } from "../shared/motion.js";
 import { fetchAppInfo } from "../api.js";
+import { LAYOUT_SECTIONS } from "../layout/sheetLayout.js";
 
-function _buildSidebar(items) {
+function _buildSidebar(sections) {
   const nav = document.getElementById("sidebar");
   if (!nav) return;
 
   const ul = nav.querySelector(".sidebar-nav") ?? document.createElement("ul");
-  ul.innerHTML = items
-    .map(
-      ({ key, label, icon }, i) => `
+  ul.innerHTML = sections
+    .map(({ id, accent }, i) => {
+      const { label, icon } = LABELS.nav.sections[id] ?? {};
+      return `
       <li>
         <a
-          href="#${key}"
+          href="#${id}"
           class="sidebar-link${i === 0 ? " is-active" : ""}"
-          data-section="${key}"
+          data-section="${id}"
+          ${accent ? `data-accent="${accent}"` : ""}
         >
-          <span class="sidebar-icon" aria-hidden="true">${icon}</span>
-          <span class="sidebar-label">${label}</span>
+          <span class="sidebar-icon" aria-hidden="true">${icon ?? ""}</span>
+          <span class="sidebar-label">${label ?? ""}</span>
         </a>
-      </li>`,
-    )
+      </li>`;
+    })
     .join("");
 
   if (!nav.querySelector(".sidebar-nav")) {
@@ -80,13 +83,12 @@ function _initActiveHighlight() {
   sections.forEach((s) => observer.observe(s));
 }
 
-export function renderSidebarSections(sectionKeys) {
-  const keys = new Set(sectionKeys);
-  _buildSidebar(LABELS.nav.filter(({ key }) => keys.has(key)));
+export function renderSidebarSections(sections) {
+  _buildSidebar(sections);
 }
 
 export function initNav() {
-  _buildSidebar(LABELS.nav);
+  _buildSidebar(LAYOUT_SECTIONS);
   _initActiveHighlight();
   _renderSidebarVersion();
 }

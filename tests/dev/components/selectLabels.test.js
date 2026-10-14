@@ -21,10 +21,10 @@ describe("initSelectLabels", () => {
 
     expect(
       document.getElementById("meleeNameSelect").getAttribute("aria-label"),
-    ).toBe(`${t("common.name")} — ${t("tabs.equipment.melee")}`);
+    ).toBe(`${t("common.name")} — ${t("tabs.tab-equip-melee")}`);
     expect(
       document.getElementById("meleeStorage").getAttribute("aria-label"),
-    ).toBe(`${t("common.storage")} — ${t("tabs.equipment.melee")}`);
+    ).toBe(`${t("common.storage")} — ${t("tabs.tab-equip-melee")}`);
     expect(
       document.getElementById("looseAmmoTypeFilter").getAttribute("aria-label"),
     ).toBe(`${t("common.type")} — ${t("ammo.looseAmmo")}`);

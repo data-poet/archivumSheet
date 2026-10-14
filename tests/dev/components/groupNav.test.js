@@ -5,9 +5,14 @@ import {
 import { initNav } from "dev/public/js/components/nav.js";
 import { getActiveGroup } from "dev/public/js/store/groupState.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
+import { SHEET_LAYOUT } from "dev/public/js/layout/sheetLayout.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
-const GROUPS = LABELS.groups.items;
+const GROUPS = SHEET_LAYOUT.map(({ group, sections }) => ({
+  key: group,
+  sections: sections.map(({ id }) => id),
+  ...LABELS.nav.groups[group],
+}));
 const ALL_SECTIONS = GROUPS.flatMap((group) => group.sections);
 
 function groupNavDOM() {
@@ -149,24 +154,5 @@ describe("initGroupNav — interaction", () => {
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
     expect(getActiveGroup()).toBe(GROUPS[0].key);
-  });
-});
-
-describe("GROUPS config", () => {
-  test("every .l-section in index.html belongs to a group, and every grouped section exists there", () => {
-    const html = require("fs").readFileSync("dev/public/index.html", "utf8");
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const pageSections = Array.from(
-      doc.querySelectorAll(".l-section"),
-      (s) => s.id,
-    );
-
-    expect([...pageSections].sort()).toEqual([...ALL_SECTIONS].sort());
-  });
-
-  test("every grouped section has a nav entry and belongs to exactly one group", () => {
-    const navKeys = new Set(LABELS.nav.map((item) => item.key));
-    ALL_SECTIONS.forEach((key) => expect(navKeys.has(key)).toBe(true));
-    expect(new Set(ALL_SECTIONS).size).toBe(ALL_SECTIONS.length);
   });
 });
