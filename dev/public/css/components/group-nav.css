@@ -1,0 +1,105 @@
+/* Replaces the bottom nav on the sheet: fixed under the topbar, scrolls sideways once the groups outgrow the viewport. */
+.l-groupnav {
+  position: fixed;
+  top: var(--topbar-h);
+  left: 0;
+  right: 0;
+  height: var(--groupnav-h);
+  padding: var(--space-2) clamp(8px, 3vw, 20px); /* inline padding mirrors .l-main so the track lines up with the sections */
+  box-sizing: border-box;
+  background: var(--color-bg);
+  z-index: 90; /* under the desktop sidebar, so its hover expansion overlaps this bar */
+}
+
+.groupnav-list {
+  display: flex;
+  gap: var(--space-2);
+  height: 100%;
+  max-width: var(--content-max-w);
+  padding: var(--space-2);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border-radius: calc(var(--radius) * 2);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.groupnav-list::-webkit-scrollbar {
+  display: none;
+}
+
+.groupnav-btn {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  padding: 0 clamp(10px, 3vw, 18px);
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.groupnav-btn:hover {
+  background: var(--color-btn-bg);
+  color: var(--color-text);
+}
+
+.groupnav-btn.is-active {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 700;
+}
+
+.groupnav-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+body.has-groupnav {
+  padding-top: calc(var(--topbar-h) + var(--groupnav-h));
+  padding-bottom: 0;
+}
+
+.has-groupnav .l-section {
+  scroll-margin-top: calc(var(--topbar-h) + var(--groupnav-h) + var(--space-4));
+}
+
+.is-view-mode .l-groupnav {
+  display: none;
+}
+
+.is-view-mode.has-groupnav {
+  padding-top: var(--topbar-h);
+}
+
+@media (min-width: 768px) {
+  .l-groupnav {
+    left: var(--sidebar-w);
+    padding-inline: clamp(12px, 2vw, 20px);
+  }
+
+  .groupnav-btn {
+    flex: 1 1 0;
+  }
+
+  .has-groupnav .l-section {
+    scroll-margin-top: calc(var(--groupnav-h) + var(--space-7));
+  }
+}

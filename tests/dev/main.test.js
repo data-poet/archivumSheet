@@ -6,6 +6,9 @@ jest.mock("dev/public/js/events/index.js", () => ({
 jest.mock("dev/public/js/components/nav.js", () => ({
   initNav: jest.fn(),
 }));
+jest.mock("dev/public/js/components/groupNav.js", () => ({
+  initGroupNav: jest.fn(),
+}));
 jest.mock("dev/public/js/components/tabs.js", () => ({
   initTabs: jest.fn(),
 }));
@@ -114,6 +117,7 @@ jest.mock("dev/public/js/components/allies/allyAddInline.js", () => ({
 
 import { bindUI } from "dev/public/js/events/index.js";
 import { initNav } from "dev/public/js/components/nav.js";
+import { initGroupNav } from "dev/public/js/components/groupNav.js";
 import { initTabs } from "dev/public/js/components/tabs.js";
 import { initViewMode } from "dev/public/js/components/viewMode.js";
 import { mountResumePanel } from "dev/public/js/components/resume/skeleton.js";
@@ -169,12 +173,25 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
 
     expect(bindUI).toHaveBeenCalledTimes(1);
     expect(initNav).toHaveBeenCalledTimes(1);
+    expect(initGroupNav).toHaveBeenCalledTimes(1);
     expect(initTabs).toHaveBeenCalledTimes(1);
     expect(initViewMode).toHaveBeenCalledTimes(1);
     expect(initTheme).toHaveBeenCalledTimes(1);
     expect(setupAutoRun).toHaveBeenCalledTimes(1);
     expect(initAttributeTableHeaders).toHaveBeenCalledTimes(1);
     expect(updateActualValues).toHaveBeenCalledTimes(1);
+  });
+
+  // initGroupNav() rescopes the sidebar initNav() built, and hides sections before tabs init.
+  test("initializes the group nav after the nav and before the tabs", async () => {
+    const order = [];
+    initNav.mockImplementation(() => order.push("initNav"));
+    initGroupNav.mockImplementation(() => order.push("initGroupNav"));
+    initTabs.mockImplementation(() => order.push("initTabs"));
+
+    await bootstrap();
+
+    expect(order).toEqual(["initNav", "initGroupNav", "initTabs"]);
   });
 
   // Order matters: initViewMode() moves #tab-char-resume and updateActualValues() reads

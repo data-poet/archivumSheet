@@ -1,4 +1,7 @@
-import { initNav } from "dev/public/js/components/nav.js";
+import {
+  initNav,
+  renderSidebarSections,
+} from "dev/public/js/components/nav.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import {
@@ -23,10 +26,7 @@ class MockIntersectionObserver {
 MockIntersectionObserver.instances = [];
 
 function navDOM() {
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `<nav id="sidebar"></nav><nav id="bottomnav"></nav>`,
-  );
+  document.body.insertAdjacentHTML("beforeend", `<nav id="sidebar"></nav>`);
 }
 
 function sectionDOM(...ids) {
@@ -66,16 +66,7 @@ describe("initNav — building the nav bars", () => {
     );
   });
 
-  test("renders the same items into the bottomnav, first one active", () => {
-    initNav();
-
-    const links = document.querySelectorAll("#bottomnav .bottomnav-link");
-    expect(links).toHaveLength(LABELS.nav.length);
-    expect(links[0].classList.contains("is-active")).toBe(true);
-    expect(links[0].dataset.section).toBe(LABELS.nav[0].key);
-  });
-
-  test("does not throw when #sidebar or #bottomnav is missing", () => {
+  test("does not throw when #sidebar is missing", () => {
     resetDOM();
     expect(() => initNav()).not.toThrow();
   });
@@ -87,6 +78,21 @@ describe("initNav — building the nav bars", () => {
     expect(document.querySelectorAll("#sidebar .sidebar-link")).toHaveLength(
       LABELS.nav.length,
     );
+  });
+});
+
+describe("renderSidebarSections", () => {
+  test("renders only the given sections, in LABELS.nav order, first one active", () => {
+    initNav();
+    renderSidebarSections([LABELS.nav[3].key, LABELS.nav[1].key]);
+
+    const links = document.querySelectorAll("#sidebar .sidebar-link");
+    expect(Array.from(links, (l) => l.dataset.section)).toEqual([
+      LABELS.nav[1].key,
+      LABELS.nav[3].key,
+    ]);
+    expect(links[0].classList.contains("is-active")).toBe(true);
+    expect(document.querySelectorAll("#sidebar .sidebar-nav")).toHaveLength(1);
   });
 });
 
@@ -115,22 +121,6 @@ describe("initNav — click highlighting", () => {
         .querySelectorAll("#sidebar .sidebar-link")[0]
         .classList.contains("is-active"),
     ).toBe(false);
-  });
-
-  test("highlighting a sidebar link also syncs the matching bottomnav link", () => {
-    initNav();
-    sectionDOM(LABELS.nav[2].key);
-
-    document
-      .querySelectorAll("#sidebar .sidebar-link")[2]
-      .dispatchEvent(
-        new MouseEvent("click", { bubbles: true, cancelable: true }),
-      );
-
-    const matchingBottomLink = document.querySelector(
-      `#bottomnav .bottomnav-link[data-section="${LABELS.nav[2].key}"]`,
-    );
-    expect(matchingBottomLink.classList.contains("is-active")).toBe(true);
   });
 
   test("scrolls without animation when the OS reduce-motion setting is on", () => {
