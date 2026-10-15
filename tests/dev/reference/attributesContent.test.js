@@ -148,7 +148,6 @@ describe("points_and_buying.md", () => {
     ["Vision", 1, 5],
     ["Hearing", 1, 5],
     ["Smell", 1, 5],
-    ["Dodge", 1, 5],
   ])(
     "%s: +%s per purchase, at most %i purchases, 5 points each",
     (attr, step, max) => {
@@ -162,14 +161,16 @@ describe("points_and_buying.md", () => {
     },
   );
 
-  test("Movement and DamageResistance cannot be bought", () => {
+  test("Movement, Dodge and DamageResistance cannot be bought", () => {
     const { attributes } = buildSecondaryAttributes(primaries, {
       DamageResistance: { bought: 3 },
+      Dodge: { bought: 3 },
     });
     expect(attributes.DamageResistance.bought).toBe(0);
+    expect(attributes.Dodge.bought).toBe(0);
     expect(attributes.Movement.bought).toBe(0);
     expect(markdown).toContain(
-      "| [[Deslocamento]], [[RD]] | não pode ser comprado | — |",
+      "| [[Deslocamento]], [[Esquiva]], [[RD]] | não pode ser comprado | — |",
     );
   });
 });
@@ -201,15 +202,15 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
     expect(markdown).toContain(`$5 + 4 = ${attributes.Dodge.value}$`);
   });
 
-  test("below 1/3 PV, VB halves (floor) and Deslocamento and Esquiva follow", () => {
+  test("below 1/3 PV, Deslocamento and Esquiva halve (round up) and VB stays", () => {
     const wounded = buildSecondaryAttributes(primaries, {
       HP: { modifier: -22 },
     }).attributes;
-    expect(wounded.BasicSpeed.value).toBe(2);
-    expect(wounded.Movement.value).toBe(2);
-    expect(wounded.Dodge.value).toBe(6);
+    expect(wounded.BasicSpeed.value).toBe(5.75);
+    expect(wounded.Movement.value).toBe(3);
+    expect(wounded.Dodge.value).toBe(5);
     expect(markdown).toContain(
-      "a VB passa de 5,75 para **2**, o Deslocamento para **2** e a Esquiva para **6**",
+      "o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**",
     );
   });
 });

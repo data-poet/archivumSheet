@@ -123,17 +123,6 @@ function buildSecondaryAttributes(
     }),
   };
 
-  // Halve BasicSpeed (floor) when current HP is below 1/3 of final_base_value; Movement/Dodge are computed after since they cascade from it.
-  // Threshold intentionally uses pre-modifier final_base_value, not the fully-modified HP.value, so gear/enchantment HP bonuses don't move the danger threshold — only current (post-damage) HP against the character's own natural max does.
-  const hpFinalBase = result.HP.final_base_value;
-  const hpCurrent = result.HP.value;
-  if (hpCurrent < hpFinalBase / 3) {
-    result.BasicSpeed = {
-      ...result.BasicSpeed,
-      value: Math.floor(result.BasicSpeed.value / 2),
-    };
-  }
-
   const carry = carry_weight || calculateCarryWeight(ST, 0);
 
   let movementBase = Math.floor(
@@ -162,8 +151,24 @@ function buildSecondaryAttributes(
 
   result.Dodge = resolveSecondary({
     base_value: dodgeBase,
-    ...config.Dodge,
+    maxBought: 0,
+    bought: 0,
+    modifier: config.Dodge?.modifier ?? 0,
+    enchantment_modifier: config.Dodge?.enchantment_modifier ?? 0,
+    has_enchantment_modifier: config.Dodge?.has_enchantment_modifier ?? false,
   });
+
+  // 4e B419: under 1/3 of natural HP (gear bonuses excluded), halve current Move and Dodge, rounding up.
+  if (result.HP.value < result.HP.final_base_value / 3) {
+    result.Movement = {
+      ...result.Movement,
+      value: Math.ceil(result.Movement.value / 2),
+    };
+    result.Dodge = {
+      ...result.Dodge,
+      value: Math.ceil(result.Dodge.value / 2),
+    };
+  }
 
   // Damage isn't a "secondary attribute" — no bought/points.
   const damage = calculateDamage(ST, {

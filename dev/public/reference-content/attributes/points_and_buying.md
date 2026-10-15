@@ -28,13 +28,12 @@ DX 12 custa $(12 - 10) \times 20 = 40$ pontos. ST 9 devolve $(9 - 10) \times 10 
 
 Depois de calculado, cada atributo secundário pode ser aumentado com compras. Cada compra custa **5 pontos**:
 
-| Atributo                            |   Ganho por compra    | Máximo de compras |
-| :---------------------------------- | :-------------------: | :---------------: |
-| [[PV]], [[Mana]], [[Toxicidade]]    |        **+4**         |         5         |
-| [[VB]]                              |       **+0,5**        |         6         |
-| [[Vontade]], Visão, Audição, Olfato |        **+1**         |         5         |
-| [[Esquiva]]                         |        **+1**         |         5         |
-| [[Deslocamento]], [[RD]]            | não pode ser comprado |         —         |
+| Atributo                              |   Ganho por compra    | Máximo de compras |
+| :------------------------------------ | :-------------------: | :---------------: |
+| [[PV]], [[Mana]], [[Toxicidade]]      |        **+4**         |         5         |
+| [[VB]]                                |       **+0,5**        |         6         |
+| [[Vontade]], Visão, Audição, Olfato   |        **+1**         |         5         |
+| [[Deslocamento]], [[Esquiva]], [[RD]] | não pode ser comprado |         —         |
 
 $$
 \text{Custo} = \text{compras} \times 5
@@ -52,6 +51,6 @@ Duas compras de PV: $+8$ PV por $2 \times 5 = 10$ pontos. Uma compra de VB leva 
 1. **Primários:** Base + Raça (inclui a meta-raça) + Modificador + Encantamento.
 2. **Base dos secundários:** fórmulas aplicadas aos primários finais. Vantagens e desvantagens como Força de Vontade ou Audição Aguçada somam ou subtraem dessas bases automaticamente.
 3. **Secundários:** base + compras, depois modificadores e encantamentos.
-4. **Ferido gravemente:** se os PV atuais estiverem abaixo de 1/3 dos PV naturais, a VB cai pela metade.
-5. **Deslocamento:** VB + modificador de carga, arredondado para baixo.
-6. **Esquiva:** Deslocamento + 4, mais compras, modificadores e encantamentos.
+4. **Deslocamento:** VB + modificador de carga, arredondado para baixo.
+5. **Esquiva:** Deslocamento + 4, mais modificadores e encantamentos.
+6. **Ferido gravemente:** se os PV atuais estiverem abaixo de 1/3 dos PV naturais, o Deslocamento e a Esquiva caem pela metade, arredondando para cima. A VB não muda.

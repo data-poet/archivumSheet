@@ -274,6 +274,24 @@ describe("renderSecondaryAttributes", () => {
     expect(row.children[2].textContent).toBe("—");
   });
 
+  test("Dodge has no 'bought' stepper — shows a plain dash cell instead", () => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<table><tbody id="secondaryTable"></tbody></table>`,
+    );
+    renderSecondaryAttributes({
+      character: {
+        secondary_attributes: {
+          Dodge: { base_value: 5, bought: 0, modifier: 0, value: 5 },
+        },
+      },
+    });
+
+    const row = document.querySelector("#secondaryTable tr");
+    expect(row.querySelector('[data-field="bought"]')).toBeNull();
+    expect(row.children[2].textContent).toBe("—");
+  });
+
   test("BasicSpeed formats base/value to 2 decimals and steps by 0.5", () => {
     document.body.insertAdjacentHTML(
       "beforeend",

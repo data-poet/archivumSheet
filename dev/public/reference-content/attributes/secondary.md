@@ -123,11 +123,6 @@ $$
 
 </details>
 
-> [!WARNING]
-> **Ferido gravemente:** quando os PV atuais caem abaixo de **1/3** dos PV naturais (base + comprados), a VB cai pela metade, arredondada para baixo. O Deslocamento e a Esquiva caem junto, porque são calculados a partir dela.
->
-> No exemplo, com 32 PV naturais: abaixo de **10,67** PV a VB passa de 5,75 para **2**, o Deslocamento para **2** e a Esquiva para **6**.
-
 </details>
 
 <details>
@@ -148,6 +143,11 @@ Sem carga: $\lfloor 5{,}75 + 0 \rfloor = 5$ m/s. Com carga média (**-1**): $\lf
 
 </details>
 
+> [!WARNING]
+> **Ferido gravemente:** quando os PV atuais caem abaixo de **1/3** dos PV naturais (base + comprados), o Deslocamento e a Esquiva atuais caem pela metade, arredondando para cima. A VB não muda.
+>
+> No exemplo, com 32 PV naturais: abaixo de **10,67** PV o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**.
+
 </details>
 
 <details>
@@ -162,7 +162,7 @@ $$
 > [!HOUSE]
 > No Archivum, a Esquiva parte do Deslocamento, então a carga também reduz a Esquiva.
 
-A vantagem Reflexos em Combate soma **+1** à base da Esquiva.
+A vantagem Reflexos em Combate soma **+1** à base da Esquiva. A Esquiva não pode ser comprada: aumente a VB ou reduza a carga. Ferido gravemente, ela cai pela metade (veja Deslocamento).
 
 <details>
 <summary>Exemplo</summary>

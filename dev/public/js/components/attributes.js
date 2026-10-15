@@ -81,7 +81,8 @@ export function renderSecondaryAttributes(sheet) {
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
-      const isNotBuyable = name === "Movement" || name === "DamageResistance";
+      const isNotBuyable =
+        name === "Movement" || name === "Dodge" || name === "DamageResistance";
       // HP/Mana/Toxicity's modifier is a damage tracker (≤ 0 only), not a stat bonus.
       const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
 

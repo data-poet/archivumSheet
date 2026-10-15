@@ -261,97 +261,99 @@ describe("SECONDARY ATTRIBUTES", () => {
     });
   });
 
-  describe("HP < 1/3 rule — BasicSpeed halving", () => {
-    it("Should NOT halve BasicSpeed when HP is at full", () => {
+  describe("HP < 1/3 rule — 4e halving of Move and Dodge", () => {
+    function wounded(modifierFor) {
+      const { attributes: full } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const hpFinalBase = full.HP.final_base_value;
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { HP: { modifier: modifierFor(hpFinalBase) } },
+        mockCarryWeight,
+      );
+      return { full, attributes, hpFinalBase };
+    }
+
+    const belowThird = (hpFinalBase) =>
+      -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+
+    it("Should leave Move and Dodge alone when HP is at full", () => {
       const { attributes } = buildSecondaryAttributes(
         mockPrimary,
         {},
         mockCarryWeight,
       );
-      const normalSpeed = attributes.BasicSpeed.final_base_value; // no modifier → value = final_base_value
-      expect(attributes.BasicSpeed.value).toBe(normalSpeed);
+      expect(attributes.Movement.value).toBe(attributes.Movement.base_value);
+      expect(attributes.Dodge.value).toBe(attributes.Dodge.base_value);
     });
 
-    it("Should halve BasicSpeed (floor) when current HP < final_base_value / 3", () => {
-      const { attributes: attrsFull } = buildSecondaryAttributes(
-        mockPrimary,
-        {},
-        mockCarryWeight,
-      );
-      const hpFinalBase = attrsFull.HP.final_base_value;
-      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
-
-      const { attributes } = buildSecondaryAttributes(
-        mockPrimary,
-        { HP: { modifier: severeInjury } },
-        mockCarryWeight,
-      );
+    it("Should halve current Move and Dodge (round up) when HP < final_base_value / 3", () => {
+      const { full, attributes, hpFinalBase } = wounded(belowThird);
 
       expect(attributes.HP.value).toBeLessThan(hpFinalBase / 3);
-      expect(attributes.BasicSpeed.value).toBe(
-        Math.floor(attrsFull.BasicSpeed.value / 2),
+      expect(attributes.Movement.value).toBe(
+        Math.ceil(full.Movement.value / 2),
       );
+      expect(attributes.Dodge.value).toBe(Math.ceil(full.Dodge.value / 2));
     });
 
-    it("Should cascade halved BasicSpeed into Movement", () => {
-      const { attributes: attrsFull } = buildSecondaryAttributes(
-        mockPrimary,
-        {},
-        mockCarryWeight,
-      );
-      const hpFinalBase = attrsFull.HP.final_base_value;
-      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+    it("Should halve Dodge directly, not recompute it from the halved Move", () => {
+      const { full, attributes } = wounded(belowThird);
 
-      const { attributes } = buildSecondaryAttributes(
-        mockPrimary,
-        { HP: { modifier: severeInjury } },
-        mockCarryWeight,
-      );
-
-      const halvedSpeed = Math.floor(attrsFull.BasicSpeed.value / 2);
-      const expectedMovement = Math.floor(
-        halvedSpeed + mockCarryWeight.weight_modifier,
-      );
-      expect(attributes.Movement.base_value).toBe(expectedMovement);
+      expect(attributes.Dodge.base_value).toBe(full.Dodge.base_value);
+      expect(attributes.Dodge.value).not.toBe(attributes.Movement.value + 4);
     });
 
-    it("Should cascade halved Movement into Dodge", () => {
-      const { attributes: attrsFull } = buildSecondaryAttributes(
-        mockPrimary,
-        {},
-        mockCarryWeight,
-      );
-      const hpFinalBase = attrsFull.HP.final_base_value;
-      const severeInjury = -(hpFinalBase - Math.floor(hpFinalBase / 3) + 1);
+    it("Should never change Basic Speed", () => {
+      const { full, attributes } = wounded(belowThird);
 
-      const { attributes } = buildSecondaryAttributes(
-        mockPrimary,
-        { HP: { modifier: severeInjury } },
-        mockCarryWeight,
-      );
-
-      expect(attributes.Dodge.base_value).toBe(attributes.Movement.value + 4);
+      expect(attributes.BasicSpeed.value).toBe(full.BasicSpeed.value);
     });
 
-    it("Should NOT halve BasicSpeed when HP is exactly at 1/3 boundary (not below)", () => {
-      const { attributes: attrsFull } = buildSecondaryAttributes(
-        mockPrimary,
-        {},
-        mockCarryWeight,
-      );
-      const hpFinalBase = attrsFull.HP.final_base_value;
-      // Place HP at exactly ceil(hpFinalBase/3), which is >= hpFinalBase/3 → no halving
-      const safeHp = Math.ceil(hpFinalBase / 3);
-      const modifier = -(hpFinalBase - safeHp);
-
-      const { attributes } = buildSecondaryAttributes(
-        mockPrimary,
-        { HP: { modifier } },
-        mockCarryWeight,
+    it("Should NOT halve when HP is exactly at the 1/3 boundary (not below)", () => {
+      const { full, attributes, hpFinalBase } = wounded(
+        (base) => -(base - Math.ceil(base / 3)),
       );
 
       expect(attributes.HP.value).toBeGreaterThanOrEqual(hpFinalBase / 3);
-      expect(attributes.BasicSpeed.value).toBe(attrsFull.BasicSpeed.value);
+      expect(attributes.Movement.value).toBe(full.Movement.value);
+      expect(attributes.Dodge.value).toBe(full.Dodge.value);
+    });
+  });
+
+  describe("Dodge is not buyable", () => {
+    it("Should ignore stored purchases and cost no points", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { Dodge: { bought: 3 } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.Dodge.bought).toBe(0);
+      expect(attributes.Dodge.points).toBe(0);
+      expect(attributes.Dodge.final_base_value).toBe(
+        attributes.Dodge.base_value,
+      );
+    });
+
+    it("Should still apply the Dodge modifier and enchantment", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {
+          Dodge: {
+            modifier: 1,
+            enchantment_modifier: 2,
+            has_enchantment_modifier: true,
+          },
+        },
+        mockCarryWeight,
+      );
+
+      expect(attributes.Dodge.value).toBe(attributes.Dodge.base_value + 3);
+      expect(attributes.Dodge.has_enchantment_modifier).toBe(true);
     });
   });
 
