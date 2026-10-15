@@ -1,46 +1,51 @@
-Cansaço e ferimentos são medidos por reservas diferentes: o cansaço gasta [[Mana]] e os ferimentos tiram [[PV]]. Esta aba mostra como cada reserva cai e como ela volta.
+Cansaço e ferimentos são medidos por reservas diferentes: o cansaço gasta [[PF]] e os ferimentos tiram [[PV]]. A [[Mana]] serve só para magia. Esta aba mostra como cada reserva cai e como ela volta.
 
-### Mana como fadiga
+### Pontos de Fadiga
 
-> [!HOUSE]
-> O Archivum não usa Pontos de Fadiga. Toda regra da 4e que gasta ou recupera fadiga gasta ou recupera **Mana**: esforço, corrida, fome, sede, calor, noites sem dormir e magias saem da mesma reserva. Um personagem exausto tem menos Mana para conjurar.
+Os PF começam iguais à [[HT]]. Magias não gastam PF: elas custam Mana (veja Magia › Conjuração › Conjurar).
+
+> [!TIP]
+> No Resumo do Personagem, cada barra de reserva (PV, PF, Mana e Toxicidade) tem um campo **Máx.** para anotar um máximo reduzido, como os PF limitados pela fome.
 
 <details>
-<summary>O que gasta Mana</summary>
+<summary>O que gasta PF</summary>
 
-- **Combate:** cada luta que dura mais de 10 segundos custa Mana conforme a [[Carga]]: **1** sem carga, **2** leve, **3** média, **4** pesada, **5** muito pesada.
-- **Corrida e natação:** a cada 15 segundos de corrida em velocidade máxima, ou a cada minuto em ritmo constante, teste de [[HT]]; falha custa **1** de Mana.
-- **Esforço extra:** usar esforço extra em ST, ataques ou movimento custa Mana, como na 4e.
-- **Fome e sede:** veja Perigos › Fome e Sede.
-- **Calor e frio:** testes de HT a cada 30 minutos em clima extremo; falha custa **1** de Mana. Veja Perigos.
-- **Noite sem dormir:** custa Mana que só volta dormindo.
-- **Magias:** cada magia custa a Mana indicada no grimório. Veja Magia para os descontos por [[NH]].
+- **Combate:** cada luta que dura mais de 10 segundos custa PF conforme a [[Carga]]: **1** sem carga, **2** leve, **3** média, **4** pesada, **5** muito pesada.
+- **Corrida e natação:** a cada 15 segundos de corrida em velocidade máxima, ou a cada minuto em ritmo constante, teste de HT; falha custa **1 PF**.
+- **Marcha:** cada hora de marcha custa PF como o combate, conforme a Carga.
+- **Esforço extra:** usar esforço extra em ST, ataques ou movimento custa PF.
+- **Fome e sede:** cada refeição perdida custa **1 PF**; a falta de água também gasta PF. Veja Perigos › Fome, Sede e Sono.
+- **Calor e frio:** testes de HT a cada 30 minutos em clima extremo; falha custa **1 PF**. Veja Perigos.
+- **Sufocamento:** sem ar, perde **1 PF** por segundo. Veja Perigos › Afogamento e Sufocamento.
+- **Noite sem dormir:** custa **5 PF**, que só voltam dormindo.
 
 </details>
 
 <details>
-<summary>Níveis de Mana | 1/3, 0, -Mana</summary>
+<summary>Níveis de PF | 1/3, 0, -PF</summary>
 
-- **Abaixo de 1/3 da Mana:** [[Deslocamento]], [[Esquiva]] e [[ST]] caem pela metade, arredondando para cima. Isso não muda os PV nem o dano básico.
-- **0 ou menos:** o personagem está à beira do colapso. Para fazer qualquer coisa além de conversar ou descansar, precisa passar num teste de **[[Vontade]]** a cada turno; se falhar, desmaia até a Mana voltar a ser positiva. Cada ponto de Mana gasto a partir daqui também tira **1 PV**.
-- **-1 × Mana:** colapso imediato e inconsciência. A Mana não cai abaixo disso: qualquer perda extra sai dos PV.
+- **Abaixo de 1/3 dos PF:** [[Deslocamento]], [[Esquiva]] e [[ST]] caem pela metade, arredondando para cima. A ST reduzida vale para levantar, carregar e disputas, não para os PV nem o dano básico.
+- **0 ou menos:** o personagem está à beira do colapso. Para fazer qualquer coisa além de conversar ou descansar, precisa passar num teste de **[[Vontade]]** a cada turno; se falhar, desmaia até os PF voltarem a ser positivos. Cada PF perdido a partir daqui também tira **1 PV**.
+- **-1 × PF:** colapso imediato e inconsciência. Os PF não caem abaixo disso: qualquer perda extra sai dos PV.
+
+> [!NOTE]
+> A ficha aplica sozinha a metade de Deslocamento e Esquiva com PF baixos, e ela se acumula com a de PV baixos.
 
 <details>
 <summary>Exemplo</summary>
 
-Com 35 de Mana, abaixo de **11,67** o personagem com Deslocamento 5, Esquiva 9 e ST 10 passa a ter Deslocamento **3**, Esquiva **5** e ST **5**. Em **0** começam os testes de Vontade, e em **-35** ele desmaia.
+Com 10 PF, a partir de **3** o personagem com Deslocamento 5, Esquiva 8 e ST 10 passa a ter Deslocamento **3**, Esquiva **4** e ST **5**. Em **0** começam os testes de Vontade, e em **-10** ele desmaia.
 
 </details>
 
 </details>
 
 <details>
-<summary>Recuperando Mana</summary>
+<summary>Recuperando PF e Mana</summary>
 
-- **Descanso:** uma boa noite de descanso recupera uma parte da Mana máxima, conforme a área de mana (veja Magia › Conjuração › Áreas de mana).
-- **Comida:** a Mana perdida por fome só volta comendo e descansando.
-- **Água:** a Mana perdida por sede só volta bebendo.
-- **Sono:** a Mana perdida por noites sem dormir só volta com uma noite de sono.
+- **Descanso:** cada **10 minutos** de descanso recuperam **1 PF**.
+- **Comida, água e sono:** os PF perdidos por fome, sede ou noites sem dormir só voltam comendo, bebendo ou dormindo; descanso sozinho não basta.
+- **Mana:** uma boa noite de descanso recupera uma parte da Mana máxima, conforme a área de mana (veja Magia › Áreas de Mana).
 - **Vantagens e magias:** algumas aceleram a recuperação; elas valem como descrito.
 
 </details>

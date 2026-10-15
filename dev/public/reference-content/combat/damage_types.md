@@ -26,8 +26,8 @@ O multiplicador de lesão vale para um acerto no tronco. Os outros locais altera
 - **Corrosão:** ácidos e efeitos que dissolvem a carne e a armadura.
 - **Toxina:** venenos, doenças e efeitos que atacam o organismo por dentro.
 
-> [!HOUSE]
-> **Dano de fadiga** reduz a [[Mana]], não os [[PV]]. No Archivum, a Mana substitui os pontos de fadiga em todas as regras. O dano de fadiga ignora o local de acerto.
+> [!NOTE]
+> **Dano de fadiga** reduz os [[PF]], não os [[PV]]. O dano de fadiga ignora o local de acerto.
 
 ### Por local de acerto
 

@@ -59,6 +59,7 @@ A [[HT]] mede a saúde e a energia do personagem: vigor físico e resistência a
 **Influencia:**
 
 - [[PV]] (junto com ST).
+- [[PF]]: igual à HT.
 - [[Mana]] (junto com IQ).
 - [[Toxicidade]] (junto com ST e IQ).
 - [[VB]] (junto com DX), e por consequência o Deslocamento e a Esquiva.

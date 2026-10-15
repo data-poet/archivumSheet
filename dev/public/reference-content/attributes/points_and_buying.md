@@ -28,12 +28,12 @@ DX 12 custa $(12 - 10) \times 20 = 40$ pontos. ST 9 devolve $(9 - 10) \times 10 
 
 Depois de calculado, cada atributo secundário pode ser aumentado com compras. Cada compra custa **5 pontos**:
 
-| Atributo                              |   Ganho por compra    | Máximo de compras |
-| :------------------------------------ | :-------------------: | :---------------: |
-| [[PV]], [[Mana]], [[Toxicidade]]      |        **+4**         |         5         |
-| [[VB]]                                |       **+0,5**        |         6         |
-| [[Vontade]], Visão, Audição, Olfato   |        **+1**         |         5         |
-| [[Deslocamento]], [[Esquiva]], [[RD]] | não pode ser comprado |         —         |
+| Atributo                                    |   Ganho por compra    | Máximo de compras |
+| :------------------------------------------ | :-------------------: | :---------------: |
+| [[PV]], [[Mana]], [[Toxicidade]]            |        **+4**         |         5         |
+| [[VB]]                                      |       **+0,5**        |         6         |
+| [[PF]], [[Vontade]], Visão, Audição, Olfato |        **+1**         |         5         |
+| [[Deslocamento]], [[Esquiva]], [[RD]]       | não pode ser comprado |         —         |
 
 $$
 \text{Custo} = \text{compras} \times 5

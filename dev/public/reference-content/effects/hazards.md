@@ -1,7 +1,4 @@
-Perigos do ambiente que ferem ou cansam sem precisar de um inimigo. O cansaço sai da [[Mana]] e os ferimentos, dos [[PV]].
-
-> [!HOUSE]
-> Onde a 4e fala em fadiga, o Archivum gasta **Mana**. Veja Sistema › Condições › Fadiga e Cura.
+Perigos do ambiente que ferem ou cansam sem precisar de um inimigo. O cansaço sai dos [[PF]] e os ferimentos, dos [[PV]]. Veja Sistema › Condições › Fadiga e Cura.
 
 ### Impactos
 
@@ -84,7 +81,7 @@ $$
 **Calor**
 
 - **Teste:** em calor acima do confortável, teste de **[[HT]]** a cada 30 minutos.
-- **Falha:** perde **1** de Mana. Esforço, armadura e roupas pesadas dão redutores; aclimatação e água à vontade dão bônus.
+- **Falha:** perde **1 PF**. Esforço, armadura e roupas pesadas dão redutores; aclimatação e água à vontade dão bônus.
 
 </details>
 
@@ -92,7 +89,7 @@ $$
 <summary>Frio</summary>
 
 - **Teste:** em frio abaixo do confortável, teste de **[[HT]]** a cada 30 minutos.
-- **Falha:** perde **1** de Mana. Quando a Mana chega a 0, a perda passa a sair dos PV, como em qualquer fadiga.
+- **Falha:** perde **1 PF**. Com PF em 0 ou menos, cada PF perdido também tira **1 PV**, como em qualquer fadiga.
 - **Roupas:** roupas de inverno dão bônus grandes; roupas comuns ou molhadas dão redutores.
 - **Vento e água:** vento forte agrava o frio; cair em água gelada exige testes muito mais frequentes.
 - **Dano por frio:** frio que causa dano direto (gelo mágico, sopro gélido) conta como elemento **Água**: aplique a resistência a Água depois da [[RD]].
@@ -105,10 +102,10 @@ $$
 <summary>Afogamento e Sufocamento</summary>
 
 - **Prender a respiração:** em repouso, cerca de **[[HT]] × 10** segundos; menos em esforço ou combate.
-- **Sem ar:** perde **1** de Mana por segundo.
-- **Mana 0 ou menos:** teste de **[[Vontade]]** a cada segundo para continuar consciente, e cada segundo sem ar também tira PV.
+- **Sem ar:** perde **1 PF** por segundo.
+- **PF 0 ou menos:** teste de **[[Vontade]]** a cada segundo para continuar consciente, e cada segundo sem ar também tira PV.
 - **Inconsciente:** sem ar, morre em poucos minutos se não for reanimado.
-- **Nadando:** teste de Natação ao entrar na água e periodicamente depois. Cada falha faz engolir água e perder **1** de Mana.
+- **Nadando:** teste de Natação ao entrar na água e periodicamente depois. Cada falha faz engolir água e perder **1 PF**.
 
 Para reanimar, veja Sistema › Condições › Aflições e Condições › Ressuscitação.
 
@@ -117,23 +114,24 @@ Para reanimar, veja Sistema › Condições › Aflições e Condições › Res
 ### Necessidades
 
 <details>
-<summary>Fome e Sede | gastam Mana</summary>
-
-> [!HOUSE]
-> Fome e sede gastam **Mana**, não fadiga.
+<summary>Fome, Sede e Sono | gastam PF</summary>
 
 **Fome**
 
-- **Refeição perdida:** cada uma das três refeições diárias que faltar custa **1** de Mana.
-- **Recuperação:** essa Mana só volta com comida e descanso; descanso sozinho não basta.
+- **Refeição perdida:** cada uma das três refeições diárias que faltar custa **1 PF**.
+- **Recuperação:** esses PF só voltam comendo; descanso sozinho não basta.
 
 **Sede**
 
 - **Necessidade:** cerca de **2 litros** de água por dia; mais em calor ou esforço.
-- **Falta de água:** cada período sem água suficiente custa Mana, e a desidratação piora mais rápido que a fome.
-- **Recuperação:** essa Mana só volta bebendo.
+- **Falta de água:** sem água suficiente, perde **1 PF** a cada 8 horas, e a desidratação piora mais rápido que a fome.
+- **Recuperação:** esses PF só voltam bebendo.
 
-Com Mana em 0 ou menos, a perda continua saindo dos PV.
+**Sono**
+
+- **Noite sem dormir:** custa **5 PF**, que só voltam dormindo.
+
+Com PF em 0 ou menos, cada PF perdido também tira **1 PV**.
 
 </details>
 

@@ -19,17 +19,22 @@ export const GLOSSARY = {
   HT: {
     term: "Vitalidade",
     definition:
-      "Saúde e vigor. Base dos testes de resistência; entra em PV, Mana, Toxicidade e Velocidade Básica.",
+      "Saúde e vigor. Base dos testes de resistência e dos PF; entra em PV, Mana, Toxicidade e Velocidade Básica.",
   },
   PV: {
     term: "Pontos de Vida",
     definition:
       "Quanto dano o personagem aguenta. Calculado a partir de HT e ST.",
   },
+  PF: {
+    term: "Pontos de Fadiga",
+    definition:
+      "Reserva de energia física, igual à HT. Gasta com esforço, corrida, fome, sede, calor e sono perdido; abaixo de 1/3, Deslocamento, Esquiva e ST caem pela metade.",
+  },
   Mana: {
     term: "Mana",
     definition:
-      "Energia mágica e física. Paga os feitiços e, no Archivum, substitui a Fadiga: esforço, fome, sede e sono perdido também consomem Mana. Calculada a partir de IQ e HT.",
+      "Energia mágica: paga os feitiços. Calculada a partir de IQ e HT.",
   },
   Toxicidade: {
     term: "Toxicidade",

@@ -2,6 +2,9 @@ Os atributos secundários são calculados a partir dos valores **finais** dos at
 
 Os exemplos abaixo usam o mesmo personagem: **ST 10, DX 12, IQ 12, HT 11**.
 
+> [!TIP]
+> No resumo, cada barra de PV, PF, Mana e Toxicidade tem dois campos: **Atual** (pontos perdidos ou gastos) e **Máx.** (redução do máximo, por exemplo quando a fome limita os PF).
+
 <details>
 <summary>Pontos de Vida (PV)</summary>
 
@@ -33,6 +36,26 @@ Os testes para não morrer usam a [[HT]], não os PV. Assim, personagens com mui
 - **PV = -10 × HT:** o corpo é destruído, se a fonte do dano for capaz disso.
 
 Com HT 11 e 32 PV: testes de morte em **-11, -22, -33 e -44**, morte automática em **-55** e corpo destruído em **-110**. Na regra padrão (×PV), seriam -32 e -160.
+
+</details>
+
+<details>
+<summary>Pontos de Fadiga (PF)</summary>
+
+Os [[PF]] são a reserva de energia física do personagem: esforço, corrida, fome, sede, calor e sono perdido gastam PF. Feitiços não: eles gastam Mana.
+
+$$
+\text{PF} = HT
+$$
+
+Abaixo de **1/3** dos PF, o personagem está exausto: o Deslocamento, a Esquiva e a [[ST]] caem pela metade, arredondando para cima. A ficha aplica a metade do Deslocamento e da Esquiva sozinha, e ela se soma à de PV baixos. Veja Sistema › Condições › Fadiga e Cura.
+
+<details>
+<summary>Exemplo</summary>
+
+Com **HT 11**, o personagem tem **11** PF. Com **3** PF ou menos, o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**.
+
+</details>
 
 </details>
 

@@ -144,6 +144,7 @@ describe("points_and_buying.md", () => {
     ["Mana", 4, 5],
     ["Toxicity", 4, 5],
     ["BasicSpeed", 0.5, 6],
+    ["FP", 1, 5],
     ["Will", 1, 5],
     ["Vision", 1, 5],
     ["Hearing", 1, 5],
@@ -200,6 +201,19 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
       `\\lfloor 5{,}75 + 0 \\rfloor = ${attributes.Movement.value}$ m/s`,
     );
     expect(markdown).toContain(`$5 + 4 = ${attributes.Dodge.value}$`);
+  });
+
+  test("PF equals HT, and below 1/3 PF Deslocamento and Esquiva halve", () => {
+    expect(attributes.FP.value).toBe(11);
+    expect(markdown).toContain("Com **HT 11**, o personagem tem **11** PF");
+    const exhausted = buildSecondaryAttributes(primaries, {
+      FP: { modifier: -8 },
+    }).attributes;
+    expect(exhausted.Movement.value).toBe(3);
+    expect(exhausted.Dodge.value).toBe(5);
+    expect(markdown).toContain(
+      "o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**",
+    );
   });
 
   test("below 1/3 PV, Deslocamento and Esquiva halve (round up) and VB stays", () => {

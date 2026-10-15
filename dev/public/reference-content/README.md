@@ -97,6 +97,6 @@ Use one blockquote callout per note, never emoji-prefixed quotes:
 
 ## Language
 
-- Use pt-BR, with the glossary's canonical terms (Falha Crítica, PV, Mana, Vontade…).
+- Use pt-BR, with the glossary's canonical terms (Falha Crítica, PV, PF, Mana, Vontade…).
 - No English in parentheses, no book page references.
 - Rules are GURPS 4e plus the Archivum house rules. Where they differ, the engine (`engine/`) is the source of truth.
