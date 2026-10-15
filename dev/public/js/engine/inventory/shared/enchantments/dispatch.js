@@ -99,7 +99,12 @@ export function createEnchantmentsHandlers({
       clearEnchantmentAddFormSelection(entryInstanceId);
 
       runWithOpenState(e, () => {
-        updateEnchantment(instanceId, entryInstanceId, params.enchantmentId, params);
+        updateEnchantment(
+          instanceId,
+          entryInstanceId,
+          params.enchantmentId,
+          params,
+        );
       });
       return true;
     }

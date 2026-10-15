@@ -56,11 +56,13 @@ describe("sendToAllyRowHTML", () => {
     const html = sendToAllyRowHTML("item-1");
     document.getElementById("root").innerHTML = html;
 
-    const options = [...document.querySelectorAll(".send-to-ally-select option")].map(
-      (o) => o.value,
-    );
+    const options = [
+      ...document.querySelectorAll(".send-to-ally-select option"),
+    ].map((o) => o.value);
     expect(options).toEqual(["ally-1", "ally-2"]);
-    expect(document.querySelector(".send-to-ally-select option").textContent).toBe("Rook");
+    expect(
+      document.querySelector(".send-to-ally-select option").textContent,
+    ).toBe("Rook");
   });
 
   test("falls back to race when the ally has no name", () => {
@@ -72,9 +74,9 @@ describe("sendToAllyRowHTML", () => {
     const html = sendToAllyRowHTML("item-1");
     document.getElementById("root").innerHTML = html;
 
-    expect(document.querySelector(".send-to-ally-select option").textContent).toBe(
-      "Elemental de Terra",
-    );
+    expect(
+      document.querySelector(".send-to-ally-select option").textContent,
+    ).toBe("Elemental de Terra");
   });
 
   test("falls back to the unnamed placeholder when neither name nor race is set", () => {
@@ -86,7 +88,9 @@ describe("sendToAllyRowHTML", () => {
     const html = sendToAllyRowHTML("item-1");
     document.getElementById("root").innerHTML = html;
 
-    expect(document.querySelector(".send-to-ally-select option").textContent).not.toBe("");
+    expect(
+      document.querySelector(".send-to-ally-select option").textContent,
+    ).not.toBe("");
   });
 
   test("renders nothing when there are no linked allies", () => {
@@ -108,16 +112,19 @@ describe("sendToAllyRowHTML", () => {
     const html = sendToAllyRowHTML("item-1");
     document.getElementById("root").innerHTML = html;
 
-    const options = [...document.querySelectorAll(".send-to-ally-select option")].map(
-      (o) => ({ value: o.value, text: o.textContent }),
-    );
+    const options = [
+      ...document.querySelectorAll(".send-to-ally-select option"),
+    ].map((o) => ({ value: o.value, text: o.textContent }));
     expect(options).toEqual([{ value: "owner-1", text: "Hero" }]);
   });
 
   test("includes a quantity input only when needsQuantity is true", () => {
     setStore({ activeId: "char-1", allies: [{ id: "ally-1", name: "Rook" }] });
 
-    const withQuantity = sendToAllyRowHTML("item-1", { needsQuantity: true, maxQuantity: 7 });
+    const withQuantity = sendToAllyRowHTML("item-1", {
+      needsQuantity: true,
+      maxQuantity: 7,
+    });
     document.getElementById("root").innerHTML = withQuantity;
     const input = document.querySelector(".send-to-ally-quantity");
     expect(input).not.toBeNull();

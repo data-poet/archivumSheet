@@ -17,17 +17,15 @@ const selected = state.selected;
 const _handleSendSurvivalGearToAllyClick = createSendToAllyHandler({
   sendFn: sendSurvivalGearToAlly,
   render: () => renderListsPreserving(selected, data),
-  canHandle: (instanceId) => selected.survivalGear.some((g) => g.id === instanceId),
+  canHandle: (instanceId) =>
+    selected.survivalGear.some((g) => g.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleSurvivalGearClick(e) {
   if (e.target.classList.contains("remove-survival-gear")) {
-    removeSurvivalGear(
-      e.target.dataset.gearId,
-      e.target.dataset.storedAt,
-    );
+    removeSurvivalGear(e.target.dataset.gearId, e.target.dataset.storedAt);
     return true;
   }
 
@@ -59,9 +57,9 @@ export function handleSurvivalGearInput(e) {
 
 export function handleSurvivalGearChange(e) {
   if (e.target.classList.contains("survival-gear-location-select")) {
-    const gearId  = e.target.dataset.gearId;
+    const gearId = e.target.dataset.gearId;
     const fromLoc = e.target.dataset.storedAt;
-    const toLoc   = e.target.value;
+    const toLoc = e.target.value;
     moveSurvivalGear(gearId, fromLoc, toLoc);
     return true;
   }
@@ -75,17 +73,17 @@ export function handleSurvivalGearChange(e) {
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddSurvivalGear() {
-  const typeEl    = document.getElementById("survivalGearTypeFilter");
-  const nameEl    = document.getElementById("survivalGearNameSelect");
-  const qtyEl     = document.getElementById("survivalGearQty");
+  const typeEl = document.getElementById("survivalGearTypeFilter");
+  const nameEl = document.getElementById("survivalGearNameSelect");
+  const qtyEl = document.getElementById("survivalGearQty");
   const storageEl = document.getElementById("survivalGearStorage");
 
   if (!nameEl || !qtyEl || !storageEl) return;
 
   const typeFilter = typeEl?.value || "";
-  const name       = nameEl.value;
-  const quantity   = parseInt(qtyEl.value, 10);
-  const storedAt   = storageEl.value;
+  const name = nameEl.value;
+  const quantity = parseInt(qtyEl.value, 10);
+  const storedAt = storageEl.value;
 
   if (!name || isNaN(quantity) || quantity <= 0) return;
 

@@ -102,7 +102,12 @@ export function moveCoins(coinType, fromLocation, toLocation) {
 // SEND TO ALLY
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function sendCoinsToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+export function sendCoinsToAlly(
+  instanceId,
+  destinationCharacterId,
+  amount,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.coins);
 
   const result = transferStackQuantity({

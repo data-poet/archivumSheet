@@ -36,14 +36,14 @@ npm run test:watch
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Node.js + Express 5 |
-| Frontend | Vanilla JavaScript (ES modules, no framework) |
-| Styling | Plain CSS |
-| Tests | Jest v30+ |
-| Data | CSV files (parsed via `csv-parse`) |
-| Deployment | Vercel (`vercel.json` included) |
+| Layer      | Technology                                    |
+| ---------- | --------------------------------------------- |
+| Backend    | Node.js + Express 5                           |
+| Frontend   | Vanilla JavaScript (ES modules, no framework) |
+| Styling    | Plain CSS                                     |
+| Tests      | Jest v30+                                     |
+| Data       | CSV files (parsed via `csv-parse`)            |
+| Deployment | Vercel (`vercel.json` included)               |
 
 ---
 
@@ -62,6 +62,7 @@ DOM event → state.selected (raw input) → POST /api/sheet/build
 - **`dev/public/js/`** — UI layer, organized by responsibility: `state.js` (the 3-part global state below), `engine/` (client-side callers of the API), `events/` (all DOM wiring, delegated through `events/index.js`), `components/` + `ui/` (renderers), `store/` (persistence, tab/view-mode state), `compute/` (client-side attribute preview before an engine round-trip), `localization/pt-BR/` (every visible string).
 
 **State (`state.js`)** has three sections:
+
 - `state.data` — raw catalog data fetched once on load (read-only).
 - `state.selected` — raw user input only, ever. This is what's sent to the engine and persisted.
 - `state.sheet` — the engine's last computed output. Renderers read from here; nothing else writes to it.

@@ -66,18 +66,14 @@ describe("findLinkedCounterpart", () => {
     const instance = { id: "MELEE-1" };
     const linked = { id: "RANGED-1", _linkedInstanceId: "MELEE-1" };
 
-    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(
-      linked,
-    );
+    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(linked);
   });
 
   test("finds the counterpart we point at (we were created second)", () => {
     const instance = { id: "MELEE-1", _linkedInstanceId: "RANGED-1" };
     const linked = { id: "RANGED-1" };
 
-    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(
-      linked,
-    );
+    expect(findLinkedCounterpart(instance, [{ id: "X" }, linked])).toBe(linked);
   });
 
   test("prefers the counterpart pointing at us when both directions could match", () => {
@@ -96,9 +92,7 @@ describe("findLinkedCounterpart", () => {
   test("returns null when nothing is linked in either direction", () => {
     const instance = { id: "MELEE-1" };
 
-    expect(
-      findLinkedCounterpart(instance, [{ id: "RANGED-1" }]),
-    ).toBeNull();
+    expect(findLinkedCounterpart(instance, [{ id: "RANGED-1" }])).toBeNull();
   });
 
   // Guards the undefined === undefined trap: an unlinked counterpart has no

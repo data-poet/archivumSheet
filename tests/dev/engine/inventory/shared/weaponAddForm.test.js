@@ -8,7 +8,12 @@ const CATALOG = [
   { weapon_id: "W-2", weapon_name: "Espada", weapon_tier: "II" },
 ];
 
-function renderForm({ name = "Espada", tier = "I", material = "Aço", storage = "backpack" } = {}) {
+function renderForm({
+  name = "Espada",
+  tier = "I",
+  material = "Aço",
+  storage = "backpack",
+} = {}) {
   resetDOM(`
     <select id="meleeNameSelect"><option value="${name}" selected>${name}</option></select>
     <select id="meleeTierSelect"><option value="${tier}" selected>${tier}</option></select>

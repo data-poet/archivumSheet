@@ -11,7 +11,8 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 const _handleSendCoinsToAllyClick = createSendToAllyHandler({
   sendFn: sendCoinsToAlly,
   render: () => renderListsPreserving(state.selected, state.data),
-  canHandle: (instanceId) => state.selected.coins.some((c) => c.id === instanceId),
+  canHandle: (instanceId) =>
+    state.selected.coins.some((c) => c.id === instanceId),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -70,8 +71,8 @@ export function handleCoinPurseChange(e) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function handleAddCoins() {
-  const coinTypeSelect   = document.getElementById("coinTypeSelect");
-  const coinQtyInput     = document.getElementById("coinQtyInput");
+  const coinTypeSelect = document.getElementById("coinTypeSelect");
+  const coinQtyInput = document.getElementById("coinQtyInput");
   const coinLocationSelect = document.getElementById("coinLocationSelect");
 
   if (!coinTypeSelect || !coinQtyInput || !coinLocationSelect) return;
@@ -85,5 +86,5 @@ export function handleAddCoins() {
   addCoins(coinType, quantity, storedAt);
 
   coinTypeSelect.value = "";
-  coinQtyInput.value   = "";
+  coinQtyInput.value = "";
 }

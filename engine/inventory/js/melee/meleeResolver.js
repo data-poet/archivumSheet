@@ -1,4 +1,3 @@
-
 const {
   resolveItemEnchantments,
 } = require("../shared/enchantmentsResolver.js");

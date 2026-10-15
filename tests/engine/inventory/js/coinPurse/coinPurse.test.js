@@ -9,7 +9,6 @@ const {
   COIN_VALUE,
 } = require("engine/inventory/js/coinPurse/coinPurseConstants");
 
-
 function round2(v) {
   return Math.round((v + Number.EPSILON) * 100) / 100;
 }
@@ -17,12 +16,11 @@ function round2(v) {
 function coin(overrides = {}) {
   return {
     coin_type: "silver",
-    quantity:  10,
-    storedAt:  "backpack",
+    quantity: 10,
+    storedAt: "backpack",
     ...overrides,
   };
 }
-
 
 describe("COIN PURSE — constants", () => {
   test("VALID_COIN_TYPES contains copper, silver, gold", () => {
@@ -46,7 +44,6 @@ describe("COIN PURSE — constants", () => {
   });
 });
 
-
 describe("COIN PURSE — empty input", () => {
   test("Should return empty buckets with zero totals when called with no args", () => {
     const result = buildCoinPurseSlots();
@@ -66,7 +63,6 @@ describe("COIN PURSE — empty input", () => {
     expect(result.carried_coin_purse_weight).toBe(0);
   });
 });
-
 
 describe("COIN PURSE — routing", () => {
   test("Should place coins in backpack bucket", () => {
@@ -97,7 +93,7 @@ describe("COIN PURSE — routing", () => {
     const result = buildCoinPurseSlots([
       coin({ coin_type: "copper", storedAt: "backpack" }),
       coin({ coin_type: "silver", storedAt: "stash" }),
-      coin({ coin_type: "gold",   storedAt: "camp" }),
+      coin({ coin_type: "gold", storedAt: "camp" }),
     ]);
 
     expect(result.backpack.length).toBe(1);
@@ -107,8 +103,8 @@ describe("COIN PURSE — routing", () => {
 
   test("Should allow same coin_type in multiple locations", () => {
     const result = buildCoinPurseSlots([
-      coin({ coin_type: "silver", quantity: 5,  storedAt: "backpack" }),
-      coin({ coin_type: "silver", quantity: 5,  storedAt: "stash" }),
+      coin({ coin_type: "silver", quantity: 5, storedAt: "backpack" }),
+      coin({ coin_type: "silver", quantity: 5, storedAt: "stash" }),
       coin({ coin_type: "silver", quantity: 10, storedAt: "camp" }),
     ]);
 
@@ -121,11 +117,10 @@ describe("COIN PURSE — routing", () => {
   });
 });
 
-
 describe("COIN PURSE — resolved shape", () => {
   test("Should include all expected fields on each resolved entry", () => {
     const result = buildCoinPurseSlots([coin()]);
-    const entry  = result.backpack[0];
+    const entry = result.backpack[0];
 
     expect(entry).toHaveProperty("coin_type");
     expect(entry).toHaveProperty("quantity");
@@ -173,7 +168,6 @@ describe("COIN PURSE — resolved shape", () => {
   });
 });
 
-
 describe("COIN PURSE — carried weight", () => {
   test("Should count backpack coins toward carried weight", () => {
     const result = buildCoinPurseSlots([
@@ -202,8 +196,8 @@ describe("COIN PURSE — carried weight", () => {
   test("Should sum weight across multiple backpack entries", () => {
     const result = buildCoinPurseSlots([
       coin({ coin_type: "copper", quantity: 100, storedAt: "backpack" }),
-      coin({ coin_type: "silver", quantity: 10,  storedAt: "backpack" }),
-      coin({ coin_type: "gold",   quantity: 2,   storedAt: "backpack" }),
+      coin({ coin_type: "silver", quantity: 10, storedAt: "backpack" }),
+      coin({ coin_type: "gold", quantity: 2, storedAt: "backpack" }),
     ]);
 
     const expected = round2(0.002 * 100 + 0.003 * 10 + 0.005 * 2);
@@ -221,7 +215,6 @@ describe("COIN PURSE — carried weight", () => {
     expect(result.carried_coin_purse_weight).toBe(round2(0.005 * 10));
   });
 });
-
 
 describe("COIN PURSE — value (copper equivalent)", () => {
   test("total_coin_purse_value includes all locations", () => {
@@ -249,8 +242,8 @@ describe("COIN PURSE — value (copper equivalent)", () => {
   test("Should compute mixed coin values correctly", () => {
     const result = buildCoinPurseSlots([
       coin({ coin_type: "copper", quantity: 1000, storedAt: "backpack" }),
-      coin({ coin_type: "silver", quantity: 10,   storedAt: "backpack" }),
-      coin({ coin_type: "gold",   quantity: 1,    storedAt: "backpack" }),
+      coin({ coin_type: "silver", quantity: 10, storedAt: "backpack" }),
+      coin({ coin_type: "gold", quantity: 1, storedAt: "backpack" }),
     ]);
 
     // 1000×1 + 10×100 + 1×1000 = 3000
@@ -268,7 +261,6 @@ describe("COIN PURSE — value (copper equivalent)", () => {
   });
 });
 
-
 describe("COIN PURSE — validation", () => {
   test("Should throw for invalid coin_type", () => {
     expect(() =>
@@ -277,33 +269,33 @@ describe("COIN PURSE — validation", () => {
   });
 
   test("Should throw for zero quantity", () => {
-    expect(() =>
-      buildCoinPurseSlots([coin({ quantity: 0 })]),
-    ).toThrow("[buildCoinPurseSlots] Invalid coinInventory");
+    expect(() => buildCoinPurseSlots([coin({ quantity: 0 })])).toThrow(
+      "[buildCoinPurseSlots] Invalid coinInventory",
+    );
   });
 
   test("Should throw for fractional quantity", () => {
-    expect(() =>
-      buildCoinPurseSlots([coin({ quantity: 1.5 })]),
-    ).toThrow("[buildCoinPurseSlots] Invalid coinInventory");
+    expect(() => buildCoinPurseSlots([coin({ quantity: 1.5 })])).toThrow(
+      "[buildCoinPurseSlots] Invalid coinInventory",
+    );
   });
 
   test("Should throw for negative quantity", () => {
-    expect(() =>
-      buildCoinPurseSlots([coin({ quantity: -5 })]),
-    ).toThrow("[buildCoinPurseSlots] Invalid coinInventory");
+    expect(() => buildCoinPurseSlots([coin({ quantity: -5 })])).toThrow(
+      "[buildCoinPurseSlots] Invalid coinInventory",
+    );
   });
 
   test("Should throw for invalid storedAt", () => {
-    expect(() =>
-      buildCoinPurseSlots([coin({ storedAt: "equipped" })]),
-    ).toThrow("[buildCoinPurseSlots] Invalid coinInventory");
+    expect(() => buildCoinPurseSlots([coin({ storedAt: "equipped" })])).toThrow(
+      "[buildCoinPurseSlots] Invalid coinInventory",
+    );
   });
 
   test("Should throw for non-object instance", () => {
-    expect(() =>
-      buildCoinPurseSlots(["invalid"]),
-    ).toThrow("[buildCoinPurseSlots] Invalid coinInventory");
+    expect(() => buildCoinPurseSlots(["invalid"])).toThrow(
+      "[buildCoinPurseSlots] Invalid coinInventory",
+    );
   });
 
   test("Should collect errors from multiple invalid instances", () => {

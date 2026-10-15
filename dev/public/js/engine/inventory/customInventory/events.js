@@ -28,9 +28,7 @@ function _renderCustomInventoryLists() {
 
 function _findCustomItemById(customItemId) {
   return (
-    state.selected.customInventory.find(
-      (e) => e.id === customItemId,
-    ) ?? null
+    state.selected.customInventory.find((e) => e.id === customItemId) ?? null
   );
 }
 

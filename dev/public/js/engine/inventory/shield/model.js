@@ -159,9 +159,7 @@ export function moveShield(instanceId, storedAt) {
 
 export function removeShield(instanceId) {
   const before = structuredClone(selected.shields);
-  selected.shields = selected.shields.filter(
-    (s) => s.id !== instanceId,
-  );
+  selected.shields = selected.shields.filter((s) => s.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
@@ -173,7 +171,11 @@ export function removeShield(instanceId) {
   });
 }
 
-export function sendShieldToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendShieldToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.shields);
 
   const clone = transferInstance({

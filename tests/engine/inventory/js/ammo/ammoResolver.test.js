@@ -5,7 +5,6 @@ const {
   calculateCarriedAmmoWeight,
 } = require("engine/inventory/js/ammo/ammoResolver");
 
-
 const mockAmmoDb = {
   "AMMO-001": {
     ammo_id: "AMMO-001",
@@ -47,7 +46,6 @@ const mockContainer = {
   container_ammo_type: "arrow",
   is_carriable: true,
 };
-
 
 describe("ammoResolver — resolveContainer", () => {
   test("Should resolve a fully populated equipped container correctly", () => {
@@ -164,7 +162,6 @@ describe("ammoResolver — resolveContainer", () => {
   });
 });
 
-
 describe("ammoResolver — resolveLooseAmmo", () => {
   test("Should resolve a loose ammo entry correctly", () => {
     const instance = {
@@ -210,7 +207,6 @@ describe("ammoResolver — resolveLooseAmmo", () => {
     expect(result.storedAt).toBe("camp");
   });
 });
-
 
 describe("ammoResolver — calculateTotalEquippedAmmo", () => {
   test("Should aggregate ammo quantities by type across equipped containers", () => {
@@ -270,7 +266,6 @@ describe("ammoResolver — calculateTotalEquippedAmmo", () => {
     expect(result).toEqual({});
   });
 });
-
 
 describe("ammoResolver — calculateCarriedAmmoWeight", () => {
   const equippedContainer = { total_weight: 1.5 };

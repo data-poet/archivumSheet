@@ -191,7 +191,12 @@ export function moveAlchemy(consumableId, fromLocation, toLocation) {
   triggerAutoRun();
 }
 
-export function sendAlchemyToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+export function sendAlchemyToAlly(
+  instanceId,
+  destinationCharacterId,
+  amount,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.alchemy);
 
   const result = transferStackQuantity({

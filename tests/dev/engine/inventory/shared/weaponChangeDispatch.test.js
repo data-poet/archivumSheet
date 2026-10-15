@@ -99,9 +99,7 @@ describe("createWeaponChangeHandler", () => {
         }),
       });
 
-      const options = document.querySelectorAll(
-        ".equipped-melee-tier option",
-      );
+      const options = document.querySelectorAll(".equipped-melee-tier option");
       expect([...options].map((o) => o.value)).toEqual(["I", "II"]);
     });
 

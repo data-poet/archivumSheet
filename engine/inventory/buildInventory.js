@@ -9,7 +9,9 @@ const { buildAlchemySlots } = require("./js/alchemy/alchemy.js");
 const { buildSurvivalGearSlots } = require("./js/survivalGear/survivalGear.js");
 const { buildAccessorySlots } = require("./js/accessories/accessories.js");
 const { buildMagicGearSlots } = require("./js/magicGear/magicGear.js");
-const { buildCustomInventorySlots } = require("./js/customInventory/customInventory.js");
+const {
+  buildCustomInventorySlots,
+} = require("./js/customInventory/customInventory.js");
 const { buildCoinPurseSlots } = require("./js/coinPurse/coinPurse.js");
 
 function buildInventory({

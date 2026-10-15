@@ -249,9 +249,7 @@ describe("EQUIPMENT RANGED", () => {
             weapon_id: weaponId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [
-              { id: "e1", enchantment_id: "ENCHANTMENT-056" },
-            ],
+            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-056" }],
           },
         ]);
       }).toThrow("Invalid enchantments");

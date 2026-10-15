@@ -290,7 +290,11 @@ export function removeMelee(instanceId) {
 
 // A dual-use pair is one physical weapon: sending the melee side without its linked ranged
 // counterpart would leave half of it behind, so both legs move together or neither does.
-export function sendMeleeToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendMeleeToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const instance = findMeleeByInstanceId(instanceId);
   if (!instance) return false;
 
@@ -493,7 +497,5 @@ export function removeMeleeEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findMeleeByInstanceId(instanceId) {
-  return (
-    selected.melee_weapons.find((w) => w.id === instanceId) || null
-  );
+  return selected.melee_weapons.find((w) => w.id === instanceId) || null;
 }

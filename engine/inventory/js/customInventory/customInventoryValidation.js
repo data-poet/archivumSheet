@@ -8,10 +8,7 @@ function validateCustomInventoryInstance(instance, index) {
     return [`${prefix}: must be an object`];
   }
 
-  if (
-    typeof instance.id !== "string" ||
-    instance.id.trim() === ""
-  ) {
+  if (typeof instance.id !== "string" || instance.id.trim() === "") {
     errors.push(`${prefix}: id must be a non-empty string`);
   }
 

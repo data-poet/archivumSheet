@@ -188,10 +188,7 @@ describe("handleFirearmClick", () => {
     document.body.appendChild(row);
 
     expect(handleFirearmClick({ target: button })).toBe(true);
-    expect(model.sendFirearmToAlly).toHaveBeenCalledWith(
-      "FIREARM-1",
-      "ally-1",
-    );
+    expect(model.sendFirearmToAlly).toHaveBeenCalledWith("FIREARM-1", "ally-1");
     jest.advanceTimersToNextFrame();
     expect(render.renderEquippedFirearms).toHaveBeenCalled();
     expect(render.renderStoredFirearms).toHaveBeenCalled();

@@ -15,5 +15,8 @@ export function tierOf(allyId) {
 export function tierLabel({ ally_id, tierList = "default" } = {}) {
   const tier = tierOf(ally_id);
   if (!tier) return ally_id ?? "";
-  return t(`allies.tierLists.${tierList}.${tier}`, `${t("allies.tierLabel")} ${tier}`);
+  return t(
+    `allies.tierLists.${tierList}.${tier}`,
+    `${t("allies.tierLabel")} ${tier}`,
+  );
 }

@@ -209,9 +209,7 @@ describe("EQUIPMENT SHIELD", () => {
             shield_id: shieldId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [
-              { id: "e1", enchantment_id: "ENCHANTMENT-000" },
-            ],
+            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-000" }],
           },
         ]);
       }).toThrow("Invalid enchantments");

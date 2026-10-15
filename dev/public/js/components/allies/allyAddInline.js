@@ -60,7 +60,10 @@ function _isUnnamedGroup(entries) {
 
 function _optionsHtml(values, labelFor) {
   return values
-    .map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(labelFor(v))}</option>`)
+    .map(
+      (v) =>
+        `<option value="${escapeHtml(v)}">${escapeHtml(labelFor(v))}</option>`,
+    )
     .join("");
 }
 
@@ -105,7 +108,8 @@ function _renderNames(mount) {
 
   const ordered = byTier
     ? [...entries].sort(
-        (a, b) => Number(tierOf(a.ally_id) ?? 0) - Number(tierOf(b.ally_id) ?? 0),
+        (a, b) =>
+          Number(tierOf(a.ally_id) ?? 0) - Number(tierOf(b.ally_id) ?? 0),
       )
     : entries;
 

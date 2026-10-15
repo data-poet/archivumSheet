@@ -17,7 +17,6 @@ const {
  * instance object. Only backpack items contribute to carried weight.
  */
 function buildCustomInventorySlots(customInventory = []) {
-
   const instanceErrors = customInventory.flatMap((instance, index) =>
     validateCustomInventoryInstance(instance, index),
   );

@@ -119,9 +119,7 @@ function calculateCarriedAmmoValue(
 
   const looseValue = looseBackpack.reduce((sum, l) => sum + l.total_value, 0);
 
-  return (
-    Math.round((containerValue + looseValue + Number.EPSILON) * 100) / 100
-  );
+  return Math.round((containerValue + looseValue + Number.EPSILON) * 100) / 100;
 }
 
 module.exports = {

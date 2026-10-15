@@ -160,7 +160,10 @@ describe("sendLooseAmmoToAlly", () => {
 
     expect(ok).toBe(true);
     expect(findEntry("ARROW-1", "backpack").quantity).toBe(15);
-    expect(destinationAmmo[0]).toMatchObject({ ammo_id: "ARROW-1", quantity: 5 });
+    expect(destinationAmmo[0]).toMatchObject({
+      ammo_id: "ARROW-1",
+      quantity: 5,
+    });
   });
 
   test("removes the source row entirely on a full send", () => {

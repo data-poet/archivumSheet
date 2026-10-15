@@ -10,8 +10,14 @@ import { handleResumeAttributeInput } from "./resumeAttributeInput.js";
 // ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleTraitClick(e) {
-  if (e.target.classList.contains("remove-adv")) { removeAdv(e.target.dataset.id); return true; }
-  if (e.target.classList.contains("remove-dis")) { removeDis(e.target.dataset.id); return true; }
+  if (e.target.classList.contains("remove-adv")) {
+    removeAdv(e.target.dataset.id);
+    return true;
+  }
+  if (e.target.classList.contains("remove-dis")) {
+    removeDis(e.target.dataset.id);
+    return true;
+  }
   return false;
 }
 

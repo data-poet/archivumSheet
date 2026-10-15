@@ -13,17 +13,24 @@ const selected = state.selected;
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Every field is provided by the caller — there is no DB to look up.
-export function addCustomItem({ name, weight, price, quantity, description, storedAt }) {
+export function addCustomItem({
+  name,
+  weight,
+  price,
+  quantity,
+  description,
+  storedAt,
+}) {
   if (!name?.trim() || quantity <= 0 || weight < 0 || price < 0) return;
 
   selected.customInventory.push({
     id: generateInstanceId(),
-    name:        name.trim(),
-    weight:      weight,
-    price:       price,
-    quantity:    quantity,
+    name: name.trim(),
+    weight: weight,
+    price: price,
+    quantity: quantity,
     description: description?.trim() || null,
-    storedAt:    storedAt,
+    storedAt: storedAt,
   });
 
   renderListsPreserving(selected, state.data, state.sheet);
@@ -36,9 +43,7 @@ export function updateCustomItemQuantity(customItemId, quantity) {
     return;
   }
 
-  const entry = selected.customInventory.find(
-    (e) => e.id === customItemId,
-  );
+  const entry = selected.customInventory.find((e) => e.id === customItemId);
   if (entry) entry.quantity = quantity;
 
   renderListsPreserving(selected, state.data, state.sheet);
@@ -61,7 +66,11 @@ export function removeCustomItem(customItemId) {
   });
 }
 
-export function sendCustomItemToAlly(customItemId, destinationCharacterId, storedAt = "backpack") {
+export function sendCustomItemToAlly(
+  customItemId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.customInventory);
 
   const clone = transferInstance({
@@ -92,9 +101,7 @@ export function sendCustomItemToAlly(customItemId, destinationCharacterId, store
 
 // Unique per id, so no merging is needed.
 export function moveCustomItem(customItemId, toLocation) {
-  const entry = selected.customInventory.find(
-    (e) => e.id === customItemId,
-  );
+  const entry = selected.customInventory.find((e) => e.id === customItemId);
   if (!entry || entry.storedAt === toLocation) return;
 
   entry.storedAt = toLocation;
@@ -109,21 +116,28 @@ export function moveCustomItem(customItemId, toLocation) {
 
 // Unlike catalog-backed items, every field here IS the item, so invalid input is rejected outright
 // rather than silently discarded. Returns true if updated, false if rejected.
-export function saveCustomItemFields(customItemId, { name, weight, price, description }) {
-  const entry = selected.customInventory.find(
-    (e) => e.id === customItemId,
-  );
+export function saveCustomItemFields(
+  customItemId,
+  { name, weight, price, description },
+) {
+  const entry = selected.customInventory.find((e) => e.id === customItemId);
   if (!entry) return false;
 
   const trimmedName = name?.trim();
-  if (!trimmedName || isNaN(weight) || weight < 0 || isNaN(price) || price < 0) {
+  if (
+    !trimmedName ||
+    isNaN(weight) ||
+    weight < 0 ||
+    isNaN(price) ||
+    price < 0
+  ) {
     return false;
   }
 
-  entry.name        = trimmedName;
-  entry.weight       = weight;
-  entry.price        = price;
-  entry.description  = description?.trim() || null;
+  entry.name = trimmedName;
+  entry.weight = weight;
+  entry.price = price;
+  entry.description = description?.trim() || null;
 
   renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();

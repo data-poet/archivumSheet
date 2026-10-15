@@ -232,7 +232,9 @@ describe("SECONDARY ATTRIBUTES", () => {
         mockCarryWeight,
       );
       expect(attributes.HP.final_base_value).toBe(attributes.HP.base_value);
-      expect(attributes.BasicSpeed.final_base_value).toBe(attributes.BasicSpeed.base_value);
+      expect(attributes.BasicSpeed.final_base_value).toBe(
+        attributes.BasicSpeed.base_value,
+      );
     });
 
     it("Should equal base_value + bought * step", () => {
@@ -241,7 +243,9 @@ describe("SECONDARY ATTRIBUTES", () => {
         { HP: { bought: 2 }, BasicSpeed: { bought: 2 } },
         mockCarryWeight,
       );
-      expect(attributes.HP.final_base_value).toBe(attributes.HP.base_value + 2 * 4);
+      expect(attributes.HP.final_base_value).toBe(
+        attributes.HP.base_value + 2 * 4,
+      );
       expect(attributes.BasicSpeed.final_base_value).toBe(
         attributes.BasicSpeed.base_value + 2 * 0.5,
       );
@@ -305,7 +309,9 @@ describe("SECONDARY ATTRIBUTES", () => {
       );
 
       const halvedSpeed = Math.floor(attrsFull.BasicSpeed.value / 2);
-      const expectedMovement = Math.floor(halvedSpeed + mockCarryWeight.weight_modifier);
+      const expectedMovement = Math.floor(
+        halvedSpeed + mockCarryWeight.weight_modifier,
+      );
       expect(attributes.Movement.base_value).toBe(expectedMovement);
     });
 

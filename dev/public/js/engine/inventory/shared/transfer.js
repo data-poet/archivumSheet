@@ -33,9 +33,12 @@ export function transferInstance({
 
   const clone = cloneInstance(instance, destinationStoredAt);
 
-  const written = withCharacterInventory(destinationCharacterId, (inventory) => {
-    inventory[destinationInventoryKey].push(clone);
-  });
+  const written = withCharacterInventory(
+    destinationCharacterId,
+    (inventory) => {
+      inventory[destinationInventoryKey].push(clone);
+    },
+  );
   if (!written) return null;
 
   const index = sourceArray.indexOf(instance);
@@ -51,9 +54,9 @@ export function undoTransferInstance({
   cloneId,
 }) {
   withCharacterInventory(destinationCharacterId, (inventory) => {
-    inventory[destinationInventoryKey] = inventory[destinationInventoryKey].filter(
-      (entry) => entry.id !== cloneId,
-    );
+    inventory[destinationInventoryKey] = inventory[
+      destinationInventoryKey
+    ].filter((entry) => entry.id !== cloneId);
   });
 }
 
@@ -78,27 +81,30 @@ export function transferStackQuantity({
 
   let destinationRowId = null;
 
-  const written = withCharacterInventory(destinationCharacterId, (inventory) => {
-    const destArray = inventory[destinationInventoryKey];
-    const match = destArray.find(
-      (entry) =>
-        entry.storedAt === destinationStoredAt &&
-        matchKeyFields.every((field) => entry[field] === row[field]),
-    );
-    if (match) {
-      match.quantity += clamped;
-      destinationRowId = match.id;
-    } else {
-      const clone = {
-        ...row,
-        id: generateInstanceId(),
-        quantity: clamped,
-        storedAt: destinationStoredAt,
-      };
-      destArray.push(clone);
-      destinationRowId = clone.id;
-    }
-  });
+  const written = withCharacterInventory(
+    destinationCharacterId,
+    (inventory) => {
+      const destArray = inventory[destinationInventoryKey];
+      const match = destArray.find(
+        (entry) =>
+          entry.storedAt === destinationStoredAt &&
+          matchKeyFields.every((field) => entry[field] === row[field]),
+      );
+      if (match) {
+        match.quantity += clamped;
+        destinationRowId = match.id;
+      } else {
+        const clone = {
+          ...row,
+          id: generateInstanceId(),
+          quantity: clamped,
+          storedAt: destinationStoredAt,
+        };
+        destArray.push(clone);
+        destinationRowId = clone.id;
+      }
+    },
+  );
   if (!written) return null;
 
   row.quantity -= clamped;
@@ -125,9 +131,9 @@ export function undoTransferStackQuantity({
 
     row.quantity -= amount;
     if (row.quantity <= 0) {
-      inventory[destinationInventoryKey] = inventory[destinationInventoryKey].filter(
-        (entry) => entry.id !== destinationRowId,
-      );
+      inventory[destinationInventoryKey] = inventory[
+        destinationInventoryKey
+      ].filter((entry) => entry.id !== destinationRowId);
     }
   });
 }

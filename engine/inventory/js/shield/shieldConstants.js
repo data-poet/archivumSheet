@@ -1,11 +1,10 @@
-
 // Shields have no slots — a character can equip at most one shield at a time,
 // but there is no positional slot system like armor pieces have.
 
 const { VALID_STORED_AT } = require("../shared/storageLocations");
 
 const BROQUEL_SKILL_ID = "SKILL-045";
-const ESCUDO_SKILL_ID  = "SKILL-082";
+const ESCUDO_SKILL_ID = "SKILL-082";
 
 // Shield IDs that use BROQUEL skill for block (the rest use ESCUDO).
 const BROQUEL_SHIELD_IDS = new Set([

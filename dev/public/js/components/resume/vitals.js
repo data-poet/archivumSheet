@@ -17,11 +17,10 @@ export function renderResumeHeader(sheet) {
   const subRace = sheet?.race?.race_sub_name || "";
   // tier_label only exists on a forked catalog ally that had no character_name to begin
   // with (see allies/tier.js) — race leads in that case, name leads in every other one.
-  const tierLabel = !charName && sheet?.pc?.tier_label ? sheet.pc.tier_label : "";
+  const tierLabel =
+    !charName && sheet?.pc?.tier_label ? sheet.pc.tier_label : "";
 
-  const parts = charName
-    ? [charName, subRace]
-    : [subRace, tierLabel];
+  const parts = charName ? [charName, subRace] : [subRace, tierLabel];
 
   nameEl.textContent = parts.filter(Boolean).join(" | ");
 }

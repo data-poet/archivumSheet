@@ -1,6 +1,8 @@
 export function calcMaxHp(baseHp, material) {
   const base = Number(baseHp) || 0;
-  const modifier = material ? Number(material.material_hit_points_modifier) || 1 : 1;
+  const modifier = material
+    ? Number(material.material_hit_points_modifier) || 1
+    : 1;
   return base * modifier;
 }
 

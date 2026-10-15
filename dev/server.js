@@ -49,7 +49,10 @@ app.use(express.static(path.join(__dirname, "public")));
 // Repo-catalog ally portraits live beside their JSON under data/allies/<type>/[<subtype>/], not
 // under public/ — this is a fallback for whatever the first static mount doesn't have (i.e. every
 // hand-authored catalog portrait), so a new type/subtype needs no mirrored folder under public/.
-app.use("/images/allies", express.static(path.join(__dirname, "../data/allies")));
+app.use(
+  "/images/allies",
+  express.static(path.join(__dirname, "../data/allies")),
+);
 
 /* -----------------------
    APP INFO
@@ -110,9 +113,7 @@ app.get("/api/races", (req, res) => {
    META-RACES
 ------------------------ */
 app.get("/api/meta-races", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_yrth_meta_races.csv"),
-  );
+  const data = loadCSV(path.join(__dirname, "../data/db_yrth_meta_races.csv"));
 
   res.json(data);
 });

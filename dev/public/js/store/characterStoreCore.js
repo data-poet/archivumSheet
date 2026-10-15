@@ -7,7 +7,9 @@ import { ENTRY_KINDS } from "../shared/constants.js";
 export const STORAGE_KEY = "archivum_characters";
 
 export function generateId(prefix = "c") {
-  return `${prefix}-` + Date.now() + "-" + Math.random().toString(36).slice(2, 7);
+  return (
+    `${prefix}-` + Date.now() + "-" + Math.random().toString(36).slice(2, 7)
+  );
 }
 
 // Entries saved before `kind` existed have none; they are all real characters.

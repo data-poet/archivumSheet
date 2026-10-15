@@ -15,10 +15,7 @@ function validateContainerInstance(instance, index) {
     errors.push(`${prefix}: container_id is required`);
   }
 
-  if (
-    typeof instance.id !== "string" ||
-    !instance.id
-  ) {
+  if (typeof instance.id !== "string" || !instance.id) {
     errors.push(`${prefix}: id is required`);
   }
 
@@ -85,7 +82,11 @@ function validateLooseAmmoInstance(instance, index) {
   return errors;
 }
 
-function validateContainerCrossRules(ammoContainerInventory, containerDb, ammoDb) {
+function validateContainerCrossRules(
+  ammoContainerInventory,
+  containerDb,
+  ammoDb,
+) {
   const errors = [];
 
   const equippedCount = {};

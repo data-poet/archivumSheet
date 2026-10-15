@@ -273,4 +273,3 @@ export function handleAddArmor() {
     storageEl.value,
   );
 }
-

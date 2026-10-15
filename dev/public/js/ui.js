@@ -1,4 +1,7 @@
-export { renderLists, renderListsPreserving } from "./components/renderLists.js";
+export {
+  renderLists,
+  renderListsPreserving,
+} from "./components/renderLists.js";
 export { getMaterialName, updateInventoryUI } from "./components/inventory.js";
 export {
   updateActualValues,

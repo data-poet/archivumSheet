@@ -1,7 +1,4 @@
-const {
-  VALID_COIN_TYPES,
-  VALID_STORED_AT,
-} = require("./coinPurseConstants");
+const { VALID_COIN_TYPES, VALID_STORED_AT } = require("./coinPurseConstants");
 
 /**
  * Validates a single coin instance object (shape only).

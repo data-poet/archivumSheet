@@ -9,11 +9,18 @@ describe("renderSurvivalGear", () => {
   test("renders one row per gear+location entry", () => {
     const selected = {
       survivalGear: [
-        { id: "g1", adventure_gear_id: "GEAR-1", quantity: 2, storedAt: "backpack" },
+        {
+          id: "g1",
+          adventure_gear_id: "GEAR-1",
+          quantity: 2,
+          storedAt: "backpack",
+        },
       ],
     };
     const data = {
-      survivalGear: [{ adventure_gear_id: "GEAR-1", adventure_gear_name: "Ração" }],
+      survivalGear: [
+        { adventure_gear_id: "GEAR-1", adventure_gear_name: "Ração" },
+      ],
     };
 
     renderSurvivalGear(selected, data, undefined);
@@ -26,9 +33,24 @@ describe("renderSurvivalGear", () => {
   test("keeps rows of different gear or locations as separate display rows", () => {
     const selected = {
       survivalGear: [
-        { id: "g1", adventure_gear_id: "GEAR-1", quantity: 1, storedAt: "backpack" },
-        { id: "g2", adventure_gear_id: "GEAR-2", quantity: 1, storedAt: "backpack" },
-        { id: "g3", adventure_gear_id: "GEAR-1", quantity: 1, storedAt: "stash" },
+        {
+          id: "g1",
+          adventure_gear_id: "GEAR-1",
+          quantity: 1,
+          storedAt: "backpack",
+        },
+        {
+          id: "g2",
+          adventure_gear_id: "GEAR-2",
+          quantity: 1,
+          storedAt: "backpack",
+        },
+        {
+          id: "g3",
+          adventure_gear_id: "GEAR-1",
+          quantity: 1,
+          storedAt: "stash",
+        },
       ],
     };
     const data = { survivalGear: [] };

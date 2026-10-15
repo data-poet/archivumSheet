@@ -44,9 +44,9 @@ describe("renderAllyLinkControl", () => {
     getActiveKind.mockReturnValue("ally");
     renderAllyLinkControl();
 
-    const options = [...document.querySelectorAll("#ally-link-select option")].map(
-      (o) => o.value,
-    );
+    const options = [
+      ...document.querySelectorAll("#ally-link-select option"),
+    ].map((o) => o.value);
     expect(options).toEqual(["", "pc-1", "pc-2"]);
   });
 

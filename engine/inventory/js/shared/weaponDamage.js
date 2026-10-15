@@ -1,4 +1,3 @@
-
 // Sign is always explicit, even at 0 (e.g. "1d6+0"), to match GURPS damage notation conventions.
 function formatDamageString(dice, sum) {
   const sign = sum < 0 ? "-" : "+";

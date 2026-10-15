@@ -158,7 +158,11 @@ export function removeContainer(instanceId) {
 }
 
 // contents[] rides along for free via the default clone's structuredClone.
-export function sendContainerToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendContainerToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.ammo_containers);
 
   const clone = transferInstance({
@@ -392,7 +396,12 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
   triggerAutoRun();
 }
 
-export function sendLooseAmmoToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+export function sendLooseAmmoToAlly(
+  instanceId,
+  destinationCharacterId,
+  amount,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.loose_ammo);
 
   const result = transferStackQuantity({
@@ -429,7 +438,5 @@ export function sendLooseAmmoToAlly(instanceId, destinationCharacterId, amount, 
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findContainerByInstanceId(instanceId) {
-  return (
-    selected.ammo_containers.find((c) => c.id === instanceId) || null
-  );
+  return selected.ammo_containers.find((c) => c.id === instanceId) || null;
 }

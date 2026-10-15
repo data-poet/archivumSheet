@@ -25,11 +25,7 @@ let _accessoriesDB = null;
 function getAccessoriesDB() {
   if (_accessoriesDB) return _accessoriesDB;
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_itens_accessories.csv",
-  );
+  const filePath = path.join(process.cwd(), "data", "db_itens_accessories.csv");
 
   const rows = loadCSV(filePath);
 

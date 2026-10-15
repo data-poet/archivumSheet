@@ -52,8 +52,7 @@ export function findLinkedCounterpart(instance, counterparts) {
 
   if (instance._linkedInstanceId) {
     return (
-      counterparts.find((c) => c.id === instance._linkedInstanceId) ??
-      null
+      counterparts.find((c) => c.id === instance._linkedInstanceId) ?? null
     );
   }
 
@@ -72,7 +71,9 @@ export function relinkDualUsePair({
   counterpartPointsAtPrimary,
 }) {
   withCharacterInventory(destinationCharacterId, (inventory) => {
-    const destPrimary = inventory[primaryKey].find((w) => w.id === primaryClone.id);
+    const destPrimary = inventory[primaryKey].find(
+      (w) => w.id === primaryClone.id,
+    );
     const destCounterpart = inventory[counterpartKey].find(
       (w) => w.id === counterpartClone.id,
     );

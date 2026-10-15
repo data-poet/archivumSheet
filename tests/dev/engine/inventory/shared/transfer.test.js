@@ -18,7 +18,12 @@ describe("transferInstance", () => {
   function makeSource() {
     return [
       { id: "armor-1", armor_id: "ARM-1", is_equipped: true, storedAt: null },
-      { id: "armor-2", armor_id: "ARM-2", is_equipped: false, storedAt: "backpack" },
+      {
+        id: "armor-2",
+        armor_id: "ARM-2",
+        is_equipped: false,
+        storedAt: "backpack",
+      },
     ];
   }
 
@@ -205,7 +210,10 @@ describe("transferStackQuantity", () => {
     expect(result.amount).toBe(5);
     expect(sourceArray[0].quantity).toBe(15);
     expect(destinationCoins).toHaveLength(1);
-    expect(destinationCoins[0]).toMatchObject({ coin_type: "gold", quantity: 5 });
+    expect(destinationCoins[0]).toMatchObject({
+      coin_type: "gold",
+      quantity: 5,
+    });
     expect(result.destinationRowId).toBe(destinationCoins[0].id);
   });
 
@@ -254,7 +262,9 @@ describe("transferStackQuantity", () => {
   test("merges into an existing matching destination row instead of duplicating", () => {
     const sourceArray = makeSource();
     const inventory = {
-      coins: [{ id: "dest-1", coin_type: "gold", quantity: 10, storedAt: "backpack" }],
+      coins: [
+        { id: "dest-1", coin_type: "gold", quantity: 10, storedAt: "backpack" },
+      ],
     };
     withCharacterInventory.mockImplementation((characterId, mutator) => {
       mutator(inventory);
@@ -314,7 +324,9 @@ describe("transferStackQuantity", () => {
 describe("undoTransferStackQuantity", () => {
   test("decrements the destination row and removes it if that empties it", () => {
     const inventory = {
-      coins: [{ id: "dest-1", coin_type: "gold", quantity: 5, storedAt: "backpack" }],
+      coins: [
+        { id: "dest-1", coin_type: "gold", quantity: 5, storedAt: "backpack" },
+      ],
     };
     withCharacterInventory.mockImplementation((characterId, mutator) => {
       mutator(inventory);
@@ -333,7 +345,9 @@ describe("undoTransferStackQuantity", () => {
 
   test("decrements without removing a row that existed before the transfer (merge case)", () => {
     const inventory = {
-      coins: [{ id: "dest-1", coin_type: "gold", quantity: 15, storedAt: "backpack" }],
+      coins: [
+        { id: "dest-1", coin_type: "gold", quantity: 15, storedAt: "backpack" },
+      ],
     };
     withCharacterInventory.mockImplementation((characterId, mutator) => {
       mutator(inventory);

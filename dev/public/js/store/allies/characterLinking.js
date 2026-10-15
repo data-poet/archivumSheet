@@ -20,7 +20,9 @@ function _save(store) {
 // encodes the link and a second field could drift out of sync with it.
 function _ownerIdOf(list, allyId) {
   for (const entry of list) {
-    if ((entry?.data?.character?.allies ?? []).some((r) => r.ally_id === allyId)) {
+    if (
+      (entry?.data?.character?.allies ?? []).some((r) => r.ally_id === allyId)
+    ) {
       return entry.id;
     }
   }
@@ -62,7 +64,9 @@ export function listCharactersGrouped() {
     indented,
   });
 
-  const owned = new Set([...childrenOf.values()].flat().map((entry) => entry.id));
+  const owned = new Set(
+    [...childrenOf.values()].flat().map((entry) => entry.id),
+  );
   const result = [];
   for (const entry of list) {
     if (owned.has(entry.id)) continue;
@@ -165,7 +169,9 @@ export function getLinkedAllies(characterId) {
   const owner = store.list.find((c) => c.id === characterId);
   const roster = owner?.data?.character?.allies ?? [];
   return roster.filter((r) =>
-    store.list.some((c) => c.id === r.ally_id && kindOf(c) === ENTRY_KINDS.ALLY),
+    store.list.some(
+      (c) => c.id === r.ally_id && kindOf(c) === ENTRY_KINDS.ALLY,
+    ),
   );
 }
 
@@ -192,8 +198,8 @@ export function recreateLinkedAllies(linkedAllies, characterId) {
     });
   }
 
-  target.data.character.allies = (target.data.character.allies ?? []).map((r) =>
-    idMap.has(r.ally_id) ? { ...r, ally_id: idMap.get(r.ally_id) } : r,
+  target.data.character.allies = (target.data.character.allies ?? []).map(
+    (r) => (idMap.has(r.ally_id) ? { ...r, ally_id: idMap.get(r.ally_id) } : r),
   );
 
   _save(store);

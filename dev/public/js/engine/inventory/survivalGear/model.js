@@ -163,7 +163,12 @@ export function moveSurvivalGear(gearId, fromLocation, toLocation) {
   triggerAutoRun();
 }
 
-export function sendSurvivalGearToAlly(instanceId, destinationCharacterId, amount, storedAt = "backpack") {
+export function sendSurvivalGearToAlly(
+  instanceId,
+  destinationCharacterId,
+  amount,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.survivalGear);
 
   const result = transferStackQuantity({

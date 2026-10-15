@@ -214,9 +214,7 @@ export function moveMagicGear(instanceId, storedAt) {
 export function removeMagicGear(instanceId) {
   const before = structuredClone(selected.magicGear);
 
-  selected.magicGear = selected.magicGear.filter(
-    (g) => g.id !== instanceId,
-  );
+  selected.magicGear = selected.magicGear.filter((g) => g.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
@@ -230,7 +228,11 @@ export function removeMagicGear(instanceId) {
   });
 }
 
-export function sendMagicGearToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendMagicGearToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.magicGear);
 
   const clone = transferInstance({

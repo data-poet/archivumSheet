@@ -290,7 +290,11 @@ export function removeRanged(instanceId) {
 
 // A dual-use pair is one physical weapon: sending the ranged side without its linked melee
 // counterpart would leave half of it behind, so both legs move together or neither does.
-export function sendRangedToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendRangedToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const instance = findRangedByInstanceId(instanceId);
   if (!instance) return false;
 
@@ -485,7 +489,5 @@ export function removeRangedEnchantment(instanceId, entryInstanceId) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function findRangedByInstanceId(instanceId) {
-  return (
-    selected.ranged_weapons.find((w) => w.id === instanceId) || null
-  );
+  return selected.ranged_weapons.find((w) => w.id === instanceId) || null;
 }

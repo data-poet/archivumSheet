@@ -59,10 +59,12 @@ function _updateFinalCell(changedInput, cssClass, key, attr) {
   const row = changedInput.closest("tr");
   if (!row) return;
   const inputs = row.querySelectorAll(`input.${cssClass}[${attr}="${key}"]`);
-  let base = 0, mod = 0;
+  let base = 0,
+    mod = 0;
   inputs.forEach((inp) => {
     const val = Number(inp.value) || 0;
-    if (inp.dataset.field === "base" || inp.dataset.field === "base_value") base = val;
+    if (inp.dataset.field === "base" || inp.dataset.field === "base_value")
+      base = val;
     else if (inp.dataset.field === "modifier") mod = val;
   });
   const finalTd = row.querySelector("td strong");

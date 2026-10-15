@@ -13,10 +13,7 @@ import {
   removeMagicGearEnchantment,
   sendMagicGearToAlly,
 } from "./model.js";
-import {
-  renderEquippedMagicGear,
-  renderStoredMagicGear,
-} from "./render.js";
+import { renderEquippedMagicGear, renderStoredMagicGear } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 import { withOpenState } from "../../../shared/openState.js";
@@ -58,7 +55,8 @@ const _magicGearEnchantments = createEnchantmentsHandlers({
 const _handleSendMagicGearToAllyClick = createSendToAllyHandler({
   sendFn: sendMagicGearToAlly,
   render: () => _renderMagicGearLists(state.sheet),
-  canHandle: (instanceId) => selected.magicGear.some((m) => m.id === instanceId),
+  canHandle: (instanceId) =>
+    selected.magicGear.some((m) => m.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

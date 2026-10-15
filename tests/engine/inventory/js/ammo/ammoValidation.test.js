@@ -9,7 +9,6 @@ const {
   VALID_LOOSE_STORED_AT,
 } = require("engine/inventory/js/ammo/ammoConstants");
 
-
 const mockContainerDb = {
   "CONT-001": {
     container_id: "CONT-001",
@@ -75,7 +74,6 @@ const mockAmmoDb = {
     ammo_description: null,
   },
 };
-
 
 describe("AMMO VALIDATION — validateContainerInstance", () => {
   test("Should return empty array for a valid equipped container", () => {
@@ -165,9 +163,7 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
       0,
     );
 
-    expect(errors).toContain(
-      "ammoContainerInventory[0]: id is required",
-    );
+    expect(errors).toContain("ammoContainerInventory[0]: id is required");
   });
 
   test("Should fail when storedAt is invalid", () => {
@@ -280,7 +276,6 @@ describe("AMMO VALIDATION — validateContainerInstance", () => {
   });
 });
 
-
 describe("AMMO VALIDATION — validateLooseAmmoInstance", () => {
   test("Should return empty array for a valid backpack loose ammo entry", () => {
     const errors = validateLooseAmmoInstance(
@@ -388,7 +383,6 @@ describe("AMMO VALIDATION — validateLooseAmmoInstance", () => {
     expect(errors[0]).toMatch("looseAmmoInventory[2]");
   });
 });
-
 
 describe("AMMO VALIDATION — validateContainerCrossRules", () => {
   test("Should return empty array for a valid single equipped carriable container", () => {
@@ -627,9 +621,9 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
       [
         {
           id: "inst-1",
-          container_id: "CONT-001",    // accepts "arrow"
+          container_id: "CONT-001", // accepts "arrow"
           storedAt: "equipped",
-          contents: [{ ammo_id: "AMMO-003", quantity: 5 }],  // bolt
+          contents: [{ ammo_id: "AMMO-003", quantity: 5 }], // bolt
         },
       ],
       mockContainerDb,
@@ -646,11 +640,11 @@ describe("AMMO VALIDATION — validateContainerCrossRules", () => {
       [
         {
           id: "inst-1",
-          container_id: "CONT-001",    // accepts "arrow"
+          container_id: "CONT-001", // accepts "arrow"
           storedAt: "equipped",
           contents: [
-            { ammo_id: "AMMO-001", quantity: 10 },  // arrow
-            { ammo_id: "AMMO-002", quantity: 5 },   // arrow
+            { ammo_id: "AMMO-001", quantity: 10 }, // arrow
+            { ammo_id: "AMMO-002", quantity: 5 }, // arrow
           ],
         },
       ],

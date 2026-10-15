@@ -283,9 +283,7 @@ describe("exportSheet", () => {
             kind: "character",
             data: {
               character: {
-                allies: [
-                  { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
-                ],
+                allies: [{ id: "ai-1", ally_id: "c-ally-1", overrides: {} }],
               },
             },
           },

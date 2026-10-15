@@ -5,16 +5,40 @@ import {
 import { renderMetaRaces } from "../engine/character/metaRaces/render.js";
 import { renderSkills } from "../engine/character/skills/render.js";
 import { renderSpells } from "../engine/magic/spells/render.js";
-import { renderArmorSlots, renderStoredArmors } from "../engine/inventory/armor/render.js";
-import { renderEquippedShield, renderStoredShields } from "../engine/inventory/shield/render.js";
-import { renderEquippedMelee, renderStoredMelee } from "../engine/inventory/melee/render.js";
-import { renderEquippedRanged, renderStoredRanged } from "../engine/inventory/ranged/render.js";
-import { renderEquippedFirearms, renderStoredFirearms } from "../engine/inventory/firearms/render.js";
-import { renderAmmoContainers, renderLooseAmmo } from "../engine/inventory/ammo/render.js";
+import {
+  renderArmorSlots,
+  renderStoredArmors,
+} from "../engine/inventory/armor/render.js";
+import {
+  renderEquippedShield,
+  renderStoredShields,
+} from "../engine/inventory/shield/render.js";
+import {
+  renderEquippedMelee,
+  renderStoredMelee,
+} from "../engine/inventory/melee/render.js";
+import {
+  renderEquippedRanged,
+  renderStoredRanged,
+} from "../engine/inventory/ranged/render.js";
+import {
+  renderEquippedFirearms,
+  renderStoredFirearms,
+} from "../engine/inventory/firearms/render.js";
+import {
+  renderAmmoContainers,
+  renderLooseAmmo,
+} from "../engine/inventory/ammo/render.js";
 import { renderAlchemy } from "../engine/inventory/alchemy/render.js";
 import { renderSurvivalGear } from "../engine/inventory/survivalGear/render.js";
-import { renderEquippedAccessories, renderStoredAccessories } from "../engine/inventory/accessories/render.js";
-import { renderEquippedMagicGear, renderStoredMagicGear } from "../engine/inventory/magicGear/render.js";
+import {
+  renderEquippedAccessories,
+  renderStoredAccessories,
+} from "../engine/inventory/accessories/render.js";
+import {
+  renderEquippedMagicGear,
+  renderStoredMagicGear,
+} from "../engine/inventory/magicGear/render.js";
 import { renderCustomInventory } from "../engine/inventory/customInventory/render.js";
 import { renderCoinPurse } from "../engine/inventory/coinPurse/render.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";

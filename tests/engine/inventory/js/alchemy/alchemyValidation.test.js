@@ -2,7 +2,9 @@ const {
   validateAlchemyInstance,
 } = require("engine/inventory/js/alchemy/alchemyValidation");
 
-const { VALID_STORED_AT } = require("engine/inventory/js/alchemy/alchemyConstants");
+const {
+  VALID_STORED_AT,
+} = require("engine/inventory/js/alchemy/alchemyConstants");
 
 describe("ALCHEMY VALIDATION — validateAlchemyInstance", () => {
   test("Should return empty array for a valid backpack entry", () => {

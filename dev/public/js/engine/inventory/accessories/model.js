@@ -204,7 +204,11 @@ export function removeAccessory(instanceId) {
   });
 }
 
-export function sendAccessoryToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendAccessoryToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.accessories);
 
   const clone = transferInstance({

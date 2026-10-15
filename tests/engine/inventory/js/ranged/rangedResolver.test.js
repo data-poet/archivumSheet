@@ -588,9 +588,7 @@ describe("rangedResolver", () => {
     test("Should resolve has_magic_return as true when a special_effect (Retorno Mágico) entry is present", () => {
       const instance = {
         ...baseInstance,
-        enchantments: [
-          { id: "e1", enchantment_id: "ENCHANTMENT-066" },
-        ],
+        enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-066" }],
       };
 
       const result = resolveRangedWeapons(
@@ -608,9 +606,7 @@ describe("rangedResolver", () => {
     test("Should add enchantments_total_price on top of weapon_final_price for total_value, regardless of the enchantment's mechanical effect", () => {
       const instance = {
         ...baseInstance,
-        enchantments: [
-          { id: "e1", enchantment_id: "ENCHANTMENT-066" },
-        ],
+        enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-066" }],
       };
 
       const result = resolveRangedWeapons(

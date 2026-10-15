@@ -192,9 +192,7 @@ export function moveFirearm(instanceId, storedAt) {
 export function removeFirearm(instanceId) {
   const before = structuredClone(selected.firearms);
 
-  selected.firearms = selected.firearms.filter(
-    (w) => w.id !== instanceId,
-  );
+  selected.firearms = selected.firearms.filter((w) => w.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
   triggerAutoRun();
@@ -206,7 +204,11 @@ export function removeFirearm(instanceId) {
   });
 }
 
-export function sendFirearmToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendFirearmToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.firearms);
 
   const clone = transferInstance({

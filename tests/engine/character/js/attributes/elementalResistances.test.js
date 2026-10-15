@@ -99,11 +99,7 @@ describe("Elemental Damage Resistances", () => {
   });
 
   test("multiplies race and meta-race multipliers together into race_base", () => {
-    const result = calculateElementalResistances(
-      { Holy: 1 },
-      {},
-      { Holy: 2 },
-    );
+    const result = calculateElementalResistances({ Holy: 1 }, {}, { Holy: 2 });
 
     expect(result.Holy.race_base).toBe(2);
     expect(result.Holy.final).toBe(2);

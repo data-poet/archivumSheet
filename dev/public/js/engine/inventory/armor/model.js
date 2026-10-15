@@ -195,7 +195,11 @@ export function removeArmor(instanceId) {
   });
 }
 
-export function sendArmorToAlly(instanceId, destinationCharacterId, storedAt = "backpack") {
+export function sendArmorToAlly(
+  instanceId,
+  destinationCharacterId,
+  storedAt = "backpack",
+) {
   const before = structuredClone(selected.armors);
 
   const clone = transferInstance({

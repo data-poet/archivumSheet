@@ -130,8 +130,18 @@ describe("alchemyResolver — calculateCarriedAlchemyWeight", () => {
 
   test("Should sum total_weight of all backpack entries", () => {
     const backpack = [
-      { consumable_id: "POTION-000", quantity: 2, storedAt: "backpack", total_weight: 1.0 },
-      { consumable_id: "ELEXIR-000", quantity: 1, storedAt: "backpack", total_weight: 0.8 },
+      {
+        consumable_id: "POTION-000",
+        quantity: 2,
+        storedAt: "backpack",
+        total_weight: 1.0,
+      },
+      {
+        consumable_id: "ELEXIR-000",
+        quantity: 1,
+        storedAt: "backpack",
+        total_weight: 0.8,
+      },
     ];
 
     const weight = calculateCarriedAlchemyWeight(backpack);
@@ -141,9 +151,24 @@ describe("alchemyResolver — calculateCarriedAlchemyWeight", () => {
 
   test("Should round to 2 decimal places", () => {
     const backpack = [
-      { consumable_id: "POTION-000", quantity: 1, storedAt: "backpack", total_weight: 0.3 },
-      { consumable_id: "POTION-000", quantity: 1, storedAt: "backpack", total_weight: 0.3 },
-      { consumable_id: "POTION-000", quantity: 1, storedAt: "backpack", total_weight: 0.3 },
+      {
+        consumable_id: "POTION-000",
+        quantity: 1,
+        storedAt: "backpack",
+        total_weight: 0.3,
+      },
+      {
+        consumable_id: "POTION-000",
+        quantity: 1,
+        storedAt: "backpack",
+        total_weight: 0.3,
+      },
+      {
+        consumable_id: "POTION-000",
+        quantity: 1,
+        storedAt: "backpack",
+        total_weight: 0.3,
+      },
     ];
 
     const weight = calculateCarriedAlchemyWeight(backpack);
@@ -154,7 +179,12 @@ describe("alchemyResolver — calculateCarriedAlchemyWeight", () => {
   test("Should not include stash or camp entries in its calculation", () => {
     // Stash/camp entries are filtered upstream in buildAlchemySlots, not here.
     const backpack = [
-      { consumable_id: "POTION-000", quantity: 3, storedAt: "backpack", total_weight: 1.5 },
+      {
+        consumable_id: "POTION-000",
+        quantity: 3,
+        storedAt: "backpack",
+        total_weight: 1.5,
+      },
     ];
 
     const weight = calculateCarriedAlchemyWeight(backpack);

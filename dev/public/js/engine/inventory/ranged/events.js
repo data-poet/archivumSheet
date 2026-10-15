@@ -79,7 +79,8 @@ const _rangedEnchantments = createEnchantmentsHandlers({
 const _handleSendRangedToAllyClick = createSendToAllyHandler({
   sendFn: sendRangedToAlly,
   render: _renderRangedAndMeleeLists,
-  canHandle: (instanceId) => selected.ranged_weapons.some((r) => r.id === instanceId),
+  canHandle: (instanceId) =>
+    selected.ranged_weapons.some((r) => r.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

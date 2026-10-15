@@ -57,7 +57,8 @@ const TABLE_KEYS = Object.keys(DAMAGE_TABLE)
   .sort((a, b) => a - b);
 
 function getTabledDamage(ST) {
-  const key = TABLE_KEYS.filter((candidate) => candidate <= ST).pop() ?? TABLE_KEYS[0];
+  const key =
+    TABLE_KEYS.filter((candidate) => candidate <= ST).pop() ?? TABLE_KEYS[0];
 
   return DAMAGE_TABLE[key];
 }

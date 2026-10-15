@@ -25,10 +25,7 @@ const _handleSendAlchemyToAllyClick = createSendToAllyHandler({
 
 export function handleAlchemyClick(e) {
   if (e.target.classList.contains("remove-alchemy")) {
-    removeAlchemy(
-      e.target.dataset.consumableId,
-      e.target.dataset.storedAt,
-    );
+    removeAlchemy(e.target.dataset.consumableId, e.target.dataset.storedAt);
     return true;
   }
 
@@ -61,8 +58,8 @@ export function handleAlchemyInput(e) {
 export function handleAlchemyChange(e) {
   if (e.target.classList.contains("alchemy-location-select")) {
     const consumableId = e.target.dataset.consumableId;
-    const fromLoc      = e.target.dataset.storedAt;
-    const toLoc        = e.target.value;
+    const fromLoc = e.target.dataset.storedAt;
+    const toLoc = e.target.value;
     moveAlchemy(consumableId, fromLoc, toLoc);
     return true;
   }
@@ -80,19 +77,19 @@ export function handleAlchemyChange(e) {
 // ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddAlchemy() {
-  const typeEl    = document.getElementById("alchemyTypeFilter");
-  const nameEl    = document.getElementById("alchemyNameSelect");
-  const tierEl    = document.getElementById("alchemyTierSelect");
-  const qtyEl     = document.getElementById("alchemyQty");
+  const typeEl = document.getElementById("alchemyTypeFilter");
+  const nameEl = document.getElementById("alchemyNameSelect");
+  const tierEl = document.getElementById("alchemyTierSelect");
+  const qtyEl = document.getElementById("alchemyQty");
   const storageEl = document.getElementById("alchemyStorage");
 
   if (!nameEl || !tierEl || !qtyEl || !storageEl) return;
 
   const typeFilter = typeEl?.value || "";
-  const name       = nameEl.value;
-  const tier       = tierEl.value;
-  const quantity   = parseInt(qtyEl.value, 10);
-  const storedAt   = storageEl.value;
+  const name = nameEl.value;
+  const tier = tierEl.value;
+  const quantity = parseInt(qtyEl.value, 10);
+  const storedAt = storageEl.value;
 
   if (!name || !tier || isNaN(quantity) || quantity <= 0) return;
 

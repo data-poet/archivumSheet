@@ -296,9 +296,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" }],
         itemCategory: "Cabeça",
         resolvedEntries: [{ id: "E1", price: 10 }],
       }),
@@ -316,9 +314,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -344,9 +340,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -461,9 +455,7 @@ describe("enchantmentsExpander — entry list", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-ADV", target: "GHOST-ID" },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "GHOST-ID" }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -870,9 +862,7 @@ describe("HTML escaping", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-XSS" },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-XSS" }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),
@@ -895,9 +885,7 @@ describe("HTML escaping", () => {
     const el = parse(
       enchantmentsExpander({
         instanceId: "ITEM-1",
-        entries: [
-          { id: "E1", enchantment_id: "ENCH-XSS", target: "ADV-001" },
-        ],
+        entries: [{ id: "E1", enchantment_id: "ENCH-XSS", target: "ADV-001" }],
         itemCategory: "Cabeça",
         resolvedEntries: [],
       }),

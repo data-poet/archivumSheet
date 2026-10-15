@@ -8,7 +8,10 @@ import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { ensureInstanceIds } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
-import { renderCharacterImage, renderResumeImage } from "../engine/character/portrait/portrait.js";
+import {
+  renderCharacterImage,
+  renderResumeImage,
+} from "../engine/character/portrait/portrait.js";
 import { showToast } from "../shared/toast.js";
 
 export { showToast };
@@ -40,26 +43,32 @@ export function exportSheet() {
     exportedAt: new Date().toISOString(),
   };
 
-  const characterName = (
-    sheet?.pc?.character_name ||
-    selected.character?.character_name ||
-    "personagem"
-  )
-    .trim()
-    .replace(/\s+/g, "_")
-    .replace(/[^a-zA-Z0-9_\-áéíóúâêîôûãõàèìòùçÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ]/g, "")
-    || "personagem";
+  const characterName =
+    (
+      sheet?.pc?.character_name ||
+      selected.character?.character_name ||
+      "personagem"
+    )
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9_\-áéíóúâêîôûãõàèìòùçÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ]/g, "") ||
+    "personagem";
 
   const date = new Date().toISOString().slice(0, 10);
 
-  _downloadJSON(payload, `archivum_${characterName}_${date}.json`, "Ficha exportada");
+  _downloadJSON(
+    payload,
+    `archivum_${characterName}_${date}.json`,
+    "Ficha exportada",
+  );
 }
 
 // Writes the active sheet as an ally catalog file, ready to drop into data/allies/. The
 // portrait is saved beside it as a PNG of the same name — see store/allies/allyExport.js.
 export function exportAllySheet() {
   const { selected, sheet } = state;
-  const name = sheet?.pc?.character_name || selected.character?.character_name || "";
+  const name =
+    sheet?.pc?.character_name || selected.character?.character_name || "";
 
   const { filename, payload } = buildAllyFile(name);
 
@@ -86,10 +95,15 @@ function _downloadJSON(payload, filename, successLabel) {
 
 export function importSheet(file) {
   return new Promise((resolve, reject) => {
-    if (!file) { reject(new Error("Nenhum arquivo selecionado.")); return; }
+    if (!file) {
+      reject(new Error("Nenhum arquivo selecionado."));
+      return;
+    }
 
     if (!file.name.endsWith(".json") && file.type !== "application/json") {
-      const err = new Error("O arquivo deve ser um .json exportado pelo Archivum.");
+      const err = new Error(
+        "O arquivo deve ser um .json exportado pelo Archivum.",
+      );
       showToast(err.message, "error");
       reject(err);
       return;
@@ -133,27 +147,27 @@ function _applyImport(payload) {
   const { pc, race, character, inventory } = payload;
 
   selected.character = {
-    player_name:       pc?.player_name       ?? "",
-    character_name:    pc?.character_name    ?? "",
-    character_sex:     pc?.character_sex     ?? "",
-    character_age:     pc?.character_age     ?? null,
-    character_weight:  pc?.character_weight  ?? null,
-    race_id:           race?.race_id         ?? null,
-    starting_points:   pc?.starting_points   ?? null,
+    player_name: pc?.player_name ?? "",
+    character_name: pc?.character_name ?? "",
+    character_sex: pc?.character_sex ?? "",
+    character_age: pc?.character_age ?? null,
+    character_weight: pc?.character_weight ?? null,
+    race_id: race?.race_id ?? null,
+    starting_points: pc?.starting_points ?? null,
     experience_points: pc?.experience_points ?? null,
-    ability_points:    pc?.ability_points    ?? null,
-    magic_points:      pc?.magic_points      ?? null,
+    ability_points: pc?.ability_points ?? null,
+    magic_points: pc?.magic_points ?? null,
     // Mirrors characters.js's _applyData — see that whitelist entry's comment.
-    tier_label:        pc?.tier_label        ?? "",
+    tier_label: pc?.tier_label ?? "",
     image: pc?.image ?? {
-      uploaded:    false,
-      data:        "",
-      background:  "",
-      color:       { r: "", g: "", b: "" },
+      uploaded: false,
+      data: "",
+      background: "",
+      color: { r: "", g: "", b: "" },
       orientation: "",
-      position:    { x: "", y: "" },
-      size:        { width: "", height: "" },
-      scale:       "",
+      position: { x: "", y: "" },
+      size: { width: "", height: "" },
+      scale: "",
     },
   };
 
@@ -170,15 +184,15 @@ function _applyImport(payload) {
     const el = document.getElementById(id);
     if (el) el.value = v ?? "";
   };
-  setVal("playerNameInput",       selected.character.player_name);
-  setVal("characterNameInput",    selected.character.character_name);
-  setVal("characterSexSelect",    selected.character.character_sex);
-  setVal("characterAgeInput",     selected.character.character_age);
-  setVal("characterWeightInput",  selected.character.character_weight);
-  setVal("startingPointsInput",   selected.character.starting_points);
+  setVal("playerNameInput", selected.character.player_name);
+  setVal("characterNameInput", selected.character.character_name);
+  setVal("characterSexSelect", selected.character.character_sex);
+  setVal("characterAgeInput", selected.character.character_age);
+  setVal("characterWeightInput", selected.character.character_weight);
+  setVal("startingPointsInput", selected.character.starting_points);
   setVal("experiencePointsInput", selected.character.experience_points);
-  setVal("abilityPointsInput",    selected.character.ability_points);
-  setVal("magicPointsInput",      selected.character.magic_points);
+  setVal("abilityPointsInput", selected.character.ability_points);
+  setVal("magicPointsInput", selected.character.magic_points);
 
   if (selected.character.race_id && state.data.races.length) {
     restoreRaceSelection(selected.character.race_id);
@@ -188,34 +202,34 @@ function _applyImport(payload) {
     const src = character.primary?.[attr];
     if (!src) return;
     const base = document.getElementById(`${attr}_base`);
-    const mod  = document.getElementById(`${attr}_mod`);
+    const mod = document.getElementById(`${attr}_mod`);
     if (base) base.value = src.base_value ?? 10;
-    if (mod)  mod.value  = src.modifier   ?? 0;
+    if (mod) mod.value = src.modifier ?? 0;
   });
 
   const weightEl = document.getElementById("weight");
   if (weightEl) weightEl.value = inventory.weight ?? 0;
 
-  selected.secondary      = character.secondary      ?? {};
-  selected.damage         = character.damage         ?? {};
-  selected.resistances    = character.resistances    ?? {};
-  selected.advantages     = character.advantages     ?? {};
-  selected.disadvantages  = character.disadvantages  ?? {};
-  selected.skills         = character.skills         ?? {};
-  selected.spells         = character.spells         ?? {};
-  selected.armors         = ensureInstanceIds(inventory.armors         ?? []);
-  selected.shields        = ensureInstanceIds(inventory.shields        ?? []);
-  selected.melee_weapons  = ensureInstanceIds(inventory.melee_weapons  ?? []);
+  selected.secondary = character.secondary ?? {};
+  selected.damage = character.damage ?? {};
+  selected.resistances = character.resistances ?? {};
+  selected.advantages = character.advantages ?? {};
+  selected.disadvantages = character.disadvantages ?? {};
+  selected.skills = character.skills ?? {};
+  selected.spells = character.spells ?? {};
+  selected.armors = ensureInstanceIds(inventory.armors ?? []);
+  selected.shields = ensureInstanceIds(inventory.shields ?? []);
+  selected.melee_weapons = ensureInstanceIds(inventory.melee_weapons ?? []);
   selected.ranged_weapons = ensureInstanceIds(inventory.ranged_weapons ?? []);
-  selected.firearms       = ensureInstanceIds(inventory.firearms       ?? []);
+  selected.firearms = ensureInstanceIds(inventory.firearms ?? []);
   selected.ammo_containers = ensureInstanceIds(inventory.ammo_containers ?? []);
-  selected.loose_ammo     = ensureInstanceIds(inventory.loose_ammo     ?? []);
-  selected.alchemy        = ensureInstanceIds(inventory.alchemy        ?? []);
-  selected.survivalGear   = ensureInstanceIds(inventory.survivalGear   ?? []);
-  selected.accessories    = ensureInstanceIds(inventory.accessories    ?? []);
-  selected.magicGear      = ensureInstanceIds(inventory.magicGear      ?? []);
+  selected.loose_ammo = ensureInstanceIds(inventory.loose_ammo ?? []);
+  selected.alchemy = ensureInstanceIds(inventory.alchemy ?? []);
+  selected.survivalGear = ensureInstanceIds(inventory.survivalGear ?? []);
+  selected.accessories = ensureInstanceIds(inventory.accessories ?? []);
+  selected.magicGear = ensureInstanceIds(inventory.magicGear ?? []);
   selected.customInventory = ensureInstanceIds(inventory.customInventory ?? []);
-  selected.coins          = ensureInstanceIds(inventory.coins          ?? []);
+  selected.coins = ensureInstanceIds(inventory.coins ?? []);
 
   renderListsPreserving(selected, data);
   renderCharacterImage();

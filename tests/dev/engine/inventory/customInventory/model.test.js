@@ -17,7 +17,14 @@ beforeEach(() => {
   resetState();
   jest.clearAllMocks();
   state.selected.customInventory = [
-    { id: "item-1", name: "Rope", weight: 1, price: 2, quantity: 1, storedAt: "backpack" },
+    {
+      id: "item-1",
+      name: "Rope",
+      weight: 1,
+      price: 2,
+      quantity: 1,
+      storedAt: "backpack",
+    },
   ];
 });
 

@@ -145,9 +145,7 @@ describe("createEnchantmentsHandlers", () => {
       const { ownsFormKey } = createEnchantmentsHandlers(
         makeConfig({
           findByInstanceId: jest.fn(() => undefined),
-          getItems: jest.fn(() => [
-            { enchantments: [{ id: "ENTRY-1" }] },
-          ]),
+          getItems: jest.fn(() => [{ enchantments: [{ id: "ENTRY-1" }] }]),
         }),
       );
       expect(ownsFormKey("ENTRY-1")).toBe(true);
@@ -167,9 +165,7 @@ describe("createEnchantmentsHandlers", () => {
       const { ownsFormKey } = createEnchantmentsHandlers(
         makeConfig({
           findByInstanceId: jest.fn(() => undefined),
-          getItems: jest.fn(() => [
-            { magicalEffects: [{ id: "E1" }] },
-          ]),
+          getItems: jest.fn(() => [{ magicalEffects: [{ id: "E1" }] }]),
           getEnchantments: (item) => item.magicalEffects,
         }),
       );

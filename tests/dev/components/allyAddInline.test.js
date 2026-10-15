@@ -30,9 +30,19 @@ import {
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 
 const INDEX = [
-  { ally_id: "ALLY_HUMANOID_001", name: "Bran", type: "humanoids", subtype: null },
+  {
+    ally_id: "ALLY_HUMANOID_001",
+    name: "Bran",
+    type: "humanoids",
+    subtype: null,
+  },
   { ally_id: "ALLY_ANIMAL_001", name: "Lobo", type: "animals", subtype: null },
-  { ally_id: "ALLY_ANIMAL_002", name: "Cavalo", type: "animals", subtype: "mounts" },
+  {
+    ally_id: "ALLY_ANIMAL_002",
+    name: "Cavalo",
+    type: "animals",
+    subtype: "mounts",
+  },
 ];
 
 function flush() {
@@ -82,9 +92,9 @@ describe("renderAllyAddControl", () => {
     typeSelect.value = "animals";
     typeSelect.dispatchEvent(new Event("change", { bubbles: true }));
 
-    const options = [...document.getElementById("ally-add-subtype").options].map(
-      (o) => o.value,
-    );
+    const options = [
+      ...document.getElementById("ally-add-subtype").options,
+    ].map((o) => o.value);
     expect(options).toEqual(["", "mounts"]);
   });
 

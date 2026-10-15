@@ -24,7 +24,9 @@ function getLinkedAllyOptions(characterId) {
     .map((r) => store.list.find((c) => c.id === r.ally_id))
     .filter(Boolean);
 
-  const ownerEntry = store.list.find((c) => c.id === getAllyOwnerId(characterId));
+  const ownerEntry = store.list.find(
+    (c) => c.id === getAllyOwnerId(characterId),
+  );
   if (ownerEntry) destinations.push(ownerEntry);
 
   return destinations.map((c) => ({
@@ -37,7 +39,10 @@ export function hasLinkedAllies(characterId) {
   return getLinkedAllyOptions(characterId).length > 0;
 }
 
-export function sendToAllyRowHTML(instanceId, { needsQuantity = false, maxQuantity = 1 } = {}) {
+export function sendToAllyRowHTML(
+  instanceId,
+  { needsQuantity = false, maxQuantity = 1 } = {},
+) {
   const allies = getLinkedAllyOptions(getActiveCharacterId());
   if (allies.length === 0) return "";
 
@@ -72,12 +77,18 @@ export function createSendToAllyHandler({ sendFn, render, canHandle }) {
     if (canHandle && !canHandle(instanceId)) return false;
 
     const row = e.target.closest(".send-to-ally-row");
-    const destinationCharacterId = row?.querySelector(".send-to-ally-select")?.value;
+    const destinationCharacterId = row?.querySelector(
+      ".send-to-ally-select",
+    )?.value;
     if (!destinationCharacterId) return true;
 
     const quantityInput = row?.querySelector(".send-to-ally-quantity");
     const args = quantityInput
-      ? [instanceId, destinationCharacterId, parseInt(quantityInput.value, 10) || 0]
+      ? [
+          instanceId,
+          destinationCharacterId,
+          parseInt(quantityInput.value, 10) || 0,
+        ]
       : [instanceId, destinationCharacterId];
 
     const ok = sendFn(...args);

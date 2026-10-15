@@ -63,9 +63,7 @@ function renderCustomInventorySection(location, entries, sheet) {
     bodyRows = sectionEntries
       .map((entry) => {
         const resolvedBucket = sheet?.inventory?.customInventory?.[location];
-        const resolvedEntry = resolvedBucket?.find(
-          (e) => e.id === entry.id,
-        );
+        const resolvedEntry = resolvedBucket?.find((e) => e.id === entry.id);
         const totalWeight = resolvedEntry?.total_weight ?? "—";
 
         return `

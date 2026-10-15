@@ -46,7 +46,11 @@ jest.mock("../../../helpers/dataUtils.js", () => ({
   loadJSON: jest.fn((file) => mockFixtureFiles[file]),
 }));
 
-const { getAlly, listAllies, ALLIES_DIR: EXPORTED_ALLIES_DIR } = require("../../../helpers/alliesCatalog.js");
+const {
+  getAlly,
+  listAllies,
+  ALLIES_DIR: EXPORTED_ALLIES_DIR,
+} = require("../../../helpers/alliesCatalog.js");
 
 describe("listAllies", () => {
   test("returns one lightweight entry per ally file in data/allies/", () => {
@@ -81,9 +85,18 @@ describe("listAllies", () => {
   test("exposes the folder nesting as type and optional subtype", () => {
     const byId = Object.fromEntries(listAllies().map((e) => [e.ally_id, e]));
 
-    expect(byId.ALLY_HUMANOID_001).toMatchObject({ type: "humanoids", subtype: null });
-    expect(byId.ALLY_ANIMAL_001).toMatchObject({ type: "animals", subtype: null });
-    expect(byId.ALLY_ANIMAL_MOUNT_001).toMatchObject({ type: "animals", subtype: "mounts" });
+    expect(byId.ALLY_HUMANOID_001).toMatchObject({
+      type: "humanoids",
+      subtype: null,
+    });
+    expect(byId.ALLY_ANIMAL_001).toMatchObject({
+      type: "animals",
+      subtype: null,
+    });
+    expect(byId.ALLY_ANIMAL_MOUNT_001).toMatchObject({
+      type: "animals",
+      subtype: "mounts",
+    });
   });
 
   test("resolves tierList to the manifest's default when no type/subtype override exists", () => {

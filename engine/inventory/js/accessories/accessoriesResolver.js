@@ -32,8 +32,7 @@ function resolveAccessoryItem(
     accessory_custom_name: instance.accessory_custom_name?.trim() || null,
     accessory_custom_description:
       instance.accessory_custom_description?.trim() || null,
-    accessory_custom_effect:
-      instance.accessory_custom_effect?.trim() || null,
+    accessory_custom_effect: instance.accessory_custom_effect?.trim() || null,
 
     is_equipped: instance.is_equipped,
     storedAt: instance.storedAt,

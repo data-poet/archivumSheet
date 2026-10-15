@@ -1,4 +1,6 @@
-const { VALID_STORED_AT } = require("engine/inventory/js/survivalGear/survivalGearConstants");
+const {
+  VALID_STORED_AT,
+} = require("engine/inventory/js/survivalGear/survivalGearConstants");
 
 describe("SURVIVAL GEAR CONSTANTS", () => {
   describe("VALID_STORED_AT", () => {

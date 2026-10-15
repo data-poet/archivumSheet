@@ -98,12 +98,7 @@ describe("ADVANTAGES", () => {
   });
 
   test("Should let is_meta_race take priority over is_enchantment", () => {
-    const result = buildAdvantages(
-      ["ADV-002"],
-      [],
-      ["ADV-002"],
-      ["ADV-002"],
-    );
+    const result = buildAdvantages(["ADV-002"], [], ["ADV-002"], ["ADV-002"]);
 
     expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
     expect(result.advantages["ADV-002"].is_enchantment).toBe(false);

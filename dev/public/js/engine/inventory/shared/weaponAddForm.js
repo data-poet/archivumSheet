@@ -25,8 +25,7 @@ export function createWeaponAddHandler({
     if (!nameEl || !tierEl || !materialEl || !storageEl) return;
 
     const weapon = catalog().find(
-      (w) =>
-        w.weapon_name === nameEl.value && w.weapon_tier === tierEl.value,
+      (w) => w.weapon_name === nameEl.value && w.weapon_tier === tierEl.value,
     );
     if (!weapon) return;
 

@@ -96,7 +96,9 @@ function buildCharacter({
       character_points: {
         primary_attributes: sumObjectValues(primaryPoints.primary_attributes),
 
-        secondary_attributes: sumObjectValues(secondaryPoints.secondary_attributes),
+        secondary_attributes: sumObjectValues(
+          secondaryPoints.secondary_attributes,
+        ),
 
         skills: secondaryPoints.skills ?? 0,
 

@@ -3,7 +3,6 @@ const {
   formatDamageString,
 } = require("engine/inventory/js/shared/weaponDamage");
 
-
 const BASE_DAMAGE_ST10 = {
   GDP: {
     dice: "1d6",
@@ -34,7 +33,6 @@ const BASE_DAMAGE_ST15 = {
   },
 };
 
-
 describe("formatDamageString", () => {
   test("negative sum uses minus sign without space", () => {
     expect(formatDamageString("1d6", -1)).toBe("1d6-1");
@@ -58,7 +56,6 @@ describe("formatDamageString", () => {
   });
 });
 
-
 describe("computeWeaponDamage — guard clauses", () => {
   test("returns empty object when base_damage is null", () => {
     expect(computeWeaponDamage("Perfuração", 1, null, null)).toEqual({});
@@ -80,7 +77,6 @@ describe("computeWeaponDamage — guard clauses", () => {
     expect(computeWeaponDamage("Outro", 1, 1, BASE_DAMAGE_ST10)).toEqual({});
   });
 });
-
 
 describe("computeWeaponDamage — Perfuração", () => {
   test("computes weapon_gdp_damage only for Perfuração type", () => {
@@ -120,7 +116,6 @@ describe("computeWeaponDamage — Perfuração", () => {
     expect(result.weapon_gdp_damage).toBeUndefined();
   });
 });
-
 
 describe("computeWeaponDamage — Corte", () => {
   test("computes weapon_bal_damage only for Corte type", () => {
@@ -172,7 +167,6 @@ describe("computeWeaponDamage — Corte", () => {
   });
 });
 
-
 describe("computeWeaponDamage — Contusão", () => {
   test("computes weapon_bal_damage for Contusão type", () => {
     // BAL.final_modifier 0 + weapon_bal_modifier +1 = +1
@@ -181,7 +175,6 @@ describe("computeWeaponDamage — Contusão", () => {
     expect(result).toEqual({ weapon_bal_damage: "1d6+1" });
   });
 });
-
 
 describe("computeWeaponDamage — both Perfuração and Corte", () => {
   test("computes both fields when type contains Perfuração and Corte", () => {
@@ -245,7 +238,6 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
     expect(result.weapon_bal_damage).toBeUndefined();
   });
 });
-
 
 describe("computeWeaponDamage — return types", () => {
   test("returned damage values are always strings", () => {

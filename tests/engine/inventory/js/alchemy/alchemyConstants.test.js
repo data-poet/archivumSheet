@@ -1,4 +1,6 @@
-const { VALID_STORED_AT } = require("engine/inventory/js/alchemy/alchemyConstants");
+const {
+  VALID_STORED_AT,
+} = require("engine/inventory/js/alchemy/alchemyConstants");
 
 describe("ALCHEMY CONSTANTS", () => {
   describe("VALID_STORED_AT", () => {

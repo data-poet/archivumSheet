@@ -24,8 +24,16 @@ import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
 const META_RACE_ROWS = [
-  { meta_race_id: "META-000", meta_race_name: "Morto-Vivo", meta_race_sub_name: "Zumbi" },
-  { meta_race_id: "META-001", meta_race_name: "Morto-Vivo", meta_race_sub_name: "Esqueleto" },
+  {
+    meta_race_id: "META-000",
+    meta_race_name: "Morto-Vivo",
+    meta_race_sub_name: "Zumbi",
+  },
+  {
+    meta_race_id: "META-001",
+    meta_race_name: "Morto-Vivo",
+    meta_race_sub_name: "Esqueleto",
+  },
   { meta_race_id: "META-002", meta_race_name: "Solitário" }, // no sub-name -> falls back to name
 ];
 
@@ -49,7 +57,9 @@ describe("loadMetaRaces", () => {
     await loadMetaRaces();
 
     expect(fetchMetaRaces).not.toHaveBeenCalled();
-    expect(document.getElementById("metaRaceNameSelect").style.display).toBe("");
+    expect(document.getElementById("metaRaceNameSelect").style.display).toBe(
+      "",
+    );
   });
 
   test("fetches and populates the name select with unique, sorted meta-race names", async () => {
@@ -60,7 +70,11 @@ describe("loadMetaRaces", () => {
     const options = Array.from(
       document.getElementById("metaRaceNameSelect").options,
     );
-    expect(options.map((o) => o.value)).toEqual(["", "Morto-Vivo", "Solitário"]);
+    expect(options.map((o) => o.value)).toEqual([
+      "",
+      "Morto-Vivo",
+      "Solitário",
+    ]);
     expect(options[0].textContent).toBe(t("character.selectMetaRace"));
   });
 });

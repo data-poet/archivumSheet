@@ -8,10 +8,10 @@ const {
 function computeShieldBlock(shieldId, skills = {}, dxValue = 0) {
   const isBroquelShield = BROQUEL_SHIELD_IDS.has(shieldId);
 
-  const primarySkillId   = isBroquelShield ? BROQUEL_SKILL_ID : ESCUDO_SKILL_ID;
-  const secondarySkillId = isBroquelShield ? ESCUDO_SKILL_ID  : BROQUEL_SKILL_ID;
+  const primarySkillId = isBroquelShield ? BROQUEL_SKILL_ID : ESCUDO_SKILL_ID;
+  const secondarySkillId = isBroquelShield ? ESCUDO_SKILL_ID : BROQUEL_SKILL_ID;
 
-  const primarySkill   = skills[primarySkillId]   ?? null;
+  const primarySkill = skills[primarySkillId] ?? null;
   const secondarySkill = skills[secondarySkillId] ?? null;
 
   if (primarySkill) {

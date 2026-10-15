@@ -93,7 +93,10 @@ describe("sendCoinsToAlly", () => {
 
     expect(ok).toBe(true);
     expect(findEntry("gold", "backpack").quantity).toBe(15);
-    expect(destinationCoins[0]).toMatchObject({ coin_type: "gold", quantity: 5 });
+    expect(destinationCoins[0]).toMatchObject({
+      coin_type: "gold",
+      quantity: 5,
+    });
   });
 
   test("removes the source row entirely on a full send", () => {

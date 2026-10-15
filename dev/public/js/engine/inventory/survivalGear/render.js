@@ -127,10 +127,17 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 data-stored-at="${location}"
               >${icon("remove")}</button>
             </td>
-            ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
-              needsQuantity: true,
-              maxQuantity: entry.quantity,
-            })}</td>` : ""}
+            ${
+              showSendToAlly
+                ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(
+                    entry.id,
+                    {
+                      needsQuantity: true,
+                      maxQuantity: entry.quantity,
+                    },
+                  )}</td>`
+                : ""
+            }
           </tr>
           ${detailRow(colCount, gearDetailFields(record))}`;
       })

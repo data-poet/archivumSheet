@@ -1,4 +1,8 @@
-const { buildSkills, computeActions, MASTER_ELIGIBLE_CATEGORIES } = require("engine/character/js/skills/skills");
+const {
+  buildSkills,
+  computeActions,
+  MASTER_ELIGIBLE_CATEGORIES,
+} = require("engine/character/js/skills/skills");
 
 const assertShape = require("tests/helpers/assertShape");
 
@@ -67,7 +71,11 @@ describe("SKILL PARRY", () => {
 
   const skillsWithParry = {
     [parrySkillId]: { base_value: 14, modifier: 0, isTrainedWithMaster: false },
-    [nonParrySkillId]: { base_value: 10, modifier: 0, isTrainedWithMaster: false },
+    [nonParrySkillId]: {
+      base_value: 10,
+      modifier: 0,
+      isTrainedWithMaster: false,
+    },
   };
 
   test("Skill with parry_modifier should have a numeric parry value", () => {
@@ -92,18 +100,20 @@ describe("SKILL PARRY", () => {
 
   test("parry = floor(parry_modifier * level) + 1 when ADV-055 present", () => {
     // same: floor(0.5 * 14) + 1 = 8
-    const result = buildSkills(
-      skillsWithParry,
-      character,
-      { "ADV-055": { advantage_name: "REFLEXOS EM COMBATE" } },
-    );
+    const result = buildSkills(skillsWithParry, character, {
+      "ADV-055": { advantage_name: "REFLEXOS EM COMBATE" },
+    });
     expect(result.skills[parrySkillId].parry).toBe(8);
   });
 
   test("parry uses floored result (no decimal)", () => {
     // BRIGA parry_modifier = 0.6666…, level = 10 → floor(6.666…) = 6
     const skills = {
-      [parrySkillId]: { base_value: 11, modifier: 0, isTrainedWithMaster: false },
+      [parrySkillId]: {
+        base_value: 11,
+        modifier: 0,
+        isTrainedWithMaster: false,
+      },
     };
     const result = buildSkills(skills, character);
     expect(Number.isInteger(result.skills[parrySkillId].parry)).toBe(true);
@@ -112,7 +122,11 @@ describe("SKILL PARRY", () => {
   test("modifier contributes to parry (level = base_value + modifier)", () => {
     // level = 14 + 2 = 16 → floor(0.5 * 16) = 8
     const skills = {
-      [parrySkillId]: { base_value: 14, modifier: 2, isTrainedWithMaster: false },
+      [parrySkillId]: {
+        base_value: 14,
+        modifier: 2,
+        isTrainedWithMaster: false,
+      },
     };
     const result = buildSkills(skills, character);
     expect(result.skills[parrySkillId].parry).toBe(8);
@@ -120,7 +134,7 @@ describe("SKILL PARRY", () => {
 });
 
 describe("IS TRAINED WITH MASTER", () => {
-  const eligibleSkillId  = "SKILL-044"; // Armas e Combate
+  const eligibleSkillId = "SKILL-044"; // Armas e Combate
   const ineligibleSkillId = "SKILL-000"; // Animais
 
   test("isTrainedWithMaster defaults to false if not provided", () => {
@@ -133,7 +147,13 @@ describe("IS TRAINED WITH MASTER", () => {
 
   test("isTrainedWithMaster is stored as true for eligible category", () => {
     const result = buildSkills(
-      { [eligibleSkillId]: { base_value: 10, modifier: 0, isTrainedWithMaster: true } },
+      {
+        [eligibleSkillId]: {
+          base_value: 10,
+          modifier: 0,
+          isTrainedWithMaster: true,
+        },
+      },
       character,
     );
     expect(result.skills[eligibleSkillId].isTrainedWithMaster).toBe(true);
@@ -141,7 +161,13 @@ describe("IS TRAINED WITH MASTER", () => {
 
   test("isTrainedWithMaster is always false for non-eligible category regardless of input", () => {
     const result = buildSkills(
-      { [ineligibleSkillId]: { base_value: 10, modifier: 0, isTrainedWithMaster: true } },
+      {
+        [ineligibleSkillId]: {
+          base_value: 10,
+          modifier: 0,
+          isTrainedWithMaster: true,
+        },
+      },
       character,
     );
     expect(result.skills[ineligibleSkillId].isTrainedWithMaster).toBe(false);
@@ -161,47 +187,80 @@ describe("COMPUTE ACTIONS", () => {
       ["Animais", 16, 16, false],
       ["Animais", 24, 24, true],
       ["Sociais", 30, 30, true],
-    ])("category=%s base=%d level=%d master=%s → 1", (category, base_value, level, isTrainedWithMaster) => {
-      expect(computeActions({ category, base_value, level, isTrainedWithMaster })).toBe(1);
-    });
+    ])(
+      "category=%s base=%d level=%d master=%s → 1",
+      (category, base_value, level, isTrainedWithMaster) => {
+        expect(
+          computeActions({ category, base_value, level, isTrainedWithMaster }),
+        ).toBe(1);
+      },
+    );
   });
 
   describe("Eligible category WITHOUT master — every 8 levels above 8", () => {
     test.each([
-      [1,  1,  1],
-      [8,  8,  1],
-      [9,  9,  1],  // 9 - 8 = 1 → floor(1/8) = 0 → 1 action
-      [15, 15, 1],  // 15 - 8 = 7 → floor(7/8) = 0 → 1 action
+      [1, 1, 1],
+      [8, 8, 1],
+      [9, 9, 1], // 9 - 8 = 1 → floor(1/8) = 0 → 1 action
+      [15, 15, 1], // 15 - 8 = 7 → floor(7/8) = 0 → 1 action
       [16, 16, 2],
       [23, 23, 2],
       [24, 24, 3],
     ])("level=%d → %d actions", (base_value, level, expected) => {
-      expect(computeActions({ category: "Armas e Combate", base_value, level, isTrainedWithMaster: false })).toBe(expected);
+      expect(
+        computeActions({
+          category: "Armas e Combate",
+          base_value,
+          level,
+          isTrainedWithMaster: false,
+        }),
+      ).toBe(expected);
     });
   });
 
   describe("Eligible category WITH master — every 4 levels of base_value above 12", () => {
     test.each([
-      [1,  1],
+      [1, 1],
       [12, 1],
-      [13, 1],  // 13 - 12 = 1 → floor(1/4) = 0 → 1 action
+      [13, 1], // 13 - 12 = 1 → floor(1/4) = 0 → 1 action
       [15, 1],
       [16, 2],
       [19, 2],
       [20, 3],
       [24, 4],
     ])("base_value=%d → %d actions", (base_value, expected) => {
-      expect(computeActions({ category: "Armas e Combate", base_value, level: base_value, isTrainedWithMaster: true })).toBe(expected);
+      expect(
+        computeActions({
+          category: "Armas e Combate",
+          base_value,
+          level: base_value,
+          isTrainedWithMaster: true,
+        }),
+      ).toBe(expected);
     });
   });
 
   describe("Mágicas category also respects master formula", () => {
     test("Mágicas with master, base 16 → 2 actions", () => {
-      expect(computeActions({ category: "Mágicas", base_value: 16, level: 16, isTrainedWithMaster: true })).toBe(2);
+      expect(
+        computeActions({
+          category: "Mágicas",
+          base_value: 16,
+          level: 16,
+          isTrainedWithMaster: true,
+        }),
+      ).toBe(2);
     });
 
     test("Mágicas without master, level 16 → 2 actions", () => {
-      expect(computeActions({ category: "Mágicas", base_value: 16, level: 16, isTrainedWithMaster: false })).toBe(2);
+      expect(
+        computeActions({
+          category: "Mágicas",
+          base_value: 16,
+          level: 16,
+          isTrainedWithMaster: false,
+        }),
+      ).toBe(2);
     });
   });
 });
@@ -211,7 +270,13 @@ describe("ACTIONS in buildSkills output", () => {
 
   test("All skills have an actions field", () => {
     const result = buildSkills(
-      { [eligibleId]: { base_value: 10, modifier: 0, isTrainedWithMaster: false } },
+      {
+        [eligibleId]: {
+          base_value: 10,
+          modifier: 0,
+          isTrainedWithMaster: false,
+        },
+      },
       character,
     );
     expect(typeof result.skills[eligibleId].actions).toBe("number");
@@ -219,7 +284,13 @@ describe("ACTIONS in buildSkills output", () => {
 
   test("Eligible skill at level 8 → 1 action (no master)", () => {
     const result = buildSkills(
-      { [eligibleId]: { base_value: 8, modifier: 0, isTrainedWithMaster: false } },
+      {
+        [eligibleId]: {
+          base_value: 8,
+          modifier: 0,
+          isTrainedWithMaster: false,
+        },
+      },
       character,
     );
     expect(result.skills[eligibleId].actions).toBe(1);
@@ -227,7 +298,13 @@ describe("ACTIONS in buildSkills output", () => {
 
   test("Eligible skill at level 16 → 2 actions (no master)", () => {
     const result = buildSkills(
-      { [eligibleId]: { base_value: 16, modifier: 0, isTrainedWithMaster: false } },
+      {
+        [eligibleId]: {
+          base_value: 16,
+          modifier: 0,
+          isTrainedWithMaster: false,
+        },
+      },
       character,
     );
     expect(result.skills[eligibleId].actions).toBe(2);
@@ -235,7 +312,13 @@ describe("ACTIONS in buildSkills output", () => {
 
   test("Eligible skill base_value 16 with master → 2 actions", () => {
     const result = buildSkills(
-      { [eligibleId]: { base_value: 16, modifier: 0, isTrainedWithMaster: true } },
+      {
+        [eligibleId]: {
+          base_value: 16,
+          modifier: 0,
+          isTrainedWithMaster: true,
+        },
+      },
       character,
     );
     expect(result.skills[eligibleId].actions).toBe(2);
@@ -243,7 +326,13 @@ describe("ACTIONS in buildSkills output", () => {
 
   test("Eligible skill base_value 20 with master → 3 actions", () => {
     const result = buildSkills(
-      { [eligibleId]: { base_value: 20, modifier: 0, isTrainedWithMaster: true } },
+      {
+        [eligibleId]: {
+          base_value: 20,
+          modifier: 0,
+          isTrainedWithMaster: true,
+        },
+      },
       character,
     );
     expect(result.skills[eligibleId].actions).toBe(3);
@@ -269,13 +358,7 @@ describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
   });
 
   test("Should not create any entry from a fortify_skill modifier alone (no-op if not known)", () => {
-    const result = buildSkills(
-      {},
-      character,
-      {},
-      {},
-      { "SKILL-000": 3 },
-    );
+    const result = buildSkills({}, character, {}, {}, { "SKILL-000": 3 });
 
     expect(result.skills["SKILL-000"]).toBeUndefined();
   });

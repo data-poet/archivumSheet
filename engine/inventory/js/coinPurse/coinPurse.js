@@ -19,7 +19,6 @@ const {
  * carried_coin_purse_value: backpack coins only (copper equivalent).
  */
 function buildCoinPurseSlots(coinInventory = []) {
-
   const instanceErrors = coinInventory.flatMap((instance, index) =>
     validateCoinInstance(instance, index),
   );
@@ -30,8 +29,8 @@ function buildCoinPurseSlots(coinInventory = []) {
     );
   }
 
-  const stash    = [];
-  const camp     = [];
+  const stash = [];
+  const camp = [];
   const backpack = [];
 
   for (const instance of coinInventory) {
@@ -54,11 +53,7 @@ function buildCoinPurseSlots(coinInventory = []) {
 
   const carried_coin_purse_weight = calculateCarriedCoinPurseWeight(backpack);
 
-  const total_coin_purse_value = sumCoinValue([
-    ...backpack,
-    ...stash,
-    ...camp,
-  ]);
+  const total_coin_purse_value = sumCoinValue([...backpack, ...stash, ...camp]);
 
   const carried_coin_purse_value = sumCoinValue(backpack);
 

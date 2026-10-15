@@ -100,7 +100,9 @@ describe("updateActualHpDisplay", () => {
   });
 
   test("is a no-op when the block has fewer than two <strong> elements", () => {
-    resetDOM(`<div class="hp-modifier"><strong>10</strong><input class="x" /></div>`);
+    resetDOM(
+      `<div class="hp-modifier"><strong>10</strong><input class="x" /></div>`,
+    );
 
     updateActualHpDisplay(document.querySelector(".x"), 10, -4);
 

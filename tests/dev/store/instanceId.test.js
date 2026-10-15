@@ -3,7 +3,8 @@ import {
   ensureInstanceIds,
 } from "dev/public/js/store/instanceId.js";
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 describe("generateInstanceId", () => {
   test("returns a UUID", () => {

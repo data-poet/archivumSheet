@@ -52,7 +52,10 @@ describe("META-RACES", () => {
   test("stacking two meta-races sums their attribute modifiers", () => {
     const zumbi = resolveMetaRaces(["META-000"]).attributeModifiers;
     const esqueleto = resolveMetaRaces(["META-001"]).attributeModifiers;
-    const stacked = resolveMetaRaces(["META-000", "META-001"]).attributeModifiers;
+    const stacked = resolveMetaRaces([
+      "META-000",
+      "META-001",
+    ]).attributeModifiers;
 
     expect(stacked.ST).toBe(zumbi.ST + esqueleto.ST);
     expect(stacked.HT).toBe(zumbi.HT + esqueleto.HT);

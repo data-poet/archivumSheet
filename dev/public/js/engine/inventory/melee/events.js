@@ -81,7 +81,8 @@ const _meleeEnchantments = createEnchantmentsHandlers({
 const _handleSendMeleeToAllyClick = createSendToAllyHandler({
   sendFn: sendMeleeToAlly,
   render: _renderMeleeAndRangedLists,
-  canHandle: (instanceId) => selected.melee_weapons.some((m) => m.id === instanceId),
+  canHandle: (instanceId) =>
+    selected.melee_weapons.some((m) => m.id === instanceId),
 });
 
 // ─── Click ────────────────────────────────────────────────────────────────────

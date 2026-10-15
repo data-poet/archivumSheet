@@ -217,9 +217,7 @@ describe("ally linking", () => {
         kind: "character",
         data: {
           character: {
-            allies: [
-              { id: "ai-1", ally_id: "c-ally-1", overrides: {} },
-            ],
+            allies: [{ id: "ai-1", ally_id: "c-ally-1", overrides: {} }],
             alliesActiveId: "ai-1",
           },
         },
@@ -301,9 +299,7 @@ describe("ally linking", () => {
         kind: "character",
         data: {
           character: {
-            allies: [
-              { id: "ai-1", ally_id: "old-ally-id", overrides: {} },
-            ],
+            allies: [{ id: "ai-1", ally_id: "old-ally-id", overrides: {} }],
           },
         },
       },

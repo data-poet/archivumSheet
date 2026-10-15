@@ -59,9 +59,7 @@ function skillName(id) {
 }
 
 function resolvedPrice(resolvedEntries, entryInstanceId) {
-  const resolved = resolvedEntries?.find(
-    (r) => r.id === entryInstanceId,
-  );
+  const resolved = resolvedEntries?.find((r) => r.id === entryInstanceId);
   return resolved ? resolved.price : null;
 }
 
