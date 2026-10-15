@@ -1,5 +1,6 @@
 import { buildReferenceSections, loadReferenceContent } from "./content.js";
 import { REFERENCE_LAYOUT, REFERENCE_SECTIONS } from "./referenceLayout.js";
+import { configureMarked, mountGlossaryPopovers } from "./markdown.js";
 import { initNav } from "../components/nav.js";
 import { initGroupNav } from "../components/groupNav.js";
 import { initTabs } from "../components/tabs.js";
@@ -35,5 +36,7 @@ window.onload = async () => {
   initTheme();
   initPageSelector();
 
+  configureMarked();
+  mountGlossaryPopovers();
   await loadReferenceContent();
 };

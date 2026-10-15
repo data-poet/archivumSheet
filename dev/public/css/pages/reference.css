@@ -29,12 +29,20 @@
   margin-top: 0;
 }
 
-/* KaTeX display math can exceed the width of a phone screen (long formulas,
-   wide matrices); scroll horizontally instead of overflowing the box. */
+/* Display math reads as a formula card tinted with the section accent. It can exceed a phone's
+   width (long formulas), so it scrolls horizontally instead of overflowing the box. */
 .reference-prose .katex-display {
-  margin: 0.6em 0;
+  margin: 0 0 0.8em;
+  padding: var(--space-4) var(--space-5);
   overflow-x: auto;
   overflow-y: hidden;
+  background: color-mix(
+    in srgb,
+    var(--_section-accent, var(--accent-combat)) 6%,
+    var(--color-surface)
+  );
+  border-left: 3px solid var(--_section-accent, var(--accent-combat));
+  border-radius: var(--radius-sm);
 }
 
 .reference-prose h1,
@@ -147,29 +155,29 @@
   font-weight: 700;
 }
 
-/* inverted nesting: outer groups get the boxed container treatment, innermost items become plain uppercase unboxed headers */
-.reference-prose details:has(details) {
+/* Top-level <details> are boxed groups; nested ones become plain uppercase item headers inside them. */
+.reference-prose > details {
   margin-bottom: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
-.reference-prose details:has(details) > *:not(summary) {
+.reference-prose > details > *:not(summary) {
   padding: var(--space-2) var(--space-5);
 }
 
-.reference-prose details:has(details)[open] > summary {
+.reference-prose > details[open] > summary {
   border-bottom: 1px solid var(--color-border);
 }
 
-.reference-prose details:not(:has(details)) {
+.reference-prose details details {
   margin-bottom: var(--space-2);
   border: none;
   border-radius: 0;
 }
 
-.reference-prose details:not(:has(details)) > summary {
+.reference-prose details details > summary {
   border-left: none !important;
   background: none;
   color: var(--color-text-muted);
@@ -181,6 +189,102 @@
   min-height: 36px;
 }
 
-.reference-prose details:not(:has(details)) > *:not(summary) {
+.reference-prose details details > *:not(summary) {
   padding: var(--space-2) 0 var(--space-2) var(--space-5);
+}
+
+.reference-prose tbody tr:nth-child(even) td {
+  background: var(--color-row-alt);
+}
+
+/* Callouts rendered by marked-alert (see js/reference/markdown.js). */
+.markdown-alert {
+  margin: 0 0 0.8em;
+  padding: var(--space-3) var(--space-5);
+  border-left: 4px solid var(--_alert);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--_alert) 10%, var(--color-surface));
+}
+
+.markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+  font-weight: 700;
+}
+
+.markdown-alert-note {
+  --_alert: var(--color-info);
+}
+.markdown-alert-tip {
+  --_alert: var(--color-success);
+}
+.markdown-alert-important {
+  --_alert: var(--accent-inventory);
+}
+.markdown-alert-warning {
+  --_alert: var(--accent-attributes);
+}
+.markdown-alert-caution {
+  --_alert: var(--color-remove);
+}
+.markdown-alert-house {
+  --_alert: var(--accent-traits);
+}
+
+/* [[term]] links: inline text with a dotted underline, opening a native popover with the definition. */
+.glossary-term {
+  display: inline;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-bottom: 1px dotted var(--_section-accent, var(--accent-combat));
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: normal;
+  cursor: help;
+}
+
+.glossary-term:hover {
+  background: color-mix(
+    in srgb,
+    var(--_section-accent, var(--accent-combat)) 12%,
+    transparent
+  );
+}
+
+.glossary-term:active {
+  transform: none;
+}
+
+.glossary-popover {
+  max-width: min(340px, 90vw);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.glossary-popover::backdrop {
+  background: rgb(0 0 0 / 0.25);
+}
+
+.glossary-popover p {
+  margin: 0;
+}
+
+.glossary-popover-term {
+  margin-bottom: var(--space-2) !important;
+  font-weight: 700;
 }

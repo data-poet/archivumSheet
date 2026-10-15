@@ -1,5 +1,5 @@
 <details>
-    <summary><b>Acertos Críticos</b></summary>
+<summary>Acertos Críticos</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |
@@ -21,7 +21,7 @@
 </details>
 
 <details>
-    <summary><b>Acertos Críticos na Cabeça</b></summary>
+<summary>Acertos Críticos na Cabeça</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |

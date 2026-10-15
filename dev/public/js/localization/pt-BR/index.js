@@ -2,6 +2,7 @@
 
 import { ALLIES } from "./allies.js";
 import { APP } from "./app.js";
+import { GLOSSARY } from "./glossary.js";
 import { REFERENCE } from "./reference.js";
 
 import { ATTRIBUTES, SECONDARY_ATTRIBUTES } from "./components/attributes.js";
@@ -82,6 +83,7 @@ export const LABELS = {
   theme: THEME,
   output: OUTPUT,
   reference: REFERENCE,
+  glossary: GLOSSARY,
   allies: ALLIES,
   undo: UNDO,
 };

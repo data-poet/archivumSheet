@@ -1,5 +1,5 @@
 <details>
-    <summary><b>Erros Críticos</b></summary>
+<summary>Erros Críticos</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |
@@ -19,7 +19,7 @@
 </details>
 
 <details>
-    <summary><b>Erros Críticos - Armas de Fogo</b></summary>
+<summary>Erros Críticos - Armas de Fogo</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |
@@ -38,7 +38,7 @@
 </details>
 
 <details>
-    <summary><b>Erro Crítico Magia - Área de Mana Baixa</b></summary>
+<summary>Erro Crítico Magia - Área de Mana Baixa</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |
@@ -59,7 +59,7 @@
 </details>
 
 <details>
-    <summary><b>Erro Crítico Magia - Área de Mana Média</b></summary>
+<summary>Erro Crítico Magia - Área de Mana Média</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |
@@ -83,7 +83,7 @@
 </details>
 
 <details>
-    <summary><b>Erro Crítico Magia - Área de Mana Alta</b></summary>
+<summary>Erro Crítico Magia - Área de Mana Alta</summary>
 
 | 3d6 | Descrição |
 | :-: | :-- |

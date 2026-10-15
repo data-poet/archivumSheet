@@ -1,35 +1,46 @@
 <details>
-<summary><b>Regras: Verificação de Pânico</b></summary>
+<summary>Regras: Verificação de Pânico</summary>
 
-### O que é?
+<details>
+<summary>O que é?</summary>
 
-Uma **Verificação de Pânico** é um Teste de Vontade exigido quando acontece algo que deveria aterrorizar os personagens (como encontrar o objeto de uma fobia).
+Uma **Verificação de Pânico** é um Teste de [[Vontade]] exigido quando acontece algo que deveria aterrorizar os personagens (como encontrar o objeto de uma fobia).
 
-### Modificadores Gerais:
+</details>
+
+<details>
+<summary>Modificadores Gerais:</summary>
 
 - **Reflexos em Combate:** Concede um bônus de **+2** em todas as Verificações de Pânico.
 - **Fobia Grave:** Adiciona um redutor extra de **-4** à Vontade.
 - **Calor da Batalha:** Se o personagem já estiver engajado em combate quando o evento aterrorizador acontecer ou for notado, recebe um bônus de **+5** (o calor da ação mitiga o medo imediato).
 
-### Bônus e Redutores de Cenário:
+</details>
+
+<details>
+<summary>Bônus e Redutores de Cenário:</summary>
 
 - **Eventos Medonhos/Violentos:** O Mestre pode impor redutores que variam de **-1** (ex: notar que as orelhas da vítima sumiram) até **-6** (ex: descobrir que a vítima era um Dependente).
 - **Situações Facilitadas:** Avistar um monstro a grande distância concede **+1**; ver um corpo após ser previamente avisado concede **+3**.
 
----
+</details>
 
-### Como calcular o Resultado na Tabela:
+<details>
+<summary>Como calcular o Resultado na Tabela:</summary>
 
 1. Jogue **3d6** toda vez que o personagem falhar na Verificação de Pânico.
 2. **Some ao resultado** a margem exata pela qual o teste de Vontade falhou.
 3. Consulte o valor final na tabela abaixo.
 
-> ⚠️ **Nota do GM:** Muitos resultados impõem novas Desvantagens Mentais (Peculiaridades, Fobias, Fantasias). O GM determina a desvantagem específica, que deve obrigatoriamente ter relação lógica com o evento causador do pânico ou com desvantagens pré-existentes do personagem.
+> [!NOTE]
+> **Nota do GM:** Muitos resultados impõem novas Desvantagens Mentais (Peculiaridades, Fobias, Fantasias). O GM determina a desvantagem específica, que deve obrigatoriamente ter relação lógica com o evento causador do pânico ou com desvantagens pré-existentes do personagem.
+
+</details>
 
 </details>
 
 <details>
-<summary><b>Tabela: Efeitos da Falha no Pânico</b></summary>
+<summary>Tabela: Efeitos da Falha no Pânico</summary>
 
 | Resultado Final | Efeito sobre o Personagem |
 | :-: | :-- |

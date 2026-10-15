@@ -4,6 +4,14 @@ export const REFERENCE = {
   pageTitle: "Referência de Regras",
   topbarTitle: "Archivum — Referência",
   loadError: "Não foi possível carregar este conteúdo.",
+  alerts: {
+    note: "Nota",
+    tip: "Dica",
+    important: "Importante",
+    warning: "Atenção",
+    caution: "Cuidado",
+    house: "Regra da Mesa",
+  },
   nav: {
     groupsAriaLabel: "Grupos de referência",
     groups: {

@@ -18,7 +18,7 @@ describe("REFERENCE_LAYOUT ↔ disk", () => {
     const root = path.join(__dirname, "../../../dev/public/reference-content");
     const onDisk = fs
       .readdirSync(root, { recursive: true })
-      .filter((file) => file.endsWith(".md"))
+      .filter((file) => file.endsWith(".md") && !file.endsWith("README.md"))
       .map((file) => `/reference-content/${file.split(path.sep).join("/")}`);
 
     expect([...onDisk].sort()).toEqual(tabs.map(({ file }) => file).sort());

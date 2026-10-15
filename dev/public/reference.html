@@ -31,8 +31,10 @@
       content="/images/ms-touch-icon-144x144-precomposed.png"
     />
     <meta name="msapplication-TileColor" content="#ffffff" />
-    <!-- Markdown renderer for the static reference content (see reference/content.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Markdown renderer and its callout extension for the reference content (see reference/markdown.js).
+         Pinned: an unpinned marked major could break marked-alert or the glossary extension. -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@18.1.1/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-alert@2.1.2/dist/index.umd.js"></script>
     <!-- Math renderer (KaTeX) for formulas inside reference markdown (see reference/content.js) -->
     <link
       rel="stylesheet"
