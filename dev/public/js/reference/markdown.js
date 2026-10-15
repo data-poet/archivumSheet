@@ -9,6 +9,7 @@ const ALERT_ICONS = {
   warning: "⚠️",
   caution: "🛑",
   house: "🏠",
+  example: "🧮",
 };
 
 // Variants replace marked-alert's defaults by type, which also swaps its English titles.

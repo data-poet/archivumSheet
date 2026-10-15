@@ -2,6 +2,7 @@
 // so components/tabs.js, nav.js, groupNav.js and the [data-accent] styling apply unchanged.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { REFERENCE_SECTIONS } from "./referenceLayout.js";
+import { enhanceProse } from "./enhance.js";
 
 const MAIN_ID = "reference-main";
 
@@ -64,6 +65,7 @@ export async function loadReferenceContent() {
         const html = window.marked.parse(markdown);
         panel.innerHTML = `<div class="reference-prose">${html}</div>`;
         _wrapTables(panel);
+        enhanceProse(panel);
         _renderMath(panel);
       } catch (err) {
         console.error(`Failed to load reference content: ${file}`, err);

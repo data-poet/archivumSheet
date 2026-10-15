@@ -32,21 +32,17 @@ $$
 
 Cada ponto de modificador tira um ponto do Deslocamento e um da Esquiva.
 
-<details>
-<summary>Exemplo</summary>
-
-Com **ST 10** e **VB 5,75**:
-
-| Carga           | Limite (kg) | Deslocamento | Esquiva |
-| :-------------- | :---------: | :----------: | :-----: |
-| Nenhuma         |     10      |      5       |    9    |
-| Leve            |     20      |      5       |    9    |
-| Média           |     30      |      4       |    8    |
-| Pesada          |     60      |      3       |    7    |
-| Muito Pesada    |     100     |      2       |    6    |
-| Acima do limite | mais de 100 |      1       |    5    |
-
-</details>
+> [!EXAMPLE]
+> Com **ST 10** e **VB 5,75**:
+>
+> | Carga           | Limite (kg) | Deslocamento | Esquiva |
+> | :-------------- | :---------: | :----------: | :-----: |
+> | Nenhuma         |     10      |      5       |    9    |
+> | Leve            |     20      |      5       |    9    |
+> | Média           |     30      |      4       |    8    |
+> | Pesada          |     60      |      3       |    7    |
+> | Muito Pesada    |     100     |      2       |    6    |
+> | Acima do limite | mais de 100 |      1       |    5    |
 
 </details>
 

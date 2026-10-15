@@ -23,14 +23,11 @@ $$
 > [!WARNING]
 > O valor final nunca fica abaixo de **0%**, mas não tem limite superior.
 
-<details>
-<summary>Exemplos</summary>
-
-- **Draconato Negro com a meta-raça Zumbi:** Necrótico 50% × 0% = **0%** (imune); Sagrado 100% × 200% = **200%**.
-- **Zumbi e Esqueleto juntos:** Sagrado 200% × 200% = **400%**.
-- **Draconto Vermelho com modificador -20% e encantamento +10%:** Fogo 50% - 20% + 10% = **40%**.
-
-</details>
+> [!EXAMPLE]
+>
+> - **Draconato Negro com a meta-raça Zumbi:** Necrótico 50% × 0% = **0%** (imune); Sagrado 100% × 200% = **200%**.
+> - **Zumbi e Esqueleto juntos:** Sagrado 200% × 200% = **400%**.
+> - **Draconto Vermelho com modificador -20% e encantamento +10%:** Fogo 50% - 20% + 10% = **40%**.
 
 </details>
 

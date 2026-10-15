@@ -25,7 +25,8 @@ describe.each(files)("%s", (_file, markdown) => {
     expect(markdown).not.toMatch(/<summary>\s*<b>/);
   });
 
-  test("uses callout syntax instead of emoji-prefixed quotes", () => {
+  test("uses callout syntax instead of emoji-prefixed quotes or collapsed examples", () => {
     expect(markdown).not.toMatch(/^>\s*(⚠️|🗡️|💡|ℹ️)/mu);
+    expect(markdown).not.toMatch(/<summary>Exemplos?<\/summary>/);
   });
 });

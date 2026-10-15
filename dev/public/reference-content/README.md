@@ -7,8 +7,10 @@ Placing a file: add it to `js/reference/referenceLayout.js` and add its label to
 
 - No title at the top. The tab already shows the name.
 - An optional short intro paragraph, then groups.
-- Groups are top-level `<details>` and render as boxes. Items are `<details>` inside a group and render as small headers.
+- Groups are top-level `<details>` and render as boxes. Items are `<details>` inside a group and render as list rows.
 - Use at most two levels. A file whose blocks don't need grouping can use top-level `<details>` only.
+- Only one sibling stays open at a time: opening an item closes the item that was open at the same level (added at render, no markup needed).
+- **Collapse only long content** (more than about five lines). Short notes, examples and formulas stay visible: use a callout instead of a `<details>`.
 
 ```markdown
 Intro opcional.
@@ -30,6 +32,7 @@ Markup rules (marked only parses markdown inside HTML blocks when they're separa
 
 - Never indent `<details>`, `<summary>` or `</details>`. Keep them out of lists.
 - `<summary>` holds plain text on its own line, with no `<b>`/`<strong>`; the CSS already bolds it.
+- `<summary>Título | badge</summary>` shows the text after `|` as a small badge on the right. Use it for a short value worth scanning without opening: `Tronco | Redutor: 0`.
 - Leave a blank line after the `<summary>` line and before each `</details>`.
 - No `<br>` spacers, and no stray `---` rules.
 
@@ -50,12 +53,13 @@ Markup rules (marked only parses markdown inside HTML blocks when they're separa
 
 Use one blockquote callout per note, never emoji-prefixed quotes:
 
-| Syntax | Title | Use for |
-|---|---|---|
-| `> [!NOTE]` | Nota | Extra context |
-| `> [!TIP]` | Dica | Practical advice |
-| `> [!WARNING]` | Atenção | Limits, exceptions, common mistakes |
-| `> [!HOUSE]` | Regra da Mesa | Archivum house rules that differ from 4e |
+| Syntax         | Title         | Use for                                           |
+| -------------- | ------------- | ------------------------------------------------- |
+| `> [!NOTE]`    | Nota          | Extra context                                     |
+| `> [!TIP]`     | Dica          | Practical advice                                  |
+| `> [!WARNING]` | Atenção       | Limits, exceptions, common mistakes               |
+| `> [!HOUSE]`   | Regra da Mesa | Archivum house rules that differ from 4e          |
+| `> [!EXAMPLE]` | Exemplo       | Worked examples (formulas and tables work inside) |
 
 ```markdown
 > [!HOUSE]
@@ -66,6 +70,7 @@ Use one blockquote callout per note, never emoji-prefixed quotes:
 
 - At most 3 columns, with short cells. Wider tables scroll sideways on mobile, but they read badly there.
 - Use `<br>` only inside table cells, where markdown can't hold a list. When a row needs paragraphs, use one `<details>` per row instead.
+- On phones, tables with long text cells (over 80 characters) turn into one card per row, labelled by the column headers. Keep headers short and meaningful.
 
 ## Glossary terms
 

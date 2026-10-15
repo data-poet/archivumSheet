@@ -11,14 +11,11 @@ $$
 \text{PV} = \left\lfloor \frac{HT \times 4 + ST \times 2}{2} \right\rfloor
 $$
 
-<details>
-<summary>Exemplo</summary>
-
-$$
-\text{PV} = \left\lfloor \frac{11 \times 4 + 10 \times 2}{2} \right\rfloor = \left\lfloor \frac{64}{2} \right\rfloor = 32
-$$
-
-</details>
+> [!EXAMPLE]
+>
+> $$
+> \text{PV} = \left\lfloor \frac{11 \times 4 + 10 \times 2}{2} \right\rfloor = \left\lfloor \frac{64}{2} \right\rfloor = 32
+> $$
 
 <details>
 <summary>Limiares de morte</summary>
@@ -48,14 +45,11 @@ $$
 \text{Mana} = \left\lfloor \frac{IQ \times 4 + HT \times 2}{2} \right\rfloor
 $$
 
-<details>
-<summary>Exemplo</summary>
-
-$$
-\text{Mana} = \left\lfloor \frac{12 \times 4 + 11 \times 2}{2} \right\rfloor = \left\lfloor \frac{70}{2} \right\rfloor = 35
-$$
-
-</details>
+> [!EXAMPLE]
+>
+> $$
+> \text{Mana} = \left\lfloor \frac{12 \times 4 + 11 \times 2}{2} \right\rfloor = \left\lfloor \frac{70}{2} \right\rfloor = 35
+> $$
 
 </details>
 
@@ -68,14 +62,11 @@ $$
 \text{Toxicidade} = \left\lfloor \frac{HT \times 4 + ST \times 2 + IQ \times 2}{3} \right\rfloor
 $$
 
-<details>
-<summary>Exemplo</summary>
-
-$$
-\text{Toxicidade} = \left\lfloor \frac{44 + 20 + 24}{3} \right\rfloor = \left\lfloor 29{,}33 \right\rfloor = 29
-$$
-
-</details>
+> [!EXAMPLE]
+>
+> $$
+> \text{Toxicidade} = \left\lfloor \frac{44 + 20 + 24}{3} \right\rfloor = \left\lfloor 29{,}33 \right\rfloor = 29
+> $$
 
 </details>
 
@@ -117,14 +108,11 @@ $$
 > [!WARNING]
 > Não arredonde: 5,75 é melhor do que 5,5.
 
-<details>
-<summary>Exemplo</summary>
-
-$$
-\text{VB} = \frac{11 + 12}{4} = 5{,}75
-$$
-
-</details>
+> [!EXAMPLE]
+>
+> $$
+> \text{VB} = \frac{11 + 12}{4} = 5{,}75
+> $$
 
 <details>
 <summary>Ferido gravemente</summary>
@@ -148,12 +136,8 @@ $$
 
 Não pode ser comprado diretamente: aumente a VB ou reduza a carga. Veja os níveis em Carga e Movimento.
 
-<details>
-<summary>Exemplo</summary>
-
-Sem carga: $\lfloor 5{,}75 + 0 \rfloor = 5$ m/s. Com carga média (**-1**): $\lfloor 5{,}75 - 1 \rfloor = 4$ m/s.
-
-</details>
+> [!EXAMPLE]
+> Sem carga: $\lfloor 5{,}75 + 0 \rfloor = 5$ m/s. Com carga média (**-1**): $\lfloor 5{,}75 - 1 \rfloor = 4$ m/s.
 
 </details>
 
@@ -171,12 +155,8 @@ $$
 
 A vantagem Reflexos em Combate soma **+1** à base da Esquiva.
 
-<details>
-<summary>Exemplo</summary>
-
-Sem carga: $5 + 4 = 9$. Com carga média: $4 + 4 = 8$.
-
-</details>
+> [!EXAMPLE]
+> Sem carga: $5 + 4 = 9$. Com carga média: $4 + 4 = 8$.
 
 </details>
 

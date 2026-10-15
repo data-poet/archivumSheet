@@ -11,6 +11,7 @@ export const REFERENCE = {
     warning: "Atenção",
     caution: "Cuidado",
     house: "Regra da Mesa",
+    example: "Exemplo",
   },
   nav: {
     groupsAriaLabel: "Grupos de referência",
