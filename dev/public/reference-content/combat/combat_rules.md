@@ -26,7 +26,7 @@ O dano causado aos personagens pelos ataques de seus inimigos e por outras fonte
 
 - **Menos do que 1/3 dos Pontos de Vida:** O [[Deslocamento]] e a [[Esquiva]] atuais caem pela metade, arredondando para cima. A [[VB]] não muda.
 - **Número de Pontos de Vida igual ou inferior a 0:** O personagem precisa ser bem-sucedido em um teste de [[HT]] a cada rodada, submetido a um redutor de **-1 para cada múltiplo inteiro negativo** do valor básico dos seus Pontos de Vida de dano sofrido, para não desmaiar, exceto se não foi obrigado a utilizar nenhuma Defesa Ativa até o momento e não fizer nada em seu turno.
-- **Número de Pontos de Vida igual a -HT:** O personagem precisa ser bem-sucedido em um teste de HT para não morrer. Daí em diante, um novo teste será necessário sempre que ele sofrer dano suficiente para alcançar outro múltiplo inteiro negativo do valor básico de HT (por exemplo, se ele possuir HT 11, deverá fazer um teste ao alcançar -11 PV, outro ao alcançar -22 PV e assim por diante).
+- **Número de Pontos de Vida igual a -HT:** O personagem precisa ser bem-sucedido em um teste de HT para não morrer. Daí em diante, um novo teste será necessário sempre que ele sofrer dano suficiente para alcançar outro múltiplo inteiro negativo da HT (por exemplo, se ele possuir HT 11, deverá fazer um teste ao alcançar -11 PV, outro ao alcançar -22 PV e assim por diante).
 - **Número de Pontos de Vida igual a -5 × HT:** O personagem morre automaticamente, independentemente de o dano ter sido causado por vários ataques ao longo de um combate ou por um único golpe.
 - **Número de Pontos de Vida igual a -10 × HT:** O corpo do personagem é completamente destruído, desde que a fonte do dano seja capaz disso.
 
@@ -56,7 +56,7 @@ Veja o exemplo completo em Personagem › Atributos › Secundários › Pontos 
 <summary>Atordoamento e Nocaute</summary>
 
 - **Atordoamento:** Se o personagem sofrer um Ferimento Grave, for atingido por um Golpe Fulminante ou perder mais do que 1/3 dos seus Pontos de Vida em decorrência de um ataque direcionado ao seu cérebro, ficará atordoado.
-- Ele receberá um redutor de **–4 em todas as suas Defesas Ativas** e não poderá agir até se recuperar.
+- Ele receberá um redutor de **-4 em todas as suas Defesas Ativas** e não poderá agir até se recuperar.
 - No início de sua próxima rodada e nas subsequentes, deverá fazer um teste de [[HT]] para voltar a si.
 - **Nocaute:** O personagem será nocauteado sempre que obtiver uma Falha Crítica ou fracassar por margem igual ou superior a cinco em um teste de HT para evitar ficar Prostrado.
 - Além disso, um ataque direcionado à área do cérebro que cause mais do que **[[PV]]/2** pontos de dano o nocauteará automaticamente.
@@ -91,7 +91,7 @@ Veja o exemplo completo em Personagem › Atributos › Secundários › Pontos 
 <details>
 <summary>Trauma por Impacto</summary>
 
-- Se o personagem estiver trajando uma armadura flexível, que por esse motivo é incapaz de absorver completamente a força dos golpes recebidos, sofrerá **1 ponto de dano real** (e não dano básico – não o multiplique em razão da natureza do ataque) para cada **10 pontos de dano completos** derivados de ataques que causem dano de perfuração, perfurante ou corte e **1 ponto de dano** para cada **5 pontos de dano completos** derivados de ataques que causem dano de contusão, desde que o ataque em questão não ultrapasse a sua [[RD]].
+- Se o personagem estiver trajando uma armadura flexível, que por esse motivo é incapaz de absorver completamente a força dos golpes recebidos, sofrerá **1 ponto de dano real** (e não dano básico – não o multiplique em razão da natureza do ataque) para cada **10 pontos de dano completos** derivados de ataques que causem dano de perfuração, empalamento ou corte e **1 ponto de dano** para cada **5 pontos de dano completos** derivados de ataques que causem dano de contusão, desde que o ataque em questão não ultrapasse a sua [[RD]].
 - Contudo, se ele utilizar uma armadura rígida sobre a armadura flexível, o trauma por impacto deverá ser calculado apenas com base no dano que ultrapassar a RD da primeira.
 
 </details>

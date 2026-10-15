@@ -69,7 +69,7 @@ O que o personagem consegue erguer ou mover, também em múltiplos da CB:
 
 | Ação                                     | Peso        |
 | :--------------------------------------- | :---------- |
-| Erguer com uma mão (1 segundo)           | **2 × CB**  |
+| Erguer com uma mão (2 segundos)          | **2 × CB**  |
 | Erguer com as duas mãos (4 segundos)     | **8 × CB**  |
 | Empurrar ou derrubar                     | **12 × CB** |
 | Carregar nas costas                      | **15 × CB** |

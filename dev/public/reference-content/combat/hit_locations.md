@@ -9,25 +9,12 @@
 </details>
 
 <details>
-<summary>Órgãos Vitais (Coração e Pulmões) | Redutor: -5</summary>
+<summary>Órgãos Vitais (Coração, Pulmões e Rins) | Redutor: -3</summary>
 
-- **Restrição de Direção:** Somente podem ser atingidos por ataques provenientes da **vanguarda (frente)** do alvo.
-- **Tipos de Dano Elegíveis:** Perfuração e Empalamento.
+- **Tipos de Dano Elegíveis:** Perfuração (todas as variantes), Empalamento e Queimadura de feixe estreito. Os demais tipos acertam o Tronco, com o multiplicador normal.
 - **Modificadores de Dano:**
-  - Perfuração: **Dano x3**.
-  - Empalamento: **Dano x3**.
-
-</details>
-
-<details>
-<summary>Rins | Redutor: -4</summary>
-
-- **Restrição de Direção:** Somente podem ser atingidos por ataques provenientes da **retaguarda (costas)** do alvo.
-- **Margem de Erro:** Se o teste de ataque fracassar por apenas 1 ponto, o atacante atinge o Tronco do adversário.
-- **Modificadores de Dano:**
-  - Contusão: **Dano x1,5**.
-  - Perfuração: **Dano x3**.
-  - _Nota:_ Os demais tipos de ataque não são capazes de alcançar os rins e causam dano normal de Tronco.
+  - Perfuração e Empalamento: **Dano x3**.
+  - Queimadura de feixe estreito: **Dano x2**.
 
 </details>
 
@@ -37,7 +24,7 @@
 - **Proteção:** Muitas jaquetas e armaduras leves não cobrem a virilha, permitindo ao Mestre desconsiderar a [[RD]] se fizer sentido.
 - **Margem de Erro:** Se o teste fracassar por apenas 1 ponto, o atacante atinge o Tronco ou a Perna do adversário.
 - **Efeitos Especiais (Alvos Masculinos contra Dano de Contusão):**
-  1. Deve passar num teste de **[[HT]]** com **–1 para cada 2 [[PV]] perdidos** ou ficará atordoado. Falha Crítica ou falha por 5+ resulta em inconsciência. (_Hipoalgia dá +3; Hiperalgia dá -4_).
+  1. Deve passar num teste de **[[HT]]** com **-1 para cada 2 [[PV]] perdidos** ou ficará atordoado. Falha Crítica ou falha por 5+ resulta em inconsciência. (_Hipoalgia dá +3; Hiperalgia dá -4_).
   2. Impõe um redutor de **-5** nos testes de HT para evitar Prostração e Atordoamento causados pelo choque.
   3. O redutor de Choque decorrente do ferimento é **dobrado** (máximo de -8 de penalidade no próximo turno).
 
@@ -48,7 +35,7 @@
 <details>
 <summary>Braço ou Perna | Redutor: -2</summary>
 
-- **Modificadores de Dano:** Ataques de perfuração contra seres vivos têm modificador fixado em **Dano x1** (em vez do multiplicador usual).
+- **Modificadores de Dano:** Perfuração grande, perfuração enorme e empalamento caem para **Dano x1**; os demais tipos causam o dano normal de Tronco.
 - **Incapacitação:** O membro ficará temporariamente incapacitado se sofrer um único golpe com dano superior a **[[PV]]/2**.
 - **Braço com Escudo:** O redutor para atingir especificamente um braço que esteja empunhando/segurando um escudo é de **-4**.
 
@@ -57,7 +44,7 @@
 <details>
 <summary>Mão ou Pé | Redutor: -4</summary>
 
-- **Modificadores de Dano:** Ataques de perfuração contra seres vivos têm modificador fixado em **Dano x1**.
+- **Modificadores de Dano:** Perfuração grande, perfuração enorme e empalamento caem para **Dano x1**; os demais tipos causam o dano normal de Tronco.
 - **Incapacitação:** A extremidade ficará incapacitada se sofrer um único golpe com dano superior a **[[PV]]/3**.
 - **Mão com Escudo:** O redutor para atingir especificamente a mão que segura a braçadeira/alça do escudo é de **-8**.
 
@@ -113,8 +100,8 @@
 - **Modificadores de Dano:**
   - Contusão ou corrosão: **Dano x1,5**.
   - Corte: **Dano x2**.
-- **Asfixia (Dano de Contusão):** Se perder mais de **1/3 dos [[PV]]** por contusão na garganta, deve passar num teste de [[HT]] com **–1 para cada 2 pontos de dano** ou terá a traqueia esfacelada (sofre 1 PV de dano por sufocamento a cada rodada até passar no teste).
-- **Decapitação (Dano de Corte):** Se sofrer um dano de corte superior aos seus **PV máximos**, deve passar num teste de HT com **–1 para cada 2 PV perdidos** ou a vítima será decapitada instantaneamente.
+- **Asfixia (Dano de Contusão):** Se perder mais de **1/3 dos [[PV]]** por contusão na garganta, deve passar num teste de [[HT]] com **-1 para cada 2 pontos de dano** ou terá a traqueia esfacelada (perde 1 [[PF]] por sufocamento a cada rodada até passar no teste).
+- **Decapitação (Dano de Corte):** Se sofrer um dano de corte superior aos seus **PV máximos**, deve passar num teste de HT com **-1 para cada 2 PV perdidos** ou a vítima será decapitada instantaneamente.
 
 </details>
 

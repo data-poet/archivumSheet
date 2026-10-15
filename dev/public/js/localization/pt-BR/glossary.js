@@ -4,7 +4,7 @@ export const GLOSSARY = {
   ST: {
     term: "Força",
     definition:
-      "Poder físico e massa muscular. Define o dano básico, a carga e entra no cálculo de PV e Toxicidade.",
+      "Poder físico e massa muscular. Define o dano básico e a Carga Básica, e entra no cálculo de PV e Toxicidade.",
   },
   DX: {
     term: "Destreza",

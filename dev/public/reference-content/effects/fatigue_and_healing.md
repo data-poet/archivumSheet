@@ -71,7 +71,7 @@ Um teste de **Primeiros Socorros** bem-sucedido logo após o ferimento recupera 
 | NT 8+             | 10 min | **1d+1**       |
 
 - **Bandagem:** só estancar o sangramento leva cerca de 1 minuto e já impede novas perdas.
-- **Medicina:** um personagem com Medicina pode prestar primeiros socorros pelo seu NH e é quem dá o bônus na cura natural. Ferimentos graves, como membros perdidos, pedem Cirurgia ou magia.
+- **Medicina:** um personagem com Medicina pode prestar primeiros socorros pelo seu NH. Ferimentos graves, como membros perdidos, pedem Cirurgia ou magia.
 
 ### Sangramento
 

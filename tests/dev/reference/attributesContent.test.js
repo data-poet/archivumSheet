@@ -149,7 +149,7 @@ describe("carry_and_movement.md", () => {
   });
 
   test.each([
-    ["oneHanded", "Erguer com uma mão (1 segundo)", 2],
+    ["oneHanded", "Erguer com uma mão (2 segundos)", 2],
     ["twoHanded", "Erguer com as duas mãos (4 segundos)", 8],
     ["shove", "Empurrar ou derrubar", 12],
     ["onBack", "Carregar nas costas", 15],

@@ -6,7 +6,7 @@
 - **Descrição:** Permite mover-se o valor total do seu [[Deslocamento]] atual.
 - **Defesas:** Qualquer Defesa Ativa é possível.
 - **Ataques de Longo Alcance:** É possível ao personagem disparar armas de longo alcance enquanto se desloca, seja nadando ou correndo.
-- **Modificadores:** Os usuais (além da TR) são: **-1** por caminhar, **-2** por correr e qualquer outro imposto pelo GM (como distração ou algum tipo de desvantagem).
+- **Modificadores:** Os usuais (além da TR) são: **-1** por caminhar, **-2** por correr e qualquer outro imposto pelo Mestre (como distração ou algum tipo de desvantagem).
 - **Recarga em Movimento:** Triplique os valores no caso de bestas e multiplique por 6 no caso de arcos.
 
 </details>
@@ -43,7 +43,7 @@
 <summary>Atacar</summary>
 
 - **Descrição:** Significa atacar qualquer oponente com sua arma devidamente preparada.
-- **Verossimilhança:** O GM pode decretar que determinados personagens não podem atacar certos inimigos ao mesmo tempo (ex.: 10 personagens não poderiam golpear simultaneamente um único oponente humanoide). O limite comum é de 3 a 4 atacantes adjacentes.
+- **Verossimilhança:** O Mestre pode decretar que determinados personagens não podem atacar certos inimigos ao mesmo tempo (ex.: 10 personagens não poderiam golpear simultaneamente um único oponente humanoide). O limite comum é de 3 a 4 atacantes adjacentes.
 - **Combate de Perto:** Se a batalha for de perto, só se deverá permitir um único disparo com cada arco ou arma de projétil similar, após o que a luta passará obrigatoriamente para armas de mão.
 - **Defesas:** Você pode aparar (com arma preparada), bloquear (com escudo preparado) ou se esquivar no mesmo turno em que ataca.
 

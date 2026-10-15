@@ -7,7 +7,7 @@ Cada personagem tem um multiplicador de dano para cada um dos dez elementos. Ele
 | **50%**  | Resistência: metade do dano |
 |  **0%**  | Imunidade                   |
 
-Os elementos são Fogo, Água, Ar, Eletricidade, Terra, Corrosão, Necrótico, Sagrado, Vazio e Arcano.
+Os elementos são Fogo, Água, Ar, Eletricidade, Terra, Corrosão, Necrótico, Sagrado, Vazio e Arcano. Dano de frio conta como Água.
 
 ### Como o valor final é formado
 
@@ -19,11 +19,12 @@ $$
 - **Modificador:** ajuste manual em pontos percentuais, somado depois da multiplicação. Por exemplo, **-20%** leva 100% a 80%.
 - **Encantamento:** bônus ou redutores dos itens encantados equipados, também somados.
 
-> [!WARNING] O valor final nunca fica abaixo de **0%**, mas não tem limite superior.
+> [!WARNING]
+> O valor final nunca fica abaixo de **0%**, mas não tem limite superior.
 
 ### Aplicando ao dano
 
-Primeiro subtraia a [[RD]] do alvo. Depois multiplique o dano que passou pelo valor final daquele elemento.
+Primeiro subtraia a [[RD]] do alvo. Depois multiplique o dano que passou pelo valor final daquele elemento. A Imunidade (**0%**) zera o dano mesmo quando a regra do ferimento mínimo de 1 se aplicaria.
 
 <details>
 <summary>Exemplo</summary>

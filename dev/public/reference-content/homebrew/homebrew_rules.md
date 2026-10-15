@@ -44,7 +44,7 @@ Os jogadores podem voluntariamente assumir riscos maiores em suas jogadas para i
 
 **Acertos Críticos Dinâmicos**
 
-Se a rolagem do Teste Dinâmico resultar em um **Acerto Crítico** (pela regra oficial, em Combate › Regras de Combate › Acerto Crítico e Falha Crítica), o ataque acumulará **tanto os benefícios da Tabela de Acertos Críticos quanto o bônus de dano adicional** proveniente do redutor voluntário escolhido.
+Se a rolagem do Teste Dinâmico resultar em um **Acerto Crítico** (pela regra oficial, em Combate › Regras › Acerto Crítico e Falha Crítica), o ataque acumulará **tanto os benefícios da Tabela de Acertos Críticos quanto o bônus de dano adicional** proveniente do redutor voluntário escolhido.
 
 </details>
 

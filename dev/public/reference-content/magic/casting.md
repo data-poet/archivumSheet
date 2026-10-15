@@ -8,7 +8,7 @@ Para lançar um feitiço, role **3d6** contra o NH Final, com os modificadores d
 
 Feitiços de ataque, como Projétil, Jato e Sopro, pedem também uma jogada de ataque depois de conjurados, conforme a descrição.
 
-Enquanto se concentra, o mago pode se defender. Se ele se defender, sofrer dano, for derrubado ou distraído de outra forma, precisa passar num teste de **[[Vontade]]-3** para não perder o feitiço. O redutor de choque do dano também se aplica ao teste de conjuração no turno seguinte. A partir do tier Especialista, ele pode se concentrar enquanto realiza outra manobra.
+Enquanto se concentra, o mago pode dar um passo e se defender. Se ele se defender, sofrer dano, for derrubado ou distraído de outra forma, precisa passar num teste de **[[Vontade]]-3** para não perder o feitiço. O redutor de choque do dano também se aplica ao teste de conjuração no turno seguinte. A partir do tier Especialista, ele pode se concentrar enquanto realiza outra manobra.
 
 **Acerto Crítico:** o feitiço funciona sem custo de Mana e com um resultado especialmente bom, a critério do Mestre.
 

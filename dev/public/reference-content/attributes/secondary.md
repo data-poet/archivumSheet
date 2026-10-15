@@ -48,7 +48,7 @@ $$
 \text{PF} = HT
 $$
 
-Abaixo de **1/3** dos PF, o personagem está exausto: o Deslocamento, a Esquiva e a [[ST]] caem pela metade, arredondando para cima. A ficha aplica tudo sozinha: a metade do Deslocamento e da Esquiva, que se soma à de PV baixos, e a ST pela metade nos limites de carga. Veja Sistema › Condições › Fadiga e Cura.
+Abaixo de **1/3** dos PF, o personagem está exausto: o Deslocamento e a Esquiva caem pela metade, arredondando para cima, e a [[ST]] cai pela metade para erguer e carregar. A ficha aplica tudo sozinha: a metade do Deslocamento e da Esquiva, que se soma à de PV baixos, e a ST pela metade nos limites de carga. Veja Sistema › Condições › Fadiga e Cura.
 
 <details>
 <summary>Exemplo</summary>
