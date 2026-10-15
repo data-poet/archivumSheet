@@ -2,10 +2,7 @@
 // Output maps are presence-aware: a target gets a key if any enchantment touches it, even if the net sum is 0, so the UI can show/hide the modifier field.
 // Lives under character/ but doubles as the bridge into magic/: spellGrants/spellModifiers are consumed by spellsResolver.js via buildSheet.js, not by anything in this module's own directory.
 
-// CSV target strings that don't match the engine's internal attribute keys 1:1.
-const ATTRIBUTE_TARGET_MAP = {
-  "Basic Speed": "BasicSpeed",
-};
+const { ATTRIBUTE_TARGET_MAP } = require("../../../../helpers/taxonomy.js");
 
 function addToSumMap(map, key, value) {
   if (!key) return;

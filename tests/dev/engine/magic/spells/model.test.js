@@ -1,4 +1,7 @@
-jest.mock("dev/public/js/api.js", () => ({ fetchSpells: jest.fn() }));
+jest.mock("dev/public/js/api.js", () => ({
+  fetchSpells: jest.fn(),
+  fetchMagicAptitudeAdvantageIds: jest.fn(),
+}));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
@@ -6,7 +9,10 @@ jest.mock("dev/public/js/components/undo.js", () => ({
   offerUndo: jest.fn(),
 }));
 
-import { fetchSpells } from "dev/public/js/api.js";
+import {
+  fetchSpells,
+  fetchMagicAptitudeAdvantageIds,
+} from "dev/public/js/api.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
 import { offerUndo } from "dev/public/js/components/undo.js";
 import {
@@ -66,6 +72,11 @@ beforeEach(() => {
 describe("loadSpells", () => {
   test("populates the school filter (unique, sorted) and the name select (deduped by spell_name)", async () => {
     fetchSpells.mockResolvedValue(SPELL_ROWS);
+    fetchMagicAptitudeAdvantageIds.mockResolvedValue([
+      "ADV-063",
+      "ADV-064",
+      "ADV-065",
+    ]);
 
     await loadSpells();
 

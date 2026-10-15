@@ -1,4 +1,7 @@
-jest.mock("dev/public/js/api.js", () => ({ fetchSkills: jest.fn() }));
+jest.mock("dev/public/js/api.js", () => ({
+  fetchSkills: jest.fn(),
+  fetchMasterEligibleCategories: jest.fn(),
+}));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
@@ -6,7 +9,10 @@ jest.mock("dev/public/js/components/undo.js", () => ({
   offerUndo: jest.fn(),
 }));
 
-import { fetchSkills } from "dev/public/js/api.js";
+import {
+  fetchSkills,
+  fetchMasterEligibleCategories,
+} from "dev/public/js/api.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
 import { offerUndo } from "dev/public/js/components/undo.js";
 import {
@@ -57,6 +63,7 @@ beforeEach(() => {
 describe("loadSkills", () => {
   test("populates the category filter with unique, sorted categories and the skill select", async () => {
     fetchSkills.mockResolvedValue(SKILL_ROWS);
+    fetchMasterEligibleCategories.mockResolvedValue(["Armas e Combate"]);
 
     await loadSkills();
 

@@ -9,9 +9,6 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
-// Categories that support isTrainedWithMaster and the actions formula
-const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
-
 // ===== SKILLS =====
 
 export function renderSkills(selected, data, sheet) {
@@ -67,7 +64,9 @@ export function renderSkills(selected, data, sheet) {
             const actions = sheetSkill?.actions ?? 1;
 
             const category = skill?.skill_category ?? "";
-            const isEligible = MASTER_ELIGIBLE_CATEGORIES.has(category);
+            const isEligible = (data.masterEligibleCategories ?? []).includes(
+              category,
+            );
             const isMaster = isEligible
               ? Boolean(skillState?.isTrainedWithMaster ?? false)
               : false;

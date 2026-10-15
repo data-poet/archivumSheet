@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { fetchSkills } from "../../../api.js";
+import { fetchSkills, fetchMasterEligibleCategories } from "../../../api.js";
 import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
@@ -23,7 +23,12 @@ function _renderSkillList() {
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadSkills() {
-  data.skills = await fetchSkills();
+  const [skills, masterEligibleCategories] = await Promise.all([
+    fetchSkills(),
+    fetchMasterEligibleCategories(),
+  ]);
+  data.skills = skills;
+  data.masterEligibleCategories = masterEligibleCategories;
 
   const types = [...new Set(data.skills.map((s) => s.skill_category))].sort();
   const typeEl = document.getElementById("skillCategorySelect");

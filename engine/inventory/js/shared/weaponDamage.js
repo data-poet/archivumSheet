@@ -1,3 +1,5 @@
+const { DAMAGE_TYPES } = require("../../../../helpers/taxonomy.js");
+
 // Sign is always explicit, even at 0 (e.g. "1d6+0"), to match GURPS damage notation conventions.
 function formatDamageString(dice, sum) {
   const sign = sum < 0 ? "-" : "+";
@@ -17,7 +19,7 @@ function computeWeaponDamage(
 
   const dmgType = String(weapon_damage_type);
 
-  if (dmgType.includes("Perfuração")) {
+  if (dmgType.includes(DAMAGE_TYPES.PERFURACAO)) {
     const gdp = base_damage.GDP;
 
     if (gdp?.dice != null && gdp?.final_modifier != null) {
@@ -26,7 +28,10 @@ function computeWeaponDamage(
     }
   }
 
-  if (dmgType.includes("Contusão") || dmgType.includes("Corte")) {
+  if (
+    dmgType.includes(DAMAGE_TYPES.CONTUSAO) ||
+    dmgType.includes(DAMAGE_TYPES.CORTE)
+  ) {
     const bal = base_damage.BAL;
 
     if (

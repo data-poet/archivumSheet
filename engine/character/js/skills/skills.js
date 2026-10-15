@@ -1,11 +1,11 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { REFLEXOS_EM_COMBATE_ID } = require("../../../../helpers/ids.js");
+const {
+  MASTER_ELIGIBLE_CATEGORIES,
+} = require("../../../../helpers/taxonomy.js");
 const { getSkillCost } = require("./skillsCost.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 const { computeParry } = require("./skillCheck.js");
-
-// Categories that support isTrainedWithMaster and the actions formula
-const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
 
 // Eligible categories only: without master, +1 action per 8 levels of base_value above 8; with master, +1 per 4 levels of base_value above 12.
 function computeActions({ category, base_value, isTrainedWithMaster }) {

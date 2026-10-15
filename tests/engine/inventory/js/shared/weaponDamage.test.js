@@ -2,6 +2,7 @@ const {
   computeWeaponDamage,
   formatDamageString,
 } = require("engine/inventory/js/shared/weaponDamage");
+const { DAMAGE_TYPES } = require("helpers/taxonomy.js");
 
 const BASE_DAMAGE_ST10 = {
   GDP: {
@@ -58,11 +59,15 @@ describe("formatDamageString", () => {
 
 describe("computeWeaponDamage — guard clauses", () => {
   test("returns empty object when base_damage is null", () => {
-    expect(computeWeaponDamage("Perfuração", 1, null, null)).toEqual({});
+    expect(computeWeaponDamage(DAMAGE_TYPES.PERFURACAO, 1, null, null)).toEqual(
+      {},
+    );
   });
 
   test("returns empty object when base_damage is undefined", () => {
-    expect(computeWeaponDamage("Perfuração", 1, null, undefined)).toEqual({});
+    expect(
+      computeWeaponDamage(DAMAGE_TYPES.PERFURACAO, 1, null, undefined),
+    ).toEqual({});
   });
 
   test("returns empty object when weapon_damage_type is null", () => {
@@ -81,7 +86,12 @@ describe("computeWeaponDamage — guard clauses", () => {
 describe("computeWeaponDamage — Perfuração", () => {
   test("computes weapon_gdp_damage only for Perfuração type", () => {
     // GDP.final_modifier -2 + weapon_gdp_modifier +1 = -1 → "1d6-1"
-    const result = computeWeaponDamage("Perfuração", 1, null, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.PERFURACAO,
+      1,
+      null,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result).toEqual({ weapon_gdp_damage: "1d6-1" });
     expect(result.weapon_bal_damage).toBeUndefined();
@@ -89,21 +99,36 @@ describe("computeWeaponDamage — Perfuração", () => {
 
   test("zero sum → 1d6+0", () => {
     // GDP.final_modifier -2 + weapon_gdp_modifier +2 = 0
-    const result = computeWeaponDamage("Perfuração", 2, null, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.PERFURACAO,
+      2,
+      null,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result.weapon_gdp_damage).toBe("1d6+0");
   });
 
   test("positive sum → plus sign", () => {
     // GDP.final_modifier +1 + weapon_gdp_modifier +3 = +4
-    const result = computeWeaponDamage("Perfuração", 3, null, BASE_DAMAGE_ST15);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.PERFURACAO,
+      3,
+      null,
+      BASE_DAMAGE_ST15,
+    );
 
     expect(result.weapon_gdp_damage).toBe("1d6+4");
   });
 
   test("weapon_gdp_modifier = 0 works correctly", () => {
     // GDP.final_modifier -2 + 0 = -2
-    const result = computeWeaponDamage("Perfuração", 0, null, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.PERFURACAO,
+      0,
+      null,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result.weapon_gdp_damage).toBe("1d6-2");
   });
@@ -111,7 +136,12 @@ describe("computeWeaponDamage — Perfuração", () => {
   test("omits weapon_gdp_damage when GDP key is missing from base_damage", () => {
     const baseDamageNoGDP = { BAL: BASE_DAMAGE_ST10.BAL };
 
-    const result = computeWeaponDamage("Perfuração", 1, null, baseDamageNoGDP);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.PERFURACAO,
+      1,
+      null,
+      baseDamageNoGDP,
+    );
 
     expect(result.weapon_gdp_damage).toBeUndefined();
   });
@@ -120,7 +150,12 @@ describe("computeWeaponDamage — Perfuração", () => {
 describe("computeWeaponDamage — Corte", () => {
   test("computes weapon_bal_damage only for Corte type", () => {
     // BAL.final_modifier 0 + weapon_bal_modifier +3 = +3 → "1d6+3"
-    const result = computeWeaponDamage("Corte", null, 3, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      null,
+      3,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result).toEqual({ weapon_bal_damage: "1d6+3" });
     expect(result.weapon_gdp_damage).toBeUndefined();
@@ -128,7 +163,12 @@ describe("computeWeaponDamage — Corte", () => {
 
   test("zero sum → 1d6+0", () => {
     // BAL.final_modifier 0 + weapon_bal_modifier 0 = 0
-    const result = computeWeaponDamage("Corte", null, 0, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      null,
+      0,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result.weapon_bal_damage).toBe("1d6+0");
   });
@@ -140,20 +180,35 @@ describe("computeWeaponDamage — Corte", () => {
       BAL: { dice: "1d6", base_modifier: -1, modifier: 0, final_modifier: -1 },
     };
 
-    const result = computeWeaponDamage("Corte", null, 0, baseDamageNeg);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      null,
+      0,
+      baseDamageNeg,
+    );
 
     expect(result.weapon_bal_damage).toBe("1d6-1");
   });
 
   test("omits weapon_bal_damage when weapon_bal_modifier is null", () => {
     // Ranged weapons have no bal_modifier
-    const result = computeWeaponDamage("Corte", 0, null, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      0,
+      null,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result.weapon_bal_damage).toBeUndefined();
   });
 
   test("omits weapon_bal_damage when weapon_bal_modifier is undefined", () => {
-    const result = computeWeaponDamage("Corte", 0, undefined, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      0,
+      undefined,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result.weapon_bal_damage).toBeUndefined();
   });
@@ -161,7 +216,12 @@ describe("computeWeaponDamage — Corte", () => {
   test("omits weapon_bal_damage when BAL key is missing from base_damage", () => {
     const baseDamageNoBAL = { GDP: BASE_DAMAGE_ST10.GDP };
 
-    const result = computeWeaponDamage("Corte", null, 2, baseDamageNoBAL);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CORTE,
+      null,
+      2,
+      baseDamageNoBAL,
+    );
 
     expect(result.weapon_bal_damage).toBeUndefined();
   });
@@ -170,7 +230,12 @@ describe("computeWeaponDamage — Corte", () => {
 describe("computeWeaponDamage — Contusão", () => {
   test("computes weapon_bal_damage for Contusão type", () => {
     // BAL.final_modifier 0 + weapon_bal_modifier +1 = +1
-    const result = computeWeaponDamage("Contusão", null, 1, BASE_DAMAGE_ST10);
+    const result = computeWeaponDamage(
+      DAMAGE_TYPES.CONTUSAO,
+      null,
+      1,
+      BASE_DAMAGE_ST10,
+    );
 
     expect(result).toEqual({ weapon_bal_damage: "1d6+1" });
   });
@@ -181,7 +246,7 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
     // GDP: -2 + 1 = -1 → "1d6-1"
     // BAL:  0 + 3 =  3 → "1d6+3"
     const result = computeWeaponDamage(
-      "Corte, Perfuração",
+      `${DAMAGE_TYPES.CORTE}, ${DAMAGE_TYPES.PERFURACAO}`,
       1,
       3,
       BASE_DAMAGE_ST10,
@@ -197,7 +262,7 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
     // GDP: +1 + 2 = +3 → "1d6+3"
     // BAL: +2 + 1 = +3 → "1d6+3"
     const result = computeWeaponDamage(
-      "Perfuração, Contusão",
+      `${DAMAGE_TYPES.PERFURACAO}, ${DAMAGE_TYPES.CONTUSAO}`,
       2,
       1,
       BASE_DAMAGE_ST15,
@@ -213,7 +278,7 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
     // GDP: -2 + 2 = 0
     // BAL:  0 + 0 = 0
     const result = computeWeaponDamage(
-      "Corte, Perfuração",
+      `${DAMAGE_TYPES.CORTE}, ${DAMAGE_TYPES.PERFURACAO}`,
       2,
       0,
       BASE_DAMAGE_ST10,
@@ -228,7 +293,7 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
   test("missing weapon_bal_modifier yields only weapon_gdp_damage", () => {
     // bal_modifier absent (e.g. ranged-style record with Corte somehow)
     const result = computeWeaponDamage(
-      "Corte, Perfuração",
+      `${DAMAGE_TYPES.CORTE}, ${DAMAGE_TYPES.PERFURACAO}`,
       1,
       null,
       BASE_DAMAGE_ST10,
@@ -242,7 +307,7 @@ describe("computeWeaponDamage — both Perfuração and Corte", () => {
 describe("computeWeaponDamage — return types", () => {
   test("returned damage values are always strings", () => {
     const result = computeWeaponDamage(
-      "Corte, Perfuração",
+      `${DAMAGE_TYPES.CORTE}, ${DAMAGE_TYPES.PERFURACAO}`,
       1,
       2,
       BASE_DAMAGE_ST10,

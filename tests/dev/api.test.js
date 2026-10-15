@@ -27,6 +27,8 @@ import {
   fetchDualUseWeapons,
   fetchMagicGearEquipLimits,
   fetchItemCategories,
+  fetchMagicAptitudeAdvantageIds,
+  fetchMasterEligibleCategories,
   fetchAppInfo,
   buildSheet,
 } from "dev/public/js/api.js";
@@ -74,6 +76,16 @@ describe.each([
     "fetchItemCategories",
     fetchItemCategories,
     "/api/inventory/item-categories",
+  ],
+  [
+    "fetchMagicAptitudeAdvantageIds",
+    fetchMagicAptitudeAdvantageIds,
+    "/api/magic/aptitude-advantage-ids",
+  ],
+  [
+    "fetchMasterEligibleCategories",
+    fetchMasterEligibleCategories,
+    "/api/skills/master-eligible-categories",
   ],
   ["fetchAppInfo", fetchAppInfo, "/api/app-info"],
 ])("%s", (_name, fn, url) => {

@@ -4,6 +4,8 @@ const path = require("path");
 
 const { version } = require("../package.json");
 const { loadDataset } = require("../helpers/datasets.js");
+const { MAGIC_APTITUDE_TIERS } = require("../helpers/ids.js");
+const { MASTER_ELIGIBLE_CATEGORIES } = require("../helpers/taxonomy.js");
 const alliesCatalog = require("../helpers/alliesCatalog.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
@@ -232,6 +234,24 @@ app.get("/api/inventory/item-categories", (req, res) => {
     RANGED: RANGED_ITEM_CATEGORY,
     FIREARMS: FIREARMS_ITEM_CATEGORY,
   });
+});
+
+/* -----------------------
+   MAGIC APTITUDE ADVANTAGE IDS
+   Serves helpers/ids.js's MAGIC_APTITUDE_TIERS keys directly — the engine
+   remains the sole source of truth for these, same rationale as above.
+------------------------ */
+app.get("/api/magic/aptitude-advantage-ids", (req, res) => {
+  res.json(Object.keys(MAGIC_APTITUDE_TIERS));
+});
+
+/* -----------------------
+   MASTER-ELIGIBLE SKILL CATEGORIES
+   Serves helpers/taxonomy.js's MASTER_ELIGIBLE_CATEGORIES directly — the
+   engine remains the sole source of truth for these, same rationale as above.
+------------------------ */
+app.get("/api/skills/master-eligible-categories", (req, res) => {
+  res.json([...MASTER_ELIGIBLE_CATEGORIES]);
 });
 
 /* -----------------------

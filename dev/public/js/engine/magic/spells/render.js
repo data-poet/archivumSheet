@@ -29,11 +29,9 @@ function normalize(str) {
 
 // Magic Aptitude (ADV-063 → ADV-065): column visibility and each spell's bonus are
 // read straight from engine output — never recomputed client-side.
-const MAGIC_APTITUDE_ADVANTAGE_IDS = ["ADV-063", "ADV-064", "ADV-065"];
-
-function hasMagicAptitude(sheet) {
+function hasMagicAptitude(sheet, data) {
   const advantages = sheet?.character?.advantages ?? {};
-  return MAGIC_APTITUDE_ADVANTAGE_IDS.some((id) => advantages[id]);
+  return (data.magicAptitudeAdvantageIds ?? []).some((id) => advantages[id]);
 }
 
 export function renderSpells(selected, data, sheet) {
@@ -54,7 +52,7 @@ export function renderSpells(selected, data, sheet) {
     ...new Set([...Object.keys(selected.spells), ...grantedNames]),
   ];
 
-  const showAptitude = hasMagicAptitude(sheet);
+  const showAptitude = hasMagicAptitude(sheet, data);
   const COLS = showAptitude ? 10 : 9;
 
   const rows =

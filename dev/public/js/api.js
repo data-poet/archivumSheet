@@ -122,6 +122,14 @@ export async function fetchItemCategories() {
   return getJSON("/api/inventory/item-categories");
 }
 
+export async function fetchMagicAptitudeAdvantageIds() {
+  return getJSON("/api/magic/aptitude-advantage-ids");
+}
+
+export async function fetchMasterEligibleCategories() {
+  return getJSON("/api/skills/master-eligible-categories");
+}
+
 export async function fetchAllyIndex() {
   return getJSON("/api/allies");
 }

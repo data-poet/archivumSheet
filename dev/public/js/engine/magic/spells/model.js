@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { fetchSpells } from "../../../api.js";
+import { fetchSpells, fetchMagicAptitudeAdvantageIds } from "../../../api.js";
 import { renderSpells } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
@@ -23,7 +23,12 @@ function _renderSpellList() {
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadSpells() {
-  data.spells = await fetchSpells();
+  const [spells, magicAptitudeAdvantageIds] = await Promise.all([
+    fetchSpells(),
+    fetchMagicAptitudeAdvantageIds(),
+  ]);
+  data.spells = spells;
+  data.magicAptitudeAdvantageIds = magicAptitudeAdvantageIds;
 
   const schools = [...new Set(data.spells.map((s) => s.spell_school))].sort();
   const schoolEl = document.getElementById("spellSchoolSelect");

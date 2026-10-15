@@ -42,6 +42,10 @@ export const state = {
       ACCESSORY: "",
       MAGIC_GEAR: "",
     },
+    // Feeds helpers/ids.js's MAGIC_APTITUDE_TIERS keys directly.
+    magicAptitudeAdvantageIds: [],
+    // Feeds helpers/taxonomy.js's MASTER_ELIGIBLE_CATEGORIES directly.
+    masterEligibleCategories: [],
   },
 
   selected: {

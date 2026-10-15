@@ -21,6 +21,7 @@ describe("renderSpells — empty state", () => {
 
 describe("renderSpells — a purely player-selected spell (engine hasn't run yet)", () => {
   const data = {
+    magicAptitudeAdvantageIds: ["ADV-063", "ADV-064", "ADV-065"],
     spells: [
       {
         spell_name: "bola-de-fogo",
@@ -388,7 +389,14 @@ describe("renderSpells — mobile card layout", () => {
       },
     };
 
-    renderSpells(selected, { spells: [] }, sheet);
+    renderSpells(
+      selected,
+      {
+        spells: [],
+        magicAptitudeAdvantageIds: ["ADV-063", "ADV-064", "ADV-065"],
+      },
+      sheet,
+    );
 
     const row = spellList().querySelector("tbody tr");
     expect(

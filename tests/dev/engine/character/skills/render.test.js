@@ -173,6 +173,7 @@ describe("renderSkills — master-training eligibility", () => {
     };
     const data = {
       skills: [{ skill_id: "SK-1", skill_category: "Armas e Combate" }],
+      masterEligibleCategories: ["Armas e Combate", "Mágicas"],
     };
     const sheet = { character: { skills: { "SK-1": { actions: 2 } } } };
 

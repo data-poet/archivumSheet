@@ -1,6 +1,9 @@
 const {
   collectEquippedEnchantments,
 } = require("engine/character/js/enchantments/collectEquippedEnchantments");
+const { ATTRIBUTE_TARGET_MAP } = require("helpers/taxonomy.js");
+
+const [MAPPED_TARGET, MAPPED_KEY] = Object.entries(ATTRIBUTE_TARGET_MAP)[0];
 
 function enchantment(overrides) {
   return {
@@ -74,21 +77,21 @@ describe("collectEquippedEnchantments", () => {
     expect(result.attributeModifiers).toEqual({ ST: 1 });
   });
 
-  test("Should translate 'Basic Speed' target to the engine's BasicSpeed key", () => {
+  test("Should translate a mapped attribute target to the engine's internal key", () => {
     const result = collectEquippedEnchantments([
       {
         enchantments: [
           enchantment({
             enchantment_effect_type: "fortify_attribute",
-            target: "Basic Speed",
+            target: MAPPED_TARGET,
             value: 1,
           }),
         ],
       },
     ]);
 
-    expect(result.attributeModifiers).toEqual({ BasicSpeed: 1 });
-    expect(result.attributeModifiers["Basic Speed"]).toBeUndefined();
+    expect(result.attributeModifiers).toEqual({ [MAPPED_KEY]: 1 });
+    expect(result.attributeModifiers[MAPPED_TARGET]).toBeUndefined();
   });
 
   test("Should sum across multiple equipped items targeting the same attribute", () => {
