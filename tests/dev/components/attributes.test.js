@@ -312,24 +312,27 @@ describe("renderSecondaryAttributes", () => {
     expect(modInput.dataset.step).toBe("0.5");
   });
 
-  test("vital stats (HP/Mana/Toxicity) get a data-max=0 clamp on their modifier stepper", () => {
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      `<table><tbody id="secondaryTable"></tbody></table>`,
-    );
-    renderSecondaryAttributes({
-      character: {
-        secondary_attributes: {
-          HP: { base_value: 10, bought: 0, modifier: -2, value: 8 },
+  test.each(["HP", "FP", "Mana", "Toxicity"])(
+    "vital %s gets a data-max=0 clamp on its modifier stepper",
+    (name) => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        `<table><tbody id="secondaryTable"></tbody></table>`,
+      );
+      renderSecondaryAttributes({
+        character: {
+          secondary_attributes: {
+            [name]: { base_value: 10, bought: 0, modifier: -2, value: 8 },
+          },
         },
-      },
-    });
+      });
 
-    const modInput = document.querySelector(
-      '#secondaryTable [data-field="modifier"]',
-    );
-    expect(modInput.getAttribute("data-max")).toBe("0");
-  });
+      const modInput = document.querySelector(
+        '#secondaryTable [data-field="modifier"]',
+      );
+      expect(modInput.getAttribute("data-max")).toBe("0");
+    },
+  );
 
   test("shows the enchantment modifier only when has_enchantment_modifier is true", () => {
     document.body.insertAdjacentHTML(

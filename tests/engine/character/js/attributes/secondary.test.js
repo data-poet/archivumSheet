@@ -324,6 +324,85 @@ describe("SECONDARY ATTRIBUTES", () => {
     });
   });
 
+  describe("FP (Pontos de Fadiga)", () => {
+    it("Should start at HT and buy +1 per purchase, at most 5, for 5 points each", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { FP: { bought: 9 } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.FP.base_value).toBe(mockPrimary.HT.value);
+      expect(attributes.FP.bought).toBe(5);
+      expect(attributes.FP.final_base_value).toBe(mockPrimary.HT.value + 5);
+      expect(attributes.FP.points).toBe(25);
+    });
+
+    it("Should halve current Move and Dodge (round up) when FP < final_base_value / 3", () => {
+      const { attributes: full } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { FP: { modifier: -9 } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.FP.value).toBeLessThan(
+        attributes.FP.final_base_value / 3,
+      );
+      expect(attributes.Movement.value).toBe(
+        Math.ceil(full.Movement.value / 2),
+      );
+      expect(attributes.Dodge.value).toBe(Math.ceil(full.Dodge.value / 2));
+    });
+
+    it("Should stack with low HP: both below 1/3 halve twice", () => {
+      const { attributes: full } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {
+          FP: { modifier: -9 },
+          HP: { modifier: -(full.HP.final_base_value - 1) },
+        },
+        mockCarryWeight,
+      );
+
+      const twice = (v) => Math.ceil(Math.ceil(v / 2) / 2);
+      expect(attributes.Movement.value).toBe(twice(full.Movement.value));
+      expect(attributes.Dodge.value).toBe(twice(full.Dodge.value));
+    });
+  });
+
+  describe("max_modifier (vital max reduction)", () => {
+    it("Should lower the value without changing the natural max", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        { Mana: { max_modifier: -6, modifier: -2 } },
+        mockCarryWeight,
+      );
+
+      expect(attributes.Mana.max_modifier).toBe(-6);
+      expect(attributes.Mana.final_base_value).toBe(attributes.Mana.base_value);
+      expect(attributes.Mana.value).toBe(attributes.Mana.base_value - 8);
+    });
+
+    it("Should default to 0", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      expect(attributes.HP.max_modifier).toBe(0);
+    });
+  });
+
   describe("Dodge is not buyable", () => {
     it("Should ignore stored purchases and cost no points", () => {
       const { attributes } = buildSecondaryAttributes(
@@ -372,6 +451,7 @@ describe("SECONDARY ATTRIBUTES", () => {
       );
 
       expect(attributes).toHaveProperty("HP");
+      expect(attributes).toHaveProperty("FP");
       expect(attributes).toHaveProperty("Mana");
       expect(attributes).toHaveProperty("Toxicity");
       expect(attributes).toHaveProperty("Will");

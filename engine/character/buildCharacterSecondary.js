@@ -10,6 +10,7 @@ const {
 
 const SECONDARY_ATTRS = [
   "HP",
+  "FP",
   "Mana",
   "Toxicity",
   "Will",

@@ -71,15 +71,6 @@
   transition: width 0.3s ease;
 }
 
-.resume-bar--hp {
-  background: var(--color-bar-hp);
-}
-.resume-bar--mana {
-  background: var(--color-bar-mana);
-}
-.resume-bar--toxicity {
-  background: var(--color-bar-toxicity);
-}
 .resume-bar--experience {
   background: var(--color-bar-experience);
 }
@@ -109,7 +100,19 @@
 .resume-bar-stepper {
   display: flex;
   justify-content: flex-end;
+  gap: var(--space-4);
   margin-top: var(--space-2);
+}
+
+.resume-bar-stepper-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.resume-bar-stepper-label {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
 }
 
 .resume-bar-stepper .num-stepper input {

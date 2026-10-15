@@ -60,6 +60,7 @@
   --focus-ring-w: 2px;
 
   --color-bar-hp: #e05252;
+  --color-bar-fatigue: #e0b12b;
   --color-bar-mana: #4a90d9;
   --color-bar-toxicity: #3aaa5c;
   /* darker than the other bars' tone because .resume-bar-badge reuses it as a fill under white text */

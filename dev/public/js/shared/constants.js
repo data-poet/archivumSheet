@@ -29,3 +29,17 @@ export const DEFAULT_MATERIAL_ID = "MAT-000";
 // authoring safe: every write goes to store.activeId, so a draft can only write to its own row,
 // and selecting a real character cannot leave the app in ally mode.
 export const ENTRY_KINDS = { CHARACTER: "character", ALLY: "ally" };
+
+// Vitals: modifier tracks lost points (≤ 0); a new one is an entry here plus its --color-bar-<bar> CSS variable.
+export const VITAL_ATTRIBUTES = [
+  { key: "HP", bar: "hp" },
+  { key: "FP", bar: "fatigue" },
+  { key: "Mana", bar: "mana" },
+  { key: "Toxicity", bar: "toxicity" },
+];
+
+export function isVitalAttribute(key) {
+  return VITAL_ATTRIBUTES.some((vital) => vital.key === key);
+}
+
+export const UNBUYABLE_SECONDARIES = ["Movement", "Dodge", "DamageResistance"];

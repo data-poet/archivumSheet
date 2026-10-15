@@ -5,6 +5,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { icon } from "../../shared/icons.js";
+import { VITAL_ATTRIBUTES } from "../../shared/constants.js";
 
 const HOST_ID = "resume-panel-host";
 const PANEL_ID = "tab-char-resume";
@@ -27,9 +28,7 @@ export const RESUME_PANEL_HTML = `
     <!-- Row 3: bars + secondary snapshot -->
     <div class="resume-row resume-row--bars-secondary">
       <div class="resume-bars-block">
-        <div id="resume_bar_hp"></div>
-        <div id="resume_bar_mana"></div>
-        <div id="resume_bar_toxicity"></div>
+        ${VITAL_ATTRIBUTES.map(({ bar }) => `<div id="resume_bar_${bar}"></div>`).join("")}
       </div>
       <div id="resume_secondary_snapshot"></div>
     </div>

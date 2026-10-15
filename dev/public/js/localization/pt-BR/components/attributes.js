@@ -16,6 +16,7 @@ export const ATTRIBUTES = {
 
 export const SECONDARY_ATTRIBUTES = {
   HP: "PV",
+  FP: "PF",
   Mana: "Mana",
   Toxicity: "Toxicidade",
   Will: "Vontade",

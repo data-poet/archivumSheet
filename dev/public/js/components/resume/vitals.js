@@ -6,6 +6,7 @@ import {
   getExperienceRankName,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { VITAL_ATTRIBUTES } from "../../shared/constants.js";
 import { getExperienceRank } from "../../engine/character/experienceRank.js";
 import { collapsibleHeader, bindCollapse } from "./shared.js";
 
@@ -179,27 +180,44 @@ export function renderResumeBars(sheet) {
   const attrs = sheet?.character?.secondary_attributes;
   if (!attrs) return;
 
-  _renderBar("resume_bar_hp", attrs.HP, "resume-bar--hp", "HP");
-  _renderBar("resume_bar_mana", attrs.Mana, "resume-bar--mana", "Mana");
-  _renderBar(
-    "resume_bar_toxicity",
-    attrs.Toxicity,
-    "resume-bar--toxicity",
-    "Toxicity",
-  );
+  VITAL_ATTRIBUTES.forEach(({ key, bar }) => _renderBar(bar, attrs[key], key));
 }
 
-function _renderBar(containerId, attr, modifierClass, attrName) {
-  const container = el(containerId);
+function _vitalStepper(attrName, field, value, label) {
+  return `
+      <label class="resume-bar-stepper-field">
+        <span class="resume-bar-stepper-label">${label}</span>
+        <div class="num-stepper">
+          <input
+            type="text"
+            inputmode="numeric"
+            class="secondary-input"
+            data-name="${attrName}"
+            data-field="${field}"
+            data-max="0"
+            value="${value}"
+          />
+          <div class="stepper-btns">
+            <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+            <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+          </div>
+        </div>
+      </label>`;
+}
+
+function _renderBar(bar, attr, attrName) {
+  const container = el(`resume_bar_${bar}`);
   if (!container || !attr) return;
 
-  // Bar max includes equipment/enchantment bonuses (e.g. a Fortify Mana ring), not just base+bought.
-  const finalBase =
-    attr.final_base_value ?? (attr.base_value ?? 0) + (attr.bought ?? 0) * 4;
-  const enchantMod = attr.enchantment_modifier ?? 0;
-  const total = finalBase + enchantMod;
+  // Max includes equipment/enchantment bonuses (e.g. a Fortify Mana ring) and any max reduction, not just base+bought.
+  const maxMod = attr.max_modifier ?? 0;
+  const total = Math.max(
+    0,
+    (attr.final_base_value ?? attr.base_value ?? 0) +
+      (attr.enchantment_modifier ?? 0) +
+      maxMod,
+  );
 
-  // modifier tracks missing/spent points (always ≤ 0, enforced in traits/events.js).
   const rawMod = attr.modifier ?? 0;
   const current = Math.max(0, total + rawMod);
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
@@ -212,8 +230,8 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
     </div>
     <div class="resume-bar-track">
       <div
-        class="resume-bar-fill ${modifierClass}"
-        style="width: ${pct}%"
+        class="resume-bar-fill resume-bar--${bar}"
+        style="width: ${pct}%; background: var(--color-bar-${bar})"
         role="progressbar"
         aria-valuenow="${current}"
         aria-valuemin="0"
@@ -221,21 +239,8 @@ function _renderBar(containerId, attr, modifierClass, attrName) {
       ></div>
     </div>
     <div class="resume-bar-stepper">
-      <div class="num-stepper">
-        <input
-          type="text"
-          inputmode="numeric"
-          class="secondary-input"
-          data-name="${attrName}"
-          data-field="modifier"
-          data-max="0"
-          value="${rawMod}"
-        />
-        <div class="stepper-btns">
-          <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
-          <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
-        </div>
-      </div>
+      ${_vitalStepper(attrName, "modifier", rawMod, t("resume.vitalCurrent"))}
+      ${_vitalStepper(attrName, "max_modifier", maxMod, t("resume.vitalMax"))}
     </div>
   `;
 }

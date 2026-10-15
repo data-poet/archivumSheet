@@ -112,15 +112,48 @@ describe("renderResumeBars", () => {
     expect(fill.style.width).toBe("79%"); // round(11/14*100)
   });
 
-  test("falls back to (base_value + bought*4) when final_base_value is absent", () => {
+  test("renders one bar per vital, in VITAL_ATTRIBUTES order, coloured by its --color-bar-<bar> variable", () => {
+    const { VITAL_ATTRIBUTES } = require("dev/public/js/shared/constants.js");
+    renderResume({
+      character: {
+        secondary_attributes: Object.fromEntries(
+          VITAL_ATTRIBUTES.map(({ key }) => [key, { final_base_value: 10 }]),
+        ),
+      },
+    });
+
+    const bars = Array.from(
+      document.querySelectorAll(".resume-bars-block > div"),
+      (d) => d.id,
+    );
+    expect(bars).toEqual(
+      VITAL_ATTRIBUTES.map(({ bar }) => `resume_bar_${bar}`),
+    );
+    const fatigue = id("resume_bar_fatigue");
+    expect(fatigue.textContent).toContain(getSecondaryAttributeLabel("FP"));
+    expect(
+      fatigue.querySelector(".resume-bar-fill").getAttribute("style"),
+    ).toContain("var(--color-bar-fatigue)");
+  });
+
+  test("a max reduction lowers the bar's total, and gets its own capped stepper", () => {
     renderResume({
       character: {
         secondary_attributes: {
-          Mana: { base_value: 10, bought: 2, modifier: 0 },
+          FP: { final_base_value: 12, modifier: -2, max_modifier: -4 },
         },
       },
     });
-    expect(id("resume_bar_mana").textContent).toContain("18/18"); // 10 + 2*4
+
+    expect(id("resume_bar_fatigue").textContent).toContain("6/8");
+    const max = id("resume_bar_fatigue").querySelector(
+      '[data-field="max_modifier"]',
+    );
+    expect(max.value).toBe("-4");
+    expect(max.dataset.max).toBe("0");
+    expect(id("resume_bar_fatigue").textContent).toContain(
+      t("resume.vitalMax"),
+    );
   });
 
   test("clamps current at 0 rather than going negative", () => {

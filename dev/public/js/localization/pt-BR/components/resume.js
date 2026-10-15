@@ -35,6 +35,8 @@ export const RESUME = {
   encumbrance: "Sobrecarga",
   carryLimits: "Limites de Carga",
   coinsCarried: "na mochila",
+  vitalCurrent: "Atual",
+  vitalMax: "Máx.",
 };
 
 export const SECTIONS = {

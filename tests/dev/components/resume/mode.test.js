@@ -192,7 +192,7 @@ describe("renderResume mode: ally", () => {
     ).toBeGreaterThan(0);
     expect(
       id("resume_bar_hp").querySelectorAll(".secondary-input"),
-    ).toHaveLength(1);
+    ).toHaveLength(2);
   });
 
   test("renders the experience bar and the point, weight, value and alchemy sections, same as a PC's", () => {

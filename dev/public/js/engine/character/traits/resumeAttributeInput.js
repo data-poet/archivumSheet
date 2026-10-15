@@ -3,6 +3,10 @@
 // file's compute/autorun.js / pcEditTarget.js dependencies. `target` is whatever
 // shared/editTarget.js resolves to — PC_EDIT_TARGET until an ally edit target is
 // registered (see shared/editTarget.js for why this is a registration, not a page check).
+import {
+  UNBUYABLE_SECONDARIES,
+  isVitalAttribute,
+} from "../../../shared/constants.js";
 
 export function handleResumeAttributeInput(e, target) {
   if (e.target.classList.contains("resume-primary-mod-input")) {
@@ -30,19 +34,21 @@ export function handleResumeAttributeInput(e, target) {
 
     target.ensureSecondary(name);
     if (field === "bought") {
-      if (name === "Movement" || name === "DamageResistance") return true;
+      if (UNBUYABLE_SECONDARIES.includes(name)) return true;
       const max = name === "BasicSpeed" ? 6 : 5;
       target.setSecondary(name, "bought", Math.max(0, Math.min(max, value)));
     }
     if (field === "modifier") {
-      // HP/Mana/Toxicity modifier tracks missing (spent/lost) points, not a stat bonus, so it's capped at 0; gear/enchantment bonuses flow through enchantment_modifier instead.
-      const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
-      const normalized = isVital
+      // A vital's modifier tracks missing points, so it's capped at 0; gear bonuses flow through enchantment_modifier.
+      const normalized = isVitalAttribute(name)
         ? Math.min(0, value)
         : name === "BasicSpeed"
           ? Math.round(value * 2) / 2
           : value;
       target.setSecondary(name, "modifier", normalized);
+    }
+    if (field === "max_modifier" && isVitalAttribute(name)) {
+      target.setSecondary(name, "max_modifier", Math.min(0, value));
     }
     return true;
   }

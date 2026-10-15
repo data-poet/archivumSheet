@@ -1,6 +1,8 @@
 const { calculateCarryWeight } = require("../../../inventory/js/carryWeight");
 const { calculateDamage } = require("./baseDamage");
 
+const LOW_RESERVES = ["HP", "FP"];
+
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
@@ -11,6 +13,7 @@ function resolveSecondary({
   modifier = 0,
   enchantment_modifier = 0,
   has_enchantment_modifier = false,
+  max_modifier = 0,
   maxBought = 5,
   step = 1,
 }) {
@@ -23,8 +26,9 @@ function resolveSecondary({
     modifier,
     enchantment_modifier,
     has_enchantment_modifier,
+    max_modifier,
     final_base_value,
-    value: final_base_value + modifier + enchantment_modifier,
+    value: final_base_value + modifier + enchantment_modifier + max_modifier,
     points: safeBought * 5,
   };
 }
@@ -44,6 +48,7 @@ function applySecondaryBaseEffects(base, effects = {}) {
 function computeBaseSecondary({ ST, HT, IQ, DX }) {
   return {
     HP: Math.floor((HT * 4 + ST * 2) / 2),
+    FP: HT,
     Mana: Math.floor((IQ * 4 + HT * 2) / 2),
     Toxicity: Math.floor((HT * 4 + ST * 2 + IQ * 2) / 3),
 
@@ -75,6 +80,11 @@ function buildSecondaryAttributes(
       base_value: base.HP,
       step: 4,
       ...config.HP,
+    }),
+
+    FP: resolveSecondary({
+      base_value: base.FP,
+      ...config.FP,
     }),
 
     Mana: resolveSecondary({
@@ -158,8 +168,9 @@ function buildSecondaryAttributes(
     has_enchantment_modifier: config.Dodge?.has_enchantment_modifier ?? false,
   });
 
-  // 4e B419: under 1/3 of natural HP (gear bonuses excluded), halve current Move and Dodge, rounding up.
-  if (result.HP.value < result.HP.final_base_value / 3) {
+  // 4e B419/B426: each reserve under 1/3 of its natural max (gear bonuses excluded) halves current Move and Dodge, rounding up; they stack.
+  LOW_RESERVES.forEach((key) => {
+    if (result[key].value >= result[key].final_base_value / 3) return;
     result.Movement = {
       ...result.Movement,
       value: Math.ceil(result.Movement.value / 2),
@@ -168,7 +179,7 @@ function buildSecondaryAttributes(
       ...result.Dodge,
       value: Math.ceil(result.Dodge.value / 2),
     };
-  }
+  });
 
   // Damage isn't a "secondary attribute" — no bought/points.
   const damage = calculateDamage(ST, {

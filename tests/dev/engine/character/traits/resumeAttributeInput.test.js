@@ -87,6 +87,69 @@ describe("handleResumeAttributeInput — secondary-input", () => {
     expect(target.setSecondary).toHaveBeenCalledWith("Perception", "bought", 5);
   });
 
+  test.each(["Movement", "Dodge", "DamageResistance"])(
+    "%s's 'bought' field is never written",
+    (name) => {
+      const target = fakeTarget();
+      handleResumeAttributeInput(
+        {
+          target: elWithClass(
+            "input",
+            "secondary-input",
+            { name, field: "bought" },
+            "4",
+          ),
+        },
+        target,
+      );
+      expect(target.setSecondary).not.toHaveBeenCalled();
+    },
+  );
+
+  test("PF's modifier is capped at 0 like the other vitals", () => {
+    const target = fakeTarget();
+    handleResumeAttributeInput(
+      {
+        target: elWithClass(
+          "input",
+          "secondary-input",
+          { name: "FP", field: "modifier" },
+          "3",
+        ),
+      },
+      target,
+    );
+    expect(target.setSecondary).toHaveBeenCalledWith("FP", "modifier", 0);
+  });
+
+  test("a vital's max_modifier is written capped at 0; non-vitals ignore it", () => {
+    const target = fakeTarget();
+    const input = (name, value) => ({
+      target: elWithClass(
+        "input",
+        "secondary-input",
+        { name, field: "max_modifier" },
+        value,
+      ),
+    });
+
+    handleResumeAttributeInput(input("Mana", "-5"), target);
+    handleResumeAttributeInput(input("HP", "2"), target);
+    handleResumeAttributeInput(input("Will", "-1"), target);
+
+    expect(target.setSecondary).toHaveBeenCalledWith(
+      "Mana",
+      "max_modifier",
+      -5,
+    );
+    expect(target.setSecondary).toHaveBeenCalledWith("HP", "max_modifier", 0);
+    expect(target.setSecondary).not.toHaveBeenCalledWith(
+      "Will",
+      "max_modifier",
+      expect.anything(),
+    );
+  });
+
   test("Movement's 'bought' field is never written", () => {
     const target = fakeTarget();
     const e = {

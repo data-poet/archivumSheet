@@ -1,5 +1,9 @@
 import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
+import {
+  UNBUYABLE_SECONDARIES,
+  isVitalAttribute,
+} from "../shared/constants.js";
 
 // th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
 export function initAttributeTableHeaders() {
@@ -81,10 +85,8 @@ export function renderSecondaryAttributes(sheet) {
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
-      const isNotBuyable =
-        name === "Movement" || name === "Dodge" || name === "DamageResistance";
-      // HP/Mana/Toxicity's modifier is a damage tracker (≤ 0 only), not a stat bonus.
-      const isVital = name === "HP" || name === "Mana" || name === "Toxicity";
+      const isNotBuyable = UNBUYABLE_SECONDARIES.includes(name);
+      const isVital = isVitalAttribute(name);
 
       const baseDisplay = isBasicSpeed
         ? Number(data.base_value).toFixed(2)

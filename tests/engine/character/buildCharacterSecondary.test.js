@@ -147,6 +147,20 @@ describe("BUILD CHARACTER SECONDARY", () => {
     });
   });
 
+  describe("Enchantments", () => {
+    it("Applies an enchantment targeting FP, like the other vitals", () => {
+      const result = buildCharacterSecondary({
+        primary_attributes: mockPrimary,
+        enchantmentAttributeModifiers: { FP: 2 },
+      });
+      const fp = result.secondary_attributes.FP;
+
+      expect(fp.enchantment_modifier).toBe(2);
+      expect(fp.has_enchantment_modifier).toBe(true);
+      expect(fp.value).toBe(mockPrimary.HT.value + 2);
+    });
+  });
+
   describe("Elemental resistances integration", () => {
     it("Defaults every element to race_base 1 when no race multipliers are given", () => {
       const { elemental_resistances } = buildCharacterSecondary({
