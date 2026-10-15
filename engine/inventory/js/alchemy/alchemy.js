@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./alchemyConstants.js");
 
@@ -17,13 +15,7 @@ let _alchemyDB = null;
 function getAlchemyDB() {
   if (_alchemyDB) return _alchemyDB;
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_alchemy_consumables.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("ALCHEMY");
 
   _alchemyDB = {};
 

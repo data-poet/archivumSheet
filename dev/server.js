@@ -3,7 +3,7 @@ const cors = require("cors");
 const path = require("path");
 
 const { version } = require("../package.json");
-const { loadCSV } = require("../helpers/dataUtils.js");
+const { loadDataset } = require("../helpers/datasets.js");
 const alliesCatalog = require("../helpers/alliesCatalog.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
@@ -65,9 +65,7 @@ app.get("/api/app-info", (req, res) => {
    ADVANTAGES
 ------------------------ */
 app.get("/api/advantages", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_traits_advantages.csv"),
-  );
+  const data = loadDataset("ADVANTAGES");
 
   res.json(data);
 });
@@ -76,9 +74,7 @@ app.get("/api/advantages", (req, res) => {
    DISADVANTAGES
 ------------------------ */
 app.get("/api/disadvantages", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_traits_disadvantages.csv"),
-  );
+  const data = loadDataset("DISADVANTAGES");
 
   res.json(data);
 });
@@ -87,7 +83,7 @@ app.get("/api/disadvantages", (req, res) => {
    SKILLS
 ------------------------ */
 app.get("/api/skills", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_skills.csv"));
+  const data = loadDataset("SKILLS");
 
   res.json(data);
 });
@@ -96,7 +92,7 @@ app.get("/api/skills", (req, res) => {
    SPELLS
 ------------------------ */
 app.get("/api/spells", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_magic_grimoire.csv"));
+  const data = loadDataset("GRIMOIRE");
 
   res.json(data);
 });
@@ -105,7 +101,7 @@ app.get("/api/spells", (req, res) => {
    RACES
 ------------------------ */
 app.get("/api/races", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_yrth_races.csv"));
+  const data = loadDataset("RACES");
   res.json(data);
 });
 
@@ -113,7 +109,7 @@ app.get("/api/races", (req, res) => {
    META-RACES
 ------------------------ */
 app.get("/api/meta-races", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_yrth_meta_races.csv"));
+  const data = loadDataset("META_RACES");
 
   res.json(data);
 });
@@ -122,9 +118,7 @@ app.get("/api/meta-races", (req, res) => {
    MATERIALS
 ------------------------ */
 app.get("/api/materials", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_crafting_materials.csv"),
-  );
+  const data = loadDataset("CRAFTING_MATERIALS");
 
   res.json(data);
 });
@@ -133,85 +127,67 @@ app.get("/api/materials", (req, res) => {
    INVENTORY
 ------------------------ */
 app.get("/api/armors", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_equipment_armors.csv"));
+  const data = loadDataset("ARMORS");
 
   res.json(data);
 });
 
 app.get("/api/shields", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_shields.csv"),
-  );
+  const data = loadDataset("SHIELDS");
 
   res.json(data);
 });
 
 app.get("/api/melee_weapons", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_melee_weapons.csv"),
-  );
+  const data = loadDataset("MELEE_WEAPONS");
 
   res.json(data);
 });
 
 app.get("/api/ranged_weapons", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_ranged_weapons.csv"),
-  );
+  const data = loadDataset("RANGED_WEAPONS");
 
   res.json(data);
 });
 
 app.get("/api/firearms", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_firearms_weapons.csv"),
-  );
+  const data = loadDataset("FIREARMS");
 
   res.json(data);
 });
 
 app.get("/api/ammo", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_equipment_ammo.csv"));
+  const data = loadDataset("AMMO");
   res.json(data);
 });
 
 app.get("/api/ammo_containers", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_equipment_ammo_containers.csv"),
-  );
+  const data = loadDataset("AMMO_CONTAINERS");
   res.json(data);
 });
 
 app.get("/api/alchemy", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_alchemy_consumables.csv"),
-  );
+  const data = loadDataset("ALCHEMY");
   res.json(data);
 });
 
 app.get("/api/survival_gear", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_itens_adventure_gear.csv"),
-  );
+  const data = loadDataset("ADVENTURE_GEAR");
   res.json(data);
 });
 
 app.get("/api/accessories", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_itens_accessories.csv"),
-  );
+  const data = loadDataset("ACCESSORIES");
   res.json(data);
 });
 
 app.get("/api/magic_gear", (req, res) => {
-  const data = loadCSV(path.join(__dirname, "../data/db_magic_gear.csv"));
+  const data = loadDataset("MAGIC_GEAR");
   res.json(data);
 });
 
 app.get("/api/enchantments", (req, res) => {
-  const data = loadCSV(
-    path.join(__dirname, "../data/db_magic_enchantments.csv"),
-  );
+  const data = loadDataset("ENCHANTMENTS");
   res.json(data);
 });
 

@@ -1,5 +1,4 @@
-const path = require("path");
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 
 const DIFFICULTY_DEFAULT_PENALTY = { F: 4, M: 5, D: 6 };
@@ -24,7 +23,7 @@ function parseSkillDefaults(text = "") {
 }
 
 function loadSkillRows() {
-  const rows = loadCSV(path.join(process.cwd(), "data", "db_skills.csv"));
+  const rows = loadDataset("SKILLS");
   return Object.fromEntries(rows.map((row) => [row.skill_id, row]));
 }
 

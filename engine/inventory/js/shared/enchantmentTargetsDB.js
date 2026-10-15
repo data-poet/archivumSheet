@@ -1,8 +1,6 @@
 // Character-layer builders only export lookups filtered to *selected* ids, so enchantment target validation needs its own full, unfiltered, id-keyed loader.
 // Spells are keyed by spell_name, not spell_id, since db_magic_grimoire.csv has one row per tier per spell and the resolver looks spells up by name + computed tier — indexing by spell_id would pin an enchantment to one tier.
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 let _enchantmentTargetsDB = null;
 
@@ -11,16 +9,10 @@ function getEnchantmentTargetsDB() {
     return _enchantmentTargetsDB;
   }
 
-  const advantageRows = loadCSV(
-    path.join(process.cwd(), "data", "db_traits_advantages.csv"),
-  );
-  const disadvantageRows = loadCSV(
-    path.join(process.cwd(), "data", "db_traits_disadvantages.csv"),
-  );
-  const skillRows = loadCSV(path.join(process.cwd(), "data", "db_skills.csv"));
-  const spellRows = loadCSV(
-    path.join(process.cwd(), "data", "db_magic_grimoire.csv"),
-  );
+  const advantageRows = loadDataset("ADVANTAGES");
+  const disadvantageRows = loadDataset("DISADVANTAGES");
+  const skillRows = loadDataset("SKILLS");
+  const spellRows = loadDataset("GRIMOIRE");
 
   const advantages = {};
   for (const row of advantageRows) {

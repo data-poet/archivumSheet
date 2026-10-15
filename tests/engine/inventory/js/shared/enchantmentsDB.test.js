@@ -1,4 +1,4 @@
-const path = require("path");
+const { datasetPath } = require("helpers/datasets.js");
 
 jest.mock("helpers/dataUtils.js", () => ({
   loadCSV: jest.fn(),
@@ -94,9 +94,7 @@ describe("getEnchantmentsDB", () => {
 
     expect(loadCSV).toHaveBeenCalledTimes(1);
 
-    expect(loadCSV).toHaveBeenCalledWith(
-      path.resolve(process.cwd(), "data/db_magic_enchantments.csv"),
-    );
+    expect(loadCSV).toHaveBeenCalledWith(datasetPath("ENCHANTMENTS"));
 
     expect(result["ENCHANTMENT-000"]).toEqual({
       enchantment_id: "ENCHANTMENT-000",

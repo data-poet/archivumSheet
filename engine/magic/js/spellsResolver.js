@@ -1,5 +1,4 @@
-const path = require("path");
-const { loadCSV } = require("../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../helpers/datasets.js");
 const {
   SPELL_ATTRIBUTE,
   MAGIC_APTITUDE_GROUP,
@@ -13,7 +12,7 @@ function getAllSpells() {
   if (_dbCache) return _dbCache;
 
   _dbCache = {
-    spells: loadCSV(path.join(process.cwd(), "data", "db_magic_grimoire.csv")),
+    spells: loadDataset("GRIMOIRE"),
   };
 
   return _dbCache;

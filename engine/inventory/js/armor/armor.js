@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { SLOTS, SLOT_MAP, VALID_STORED_AT } = require("./armorConstants.js");
 
@@ -26,9 +24,7 @@ function getArmorDB() {
     return _armorDB;
   }
 
-  const filePath = path.join(process.cwd(), "data", "db_equipment_armors.csv");
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("ARMORS");
 
   _armorDB = {};
 

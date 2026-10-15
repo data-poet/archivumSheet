@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./meleeConstants.js");
 
@@ -30,13 +28,7 @@ function getMeleeDB() {
     return _meleeDB;
   }
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_equipment_melee_weapons.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("MELEE_WEAPONS");
 
   _meleeDB = {};
 

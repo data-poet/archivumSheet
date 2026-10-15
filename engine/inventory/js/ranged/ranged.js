@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./rangedConstants.js");
 
@@ -30,13 +28,7 @@ function getRangedDB() {
     return _rangedDB;
   }
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_equipment_ranged_weapons.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("RANGED_WEAPONS");
 
   _rangedDB = {};
 

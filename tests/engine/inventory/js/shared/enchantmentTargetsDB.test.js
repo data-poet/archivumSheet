@@ -1,3 +1,5 @@
+const { DATASETS } = require("helpers/datasets.js");
+
 jest.mock("helpers/dataUtils.js", () => ({
   loadCSV: jest.fn(),
 }));
@@ -56,11 +58,10 @@ describe("getEnchantmentTargetsDB", () => {
     ({ loadCSV } = require("helpers/dataUtils.js"));
 
     loadCSV.mockImplementation((filePath) => {
-      if (filePath.includes("db_traits_advantages.csv")) return advantageRows;
-      if (filePath.includes("db_traits_disadvantages.csv"))
-        return disadvantageRows;
-      if (filePath.includes("db_skills.csv")) return skillRows;
-      if (filePath.includes("db_magic_grimoire.csv")) return spellRows;
+      if (filePath.includes(DATASETS.ADVANTAGES)) return advantageRows;
+      if (filePath.includes(DATASETS.DISADVANTAGES)) return disadvantageRows;
+      if (filePath.includes(DATASETS.SKILLS)) return skillRows;
+      if (filePath.includes(DATASETS.GRIMOIRE)) return spellRows;
       return [];
     });
   });

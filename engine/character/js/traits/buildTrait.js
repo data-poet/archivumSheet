@@ -1,10 +1,9 @@
-const path = require("path");
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 // Precedence when an id qualifies from more than one free-grant source (cost is 0 either way,
 // this only decides which badge shows): race-innate → meta-race → enchantment.
 function buildTrait({
-  csvFileName,
+  datasetKey,
   idField,
   nameField,
   typeField,
@@ -16,8 +15,7 @@ function buildTrait({
   enchantmentIds = [],
   metaRaceIds = [],
 }) {
-  const filePath = path.join(process.cwd(), "data", csvFileName);
-  const rows = loadCSV(filePath);
+  const rows = loadDataset(datasetKey);
 
   const traits = {};
   let totalCost = 0;

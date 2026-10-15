@@ -1,5 +1,4 @@
-const path = require("path");
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 const { ELEMENTAL_TYPES } = require("../attributes/elementalResistances");
 
 const ELEMENT_COLUMN = {
@@ -44,8 +43,7 @@ function idListOf(raw) {
 // elementalResistances.js); attribute modifiers and advantage/disadvantage ids sum/union instead,
 // same treatment race modifiers already get.
 function resolveMetaRaces(metaRaceIds = []) {
-  const filePath = path.join(process.cwd(), "data", "db_yrth_meta_races.csv");
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("META_RACES");
 
   const selectedRows = rows.filter((row) =>
     metaRaceIds.includes(row.meta_race_id),

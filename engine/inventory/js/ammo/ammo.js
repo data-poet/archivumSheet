@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const {
   VALID_CONTAINER_STORED_AT,
@@ -26,8 +24,7 @@ let _ammoDB = null;
 function getAmmoDB() {
   if (_ammoDB) return _ammoDB;
 
-  const filePath = path.join(process.cwd(), "data", "db_equipment_ammo.csv");
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("AMMO");
 
   _ammoDB = {};
 
@@ -52,12 +49,7 @@ let _containerDB = null;
 function getContainerDB() {
   if (_containerDB) return _containerDB;
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_equipment_ammo_containers.csv",
-  );
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("AMMO_CONTAINERS");
 
   _containerDB = {};
 

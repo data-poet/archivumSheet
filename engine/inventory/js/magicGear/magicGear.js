@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./magicGearConstants.js");
 
@@ -26,9 +24,7 @@ let _magicGearDB = null;
 function getMagicGearDB() {
   if (_magicGearDB) return _magicGearDB;
 
-  const filePath = path.join(process.cwd(), "data", "db_magic_gear.csv");
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("MAGIC_GEAR");
 
   _magicGearDB = {};
 

@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./accessoriesConstants.js");
 
@@ -25,9 +23,7 @@ let _accessoriesDB = null;
 function getAccessoriesDB() {
   if (_accessoriesDB) return _accessoriesDB;
 
-  const filePath = path.join(process.cwd(), "data", "db_itens_accessories.csv");
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("ACCESSORIES");
 
   _accessoriesDB = {};
 

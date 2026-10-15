@@ -1,5 +1,4 @@
-const path = require("path");
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 const { getSkillCost } = require("./skillsCost.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 const { computeParry } = require("./skillCheck.js");
@@ -29,8 +28,7 @@ function buildSkills(
   enchantmentSkillGrants = {},
   enchantmentSkillModifiers = {},
 ) {
-  const filePath = path.join(process.cwd(), "data", "db_skills.csv");
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("SKILLS");
 
   const hasReflexos = "ADV-055" in advantages;
 

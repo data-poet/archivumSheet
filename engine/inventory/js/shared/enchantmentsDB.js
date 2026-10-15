@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 let _enchantmentsDB = null;
 
@@ -30,13 +28,7 @@ function getEnchantmentsDB() {
     return _enchantmentsDB;
   }
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_magic_enchantments.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("ENCHANTMENTS");
 
   _enchantmentsDB = {};
 

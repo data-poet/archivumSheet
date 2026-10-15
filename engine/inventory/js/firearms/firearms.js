@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./firearmsConstants.js");
 
@@ -25,13 +23,7 @@ function getFirearmsDB() {
     return _firearmsDB;
   }
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_equipment_firearms_weapons.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("FIREARMS");
 
   _firearmsDB = {};
 

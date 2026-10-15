@@ -1,4 +1,4 @@
-const path = require("path");
+const { datasetPath } = require("helpers/datasets.js");
 
 jest.mock("helpers/dataUtils.js", () => ({
   loadCSV: jest.fn(),
@@ -55,9 +55,7 @@ describe("getMaterialsDB", () => {
 
     expect(loadCSV).toHaveBeenCalledTimes(1);
 
-    expect(loadCSV).toHaveBeenCalledWith(
-      path.resolve(process.cwd(), "data/db_crafting_materials.csv"),
-    );
+    expect(loadCSV).toHaveBeenCalledWith(datasetPath("CRAFTING_MATERIALS"));
 
     expect(result).toEqual({
       iron: {

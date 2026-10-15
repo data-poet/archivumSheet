@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./survivalGearConstants.js");
 
@@ -17,13 +15,7 @@ let _survivalGearDB = null;
 function getSurvivalGearDB() {
   if (_survivalGearDB) return _survivalGearDB;
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_itens_adventure_gear.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("ADVENTURE_GEAR");
 
   _survivalGearDB = {};
 

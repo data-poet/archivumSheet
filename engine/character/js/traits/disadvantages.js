@@ -7,7 +7,7 @@ function buildDisadvantages(
   metaRaceIds = [],
 ) {
   return buildTrait({
-    csvFileName: "db_traits_disadvantages.csv",
+    datasetKey: "DISADVANTAGES",
     idField: "disadvantage_id",
     nameField: "disadvantage_name",
     typeField: "disadvantage_type",

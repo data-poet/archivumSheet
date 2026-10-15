@@ -1,6 +1,4 @@
-const path = require("path");
-
-const { loadCSV } = require("../../../../helpers/dataUtils.js");
+const { loadDataset } = require("../../../../helpers/datasets.js");
 
 let _materialsDB = null;
 
@@ -9,13 +7,7 @@ function getMaterialsDB() {
     return _materialsDB;
   }
 
-  const filePath = path.join(
-    process.cwd(),
-    "data",
-    "db_crafting_materials.csv",
-  );
-
-  const rows = loadCSV(filePath);
+  const rows = loadDataset("CRAFTING_MATERIALS");
 
   _materialsDB = {};
 
