@@ -136,6 +136,96 @@ describe("renderResumeBars", () => {
     ).toContain("var(--color-bar-fatigue)");
   });
 
+  test("PV and PF bars show the engine's threshold chip; other bars don't", () => {
+    renderResume({
+      character: {
+        secondary_attributes: {
+          HP: { final_base_value: 30, modifier: -25 },
+          FP: { final_base_value: 12, modifier: -10 },
+          Mana: { final_base_value: 20 },
+        },
+        thresholds: {
+          hp: { state: "reeling", death_checks: 0 },
+          fp: { state: "exhausted" },
+        },
+      },
+    });
+
+    expect(
+      id("resume_bar_hp").querySelector(".threshold-chip--reeling"),
+    ).not.toBeNull();
+    expect(
+      id("resume_bar_fatigue").querySelector(".threshold-chip--exhausted"),
+    ).not.toBeNull();
+    expect(id("resume_bar_mana").querySelector(".threshold-chip")).toBeNull();
+  });
+
+  test("negative PV switch the bar to a death zone with one tick per death check and the next check", () => {
+    renderResume({
+      character: {
+        secondary_attributes: {
+          HP: { final_base_value: 32, modifier: -46 },
+        },
+        thresholds: {
+          hp: {
+            state: "dying",
+            death_checks: 1,
+            death_check_values: [-12, -24, -36, -48],
+            next_death_check: -24,
+            death_at: -60,
+          },
+          fp: { state: "ok", unconscious_at: -12 },
+        },
+      },
+    });
+
+    const bar = id("resume_bar_hp");
+    expect(bar.querySelector(".resume-bar-values").textContent).toBe(
+      "-14/32 · próximo teste em -24",
+    );
+    expect(bar.querySelector(".resume-bar-track--negative")).not.toBeNull();
+    const ticks = bar.querySelectorAll(".resume-bar-tick");
+    expect(ticks).toHaveLength(4);
+    expect(Array.from(ticks, (t) => t.classList.contains("is-passed"))).toEqual(
+      [true, false, false, false],
+    );
+    expect(
+      bar.querySelector(".resume-bar-fill--negative").getAttribute("style"),
+    ).toContain("width: 23%");
+  });
+
+  test("negative PF fill toward unconsciousness, with no ticks", () => {
+    renderResume({
+      character: {
+        secondary_attributes: {
+          FP: { final_base_value: 12, modifier: -18 },
+        },
+        thresholds: {
+          hp: { state: "ok", death_check_values: [], death_at: -60 },
+          fp: { state: "collapsing", unconscious_at: -12 },
+        },
+      },
+    });
+
+    const bar = id("resume_bar_fatigue");
+    expect(bar.querySelector(".resume-bar-values").textContent).toBe(
+      "-6/12 · inconsciente em -12",
+    );
+    expect(bar.querySelectorAll(".resume-bar-tick")).toHaveLength(0);
+  });
+
+  test("Mana and Toxicidade stay clamped at 0", () => {
+    renderResume({
+      character: {
+        secondary_attributes: { Mana: { final_base_value: 10, modifier: -15 } },
+        thresholds: { hp: { state: "ok" }, fp: { state: "ok" } },
+      },
+    });
+    expect(
+      id("resume_bar_mana").querySelector(".resume-bar-values").textContent,
+    ).toBe("0/10");
+  });
+
   test("a max reduction lowers the bar's total, and gets its own capped stepper", () => {
     renderResume({
       character: {

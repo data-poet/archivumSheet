@@ -2,6 +2,7 @@ const { buildCharacterPrimary } = require("./buildCharacterPrimary");
 const { buildCharacterSecondary } = require("./buildCharacterSecondary");
 const { buildTraitsEffects } = require("./js/traits/effects");
 const { sumObjectValues } = require("../../helpers/sumObjectValues");
+const { computeThresholds } = require("./js/attributes/thresholds");
 
 function buildCharacter({
   advantages = [],
@@ -83,6 +84,12 @@ function buildCharacter({
       base_damage: secondary.base_damage,
 
       elemental_resistances: secondary.elemental_resistances,
+
+      thresholds: computeThresholds({
+        HT: primary.primary_attributes.HT,
+        HP: secondary.secondary_attributes.HP,
+        FP: secondary.secondary_attributes.FP,
+      }),
 
       skills: secondary.skills,
 

@@ -10,6 +10,7 @@ export {
 } from "./components/attributes.js";
 export { renderDamage } from "./components/damage.js";
 export { renderElementalResistances } from "./components/resistances.js";
+export { renderThresholds } from "./components/thresholds.js";
 export { renderOutput } from "./components/output.js";
 export { renderResume } from "./components/resume/index.js";
 export { syncViewMode } from "./components/viewMode.js";

@@ -1,12 +1,14 @@
 // Identity, experience, and the attribute/bar readouts at the top of the resume.
 
 import {
+  LABELS,
   t,
   getSecondaryAttributeLabel,
   getExperienceRankName,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { VITAL_ATTRIBUTES } from "../../shared/constants.js";
+import { thresholdChip, fillThreshold } from "../thresholds.js";
 import { getExperienceRank } from "../../engine/character/experienceRank.js";
 import { collapsibleHeader, bindCollapse } from "./shared.js";
 
@@ -180,7 +182,68 @@ export function renderResumeBars(sheet) {
   const attrs = sheet?.character?.secondary_attributes;
   if (!attrs) return;
 
-  VITAL_ATTRIBUTES.forEach(({ key, bar }) => _renderBar(bar, attrs[key], key));
+  const thresholds = sheet?.character?.thresholds;
+  VITAL_ATTRIBUTES.forEach(({ key, bar }) =>
+    _renderBar(bar, attrs[key], key, {
+      chip: _chipFor(key, thresholds),
+      zone: thresholds ? ZONES[key]?.(thresholds) : null,
+    }),
+  );
+}
+
+const CHIP_KIND = { HP: "hp", FP: "fp" };
+
+function _chipFor(key, thresholds) {
+  const kind = CHIP_KIND[key];
+  return kind && thresholds ? thresholdChip(kind, thresholds[kind]) : "";
+}
+
+// Vitals whose value can go below 0 get a negative zone that runs from 0 down to its floor.
+const ZONES = {
+  HP: ({ hp }) => ({
+    floor: hp.death_at,
+    ticks: hp.death_check_values,
+    caption: (current) => {
+      if (current <= hp.death_at) return "";
+      if (hp.next_death_check !== null)
+        return fillThreshold(LABELS.thresholds.bar.nextDeathCheck, {
+          x: hp.next_death_check,
+        });
+      return fillThreshold(LABELS.thresholds.bar.deathAt, { x: hp.death_at });
+    },
+  }),
+  FP: ({ fp }) => ({
+    floor: fp.unconscious_at,
+    ticks: [],
+    caption: (current) =>
+      current > fp.unconscious_at
+        ? fillThreshold(LABELS.thresholds.bar.unconsciousAt, {
+            x: fp.unconscious_at,
+          })
+        : "",
+  }),
+};
+
+function _negativeTrack(current, zone) {
+  const pct = Math.min(100, Math.round((current / zone.floor) * 100));
+  const ticks = zone.ticks
+    .map(
+      (value) =>
+        `<span class="resume-bar-tick${current <= value ? " is-passed" : ""}" style="left: ${(value / zone.floor) * 100}%"></span>`,
+    )
+    .join("");
+  return `
+    <div class="resume-bar-track resume-bar-track--negative">
+      <div
+        class="resume-bar-fill resume-bar-fill--negative"
+        style="width: ${pct}%"
+        role="progressbar"
+        aria-valuenow="${current}"
+        aria-valuemin="${zone.floor}"
+        aria-valuemax="0"
+      ></div>
+      ${ticks}
+    </div>`;
 }
 
 function _vitalStepper(attrName, field, value, label) {
@@ -205,7 +268,7 @@ function _vitalStepper(attrName, field, value, label) {
       </label>`;
 }
 
-function _renderBar(bar, attr, attrName) {
+function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
   const container = el(`resume_bar_${bar}`);
   if (!container || !attr) return;
 
@@ -219,16 +282,20 @@ function _renderBar(bar, attr, attrName) {
   );
 
   const rawMod = attr.modifier ?? 0;
-  const current = Math.max(0, total + rawMod);
-  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  const current = zone ? total + rawMod : Math.max(0, total + rawMod);
+  const pct = total > 0 ? Math.round((Math.max(0, current) / total) * 100) : 0;
   const label = getSecondaryAttributeLabel(attrName);
+  const caption = zone && current <= 0 ? zone.caption(current) : "";
 
   container.innerHTML = `
     <div class="resume-bar-header">
       <span class="resume-bar-label">${label}</span>
-      <span class="resume-bar-values">${current}/${total}</span>
+      <span class="resume-bar-values">${current}/${total}${caption ? ` · ${caption}` : ""}</span>
     </div>
-    <div class="resume-bar-track">
+    ${
+      zone && current < 0
+        ? _negativeTrack(current, zone)
+        : `<div class="resume-bar-track">
       <div
         class="resume-bar-fill resume-bar--${bar}"
         style="width: ${pct}%; background: var(--color-bar-${bar})"
@@ -237,7 +304,9 @@ function _renderBar(bar, attr, attrName) {
         aria-valuemin="0"
         aria-valuemax="${total}"
       ></div>
-    </div>
+    </div>`
+    }
+    ${chip ? `<p class="resume-bar-chip">${chip}</p>` : ""}
     <div class="resume-bar-stepper">
       ${_vitalStepper(attrName, "modifier", rawMod, t("resume.vitalCurrent"))}
       ${_vitalStepper(attrName, "max_modifier", maxMod, t("resume.vitalMax"))}

@@ -6,6 +6,7 @@ export const TABS = {
   "tab-attr-secondary": "Secundários",
   "tab-attr-damage": "Dano Base",
   "tab-attr-resistances": "Resistências",
+  "tab-survival-thresholds": "Limiares",
   "tab-traits-advantages": "Vantagens",
   "tab-traits-disadvantages": "Desvantagens",
   "tab-skills-list": "Perícias",

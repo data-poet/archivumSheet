@@ -15,6 +15,7 @@ import { OUTPUT } from "./components/output.js";
 import { ELEMENTAL_RESISTANCES } from "./components/resistances.js";
 import { RESUME, SECTIONS } from "./components/resume.js";
 import { TABS } from "./components/tabs.js";
+import { THRESHOLDS } from "./components/thresholds.js";
 import { THEME } from "./components/theme.js";
 import { UNDO } from "./components/undo.js";
 import { VIEW_MODE } from "./components/viewMode.js";
@@ -84,6 +85,7 @@ export const LABELS = {
   output: OUTPUT,
   reference: REFERENCE,
   glossary: GLOSSARY,
+  thresholds: THRESHOLDS,
   allies: ALLIES,
   undo: UNDO,
 };

@@ -10,6 +10,7 @@ import {
   renderSecondaryAttributes,
   renderDamage,
   renderElementalResistances,
+  renderThresholds,
   renderResume,
   syncViewMode,
 } from "../ui.js";
@@ -123,6 +124,7 @@ export async function runEngine() {
     renderSecondaryAttributes(json);
     renderDamage(json);
     renderElementalResistances(json);
+    renderThresholds(json);
     renderResume(json, state.data, state.selected);
     syncViewMode();
 

@@ -27,7 +27,11 @@ export const SHEET_LAYOUT = [
         icon: "survival",
         box: "box--attr",
         accent: "attributes",
-        tabs: ["tab-attr-damage", "tab-attr-resistances"],
+        tabs: [
+          "tab-attr-damage",
+          "tab-attr-resistances",
+          "tab-survival-thresholds",
+        ],
       },
       {
         id: "section-traits",

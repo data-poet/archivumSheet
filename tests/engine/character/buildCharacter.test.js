@@ -81,6 +81,21 @@ describe("BUILD CHARACTER", () => {
     });
   });
 
+  describe("Thresholds", () => {
+    it("Should attach thresholds computed from natural HT, PV and PF", () => {
+      const { character } = buildCharacter(mockInput);
+      const { HT } = character.primary_attributes;
+      const { HP } = character.secondary_attributes;
+
+      expect(character.thresholds.ht).toBe(HT.base_value + HT.race_modifier);
+      expect(character.thresholds.hp.major_wound_over).toBe(
+        HP.final_base_value / 2,
+      );
+      expect(character.thresholds.hp.state).toBe("ok");
+      expect(character.thresholds.fp.state).toBe("ok");
+    });
+  });
+
   describe("Points aggregation", () => {
     it("Should include all point categories including skills", () => {
       const { character } = buildCharacter(mockInput);
