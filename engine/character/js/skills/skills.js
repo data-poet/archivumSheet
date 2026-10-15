@@ -1,6 +1,7 @@
 const path = require("path");
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
 const { getSkillCost } = require("./skillsCost.js");
+const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 
 // Categories that support isTrainedWithMaster and the actions formula
 const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
@@ -132,6 +133,7 @@ function buildSkills(
       enchantment_modifier: enchantmentModifier,
       has_enchantment_modifier: hasEnchantmentModifier,
       value: level,
+      critical: criticalRanges(level),
 
       relative_level: relative,
 

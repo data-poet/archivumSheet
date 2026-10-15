@@ -19,6 +19,7 @@ export const TRAITS = {
   mod: "Mod",
   enchantment: "Encantamento",
   final: "NH Final",
+  critical: "Crítico",
   aptitude: "Aptidão",
   school: "Escola",
   tier: "Tier",

@@ -1,5 +1,6 @@
 const { getSpellCost } = require("./js/spellsCost.js");
 const { SPELL_ATTRIBUTE } = require("./js/spellsConstants.js");
+const { criticalRanges } = require("../../helpers/criticalRanges.js");
 
 function buildGrimoire(selectedSpells = {}, character = {}) {
   const spells = {};
@@ -60,6 +61,7 @@ function buildGrimoire(selectedSpells = {}, character = {}) {
       has_enchantment_modifier,
       is_enchantment,
       value: level,
+      critical: criticalRanges(level),
       relative_level: relative,
       points: cost,
     };

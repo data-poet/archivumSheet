@@ -22,6 +22,10 @@ export function renderResumeTraits(sheet) {
   );
 }
 
+function _critical(critical) {
+  return critical ? `≤${critical.success} · ≥${critical.failure}` : "—";
+}
+
 export function renderResumeSkills(sheet) {
   const skills = sheet?.character?.skills || {};
   const entries = Object.values(skills);
@@ -40,6 +44,7 @@ export function renderResumeSkills(sheet) {
       <tr>
         <td>${s.name ?? "—"}</td>
         <td class="col-num">${s.value ?? "—"}</td>
+        <td class="col-num resume-critical">${_critical(s.critical)}</td>
         <td class="col-num">${s.parry != null ? s.parry : "—"}</td>
         <td class="col-num">${s.actions ?? "—"}</td>
       </tr>
@@ -56,6 +61,7 @@ export function renderResumeSkills(sheet) {
             <tr>
               <th>${t("common.name")}</th>
               <th class="col-num">${t("traits.final")}</th>
+              <th class="col-num">${t("traits.critical")}</th>
               <th class="col-num">${t("traits.parry")}</th>
               <th class="col-num">${t("traits.actions")}</th>
             </tr>
@@ -90,6 +96,7 @@ export function renderResumeMagic(sheet, data) {
           <td>${s.name ?? "—"}</td>
           <td class="col-num">${cost}</td>
           <td class="col-num">${s.value ?? "—"}</td>
+          <td class="col-num resume-critical">${_critical(s.critical)}</td>
         </tr>
       `;
     })
@@ -105,6 +112,7 @@ export function renderResumeMagic(sheet, data) {
               <th>${t("common.name")}</th>
               <th class="col-num">${t("traits.spellCost")}</th>
               <th class="col-num">${t("traits.final")}</th>
+              <th class="col-num">${t("traits.critical")}</th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>

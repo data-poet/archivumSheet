@@ -79,7 +79,13 @@ describe("renderResumeSkills", () => {
     renderResume({
       character: {
         skills: {
-          "SK-1": { name: "Espadas", value: 14, parry: 10, actions: "1 ação" },
+          "SK-1": {
+            name: "Espadas",
+            value: 14,
+            critical: { success: 4, failure: 17 },
+            parry: 10,
+            actions: "1 ação",
+          },
         },
       },
     });
@@ -91,8 +97,12 @@ describe("renderResumeSkills", () => {
     const cells = row.querySelectorAll("td");
     expect(cells[0].textContent).toBe("Espadas");
     expect(cells[1].textContent).toBe("14");
-    expect(cells[2].textContent).toBe("10");
-    expect(cells[3].textContent).toBe("1 ação");
+    expect(cells[2].textContent).toBe("≤4 · ≥17");
+    expect(cells[3].textContent).toBe("10");
+    expect(cells[4].textContent).toBe("1 ação");
+    expect(container.querySelector("thead").textContent).toContain(
+      t("traits.critical"),
+    );
   });
 
   test("shows an em-dash for missing name/value/actions, but allows parry of 0 through", () => {
@@ -102,8 +112,9 @@ describe("renderResumeSkills", () => {
     const cells = id("resume_skills_container").querySelectorAll("tbody td");
     expect(cells[0].textContent).toBe("—");
     expect(cells[1].textContent).toBe("—");
-    expect(cells[2].textContent).toBe("0"); // 0 is a real value, not "missing"
-    expect(cells[3].textContent).toBe("—");
+    expect(cells[2].textContent).toBe("—");
+    expect(cells[3].textContent).toBe("0"); // 0 is a real value, not "missing"
+    expect(cells[4].textContent).toBe("—");
   });
 
   test("hides the container when there are no skills", () => {
@@ -116,7 +127,15 @@ describe("renderResumeSkills", () => {
 describe("renderResumeMagic", () => {
   test("renders a row per grimoire spell, resolving cost from the catalog by spell_id", () => {
     renderResume(
-      { grimoire: { "SPELL-1": { name: "Bola de Fogo", value: 15 } } },
+      {
+        grimoire: {
+          "SPELL-1": {
+            name: "Bola de Fogo",
+            value: 15,
+            critical: { success: 5, failure: 17 },
+          },
+        },
+      },
       { spells: [{ spell_id: "SPELL-1", spell_cost: "3" }] },
     );
 
@@ -127,6 +146,7 @@ describe("renderResumeMagic", () => {
     expect(cells[0].textContent).toBe("Bola de Fogo");
     expect(cells[1].textContent).toBe("3");
     expect(cells[2].textContent).toBe("15");
+    expect(cells[3].textContent).toBe("≤5 · ≥17");
   });
 
   test("shows an em-dash cost when the spell isn't found in the catalog", () => {

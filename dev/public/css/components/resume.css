@@ -349,3 +349,7 @@
 .resume-expander-arrow--open {
   transform: rotate(90deg);
 }
+
+.resume-critical {
+  white-space: nowrap;
+}

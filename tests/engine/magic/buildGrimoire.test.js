@@ -124,4 +124,14 @@ describe("buildGrimoire", () => {
 
     expect(result.spells["ARC-0001"]).toBeUndefined();
   });
+  test("Should attach the 4e critical ranges for the final level", () => {
+    const result = buildGrimoire(
+      { "ARC-0001": { row: mockRow(), base_value: 15, modifier: 1 } },
+      character,
+    );
+    expect(result.spells["ARC-0001"].critical).toEqual({
+      success: 6,
+      failure: 18,
+    });
+  });
 });

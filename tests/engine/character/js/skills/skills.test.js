@@ -25,6 +25,14 @@ describe("BUILD SKILLS (ENGINE)", () => {
     expect(typeof result.character_points.skills).toBe("number");
   });
 
+  test("Should attach the 4e critical ranges for each skill's final level", () => {
+    const { criticalRanges } = require("helpers/criticalRanges");
+    const result = buildSkills(selectedSkills, character);
+    Object.values(result.skills).forEach((skill) => {
+      expect(skill.critical).toEqual(criticalRanges(skill.value));
+    });
+  });
+
   test("Should only include selected skill IDs", () => {
     const result = buildSkills(selectedSkills, character);
     const skillIds = Object.keys(result.skills);
