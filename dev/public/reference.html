@@ -48,7 +48,7 @@
     ></script>
   </head>
 
-  <body>
+  <body class="has-groupnav">
     <!-- ═══════════════════════════════════════════════════════════════════════
          MOBILE: Top bar
          ═══════════════════════════════════════════════════════════════════════ -->
@@ -81,19 +81,17 @@
     </header>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
-         DESKTOP: Sidebar nav (built by reference/nav.js)
+         DESKTOP: Sidebar nav (built by components/nav.js)
          ═══════════════════════════════════════════════════════════════════════ -->
     <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
+
+    <!-- Group bar (built by components/groupNav.js) -->
+    <nav class="l-groupnav" id="groupnav"></nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          MAIN CONTENT — sections/tabs built by reference/content.js
          ═══════════════════════════════════════════════════════════════════════ -->
     <main class="l-main" id="reference-main"></main>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         MOBILE: Bottom tab navigation (built by reference/nav.js)
-         ═══════════════════════════════════════════════════════════════════════ -->
-    <nav class="l-bottomnav" id="bottomnav" aria-label="Seções"></nav>
 
     <!-- Page selector popover (built by components/pageSelector.js) -->
     <div

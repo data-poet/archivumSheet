@@ -187,13 +187,8 @@
   display: none;
 }
 
-.is-view-mode .l-sidebar,
-.is-view-mode .l-bottomnav {
+.is-view-mode .l-sidebar {
   display: none !important;
-}
-
-.is-view-mode {
-  padding-bottom: 0;
 }
 
 .is-view-mode #main-content {

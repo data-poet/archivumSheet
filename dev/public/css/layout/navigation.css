@@ -93,50 +93,8 @@
   font-size: 14px;
 }
 
-.l-bottomnav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--bottomnav-h);
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  display: flex;
-  z-index: 200;
-  box-shadow: var(--shadow-top);
-}
-
-.bottomnav-link {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  text-decoration: none;
-  color: var(--color-text-muted);
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  padding: var(--space-3) var(--space-1);
-  border-top: 3px solid transparent;
-  transition:
-    color 0.15s,
-    border-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.bottomnav-link:focus-visible {
-  outline-offset: calc(-1 * var(--focus-ring-w));
-}
-
-.bottomnav-link.is-active {
-  color: var(--_section-accent, var(--accent-character));
-  border-top-color: var(--_section-accent, var(--accent-character));
-}
-
-/* --_section-accent for sheet sections and their sidebar links; data-accent comes from js/layout/sheetLayout.js */
+/* --_section-accent for sections, their sidebar links and group-bar buttons; data-accent comes from
+   js/layout/sheetLayout.js and js/reference/referenceLayout.js */
 [data-accent="character"] {
   --_section-accent: var(--accent-character);
 }
@@ -158,14 +116,8 @@
 [data-accent="inventory"] {
   --_section-accent: var(--accent-inventory);
 }
-/* reference page sections still key off data-section (js/reference/content.js) */
-[data-section="section-combat"] {
+[data-accent="combat"] {
   --_section-accent: var(--accent-combat);
-}
-
-.bottomnav-icon {
-  font-size: 16px;
-  line-height: 1;
 }
 
 .l-main {
@@ -187,7 +139,6 @@
     display: flex;
     flex-direction: column;
     padding-top: var(--topbar-h);
-    padding-bottom: 0;
   }
 
   .l-topbar {
@@ -201,10 +152,6 @@
 
   .view-mode-btn-label {
     display: inline;
-  }
-
-  .l-bottomnav {
-    display: none;
   }
 
   .l-sidebar {

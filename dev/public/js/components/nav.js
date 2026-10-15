@@ -1,17 +1,18 @@
 // initNav() must run before initGroupNav(), which scopes the sidebar to the active group.
+// The sheet uses the defaults; the reference page passes its own sections and labels.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { scrollToSection } from "../shared/motion.js";
 import { fetchAppInfo } from "../api.js";
 import { LAYOUT_SECTIONS } from "../layout/sheetLayout.js";
 
-function _buildSidebar(sections) {
+function _buildSidebar(sections, labels) {
   const nav = document.getElementById("sidebar");
   if (!nav) return;
 
   const ul = nav.querySelector(".sidebar-nav") ?? document.createElement("ul");
   ul.innerHTML = sections
     .map(({ id, accent }, i) => {
-      const { label, icon } = LABELS.nav.sections[id] ?? {};
+      const { label, icon } = labels[id] ?? {};
       return `
       <li>
         <a
@@ -83,12 +84,15 @@ function _initActiveHighlight() {
   sections.forEach((s) => observer.observe(s));
 }
 
-export function renderSidebarSections(sections) {
-  _buildSidebar(sections);
+export function renderSidebarSections(sections, labels = LABELS.nav.sections) {
+  _buildSidebar(sections, labels);
 }
 
-export function initNav() {
-  _buildSidebar(LAYOUT_SECTIONS);
+export function initNav({
+  sections = LAYOUT_SECTIONS,
+  labels = LABELS.nav.sections,
+} = {}) {
+  _buildSidebar(sections, labels);
   _initActiveHighlight();
   _renderSidebarVersion();
 }

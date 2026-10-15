@@ -90,7 +90,6 @@
   --hover-darken-pct: 85%;
 
   --topbar-h: clamp(48px, 1vw + 44px, 64px);
-  --bottomnav-h: clamp(52px, 1vw + 48px, 64px);
   --groupnav-h: 56px; /* 44px tap-target pill (matches .tab-btn) plus the inset track padding */
 
   --sidebar-w: 64px; /* bumped up for desktop cursor target space */
@@ -193,8 +192,6 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   margin: 0;
-  /* mobile: space for topbar + bottom nav */
   padding-top: var(--topbar-h);
-  padding-bottom: var(--bottomnav-h);
   min-height: 100dvh;
 }

@@ -1,9 +1,9 @@
-const STORAGE_KEY = "archivum:activeGroup";
+const DEFAULT_STORAGE_KEY = "archivum:activeGroup";
 
-export function getActiveGroup() {
-  return localStorage.getItem(STORAGE_KEY);
+export function getActiveGroup(storageKey = DEFAULT_STORAGE_KEY) {
+  return localStorage.getItem(storageKey);
 }
 
-export function setActiveGroup(key) {
-  localStorage.setItem(STORAGE_KEY, key);
+export function setActiveGroup(key, storageKey = DEFAULT_STORAGE_KEY) {
+  localStorage.setItem(storageKey, key);
 }

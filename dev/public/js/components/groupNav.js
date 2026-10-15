@@ -1,6 +1,7 @@
 // Groups only toggle `hidden` on existing sections, never re-render them — same invariant
 // as tabs.js, so element IDs and event wiring survive group switches.
 // initGroupNav() must run after initNav() (it rescopes the sidebar) and before initTabs().
+// The sheet uses the defaults; the reference page passes its own layout, labels and storage key.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "../layout/sheetLayout.js";
 import { getActiveGroup, setActiveGroup } from "../store/groupState.js";
@@ -8,9 +9,24 @@ import { renderSidebarSections } from "./nav.js";
 
 const NAV_ID = "groupnav";
 
+let _config = {};
+
+function _layout() {
+  return _config.layout ?? SHEET_LAYOUT;
+}
+
+function _labels() {
+  return _config.labels ?? LABELS.nav;
+}
+
+function _storedGroup() {
+  return getActiveGroup(_config.storageKey);
+}
+
 // A stored key can outlive its group (renamed or removed), so unknown keys fall back.
 function _resolveGroup(key) {
-  return SHEET_LAYOUT.find(({ group }) => group === key) ?? SHEET_LAYOUT[0];
+  const layout = _layout();
+  return layout.find(({ group }) => group === key) ?? layout[0];
 }
 
 function _getButtons() {
@@ -21,17 +37,20 @@ function _buildGroupNav() {
   const nav = document.getElementById(NAV_ID);
   if (!nav) return;
 
-  nav.setAttribute("aria-label", LABELS.nav.groupsAriaLabel);
+  const labels = _labels();
+  nav.setAttribute("aria-label", labels.groupsAriaLabel);
   nav.innerHTML = `
     <div class="groupnav-list" role="tablist">
-      ${SHEET_LAYOUT.map(({ group: key }) => {
-        const { label, short, icon } = LABELS.nav.groups[key] ?? {};
-        return `
+      ${_layout()
+        .map(({ group: key, accent }) => {
+          const { label, short, icon } = labels.groups[key] ?? {};
+          return `
         <button
           type="button"
           class="groupnav-btn"
           role="tab"
           data-group="${key}"
+          ${accent ? `data-accent="${accent}"` : ""}
           aria-label="${label ?? ""}"
           aria-selected="false"
           tabindex="-1"
@@ -40,7 +59,8 @@ function _buildGroupNav() {
           <span class="groupnav-label" aria-hidden="true">${label ?? ""}</span>
           <span class="groupnav-label-short" aria-hidden="true">${short ?? label ?? ""}</span>
         </button>`;
-      }).join("")}
+        })
+        .join("")}
     </div>`;
 }
 
@@ -60,19 +80,20 @@ export function activateGroup(key) {
     if (isActive) btn.scrollIntoView?.({ block: "nearest", inline: "nearest" });
   });
 
-  renderSidebarSections(sections);
-  setActiveGroup(group);
+  renderSidebarSections(sections, _labels().sections);
+  setActiveGroup(group, _config.storageKey);
   return group;
 }
 
 function _switchTo(key) {
-  const previous = _resolveGroup(getActiveGroup()).group;
+  const previous = _resolveGroup(_storedGroup()).group;
   if (activateGroup(key) !== previous) window.scrollTo({ top: 0 });
 }
 
-export function initGroupNav() {
+export function initGroupNav({ layout, labels, storageKey } = {}) {
+  _config = { layout, labels, storageKey };
   _buildGroupNav();
-  activateGroup(getActiveGroup());
+  activateGroup(_storedGroup());
 
   const nav = document.getElementById(NAV_ID);
   if (!nav) return;
@@ -87,7 +108,7 @@ export function initGroupNav() {
     if (!step) return;
     const buttons = _getButtons();
     const current = buttons.findIndex(
-      (btn) => btn.dataset.group === getActiveGroup(),
+      (btn) => btn.dataset.group === _storedGroup(),
     );
     const next = buttons[(current + step + buttons.length) % buttons.length];
     e.preventDefault();

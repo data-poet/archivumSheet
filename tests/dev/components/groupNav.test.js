@@ -166,3 +166,64 @@ describe("initGroupNav — interaction", () => {
     expect(getActiveGroup()).toBe(GROUPS[0].key);
   });
 });
+
+describe("initGroupNav — custom layout (reference page)", () => {
+  const layout = [
+    {
+      group: "one",
+      accent: "skills",
+      sections: [{ id: "ref-a", accent: "skills" }],
+    },
+    {
+      group: "two",
+      accent: "combat",
+      sections: [{ id: "ref-b", accent: "combat" }],
+    },
+  ];
+  const labels = {
+    groupsAriaLabel: "Grupos de referência",
+    groups: {
+      one: { label: "Um", short: "Um", icon: "1" },
+      two: { label: "Dois", short: "Dois", icon: "2" },
+    },
+    sections: {
+      "ref-a": { label: "A", icon: "a" },
+      "ref-b": { label: "B", icon: "b" },
+    },
+  };
+  const storageKey = "archivum:referenceGroup";
+
+  beforeEach(() => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<section id="ref-a" class="l-section"></section><section id="ref-b" class="l-section"></section>`,
+    );
+  });
+
+  test("renders the given groups with their accents and scopes the sidebar with the given labels", () => {
+    initGroupNav({ layout, labels, storageKey });
+
+    expect(document.getElementById("groupnav").getAttribute("aria-label")).toBe(
+      labels.groupsAriaLabel,
+    );
+    expect(groupButton("two").dataset.accent).toBe("combat");
+    expect(visibleSections()).toEqual(["ref-a"]);
+    const link = document.querySelector("#sidebar .sidebar-link");
+    expect(link.dataset.accent).toBe("skills");
+    expect(link.querySelector(".sidebar-label").textContent).toBe("A");
+  });
+
+  test("persists under its own storage key, leaving the sheet's untouched", () => {
+    localStorage.setItem("archivum:activeGroup", GROUPS[1].key);
+    initGroupNav({ layout, labels, storageKey });
+    activateGroup("two");
+
+    expect(localStorage.getItem(storageKey)).toBe("two");
+    expect(getActiveGroup()).toBe(GROUPS[1].key);
+  });
+
+  test("sheet group buttons carry no accent", () => {
+    initGroupNav();
+    expect(groupButton(GROUPS[0].key).hasAttribute("data-accent")).toBe(false);
+  });
+});

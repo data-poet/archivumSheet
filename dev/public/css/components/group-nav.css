@@ -1,4 +1,4 @@
-/* Replaces the bottom nav on the sheet, fixed under the topbar. Mobile stacks the icon over a short
+/* Group bar for the sheet and the reference page, fixed under the topbar. Mobile stacks the icon over a short
    label so all groups fit a 320px screen; sideways scroll is only a fallback. */
 .l-groupnav {
   position: fixed;
@@ -79,9 +79,16 @@
   display: none;
 }
 
+/* Group accent is opt-in (reference page): a tint plus underline, keeping text at --color-text since
+   several accents fall below 4.5:1 as text or under white. */
+.groupnav-btn.is-active[data-accent] {
+  background: color-mix(in srgb, var(--_section-accent) 16%, transparent);
+  color: var(--color-text);
+  box-shadow: inset 0 -3px 0 var(--_section-accent);
+}
+
 body.has-groupnav {
   padding-top: calc(var(--topbar-h) + var(--groupnav-h));
-  padding-bottom: 0;
 }
 
 .has-groupnav .l-section {

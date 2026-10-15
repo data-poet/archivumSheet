@@ -1,69 +1,36 @@
-// Structural config (key/icon/file) is mixed with labels on purpose, as with `nav` — add a section here plus its .md files under /reference-content/<key>/, no HTML/JS changes needed.
+// Labels only, keyed by the ids in js/reference/referenceLayout.js. `nav` mirrors the sheet's NAV shape
+// so components/nav.js and components/groupNav.js can render it unchanged.
 export const REFERENCE = {
   pageTitle: "Referência de Regras",
   topbarTitle: "Archivum — Referência",
   loadError: "Não foi possível carregar este conteúdo.",
-  sections: [
-    {
-      key: "section-combat",
-      label: "Combate",
-      icon: "1️⃣",
-      tabs: [
-        {
-          key: "tab-combat-rules",
-          label: "Regras de Combate",
-          file: "/reference-content/combat/combat_rules.md",
-        },
-        {
-          key: "tab-combat-maneuvers",
-          label: "Manobras",
-          file: "/reference-content/combat/maneuvers.md",
-        },
-        {
-          key: "tab-combat-hit-locations",
-          label: "Locais de Acerto",
-          file: "/reference-content/combat/hit_locations.md",
-        },
-      ],
+  nav: {
+    groupsAriaLabel: "Grupos de referência",
+    groups: {
+      system: { label: "Sistema", short: "Sistema", icon: "🎲" },
+      combat: { label: "Combate", short: "Combate", icon: "⚔️" },
+      tables: { label: "Tabelas", short: "Tabelas", icon: "📜" },
+      house: { label: "Mesa", short: "Mesa", icon: "🏠" },
     },
-    {
-      key: "tables",
-      label: "Tabelas",
-      icon: "2️⃣",
-      tabs: [
-        {
-          key: "tab-critical-hit-tables",
-          label: "Acertos Críticos",
-          file: "/reference-content/tables/critical_hit_tables.md",
-        },
-        {
-          key: "tab-critical-miss-tables",
-          label: "Erros Críticos",
-          file: "/reference-content/tables/critical_miss_tables.md",
-        },
-        {
-          key: "tab-reaction-table",
-          label: "Reações",
-          file: "/reference-content/tables/reaction_table.md",
-        },
-        {
-          key: "tab-panic-table",
-          label: "Pânico",
-          file: "/reference-content/tables/panic_table.md",
-        },
-      ],
+    sections: {
+      "section-reactions": { label: "Reações", icon: "🤝" },
+      "section-conditions": { label: "Aflições e Condições", icon: "🩸" },
+      "section-combat-rules": { label: "Regras de Combate", icon: "⚔️" },
+      "section-maneuvers": { label: "Manobras", icon: "🤺" },
+      "section-criticals": { label: "Críticos", icon: "🎯" },
+      "section-panic": { label: "Pânico", icon: "😱" },
+      "section-homebrew": { label: "Regras do Mestre", icon: "📖" },
     },
-    {
-      key: "homebrew",
-      label: "Homebrew",
-      icon: "3️⃣",
-      tabs: [
-        {
-          key: "homebrew-rules",
-          label: "Regras do Mestre",
-          file: "/reference-content/homebrew/homebrew_rules.md",
-        },
-      ],
-    },
-  ],
+  },
+  tabs: {
+    "tab-reaction-table": "Reações",
+    "tab-afflictions-conditions": "Aflições e Condições",
+    "tab-combat-rules": "Regras de Combate",
+    "tab-combat-hit-locations": "Locais de Acerto",
+    "tab-combat-maneuvers": "Manobras",
+    "tab-critical-hit-tables": "Acertos Críticos",
+    "tab-critical-miss-tables": "Erros Críticos",
+    "tab-panic-table": "Pânico",
+    "tab-homebrew-rules": "Regras do Mestre",
+  },
 };
