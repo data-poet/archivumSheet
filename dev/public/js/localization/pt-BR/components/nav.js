@@ -11,6 +11,7 @@ export const NAV = {
   sections: {
     "section-character": { label: "Personagem" },
     "section-attributes": { label: "Atributos" },
+    "section-survival": { label: "Sobrevivência" },
     "section-traits": { label: "Traços" },
     "section-skills": { label: "Perícias" },
     "section-magic": { label: "Magia" },

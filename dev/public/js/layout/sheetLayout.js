@@ -20,12 +20,14 @@ export const SHEET_LAYOUT = [
         icon: "attributes",
         box: "box--attr",
         accent: "attributes",
-        tabs: [
-          "tab-attr-primary",
-          "tab-attr-secondary",
-          "tab-attr-damage",
-          "tab-attr-resistances",
-        ],
+        tabs: ["tab-attr-primary", "tab-attr-secondary"],
+      },
+      {
+        id: "section-survival",
+        icon: "survival",
+        box: "box--attr",
+        accent: "attributes",
+        tabs: ["tab-attr-damage", "tab-attr-resistances"],
       },
       {
         id: "section-traits",

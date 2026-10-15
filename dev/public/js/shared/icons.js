@@ -13,6 +13,7 @@ export const ICONS = {
   // Sheet sections
   profile: "👤",
   attributes: "💪",
+  survival: "⛑️",
   traits: "🧬",
   skills: "🎯",
   magic: "🔮",

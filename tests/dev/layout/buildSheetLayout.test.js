@@ -148,9 +148,17 @@ describe("buildSheetLayout — reference help links", () => {
     expect(help.target).toBe("_blank");
     expect(help.getAttribute("aria-label")).toBe(LABELS.nav.referenceHelp);
     expect(
-      strip.querySelector('.tab-btn[data-tab="tab-attr-damage"]').dataset
+      strip.querySelector('.tab-btn[data-tab="tab-attr-secondary"]').dataset
+        .reference,
+    ).toBe(REFERENCE_LINKS["tab-attr-secondary"]);
+    const survival = document.querySelector("#section-survival .tab-strip");
+    expect(
+      survival.querySelector('.tab-btn[data-tab="tab-attr-damage"]').dataset
         .reference,
     ).toBe(REFERENCE_LINKS["tab-attr-damage"]);
+    expect(survival.querySelector(".tab-strip-help").getAttribute("href")).toBe(
+      `/reference.html#${REFERENCE_LINKS["tab-attr-damage"]}`,
+    );
     expect(
       help.nextElementSibling.classList.contains("tab-strip-collapse"),
     ).toBe(true);
