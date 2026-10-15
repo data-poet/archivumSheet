@@ -48,6 +48,8 @@ export const ICONS = {
   ranged: "🏹",
   arcana: "✨",
   casting: "🔮",
+  spells: "🪄",
+  "mana-zones": "🌀",
 
   // Reference callouts (> [!TYPE])
   "callout-note": "ℹ️",

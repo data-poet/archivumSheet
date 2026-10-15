@@ -180,6 +180,21 @@ export const REFERENCE_LAYOUT = [
     accent: "magic",
     sections: [
       {
+        id: "section-spells",
+        icon: "spells",
+        accent: "magic",
+        tabs: [
+          {
+            id: "tab-magic-grimoire",
+            file: `${CONTENT}/magic/grimoire.md`,
+          },
+          {
+            id: "tab-magic-level",
+            file: `${CONTENT}/magic/level_and_tier.md`,
+          },
+        ],
+      },
+      {
         id: "section-magic",
         icon: "casting",
         accent: "magic",
@@ -187,6 +202,17 @@ export const REFERENCE_LAYOUT = [
           {
             id: "tab-magic-casting",
             file: `${CONTENT}/magic/casting.md`,
+          },
+        ],
+      },
+      {
+        id: "section-mana-zones",
+        icon: "mana-zones",
+        accent: "magic",
+        tabs: [
+          {
+            id: "tab-mana-zones",
+            file: `${CONTENT}/magic/mana_zones.md`,
           },
         ],
       },
