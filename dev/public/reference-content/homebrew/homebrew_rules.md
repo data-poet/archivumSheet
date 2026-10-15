@@ -1,9 +1,9 @@
 <details>
 <summary>Crit Coins (Moedas do Destino)</summary>
 
-**Conceito e Adquisição**
+**Conceito e Aquisição**
 
-As **Crit Coins** são recursos especiais concedidos pelo Mestre em momentos de destaque na narrativa, interpretação memorável ou feitos heroicos.
+As **Crit Coins** são recursos especiais concedidos pelo Mestre em momentos de destaque na narrativa, interpretação memorável ou feitos heroicos. Cada uma é uma moeda com duas faces de d20: uma marcada com **1** e a outra com **20**.
 
 **Utilização**
 
@@ -11,7 +11,7 @@ As **Crit Coins** são recursos especiais concedidos pelo Mestre em momentos de 
 - **Mecânica:** O jogador lança a moeda junto com a rolagem habitual da ação.
 - **Resultados:**
   - **Face 20:** A rolagem é convertida imediatamente em um **Acerto Crítico**, independentemente do resultado dos dados.
-  - **Face 1:** A rolagem é convertida imediatamente em um **Erro Crítico**, independentemente do resultado dos dados.
+  - **Face 1:** A rolagem é convertida imediatamente em uma **Falha Crítica**, independentemente do resultado dos dados.
 
 > [!WARNING]
 > A decisão de utilizar a moeda deve ser declarada antes do Mestre narrar o desfecho da rolagem.
@@ -27,7 +27,7 @@ Durante o combate, os personagens possuem maior agilidade e facilidade no acesso
 
 - **Frequência:** Permite-se o uso de **um (1) consumível alquímico livre por embate** (encontro de combate).
 - **Custo de Ação:** Não consome a ação principal nem a movimentação do turno (conta como uma ação livre).
-- **Pré-requisito:** O item consumível **deve estar armazenado na mochila** ou ao alcance imediato do personagem no momento do início do combate.
+- **Pré-requisito:** O item consumível **deve estar armazenado na mochila** do personagem no momento do início do combate.
 
 </details>
 
@@ -40,22 +40,11 @@ Os jogadores podem voluntariamente assumir riscos maiores em suas jogadas para i
 
 - **Mecânica:** O jogador declara um **redutor voluntário** no seu Nível de Habilidade ([[NH]]) efetivo antes de realizar a rolagem.
 - **Bônus de Dano:** Caso o ataque seja bem-sucedido, o dano do golpe receberá um **bônus direto igual ao valor do redutor escolhido**.
-
-**Margem de Crítico Expandida por NH**
-
-Ao utilizar os Testes Dinâmicos (ou em jogadas padrão), a margem para obter um **Acerto Crítico** em 3d6 obedece aos limites de NH efetivo do personagem:
-
-| Resultado nos Dados (3d6) | Requisito para Acerto Crítico                 |
-| :-----------------------: | :-------------------------------------------- |
-|        **3 ou 4**         | Sempre é um **Acerto Crítico** (qualquer NH). |
-|           **5**           | Requer **NH efetivo 15 ou mais**.             |
-|           **6**           | Requer **NH efetivo 18 ou mais**.             |
-|           **7**           | Requer **NH efetivo 20 ou mais**.             |
-|           **8**           | Requer **NH efetivo 24 ou mais**.             |
+- **Limite:** O redutor voluntário máximo é **-5**.
 
 **Acertos Críticos Dinâmicos**
 
-Se a rolagem do Teste Dinâmico resultar em um **Acerto Crítico** (de acordo com a tabela acima), o ataque acumulará **tanto os benefícios da Tabela de Acertos Críticos quanto o bônus de dano adicional** proveniente do redutor voluntário escolhido.
+Se a rolagem do Teste Dinâmico resultar em um **Acerto Crítico** (pela regra oficial, em Combate › Regras de Combate › Acerto Crítico e Falha Crítica), o ataque acumulará **tanto os benefícios da Tabela de Acertos Críticos quanto o bônus de dano adicional** proveniente do redutor voluntário escolhido.
 
 </details>
 
@@ -69,9 +58,9 @@ Quando um personagem falhar em todos os testes de sobrevivência/[[HT]] necessá
 **O Turno Final**
 
 - **Ação Heroica:** Em vez de ser removido imediatamente de jogo, o personagem ganha direito a **uma última ação instantânea** antes de sucumbir.
-- **Garantia de Crítico:** Qualquer teste ou rolagem realizada nesta última ação será considerado um **Acerto Crítico automático**, **independentemente do resultado dos dados**.
-- **Bônus do Crítico:** O jogador tem direito à 3 rolagens de bônus, podendo escolher **livremente** entre os 3 resultados.
-- **A Única Exceção:** Se o resultado final dos dados for exatamente **18**, a ação falha como um **Erro Crítico** absoluto (a única forma da ação do Último Suspiro falhar).
+- **Garantia de Crítico:** Qualquer teste ou rolagem realizados nesta última ação será considerado um **Acerto Crítico automático**, exceto num resultado de **18** (veja abaixo).
+- **Bônus do Crítico:** O jogador tem direito a 3 rolagens de bônus, podendo escolher **livremente** entre os 3 resultados.
+- **A Única Exceção:** Se a rolagem de **3d6** der exatamente **18**, a ação falha como uma **Falha Crítica** absoluta (a única forma de a ação do Último Suspiro falhar).
 
 > [!NOTE]
 > **Propósito:** Esta regra existe para permitir que a despedida de um personagem seja memorável, heroica e com impacto significativo na história da campanha.

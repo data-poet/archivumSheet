@@ -23,4 +23,11 @@ $$
 
 ### Aplicando ao dano
 
-Multiplique o dano daquele elemento pelo valor final. Por exemplo, um personagem com Fogo **50%** que sofre **10** de dano de fogo recebe **5**.
+Primeiro subtraia a [[RD]] do alvo. Depois multiplique o dano que passou pelo valor final daquele elemento.
+
+<details>
+<summary>Exemplo</summary>
+
+Um personagem com **RD 2** e Fogo **50%** sofre **12** de dano de fogo: $12 - 2 = 10$ passam pela RD, e ele recebe $10 \times 0{,}5 = 5$.
+
+</details>

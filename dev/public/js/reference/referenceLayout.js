@@ -107,8 +107,16 @@ export const REFERENCE_LAYOUT = [
         accent: "combat",
         tabs: [
           {
-            id: "tab-combat-maneuvers",
-            file: `${CONTENT}/combat/maneuvers.md`,
+            id: "tab-maneuvers-attack-movement",
+            file: `${CONTENT}/combat/maneuvers_attack_movement.md`,
+          },
+          {
+            id: "tab-maneuvers-defense",
+            file: `${CONTENT}/combat/maneuvers_defense.md`,
+          },
+          {
+            id: "tab-maneuvers-martial",
+            file: `${CONTENT}/combat/maneuvers_martial.md`,
           },
         ],
       },
@@ -127,8 +135,12 @@ export const REFERENCE_LAYOUT = [
             file: `${CONTENT}/tables/critical_hit_tables.md`,
           },
           {
-            id: "tab-critical-miss-tables",
-            file: `${CONTENT}/tables/critical_miss_tables.md`,
+            id: "tab-critical-failures",
+            file: `${CONTENT}/tables/critical_failures.md`,
+          },
+          {
+            id: "tab-critical-failures-magic",
+            file: `${CONTENT}/tables/critical_failures_magic.md`,
           },
         ],
       },

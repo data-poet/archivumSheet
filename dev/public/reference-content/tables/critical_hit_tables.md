@@ -1,37 +1,43 @@
+Em todos os casos, o alvo não tem direito a Defesa Ativa contra o ataque. Dobrar ou triplicar o dano se refere sempre ao **dano básico**, antes da [[RD]], e não ao dano final.
+
 <details>
 <summary>Acertos Críticos</summary>
 
-| 3d6 | Descrição |
-| :-: | :-- |
-| **3** | - O golpe provocará um dano normal, se tiver atingido o tronco da vítima que será nocauteada.<br>- Faça um teste de HT a cada 30 minutos para ver se ela se recupera. Em qualquer outro caso, provocará o triplo do dano. |
-| **4** | O golpe ultrapassa a armadura e provoca dano normal. |
-| **5** | O golpe provoca o triplo do dano normal. |
-| **6** | O golpe provoca o dobro do dano normal. |
-| **7** | O golpe provoca dano normal, e a vítima ficará atordoada até conseguir um sucesso em um teste de HT. |
-| **8** | - Se o golpe atingir um braço, perna, mão ou pé, ele provocará o dano normal e aquela parte do corpo estará incapacitada independente da quantidade de dano provocada.<br>- No entanto, o golpe não provocará nada além de um choque nevrálgico que se curará em seis turnos. (É claro que se o dano provocado for grande o suficiente para inutilizar o membro, ele não se curará.)<br>- Caso contrário, o golpe provocará dano normal. |
-| **9, 10, 11** | Dano normal apenas. |
-| **12** | Como #8 |
-| **13** | O golpe ultrapassa a armadura e provoca o dano normal. |
-| **14** | - Se o golpe atingir um braço, perna, mão ou pé, ele provocará dano normal e aquele membro estará incapacitada independente da intensidade do dano provocado.<br>- Caso contrário, o dano provocado será normal. |
-| **15** | A arma do oponente cai e ele recebe uma quantidade de dano normal. |
-| **16** | O golpe provoca o dobro do dano normal. |
-| **17** | O golpe provoca o triplo do dano normal. |
-| **18** | - Se o golpe atingir o tronco da vítima, provocará dano normal e ela será nocauteada.<br>- Faça um teste de HT a cada 30 minutos para ver se ela se recupera.<br>- Se o golpe não tiver atingido o tronco, o dano provocado será o triplo do normal. |
+|      3d6      | Descrição                                                                                                                                                                                                                                                                                                                                                      |
+| :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     **3**     | O golpe provoca o triplo do dano.                                                                                                                                                                                                                                                                                                                              |
+|     **4**     | A RD do alvo protege apenas com metade do valor (arredondado para baixo), depois de aplicar qualquer divisor de armadura.                                                                                                                                                                                                                                      |
+|     **5**     | O golpe provoca o dobro do dano.                                                                                                                                                                                                                                                                                                                               |
+|     **6**     | O golpe provoca o dano máximo normal.                                                                                                                                                                                                                                                                                                                          |
+|     **7**     | Se qualquer dano passar pela RD, trate-o como um Ferimento Grave, independentemente do dano real.                                                                                                                                                                                                                                                              |
+|     **8**     | Se qualquer dano passar pela RD, ele causa o dobro do choque normal (até um redutor máximo de **-8**). Se atingir um membro ou extremidade, essa parte do corpo também fica incapacitada. É só um "choque nevrálgico": a incapacitação passa em (16 - [[HT]]) segundos, no mínimo 2, a menos que o dano já fosse suficiente para incapacitar a parte do corpo. |
+| **9, 10, 11** | Apenas dano normal.                                                                                                                                                                                                                                                                                                                                            |
+|    **12**     | Dano normal, e a vítima larga tudo o que estiver segurando, mesmo que nenhum dano passe pela RD.                                                                                                                                                                                                                                                               |
+|  **13, 14**   | Se qualquer dano passar pela RD, trate-o como um Ferimento Grave, independentemente do dano real.                                                                                                                                                                                                                                                              |
+|    **15**     | O golpe provoca o dano máximo normal.                                                                                                                                                                                                                                                                                                                          |
+|    **16**     | O golpe provoca o dobro do dano.                                                                                                                                                                                                                                                                                                                               |
+|    **17**     | A RD do alvo protege apenas com metade do valor (arredondado para baixo), depois de aplicar qualquer divisor de armadura.                                                                                                                                                                                                                                      |
+|    **18**     | O golpe provoca o triplo do dano.                                                                                                                                                                                                                                                                                                                              |
 
 </details>
 
 <details>
 <summary>Acertos Críticos na Cabeça</summary>
 
-| 3d6 | Descrição |
-| :-: | :-- |
-| **3** | O oponente é morto instantaneamente! |
-| **4, 5** | - O oponente é nocauteado.<br>- Faça um teste de HT a cada 30 minutos para ver se ele se recupera. |
-| **6, 7** | - O oponente é atingido nos dois olhos e está cego. Use as regras de “incapacitação” para ver se o ferimento pode ser curado ou não (faça um teste para cada olho).<br>- O oponente ficará atordoado e lutará com seu atributo DX submetido a um redutor igual a -10 durante todo o resto da batalha. |
-| **8** | - O oponente é desequilibrado.<br>- Ele conseguirá se defender normalmente durante o próximo turno, mas não poderá fazer mais nada.<br>- O golpe também provocará o dano normal. |
-| **9, 10, 11** | Dano normal na cabeça apenas. |
-| **12, 13** | - Se o ataque foi feito com uma arma contundente, ela provocará o dano normal e a vítima ficará surda durante 24 hs.<br>- Se a arma era cortante ou perfurante, o golpe provocará apenas a perda de 1 ponto de vida, mas a face da vítima ficará marcada com cicatrizes. |
-| **14** | - Dano normal na cabeça.<br>- A vítima vacila e deixa cair a arma (se ela tinha duas armas jogue os dados para escolher qual caiu). |
-| **15 a 18** | Dano normal na cabeça e a vítima fica atordoada. |
+Use esta tabela apenas para acertos críticos na cabeça (rosto, crânio ou olho).
+
+|      3d6      | Descrição                                                                                                                                                                                                              |
+| :-----------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     **3**     | O golpe provoca o dano máximo normal **e** ignora a RD do alvo.                                                                                                                                                        |
+|   **4, 5**    | A RD do alvo protege apenas com metade do valor (arredondado para cima), depois de aplicar qualquer divisor de armadura. Se qualquer dano passar, trate-o como um Ferimento Grave, independentemente do dano real.     |
+|   **6, 7**    | Se o ataque mirava o rosto ou o crânio, trate-o como um acerto no olho, mesmo que o ataque normalmente não pudesse atingir o olho. Se for impossível atingir o olho (por exemplo, pelas costas), trate como **4**.     |
+|     **8**     | Dano normal na cabeça, e a vítima perde o equilíbrio: no próximo turno ela deve Não Fazer Nada (mas pode se defender normalmente).                                                                                     |
+| **9, 10, 11** | Apenas dano normal na cabeça.                                                                                                                                                                                          |
+|  **12, 13**   | Se qualquer dano passar pela RD, um ataque de contusão deixa a vítima surda; qualquer outro ataque deixa uma cicatriz grave (a vítima perde um nível de aparência, ou dois se o ataque for de queimadura ou corrosão). |
+|    **14**     | Dano normal na cabeça, e a vítima larga a arma (se estiver segurando duas, role para ver qual).                                                                                                                        |
+|    **15**     | O golpe provoca o dano máximo normal.                                                                                                                                                                                  |
+|    **16**     | O golpe provoca o dobro do dano.                                                                                                                                                                                       |
+|    **17**     | A RD do alvo protege apenas com metade do valor (arredondado para cima), depois de aplicar qualquer divisor de armadura.                                                                                               |
+|    **18**     | O golpe provoca o triplo do dano.                                                                                                                                                                                      |
 
 </details>

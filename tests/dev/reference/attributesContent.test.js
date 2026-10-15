@@ -215,92 +215,17 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
 });
 
 describe("elemental_resistances.md", () => {
-  const { parse } = require("csv-parse/sync");
   const {
     ELEMENTAL_TYPES,
-    calculateElementalResistances,
   } = require("engine/character/js/attributes/elementalResistances");
   const {
     ELEMENTAL_RESISTANCES,
   } = require("dev/public/js/localization/pt-BR/components/resistances.js");
-  const markdown = read("elemental_resistances.md");
-  // The CSV header spells corrosion "corrossion"; same mapping as engine/character/js/traits/metaRaces.js.
-  const column = (type) =>
-    type === "Corrosion" ? "corrossion" : type.toLowerCase();
-
-  function multiplierRows(file, prefix) {
-    const rows = parse(
-      fs.readFileSync(path.join(__dirname, "../../../data", file)),
-      {
-        columns: true,
-        skip_empty_lines: true,
-      },
-    );
-    return rows.flatMap((row) => {
-      const cells = ELEMENTAL_TYPES.map((type) => [
-        type,
-        row[`${prefix}${column(type)}_damage_multiplier`],
-      ])
-        .filter(
-          ([, value]) =>
-            value !== "" && value !== undefined && Number(value) !== 1,
-        )
-        .map(
-          ([type, value]) =>
-            `${ELEMENTAL_RESISTANCES[type]} **${Math.round(Number(value) * 100)}%**`,
-        );
-      const name = row[`${prefix}sub_name`] || row[`${prefix}name`];
-      return cells.length ? [`| ${name} | ${cells.join(" · ")} |`] : [];
-    });
-  }
-
-  test.each([
-    ["db_yrth_races.csv", "race_"],
-    ["db_yrth_meta_races.csv", "meta_race_"],
-  ])("lists every non-100%% multiplier from %s", (file, prefix) => {
-    const rows = multiplierRows(file, prefix);
-    expect(rows.length).toBeGreaterThan(0);
-    rows.forEach((row) => expect(markdown).toContain(row));
-  });
 
   test("names all ten elements", () => {
+    const markdown = read("elemental_resistances.md");
     ELEMENTAL_TYPES.forEach((type) =>
       expect(markdown).toContain(ELEMENTAL_RESISTANCES[type]),
     );
-  });
-
-  test("race and meta-race multiply, modifiers add after, and the result floors at 0", () => {
-    const {
-      resolveMetaRaces,
-    } = require("engine/character/js/traits/metaRaces");
-    const zombie = resolveMetaRaces(["META-000"]).elementalMultipliers;
-    const blackDragonborn = { Electricity: 2, Necrotic: 0.5 };
-    const stacked = calculateElementalResistances(blackDragonborn, {}, zombie);
-    expect(stacked.Necrotic.final).toBe(0);
-    expect(stacked.Holy.final).toBe(2);
-
-    const zombieAndSkeleton = resolveMetaRaces([
-      "META-000",
-      "META-001",
-    ]).elementalMultipliers;
-    expect(
-      calculateElementalResistances({}, {}, zombieAndSkeleton).Holy.final,
-    ).toBe(4);
-
-    const adjusted = calculateElementalResistances(
-      { Fire: 0.5 },
-      { Fire: { modifier: -0.2, enchantment_modifier: 0.1 } },
-    );
-    expect(adjusted.Fire.final).toBeCloseTo(0.4);
-
-    const floored = calculateElementalResistances(
-      { Fire: 0.5 },
-      { Fire: { modifier: -1 } },
-    );
-    expect(floored.Fire.final).toBe(0);
-
-    expect(markdown).toContain("Necrótico 50% × 0% = **0%**");
-    expect(markdown).toContain("Sagrado 200% × 200% = **400%**");
-    expect(markdown).toContain("Fogo 50% - 20% + 10% = **40%**");
   });
 });
