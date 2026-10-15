@@ -563,6 +563,63 @@ describe("BUILD SHEET", () => {
       );
     });
 
+    it("Should attach a skill check to equipped weapons, applying the minimum-ST penalty", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          ranged: [
+            {
+              id: "rng-1",
+              weapon_id: "RANGED-001",
+              is_equipped: true,
+              storedAt: null,
+            },
+          ],
+        },
+      });
+      const weapon = result.inventory.ranged.equipped[0];
+      const ST = result.character.primary_attributes.ST.value;
+
+      expect(weapon.weapon_skill_id).toBeTruthy();
+      expect(weapon.skill_check.skill_id).toBe(weapon.weapon_skill_id);
+      expect(weapon.skill_check.st_penalty).toBe(
+        Math.max(0, weapon.weapon_min_strength - ST),
+      );
+    });
+
+    it("Should always list a DX-based Desarmado row first, with punch and kick damage", () => {
+      const { character } = buildSheet(mockInput);
+      const [unarmed] = character.unarmed;
+      const DX = character.primary_attributes.DX.value;
+
+      expect(unarmed.name).toBeNull();
+      expect(unarmed.level).toBe(DX);
+      expect(unarmed.parry).toBe(3 + Math.floor(DX / 2));
+      expect(unarmed.damage.punch).toMatch(/^\d+d6[+-]\d+$/);
+      expect(unarmed.damage.kick).toMatch(/^\d+d6[+-]\d+$/);
+    });
+
+    it("Should give shields a skill check and a 4e block from it", () => {
+      const result = buildSheet({
+        ...mockInput,
+        inventory: {
+          ...mockInput.inventory,
+          shield: [
+            {
+              id: "sh-1",
+              shield_id: "SHIELD-010",
+              is_equipped: true,
+              storedAt: null,
+            },
+          ],
+        },
+      });
+      const shield = result.inventory.shield.equipped;
+      expect(shield.skill_check.skill_id).toBe("SKILL-082");
+      expect(shield.block).toBe(3 + Math.floor(shield.skill_check.level / 2));
+    });
+
     it("Should halve lifting ST for carry limits below 1/3 FP, leaving weapon ranges on full ST", () => {
       const withFP = (fp) => ({
         ...mockInput,

@@ -243,7 +243,7 @@ SKILL-036,ARREMESSO - F|M,ARREMESSO,Atléticas,F,M,DX,,Módulo Básico,49,"
 - Se você não tiver esta perícia, jogue contra DX-3 quando estiver arremessando algo para atingir um alvo, ou contra DX para tentar atingir uma área.",,,,FALSE
 SKILL-037,MACHADO/MAÇA - F|F,MACHADO/MAÇA,Armas e Combate,F,F,DX,"
 - DX -5",Módulo Básico,49,"
-- Habilidade no uso de qualquer arma pequena e desbalanceada como um machado, machadinha, maça, picareta etc...",,0.5,,FALSE
+- Habilidade no uso de qualquer arma pequena e desbalanceada como um machado, machadinha, maça, picareta etc...",,0,,FALSE
 SKILL-038,ARREMESSO DE MACHADO - F|F,ARREMESSO DE MACHADO,Armas e Combate,F,F,DX,"
 - DX -4",Módulo Básico,49,"
 - Habilidade no arremesso de qualquer machado de arremesso equilibrado, mas não um machado de guerra desbalanceado.",,,,FALSE
@@ -280,11 +280,11 @@ SKILL-043,BRIGA - F|F,BRIGA,Armas e Combate,F,F,DX,,Módulo Básico,50,"
 - Faça um teste de Briga sempre que atacar o adversário com as mãos ou pés para ver se consegue atingi-lo.
 - Some 1/10 de seu NH em Briga (arredondado para baixo) ao dano provocado.
 - É possível aparar duas vezes por turno (um para cada mão) quando você se defende com as mãos limpas, e seu parâmetro Aparar será igual a 2/3 de seu NH em Briga.
--Com esta perícia só é possível aparar ataques de mãos, pés e armas usadas em combate de perto.",,0.6666666667,,FALSE
+-Com esta perícia só é possível aparar ataques de mãos, pés e armas usadas em combate de perto.",,0,,FALSE
 SKILL-044,ESPADAS LONGAS - F|M,ESPADAS LONGAS,Armas e Combate,F,M,DX,"
 -  DX-5
 - ESPADA CURTA -2",Módulo Básico,50,"
-- Esta é a perícia no uso de qualquer arma para ser empunhada com uma só mão, balanceada, medindo entre 100 e 120 cm (entre elas Montantes, Cimitarras, bastões de baseball e coisas similares).",,0.5,,FALSE
+- Esta é a perícia no uso de qualquer arma para ser empunhada com uma só mão, balanceada, medindo entre 100 e 120 cm (entre elas Montantes, Cimitarras, bastões de baseball e coisas similares).",,0,,FALSE
 SKILL-045,BROQUEL - F|F,BROQUEL,Armas e Combate,F,F,DX,"
 - DX -4
 - ESCUDO -2",Módulo Básico,50,"
@@ -401,7 +401,7 @@ SKILL-058,ESGRIMA - F|M,ESGRIMA,Armas e Combate,F,M,DX,"
 - Além disso, você pode aparar duas vezes por turno.
 - Se você estiver em Defesa Total, poderá aparar qualquer número de ataques em uma rodada.
 - Muitos esgrimistas carregam uma adaga como segunda arma. Ela também pode aparar (apara 3 ataques por rodada), mas apenas com a habilidade normal do esgrimista em aparar com uma Faca.
-- A única desvantagem do aparar do esgrimista é que suas armas são muito leves e podem quebrar quando usadas para aparar (v. pág. 99, 110).",,0.6666666667,,FALSE
+- A única desvantagem do aparar do esgrimista é que suas armas são muito leves e podem quebrar quando usadas para aparar (v. pág. 99, 110).",,0,,FALSE
 SKILL-059,MANGUAL - F|D,MANGUAL,Armas e Combate,F,D,DX,"
 - DX -6",Módulo Básico,50,"
 - Esta é a perícia no uso de armas desbalanceadas, com a cabeça ligada ao cabo por uma corrente ou corda, tal como o mangual, morningstar ou o nunchaku.
@@ -534,16 +534,16 @@ SKILL-074,ARTES MARCIAIS | JUDÔ - F|D,ARTES MARCIAIS | JUDÔ,Armas e Combate,F,
 arma, usando 2/3 de seu NH em Judô como seu Aparar. A chance de se machucar ao aparar uma arma com as mãos também é menor (v. pág. 101).
 - Se conseguir aparar com sucesso, você poderá tentar derrubar aquele adversário em seu próximo turno, se ele estiver em um hexágono adjacente ao seu; isto é um ataque. Faça seu teste de Judô. Seu oponente poderá usar qualquer defesa ativa (ele pode aparar sua mão com uma espada). Se ele falhar em sua defesa, terá sido derrubado. Um resultado igual a 17 ou 18 em sua jogada de ataque significa que você foi derrubado. Note que num ataque total você não pode tentar 2 tombos, mas pode fazer uma tentativa com um bônus de +4. É possível também usar esta perícia para derrubar seu oponente se você o estiver Segurando (Combate de Perto, pág. 111); -5 se você estiver deitado no chão.
 - Quando derrubar um adversário, ele cairá onde você desejar, num raio de 2 hexágonos a seu redor. Um destes hexágonos deverá ser o que ele ocupava antes, seu hexágono, ou qualquer hexágono adjacente a um destes. Ele deve fazer um teste de HT; uma falha significará que ele está atordoado. Se você o atirar contra alguém, aquela pessoa deverá conseguir um sucesso em uma jogada contra DX+3 ou ST+3 (o que for maior), para evitar ser derrubada.
-- É possível também usar seu nível de habilidade em Judô ao invés de DX em qualquer teste de DX feito num Combate de Perto, exceto para sacar uma arma ou largar um escudo.",,0.6666666667,,FALSE
+- É possível também usar seu nível de habilidade em Judô ao invés de DX em qualquer teste de DX feito num Combate de Perto, exceto para sacar uma arma ou largar um escudo.",,0,,FALSE
 SKILL-075,ARTES MARCIAIS | CARATÊ - F|D,ARTES MARCIAIS | CARATÊ,Armas e Combate,F,D,DX,,Módulo Básico,51,"
 - Esta perícia não representa nenhuma escola específica de combate desarmado e sim uma habilidade geral com socos e chutes.
 - Não existe penalidade para o uso da mão esquerda. Qualquer mão que venha a ser usada deverá estar vazia, e sua Carga deve ser Leve ou menos.
 - É possível aparar com qualquer uma das mãos como se ela fosse uma arma, usando 2/3 de seu NH em Caratê como seu Aparar.
 - Se for usado ofensivamente, o Caratê aumentará a quantidade de dano que você é capaz de provocar quando ataca sem armas. Faça um teste de Caratê para ver se o golpe atinge o alvo. (No caso de um chute, use um redutor de -2. Se errar o chute deverá fazer um teste de DX para ver se cai.) Deve-se adicionar 1/5 de seu NH em Caratê, arredondado para baixo, ao dano básico que você provoca com suas mãos ou pés. Aparar com as mãos vazias ainda lhe causará dano se você falhar (v. pág. 101).
-- Nota : Apesar de ser capaz de quebrar tijolos em uma demonstração, você não será capaz de atravessar uma armadura com um soco e sair ileso. Faça um teste de HT toda vez que atingir um alvo com RD igual a 3 ou mais. Uma falha significa que sua mão ou pé recebeu um dano igual a 1d6-2. A Rijeza de seu oponente não conta como RD neste caso. Sua própria Rijeza (ou botas, etc...) o protegerá neste caso.",,0.6666666667,,FALSE
+- Nota : Apesar de ser capaz de quebrar tijolos em uma demonstração, você não será capaz de atravessar uma armadura com um soco e sair ileso. Faça um teste de HT toda vez que atingir um alvo com RD igual a 3 ou mais. Uma falha significa que sua mão ou pé recebeu um dano igual a 1d6-2. A Rijeza de seu oponente não conta como RD neste caso. Sua própria Rijeza (ou botas, etc...) o protegerá neste caso.",,0,,FALSE
 SKILL-076,FACA - F|F,FACA,Armas e Combate,F,F,DX,"
 - DX -4",Módulo Básico,51,"
-- A perícia no uso, mas não no arremesso, de qualquer tipo de faca, adaga ou estilete.",,0.5,,FALSE
+- A perícia no uso, mas não no arremesso, de qualquer tipo de faca, adaga ou estilete.",,-1,,FALSE
 SKILL-077,ARREMESSO DE FACA - F|F,ARREMESSO DE FACA,Armas e Combate,F,F,DX,"
 - DX -4",Módulo Básico,51,"
 - A habilidade de arremessar qualquer espécie de faca.",,,,FALSE
@@ -582,12 +582,12 @@ SKILL-082,ESCUDO - F|F,ESCUDO,Armas e Combate,F,F,DX,"
 - O atributo DX de uma pessoa média é 10, ou seja o nível pré-definido de sua habilidade com o Escudo é 6 e seu Bloqueio será 3..",,,SKILL-045:-2,FALSE
 SKILL-083,ESPADAS CURTAS - F|M,ESPADAS CURTAS,Armas e Combate,F,M,DX,"
 - DX-5
-- ESPADAS LONGAS-2",Módulo Básico,52,"Esta é a perícia no uso de qualquer tipo de arma balanceada com 60 a 100 cm de comprimento, incluindo o terçado, o gládio e o bastão.",,0.5,SKILL-044:-2,FALSE
+- ESPADAS LONGAS-2",Módulo Básico,52,"Esta é a perícia no uso de qualquer tipo de arma balanceada com 60 a 100 cm de comprimento, incluindo o terçado, o gládio e o bastão.",,0,SKILL-044:-2,FALSE
 SKILL-084,FUNDA - F|D,FUNDA,Armas e Combate,F,D,DX,"
 - DX -6",Módulo Básico,52,Esta é a perícia no uso da funda ou fustíbalo.,,,,FALSE
 SKILL-085,LANÇA - F|M,LANÇA,Armas e Combate,F,M,DX,"
 - DX -5
-- BASTÃO -2",Módulo Básico,52,"Esta é a perícia no uso (mas não arremesso) de qualquer tipo de lança, dardo, tridente, baioneta, pique ou arma longa, leve e pontuda.",,0.5,SKILL-095:-2,FALSE
+- BASTÃO -2",Módulo Básico,52,"Esta é a perícia no uso (mas não arremesso) de qualquer tipo de lança, dardo, tridente, baioneta, pique ou arma longa, leve e pontuda.",,0,SKILL-095:-2,FALSE
 SKILL-086,ARREMESSO DE LANÇA - F|F,ARREMESSO DE LANÇA,Armas e Combate,F,F,DX,"
 - DX -4
 - BROQUEL -2",Módulo Básico,52,"
@@ -635,13 +635,13 @@ SKILL-094,RAPIDEZ DE RECARGA | LANÇA FOGUETES - F|F,RAPIDEZ DE RECARGA | LANÇA
 SKILL-095,BASTÃO - F|D,BASTÃO,Armas e Combate,F,D,DX,"
 - DX -5
 - LANÇA -2",Módulo Básico,52,"
-- Esta é a perícia no uso do Bastão ou de qualquer haste ou vara improvisada como Bastão. Este é um tipo de arma empunhada com as duas mãos. Seu Aparar será 2/3 de seu nível de habilidade.",,0.6666666667,SKILL-085:-2,FALSE
+- Esta é a perícia no uso do Bastão ou de qualquer haste ou vara improvisada como Bastão. Este é um tipo de arma empunhada com as duas mãos. Seu Aparar será 2/3 de seu nível de habilidade.",,2,SKILL-085:-2,FALSE
 SKILL-096,MACHADO/MAÇA DE DUAS MÃOS - F|M,MACHADO/MAÇA DE DUAS MÃOS,Armas e Combate,F,M,DX,"
 - DX -5",Módulo Básico,52,"
-- Habilidade na utilização de qualquer arma longa, pesada e não balanceada como, por exemplo, o machado de batalha ou a marreta.",,0.5,,FALSE
+- Habilidade na utilização de qualquer arma longa, pesada e não balanceada como, por exemplo, o machado de batalha ou a marreta.",,0,,FALSE
 SKILL-097,ESPADAS DE DUAS MÃOS - F|M,ESPADAS DE DUAS MÃOS,Armas e Combate,F,M,DX,"
 - DX -5",Módulo Básico,52,"
-- Esta é a perícia no manuseio de uma arma de lâmina longa (1,5m a 2m) com as duas mãos.",,0.5,,FALSE
+- Esta é a perícia no manuseio de uma arma de lâmina longa (1,5m a 2m) com as duas mãos.",,0,,FALSE
 SKILL-098,CHICOTE - F|M,CHICOTE,Armas e Combate,F,M,DX,,Módulo Básico,52,"
 - Esta é a habilidade em usar um chicote como uma arma. Existem chicotes de vários comprimentos. Em termos de jogo, um chicote com 1 m de comprimento tem um alcance de 1 m. O tempo necessário para re-preparar um chicote depende de
 seu comprimento: 0 turnos para um chicote de 1 m; 1 turno para um chicote de 2 m; 2 turnos para um chicote de 3 m ou mais. Os chicotes podem ter até 6 m de comprimento. É impossível atingir um alvo a 1 m de distância, ou menos, com um chicote de 2 m de comprimento.

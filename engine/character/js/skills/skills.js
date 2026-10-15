@@ -2,6 +2,7 @@ const path = require("path");
 const { loadCSV } = require("../../../../helpers/dataUtils.js");
 const { getSkillCost } = require("./skillsCost.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
+const { computeParry } = require("./skillCheck.js");
 
 // Categories that support isTrainedWithMaster and the actions formula
 const MASTER_ELIGIBLE_CATEGORIES = new Set(["Armas e Combate", "Mágicas"]);
@@ -103,10 +104,7 @@ function buildSkills(
         });
 
     const parryModifier = Number(row.skill_parry_modifier || 0);
-    let parry = null;
-    if (row.skill_parry_modifier && row.skill_parry_modifier.trim() !== "") {
-      parry = Math.floor(parryModifier * level) + (hasReflexos ? 1 : 0);
-    }
+    const parry = computeParry(row, level, hasReflexos);
 
     // Preserved from the player's own selection even if an enchantment grant wins on level — it's a declared training style, not tied to which source wins.
     const category = row.skill_category || "";

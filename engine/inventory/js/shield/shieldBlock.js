@@ -4,27 +4,17 @@ const {
   BROQUEL_SHIELD_IDS,
 } = require("./shieldConstants.js");
 
-// Priority: matching skill (floor(value/2)+3) > cross-skill penalty (floor(value/2)+1) > DX-based fallback (dxValue-4). "Matching" is by shield_id: SHIELD-000..004 use Broquel, all others use Escudo.
-function computeShieldBlock(shieldId, skills = {}, dxValue = 0) {
-  const isBroquelShield = BROQUEL_SHIELD_IDS.has(shieldId);
+function shieldSkillId(shieldId) {
+  return BROQUEL_SHIELD_IDS.has(shieldId) ? BROQUEL_SKILL_ID : ESCUDO_SKILL_ID;
+}
 
-  const primarySkillId = isBroquelShield ? BROQUEL_SKILL_ID : ESCUDO_SKILL_ID;
-  const secondarySkillId = isBroquelShield ? ESCUDO_SKILL_ID : BROQUEL_SKILL_ID;
-
-  const primarySkill = skills[primarySkillId] ?? null;
-  const secondarySkill = skills[secondarySkillId] ?? null;
-
-  if (primarySkill) {
-    return Math.floor(primarySkill.value / 2) + 3;
-  }
-
-  if (secondarySkill) {
-    return Math.floor(secondarySkill.value / 2) + 1;
-  }
-
-  return dxValue - 4;
+// 4e B375: Block = 3 + skill/2, +1 with Combat Reflexes; the other shield skill and DX come in as skill defaults.
+function blockFromLevel(level, hasReflexos = false) {
+  if (level == null) return null;
+  return 3 + Math.floor(level / 2) + (hasReflexos ? 1 : 0);
 }
 
 module.exports = {
-  computeShieldBlock,
+  shieldSkillId,
+  blockFromLevel,
 };

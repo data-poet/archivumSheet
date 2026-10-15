@@ -140,6 +140,7 @@ function resolveRangedWeapons(
     weapon_box_name: weapon.weapon_box_name,
     weapon_type: weapon.weapon_type,
     weapon_skill: weapon.weapon_skill,
+    weapon_skill_id: weapon.weapon_skill_id ?? null,
     weapon_tier: weapon.weapon_tier,
     weapon_damage_type: weapon.weapon_damage_type,
 

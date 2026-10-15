@@ -47,6 +47,7 @@ function getRangedDB() {
       weapon_box_name: row.weapon_box_name,
       weapon_name: row.weapon_name,
       weapon_skill: row.weapon_skill,
+      weapon_skill_id: row.weapon_skill_id || null,
       weapon_type: row.weapon_type,
       weapon_tier: row.weapon_tier,
       weapon_damage_type: row.weapon_damage_type,

@@ -5,8 +5,19 @@ const { liftingStrength } = require("./inventory/js/carryWeight");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
 const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
-const { computeShieldBlock } = require("./inventory/js/shield/shieldBlock");
-const { computeWeaponDamage } = require("./inventory/js/shared/weaponDamage");
+const { criticalRanges } = require("../helpers/criticalRanges");
+const {
+  shieldSkillId,
+  blockFromLevel,
+} = require("./inventory/js/shield/shieldBlock");
+const {
+  computeWeaponDamage,
+  formatDamageString,
+} = require("./inventory/js/shared/weaponDamage");
+const {
+  loadSkillRows,
+  resolveSkillCheck,
+} = require("./character/js/skills/skillCheck");
 const {
   collectEquippedEnchantments,
 } = require("./character/js/enchantments/collectEquippedEnchantments");
@@ -204,20 +215,34 @@ function buildSheet({
    * Block depends on the final character skills and DX, so it is computed here
    * after both the character and inventory layers are fully resolved.
    *
-   * Each resolved shield (equipped + all storage buckets) receives a `block`
-   * field computed by computeShieldBlock.
+   * Each resolved shield (equipped + all storage buckets) receives its
+   * `skill_check` (Broquel/Escudo, learned or default) and a 4e `block`.
    */
 
-  const _dxValue = characterData.primary_attributes.DX.value;
+  const _primary = characterData.primary_attributes;
   const _skills = characterData.skills || {};
+  const _hasReflexos = "ADV-055" in (characterData.advantages || {});
+  const _skillRows = loadSkillRows();
+
+  function _skillCheck(skillId, minStrength = 0) {
+    if (!skillId) return null;
+    return resolveSkillCheck(skillId, {
+      rows: _skillRows,
+      skills: _skills,
+      primary: _primary,
+      hasReflexos: _hasReflexos,
+      stPenalty: Math.max(0, minStrength - _primary.ST.value),
+    });
+  }
+
   const _shieldInv = inventoryResult.inventory.shield;
 
   function _attachBlock(shieldObj) {
     if (!shieldObj) return;
-    shieldObj.block = computeShieldBlock(
-      shieldObj.shield_id,
-      _skills,
-      _dxValue,
+    shieldObj.skill_check = _skillCheck(shieldSkillId(shieldObj.shield_id));
+    shieldObj.block = blockFromLevel(
+      shieldObj.skill_check?.level,
+      _hasReflexos,
     );
   }
 
@@ -266,6 +291,57 @@ function buildSheet({
     (_meleeInv[bucket] || []).forEach(_attachWeaponDamage);
     (_rangedInv[bucket] || []).forEach(_attachWeaponDamage);
   }
+
+  function _attachSkillCheck(weapon) {
+    if (!weapon) return;
+    weapon.skill_check = _skillCheck(
+      weapon.weapon_skill_id,
+      weapon.weapon_min_strength,
+    );
+  }
+
+  for (const inv of [
+    _meleeInv,
+    _rangedInv,
+    inventoryResult.inventory.firearms,
+  ]) {
+    for (const bucket of ["equipped", "backpack", "stash", "camp"]) {
+      (inv?.[bucket] || []).forEach(_attachSkillCheck);
+    }
+  }
+
+  // Punch is thrust-1 and kick is thrust (4e); a skill flagged skill_is_unarmed gets its own row once learned.
+  const _gdp = _baseDamage?.GDP;
+  const _unarmedDamage = _gdp
+    ? {
+        punch: formatDamageString(_gdp.dice, _gdp.final_modifier - 1),
+        kick: formatDamageString(_gdp.dice, _gdp.final_modifier),
+      }
+    : null;
+
+  characterData.unarmed = [
+    {
+      skill_id: null,
+      name: null,
+      level: _primary.DX.value,
+      source: { type: "attribute", attribute: "DX", penalty: 0 },
+      st_penalty: 0,
+      parry: 3 + Math.floor(_primary.DX.value / 2) + (_hasReflexos ? 1 : 0),
+      actions: 1,
+      critical: criticalRanges(_primary.DX.value),
+      damage: _unarmedDamage,
+    },
+    ...Object.values(_skillRows)
+      .filter(
+        (row) =>
+          String(row.skill_is_unarmed).trim().toUpperCase() === "TRUE" &&
+          _skills[row.skill_id],
+      )
+      .map((row) => ({
+        ..._skillCheck(row.skill_id),
+        damage: _unarmedDamage,
+      })),
+  ];
 
   /**
    * ───────────────────────────────────────────────────────────────────────────

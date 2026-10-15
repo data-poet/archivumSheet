@@ -100,22 +100,22 @@ describe("SKILL PARRY", () => {
     expect(nonParrySkill.parry).toBeNull();
   });
 
-  test("parry = floor(parry_modifier * level) — no ADV-055", () => {
-    // ESPADAS LONGAS parry_modifier = 0.5, level = 14 → floor(0.5 * 14) = 7
+  test("parry = 3 + floor(level / 2) + bonus (4e) — no ADV-055", () => {
+    // ESPADAS LONGAS bonus 0, level 14 → 3 + 7 = 10
     const result = buildSkills(skillsWithParry, character);
-    expect(result.skills[parrySkillId].parry).toBe(7);
+    expect(result.skills[parrySkillId].parry).toBe(10);
   });
 
-  test("parry = floor(parry_modifier * level) + 1 when ADV-055 present", () => {
-    // same: floor(0.5 * 14) + 1 = 8
+  test("parry = 3 + floor(level / 2) + bonus + 1 when ADV-055 present", () => {
+    // same: 3 + 7 + 1 = 11
     const result = buildSkills(skillsWithParry, character, {
       "ADV-055": { advantage_name: "REFLEXOS EM COMBATE" },
     });
-    expect(result.skills[parrySkillId].parry).toBe(8);
+    expect(result.skills[parrySkillId].parry).toBe(11);
   });
 
   test("parry uses floored result (no decimal)", () => {
-    // BRIGA parry_modifier = 0.6666…, level = 10 → floor(6.666…) = 6
+    // level 11 → 3 + floor(5.5) = 8
     const skills = {
       [parrySkillId]: {
         base_value: 11,
@@ -128,7 +128,7 @@ describe("SKILL PARRY", () => {
   });
 
   test("modifier contributes to parry (level = base_value + modifier)", () => {
-    // level = 14 + 2 = 16 → floor(0.5 * 16) = 8
+    // level = 14 + 2 = 16 → 3 + 8 = 11
     const skills = {
       [parrySkillId]: {
         base_value: 14,
@@ -137,7 +137,20 @@ describe("SKILL PARRY", () => {
       },
     };
     const result = buildSkills(skills, character);
-    expect(result.skills[parrySkillId].parry).toBe(8);
+    expect(result.skills[parrySkillId].parry).toBe(11);
+  });
+});
+
+describe("SKILL PARRY — 4e bonuses", () => {
+  test.each([
+    ["SKILL-095", "BASTÃO", 2],
+    ["SKILL-076", "FACA", -1],
+  ])("%s (%s) adds %i to 3 + floor(level / 2)", (id, _name, bonus) => {
+    const result = buildSkills(
+      { [id]: { base_value: 12, modifier: 0, isTrainedWithMaster: false } },
+      character,
+    );
+    expect(result.skills[id].parry).toBe(3 + 6 + bonus);
   });
 });
 

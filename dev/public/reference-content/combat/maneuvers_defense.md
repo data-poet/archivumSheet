@@ -37,7 +37,8 @@
 <summary>Bloqueio</summary>
 
 - **Requisito:** Você precisa ter um escudo ou broquel devidamente preparado.
-- **Cálculo Base:** Metade (1/2) do seu nível de habilidade com Escudo, arredondado para baixo, +3.
+- **Cálculo Base:** 3 + metade do NH com Escudo (ou Broquel, para broquéis), arredondado para baixo, +1 com Reflexos em Combate.
+- **Sem a perícia:** use o NH padrão: a outra perícia de escudo **-2** ou DX **-4**, o que for maior.
 - **Capacidade:** Bloqueia armas de mão, armas arremessadas, flechas, virotes e pedras de funda.
 - **Restrição:** É impossível bloquear balas de armas de fogo ou armas de feixe (laser).
 - **Limite:** Apenas **1 ataque por ação**, exceto em _Defesa Total_, onde se pode bloquear até dois ataques.
@@ -47,7 +48,8 @@
 <details>
 <summary>Aparar</summary>
 
-- **Cálculo Base:** Seu nível de habilidade com a arma de mão utilizada vezes o multiplicador de aparar com arma de mão, arredondado para baixo.
+- **Cálculo Base:** 3 + metade do [[NH]] com a arma, arredondado para baixo, +1 com Reflexos em Combate. Algumas perícias somam um ajuste: Bastão **+2**, Faca **-1**. Sem a perícia, use o NH padrão (veja Bloqueio).
+- **Desarmado:** aparar com as mãos usa a [[DX]] no lugar do NH (ou a perícia de luta desarmada que você tiver).
 - **Quebra de Arma:** A arma tem 1/3 de chance de quebrar se aparar um ataque vindo de uma arma com peso **3 ou mais vezes maior** que o seu próprio (muito comum com facas e floretes).
 - **Objetos Improvisados:** Pode-se aparar com objetos de formato adequado usando a perícia da arma mais próxima (ex.: rifle/vara apara como lança). Aparar com um arco inutiliza sua função de disparo.
 - **Limite:** Apenas 1 aparar por ação (2 se usar duas armas ou manobra _Defesa Total_).

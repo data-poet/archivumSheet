@@ -42,6 +42,7 @@ function getFirearmsDB() {
       weapon_name: row.weapon_name,
       weapon_type: row.weapon_type,
       weapon_skill: row.weapon_skill,
+      weapon_skill_id: row.weapon_skill_id || null,
       weapon_tier: row.weapon_tier,
       weapon_gdp_dice: row.weapon_gdp_dice,
       weapon_gdp_modifier: Number(row.weapon_gdp_modifier),
