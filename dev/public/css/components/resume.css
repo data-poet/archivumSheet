@@ -353,3 +353,9 @@
 .resume-critical {
   white-space: nowrap;
 }
+
+/* Marks an NH derived from a skill/attribute default or lowered by minimum ST (shared.js's nhCell) — the title attribute carries the why. */
+.resume-nh-default {
+  cursor: help;
+  border-bottom: 1px dotted var(--color-text-muted);
+}

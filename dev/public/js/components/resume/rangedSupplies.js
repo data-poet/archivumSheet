@@ -8,9 +8,13 @@ import {
   quantityStepperCell,
   roundsStepperCell,
   renderResumeWeaponTable,
+  formatCritical,
+  nhCell,
 } from "./shared.js";
 
 export function renderResumeFirearms(sheet, { editable = true } = {}) {
+  const skills = sheet?.character?.skills;
+
   renderResumeWeaponTable({
     containerId: "resume_firearms_container",
     title: t("sections.firearms"),
@@ -19,6 +23,16 @@ export function renderResumeFirearms(sheet, { editable = true } = {}) {
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
     editable,
     columns: [
+      { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
+      {
+        header: t("traits.critical"),
+        tdClass: "resume-critical",
+        cell: (w) => formatCritical(w.skill_check?.critical),
+      },
+      {
+        header: t("traits.actions"),
+        cell: (w) => w.skill_check?.actions ?? "—",
+      },
       { header: t("ranged.tr"), cell: (w) => w.weapon_final_tr ?? "—" },
       { header: t("ranged.prec"), cell: (w) => w.weapon_final_prec ?? "—" },
       { header: t("ranged.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },

@@ -88,7 +88,7 @@ describe("renderResumeShield", () => {
     expect(id("resume_shield_container").hidden).toBe(true);
   });
 
-  test("shows name/dr/block and an HP stepper when equipped with hit points", () => {
+  test("shows name/nh/critical/actions/dr/block and an HP stepper when equipped with hit points", () => {
     renderResume({
       inventory: {
         shield: {
@@ -96,6 +96,12 @@ describe("renderResumeShield", () => {
             shield_name: "Broquel",
             final_damage_resistance: 2,
             block: 8,
+            skill_check: {
+              level: 10,
+              source: { type: "learned" },
+              critical: { success: 4, failure: 17 },
+              actions: 2,
+            },
             shield_final_hit_points: 15,
             hit_points_modifier: 0,
           },
@@ -107,17 +113,22 @@ describe("renderResumeShield", () => {
     expect(container.hidden).toBe(false);
     expect(container.textContent).toContain("Broquel");
     const cells = container.querySelectorAll("tbody td");
-    expect(cells[1].textContent).toBe("2");
-    expect(cells[2].textContent).toBe("8");
+    expect(cells[1].textContent).toBe("10");
+    expect(cells[2].textContent).toBe("≤4 · ≥17");
+    expect(cells[3].textContent).toBe("2");
+    expect(cells[4].textContent).toBe("2");
+    expect(cells[5].textContent).toBe("8");
     expect(container.querySelector(".resume-shield-hp")).not.toBeNull();
   });
 
-  test("omits the HP stepper and shows dashes when the shield has no HP/DR/block data", () => {
+  test("omits the HP stepper and shows dashes when the shield has no HP/DR/block/NH data", () => {
     renderResume({ inventory: { shield: { equipped: {} } } });
     const container = id("resume_shield_container");
     const cells = container.querySelectorAll("tbody td");
     expect(cells[0].textContent).toBe("—");
     expect(cells[1].textContent).toBe("—");
+    expect(cells[2].textContent).toBe("—");
+    expect(cells[3].textContent).toBe("—");
     expect(container.querySelector(".resume-shield-hp")).toBeNull();
   });
 });
@@ -190,10 +201,93 @@ describe("renderResumeMelee", () => {
         },
       },
     });
+    // No character.unarmed is given, so there's no Desarmado row ahead of it.
     const cells = id("resume_melee_container").querySelectorAll("tbody td");
-    expect(cells[1].textContent).toBe("C,1");
-    expect(cells[2].textContent).toBe("1d");
-    expect(cells[3].textContent).toBe("—");
+    expect(cells[5].textContent).toBe("C,1");
+    expect(cells[6].textContent).toBe("1d");
+    expect(cells[7].textContent).toBe("—");
+  });
+
+  test("shows NH/Crítico/Aparar/Ações from the weapon's skill check", () => {
+    renderResume({
+      inventory: {
+        melee: {
+          equipped: [
+            {
+              weapon_name: "Espada Longa",
+              skill_check: {
+                level: 14,
+                source: { type: "learned" },
+                st_penalty: 0,
+                parry: 10,
+                actions: 1,
+                critical: { success: 5, failure: 17 },
+              },
+            },
+          ],
+        },
+      },
+    });
+    const cells = id("resume_melee_container").querySelectorAll("tbody td");
+    expect(cells[1].textContent).toBe("14");
+    expect(cells[2].textContent).toBe("≤5 · ≥17");
+    expect(cells[3].textContent).toBe("10");
+    expect(cells[4].textContent).toBe("1"); // Ações column
+  });
+
+  test("marks a defaulted or ST-penalized NH with a tooltip, and leaves a learned one plain", () => {
+    renderResume({
+      inventory: {
+        melee: {
+          equipped: [
+            {
+              weapon_name: "Machado",
+              skill_check: {
+                level: 7,
+                source: { type: "attribute", attribute: "DX", penalty: -5 },
+                st_penalty: 2,
+              },
+            },
+          ],
+        },
+      },
+    });
+    const nhCell = id("resume_melee_container").querySelector(
+      "tbody td:nth-child(2)",
+    );
+    expect(nhCell.textContent).toBe("7*");
+    expect(nhCell.querySelector("span").title).toContain("DX -5");
+    expect(nhCell.querySelector("span").title).toContain("ST -2");
+  });
+
+  test("lists Desarmado first, with punch/kick damage and DX-based parry", () => {
+    renderResume({
+      character: {
+        unarmed: [
+          {
+            skill_id: null,
+            name: null,
+            level: 12,
+            source: { type: "attribute", attribute: "DX", penalty: 0 },
+            st_penalty: 0,
+            parry: 9,
+            actions: 1,
+            critical: { success: 4, failure: 17 },
+            damage: { punch: "1d6-2", kick: "1d6-1" },
+          },
+        ],
+      },
+      inventory: { melee: { equipped: [] } },
+    });
+    const row = id("resume_melee_container").querySelector("tbody tr");
+    const cells = row.querySelectorAll("td");
+    expect(cells[0].textContent).toBe(t("resume.unarmed"));
+    // Desarmado is always DX-derived, never a purchased skill, so its NH keeps the default marker.
+    expect(cells[1].textContent).toBe("12*");
+    expect(cells[3].textContent).toBe("9");
+    expect(cells[6].textContent).toBe("—"); // BAL damage
+    expect(cells[7].textContent).toContain("1d6-2");
+    expect(cells[7].textContent).toContain("1d6-1");
   });
 
   test("renders one row per equipped weapon, each with its own instance id on the stepper", () => {
@@ -254,9 +348,9 @@ describe("renderResumeRanged", () => {
     const row = id("resume_ranged_container").querySelector("tbody tr");
     const cells = row.querySelectorAll("td");
     expect(cells[0].textContent).toBe("Arco Longo");
-    expect(cells[1].textContent).toBe("1x2");
-    expect(cells[2].textContent).toBe("2");
-    expect(cells[3].textContent).toBe("1d+2");
+    expect(cells[4].textContent).toBe("1x2");
+    expect(cells[5].textContent).toBe("2");
+    expect(cells[6].textContent).toBe("1d+2");
     expect(row.textContent).toContain("6/6");
   });
 
@@ -276,5 +370,31 @@ describe("renderResumeRanged", () => {
     });
     const row = id("resume_ranged_container").querySelector("tbody tr");
     expect(row.querySelector(".resume-ranged-hp")).toBeNull();
+  });
+
+  test("shows NH/Crítico/Ações from the weapon's skill check, with no Aparar column", () => {
+    renderResume({
+      inventory: {
+        ranged: {
+          equipped: [
+            {
+              weapon_name: "Arco Longo",
+              skill_check: {
+                level: 13,
+                source: { type: "learned" },
+                st_penalty: 0,
+                parry: null,
+                actions: 1,
+                critical: { success: 4, failure: 17 },
+              },
+            },
+          ],
+        },
+      },
+    });
+    const cells = id("resume_ranged_container").querySelectorAll("tbody td");
+    expect(cells[1].textContent).toBe("13");
+    expect(cells[2].textContent).toBe("≤4 · ≥17");
+    expect(cells[3].textContent).toBe("1");
   });
 });

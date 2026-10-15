@@ -9,6 +9,8 @@ import {
   bindCollapse,
   hpStepperCell,
   renderResumeWeaponTable,
+  formatCritical,
+  nhCell,
 } from "./shared.js";
 
 const ARMOR_SLOTS = [
@@ -91,6 +93,10 @@ export function renderResumeShield(sheet, { editable = true } = {}) {
   // final_damage_resistance includes enchantments, same as renderResumeArmor.
   const dr = equippedShield.final_damage_resistance ?? "—";
   const block = equippedShield.block ?? "—";
+  const check = equippedShield.skill_check;
+  const nh = nhCell(check, sheet?.character?.skills);
+  const critical = formatCritical(check?.critical);
+  const actions = check?.actions ?? "—";
   const maxHp = equippedShield.shield_final_hit_points ?? 0;
   const modifier = equippedShield.hit_points_modifier ?? 0;
   const actualHp = calcActualHp(maxHp, modifier);
@@ -115,6 +121,9 @@ export function renderResumeShield(sheet, { editable = true } = {}) {
           <thead>
             <tr>
               <th>${t("common.name")}</th>
+              <th class="col-num">${t("traits.nh")}</th>
+              <th class="col-num resume-critical">${t("traits.critical")}</th>
+              <th class="col-num">${t("traits.actions")}</th>
               <th class="col-num">${t("shield.dr")}</th>
               <th class="col-num">${t("shield.block")}</th>
               <th class="col-num">${t("armor.hp")}</th>
@@ -123,6 +132,9 @@ export function renderResumeShield(sheet, { editable = true } = {}) {
           <tbody>
             <tr>
               <td>${equippedShield.shield_name ?? "—"}</td>
+              <td class="col-num">${nh}</td>
+              <td class="col-num resume-critical">${critical}</td>
+              <td class="col-num">${actions}</td>
               <td class="col-num">${dr}</td>
               <td class="col-num">${block}</td>
               ${hpCell}
@@ -144,15 +156,55 @@ function meleeMaxHp(w) {
     : 0;
 }
 
+// Shapes character.unarmed (Desarmado + learned skill_is_unarmed skills) like weapons, to share the melee table.
+function _unarmedRows(unarmed = []) {
+  return unarmed.map((u) => ({
+    weapon_name: u.name ?? t("resume.unarmed"),
+    weapon_reach: "—",
+    weapon_bal_damage: "—",
+    weapon_gdp_damage: u.damage
+      ? `${t("resume.punch")} ${u.damage.punch} · ${t("resume.kick")} ${u.damage.kick}`
+      : "—",
+    skill_check: {
+      level: u.level,
+      source: u.source,
+      st_penalty: u.st_penalty,
+      parry: u.parry,
+      actions: u.actions,
+      critical: u.critical,
+    },
+  }));
+}
+
 export function renderResumeMelee(sheet, { editable = true } = {}) {
+  const skills = sheet?.character?.skills;
+  const weapons = [
+    ..._unarmedRows(sheet?.character?.unarmed),
+    ...(sheet?.inventory?.melee?.equipped ?? []),
+  ];
+
   renderResumeWeaponTable({
     containerId: "resume_melee_container",
     title: t("sections.melee"),
-    weapons: sheet?.inventory?.melee?.equipped ?? [],
+    weapons,
     hpCssClass: "resume-melee-hp",
     computeMaxHp: meleeMaxHp,
     editable,
     columns: [
+      { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
+      {
+        header: t("traits.critical"),
+        tdClass: "resume-critical",
+        cell: (w) => formatCritical(w.skill_check?.critical),
+      },
+      {
+        header: t("traits.parry"),
+        cell: (w) => w.skill_check?.parry ?? "—",
+      },
+      {
+        header: t("traits.actions"),
+        cell: (w) => w.skill_check?.actions ?? "—",
+      },
       { header: t("melee.reach"), cell: (w) => w.weapon_reach ?? "—" },
       { header: t("melee.balDmg"), cell: (w) => w.weapon_bal_damage ?? "—" },
       { header: t("melee.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },
@@ -161,6 +213,8 @@ export function renderResumeMelee(sheet, { editable = true } = {}) {
 }
 
 export function renderResumeRanged(sheet, { editable = true } = {}) {
+  const skills = sheet?.character?.skills;
+
   renderResumeWeaponTable({
     containerId: "resume_ranged_container",
     title: t("sections.ranged"),
@@ -169,6 +223,16 @@ export function renderResumeRanged(sheet, { editable = true } = {}) {
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
     editable,
     columns: [
+      { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
+      {
+        header: t("traits.critical"),
+        tdClass: "resume-critical",
+        cell: (w) => formatCritical(w.skill_check?.critical),
+      },
+      {
+        header: t("traits.actions"),
+        cell: (w) => w.skill_check?.actions ?? "—",
+      },
       { header: t("ranged.tr"), cell: (w) => w.weapon_tr ?? "—" },
       { header: t("ranged.prec"), cell: (w) => w.weapon_prec ?? "—" },
       { header: t("ranged.gdpDmg"), cell: (w) => w.weapon_gdp_damage ?? "—" },

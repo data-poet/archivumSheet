@@ -42,9 +42,9 @@ describe("renderResumeFirearms", () => {
     expect(container.hidden).toBe(false);
     const cells = container.querySelectorAll("tbody td");
     expect(cells[0].textContent).toBe("Pistola");
-    expect(cells[1].textContent).toBe("2d");
-    expect(cells[2].textContent).toBe("1");
-    expect(cells[3].textContent).toBe("2d+1");
+    expect(cells[4].textContent).toBe("2d");
+    expect(cells[5].textContent).toBe("1");
+    expect(cells[6].textContent).toBe("2d+1");
 
     const hpInput = container.querySelector(".resume-firearm-hp");
     expect(hpInput.value).toBe("-1");

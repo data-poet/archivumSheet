@@ -124,6 +124,84 @@ describe("renderResumeSkills", () => {
   });
 });
 
+describe("renderResumeSkills — hides skills already shown via gear", () => {
+  function names(container) {
+    return Array.from(
+      container.querySelectorAll("tbody tr td:first-child"),
+      (td) => td.textContent,
+    );
+  }
+
+  test("hides a skill used by an equipped melee weapon's skill check", () => {
+    renderResume({
+      character: {
+        skills: {
+          "SK-SWORD": { name: "Espadas Longas" },
+          "SK-OTHER": { name: "Furtividade" },
+        },
+      },
+      inventory: {
+        melee: {
+          equipped: [
+            { weapon_name: "Espada", skill_check: { skill_id: "SK-SWORD" } },
+          ],
+        },
+      },
+    });
+    expect(names(id("resume_skills_container"))).toEqual(["Furtividade"]);
+  });
+
+  test("hides a skill used by ranged, firearms or the equipped shield", () => {
+    renderResume({
+      character: {
+        skills: {
+          "SK-BOW": { name: "Arco" },
+          "SK-GUN": { name: "Armas de Pólvora" },
+          "SK-SHIELD": { name: "Escudo" },
+        },
+      },
+      inventory: {
+        ranged: { equipped: [{ skill_check: { skill_id: "SK-BOW" } }] },
+        firearms: { equipped: [{ skill_check: { skill_id: "SK-GUN" } }] },
+        shield: { equipped: { skill_check: { skill_id: "SK-SHIELD" } } },
+      },
+    });
+    expect(id("resume_skills_container").hidden).toBe(true);
+  });
+
+  test("hides a skill shown as an unarmed row", () => {
+    renderResume({
+      character: {
+        skills: { "SK-KARATE": { name: "Caratê" } },
+        unarmed: [{ skill_id: "SK-KARATE", name: "Caratê" }],
+      },
+    });
+    expect(id("resume_skills_container").hidden).toBe(true);
+  });
+
+  test("keeps a combat skill visible when no equipped gear or unarmed row uses it", () => {
+    renderResume({
+      character: {
+        skills: { "SK-JUDO": { name: "Judô" } },
+        unarmed: [{ skill_id: null, name: null }],
+      },
+      inventory: { melee: { equipped: [] } },
+    });
+    expect(names(id("resume_skills_container"))).toEqual(["Judô"]);
+  });
+
+  test("tolerates a weapon or shield with no skill_check at all", () => {
+    renderResume({
+      character: { skills: { "SK-1": { name: "Perícia" } } },
+      inventory: {
+        melee: { equipped: [{ weapon_name: "Sem perícia" }] },
+        shield: { equipped: { shield_name: "Sem perícia" } },
+      },
+    });
+    expect(names(id("resume_skills_container"))).toEqual(["Perícia"]);
+  });
+});
+
 describe("renderResumeMagic", () => {
   test("renders a row per grimoire spell, resolving cost from the catalog by spell_id", () => {
     renderResume(

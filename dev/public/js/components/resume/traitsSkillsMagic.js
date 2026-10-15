@@ -4,6 +4,7 @@ import {
   collapsibleHeader,
   bindCollapse,
   renderCollapsibleNameList,
+  formatCritical,
 } from "./shared.js";
 
 export function renderResumeTraits(sheet) {
@@ -22,13 +23,32 @@ export function renderResumeTraits(sheet) {
   );
 }
 
-function _critical(critical) {
-  return critical ? `≤${critical.success} · ≥${critical.failure}` : "—";
+// Hides a skill already shown through an equipped weapon, shield or unarmed row, so it isn't listed twice.
+function _shownSkillIds(sheet) {
+  const ids = new Set();
+  const add = (check) => {
+    if (check?.skill_id) ids.add(check.skill_id);
+  };
+
+  (sheet?.inventory?.melee?.equipped ?? []).forEach((w) => add(w.skill_check));
+  (sheet?.inventory?.ranged?.equipped ?? []).forEach((w) => add(w.skill_check));
+  (sheet?.inventory?.firearms?.equipped ?? []).forEach((w) =>
+    add(w.skill_check),
+  );
+  add(sheet?.inventory?.shield?.equipped?.skill_check);
+  (sheet?.character?.unarmed ?? []).forEach((u) => {
+    if (u.skill_id) ids.add(u.skill_id);
+  });
+
+  return ids;
 }
 
 export function renderResumeSkills(sheet) {
   const skills = sheet?.character?.skills || {};
-  const entries = Object.values(skills);
+  const shown = _shownSkillIds(sheet);
+  const entries = Object.entries(skills)
+    .filter(([id]) => !shown.has(id))
+    .map(([, skill]) => skill);
   const container = el("resume_skills_container");
   if (!container) return;
 
@@ -44,7 +64,7 @@ export function renderResumeSkills(sheet) {
       <tr>
         <td>${s.name ?? "—"}</td>
         <td class="col-num">${s.value ?? "—"}</td>
-        <td class="col-num resume-critical">${_critical(s.critical)}</td>
+        <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
         <td class="col-num">${s.parry != null ? s.parry : "—"}</td>
         <td class="col-num">${s.actions ?? "—"}</td>
       </tr>
@@ -96,7 +116,7 @@ export function renderResumeMagic(sheet, data) {
           <td>${s.name ?? "—"}</td>
           <td class="col-num">${cost}</td>
           <td class="col-num">${s.value ?? "—"}</td>
-          <td class="col-num resume-critical">${_critical(s.critical)}</td>
+          <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
         </tr>
       `;
     })

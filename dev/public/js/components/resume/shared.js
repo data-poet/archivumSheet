@@ -170,7 +170,10 @@ export function renderResumeWeaponTable({
           : `<td></td>`;
 
       const statCells = columns
-        .map((col) => `<td class="col-num">${col.cell(w)}</td>`)
+        .map(
+          (col) =>
+            `<td class="col-num${col.tdClass ? ` ${col.tdClass}` : ""}">${col.cell(w)}</td>`,
+        )
         .join("");
 
       return `
@@ -207,6 +210,27 @@ export function renderResumeWeaponTable({
     </div>
   `;
   bindCollapse(container);
+}
+
+export function formatCritical(critical) {
+  return critical ? `≤${critical.success} · ≥${critical.failure}` : "—";
+}
+
+// A defaulted or ST-penalized NH gets a "*" and a tooltip naming the source, so it isn't mistaken for a trained level.
+export function nhCell(check, skills = {}) {
+  if (!check || check.level == null) return "—";
+
+  const notes = [];
+  if (check.source?.type === "skill") {
+    const name = skills[check.source.skill_id]?.name ?? check.source.skill_id;
+    notes.push(`padrão: ${name} ${check.source.penalty}`);
+  } else if (check.source?.type === "attribute") {
+    notes.push(`padrão: ${check.source.attribute} ${check.source.penalty}`);
+  }
+  if (check.st_penalty > 0) notes.push(`ST -${check.st_penalty}`);
+
+  if (notes.length === 0) return String(check.level);
+  return `<span class="resume-nh-default" title="${notes.join(" · ")}">${check.level}*</span>`;
 }
 
 export function renderCollapsibleNameList(containerId, entries, title) {
