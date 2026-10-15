@@ -6,6 +6,9 @@ const {
 const {
   VALID_STORED_AT,
 } = require("engine/inventory/js/ranged/rangedConstants");
+const { DUAL_USE_WEAPON_PAIRS } = require("helpers/ids.js");
+
+const [, DUAL_USE_RANGED_ID] = DUAL_USE_WEAPON_PAIRS[0];
 
 describe("RANGED WEAPON VALIDATION", () => {
   describe("validateRangedInstance", () => {
@@ -239,7 +242,7 @@ describe("RANGED WEAPON VALIDATION", () => {
       const errors = validateRangedEnchantments(
         [
           {
-            weapon_id: "RANGED-050",
+            weapon_id: DUAL_USE_RANGED_ID,
             enchantments: [{ enchantment_id: "ENCHANTMENT-056", value: 1 }],
           },
         ],

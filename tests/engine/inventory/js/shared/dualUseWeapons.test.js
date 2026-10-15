@@ -7,34 +7,17 @@ const {
   getMeleeCounterpart,
   resolveDualUseEnchantmentCategory,
 } = require("engine/inventory/js/shared/dualUseWeapons");
+const { DUAL_USE_WEAPON_PAIRS } = require("helpers/ids.js");
+
+const [LANCA_MELEE_ID, LANCA_RANGED_ID] = DUAL_USE_WEAPON_PAIRS[0];
+const [MACHADINHA_MELEE_ID, MACHADINHA_RANGED_ID] = DUAL_USE_WEAPON_PAIRS[10];
 
 describe("DUAL-USE WEAPONS", () => {
   // Lança de Mão, Lança de Arremesso, Machadinha, Machado de Arremesso — 4 dual-use
   // weapons × 5 tiers each. Same two assertions per pair regardless of weapon family,
   // so one parameterized run covers all of them instead of one describe block each.
   describe("Dual-use weapon pairs", () => {
-    const TIERS = [
-      ["MELEE-215", "RANGED-050"],
-      ["MELEE-216", "RANGED-051"],
-      ["MELEE-217", "RANGED-052"],
-      ["MELEE-218", "RANGED-053"],
-      ["MELEE-219", "RANGED-054"],
-      ["MELEE-220", "RANGED-055"],
-      ["MELEE-221", "RANGED-056"],
-      ["MELEE-222", "RANGED-057"],
-      ["MELEE-223", "RANGED-058"],
-      ["MELEE-224", "RANGED-059"],
-      ["MELEE-280", "RANGED-005"],
-      ["MELEE-281", "RANGED-006"],
-      ["MELEE-282", "RANGED-007"],
-      ["MELEE-283", "RANGED-008"],
-      ["MELEE-284", "RANGED-009"],
-      ["MELEE-285", "RANGED-010"],
-      ["MELEE-286", "RANGED-011"],
-      ["MELEE-287", "RANGED-012"],
-      ["MELEE-288", "RANGED-013"],
-      ["MELEE-289", "RANGED-014"],
-    ];
+    const TIERS = DUAL_USE_WEAPON_PAIRS;
 
     test.each(TIERS)("melee %s maps to ranged %s", (meleeId, rangedId) => {
       expect(MELEE_TO_RANGED[meleeId]).toBe(rangedId);
@@ -58,7 +41,7 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns false for a ranged weapon_id", () => {
-      expect(isMeleeDualUse("RANGED-005")).toBe(false);
+      expect(isMeleeDualUse(MACHADINHA_RANGED_ID)).toBe(false);
     });
   });
 
@@ -75,13 +58,15 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns false for a melee weapon_id", () => {
-      expect(isRangedDualUse("MELEE-280")).toBe(false);
+      expect(isRangedDualUse(MACHADINHA_MELEE_ID)).toBe(false);
     });
   });
 
   describe("getRangedCounterpart", () => {
     test("returns ranged ID for a dual-use melee weapon", () => {
-      expect(getRangedCounterpart("MELEE-280")).toBe("RANGED-005");
+      expect(getRangedCounterpart(MACHADINHA_MELEE_ID)).toBe(
+        MACHADINHA_RANGED_ID,
+      );
     });
 
     test("returns null for a non-dual-use melee weapon", () => {
@@ -91,7 +76,7 @@ describe("DUAL-USE WEAPONS", () => {
 
   describe("getMeleeCounterpart", () => {
     test("returns melee ID for a dual-use ranged weapon", () => {
-      expect(getMeleeCounterpart("RANGED-050")).toBe("MELEE-215");
+      expect(getMeleeCounterpart(LANCA_RANGED_ID)).toBe(LANCA_MELEE_ID);
     });
 
     test("returns null for a non-dual-use ranged weapon", () => {
@@ -114,7 +99,7 @@ describe("DUAL-USE WEAPONS", () => {
     test("returns [own, counterpart] for a dual-use melee weapon", () => {
       expect(
         resolveDualUseEnchantmentCategory(
-          "MELEE-280",
+          MACHADINHA_MELEE_ID,
           "Armas Corpo a Corpo",
           "Armas de Longo Alcance",
           isMeleeDualUse,
@@ -125,7 +110,7 @@ describe("DUAL-USE WEAPONS", () => {
     test("returns [own, counterpart] for a dual-use ranged weapon", () => {
       expect(
         resolveDualUseEnchantmentCategory(
-          "RANGED-005",
+          MACHADINHA_RANGED_ID,
           "Armas de Longo Alcance",
           "Armas Corpo a Corpo",
           isRangedDualUse,
@@ -147,8 +132,10 @@ describe("DUAL-USE WEAPONS", () => {
       }
     });
 
-    test("exactly 20 dual-use pairs exist (4 weapons × 5 tiers)", () => {
-      expect(Object.keys(MELEE_TO_RANGED).length).toBe(20);
+    test("one MELEE_TO_RANGED entry per registered dual-use pair", () => {
+      expect(Object.keys(MELEE_TO_RANGED).length).toBe(
+        DUAL_USE_WEAPON_PAIRS.length,
+      );
     });
   });
 

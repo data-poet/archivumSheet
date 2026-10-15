@@ -74,6 +74,38 @@ const BROQUEL_SHIELD_IDS = new Set([
 // has_magic_return (rangedResolver.js) keys off this id, not effect_type.
 const MAGIC_RETURN_ENCHANTMENT_ID = "ENCHANTMENT-066";
 
+// Weapons that appear in both the melee and ranged tables and are auto-mirrored
+// across them. Pairs listed as [meleeId, rangedId] for each tier (Comum → Obra-Prima).
+const DUAL_USE_WEAPON_PAIRS = [
+  // Lança de Mão
+  ["MELEE-215", "RANGED-050"],
+  ["MELEE-216", "RANGED-051"],
+  ["MELEE-217", "RANGED-052"],
+  ["MELEE-218", "RANGED-053"],
+  ["MELEE-219", "RANGED-054"],
+
+  // Lança de Arremesso
+  ["MELEE-220", "RANGED-055"],
+  ["MELEE-221", "RANGED-056"],
+  ["MELEE-222", "RANGED-057"],
+  ["MELEE-223", "RANGED-058"],
+  ["MELEE-224", "RANGED-059"],
+
+  // Machadinha
+  ["MELEE-280", "RANGED-005"],
+  ["MELEE-281", "RANGED-006"],
+  ["MELEE-282", "RANGED-007"],
+  ["MELEE-283", "RANGED-008"],
+  ["MELEE-284", "RANGED-009"],
+
+  // Machado de Arremesso
+  ["MELEE-285", "RANGED-010"],
+  ["MELEE-286", "RANGED-011"],
+  ["MELEE-287", "RANGED-012"],
+  ["MELEE-288", "RANGED-013"],
+  ["MELEE-289", "RANGED-014"],
+];
+
 module.exports = {
   WILL_BONUS_TIERS,
   WILL_PENALTY_TIERS,
@@ -87,4 +119,5 @@ module.exports = {
   ESCUDO_SKILL_ID,
   BROQUEL_SHIELD_IDS,
   MAGIC_RETURN_ENCHANTMENT_ID,
+  DUAL_USE_WEAPON_PAIRS,
 };

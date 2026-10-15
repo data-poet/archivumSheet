@@ -4,6 +4,9 @@ const {
 } = require("engine/inventory/js/melee/meleeValidation");
 
 const { VALID_STORED_AT } = require("engine/inventory/js/melee/meleeConstants");
+const { DUAL_USE_WEAPON_PAIRS } = require("helpers/ids.js");
+
+const [DUAL_USE_MELEE_ID] = DUAL_USE_WEAPON_PAIRS[0];
 
 describe("MELEE WEAPON VALIDATION", () => {
   describe("validateMeleeInstance", () => {
@@ -246,7 +249,7 @@ describe("MELEE WEAPON VALIDATION", () => {
       const errors = validateMeleeEnchantments(
         [
           {
-            weapon_id: "MELEE-215",
+            weapon_id: DUAL_USE_MELEE_ID,
             enchantments: [{ enchantment_id: "ENCHANTMENT-062", value: 1 }],
           },
         ],
@@ -261,7 +264,7 @@ describe("MELEE WEAPON VALIDATION", () => {
       const errors = validateMeleeEnchantments(
         [
           {
-            weapon_id: "MELEE-215",
+            weapon_id: DUAL_USE_MELEE_ID,
             enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1 }],
           },
         ],

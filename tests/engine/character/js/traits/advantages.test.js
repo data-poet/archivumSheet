@@ -1,11 +1,12 @@
 const { buildAdvantages } = require("engine/character/js/traits/advantages");
+const { REFLEXOS_EM_COMBATE_ID } = require("helpers/ids.js");
 
 const assertShape = require("tests/helpers/assertShape");
 const assertNumericMap = require("tests/helpers/assertNumericMap");
 
 describe("ADVANTAGES", () => {
   test("Should correctly calculate the selected advantages.", () => {
-    const selected = ["ADV-002", "ADV-053", "ADV-055"];
+    const selected = ["ADV-002", "ADV-053", REFLEXOS_EM_COMBATE_ID];
 
     const result = buildAdvantages(selected);
 
@@ -27,7 +28,7 @@ describe("ADVANTAGES", () => {
   });
 
   test("Should add up the costs correctly.", () => {
-    const selected = ["ADV-002", "ADV-053", "ADV-055"];
+    const selected = ["ADV-002", "ADV-053", REFLEXOS_EM_COMBATE_ID];
 
     const result = buildAdvantages(selected);
 
