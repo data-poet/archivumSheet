@@ -6,6 +6,7 @@ const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
 const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { criticalRanges } = require("../helpers/criticalRanges");
+const { REFLEXOS_EM_COMBATE_ID } = require("../helpers/ids");
 const {
   shieldSkillId,
   blockFromLevel,
@@ -221,7 +222,8 @@ function buildSheet({
 
   const _primary = characterData.primary_attributes;
   const _skills = characterData.skills || {};
-  const _hasReflexos = "ADV-055" in (characterData.advantages || {});
+  const _hasReflexos =
+    REFLEXOS_EM_COMBATE_ID in (characterData.advantages || {});
   const _skillRows = loadSkillRows();
 
   function _skillCheck(skillId, minStrength = 0) {

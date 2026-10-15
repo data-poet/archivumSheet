@@ -1,6 +1,7 @@
 const { buildSheet } = require("engine/buildSheet");
 const assertShape = require("tests/helpers/assertShape");
 const { calculateBasicLift } = require("engine/inventory/js/carryWeight");
+const { ESCUDO_SKILL_ID } = require("helpers/ids.js");
 
 describe("BUILD SHEET", () => {
   const mockInput = {
@@ -616,7 +617,7 @@ describe("BUILD SHEET", () => {
         },
       });
       const shield = result.inventory.shield.equipped;
-      expect(shield.skill_check.skill_id).toBe("SKILL-082");
+      expect(shield.skill_check.skill_id).toBe(ESCUDO_SKILL_ID);
       expect(shield.block).toBe(3 + Math.floor(shield.skill_check.level / 2));
     });
 

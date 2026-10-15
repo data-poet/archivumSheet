@@ -2,20 +2,22 @@ const {
   shieldSkillId,
   blockFromLevel,
 } = require("engine/inventory/js/shield/shieldBlock");
+const {
+  BROQUEL_SKILL_ID,
+  ESCUDO_SKILL_ID,
+  BROQUEL_SHIELD_IDS,
+} = require("helpers/ids.js");
 
 describe("shieldSkillId", () => {
-  test.each([
-    "SHIELD-000",
-    "SHIELD-001",
-    "SHIELD-002",
-    "SHIELD-003",
-    "SHIELD-004",
-  ])("%s uses Broquel (SKILL-045)", (id) => {
-    expect(shieldSkillId(id)).toBe("SKILL-045");
-  });
+  test.each([...BROQUEL_SHIELD_IDS])(
+    `%s uses Broquel (${BROQUEL_SKILL_ID})`,
+    (id) => {
+      expect(shieldSkillId(id)).toBe(BROQUEL_SKILL_ID);
+    },
+  );
 
-  test("any other shield uses Escudo (SKILL-082)", () => {
-    expect(shieldSkillId("SHIELD-010")).toBe("SKILL-082");
+  test(`any other shield uses Escudo (${ESCUDO_SKILL_ID})`, () => {
+    expect(shieldSkillId("SHIELD-010")).toBe(ESCUDO_SKILL_ID);
   });
 });
 

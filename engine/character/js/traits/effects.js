@@ -1,50 +1,12 @@
-const willAdvGroup = {
-  "ADV-088": 1,
-  "ADV-089": 2,
-  "ADV-090": 3,
-  "ADV-091": 4,
-  "ADV-092": 5,
-};
-
-const willDisGroup = {
-  "DIS-100": 1,
-  "DIS-101": 2,
-  "DIS-102": 3,
-  "DIS-103": 4,
-  "DIS-104": 5,
-};
-
-const hearingSingleGroup = {
-  "ADV-021": 1,
-  "ADV-022": 2,
-  "ADV-023": 3,
-  "ADV-024": 4,
-  "ADV-025": 5,
-};
-
-const smellSingleGroup = {
-  "ADV-026": 1,
-  "ADV-027": 2,
-  "ADV-028": 3,
-  "ADV-029": 4,
-  "ADV-030": 5,
-};
-
-const visionSingleGroup = {
-  "ADV-037": 1,
-  "ADV-038": 2,
-  "ADV-039": 3,
-  "ADV-040": 4,
-  "ADV-041": 5,
-};
-
-const fullSenseGroup = {
-  "ADV-031": 1,
-  "ADV-032": 2,
-  "ADV-033": 3,
-  "ADV-034": 4,
-  "ADV-035": 5,
-};
+const {
+  WILL_BONUS_TIERS: willAdvGroup,
+  WILL_PENALTY_TIERS: willDisGroup,
+  HEARING_BONUS_TIERS: hearingSingleGroup,
+  SMELL_BONUS_TIERS: smellSingleGroup,
+  VISION_BONUS_TIERS: visionSingleGroup,
+  FULL_SENSE_BONUS_TIERS: fullSenseGroup,
+  REFLEXOS_EM_COMBATE_ID,
+} = require("../../../../helpers/ids.js");
 
 function pickHighest(ids, map) {
   let max = 0;
@@ -78,7 +40,7 @@ function buildTraitsEffects({ advantages = [], disadvantages = [] } = {}) {
   const advantageIds = Object.keys(advantages);
   const disadvantageIds = Object.keys(disadvantages);
 
-  if (advantageIds.includes("ADV-055")) {
+  if (advantageIds.includes(REFLEXOS_EM_COMBATE_ID)) {
     addEffect(effects, "Dodge", 1);
   }
 

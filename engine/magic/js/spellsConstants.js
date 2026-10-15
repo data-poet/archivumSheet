@@ -1,3 +1,5 @@
+const { MAGIC_APTITUDE_TIERS } = require("../../../helpers/ids.js");
+
 const SPELL_ATTRIBUTE = "IQ";
 
 const COST_TABLES = {
@@ -68,12 +70,7 @@ const COST_TABLES = {
   },
 };
 
-// Only the highest-ranked advantage in the group applies — they're mutually exclusive tiers of the same trait.
-const MAGIC_APTITUDE_GROUP = {
-  "ADV-063": 1,
-  "ADV-064": 2,
-  "ADV-065": 3,
-};
+const MAGIC_APTITUDE_GROUP = MAGIC_APTITUDE_TIERS;
 
 // Ordered ascending by max; the first threshold the level doesn't exceed wins. Anything above the last entry falls through to SPELL_TIER_DEFAULT.
 const SPELL_TIER_THRESHOLDS = [

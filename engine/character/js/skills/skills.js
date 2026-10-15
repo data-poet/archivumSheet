@@ -1,4 +1,5 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
+const { REFLEXOS_EM_COMBATE_ID } = require("../../../../helpers/ids.js");
 const { getSkillCost } = require("./skillsCost.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 const { computeParry } = require("./skillCheck.js");
@@ -30,7 +31,7 @@ function buildSkills(
 ) {
   const rows = loadDataset("SKILLS");
 
-  const hasReflexos = "ADV-055" in advantages;
+  const hasReflexos = REFLEXOS_EM_COMBATE_ID in advantages;
 
   const skills = {};
   let totalCost = 0;

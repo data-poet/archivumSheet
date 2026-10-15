@@ -3,6 +3,7 @@ const {
   resolveRangedWeapons,
   resolveDistanceFormula,
 } = require("engine/inventory/js/ranged/rangedResolver");
+const { MAGIC_RETURN_ENCHANTMENT_ID } = require("helpers/ids.js");
 
 describe("rangedResolver", () => {
   const mockWeapon = {
@@ -318,8 +319,8 @@ describe("rangedResolver", () => {
         enchantment_base_price: 1000,
         enchantment_price_per_extra_value: 1000,
       },
-      "ENCHANTMENT-066": {
-        enchantment_id: "ENCHANTMENT-066",
+      [MAGIC_RETURN_ENCHANTMENT_ID]: {
+        enchantment_id: MAGIC_RETURN_ENCHANTMENT_ID,
         enchantment_name: "Retorno Mágico",
         enchantment_effect_type: "special_effect",
         enchantment_is_percentage: false,
@@ -591,7 +592,9 @@ describe("rangedResolver", () => {
     test("Should resolve has_magic_return as true when a special_effect (Retorno Mágico) entry is present", () => {
       const instance = {
         ...baseInstance,
-        enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-066" }],
+        enchantments: [
+          { id: "e1", enchantment_id: MAGIC_RETURN_ENCHANTMENT_ID },
+        ],
       };
 
       const result = resolveRangedWeapons(
@@ -609,7 +612,9 @@ describe("rangedResolver", () => {
     test("Should add enchantments_total_price on top of weapon_final_price for total_value, regardless of the enchantment's mechanical effect", () => {
       const instance = {
         ...baseInstance,
-        enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-066" }],
+        enchantments: [
+          { id: "e1", enchantment_id: MAGIC_RETURN_ENCHANTMENT_ID },
+        ],
       };
 
       const result = resolveRangedWeapons(

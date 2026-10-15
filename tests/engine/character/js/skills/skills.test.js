@@ -3,6 +3,7 @@ const {
   computeActions,
   MASTER_ELIGIBLE_CATEGORIES,
 } = require("engine/character/js/skills/skills");
+const { REFLEXOS_EM_COMBATE_ID } = require("helpers/ids.js");
 
 const assertShape = require("tests/helpers/assertShape");
 
@@ -100,16 +101,16 @@ describe("SKILL PARRY", () => {
     expect(nonParrySkill.parry).toBeNull();
   });
 
-  test("parry = 3 + floor(level / 2) + bonus (4e) — no ADV-055", () => {
+  test("parry = 3 + floor(level / 2) + bonus (4e) — no Reflexos em Combate", () => {
     // ESPADAS LONGAS bonus 0, level 14 → 3 + 7 = 10
     const result = buildSkills(skillsWithParry, character);
     expect(result.skills[parrySkillId].parry).toBe(10);
   });
 
-  test("parry = 3 + floor(level / 2) + bonus + 1 when ADV-055 present", () => {
+  test("parry = 3 + floor(level / 2) + bonus + 1 when Reflexos em Combate present", () => {
     // same: 3 + 7 + 1 = 11
     const result = buildSkills(skillsWithParry, character, {
-      "ADV-055": { advantage_name: "REFLEXOS EM COMBATE" },
+      [REFLEXOS_EM_COMBATE_ID]: { advantage_name: "REFLEXOS EM COMBATE" },
     });
     expect(result.skills[parrySkillId].parry).toBe(11);
   });
