@@ -1,5 +1,4 @@
-<details>
-<summary>1 - Movimento</summary>
+### 1 - Movimento
 
 <details>
 <summary>1. Deslocamento</summary>
@@ -38,10 +37,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>2 - Ataques</summary>
+### 2 - Ataques
 
 <details>
 <summary>1. Atacar</summary>
@@ -180,10 +176,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>3 - Defesa</summary>
+### 3 - Defesa
 
 <details>
 <summary>1. Defesa Ativa</summary>
@@ -238,10 +231,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>4 - Marciais e Combate Corpo a Corpo</summary>
+### 4 - Marciais e Combate Corpo a Corpo
 
 <details>
 <summary>1. Agarrar</summary>
@@ -301,10 +291,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>5 - Especiais</summary>
+### 5 - Especiais
 
 <details>
 <summary>1 - Mecânica de Combos Customizados</summary>
@@ -314,7 +301,5 @@ As Manobras Combinadas funcionam como Técnicas Difíceis (compradas com pontos 
 - **Funcionamento:** Permitem realizar uma sequência fixa de ataques ou fintas pré-treinados (ex: _Finta com a Espada seguida de Chute na Canela_) em um único turno.
 - **Penalidades Fixas:** Todas as penalidades por usar a mão inábil, ataques múltiplos e ataques a partes específicas do corpo (tabela de localização de dano) são somadas no momento de criação da técnica e vão diminuindo conforme o jogador investe CP (Pontos de Personagem) nela.
 - **Ativação:** Exige declarar uma manobra base de _Atacar_ ou _Ataque Total_ para colocar a combinação em prática na rodada.
-
-</details>
 
 </details>

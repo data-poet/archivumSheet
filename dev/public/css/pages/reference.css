@@ -73,8 +73,21 @@
   padding-bottom: 0.25em;
 }
 
+/* Section headings between item lists: an accent bar marks where each part of the tab starts. */
 .reference-prose h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   font-size: 1.05em;
+}
+
+.reference-prose h3::before {
+  content: "";
+  flex-shrink: 0;
+  width: 4px;
+  height: 1.1em;
+  border-radius: 2px;
+  background: var(--_section-accent, var(--accent-combat));
 }
 
 .reference-prose h4 {
@@ -162,39 +175,31 @@
   font-weight: 700;
 }
 
-/* Top-level <details> are boxed groups; nested ones become plain uppercase item headers inside them. */
-.reference-prose > details {
-  margin-bottom: var(--space-4);
+/* js/reference/enhance.js wraps each run of <details> in .reference-list: one box of rows, the open
+   row marked by an accent bar and tint. Headings (###) carry the structure between lists. */
+.reference-list {
+  margin-bottom: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
-.reference-prose > details > *:not(summary) {
-  padding: var(--space-2) var(--space-5);
-}
-
-.reference-prose > details[open] > summary {
-  border-bottom: 1px solid var(--color-border);
-}
-
-.reference-prose summary {
-  scroll-margin-top: calc(var(--topbar-h) + var(--groupnav-h) + var(--space-4));
-}
-
-/* Nested items render as full-bleed list rows; the open one gets an accent bar and tint. */
-.reference-prose > details > details {
-  padding: 0;
-}
-
-.reference-prose details details {
+.reference-list > details {
   margin: 0;
   border: none;
   border-top: 1px solid var(--color-border);
   border-radius: 0;
 }
 
-.reference-prose details details > summary {
+.reference-list > details:first-child {
+  border-top: none;
+}
+
+.reference-prose summary {
+  scroll-margin-top: calc(var(--topbar-h) + var(--groupnav-h) + var(--space-4));
+}
+
+.reference-list > details > summary {
   border-left: 3px solid transparent !important;
   background: none;
   color: var(--color-text);
@@ -204,7 +209,7 @@
   min-height: 44px;
 }
 
-.reference-prose details details[open] {
+.reference-list > details[open] {
   background: color-mix(
     in srgb,
     var(--_section-accent, var(--accent-combat)) 4%,
@@ -212,7 +217,7 @@
   );
 }
 
-.reference-prose details details[open] > summary {
+.reference-list > details[open] > summary {
   border-left-color: var(--_section-accent, var(--accent-combat)) !important;
   border-bottom-color: transparent;
   background: color-mix(
@@ -223,13 +228,46 @@
 }
 
 /* Left padding lines the body up with the summary text, past the chevron. */
-.reference-prose details details > *:not(summary) {
+.reference-list > details > *:not(summary) {
   padding: var(--space-2) var(--space-5) var(--space-2)
     calc(var(--space-5) + 12px + var(--space-4));
 }
 
-.reference-prose details details > :last-child:not(summary) {
+.reference-list > details > :last-child:not(summary) {
   padding-bottom: var(--space-4);
+}
+
+/* Worked examples: a compact tinted disclosure, distinct from list rows, usable inside an item. */
+.reference-prose details.reference-example {
+  margin: 0 0 0.8em;
+  padding: 0;
+  border: none;
+  border-left: 4px solid var(--_section-accent, var(--accent-combat));
+  border-radius: var(--radius-sm);
+  background: color-mix(
+    in srgb,
+    var(--_section-accent, var(--accent-combat)) 8%,
+    var(--color-surface)
+  );
+}
+
+.reference-prose details.reference-example > summary {
+  min-height: 36px;
+  padding: var(--space-3) var(--space-5);
+  border: none !important;
+  background: none;
+  color: var(--color-text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.reference-prose details.reference-example > *:not(summary) {
+  padding: 0 var(--space-5) var(--space-3);
+}
+
+/* Inside a list row, line the example up with the row's body text. */
+.reference-list > details > details.reference-example {
+  margin: 0 var(--space-5) 0.8em calc(var(--space-5) + 12px + var(--space-4));
 }
 
 .summary-title {
@@ -269,8 +307,9 @@
   margin-bottom: 0;
 }
 
-/* A formula inside a callout already sits on the callout's tint. */
-.markdown-alert .katex-display {
+/* A formula inside a callout or example already sits on its tint. */
+.markdown-alert .katex-display,
+.reference-example .katex-display {
   padding-inline: 0;
   background: none;
   border-left: none;
@@ -301,9 +340,6 @@
 }
 .markdown-alert-house {
   --_alert: var(--accent-traits);
-}
-.markdown-alert-example {
-  --_alert: var(--_section-accent, var(--accent-combat));
 }
 
 /* [[term]] links: inline text with a dotted underline, opening a native popover with the definition. */

@@ -1,5 +1,4 @@
-<details>
-<summary>Locais Base</summary>
+### Locais Base
 
 <details>
 <summary>Tronco (Torso) | Redutor: 0</summary>
@@ -43,10 +42,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>Membros e Extremidades</summary>
+### Membros e Extremidades
 
 <details>
 <summary>Braço ou Perna | Redutor: -2</summary>
@@ -74,10 +70,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>Cabeça e Pescoço</summary>
+### Cabeça e Pescoço
 
 <details>
 <summary>Cérebro | Redutor: -7</summary>
@@ -124,10 +117,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>Alvos Especiais e Equipamento</summary>
+### Alvos Especiais e Equipamento
 
 <details>
 <summary>Frestas na Armadura | Redutor: -8</summary>
@@ -148,7 +138,5 @@
   - Arma Pequena (Espada Curta, Pistola): **-5**
   - Arma Muito Pequena (Faca, Adaga): **-7**
 - **Regra:** Em caso de acerto, o dano é aplicado diretamente contra a RD e os [[PV]] estruturais da arma do oponente.
-
-</details>
 
 </details>

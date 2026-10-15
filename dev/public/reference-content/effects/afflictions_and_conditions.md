@@ -1,5 +1,4 @@
-<details>
-<summary>Condições Irritantes</summary>
+### Condições Irritantes
 
 <details>
 <summary>Tosse ou Espirro (Coughing or Sneezing)</summary>
@@ -63,21 +62,15 @@
 
 </details>
 
-</details>
+### Condições Incapacitantes
 
-<details>
-<summary>Condições Incapacitantes</summary>
-
-<details>
-<summary>Regras Gerais de Incapacitação</summary>
+**Regras Gerais de Incapacitação**
 
 - **Ações:** Impedem a realização de ações voluntárias durante a sua vigência.
 - **Atordoamento:** Você fica efetivamente atordoado (**-4 nas defesas ativas**). Em combate, deve declarar a manobra **Fazer Nada** no seu turno.
 - **Movimentação:**
   - Se a aflição permitir cair, você pode sentar, ajoelhar ou deitar-se (se estiver de pé), ou deitar-se (se estiver ajoelhado ou sentado).
   - Se permitir cambalear, você pode cair, mudar a orientação da frente ou dar um passo/rastejar um metro.
-
-</details>
 
 <details>
 <summary>Agonia (Agony)</summary>
@@ -161,10 +154,7 @@
 
 </details>
 
-</details>
-
-<details>
-<summary>Condições Mortais</summary>
+### Condições Mortais
 
 <details>
 <summary>Coma (Coma)</summary>
@@ -182,7 +172,5 @@
 - **Risco de Morte:** Morrerá em **HT / 3** minutos a menos que seja reanimado (veja _Ressuscitação_, p. 425).
 - **Sobrevivência:** Se sobreviver, ficará com 0 PV ou com seus PVs atuais, o que for pior.
 - **Imunidades:** _Tolerância a Ferimentos (Difuso, Homogêneo ou Sem Órgãos Vitais)_ concede imunidade a esta aflição.
-
-</details>
 
 </details>

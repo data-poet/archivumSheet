@@ -2,25 +2,50 @@
 // (conventions in reference-content/README.md).
 
 const BADGE_SEPARATOR = " | ";
+const EXAMPLE_TITLE = /^Exemplos?$/;
 // Cells longer than this mean prose rows, which read better as stacked cards on phones;
 // short numeric tables (e.g. the damage table) stay tabular.
 const CARD_CELL_CHARS = 80;
 
-// Sibling <details> share a `name`, so the browser keeps at most one of them open.
-function _linkAccordions(panel) {
-  let group = 0;
-  const containers = [
-    panel.querySelector(".reference-prose"),
-    ...panel.querySelectorAll(".reference-prose details"),
-  ].filter(Boolean);
+// "Exemplo" disclosures are the one nesting the conventions allow; they get their own compact
+// style and never join an item list.
+function _markExamples(panel) {
+  panel.querySelectorAll(".reference-prose details").forEach((details) => {
+    const title = details.querySelector(":scope > summary")?.textContent.trim();
+    if (EXAMPLE_TITLE.test(title ?? ""))
+      details.classList.add("reference-example");
+  });
+}
 
-  containers.forEach((container) => {
-    const siblings = Array.from(container.children).filter(
-      (el) => el.tagName === "DETAILS",
-    );
-    if (siblings.length < 2) return;
-    const name = `${panel.id}-accordion-${group++}`;
-    siblings.forEach((details) => details.setAttribute("name", name));
+// Each run of consecutive <details> becomes one boxed list of rows, and its items share a
+// `name`, so the browser keeps at most one of them open.
+function _groupItemLists(panel) {
+  const prose = panel.querySelector(".reference-prose");
+  if (!prose) return;
+
+  const runs = [];
+  let run = null;
+  Array.from(prose.children).forEach((el) => {
+    if (
+      el.tagName !== "DETAILS" ||
+      el.classList.contains("reference-example")
+    ) {
+      run = null;
+      return;
+    }
+    if (!run) runs.push((run = []));
+    run.push(el);
+  });
+
+  runs.forEach((items, i) => {
+    const list = document.createElement("div");
+    list.className = "reference-list";
+    items[0].before(list);
+    items.forEach((details) => {
+      if (items.length > 1)
+        details.setAttribute("name", `${panel.id}-list-${i}`);
+      list.appendChild(details);
+    });
   });
 }
 
@@ -63,7 +88,8 @@ function _labelTableCells(panel) {
 }
 
 export function enhanceProse(panel) {
-  _linkAccordions(panel);
+  _markExamples(panel);
+  _groupItemLists(panel);
   _splitSummaryBadges(panel);
   _labelTableCells(panel);
 }

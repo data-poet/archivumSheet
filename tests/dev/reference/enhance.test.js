@@ -17,19 +17,43 @@ const item = (title) =>
 
 beforeEach(() => resetDOM());
 
-describe("enhanceProse — accordions", () => {
-  test("siblings at each level share a name per container; a lone details gets none", () => {
+describe("enhanceProse — item lists", () => {
+  test("wraps each run of details in its own list, sharing a name per run", () => {
     const panel = panelWith(`
-      <details><summary>G1</summary>${item("a")}${item("b")}</details>
-      <details><summary>G2</summary>${item("c")}</details>`);
+      <h3>A</h3>${item("a1")}${item("a2")}
+      <h3>B</h3>${item("b1")}${item("b2")}
+      <p>texto</p>${item("solo")}`);
     enhanceProse(panel);
 
-    const [g1, g2] = panel.querySelectorAll(".reference-prose > details");
-    const [a, b] = g1.querySelectorAll(":scope > details");
-    expect(g1.getAttribute("name")).toBe(g2.getAttribute("name"));
-    expect(a.getAttribute("name")).toBe(b.getAttribute("name"));
-    expect(a.getAttribute("name")).not.toBe(g1.getAttribute("name"));
-    expect(g2.querySelector("details").hasAttribute("name")).toBe(false);
+    const lists = panel.querySelectorAll(".reference-prose > .reference-list");
+    expect(lists).toHaveLength(3);
+    const [a, b, solo] = Array.from(lists, (list) =>
+      Array.from(list.children, (d) => d.getAttribute("name")),
+    );
+    expect(a[0]).toBe(a[1]);
+    expect(b[0]).toBe(b[1]);
+    expect(a[0]).not.toBe(b[0]);
+    expect(solo).toEqual([null]);
+    expect(lists[0].previousElementSibling.tagName).toBe("H3");
+  });
+
+  test("Exemplo disclosures get their own class and stay out of item lists", () => {
+    const panel = panelWith(
+      `<p>texto</p>${item("Exemplo")}${item("a")}<details><summary>b</summary>${item("Exemplos")}</details>`,
+    );
+    enhanceProse(panel);
+
+    const examples = panel.querySelectorAll(".reference-example");
+    expect(
+      Array.from(examples, (d) => d.querySelector("summary").textContent),
+    ).toEqual(["Exemplo", "Exemplos"]);
+    expect(examples[0].parentElement.classList.contains("reference-list")).toBe(
+      false,
+    );
+    const list = panel.querySelector(".reference-list");
+    expect(
+      Array.from(list.children, (d) => d.querySelector("summary").textContent),
+    ).toEqual(["a", "b"]);
   });
 });
 

@@ -6,24 +6,27 @@ Placing a file: add it to `js/reference/referenceLayout.js` and add its label to
 ## File structure
 
 - No title at the top. The tab already shows the name.
-- An optional short intro paragraph, then groups.
-- Groups are top-level `<details>` and render as boxes. Items are `<details>` inside a group and render as list rows.
-- Use at most two levels. A file whose blocks don't need grouping can use top-level `<details>` only.
-- Only one sibling stays open at a time: opening an item closes the item that was open at the same level (added at render, no markup needed).
-- **Collapse only long content** (more than about five lines). Short notes, examples and formulas stay visible: use a callout instead of a `<details>`.
+- Structure comes from `###` headings, which stay visible. Collapsibles are only for **lists of peers you look up one at a time** (maneuvers, conditions, hit locations, long tables).
+- **Never nest `<details>`**, with one exception: worked examples. If an item has parts, label them in bold inside it.
+- Consecutive `<details>` render as one boxed list of rows, and only one row per list stays open (added at render, no markup needed).
+- **Collapse only long content** (more than about five lines). Short tabs, under about 500 words, use headings and no collapsibles. Short notes and formulas stay visible: use a callout.
 
 ```markdown
 Intro opcional.
 
-<details>
-<summary>Grupo</summary>
+### Seção
 
 <details>
-<summary>Item</summary>
+<summary>Item | badge opcional</summary>
 
 - **Termo:** conteúdo em markdown.
 
 </details>
+
+<details>
+<summary>Outro item</summary>
+
+Texto.
 
 </details>
 ```
@@ -39,7 +42,7 @@ Markup rules (marked only parses markdown inside HTML blocks when they're separa
 ## Inside an item
 
 - Use paragraphs and lists. For definitions, start a list item with a bold label: `- **Termo:** texto`.
-- No `#` headings. Group with `<details>`, label with bold.
+- No headings inside an item; use bold labels (`**Parte**` or `- **Termo:**`).
 - Bold dice and modifiers: `**3d6**`, `**-2**`, `**+1**`.
 - Put formulas in KaTeX display math:
 
@@ -49,17 +52,31 @@ Markup rules (marked only parses markdown inside HTML blocks when they're separa
   $$
   ```
 
+## Examples
+
+Worked examples always go in a collapsible titled `Exemplo` (or `Exemplos` for a list). It renders as a compact tinted box, can sit inside an item, and stays out of the item list:
+
+```markdown
+<details>
+<summary>Exemplo</summary>
+
+$$
+\text{PV} = 32
+$$
+
+</details>
+```
+
 ## Callouts
 
 Use one blockquote callout per note, never emoji-prefixed quotes:
 
-| Syntax         | Title         | Use for                                           |
-| -------------- | ------------- | ------------------------------------------------- |
-| `> [!NOTE]`    | Nota          | Extra context                                     |
-| `> [!TIP]`     | Dica          | Practical advice                                  |
-| `> [!WARNING]` | Atenção       | Limits, exceptions, common mistakes               |
-| `> [!HOUSE]`   | Regra da Mesa | Archivum house rules that differ from 4e          |
-| `> [!EXAMPLE]` | Exemplo       | Worked examples (formulas and tables work inside) |
+| Syntax         | Title         | Use for                                  |
+| -------------- | ------------- | ---------------------------------------- |
+| `> [!NOTE]`    | Nota          | Extra context                            |
+| `> [!TIP]`     | Dica          | Practical advice                         |
+| `> [!WARNING]` | Atenção       | Limits, exceptions, common mistakes      |
+| `> [!HOUSE]`   | Regra da Mesa | Archivum house rules that differ from 4e |
 
 ```markdown
 > [!HOUSE]

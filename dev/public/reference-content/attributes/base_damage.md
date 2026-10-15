@@ -8,8 +8,7 @@ O dano é escrito como dados mais bônus: **1d6-2** significa rolar um dado de s
 > [!NOTE]
 > Armas e ataques específicos somam seus próprios modificadores a este dano básico. Os modificadores de GDP e BAL na ficha também são somados ao bônus da tabela.
 
-<details>
-<summary>Tabela de dano (ST 1 a 100)</summary>
+### Tabela de dano (ST 1 a 100)
 
 Uma ST entre dois valores da tabela usa a linha imediatamente abaixo. Por exemplo, ST 32 usa a linha da ST 31.
 
@@ -65,10 +64,7 @@ Uma ST entre dois valores da tabela usa a linha imediatamente abaixo. Por exempl
 
 — significa sem dano básico.
 
-</details>
-
-<details>
-<summary>Acima de ST 100</summary>
+### Acima de ST 100
 
 O dano sobe **1 dado a cada 10 de ST**, sem bônus fixo, e o BAL fica sempre 2 dados à frente do GDP:
 
@@ -79,5 +75,3 @@ $$
 $$
 
 Por exemplo, ST 125: GDP **13d6** e BAL **15d6**.
-
-</details>

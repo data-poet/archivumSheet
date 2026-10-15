@@ -25,8 +25,23 @@ describe.each(files)("%s", (_file, markdown) => {
     expect(markdown).not.toMatch(/<summary>\s*<b>/);
   });
 
-  test("uses callout syntax instead of emoji-prefixed quotes or collapsed examples", () => {
+  test("never nests <details>, except an Exemplo inside an item", () => {
+    let depth = 0;
+    for (const match of markdown.matchAll(
+      /<\/?details>(\n<summary>(.*)<\/summary>)?/g,
+    )) {
+      if (match[0] === "</details>") {
+        depth -= 1;
+        continue;
+      }
+      depth += 1;
+      if (depth > 1) expect(match[2]).toMatch(/^Exemplos?$/);
+      expect(depth).toBeLessThanOrEqual(2);
+    }
+  });
+
+  test("uses callout syntax instead of emoji-prefixed quotes, and Exemplo disclosures for examples", () => {
     expect(markdown).not.toMatch(/^>\s*(⚠️|🗡️|💡|ℹ️)/mu);
-    expect(markdown).not.toMatch(/<summary>Exemplos?<\/summary>/);
+    expect(markdown).not.toMatch(/\[!EXAMPLE\]/);
   });
 });

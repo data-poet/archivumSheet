@@ -1,15 +1,11 @@
 <details>
 <summary>Crit Coins (Moedas do Destino)</summary>
 
-<details>
-<summary>Conceito e Adquisição</summary>
+**Conceito e Adquisição**
 
 As **Crit Coins** são recursos especiais concedidos pelo Mestre em momentos de destaque na narrativa, interpretação memorável ou feitos heroicos.
 
-</details>
-
-<details>
-<summary>Utilização</summary>
+**Utilização**
 
 - **Momento de Uso:** Um jogador pode optar por gastar uma _Crit Coin_ em **qualquer rolagem de dados** realizada por seu personagem.
 - **Mecânica:** O jogador lança a moeda junto com a rolagem habitual da ação.
@@ -22,13 +18,10 @@ As **Crit Coins** são recursos especiais concedidos pelo Mestre em momentos de 
 
 </details>
 
-</details>
-
 <details>
 <summary>Uso Livre de Consumíveis Alquímicos</summary>
 
-<details>
-<summary>Mecânica de Uso em Combate</summary>
+**Mecânica de Uso em Combate**
 
 Durante o combate, os personagens possuem maior agilidade e facilidade no acesso aos seus itens de apoio alquímico:
 
@@ -38,23 +31,17 @@ Durante o combate, os personagens possuem maior agilidade e facilidade no acesso
 
 </details>
 
-</details>
-
 <details>
 <summary>Testes Dinâmicos (Ataques Arriscados)</summary>
 
-<details>
-<summary>Ajuste Voluntário de Dificuldade</summary>
+**Ajuste Voluntário de Dificuldade**
 
 Os jogadores podem voluntariamente assumir riscos maiores em suas jogadas para infligir um impacto devastador ao alvo:
 
 - **Mecânica:** O jogador declara um **redutor voluntário** no seu Nível de Habilidade ([[NH]]) efetivo antes de realizar a rolagem.
 - **Bônus de Dano:** Caso o ataque seja bem-sucedido, o dano do golpe receberá um **bônus direto igual ao valor do redutor escolhido**.
 
-</details>
-
-<details>
-<summary>Margem de Crítico Expandida por NH</summary>
+**Margem de Crítico Expandida por NH**
 
 Ao utilizar os Testes Dinâmicos (ou em jogadas padrão), a margem para obter um **Acerto Crítico** em 3d6 obedece aos limites de NH efetivo do personagem:
 
@@ -66,29 +53,20 @@ Ao utilizar os Testes Dinâmicos (ou em jogadas padrão), a margem para obter um
 |           **7**           | Requer **NH efetivo 20 ou mais**.             |
 |           **8**           | Requer **NH efetivo 24 ou mais**.             |
 
-</details>
-
-<details>
-<summary>Acertos Críticos Dinâmicos</summary>
+**Acertos Críticos Dinâmicos**
 
 Se a rolagem do Teste Dinâmico resultar em um **Acerto Crítico** (de acordo com a tabela acima), o ataque acumulará **tanto os benefícios da Tabela de Acertos Críticos quanto o bônus de dano adicional** proveniente do redutor voluntário escolhido.
-
-</details>
 
 </details>
 
 <details>
 <summary>O Último Suspiro (Morte Épica)</summary>
 
-<details>
-<summary>Condição de Ativação</summary>
+**Condição de Ativação**
 
 Quando um personagem falhar em todos os testes de sobrevivência/[[HT]] necessários para se manter vivo e sua morte for inevitável em termos de regras, a regra do **Último Suspiro** é acionada.
 
-</details>
-
-<details>
-<summary>O Turno Final</summary>
+**O Turno Final**
 
 - **Ação Heroica:** Em vez de ser removido imediatamente de jogo, o personagem ganha direito a **uma última ação instantânea** antes de sucumbir.
 - **Garantia de Crítico:** Qualquer teste ou rolagem realizada nesta última ação será considerado um **Acerto Crítico automático**, **independentemente do resultado dos dados**.
@@ -97,7 +75,5 @@ Quando um personagem falhar em todos os testes de sobrevivência/[[HT]] necessá
 
 > [!NOTE]
 > **Propósito:** Esta regra existe para permitir que a despedida de um personagem seja memorável, heroica e com impacto significativo na história da campanha.
-
-</details>
 
 </details>

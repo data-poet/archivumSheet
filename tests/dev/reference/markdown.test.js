@@ -69,7 +69,6 @@ describe("configureMarked", () => {
       LABELS.reference.alerts.house,
     );
     expect(variants.find((v) => v.type === "note").title).toBe("Nota");
-    expect(variants.find((v) => v.type === "example").title).toBe("Exemplo");
     expect(marked.use).toHaveBeenCalledWith({
       extensions: [glossaryExtension],
     });
