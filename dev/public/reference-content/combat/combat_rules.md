@@ -25,13 +25,13 @@
 O dano causado aos personagens pelos ataques de seus inimigos e por outras fontes acarreta as seguintes consequências (os efeitos são cumulativos):
 
 - **Menos do que 1/3 dos Pontos de Vida:** O [[Deslocamento]] e a [[Esquiva]] atuais caem pela metade, arredondando para cima. A [[VB]] não muda.
-- **Número de Pontos de Vida igual ou inferior a 0:** O personagem precisa ser bem-sucedido em um teste de [[HT]] a cada rodada, submetido a um redutor de **-1 para cada múltiplo inteiro negativo** do valor básico dos seus Pontos de Vida de dano sofrido, para não desmaiar, exceto se não foi obrigado a utilizar nenhuma Defesa Ativa até o momento e não fizer nada em seu turno.
+- **Número de Pontos de Vida igual ou inferior a 0:** O personagem precisa ser bem-sucedido em um teste de [[HT]] a cada rodada, submetido a um redutor de **-1 para cada múltiplo inteiro negativo da HT** que os PV tiverem alcançado, para não desmaiar, exceto se não foi obrigado a utilizar nenhuma Defesa Ativa até o momento e não fizer nada em seu turno.
 - **Número de Pontos de Vida igual a -HT:** O personagem precisa ser bem-sucedido em um teste de HT para não morrer. Daí em diante, um novo teste será necessário sempre que ele sofrer dano suficiente para alcançar outro múltiplo inteiro negativo da HT (por exemplo, se ele possuir HT 11, deverá fazer um teste ao alcançar -11 PV, outro ao alcançar -22 PV e assim por diante).
 - **Número de Pontos de Vida igual a -5 × HT:** O personagem morre automaticamente, independentemente de o dano ter sido causado por vários ataques ao longo de um combate ou por um único golpe.
 - **Número de Pontos de Vida igual a -10 × HT:** O corpo do personagem é completamente destruído, desde que a fonte do dano seja capaz disso.
 
 > [!HOUSE]
-> Os limiares de morte usam a HT (**base + raça + meta-raça**), não os PV. Assim, personagens com muitos PV não ganham uma margem enorme antes da morte.
+> Os limiares de morte e o redutor do teste para não desmaiar usam a HT (**base + raça + meta-raça**), não os PV. Assim, personagens com muitos PV não ganham uma margem enorme antes da morte.
 
 Veja o exemplo completo em Personagem › Atributos › Secundários › Pontos de Vida.
 

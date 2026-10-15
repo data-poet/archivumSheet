@@ -30,7 +30,7 @@ Os testes para não morrer usam a [[HT]], não os PV. Assim, personagens com mui
 > [!HOUSE]
 > A HT usada aqui é a **base + raça + meta-raça**. Equipamentos, encantamentos e efeitos temporários não contam.
 
-- **PV ≤ 0:** teste de HT a cada rodada para não desmaiar.
+- **PV ≤ 0:** teste de HT a cada rodada para não desmaiar, com **-1** para cada múltiplo de -HT alcançado.
 - **PV = -1 × HT:** teste de HT para não morrer, repetido a cada novo múltiplo negativo de HT.
 - **PV = -5 × HT:** morte automática.
 - **PV = -10 × HT:** o corpo é destruído, se a fonte do dano for capaz disso.
