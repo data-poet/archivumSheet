@@ -160,11 +160,11 @@
 </details>
 
 <details>
-<summary>Concentrar & Avançar e Concentrar</summary>
+<summary>Concentrar</summary>
 
 - **Descrição:** Realizar uma magia ou tarefa mental que exija foco absoluto.
-- **Movimento:** Na variação _Avançar e Concentrar_, permite mover-se até metade do Deslocamento (arredondado para baixo) em qualquer direção.
-- **Testes de Interrupção:** Qualquer defesa ativa é permitida enquanto se concentra. Contudo, defender-se quebra o foco: exige um teste bem-sucedido de **Vontade** (ou **[[IQ]]-3** se estiver se movendo) para não perder a magia/concentração.
+- **Movimento:** Pode dar um passo.
+- **Testes de Interrupção:** Qualquer defesa ativa é permitida enquanto se concentra. Se você se defender, sofrer dano, for derrubado ou distraído de outra forma, faça um teste de **[[Vontade]]-3** para não perder a magia ou a concentração.
 
 </details>
 

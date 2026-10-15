@@ -37,7 +37,7 @@ Com 35 de Mana, abaixo de **11,67** o personagem com Deslocamento 5, Esquiva 9 e
 <details>
 <summary>Recuperando Mana</summary>
 
-- **Descanso:** cada 10 minutos de repouso recuperam **1** de Mana. Conversar, ler ou pensar conta como descanso; marchar, lutar ou conjurar não.
+- **Descanso:** uma boa noite de descanso recupera uma parte da Mana máxima, conforme a área de mana (veja Magia › Conjuração › Áreas de mana).
 - **Comida:** a Mana perdida por fome só volta comendo e descansando.
 - **Água:** a Mana perdida por sede só volta bebendo.
 - **Sono:** a Mana perdida por noites sem dormir só volta com uma noite de sono.
@@ -47,10 +47,10 @@ Com 35 de Mana, abaixo de **11,67** o personagem com Deslocamento 5, Esquiva 9 e
 
 ### Cura natural
 
-Ao fim de cada dia de descanso, o personagem faz um teste de **[[HT]]**. Com sucesso, recupera **1 PV**. Sob os cuidados de alguém com Medicina, ele ganha **+1** nesse teste.
+Uma boa noite de descanso recupera **4 PV**.
 
-> [!NOTE]
-> A taxa da 4e foi feita para PV bem menores. Com os PV do Archivum, ela é muito lenta; o Mestre decide se ajusta.
+> [!HOUSE]
+> No 4e a cura natural é um teste de HT por dia para recuperar 1 PV. No Archivum, com PV cerca de 3× maiores, cada boa noite de descanso recupera 4 PV, sem teste.
 
 ### Primeiros Socorros
 

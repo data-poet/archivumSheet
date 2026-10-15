@@ -8,15 +8,18 @@ Perigos do ambiente que ferem ou cansam sem precisar de um inimigo. O cansaço s
 <details>
 <summary>Queda | dano por altura</summary>
 
-Uma queda causa dano por contusão que depende dos PV de quem cai e da velocidade no impacto.
+Uma queda causa dano por contusão que depende da [[ST]] de quem cai e da velocidade no impacto.
 
 $$
 \text{velocidade} = \sqrt{21{,}4 \times \text{altura em metros}}
 $$
 
 $$
-\text{dados de dano} = \frac{\text{PV} \times \text{velocidade}}{100}
+\text{dados de dano} = \frac{\text{ST} \times \text{velocidade}}{100}
 $$
+
+> [!HOUSE]
+> No 4e a fórmula usa os PV, que lá valem a ST. No Archivum os PV são cerca de 3× maiores, então use a ST.
 
 Arredonde para o dado mais próximo. Abaixo de meio dado, o dano é **1d-3**; de meio dado até 1 dado, **1d-2**.
 
@@ -39,10 +42,10 @@ Arredonde para o dado mais próximo. Abaixo de meio dado, o dano é **1d-3**; de
 <details>
 <summary>Exemplo</summary>
 
-Queda de 10 m com 32 PV:
+Queda de 10 m com ST 12:
 
 $$
-\frac{32 \times 15}{100} = 4{,}8 \approx \textbf{5d}
+\frac{12 \times 15}{100} = 1{,}8 \approx \textbf{2d}
 $$
 
 </details>
@@ -50,16 +53,16 @@ $$
 </details>
 
 <details>
-<summary>Colisões | PV × velocidade</summary>
+<summary>Colisões | ST × velocidade</summary>
 
 Bater em algo, ou ser atingido por algo grande em movimento, causa dano por contusão com a mesma fórmula da queda. Use a velocidade relativa entre os dois.
 
 $$
-\text{dados de dano} = \frac{\text{PV} \times \text{velocidade}}{100}
+\text{dados de dano} = \frac{\text{ST} \times \text{velocidade}}{100}
 $$
 
-- **Objeto imóvel:** um muro ou rocha usa os PV de quem colide; quem bate sofre todo o dano.
-- **Dois corpos em movimento:** cada um causa ao outro o dano calculado com os próprios PV.
+- **Objeto imóvel:** um muro ou rocha usa a ST de quem colide; quem bate sofre todo o dano.
+- **Dois corpos em movimento:** cada um causa ao outro o dano calculado com a própria ST.
 - **Projeção:** quem é projetado contra uma parede sofre o dano como se tivesse sido arremessado. Veja Combate › Regras › Projeção.
 
 </details>
@@ -92,6 +95,7 @@ $$
 - **Falha:** perde **1** de Mana. Quando a Mana chega a 0, a perda passa a sair dos PV, como em qualquer fadiga.
 - **Roupas:** roupas de inverno dão bônus grandes; roupas comuns ou molhadas dão redutores.
 - **Vento e água:** vento forte agrava o frio; cair em água gelada exige testes muito mais frequentes.
+- **Dano por frio:** frio que causa dano direto (gelo mágico, sopro gélido) conta como elemento **Água**: aplique a resistência a Água depois da [[RD]].
 
 </details>
 

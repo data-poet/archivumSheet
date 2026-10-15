@@ -12,9 +12,10 @@
 <summary>Órgãos Vitais (Coração e Pulmões) | Redutor: -5</summary>
 
 - **Restrição de Direção:** Somente podem ser atingidos por ataques provenientes da **vanguarda (frente)** do alvo.
-- **Tipos de Dano Elegíveis:** Perfuração.
+- **Tipos de Dano Elegíveis:** Perfuração e Empalamento.
 - **Modificadores de Dano:**
   - Perfuração: **Dano x3**.
+  - Empalamento: **Dano x3**.
 
 </details>
 

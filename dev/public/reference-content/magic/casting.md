@@ -10,15 +10,15 @@ O **tipo** diz o que o feitiço faz: Manipulação, Invocação, Debilitação, 
 
 A **dificuldade** usa as letras das perícias: **F** (Fácil), **M** (Média), **D** (Difícil) e **MD** (Muito Difícil). Ela só influencia o custo em pontos de personagem.
 
-O **tier** não é escolhido: ele vem do nível final do feitiço. Cada feitiço tem uma versão por tier, e a ficha mostra os dados da versão que você alcançou. Subir de tier costuma aumentar alcance, área, dano ou duração, e baratear o escalonamento.
+O **tier** não é escolhido: ele vem do nível final do feitiço. Cada feitiço tem uma versão por tier, e a ficha mostra os dados da versão que você alcançou. Subir de tier costuma aumentar alcance, área, dano ou duração, e baratear o escalonamento. O tier também define o ritual necessário para conjurar.
 
-| Tier         | Nível final |
-| ------------ | ----------- |
-| Aprendiz     | até 12      |
-| Experiente   | 13 a 15     |
-| Veterano     | 16 e 17     |
-| Especialista | 18 e 19     |
-| Mestre       | 20+         |
+| Tier         | Nível final | Forma de conjuração                                                                                                             |
+| ------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Aprendiz     | até 12      | Pronunciar algumas palavras em voz baixa e fazer um gesto.                                                                      |
+| Experiente   | 13 a 15     | Dizer uma ou duas palavras e gesticular; alguns dedos bastam.                                                                   |
+| Veterano     | 16 e 17     | Dizer uma ou duas palavras **ou** fazer um pequeno gesto, não necessariamente ambos.                                            |
+| Especialista | 18 e 19     | Nenhum ritual: o mago parece apenas contemplar o espaço. Pode se concentrar enquanto faz outra manobra (lutar, conversar etc.). |
+| Mestre       | 20+         | Como Especialista, e pode conjurar **dois feitiços no mesmo turno**.                                                            |
 
 <details>
 <summary>Campos do card</summary>
@@ -89,7 +89,7 @@ Para lançar um feitiço, role **3d6** contra o NH Final, com os modificadores d
 
 Feitiços de ataque, como Projétil, Jato e Sopro, pedem também uma jogada de ataque depois de conjurados, conforme a descrição.
 
-Enquanto se concentra, o mago pode se defender. Pela regra do GURPS 4e, se ele se defender, sofrer dano, for derrubado ou distraído de outra forma, precisa passar num teste de **[[Vontade]]-3** para não perder o feitiço. O redutor de choque do dano também se aplica ao teste de conjuração no turno seguinte.
+Enquanto se concentra, o mago pode se defender. Se ele se defender, sofrer dano, for derrubado ou distraído de outra forma, precisa passar num teste de **[[Vontade]]-3** para não perder o feitiço. O redutor de choque do dano também se aplica ao teste de conjuração no turno seguinte. A partir do tier Especialista, ele pode se concentrar enquanto realiza outra manobra.
 
 **Acerto Crítico:** o feitiço funciona sem custo de Mana e com um resultado especialmente bom, a critério do Mestre.
 
@@ -99,25 +99,20 @@ As faixas de crítico são as normais do [[NH]]: veja Combate › Regras › Ace
 
 ### Custo em Mana
 
-Ao conjurar, pague a Mana listada no card, mais o que você escolher pelo escalonamento. Uma falha comum gasta **1** ponto de Mana; um sucesso ou uma Falha Crítica gasta o custo cheio.
+Ao conjurar, pague a Mana listada no card, mais o que você escolher pelo escalonamento. O custo não diminui com o NH.
+
+- **Sucesso:** gasta o custo cheio.
+- **Falha comum:** gasta **1** de Mana.
+- **Acerto Crítico:** não gasta Mana.
+- **Falha Crítica:** gasta o custo cheio.
 
 > [!HOUSE]
 > No Archivum, feitiços gastam [[Mana]], não pontos de Fadiga.
 
-Quem domina bem o feitiço gasta menos:
-
-| NH Final | Desconto |
-| -------- | -------- |
-| 15 a 19  | **-1**   |
-| 20 a 24  | **-2**   |
-| 25 a 29  | **-3**   |
-
-E assim por diante: **-1** a mais a cada 5 níveis.
-
 <details>
 <summary>Exemplo</summary>
 
-Um feitiço de custo **8** sai por **8** com NH 14, **7** com NH 16 e **6** com NH 20. Com 35 de Mana e NH 16, o mago consegue lançá-lo **5** vezes antes de ficar com Mana muito baixa.
+Um feitiço de custo **8** custa **8** em qualquer NH. Com 35 de Mana, o mago consegue lançá-lo **4** vezes (32 de Mana) antes de precisar descansar.
 
 </details>
 
@@ -125,6 +120,49 @@ Quando a Mana acaba, o personagem sofre os efeitos de Mana baixa e pode continua
 
 ### Áreas de mana
 
-O nível de mana do lugar onde o feitiço é lançado muda o que pode dar errado. O Archivum divide as áreas em **Baixa**, **Média** e **Alta**, e alguns feitiços citam também **Mana Morta**, onde a magia praticamente não flui.
+Cada lugar tem uma área de mana, definida pelo Mestre. Ela segue os níveis de mana do GURPS 4e e muda o que a magia consegue fazer e quanto de Mana se recupera ao descansar. Alguns feitiços também mudam de efeito conforme a área, e isso aparece na descrição.
 
-O Mestre define a área de cada lugar. Na Falha Crítica, ele pode rolar na tabela oficial ou na tabela da área de mana atual. Alguns feitiços mudam de efeito conforme a área, e isso aparece na descrição.
+<details>
+<summary>Morta | sem mana</summary>
+
+- **Conjuração:** nenhum feitiço funciona, e itens mágicos ficam inertes.
+- **Descanso:** uma boa noite de descanso não recupera Mana.
+
+</details>
+
+<details>
+<summary>Baixa | -5</summary>
+
+- **Conjuração:** todos os feitiços sofrem **-5** em todos os testes, e itens mágicos sofrem o mesmo redutor.
+- **Falha Crítica:** os efeitos costumam ser brandos. Use a tabela de Área de Mana Baixa.
+- **Descanso:** uma boa noite de descanso recupera **10%** da Mana máxima, arredondado para baixo.
+
+</details>
+
+<details>
+<summary>Média | normal</summary>
+
+- **Conjuração:** os feitiços funcionam normalmente.
+- **Falha Crítica:** use a tabela oficial ou a de Área de Mana Média.
+- **Descanso:** uma boa noite de descanso recupera **30%** da Mana máxima, arredondado para baixo.
+
+</details>
+
+<details>
+<summary>Alta | sem redutor</summary>
+
+- **Conjuração:** os feitiços funcionam normalmente, e qualquer um que conheça o feitiço pode conjurá-lo.
+- **Falha Crítica:** use a tabela de Área de Mana Alta.
+- **Descanso:** uma boa noite de descanso recupera **50%** da Mana máxima, arredondado para baixo.
+
+</details>
+
+> [!NOTE]
+> Quando o mago e o alvo estão em áreas diferentes, vale a área mais fraca das duas. Um projétil mágico atravessa para uma área Morta, mas nenhum outro efeito entra nela.
+
+<details>
+<summary>Exemplo</summary>
+
+Um mago com **35** de Mana máxima descansa uma noite numa área Baixa: recupera $\lfloor 35 \times 0{,}1 \rfloor = 3$. Numa área Alta, recuperaria $\lfloor 35 \times 0{,}5 \rfloor = 17$.
+
+</details>

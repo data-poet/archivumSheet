@@ -155,12 +155,10 @@ Quando algo tenta afetar o personagem contra a vontade dele, como um veneno, uma
 - **Contra um efeito fixo:** um teste simples, com o modificador do efeito. Um veneno forte pode impor **-4** ao teste de HT, por exemplo.
 - **Contra alguém:** uma Disputa Rápida entre a perícia de quem ataca e a HT ou Vontade de quem resiste. Quem ataca precisa ter sucesso no próprio teste; se ele falhar, o efeito falha. Em caso de empate, quem resiste vence.
 
-**Regra do 16:** contra efeitos sobrenaturais, se o NH de quem ataca passar de 16, ele é reduzido para **16** ou para o valor de resistência do alvo, o que for maior. Assim, um mago muito habilidoso não anula sozinho a resistência de quem se defende.
-
 <details>
 <summary>Exemplo</summary>
 
-Um mago com NH 19 em uma magia de sono a lança em um guarda com Vontade 11. Pela Regra do 16, o NH do mago cai para **16**.
+Um mago com NH 16 em uma magia de sono a lança em um guarda com Vontade 11.
 
 - O mago rola **12**: sucesso por margem **4**.
 - O guarda rola **9**: sucesso por margem **2**.
