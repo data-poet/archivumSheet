@@ -12,8 +12,18 @@ function id(x) {
 
 function carry(overrides = {}) {
   return {
-    weight_modifier: 1,
+    level: "none",
+    move_factor: 1,
+    dodge_penalty: 0,
+    basic_lift: 10,
     limits: { none: 10, light: 20, medium: 30, heavy: 40, veryHeavy: 50 },
+    lifts: {
+      oneHanded: 20,
+      twoHanded: 80,
+      shove: 120,
+      onBack: 150,
+      shiftSlightly: 500,
+    },
     ...overrides,
   };
 }
@@ -98,37 +108,37 @@ describe("renderResumeWeight", () => {
     expect(id("encumbrance").textContent).toBe("—");
   });
 
-  // resume.js duplicates inventory.js's encumbrance threshold ladder rather
-  // than sharing it, so it's worth re-verifying here in case they drift apart.
-  describe("encumbrance thresholds (mirrors inventory.js's ladder)", () => {
-    const limits = {
-      none: 10,
-      light: 20,
-      medium: 30,
-      heavy: 40,
-      veryHeavy: 50,
-    };
-
-    function weightFor(w) {
-      id("weight").value = String(w);
-      renderResume({
-        inventory: { carry_weight: { weight_modifier: 3, limits } },
-      });
-      return id("encumbrance").textContent;
-    }
-
-    test("at the 'none' limit exactly: still none", () => {
-      expect(weightFor(10)).toBe(`${getEncumbranceLabel("none")} (×3)`);
+  test("labels the load with the engine's level, without re-deriving it from the weight", () => {
+    id("weight").value = "999";
+    renderResume({
+      inventory: {
+        carry_weight: carry({
+          level: "heavy",
+          move_factor: 0.4,
+          dodge_penalty: -3,
+        }),
+      },
     });
+    expect(id("encumbrance").textContent).toBe(
+      `${getEncumbranceLabel("heavy")} (Desl. ×0,4 · Esq. −3)`,
+    );
+  });
 
-    test("just above 'none': light", () => {
-      expect(weightFor(11)).toBe(`${getEncumbranceLabel("light")} (×3)`);
-    });
+  test("shows the Basic Lift and the lift values under the limits", () => {
+    renderResume({ inventory: { carry_weight: carry() } });
+    const limits = id("carry_limits");
 
-    test("at or above 'veryHeavy': overloaded", () => {
-      expect(weightFor(50)).toBe(`${getEncumbranceLabel("overloaded")} (×3)`);
-      expect(weightFor(500)).toBe(`${getEncumbranceLabel("overloaded")} (×3)`);
-    });
+    expect(limits.textContent).toContain(`${t("resume.basicLift")}:`);
+    expect(limits.textContent).toContain("10 kg");
+    expect(limits.textContent).toContain(t("inventory.lifts.onBack"));
+    const liftCells = limits.querySelectorAll(".resume-lifts-table td");
+    expect(Array.from(liftCells, (c) => c.textContent)).toEqual([
+      "20",
+      "80",
+      "120",
+      "150",
+      "500",
+    ]);
   });
 });
 

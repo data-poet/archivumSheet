@@ -14,7 +14,9 @@ describe("SECONDARY ATTRIBUTES", () => {
   };
 
   const mockCarryWeight = {
-    weight_modifier: -3,
+    level: "heavy",
+    move_factor: 0.4,
+    dodge_penalty: -3,
   };
 
   describe("Base calculations", () => {
@@ -42,9 +44,10 @@ describe("SECONDARY ATTRIBUTES", () => {
 
       expect(attributes.BasicSpeed.base_value).toBe((12 + 9) / 4);
 
-      expect(attributes.Movement.base_value).toBe(Math.floor(5.25 - 3));
+      expect(attributes.Movement.base_value).toBe(Math.floor(5.25));
+      expect(attributes.Movement.value).toBe(Math.floor(5 * 0.4));
 
-      expect(attributes.Dodge.base_value).toBe(Math.floor(2 + 4));
+      expect(attributes.Dodge.base_value).toBe(5 + 4 - 3);
     });
   });
 
@@ -59,7 +62,8 @@ describe("SECONDARY ATTRIBUTES", () => {
       Object.entries(attributes).forEach(([key, attr]) => {
         expect(attr.bought).toBe(0);
         expect(attr.modifier).toBe(0);
-        expect(attr.value).toBe(attr.base_value);
+        // Movement's value is the load-reduced Move; its base stays the unencumbered Basic Move.
+        if (key !== "Movement") expect(attr.value).toBe(attr.base_value);
       });
     });
   });
@@ -152,16 +156,43 @@ describe("SECONDARY ATTRIBUTES", () => {
   });
 
   describe("Movement", () => {
-    it("Should decrease with carry weight penalties", () => {
+    it("Should multiply unencumbered Move by the load's move_factor (4e), keeping Basic Move as base", () => {
       const { attributes } = buildSecondaryAttributes(
         mockPrimary,
         {},
         mockCarryWeight,
       );
 
-      const expectedBase = Math.floor(5.25 - 3);
+      expect(attributes.Movement.base_value).toBe(5);
+      expect(attributes.Movement.value).toBe(Math.floor(5 * 0.4));
+    });
 
-      expect(attributes.Movement.base_value).toBe(expectedBase);
+    it("Should never drop below 1 while the load is within limits", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        {
+          level: "veryHeavy",
+          move_factor: 0.2,
+          dodge_penalty: -4,
+        },
+      );
+
+      expect(attributes.Movement.value).toBe(1);
+    });
+
+    it("Should be 0 when overloaded", () => {
+      const { attributes } = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        {
+          level: "overloaded",
+          move_factor: 0,
+          dodge_penalty: -4,
+        },
+      );
+
+      expect(attributes.Movement.value).toBe(0);
     });
 
     it("Should increase if BasicSpeed is increased", () => {
@@ -175,9 +206,7 @@ describe("SECONDARY ATTRIBUTES", () => {
 
       const expectedSpeed = 5.25 + 2 * 0.5;
 
-      expect(attributes.Movement.base_value).toBe(
-        Math.floor(expectedSpeed - 3),
-      );
+      expect(attributes.Movement.base_value).toBe(Math.floor(expectedSpeed));
     });
 
     it("Should not allow bought levels (always 0)", () => {
@@ -190,7 +219,9 @@ describe("SECONDARY ATTRIBUTES", () => {
       );
 
       expect(attributes.Movement.bought).toBe(0);
-      expect(attributes.Movement.value).toBe(attributes.Movement.base_value);
+      expect(attributes.Movement.final_base_value).toBe(
+        attributes.Movement.base_value,
+      );
     });
   });
 
@@ -286,7 +317,9 @@ describe("SECONDARY ATTRIBUTES", () => {
         {},
         mockCarryWeight,
       );
-      expect(attributes.Movement.value).toBe(attributes.Movement.base_value);
+      expect(attributes.Movement.value).toBe(
+        Math.floor(attributes.Movement.base_value * 0.4),
+      );
       expect(attributes.Dodge.value).toBe(attributes.Dodge.base_value);
     });
 
@@ -400,6 +433,33 @@ describe("SECONDARY ATTRIBUTES", () => {
         mockCarryWeight,
       );
       expect(attributes.HP.max_modifier).toBe(0);
+    });
+  });
+
+  describe("Dodge under load (4e)", () => {
+    it("Should start from unencumbered Move + 4 and take the load's dodge_penalty", () => {
+      const light = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        {
+          level: "light",
+          move_factor: 0.8,
+          dodge_penalty: -1,
+        },
+      ).attributes;
+      const none = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        {
+          level: "none",
+          move_factor: 1,
+          dodge_penalty: 0,
+        },
+      ).attributes;
+
+      expect(none.Dodge.value).toBe(none.Movement.value + 4);
+      expect(light.Dodge.value).toBe(none.Dodge.value - 1);
+      expect(light.Movement.value).toBe(Math.floor(none.Movement.value * 0.8));
     });
   });
 

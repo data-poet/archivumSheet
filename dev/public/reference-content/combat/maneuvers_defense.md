@@ -29,7 +29,7 @@
 - **Esquivar e Recuar:** Recuar para longe do atacante concede **+3** na Esquiva, ou **+1** em Aparar e Bloqueio (**+3** ao aparar com armas de esgrima ou com Boxe, Judô ou Caratê).
 
 > [!HOUSE]
-> No 4e a Esquiva é VB + 3; no Archivum ela é Deslocamento + 4.
+> No 4e a Esquiva é VB + 3; no Archivum ela é o Deslocamento sem carga + 4. A carga reduz como no 4e.
 
 </details>
 

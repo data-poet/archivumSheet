@@ -7,12 +7,20 @@ export const INVENTORY = {
     veryHeavy: "Muito Pesado",
     overloaded: "Sobrecarregado",
   },
+  encumbranceEffect: { move: "Desl.", dodge: "Esq." },
   carryLimits: {
     none: "Nenhuma",
     light: "Leve",
     medium: "Média",
     heavy: "Pesada",
     veryHeavy: "Muito Pesada",
+  },
+  lifts: {
+    oneHanded: "1 mão",
+    twoHanded: "2 mãos",
+    shove: "Empurrar",
+    onBack: "Nas costas",
+    shiftSlightly: "Arrastar",
   },
   comingSoon: "Em desenvolvimento — Poções serão adicionadas aqui.",
   sendToAlly: {

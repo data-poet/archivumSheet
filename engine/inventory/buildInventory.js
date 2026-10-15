@@ -16,6 +16,7 @@ const { buildCoinPurseSlots } = require("./js/coinPurse/coinPurse.js");
 
 function buildInventory({
   ST = 0,
+  liftingST = ST,
   weight = 0,
   armorInventory = [],
   shieldInventory = [],
@@ -58,7 +59,7 @@ function buildInventory({
     customInv.carried_custom_inventory_weight +
     coinPurse.carried_coin_purse_weight;
 
-  const carryWeight = calculateCarryWeight(ST, effectiveWeight);
+  const carryWeight = calculateCarryWeight(liftingST, effectiveWeight);
 
   return {
     inventory: {

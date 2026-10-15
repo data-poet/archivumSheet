@@ -84,36 +84,83 @@ describe("base_damage.md", () => {
 
 describe("carry_and_movement.md", () => {
   const markdown = read("carry_and_movement.md");
-  const ST = 10;
+  const { calculateBasicLift } = require("engine/inventory/js/carryWeight");
   const levels = [
-    ["Nenhuma", 1, 0],
-    ["Leve", 2, 0],
-    ["Média", 3, -1],
-    ["Pesada", 6, -2],
-    ["Muito Pesada", 10, -3],
+    ["Nenhuma", 1, "×1", 0],
+    ["Leve", 2, "×0,8", -1],
+    ["Média", 3, "×0,6", -2],
+    ["Pesada", 6, "×0,4", -3],
+    ["Muito Pesada", 10, "×0,2", -4],
   ];
 
+  test("Basic Lift examples match the engine", () => {
+    expect(calculateBasicLift(10)).toBe(10);
+    expect(calculateBasicLift(12)).toBe(14);
+    expect(calculateBasicLift(7)).toBe(4.9);
+    expect(markdown).toContain("arredondado para **14** kg");
+    expect(markdown).toContain("4{,}9$ kg, sem arredondar");
+  });
+
   test.each(levels)(
-    "%s: up to %i × ST, modifier %i",
-    (name, multiplier, modifier) => {
-      const { weight_modifier } = calculateCarryWeight(ST, ST * multiplier);
-      expect(weight_modifier).toBe(modifier);
-      expect(
-        calculateCarryWeight(ST, ST * multiplier + 0.01).weight_modifier,
-      ).toBeLessThanOrEqual(modifier);
-      const label = multiplier === 1 ? "**ST**" : `**${multiplier} × ST**`;
+    "%s: up to %i × CB, Deslocamento %s, Esquiva %i",
+    (name, multiplier, factor, penalty) => {
+      const bl = calculateBasicLift(12);
+      const atLimit = calculateCarryWeight(12, bl * multiplier);
+      expect(atLimit.limits[atLimit.level]).toBe(bl * multiplier);
+      expect(String(atLimit.move_factor).replace(".", ",")).toBe(
+        factor.slice(1),
+      );
+      expect(atLimit.dodge_penalty).toBe(penalty);
+      const label = multiplier === 1 ? "**CB**" : `**${multiplier} × CB**`;
       expect(markdown).toContain(
-        `| ${name} | até ${label} | **${modifier}** |`,
+        `| ${name} | até ${label} | **${factor}** | **${penalty}** |`,
       );
     },
   );
 
-  test("over 10 × ST the modifier is -4", () => {
-    expect(calculateCarryWeight(ST, ST * 10 + 1).weight_modifier).toBe(-4);
+  test("over 10 × CB the character can't move", () => {
+    const overloaded = calculateCarryWeight(12, 141);
+    expect(overloaded.move_factor).toBe(0);
+    expect(overloaded.dodge_penalty).toBe(-4);
     expect(markdown).toContain(
-      "| Acima do limite | mais de **10 × ST** | **-4** |",
+      "| Acima do limite | mais de **10 × CB** | não se move | **-4** |",
     );
   });
+
+  test("the ST 12 example rows match the engine", () => {
+    const primaries = {
+      ST: { value: 12 },
+      DX: { value: 12 },
+      IQ: { value: 12 },
+      HT: { value: 11 },
+    };
+    const bl = calculateBasicLift(12);
+    levels.forEach(([name, multiplier]) => {
+      const carry = calculateCarryWeight(12, bl * multiplier);
+      const { Movement, Dodge } = buildSecondaryAttributes(
+        primaries,
+        {},
+        carry,
+      ).attributes;
+      expect(markdown).toContain(
+        `| ${name} | ${bl * multiplier} | ${Movement.value} | ${Dodge.value} |`,
+      );
+    });
+  });
+
+  test.each([
+    ["oneHanded", "Erguer com uma mão (1 segundo)", 2],
+    ["twoHanded", "Erguer com as duas mãos (4 segundos)", 8],
+    ["shove", "Empurrar ou derrubar", 12],
+    ["onBack", "Carregar nas costas", 15],
+    ["shiftSlightly", "Arrastar um pouco (no chão, com esforço)", 50],
+  ])(
+    "lift %s is %s = %i × CB in the engine and the text",
+    (key, label, multiplier) => {
+      expect(calculateCarryWeight(10, 0).lifts[key]).toBe(10 * multiplier);
+      expect(markdown).toContain(`| ${label} | **${multiplier} × CB** |`);
+    },
+  );
 });
 
 describe("points_and_buying.md", () => {
@@ -198,9 +245,21 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
     expect(attributes.BasicSpeed.value).toBe(5.75);
     expect(markdown).toContain("= 5{,}75");
     expect(markdown).toContain(
-      `\\lfloor 5{,}75 + 0 \\rfloor = ${attributes.Movement.value}$ m/s`,
+      `\\lfloor 5{,}75 \\rfloor = ${attributes.Movement.value}$ m/s`,
     );
     expect(markdown).toContain(`$5 + 4 = ${attributes.Dodge.value}$`);
+    const {
+      calculateCarryWeight: carryFor,
+    } = require("engine/inventory/js/carryWeight");
+    const medium = buildSecondaryAttributes(
+      primaries,
+      {},
+      carryFor(10, 30),
+    ).attributes;
+    expect(markdown).toContain(
+      `\\lfloor 5 \\times 0{,}6 \\rfloor = ${medium.Movement.value}$ m/s`,
+    );
+    expect(markdown).toContain(`$5 + 4 - 2 = ${medium.Dodge.value}$`);
   });
 
   test("PF equals HT, and below 1/3 PF Deslocamento and Esquiva halve", () => {

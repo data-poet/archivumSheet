@@ -2,11 +2,19 @@
 
 import {
   t,
-  getEncumbranceLabel,
+  getEncumbranceText,
   getCarryLimitLabel,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { renderSumTable } from "../../shared/renderUtils.js";
+
+const LIFT_KEYS = [
+  "oneHanded",
+  "twoHanded",
+  "shove",
+  "onBack",
+  "shiftSlightly",
+];
 
 export function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
@@ -52,18 +60,7 @@ export function renderResumeWeight(sheet) {
         1000,
     ) / 1000;
 
-  let stateKey = "none";
-  if (carry) {
-    if (totalWeight >= carry.limits.veryHeavy) stateKey = "overloaded";
-    else if (totalWeight >= carry.limits.heavy) stateKey = "veryHeavy";
-    else if (totalWeight >= carry.limits.medium) stateKey = "heavy";
-    else if (totalWeight >= carry.limits.light) stateKey = "medium";
-    else if (totalWeight > carry.limits.none) stateKey = "light";
-  }
-
-  const encumbranceLabel = carry
-    ? `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`
-    : "—";
+  const encumbranceLabel = carry ? getEncumbranceText(carry) : "—";
 
   renderSumTable(
     [
@@ -130,6 +127,23 @@ export function renderResumeWeight(sheet) {
               <td class="col-num">${carry.limits.medium}</td>
               <td class="col-num">${carry.limits.heavy}</td>
               <td class="col-num">${carry.limits.veryHeavy}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="resume-basic-lift">
+        <strong>${t("resume.basicLift")}:</strong> ${carry.basic_lift} kg
+      </p>
+      <div class="table-wrapper">
+        <table class="resume-limits-table resume-lifts-table">
+          <thead>
+            <tr>
+              ${LIFT_KEYS.map((key) => `<th>${t(`inventory.lifts.${key}`)}</th>`).join("")}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              ${LIFT_KEYS.map((key) => `<td class="col-num">${carry.lifts[key]}</td>`).join("")}
             </tr>
           </tbody>
         </table>

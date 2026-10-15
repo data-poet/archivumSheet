@@ -32,7 +32,9 @@ function inventoryDOM() {
 
 function carry(overrides = {}) {
   return {
-    weight_modifier: 1,
+    level: "none",
+    move_factor: 1,
+    dodge_penalty: 0,
     limits: { none: 10, light: 20, medium: 30, heavy: 40, veryHeavy: 50 },
     ...overrides,
   };
@@ -129,41 +131,21 @@ describe("updateInventoryUI", () => {
   });
 });
 
-describe("updateInventoryUI — encumbrance thresholds", () => {
-  // Each threshold maps to the label one tier below its name (crossing veryHeavy reports "overloaded"); mirrors the source intentionally.
-  const limits = { none: 10, light: 20, medium: 30, heavy: 40, veryHeavy: 50 };
-
-  function weightFor(w) {
+describe("updateInventoryUI — encumbrance label", () => {
+  test("uses the engine's load level and shows its 4e Move factor and Dodge penalty", () => {
     inventoryDOM();
-    document.getElementById("weight").value = String(w);
+    document.getElementById("weight").value = "999";
     updateInventoryUI({
-      inventory: { carry_weight: { weight_modifier: 2, limits } },
+      inventory: {
+        carry_weight: carry({
+          level: "light",
+          move_factor: 0.8,
+          dodge_penalty: -1,
+        }),
+      },
     });
-    return document.getElementById("encumbrance").textContent;
-  }
-
-  test("at or below the 'none' limit: no encumbrance label", () => {
-    expect(weightFor(10)).toBe(`${getEncumbranceLabel("none")} (×2)`);
-  });
-
-  test("just above 'none': light", () => {
-    expect(weightFor(11)).toBe(`${getEncumbranceLabel("light")} (×2)`);
-  });
-
-  test("at the 'light' limit: medium", () => {
-    expect(weightFor(20)).toBe(`${getEncumbranceLabel("medium")} (×2)`);
-  });
-
-  test("at the 'medium' limit: heavy", () => {
-    expect(weightFor(30)).toBe(`${getEncumbranceLabel("heavy")} (×2)`);
-  });
-
-  test("at the 'heavy' limit: veryHeavy", () => {
-    expect(weightFor(40)).toBe(`${getEncumbranceLabel("veryHeavy")} (×2)`);
-  });
-
-  test("at or above the 'veryHeavy' limit: overloaded", () => {
-    expect(weightFor(50)).toBe(`${getEncumbranceLabel("overloaded")} (×2)`);
-    expect(weightFor(999)).toBe(`${getEncumbranceLabel("overloaded")} (×2)`);
+    expect(document.getElementById("encumbrance").textContent).toBe(
+      `${getEncumbranceLabel("light")} (Desl. ×0,8 · Esq. −1)`,
+    );
   });
 });

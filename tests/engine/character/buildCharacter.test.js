@@ -31,7 +31,9 @@ describe("BUILD CHARACTER", () => {
     },
 
     carry_weight: {
-      weight_modifier: -3,
+      level: "heavy",
+      move_factor: 0.4,
+      dodge_penalty: -3,
     },
   };
 
@@ -67,11 +69,15 @@ describe("BUILD CHARACTER", () => {
       const basicSpeed =
         (HT + DX) / 4 + character.secondary_attributes.BasicSpeed.bought * 0.5;
 
-      const expected = Math.floor(
-        basicSpeed + mockInput.carry_weight.weight_modifier,
+      expect(movement.base_value).toBe(Math.floor(basicSpeed));
+      expect(movement.value).toBe(
+        Math.max(
+          1,
+          Math.floor(
+            Math.floor(basicSpeed) * mockInput.carry_weight.move_factor,
+          ),
+        ),
       );
-
-      expect(movement.base_value).toBe(expected);
     });
   });
 

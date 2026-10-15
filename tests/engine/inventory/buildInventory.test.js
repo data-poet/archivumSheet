@@ -165,7 +165,7 @@ describe("INVENTORY BUILDER", () => {
 
   const firearmId = Object.keys(firearmsDb)[0];
 
-  // Tier-boundary math (limits, weight_modifier per load range) is exhaustively covered in
+  // Tier-boundary math (limits and load level per range) is exhaustively covered in
   // carryWeight.test.js against calculateCarryWeight directly; this just confirms ST/weight
   // actually reach it through buildInventory's wiring.
   test("Should wire ST and weight into inventory.carry_weight", () => {
@@ -175,7 +175,12 @@ describe("INVENTORY BUILDER", () => {
     });
 
     assertShape(result, ["inventory"]);
-    assertShape(result.inventory.carry_weight, ["limits", "weight_modifier"]);
+    assertShape(result.inventory.carry_weight, [
+      "limits",
+      "level",
+      "move_factor",
+      "dodge_penalty",
+    ]);
   });
 
   test("Should include armor inventory", () => {
@@ -266,7 +271,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.armor.carried_armor_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should ignore camp armor weight in carry calculation", () => {
@@ -284,7 +289,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.armor.carried_armor_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should include equipped shield weight in carry calculation", () => {
@@ -334,7 +339,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.shield.carried_shield_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should ignore camp shield weight in carry calculation", () => {
@@ -352,7 +357,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.shield.carried_shield_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should combine armor and shield carried weight", () => {
@@ -447,7 +452,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.firearms.carried_firearms_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should ignore camp firearm weight in carry calculation", () => {
@@ -465,7 +470,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.firearms.carried_firearms_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should combine firearm carried weight with the rest of the inventory", () => {
@@ -567,7 +572,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.ammo.carried_ammo_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should ignore stash loose ammo weight in carry calculation", () => {
@@ -581,7 +586,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.ammo.carried_ammo_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should add ammo carried weight to overall carry_weight calculation", () => {
@@ -665,7 +670,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.magicGear.carried_magic_gear_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should ignore camp magic gear weight in carry calculation", () => {
@@ -683,7 +688,7 @@ describe("INVENTORY BUILDER", () => {
 
     expect(result.inventory.magicGear.carried_magic_gear_weight).toBe(0);
 
-    expect(result.inventory.carry_weight.weight_modifier).toBe(0);
+    expect(result.inventory.carry_weight.level).toBe("none");
   });
 
   test("Should combine magic gear carried weight with the rest of the inventory", () => {

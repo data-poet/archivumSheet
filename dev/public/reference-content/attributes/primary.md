@@ -14,7 +14,7 @@ A [[ST]] mede o poder físico e a massa muscular do personagem. Ela permite:
 - [[PV]] (junto com HT).
 - [[Toxicidade]] (junto com HT e IQ).
 - Dano Base: [[GDP]] e [[BAL]].
-- Limites de [[Carga]].
+- [[CB]] e os limites de [[Carga]].
 
 </details>
 

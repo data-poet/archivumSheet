@@ -24,7 +24,7 @@ Os PF começam iguais à [[HT]]. Magias não gastam PF: elas custam Mana (veja M
 <details>
 <summary>Níveis de PF | 1/3, 0, -PF</summary>
 
-- **Abaixo de 1/3 dos PF:** [[Deslocamento]], [[Esquiva]] e [[ST]] caem pela metade, arredondando para cima. A ST reduzida vale para levantar, carregar e disputas, não para os PV nem o dano básico.
+- **Abaixo de 1/3 dos PF:** [[Deslocamento]], [[Esquiva]] e [[ST]] caem pela metade, arredondando para cima. A ST reduzida vale para levantar, carregar e disputas, não para os PV nem o dano básico; a ficha já recalcula a Carga Básica com ela.
 - **0 ou menos:** o personagem está à beira do colapso. Para fazer qualquer coisa além de conversar ou descansar, precisa passar num teste de **[[Vontade]]** a cada turno; se falhar, desmaia até os PF voltarem a ser positivos. Cada PF perdido a partir daqui também tira **1 PV**.
 - **-1 × PF:** colapso imediato e inconsciência. Os PF não caem abaixo disso: qualquer perda extra sai dos PV.
 

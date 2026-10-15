@@ -1,6 +1,7 @@
 const { buildCharacter } = require("./character/buildCharacter");
 const { resolveMetaRaces } = require("./character/js/traits/metaRaces");
 const { buildInventory } = require("./inventory/buildInventory");
+const { liftingStrength } = require("./inventory/js/carryWeight");
 const { resolveAll } = require("./magic/js/spellsResolver");
 const { buildGrimoire } = require("./magic/buildGrimoire");
 const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
@@ -61,9 +62,10 @@ function buildSheet({
    * ───────────────────────────────────────────────────────────────────────────
    */
 
-  function runInventory(inventoryST) {
+  function runInventory(inventoryST, liftingST) {
     return buildInventory({
       ST: inventoryST,
+      liftingST,
       weight: inventory.weight || 0,
       armorInventory: inventory.armor || [],
       shieldInventory: inventory.shield || [],
@@ -81,7 +83,11 @@ function buildSheet({
     });
   }
 
-  let inventoryResult = runInventory(st);
+  const initialLiftingST = liftingStrength(
+    st,
+    initialCharacter.secondary_attributes.FP,
+  );
+  let inventoryResult = runInventory(st, initialLiftingST);
 
   /**
    * ───────────────────────────────────────────────────────────────────────────
@@ -166,7 +172,7 @@ function buildSheet({
    * weapon distances and carry_weight were already resolved in step 2 using
    * the pre-enchantment ST. Re-run the inventory layer with the corrected ST
    * and rebuild the character once more so Movement (which is derived from
-   * carry_weight.weight_modifier) reflects it too.
+   * carry_weight's load level) reflects it too.
    *
    * IQ/DX/HT have no equivalent leak: their only consumers (skills, spells,
    * shield block, weapon damage) all run after this final character build,
@@ -177,9 +183,13 @@ function buildSheet({
    */
 
   const correctedST = characterResult.character.primary_attributes.ST.value;
+  const correctedLiftingST = liftingStrength(
+    correctedST,
+    characterResult.character.secondary_attributes.FP,
+  );
 
-  if (correctedST !== st) {
-    inventoryResult = runInventory(correctedST);
+  if (correctedST !== st || correctedLiftingST !== initialLiftingST) {
+    inventoryResult = runInventory(correctedST, correctedLiftingST);
     characterResult = runCharacter(inventoryResult.inventory.carry_weight);
   }
 

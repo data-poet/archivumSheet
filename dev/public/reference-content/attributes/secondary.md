@@ -48,7 +48,7 @@ $$
 \text{PF} = HT
 $$
 
-Abaixo de **1/3** dos PF, o personagem está exausto: o Deslocamento, a Esquiva e a [[ST]] caem pela metade, arredondando para cima. A ficha aplica a metade do Deslocamento e da Esquiva sozinha, e ela se soma à de PV baixos. Veja Sistema › Condições › Fadiga e Cura.
+Abaixo de **1/3** dos PF, o personagem está exausto: o Deslocamento, a Esquiva e a [[ST]] caem pela metade, arredondando para cima. A ficha aplica tudo sozinha: a metade do Deslocamento e da Esquiva, que se soma à de PV baixos, e a ST pela metade nos limites de carga. Veja Sistema › Condições › Fadiga e Cura.
 
 <details>
 <summary>Exemplo</summary>
@@ -151,10 +151,10 @@ $$
 <details>
 <summary>Deslocamento</summary>
 
-O [[Deslocamento]] é quantos metros por segundo o personagem percorre. É a VB somada ao modificador de [[Carga]], arredondada para baixo.
+O [[Deslocamento]] é quantos metros por segundo o personagem percorre. Sem carga, é a VB arredondada para baixo; a [[Carga]] multiplica esse valor.
 
 $$
-\text{Deslocamento} = \left\lfloor \text{VB} + \text{modificador de carga} \right\rfloor
+\text{Deslocamento} = \left\lfloor \lfloor \text{VB} \rfloor \times \text{fator de carga} \right\rfloor
 $$
 
 Não pode ser comprado diretamente: aumente a VB ou reduza a carga. Veja os níveis em Carga e Movimento.
@@ -162,7 +162,7 @@ Não pode ser comprado diretamente: aumente a VB ou reduza a carga. Veja os nív
 <details>
 <summary>Exemplo</summary>
 
-Sem carga: $\lfloor 5{,}75 + 0 \rfloor = 5$ m/s. Com carga média (**-1**): $\lfloor 5{,}75 - 1 \rfloor = 4$ m/s.
+Sem carga: $\lfloor 5{,}75 \rfloor = 5$ m/s. Com carga média (**×0,6**): $\lfloor 5 \times 0{,}6 \rfloor = 3$ m/s.
 
 </details>
 
@@ -179,18 +179,18 @@ Sem carga: $\lfloor 5{,}75 + 0 \rfloor = 5$ m/s. Com carga média (**-1**): $\lf
 A [[Esquiva]] é a defesa ativa para sair do caminho de um ataque. Para esquivar, role **3d6** e tire igual ou menos que o valor.
 
 $$
-\text{Esquiva} = \text{Deslocamento} + 4
+\text{Esquiva} = \text{Deslocamento sem carga} + 4 - \text{nível de carga}
 $$
 
 > [!HOUSE]
-> No Archivum, a Esquiva parte do Deslocamento, então a carga também reduz a Esquiva.
+> No Archivum, a Esquiva parte do Deslocamento sem carga (+4), em vez da VB + 3 do 4e. A carga tira de **0** a **4** pontos, como no 4e.
 
 A vantagem Reflexos em Combate soma **+1** à base da Esquiva. A Esquiva não pode ser comprada: aumente a VB ou reduza a carga. Ferido gravemente, ela cai pela metade (veja Deslocamento).
 
 <details>
 <summary>Exemplo</summary>
 
-Sem carga: $5 + 4 = 9$. Com carga média: $4 + 4 = 8$.
+Sem carga: $5 + 4 = 9$. Com carga média (**-2**): $5 + 4 - 2 = 7$.
 
 </details>
 

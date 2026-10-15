@@ -1,5 +1,6 @@
 const { buildSheet } = require("engine/buildSheet");
 const assertShape = require("tests/helpers/assertShape");
+const { calculateBasicLift } = require("engine/inventory/js/carryWeight");
 
 describe("BUILD SHEET", () => {
   const mockInput = {
@@ -64,17 +65,21 @@ describe("BUILD SHEET", () => {
 
       const baseSpeed = (HT + DX) / 4 + 2 * 0.5;
 
-      const expected = Math.floor(baseSpeed - 2);
-
-      expect(movement.base_value).toBe(expected);
+      // weight 40 at ST 10 (CB 10) is a heavy load: Move × 0.4
+      expect(movement.base_value).toBe(Math.floor(baseSpeed));
+      expect(movement.value).toBe(Math.floor(Math.floor(baseSpeed) * 0.4));
     });
   });
 
   describe("Inventory integration", () => {
-    it("Should include weight modifier from inventory", () => {
+    it("Should include the load level and its 4e effects from inventory", () => {
       const result = buildSheet(mockInput);
 
-      expect(result.inventory.carry_weight).toHaveProperty("weight_modifier");
+      expect(result.inventory.carry_weight).toMatchObject({
+        level: "heavy",
+        move_factor: 0.4,
+        dodge_penalty: -3,
+      });
     });
 
     it("Should correctly classify weight tiers", () => {
@@ -558,6 +563,44 @@ describe("BUILD SHEET", () => {
       );
     });
 
+    it("Should halve lifting ST for carry limits below 1/3 FP, leaving weapon ranges on full ST", () => {
+      const withFP = (fp) => ({
+        ...mockInput,
+        character: {
+          ...mockInput.character,
+          secondaryAttributes: {
+            ...mockInput.character.secondaryAttributes,
+            FP: fp,
+          },
+        },
+        inventory: {
+          ...mockInput.inventory,
+          ranged: [
+            {
+              id: "rng-1",
+              weapon_id: "RANGED-001",
+              is_equipped: true,
+              storedAt: null,
+            },
+          ],
+        },
+      });
+
+      const rested = buildSheet(withFP({ modifier: 0 }));
+      const exhausted = buildSheet(withFP({ modifier: -8 }));
+      const ST = rested.character.primary_attributes.ST.value;
+
+      expect(rested.inventory.carry_weight.basic_lift).toBe(
+        calculateBasicLift(ST),
+      );
+      expect(exhausted.inventory.carry_weight.basic_lift).toBe(
+        calculateBasicLift(Math.ceil(ST / 2)),
+      );
+      expect(exhausted.inventory.ranged.equipped[0].weapon_max_distance).toBe(
+        rested.inventory.ranged.equipped[0].weapon_max_distance,
+      );
+    });
+
     it("Should recompute carry_weight limits and Movement after an equipped ST-fortify accessory shifts the encumbrance tier", () => {
       const withWeight = (extra) => ({
         ...mockInput,
@@ -591,18 +634,20 @@ describe("BUILD SHEET", () => {
       const correctedST = enchanted.character.primary_attributes.ST.value;
 
       // carry_weight.limits must reflect the corrected ST, not the pre-enchantment one
-      expect(enchanted.inventory.carry_weight.limits.none).toBe(correctedST);
+      expect(enchanted.inventory.carry_weight.limits.none).toBe(
+        calculateBasicLift(correctedST),
+      );
       expect(enchanted.inventory.carry_weight.limits.none).not.toBe(
         baseline.inventory.carry_weight.limits.none,
       );
 
-      // At weight 32: ST 10 → heavy tier (modifier -2); ST 12 → medium tier (modifier -1)
-      expect(baseline.inventory.carry_weight.weight_modifier).toBe(-2);
-      expect(enchanted.inventory.carry_weight.weight_modifier).toBe(-1);
+      // At weight 32: ST 10 (CB 10) → heavy; ST 12 (CB 14) → medium
+      expect(baseline.inventory.carry_weight.level).toBe("heavy");
+      expect(enchanted.inventory.carry_weight.level).toBe("medium");
 
-      expect(enchanted.character.secondary_attributes.Movement.value).toBe(
-        baseline.character.secondary_attributes.Movement.value + 1,
-      );
+      expect(
+        enchanted.character.secondary_attributes.Movement.value,
+      ).toBeGreaterThan(baseline.character.secondary_attributes.Movement.value);
     });
 
     it("Should already reflect an equipped IQ-fortify accessory without needing a correction pass", () => {
@@ -701,7 +746,7 @@ describe("BUILD SHEET", () => {
         baseline.character.primary_attributes.ST.value + 2,
       );
       expect(zombified.inventory.carry_weight.limits.none).toBe(
-        zombified.character.primary_attributes.ST.value,
+        calculateBasicLift(zombified.character.primary_attributes.ST.value),
       );
     });
 

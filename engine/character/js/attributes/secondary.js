@@ -135,16 +135,14 @@ function buildSecondaryAttributes(
 
   const carry = carry_weight || calculateCarryWeight(ST, 0);
 
-  let movementBase = Math.floor(
-    result.BasicSpeed.value + carry.weight_modifier,
-  );
+  let basicMove = Math.floor(result.BasicSpeed.value);
 
   if (effects?.secondary?.Movement?.base) {
-    movementBase += effects.secondary.Movement.base;
+    basicMove += effects.secondary.Movement.base;
   }
 
-  result.Movement = resolveSecondary({
-    base_value: movementBase,
+  const unencumbered = resolveSecondary({
+    base_value: basicMove,
     maxBought: 0,
     bought: 0,
     modifier: config.Movement?.modifier ?? 0,
@@ -153,7 +151,16 @@ function buildSecondaryAttributes(
       config.Movement?.has_enchantment_modifier ?? false,
   });
 
-  let dodgeBase = Math.floor(result.Movement.value + 4);
+  result.Movement = {
+    ...unencumbered,
+    value:
+      carry.move_factor === 0
+        ? 0
+        : Math.max(1, Math.floor(unencumbered.value * carry.move_factor)),
+  };
+
+  // Dodge starts from unencumbered Move (house: Move + 4) so the 4e load penalty isn't counted twice.
+  let dodgeBase = Math.floor(unencumbered.value + 4) + carry.dodge_penalty;
 
   if (effects?.secondary?.Dodge?.base) {
     dodgeBase += effects.secondary.Dodge.base;

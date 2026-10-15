@@ -59,12 +59,12 @@ export const GLOSSARY = {
   Deslocamento: {
     term: "Deslocamento",
     definition:
-      "Metros por segundo que o personagem percorre. Velocidade Básica mais o modificador de carga, arredondado para baixo.",
+      "Metros por segundo que o personagem percorre. Velocidade Básica arredondada para baixo, multiplicada pelo fator de carga.",
   },
   Esquiva: {
     term: "Esquiva",
     definition:
-      "Defesa ativa para sair do caminho de um ataque. Deslocamento + 4; role 3d6 e tire igual ou menos.",
+      "Defesa ativa para sair do caminho de um ataque. Deslocamento sem carga + 4, menos o nível de carga; role 3d6 e tire igual ou menos.",
   },
   NH: {
     term: "Nível de Habilidade",
@@ -89,6 +89,11 @@ export const GLOSSARY = {
   Carga: {
     term: "Carga",
     definition:
-      "Peso carregado em relação à ST. Níveis mais altos reduzem Deslocamento e Esquiva.",
+      "Peso carregado em relação à Carga Básica. Cada nível multiplica o Deslocamento (×0,8 a ×0,2) e tira 1 a 4 da Esquiva.",
+  },
+  CB: {
+    term: "Carga Básica",
+    definition:
+      "ST × ST / 10 kg, arredondado a partir de 5 kg. Base dos limites de carga e do que o personagem consegue erguer.",
   },
 };

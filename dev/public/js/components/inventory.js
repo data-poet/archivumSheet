@@ -1,7 +1,7 @@
 import { el } from "../shared/dom.js";
 import {
   t,
-  getEncumbranceLabel,
+  getEncumbranceText,
   getCarryLimitLabel,
 } from "../localization/pt-BR/index.js";
 
@@ -59,18 +59,7 @@ export function updateInventoryUI(sheet) {
   set("custom_inventory_weight", customInventoryWeight);
   set("total_weight", weight);
 
-  let stateKey = "none";
-
-  if (weight >= carry.limits.veryHeavy) stateKey = "overloaded";
-  else if (weight >= carry.limits.heavy) stateKey = "veryHeavy";
-  else if (weight >= carry.limits.medium) stateKey = "heavy";
-  else if (weight >= carry.limits.light) stateKey = "medium";
-  else if (weight > carry.limits.none) stateKey = "light";
-
-  set(
-    "encumbrance",
-    `${getEncumbranceLabel(stateKey)} (×${carry.weight_modifier})`,
-  );
+  set("encumbrance", getEncumbranceText(carry));
 
   const limitsEl = el("carry_limits");
   if (limitsEl) {

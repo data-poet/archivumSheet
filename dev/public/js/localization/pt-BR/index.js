@@ -110,6 +110,13 @@ export function getEncumbranceLabel(key) {
   return LABELS.inventory.encumbrance[key] ?? key;
 }
 
+export function getEncumbranceText(carry) {
+  const factor = String(carry.move_factor).replace(".", ",");
+  const penalty =
+    carry.dodge_penalty === 0 ? "0" : `−${Math.abs(carry.dodge_penalty)}`;
+  return `${getEncumbranceLabel(carry.level)} (${LABELS.inventory.encumbranceEffect.move} ×${factor} · ${LABELS.inventory.encumbranceEffect.dodge} ${penalty})`;
+}
+
 export function getCarryLimitLabel(key) {
   return LABELS.inventory.carryLimits[key] ?? key;
 }
