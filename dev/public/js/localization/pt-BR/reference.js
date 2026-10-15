@@ -15,12 +15,17 @@ export const REFERENCE = {
   nav: {
     groupsAriaLabel: "Grupos de referência",
     groups: {
+      character: { label: "Personagem", short: "Pers.", icon: "🧙" },
       system: { label: "Sistema", short: "Sistema", icon: "🎲" },
       combat: { label: "Combate", short: "Combate", icon: "⚔️" },
       tables: { label: "Tabelas", short: "Tabelas", icon: "📜" },
       house: { label: "Mesa", short: "Mesa", icon: "🏠" },
     },
     sections: {
+      "section-attributes": { label: "Atributos", icon: "💪" },
+      "section-base-damage": { label: "Dano Base", icon: "🗡️" },
+      "section-carry": { label: "Carga e Movimento", icon: "🎒" },
+      "section-resistances": { label: "Resistências Elementais", icon: "🔥" },
       "section-reactions": { label: "Reações", icon: "🤝" },
       "section-conditions": { label: "Aflições e Condições", icon: "🩸" },
       "section-combat-rules": { label: "Regras de Combate", icon: "⚔️" },
@@ -31,6 +36,12 @@ export const REFERENCE = {
     },
   },
   tabs: {
+    "tab-attr-primary": "Primários",
+    "tab-attr-secondary": "Secundários",
+    "tab-attr-base-damage": "Dano Base",
+    "tab-attr-carry": "Carga e Movimento",
+    "tab-attr-points": "Custo e Compra",
+    "tab-attr-resistances": "Resistências Elementais",
     "tab-reaction-table": "Reações",
     "tab-afflictions-conditions": "Aflições e Condições",
     "tab-combat-rules": "Regras de Combate",

@@ -5,6 +5,60 @@ const CONTENT = "/reference-content";
 
 export const REFERENCE_LAYOUT = [
   {
+    group: "character",
+    accent: "attributes",
+    sections: [
+      {
+        id: "section-attributes",
+        accent: "attributes",
+        tabs: [
+          {
+            id: "tab-attr-primary",
+            file: `${CONTENT}/attributes/primary.md`,
+          },
+          {
+            id: "tab-attr-secondary",
+            file: `${CONTENT}/attributes/secondary.md`,
+          },
+          {
+            id: "tab-attr-points",
+            file: `${CONTENT}/attributes/points_and_buying.md`,
+          },
+        ],
+      },
+      {
+        id: "section-base-damage",
+        accent: "attributes",
+        tabs: [
+          {
+            id: "tab-attr-base-damage",
+            file: `${CONTENT}/attributes/base_damage.md`,
+          },
+        ],
+      },
+      {
+        id: "section-carry",
+        accent: "attributes",
+        tabs: [
+          {
+            id: "tab-attr-carry",
+            file: `${CONTENT}/attributes/carry_and_movement.md`,
+          },
+        ],
+      },
+      {
+        id: "section-resistances",
+        accent: "attributes",
+        tabs: [
+          {
+            id: "tab-attr-resistances",
+            file: `${CONTENT}/attributes/elemental_resistances.md`,
+          },
+        ],
+      },
+    ],
+  },
+  {
     group: "system",
     accent: "skills",
     sections: [
