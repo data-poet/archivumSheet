@@ -1,6 +1,7 @@
 // Manual choice (themeState.js) wins once set; otherwise follows prefers-color-scheme live.
 // A blocking inline script in <head> already sets data-theme before first paint to avoid a
 // flash of the wrong theme — initTheme() just re-applies it (cheap, idempotent).
+import { icon } from "../shared/icons.js";
 import { getTheme, setTheme } from "../store/themeState.js";
 import { t } from "../localization/pt-BR/index.js";
 
@@ -19,8 +20,7 @@ function applyTheme(theme) {
 
   const btn = document.getElementById(BTN_ID);
   if (!btn) return;
-  btn.textContent =
-    theme === "dark" ? t("theme.iconDark") : t("theme.iconLight");
+  btn.innerHTML = icon(theme === "dark" ? "theme-dark" : "theme-light");
   btn.setAttribute(
     "aria-label",
     theme === "dark" ? t("theme.ariaDark") : t("theme.ariaLight"),

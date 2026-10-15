@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -162,7 +163,7 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
           dataAttrs: `data-instance-id="${instanceId}"`,
         })}
         ${equippedMoveSelect("equipped-ranged-move", `data-instance-id="${instanceId}"`)}
-        <button class="btn-remove remove-equipped-ranged" data-instance-id="${instanceId}">✕</button>
+        <button class="btn-remove remove-equipped-ranged" data-instance-id="${instanceId}">${icon("remove")}</button>
       </div>
     </div>
     ${equippedItemTabs(instanceId, [
@@ -244,7 +245,7 @@ function renderStorageSection(location, stored, data, sheet) {
             <select class="ranged-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-ranged" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-ranged" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button class="equip-stored-ranged" data-instance-id="${instanceId}">${t("common.equip")}</button>

@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -92,7 +93,7 @@ function renderCustomInventorySection(location, entries, sheet) {
               <button
                 class="btn-remove remove-custom-item"
                 data-custom-item-id="${entry.id}"
-              >✕</button>
+              >${icon("remove")}</button>
             </td>
             ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id)}</td>` : ""}
           </tr>

@@ -5,6 +5,7 @@
 import { LABELS } from "../localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "./sheetLayout.js";
 import { REFERENCE_LINKS, referenceHref } from "./referenceLinks.js";
+import { icon } from "../shared/icons.js";
 
 const MAIN_ID = "main-content";
 const POOL_ID = "sheet-panels";
@@ -29,7 +30,7 @@ function _buildHelpLink(section) {
   const anchors = section.tabs.map((tabId) => REFERENCE_LINKS[tabId]);
   if (!anchors.some(Boolean)) return "";
   const first = anchors[0];
-  return `<a class="tab-strip-help" target="_blank" rel="noopener" aria-label="${LABELS.nav.referenceHelp}" title="${LABELS.nav.referenceHelp}"${first ? ` href="${referenceHref(first)}"` : " hidden"}>?</a>`;
+  return `<a class="tab-strip-help" target="_blank" rel="noopener" aria-label="${LABELS.nav.referenceHelp}" title="${LABELS.nav.referenceHelp}"${first ? ` href="${referenceHref(first)}"` : " hidden"}>${icon("help")}</a>`;
 }
 
 function _buildTabStrip(section) {

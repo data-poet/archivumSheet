@@ -4,6 +4,7 @@
 // folder writes into them by id.
 
 import { t } from "../../localization/pt-BR/index.js";
+import { icon } from "../../shared/icons.js";
 
 const HOST_ID = "resume-panel-host";
 const PANEL_ID = "tab-char-resume";
@@ -168,7 +169,9 @@ function applyResumeStaticLabels() {
   setText("lbl-encumbrance", `${t("resume.encumbrance")}:`);
   setText("lbl-resume-totalWeight", t("resume.totalWeight"));
   setText("lbl-resume-totalValue", t("resume.totalValue"));
-  setText("lbl-resume-coins-carried", t("resume.coinsCarried"));
+  const coinsCarried = document.getElementById("lbl-resume-coins-carried");
+  if (coinsCarried)
+    coinsCarried.innerHTML = `${icon("coins-carried")} ${t("resume.coinsCarried")}`;
 }
 
 // Must run before anything that reads the panel — initViewMode() moves #tab-char-resume,

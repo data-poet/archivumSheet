@@ -4,6 +4,7 @@ import { LABELS } from "../localization/pt-BR/index.js";
 import { scrollToSection } from "../shared/motion.js";
 import { fetchAppInfo } from "../api.js";
 import { LAYOUT_SECTIONS } from "../layout/sheetLayout.js";
+import { icon } from "../shared/icons.js";
 
 function _buildSidebar(sections, labels) {
   const nav = document.getElementById("sidebar");
@@ -11,8 +12,8 @@ function _buildSidebar(sections, labels) {
 
   const ul = nav.querySelector(".sidebar-nav") ?? document.createElement("ul");
   ul.innerHTML = sections
-    .map(({ id, accent }, i) => {
-      const { label, icon } = labels[id] ?? {};
+    .map(({ id, accent, icon: iconName }, i) => {
+      const { label } = labels[id] ?? {};
       return `
       <li>
         <a
@@ -21,7 +22,7 @@ function _buildSidebar(sections, labels) {
           data-section="${id}"
           ${accent ? `data-accent="${accent}"` : ""}
         >
-          <span class="sidebar-icon" aria-hidden="true">${icon ?? ""}</span>
+          <span class="sidebar-icon" aria-hidden="true">${icon(iconName)}</span>
           <span class="sidebar-label">${label ?? ""}</span>
         </a>
       </li>`;

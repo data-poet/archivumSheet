@@ -1,5 +1,6 @@
 // View mode physically moves the single resume panel node into #view-mode-resume via
 // appendChild (a real DOM move, not a clone), so IDs stay unique and listeners/state survive.
+import { icon } from "../shared/icons.js";
 import { isViewMode, setViewMode } from "../store/viewModeState.js";
 import { t } from "../localization/pt-BR/index.js";
 
@@ -24,11 +25,11 @@ function applyMode(viewMode) {
 
   const btn = document.getElementById(BTN_ID);
   if (btn) {
-    const icon = viewMode ? t("viewMode.iconEdit") : t("viewMode.iconView");
+    const btnIcon = icon(viewMode ? "view-mode-edit" : "view-mode-view");
     const label = viewMode ? t("viewMode.btnEdit") : t("viewMode.btnView");
     // The label collapses on mobile (see navigation.css) so the icon alone must stay
     // meaningful — it's still wrapped for layout, not just inlined as text.
-    btn.innerHTML = `<span class="view-mode-btn-icon" aria-hidden="true">${icon}</span><span class="view-mode-btn-label">${label}</span>`;
+    btn.innerHTML = `<span class="view-mode-btn-icon" aria-hidden="true">${btnIcon}</span><span class="view-mode-btn-label">${label}</span>`;
     btn.setAttribute(
       "aria-label",
       viewMode ? t("viewMode.ariaEdit") : t("viewMode.ariaView"),

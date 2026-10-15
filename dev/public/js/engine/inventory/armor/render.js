@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -183,7 +184,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-armor-move", `data-slot="${slot}"`)}
-        ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance.id}">✕</button>` : ""}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-armor" data-instance-id="${equippedInstance.id}">${icon("remove")}</button>` : ""}
       </div>
     </div>
     ${
@@ -268,7 +269,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
             <select class="armor-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-armor" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-armor" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button class="equip-stored-armor" data-instance-id="${instanceId}">${t("common.equip")}</button>

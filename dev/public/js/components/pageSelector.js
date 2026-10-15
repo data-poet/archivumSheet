@@ -9,6 +9,7 @@
 // The popover reuses the `char-selector-*` classes: those are the app's generic
 // popover-list styles, and renaming them is a separate cleanup.
 
+import { icon } from "../shared/icons.js";
 import { LABELS } from "../localization/pt-BR/index.js";
 import { clickStartedInside } from "../shared/eventDispatch.js";
 
@@ -51,7 +52,7 @@ export function renderPageSelector() {
     trigger.setAttribute("title", triggerAria);
     trigger.innerHTML = `
       <span class="page-selector-btn-label">${current?.label ?? ""}</span>
-      <span class="page-selector-btn-chevron" aria-hidden="true">⌄</span>
+      <span class="page-selector-btn-chevron" aria-hidden="true">${icon("chevron-down")}</span>
     `;
   }
 

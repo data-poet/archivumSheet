@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -210,7 +211,7 @@ function renderContainerSlot(
                 data-from-instance-id="${instanceId}"
                 data-ammo-id="${entry.ammo_id}"
               >
-                <option value="">↪ ${t("common.storage")}</option>
+                <option value="">${icon("storage-option")} ${t("common.storage")}</option>
                 ${opts}
               </select>`;
             })();
@@ -241,7 +242,7 @@ function renderContainerSlot(
                   class="btn-remove remove-ammo-from-container"
                   data-instance-id="${instanceId}"
                   data-ammo-id="${entry.ammo_id}"
-                >✕</button>
+                >${icon("remove")}</button>
               </td>
             </tr>
             ${detailRow(3, ammoDetailFields(ammoRecord))}`;
@@ -266,7 +267,7 @@ function renderContainerSlot(
           <select class="ammo-container-storage-select" data-instance-id="${instanceId}">
             ${containerStorageOptions(inst.storedAt, isCarriable)}
           </select>
-          <button class="btn-remove remove-ammo-container" data-instance-id="${instanceId}">✕</button>
+          <button class="btn-remove remove-ammo-container" data-instance-id="${instanceId}">${icon("remove")}</button>
           ${sendToAllyRowHTML(instanceId)}
         </div>
         <div class="ammo-container-meta">
@@ -371,7 +372,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
                 class="btn-remove remove-loose-ammo"
                 data-ammo-id="${entry.ammo_id}"
                 data-stored-at="${location}"
-              >✕</button>
+              >${icon("remove")}</button>
             </td>
             ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
               needsQuantity: true,

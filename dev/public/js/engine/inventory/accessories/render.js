@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -113,7 +114,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
           />
         </label>
         ${equippedMoveSelect("equipped-accessory-move", `data-instance-id="${instanceId}"`)}
-        <button class="btn-remove remove-equipped-accessory" data-instance-id="${instanceId}">✕</button>
+        <button class="btn-remove remove-equipped-accessory" data-instance-id="${instanceId}">${icon("remove")}</button>
       </div>
     </div>
     ${equippedItemTabs(instanceId, [
@@ -189,7 +190,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
             <select class="accessory-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-accessory" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button

@@ -1,3 +1,4 @@
+import { icon } from "../shared/icons.js";
 import { t } from "../localization/pt-BR/index.js";
 import {
   listCharacters,
@@ -70,7 +71,7 @@ export function updateSelectorButton() {
 
   btn.innerHTML = `
     <span class="char-selector-btn-name">${escapeHtml(_displayName(active))}</span>
-    <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
+    <span class="char-selector-btn-chevron" aria-hidden="true">${icon("chevron-down")}</span>
   `;
 }
 
@@ -125,7 +126,7 @@ export function renderPopover() {
             data-action="select-char"
             data-id="${c.id}"
             ${isActive ? 'aria-current="true"' : ""}>
-          <span class="char-selector-radio" aria-hidden="true">${isActive ? "⦿" : "○"}</span>
+          <span class="char-selector-radio" aria-hidden="true">${icon(isActive ? "radio-on" : "radio-off")}</span>
           <span class="char-selector-item-info">
             <span class="char-selector-item-name">${escapeHtml(_displayName(c))}</span>
           </span>
@@ -135,10 +136,10 @@ export function renderPopover() {
     })
     .join("");
 
-  const actionItem = (action, icon, label, extraClass = "") => `
+  const actionItem = (action, iconName, label, extraClass = "") => `
       <li>
         <button type="button" class="char-selector-action-item${extraClass}" data-action="${action}">
-          <span class="char-selector-action-icon" aria-hidden="true">${icon}</span>
+          <span class="char-selector-action-icon" aria-hidden="true">${icon(iconName)}</span>
           <span>${label}</span>
         </button>
       </li>`;
@@ -149,13 +150,13 @@ export function renderPopover() {
     </ul>
     <div class="char-selector-divider"></div>
     <ul class="char-selector-actions">
-      ${actionItem("add-char", "+", t("characters.add"))}
-      ${actionItem("add-ally", "+", t("characters.addAlly"))}
-      ${actionItem("remove-char", "−", t("characters.remove"), " char-selector-action-remove")}
+      ${actionItem("add-char", "add", t("characters.add"))}
+      ${actionItem("add-ally", "add", t("characters.addAlly"))}
+      ${actionItem("remove-char", "remove-character", t("characters.remove"), " char-selector-action-remove")}
       <li class="char-selector-divider" role="presentation"></li>
-      ${actionItem("import-char", "⬆️", t("app.import"))}
-      ${actionItem("export-char", "⬇️", t("app.export"))}
-      ${actionItem("replace-char", "🔄", t("characters.replace"))}
+      ${actionItem("import-char", "import", t("app.import"))}
+      ${actionItem("export-char", "export", t("app.export"))}
+      ${actionItem("replace-char", "replace", t("characters.replace"))}
     </ul>
   `;
 }

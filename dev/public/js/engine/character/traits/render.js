@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -51,7 +52,7 @@ export function renderAdvantages(selected, data, sheet) {
             const actionCell =
               isInnate || isMetaRace || isEnchantment
                 ? `<td class="col-action"></td>`
-                : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">✕</button></td>`;
+                : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">${icon("remove")}</button></td>`;
 
             return `
           <tr class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
@@ -128,7 +129,7 @@ export function renderDisadvantages(selected, data, sheet) {
             const actionCell =
               isInnate || isMetaRace || isEnchantment
                 ? `<td class="col-action"></td>`
-                : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">✕</button></td>`;
+                : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">${icon("remove")}</button></td>`;
 
             return `
           <tr class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">

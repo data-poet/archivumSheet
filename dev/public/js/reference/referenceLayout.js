@@ -1,15 +1,17 @@
-// Same shape as js/layout/sheetLayout.js, so groupNav.js and nav.js serve both pages. Labels and icons
-// live in localization (reference.js), keyed by these ids. Each tab renders one markdown file.
+// Same shape as js/layout/sheetLayout.js, so groupNav.js and nav.js serve both pages. Labels live in
+// localization (reference.js), keyed by these ids; `icon` names an entry in js/shared/icons.js. Each tab renders one markdown file.
 // `accent` maps to an --accent-* token (see navigation.css); a group's accent colours its group-bar button.
 const CONTENT = "/reference-content";
 
 export const REFERENCE_LAYOUT = [
   {
     group: "character",
+    icon: "character",
     accent: "attributes",
     sections: [
       {
         id: "section-attributes",
+        icon: "attributes",
         accent: "attributes",
         tabs: [
           {
@@ -28,6 +30,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-base-damage",
+        icon: "base-damage",
         accent: "attributes",
         tabs: [
           {
@@ -38,6 +41,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-carry",
+        icon: "carry",
         accent: "attributes",
         tabs: [
           {
@@ -48,6 +52,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-resistances",
+        icon: "resistances",
         accent: "attributes",
         tabs: [
           {
@@ -60,10 +65,12 @@ export const REFERENCE_LAYOUT = [
   },
   {
     group: "system",
+    icon: "system",
     accent: "skills",
     sections: [
       {
         id: "section-reactions",
+        icon: "reactions",
         accent: "skills",
         tabs: [
           {
@@ -74,6 +81,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-conditions",
+        icon: "conditions",
         accent: "skills",
         tabs: [
           {
@@ -86,10 +94,12 @@ export const REFERENCE_LAYOUT = [
   },
   {
     group: "combat",
+    icon: "combat",
     accent: "combat",
     sections: [
       {
         id: "section-combat-rules",
+        icon: "combat-rules",
         accent: "combat",
         tabs: [
           {
@@ -104,6 +114,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-maneuvers",
+        icon: "maneuvers",
         accent: "combat",
         tabs: [
           {
@@ -124,10 +135,12 @@ export const REFERENCE_LAYOUT = [
   },
   {
     group: "tables",
+    icon: "tables",
     accent: "inventory",
     sections: [
       {
         id: "section-criticals",
+        icon: "criticals",
         accent: "inventory",
         tabs: [
           {
@@ -146,6 +159,7 @@ export const REFERENCE_LAYOUT = [
       },
       {
         id: "section-panic",
+        icon: "panic",
         accent: "inventory",
         tabs: [
           {
@@ -158,10 +172,12 @@ export const REFERENCE_LAYOUT = [
   },
   {
     group: "house",
+    icon: "house",
     accent: "traits",
     sections: [
       {
         id: "section-homebrew",
+        icon: "homebrew",
         accent: "traits",
         tabs: [
           {

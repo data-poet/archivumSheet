@@ -7,9 +7,11 @@ import { getActiveGroup } from "dev/public/js/store/groupState.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "dev/public/js/layout/sheetLayout.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { icon } from "dev/public/js/shared/icons.js";
 
-const GROUPS = SHEET_LAYOUT.map(({ group, sections }) => ({
+const GROUPS = SHEET_LAYOUT.map(({ group, sections, icon: iconName }) => ({
   key: group,
+  icon: icon(iconName),
   sections: sections.map(({ id }) => id),
   ...LABELS.nav.groups[group],
 }));

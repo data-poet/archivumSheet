@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
@@ -92,7 +93,7 @@ function renderCoinSection(location, coins, sheet) {
                 class="btn-remove remove-coin"
                 data-coin-type="${entry.coin_type}"
                 data-stored-at="${location}"
-              >✕</button>
+              >${icon("remove")}</button>
             </td>
             ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
               needsQuantity: true,

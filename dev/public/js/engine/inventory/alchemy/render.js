@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -144,7 +145,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
                 class="btn-remove remove-alchemy"
                 data-consumable-id="${entry.consumable_id}"
                 data-stored-at="${location}"
-              >✕</button>
+              >${icon("remove")}</button>
             </td>
             ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
               needsQuantity: true,

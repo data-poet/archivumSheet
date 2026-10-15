@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -124,7 +125,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 class="btn-remove remove-survival-gear"
                 data-gear-id="${entry.adventure_gear_id}"
                 data-stored-at="${location}"
-              >✕</button>
+              >${icon("remove")}</button>
             </td>
             ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(entry.id, {
               needsQuantity: true,

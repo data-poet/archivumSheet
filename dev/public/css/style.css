@@ -11,6 +11,7 @@
 
 /* ── Foundations ─────────────────────────────────────────────────────────── */
 @import url("base/variables.css");
+@import url("base/icons.css");
 
 /* ── Layout ───────────────────────────────────────────────────────────────── */
 @import url("layout/navigation.css");

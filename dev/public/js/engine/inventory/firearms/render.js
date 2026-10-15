@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -229,7 +230,7 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
           instanceId,
         })}
         ${equippedMoveSelect("equipped-firearm-move", `data-instance-id="${instanceId}"`)}
-        <button class="btn-remove remove-equipped-firearm" data-instance-id="${instanceId}">✕</button>
+        <button class="btn-remove remove-equipped-firearm" data-instance-id="${instanceId}">${icon("remove")}</button>
       </div>
     </div>
     ${equippedItemTabs(instanceId, [
@@ -326,7 +327,7 @@ function renderStorageSection(location, stored, data, sheet) {
             <select class="firearm-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-firearm" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-firearm" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button class="equip-stored-firearm" data-instance-id="${instanceId}">${t("common.equip")}</button>

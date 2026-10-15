@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -130,7 +131,7 @@ export function renderSpells(selected, data, sheet) {
             // Item-granted rows have nothing in the player's own selection to remove.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
-              : `<td class="col-action"><button class="btn-remove remove-spell" data-name="${name}">✕</button></td>`;
+              : `<td class="col-action"><button class="btn-remove remove-spell" data-name="${name}">${icon("remove")}</button></td>`;
 
             const enchantmentTag = isEnchantment
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`

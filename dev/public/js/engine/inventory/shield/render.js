@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
 import {
@@ -166,7 +167,7 @@ export function renderEquippedShield(selected, data, sheet) {
             : ""
         }
         ${equippedMoveSelect("equipped-shield-move")}
-        ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance.id}">✕</button>` : ""}
+        ${equippedInstance ? `<button class="btn-remove remove-equipped-shield" data-instance-id="${equippedInstance.id}">${icon("remove")}</button>` : ""}
       </div>
     </div>
     ${
@@ -253,7 +254,7 @@ function renderStorageSection(location, stored, data, sheet) {
             <select class="shield-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-shield" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-shield" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button class="equip-stored-shield" data-instance-id="${instanceId}">${t("common.equip")}</button>

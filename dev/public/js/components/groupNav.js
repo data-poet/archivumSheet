@@ -6,6 +6,7 @@ import { LABELS } from "../localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "../layout/sheetLayout.js";
 import { getActiveGroup, setActiveGroup } from "../store/groupState.js";
 import { renderSidebarSections } from "./nav.js";
+import { icon } from "../shared/icons.js";
 
 const NAV_ID = "groupnav";
 
@@ -42,8 +43,8 @@ function _buildGroupNav() {
   nav.innerHTML = `
     <div class="groupnav-list" role="tablist">
       ${_layout()
-        .map(({ group: key, accent }) => {
-          const { label, short, icon } = labels.groups[key] ?? {};
+        .map(({ group: key, accent, icon: iconName }) => {
+          const { label, short } = labels.groups[key] ?? {};
           return `
         <button
           type="button"
@@ -55,7 +56,7 @@ function _buildGroupNav() {
           aria-selected="false"
           tabindex="-1"
         >
-          <span class="groupnav-icon" aria-hidden="true">${icon ?? ""}</span>
+          <span class="groupnav-icon" aria-hidden="true">${icon(iconName)}</span>
           <span class="groupnav-label" aria-hidden="true">${label ?? ""}</span>
           <span class="groupnav-label-short" aria-hidden="true">${short ?? label ?? ""}</span>
         </button>`;

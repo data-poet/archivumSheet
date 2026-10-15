@@ -1,0 +1,9 @@
+/* Custom icons from js/shared/icons.js (<img class="icon"> or <svg class="icon">) size like the emoji they
+   replace: one line of the surrounding text, sitting on the baseline. */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  object-fit: contain;
+}

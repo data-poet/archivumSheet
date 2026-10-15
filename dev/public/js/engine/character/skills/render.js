@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
@@ -132,7 +133,7 @@ export function renderSkills(selected, data, sheet) {
             // Item-granted rows have nothing to remove, same as innate advantages.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
-              : `<td class="col-action"><button class="btn-remove remove-skill" data-id="${id}">✕</button></td>`;
+              : `<td class="col-action"><button class="btn-remove remove-skill" data-id="${id}">${icon("remove")}</button></td>`;
 
             const enchantmentTag = isEnchantment
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`

@@ -7,7 +7,6 @@ export const CHARACTER_IMAGE = {
 
   tabLabel: "Imagem",
   uploadBtn: "Selecionar imagem",
-  clearBtn: "✕",
   sizeAndPosition: "Tamanho & Posição",
   background: "Fundo",
   bgAverage: "Automático",

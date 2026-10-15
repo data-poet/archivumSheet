@@ -10,6 +10,7 @@ import {
   mockFetchResponse,
   mockFetchError,
 } from "tests/dev/helpers/mockFetch.js";
+import { icon } from "dev/public/js/shared/icons.js";
 
 // jsdom implements neither scrollIntoView nor IntersectionObserver.
 class MockIntersectionObserver {
@@ -57,11 +58,13 @@ describe("initNav — building the nav bars", () => {
     expect(links[1].classList.contains("is-active")).toBe(false);
 
     const first = LAYOUT_SECTIONS[0];
-    const { label, icon } = LABELS.nav.sections[first.id];
+    const { label } = LABELS.nav.sections[first.id];
     expect(links[0].dataset.section).toBe(first.id);
     expect(links[0].dataset.accent).toBe(first.accent);
     expect(links[0].getAttribute("href")).toBe(`#${first.id}`);
-    expect(links[0].querySelector(".sidebar-icon").textContent).toBe(icon);
+    expect(links[0].querySelector(".sidebar-icon").textContent).toBe(
+      icon(first.icon),
+    );
     expect(links[0].querySelector(".sidebar-label").textContent).toBe(label);
   });
 

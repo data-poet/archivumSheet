@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { emptyRow, cardTitleCell } from "../../../shared/renderUtils.js";
@@ -22,7 +23,7 @@ export function renderMetaRaces(selected, data) {
             return `
           <tr data-id="${id}">
             ${cardTitleCell(name)}
-            <td class="col-action"><button class="btn-remove remove-meta-race" data-id="${id}">✕</button></td>
+            <td class="col-action"><button class="btn-remove remove-meta-race" data-id="${id}">${icon("remove")}</button></td>
           </tr>`;
           })
           .join("");

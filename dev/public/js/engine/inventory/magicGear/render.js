@@ -1,3 +1,4 @@
+import { icon } from "../../../shared/icons.js";
 import {
   t,
   getMagicGearLimitReachedLabel,
@@ -93,7 +94,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
         <span class="item-detail"><em>${t("common.price")}:</em> ${resolved?.total_value ?? record.magic_gear_price}</span>
         <span class="item-detail"><em>${t("common.weight")}:</em> ${resolved?.total_weight ?? record.magic_gear_weight}</span>
         ${equippedMoveSelect("equipped-magic-gear-move", `data-instance-id="${instanceId}"`)}
-        <button class="btn-remove remove-equipped-magic-gear" data-instance-id="${instanceId}">✕</button>
+        <button class="btn-remove remove-equipped-magic-gear" data-instance-id="${instanceId}">${icon("remove")}</button>
       </div>
     </div>
     ${equippedItemTabs(instanceId, [
@@ -166,7 +167,7 @@ function renderStorageSection(location, stored, data, sheet) {
             <select class="magic-gear-storage-select" data-instance-id="${instanceId}">
               ${storageOptions(inst.storedAt)}
             </select>
-            <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">✕</button>
+            <button class="btn-remove remove-magic-gear" data-instance-id="${instanceId}">${icon("remove")}</button>
           </td>
           <td class="col-action">
             <button

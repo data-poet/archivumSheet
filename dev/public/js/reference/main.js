@@ -10,6 +10,7 @@ import { initTabs } from "../components/tabs.js";
 import { initTheme } from "../components/theme.js";
 import { initPageSelector } from "../components/pageSelector.js";
 import { LABELS } from "../localization/pt-BR/index.js";
+import { icon } from "../shared/icons.js";
 
 // Separate from the sheet's key, whose group ids would otherwise fall back to the first group here.
 const GROUP_STORAGE_KEY = "archivum:referenceGroup";
@@ -20,6 +21,9 @@ function _hydrateShell() {
 
   const topbarTitle = document.getElementById("topbar-title");
   if (topbarTitle) topbarTitle.textContent = L.topbarTitle;
+
+  const searchBtn = document.getElementById("reference-search-btn");
+  if (searchBtn) searchBtn.innerHTML = icon("search");
 }
 
 window.onload = async () => {

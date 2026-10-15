@@ -34,7 +34,7 @@ export const RESUME = {
   customInventoryWeight: "Inv. Personalizado",
   encumbrance: "Sobrecarga",
   carryLimits: "Limites de Carga",
-  coinsCarried: "💰 na mochila",
+  coinsCarried: "na mochila",
 };
 
 export const SECTIONS = {

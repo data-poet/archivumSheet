@@ -49,7 +49,6 @@ describe("REFERENCE_LAYOUT ↔ localization", () => {
         expect.objectContaining({
           label: expect.any(String),
           short: expect.any(String),
-          icon: expect.any(String),
         }),
       ),
     );

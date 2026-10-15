@@ -2,21 +2,13 @@
 // Conventions for authors live in reference-content/README.md.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { slugify } from "./enhance.js";
-
-const ALERT_ICONS = {
-  note: "ℹ️",
-  tip: "💡",
-  important: "❗",
-  warning: "⚠️",
-  caution: "🛑",
-  house: "🏠",
-};
+import { icon } from "../shared/icons.js";
 
 // Variants replace marked-alert's defaults by type, which also swaps its English titles.
 function _alertVariants() {
-  return Object.entries(ALERT_ICONS).map(([type, icon]) => ({
+  return Object.keys(LABELS.reference.alerts).map((type) => ({
     type,
-    icon: `<span class="markdown-alert-icon" aria-hidden="true">${icon}</span>`,
+    icon: `<span class="markdown-alert-icon" aria-hidden="true">${icon(`callout-${type}`)}</span>`,
     title: LABELS.reference.alerts[type],
   }));
 }

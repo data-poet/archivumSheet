@@ -51,7 +51,7 @@
           aria-label="Entrar no modo visualização"
           aria-pressed="false"
         >
-          <span class="view-mode-btn-icon" aria-hidden="true">📃</span>
+          <span class="view-mode-btn-icon" aria-hidden="true"></span>
           <span class="view-mode-btn-label">Visualizar</span>
         </button>
         <button
@@ -60,9 +60,7 @@
           type="button"
           aria-label="Mudar para modo escuro"
           aria-pressed="false"
-        >
-          ☀️
-        </button>
+        ></button>
         <button
           id="page-selector-btn"
           class="topbar-btn page-selector-btn"
@@ -78,7 +76,7 @@
           aria-expanded="false"
         >
           <span class="char-selector-btn-name">—</span>
-          <span class="char-selector-btn-chevron" aria-hidden="true">⌄</span>
+          <span class="char-selector-btn-chevron" aria-hidden="true"></span>
         </button>
       </div>
     </header>
@@ -1260,6 +1258,7 @@
       // This is the only place static UI strings are set; everything reads from
       // LABELS so swapping the import in pt-BR/index.js (or creating en-US/) is enough.
       import { LABELS, t } from "/js/localization/pt-BR/index.js";
+      import { icon } from "/js/shared/icons.js";
       import {
         populateStorageSelects,
         EQUIP_SECTION_PREFIXES,
@@ -1412,7 +1411,8 @@
         // Character image tab
         setText("charimg-section-lbl", L.characterImage.tabLabel);
         setText("charimg-upload-lbl", L.characterImage.uploadBtn);
-        setText("charimg-clear-btn", L.characterImage.clearBtn);
+        const clearBtn = document.getElementById("charimg-clear-btn");
+        if (clearBtn) clearBtn.innerHTML = icon("remove");
         setText("charimg-drag-hint", L.characterImage.dragHint);
         setText("charimg-size-pos-lbl", L.characterImage.sizeAndPosition);
         setText("charimg-bg-lbl", L.characterImage.background);

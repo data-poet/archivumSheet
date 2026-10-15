@@ -1,21 +1,21 @@
 // Split out of store/persistence.js: that module imports compute/autorun.js for its
 // save/export flows, and ally save/export flows must never pull in compute/*. This file
-// stays a leaf so both PC and ally flows can show a toast.
+// stays a leaf (icons.js has no imports) so both PC and ally flows can show a toast.
 
-const TOAST_ICONS = { success: "✓", error: "✕", info: "ℹ" };
+import { icon } from "./icons.js";
 
 export function showToast(message, type = "success", options = {}) {
   document.getElementById("_archivum-toast")?.remove();
 
   const { actionLabel, onAction, duration = 3000 } = options;
-  const icon = TOAST_ICONS[type] ?? TOAST_ICONS.info;
+  const toastIcon = icon(`toast-${type}`) || icon("toast-info");
 
   const toast = document.createElement("div");
   toast.id = "_archivum-toast";
   toast.className = `toast toast--${type}`;
 
   toast.innerHTML = `
-    <span class="toast-icon" aria-hidden="true">${icon}</span>
+    <span class="toast-icon" aria-hidden="true">${toastIcon}</span>
     <span class="toast-message">${message}</span>
     ${actionLabel ? `<button type="button" class="toast-action">${actionLabel}</button>` : ""}
   `;
@@ -32,7 +32,9 @@ export function showToast(message, type = "success", options = {}) {
     if (dismissed) return;
     dismissed = true;
     toast.classList.remove("is-visible");
-    toast.addEventListener("transitionend", () => toast.remove(), { once: true });
+    toast.addEventListener("transitionend", () => toast.remove(), {
+      once: true,
+    });
   };
 
   if (actionLabel && onAction) {
