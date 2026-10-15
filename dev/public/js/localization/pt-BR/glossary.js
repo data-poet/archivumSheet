@@ -26,15 +26,10 @@ export const GLOSSARY = {
     definition:
       "Quanto dano o personagem aguenta. Calculado a partir de HT e ST.",
   },
-  PF: {
-    term: "Pontos de Fadiga",
-    definition:
-      "Reserva de energia física. Perdida por esforço, fome, sede e algumas aflições.",
-  },
   Mana: {
     term: "Mana",
     definition:
-      "Energia mágica para conjurar e sustentar magias. Calculada a partir de IQ e HT.",
+      "Energia mágica e física. Paga os feitiços e, no Archivum, substitui a Fadiga: esforço, fome, sede e sono perdido também consomem Mana. Calculada a partir de IQ e HT.",
   },
   Toxicidade: {
     term: "Toxicidade",

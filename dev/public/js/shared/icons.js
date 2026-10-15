@@ -42,6 +42,12 @@ export const ICONS = {
   criticals: "🎯",
   panic: "😱",
   homebrew: "📖",
+  "success-rolls": "⚖️",
+  hazards: "☠️",
+  "damage-types": "💥",
+  ranged: "🏹",
+  arcana: "✨",
+  casting: "🔮",
 
   // Reference callouts (> [!TYPE])
   "callout-note": "ℹ️",

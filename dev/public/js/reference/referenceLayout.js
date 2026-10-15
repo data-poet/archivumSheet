@@ -69,6 +69,17 @@ export const REFERENCE_LAYOUT = [
     accent: "skills",
     sections: [
       {
+        id: "section-tests",
+        icon: "success-rolls",
+        accent: "skills",
+        tabs: [
+          {
+            id: "tab-success-rolls",
+            file: `${CONTENT}/system/success_rolls.md`,
+          },
+        ],
+      },
+      {
         id: "section-reactions",
         icon: "reactions",
         accent: "skills",
@@ -87,6 +98,21 @@ export const REFERENCE_LAYOUT = [
           {
             id: "tab-afflictions-conditions",
             file: `${CONTENT}/effects/afflictions_and_conditions.md`,
+          },
+          {
+            id: "tab-fatigue-healing",
+            file: `${CONTENT}/effects/fatigue_and_healing.md`,
+          },
+        ],
+      },
+      {
+        id: "section-hazards",
+        icon: "hazards",
+        accent: "skills",
+        tabs: [
+          {
+            id: "tab-hazards",
+            file: `${CONTENT}/effects/hazards.md`,
           },
         ],
       },
@@ -110,6 +136,10 @@ export const REFERENCE_LAYOUT = [
             id: "tab-combat-hit-locations",
             file: `${CONTENT}/combat/hit_locations.md`,
           },
+          {
+            id: "tab-damage-types",
+            file: `${CONTENT}/combat/damage_types.md`,
+          },
         ],
       },
       {
@@ -128,6 +158,35 @@ export const REFERENCE_LAYOUT = [
           {
             id: "tab-maneuvers-martial",
             file: `${CONTENT}/combat/maneuvers_martial.md`,
+          },
+        ],
+      },
+      {
+        id: "section-ranged",
+        icon: "ranged",
+        accent: "combat",
+        tabs: [
+          {
+            id: "tab-ranged-combat",
+            file: `${CONTENT}/combat/ranged_combat.md`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    group: "magic",
+    icon: "arcana",
+    accent: "magic",
+    sections: [
+      {
+        id: "section-magic",
+        icon: "casting",
+        accent: "magic",
+        tabs: [
+          {
+            id: "tab-magic-casting",
+            file: `${CONTENT}/magic/casting.md`,
           },
         ],
       },

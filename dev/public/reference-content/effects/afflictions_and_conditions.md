@@ -76,10 +76,10 @@
 <summary>Agonia</summary>
 
 - **Descrição:** Você está consciente, mas em uma dor tão terrível que só consegue gemer ou gritar. Se estiver de pé ou sentado, você cai.
-- **Perda de [[PF]]:** Perde **1 PF por minuto** (ou fração de minuto) enquanto durar a aflição.
+- **Perda de [[Mana]]:** Perde **1 de Mana por minuto** (ou fração de minuto) enquanto durar a aflição.
 - **Pós-Recuperação:** Qualquer pessoa que possa ameaçá-lo de forma convincente com o retorno da dor recebe **+3 nos testes das perícias Interrogatório e Intimidação**.
 - **Modificadores:**
-  - _Hiperalgia:_ Dobra a perda de PF e o bônus de tortura.
+  - _Hiperalgia:_ Dobra a perda de Mana e o bônus de tortura.
   - _Hipoalgia:_ Permite funcionar apesar da agonia, mas com **-3 na [[DX]] e [[IQ]]**.
 
 </details>
@@ -135,7 +135,7 @@
 
 - **Efeitos:** Você está consciente, mas vomitando (ou com ânsias secas).
 - **Penalidades:** Se tentar agir, sofre **-5 na DX, IQ e [[Per]]**, e falha automaticamente em qualquer ação que exija a manobra _Concentrar_.
-- **Consequências:** Ao final do surto, perde **1 PF**. Não obtém benefícios de refeições recentes ou medicamentos orais.
+- **Consequências:** Ao final do surto, perde **1 de Mana**. Não obtém benefícios de refeições recentes ou medicamentos orais.
 
 </details>
 
@@ -143,7 +143,7 @@
 <summary>Convulsão</summary>
 
 - **Efeitos:** Seus membros tremem incontrolavelmente, você cai se estiver de pé e não consegue falar ou pensar com clareza. Não pode realizar nenhuma ação.
-- **Consequência:** Ao final da convulsão, você perde **1d** PF.
+- **Consequência:** Ao final da convulsão, você perde **1d** de Mana.
 
 </details>
 
@@ -172,7 +172,7 @@
 <details>
 <summary>Ataque Cardíaco</summary>
 
-- **Descrição:** Seu coração para de funcionar (parada cardíaca). Você reduz seus PF imediatamente para **-1 × [[PF]]**.
+- **Descrição:** Seu coração para de funcionar (parada cardíaca). Você reduz sua Mana imediatamente para **-1 × [[Mana]]**.
 - **Risco de Morte:** Morrerá em **HT / 3** minutos a menos que seja reanimado (veja Ressuscitação, abaixo).
 - **Sobrevivência:** Se sobreviver, ficará com 0 PV ou com seus PV atuais, o que for pior.
 - **Imunidades:** _Tolerância a Ferimentos (Difuso, Homogêneo ou Sem Órgãos Vitais)_ concede imunidade a esta aflição.
