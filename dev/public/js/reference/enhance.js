@@ -2,6 +2,15 @@
 // (conventions in reference-content/README.md).
 
 const BADGE_SEPARATOR = " | ";
+
+export function slugify(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^A-Za-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
+}
 const EXAMPLE_TITLE = /^Exemplos?$/;
 // Cells longer than this mean prose rows, which read better as stacked cards on phones;
 // short numeric tables (e.g. the damage table) stay tabular.
@@ -68,6 +77,29 @@ function _splitSummaryBadges(panel) {
   });
 }
 
+// Stable ids for deep links and search: "<tab id>--<slug of the title>", e.g.
+// tab-attr-secondary--pontos-de-vida-pv. Runs after badges are split, so only the title counts.
+function _assignAnchors(panel) {
+  const used = new Set();
+  const targets = panel.querySelectorAll(
+    ".reference-prose h3, .reference-prose details:not(.reference-example)",
+  );
+  targets.forEach((el) => {
+    const label =
+      el.tagName === "DETAILS"
+        ? (
+            el.querySelector(":scope > summary .summary-title") ??
+            el.querySelector(":scope > summary")
+          )?.textContent
+        : el.textContent;
+    const base = `${panel.id}--${slugify(label ?? "")}`;
+    let id = base;
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    el.id = id;
+  });
+}
+
 function _labelTableCells(panel) {
   panel.querySelectorAll(".reference-prose table").forEach((table) => {
     const headers = Array.from(table.querySelectorAll("thead th"), (th) =>
@@ -91,6 +123,7 @@ export function enhanceProse(panel) {
   _markExamples(panel);
   _groupItemLists(panel);
   _splitSummaryBadges(panel);
+  _assignAnchors(panel);
   _labelTableCells(panel);
 }
 

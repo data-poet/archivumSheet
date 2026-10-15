@@ -1,6 +1,7 @@
 // marked setup for reference content: GFM-style callouts (marked-alert, CDN) and [[glossary]] terms.
 // Conventions for authors live in reference-content/README.md.
 import { LABELS } from "../localization/pt-BR/index.js";
+import { slugify } from "./enhance.js";
 
 const ALERT_ICONS = {
   note: "ℹ️",
@@ -23,12 +24,7 @@ function _alertVariants() {
 const TERM_PATTERN = /^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/;
 
 export function glossaryPopoverId(key) {
-  const slug = key
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^A-Za-z0-9]+/g, "-")
-    .toLowerCase();
-  return `glossary-${slug}`;
+  return `glossary-${slugify(key)}`;
 }
 
 // Unknown keys render as plain text, so a typo degrades gracefully; the guard test catches it.

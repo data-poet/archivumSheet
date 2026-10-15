@@ -35,6 +35,8 @@
          Pinned: an unpinned marked major could break marked-alert or the glossary extension. -->
     <script src="https://cdn.jsdelivr.net/npm/marked@18.1.1/lib/marked.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-alert@2.1.2/dist/index.umd.js"></script>
+    <!-- Search index for the reference (see reference/search.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@7.2.0/dist/umd/index.min.js"></script>
     <!-- Math renderer (KaTeX) for formulas inside reference markdown (see reference/content.js) -->
     <link
       rel="stylesheet"
@@ -58,10 +60,19 @@
       <div class="topbar-logo">
         <img src="/images/chrome-touch-icon-128x128.png" alt="Archivum Sheet" />
         <span class="topbar-logo-name" id="topbar-title"
-          >Archivum — Referência</span
+          >Archivum</span
         >
       </div>
       <div class="topbar-actions">
+        <button
+          id="reference-search-btn"
+          class="topbar-btn topbar-btn-icon-only"
+          type="button"
+          aria-controls="reference-search"
+          aria-expanded="false"
+        >
+          🔍
+        </button>
         <button
           id="theme-toggle-btn"
           class="topbar-btn topbar-btn-icon-only"
@@ -86,6 +97,9 @@
          DESKTOP: Sidebar nav (built by components/nav.js)
          ═══════════════════════════════════════════════════════════════════════ -->
     <nav class="l-sidebar" id="sidebar" aria-label="Navegação"></nav>
+
+    <!-- Search panel (built by reference/search.js) -->
+    <div id="reference-search" class="reference-search" hidden></div>
 
     <!-- Group bar (built by components/groupNav.js) -->
     <nav class="l-groupnav" id="groupnav"></nav>

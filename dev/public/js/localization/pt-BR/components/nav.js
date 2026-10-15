@@ -1,5 +1,6 @@
 export const NAV = {
   groupsAriaLabel: "Grupos de seções",
+  referenceHelp: "Ver as regras na referência",
   groups: {
     character: { label: "Personagem", short: "Pers.", icon: "🧙" },
     abilities: { label: "Habilidades", short: "Habil.", icon: "✨" },

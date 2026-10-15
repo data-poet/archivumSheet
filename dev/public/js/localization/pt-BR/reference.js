@@ -2,8 +2,15 @@
 // so components/nav.js and components/groupNav.js can render it unchanged.
 export const REFERENCE = {
   pageTitle: "Referência de Regras",
-  topbarTitle: "Archivum — Referência",
+  topbarTitle: "Archivum",
   loadError: "Não foi possível carregar este conteúdo.",
+  search: {
+    open: "Buscar nas regras",
+    close: "Fechar busca",
+    placeholder: "Buscar regra, tabela ou termo…",
+    empty: "Nada encontrado.",
+    resultsLabel: "Resultados da busca",
+  },
   alerts: {
     note: "Nota",
     tip: "Dica",
@@ -25,10 +32,10 @@ export const REFERENCE = {
       "section-attributes": { label: "Atributos", icon: "💪" },
       "section-base-damage": { label: "Dano Base", icon: "🗡️" },
       "section-carry": { label: "Carga e Movimento", icon: "🎒" },
-      "section-resistances": { label: "Resistências Elementais", icon: "🔥" },
+      "section-resistances": { label: "Resistências", icon: "🔥" },
       "section-reactions": { label: "Reações", icon: "🤝" },
-      "section-conditions": { label: "Aflições e Condições", icon: "🩸" },
-      "section-combat-rules": { label: "Regras de Combate", icon: "⚔️" },
+      "section-conditions": { label: "Condições", icon: "🩸" },
+      "section-combat-rules": { label: "Regras", icon: "⚔️" },
       "section-maneuvers": { label: "Manobras", icon: "🤺" },
       "section-criticals": { label: "Críticos", icon: "🎯" },
       "section-panic": { label: "Pânico", icon: "😱" },

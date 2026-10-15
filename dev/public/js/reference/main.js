@@ -2,6 +2,8 @@ import { buildReferenceSections, loadReferenceContent } from "./content.js";
 import { REFERENCE_LAYOUT, REFERENCE_SECTIONS } from "./referenceLayout.js";
 import { configureMarked, mountGlossaryPopovers } from "./markdown.js";
 import { initAccordionScroll } from "./enhance.js";
+import { initDeepLinks } from "./deepLink.js";
+import { initSearch } from "./search.js";
 import { initNav } from "../components/nav.js";
 import { initGroupNav } from "../components/groupNav.js";
 import { initTabs } from "../components/tabs.js";
@@ -41,4 +43,6 @@ window.onload = async () => {
   initAccordionScroll();
   mountGlossaryPopovers();
   await loadReferenceContent();
+  initSearch();
+  initDeepLinks();
 };

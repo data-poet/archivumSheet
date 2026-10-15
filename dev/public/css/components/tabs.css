@@ -80,6 +80,38 @@
   color: var(--color-text);
 }
 
+/* "?" link to the matching reference tab (js/layout/referenceLinks.js); it takes the collapse
+   button's auto margin so both stay pinned right. */
+.tab-strip-help {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tab-strip-help:hover {
+  color: var(--_section-accent, var(--accent-character));
+  border-color: var(--_section-accent, var(--accent-character));
+}
+
+.tab-strip-help[hidden] {
+  display: none;
+}
+
+.tab-strip-help:not([hidden]) + .tab-strip-collapse {
+  margin-left: 0;
+}
+
 .tab-strip-collapse[aria-expanded="true"] {
   transform: rotate(90deg);
 }

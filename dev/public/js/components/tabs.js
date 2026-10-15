@@ -2,6 +2,7 @@
 // event wiring in events/index.js is unaffected by tab switches.
 import { getActiveTab, setActiveTab } from "../store/tabState.js";
 import { isCollapsed, setCollapsed } from "../store/sectionCollapseState.js";
+import { referenceHref } from "../layout/referenceLinks.js";
 
 export function activateTab(sectionId, tabId) {
   const section = document.getElementById(sectionId);
@@ -14,6 +15,14 @@ export function activateTab(sectionId, tabId) {
   section.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.classList.toggle("is-active", btn.dataset.tab === tabId);
   });
+
+  const help = section.querySelector(".tab-strip-help");
+  if (help) {
+    const anchor = section.querySelector(`.tab-btn[data-tab="${tabId}"]`)
+      ?.dataset.reference;
+    help.hidden = !anchor;
+    if (anchor) help.href = referenceHref(anchor);
+  }
 
   setActiveTab(sectionId, tabId);
 }
@@ -30,8 +39,21 @@ function applyCollapse(sectionId, collapsed) {
   const btn = section.querySelector(".tab-strip-collapse");
   if (btn) {
     btn.setAttribute("aria-expanded", String(!collapsed));
-    btn.setAttribute("aria-label", collapsed ? "Expandir seção" : "Recolher seção");
+    btn.setAttribute(
+      "aria-label",
+      collapsed ? "Expandir seção" : "Recolher seção",
+    );
   }
+}
+
+// Expands a section and, when it has tab buttons, switches to tabId — used by the reference's deep links.
+export function openSection(sectionId, tabId) {
+  setCollapsed(sectionId, false);
+  applyCollapse(sectionId, false);
+  const hasButton = document.querySelector(
+    `#${sectionId} .tab-btn[data-tab="${tabId}"]`,
+  );
+  if (tabId && hasButton) activateTab(sectionId, tabId);
 }
 
 export function initTabs() {

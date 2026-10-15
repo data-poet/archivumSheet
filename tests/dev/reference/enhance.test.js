@@ -134,3 +134,25 @@ describe("initAccordionScroll", () => {
     expect(summary.scrollIntoView).not.toHaveBeenCalled();
   });
 });
+
+describe("enhanceProse — anchors", () => {
+  test("gives headings and items '<tab>--<slug>' ids from their title, deduplicated, skipping examples", () => {
+    const panel = panelWith(`
+      <h3>Pontos de Vida (PV)</h3>
+      ${item("Ação Rápida | -2")}${item("Ação Rápida")}
+      <details><summary>Item</summary>${item("Exemplo")}</details>`);
+    enhanceProse(panel);
+
+    expect(panel.querySelector("h3").id).toBe("tab-x--pontos-de-vida-pv");
+    const ids = Array.from(
+      panel.querySelectorAll(".reference-list > details"),
+      (d) => d.id,
+    );
+    expect(ids).toEqual([
+      "tab-x--acao-rapida",
+      "tab-x--acao-rapida-2",
+      "tab-x--item",
+    ]);
+    expect(panel.querySelector(".reference-example").id).toBe("");
+  });
+});

@@ -4,6 +4,7 @@
 // Must run before initNav(), initGroupNav() and initTabs(), which query the built shells.
 import { LABELS } from "../localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "./sheetLayout.js";
+import { REFERENCE_LINKS, referenceHref } from "./referenceLinks.js";
 
 const MAIN_ID = "main-content";
 const POOL_ID = "sheet-panels";
@@ -14,11 +15,21 @@ function _buildTabStripItems(section) {
     return `<span class="tab-strip-title">${LABELS.nav.sections[section.id]?.label ?? ""}</span>`;
   }
   return section.tabs
-    .map(
-      (tabId) =>
-        `<button class="tab-btn" data-tab="${tabId}">${LABELS.tabs[tabId] ?? ""}</button>`,
-    )
+    .map((tabId) => {
+      const reference = REFERENCE_LINKS[tabId];
+      const data = reference ? ` data-reference="${reference}"` : "";
+      return `<button class="tab-btn" data-tab="${tabId}"${data}>${LABELS.tabs[tabId] ?? ""}</button>`;
+    })
     .join("");
+}
+
+// Opens in a new tab on purpose: the reference never writes the character, so it can't race the sheet
+// (see components/pageSelector.js), and the player keeps their place. tabs.js retargets it per tab.
+function _buildHelpLink(section) {
+  const anchors = section.tabs.map((tabId) => REFERENCE_LINKS[tabId]);
+  if (!anchors.some(Boolean)) return "";
+  const first = anchors[0];
+  return `<a class="tab-strip-help" target="_blank" rel="noopener" aria-label="${LABELS.nav.referenceHelp}" title="${LABELS.nav.referenceHelp}"${first ? ` href="${referenceHref(first)}"` : " hidden"}>?</a>`;
 }
 
 function _buildTabStrip(section) {
@@ -28,6 +39,7 @@ function _buildTabStrip(section) {
   // The collapse button's aria-label is set by initTabs() along with its state.
   strip.innerHTML = `
     ${_buildTabStripItems(section)}
+    ${_buildHelpLink(section)}
     <button class="tab-strip-collapse" aria-expanded="false" type="button">&#8250;</button>`;
   return strip;
 }

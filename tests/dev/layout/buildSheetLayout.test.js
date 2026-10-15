@@ -132,3 +132,36 @@ describe("buildSheetLayout", () => {
     expect(() => buildSheetLayout()).not.toThrow();
   });
 });
+
+describe("buildSheetLayout — reference help links", () => {
+  const { REFERENCE_LINKS } = require("dev/public/js/layout/referenceLinks.js");
+
+  test("sections with a mapped tab get a '?' link opening the reference in a new tab", () => {
+    poolDOM();
+    buildSheetLayout();
+
+    const strip = document.querySelector("#section-attributes .tab-strip");
+    const help = strip.querySelector(".tab-strip-help");
+    expect(help.getAttribute("href")).toBe(
+      `/reference.html#${REFERENCE_LINKS["tab-attr-primary"]}`,
+    );
+    expect(help.target).toBe("_blank");
+    expect(help.getAttribute("aria-label")).toBe(LABELS.nav.referenceHelp);
+    expect(
+      strip.querySelector('.tab-btn[data-tab="tab-attr-damage"]').dataset
+        .reference,
+    ).toBe(REFERENCE_LINKS["tab-attr-damage"]);
+    expect(
+      help.nextElementSibling.classList.contains("tab-strip-collapse"),
+    ).toBe(true);
+  });
+
+  test("sections without mapped tabs get no link", () => {
+    poolDOM();
+    buildSheetLayout();
+
+    expect(
+      document.querySelector("#section-skills .tab-strip-help"),
+    ).toBeNull();
+  });
+});

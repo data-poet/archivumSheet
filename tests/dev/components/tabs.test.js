@@ -199,3 +199,62 @@ describe("initTabs — tab wiring", () => {
     expect(setActiveTab).not.toHaveBeenCalled();
   });
 });
+
+describe("tabs — reference help link", () => {
+  beforeEach(() => resetDOM());
+
+  test("activateTab points the '?' link at the active tab's reference, hiding it when there is none", () => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<div id="section-x"><div class="box"><div class="tab-strip" data-section="section-x">
+        <button class="tab-btn" data-tab="tab-a" data-reference="ref-a">a</button>
+        <button class="tab-btn" data-tab="tab-b">b</button>
+        <a class="tab-strip-help" href="/reference.html#ref-a">?</a>
+      </div><div class="tab-panel" id="tab-a"></div><div class="tab-panel" id="tab-b"></div></div></div>`,
+    );
+    const help = document.querySelector(".tab-strip-help");
+
+    activateTab("section-x", "tab-b");
+    expect(help.hidden).toBe(true);
+
+    activateTab("section-x", "tab-a");
+    expect(help.hidden).toBe(false);
+    expect(help.getAttribute("href")).toBe("/reference.html#ref-a");
+  });
+});
+
+describe("openSection", () => {
+  beforeEach(() => {
+    resetDOM();
+    jest.clearAllMocks();
+  });
+
+  test("expands the section and switches to the tab when it has a button", () => {
+    const { openSection } = require("dev/public/js/components/tabs.js");
+    sectionDOM({ id: "section-traits", tabs: ["tab-a", "tab-b"] });
+    document
+      .querySelector("#section-traits .box")
+      .classList.add("is-collapsed");
+
+    openSection("section-traits", "tab-b");
+
+    expect(setCollapsed).toHaveBeenCalledWith("section-traits", false);
+    expect(
+      document
+        .querySelector("#section-traits .box")
+        .classList.contains("is-collapsed"),
+    ).toBe(false);
+    expect(
+      document.getElementById("tab-b").classList.contains("is-active"),
+    ).toBe(true);
+  });
+
+  test("only expands when the tab has no button (single-tab sections)", () => {
+    const { openSection } = require("dev/public/js/components/tabs.js");
+    sectionDOM({ id: "section-traits", tabs: ["tab-a"] });
+
+    openSection("section-traits", "tab-missing");
+
+    expect(setActiveTab).not.toHaveBeenCalled();
+  });
+});
