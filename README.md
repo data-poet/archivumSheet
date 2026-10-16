@@ -74,6 +74,13 @@ DOM event → state.selected (raw input) → POST /api/sheet/build
 
 Flat CSV tables, parsed by `helpers/dataUtils.js`. Covers: traits (advantages/disadvantages), skills, the magic grimoire, magic enchantments, races, armor, shields, melee/ranged/firearms weapons, ammo + containers, alchemy consumables, adventure gear, accessories, magic gear (wands/staves/instruments), and crafting materials (equipment tier modifiers).
 
+Conventions every CSV follows:
+
+- LF line endings and a trailing newline (`.gitattributes` normalizes `data/*.csv` on commit, so an editor that saves CRLF does not create diffs).
+- Booleans are the strings `TRUE` and `FALSE`; an empty cell means "none".
+- Empty and zero differ where it matters: `skill_parry_modifier` empty means the skill cannot parry, `0` means parry +0.
+- List cells are comma-separated (`skill_defaults` uses `;` between entries and `:` between a skill and its penalty).
+
 ---
 
 ## Features

@@ -1,0 +1,7 @@
+trait_modifier_id,trait_modifier_parents_id,trait_modifier_box_name,trait_modifier_name,trait_modifier_kind,trait_modifier_percent,trait_modifier_exclusive_group,trait_modifier_requires_ids,trait_modifier_incompatible_ids,trait_modifier_description,trait_modifier_source_book,trait_modifier_source_page,available_for
+TRAITMOD-000,"ADV-011, ADV-012",FÁCIL DE ACERTAR | -20%,Fácil de Acertar,Limitação,-0.2,,,,"
+- Seus olhos são incomumente grandes ou, de outra forma, mais vulneráveis ​​a ataques.
+    - Outros podem mirar seus olhos, estando dentro de seu arco de visão, com uma penalidade de apenas -6 para acertar.",Módulo Básico 4e,34,
+TRAITMOD-001,ADV-012 ADV-013,REQUER SINAL | -20%,Requer Sinal,Limitação,-0.2,,,,"
+- Você depende de sinais de uma rede de satélites de navegação (como o GPS da Terra) ou de um sistema semelhante.
+- Sua habilidade não funciona na ausência de tal sistema, e pode ser bloqueada.",Módulo Básico 4e,34,

@@ -10,7 +10,7 @@ const DATA = path.join(__dirname, "../../../data");
 function headerOf(file) {
   return fs
     .readFileSync(path.join(DATA, file), "utf8")
-    .split("\n")[0]
+    .split(/\r?\n/)[0]
     .split(",");
 }
 
