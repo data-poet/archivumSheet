@@ -15,6 +15,10 @@
     "test:data": "jest --selectProjects data",
     "check:data": "node scripts/checkData.js",
     "data:format": "node scripts/formatData.js",
+    "golden:record": "node scripts/golden.js record",
+    "golden:compare": "node scripts/golden.js compare",
+    "coverage:record": "node scripts/golden.js coverage-record",
+    "coverage:compare": "node scripts/golden.js coverage-compare",
     "test:renumber": "node scripts/renumberCheck.js"
   },
   "author": "",

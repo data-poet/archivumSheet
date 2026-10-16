@@ -33,6 +33,9 @@ npm run test:watch
 npm run test:data       # only the guards that read the real CSVs (fast feedback after a data edit)
 npm run check:data      # validate the CSVs: ids, keys, references, vocabularies, number formats
 npm run data:format     # after a spreadsheet export: LF endings and a final newline
+npm run golden:record     # before a refactor: freeze data/ at HEAD and dump what the engine builds from it
+npm run golden:compare    # after it: every dump must be identical, whatever the live CSVs are doing
+npm run coverage:record   # per-file coverage baseline; coverage:compare fails if a file's lines or branches drop
 npm run test:renumber   # re-run the suite on a copy with every dataset id shifted
 ```
 
