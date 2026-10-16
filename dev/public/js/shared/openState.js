@@ -27,6 +27,8 @@ const MANAGED_CONTAINER_IDS = [
   "meleeStorageList",
   "rangedSlots",
   "rangedStorageList",
+  "firearmSlots",
+  "firearmStorageList",
   "ammoContainerList",
   "looseAmmoList",
   "alchemyList",

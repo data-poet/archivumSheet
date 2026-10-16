@@ -371,6 +371,29 @@ describe("snapshotAll / restoreAll", () => {
     const rebuilt = document.querySelector("#armorSlots .table-wrapper");
     expect(rebuilt.scrollLeft).toBe(77);
   });
+
+  test.each(["firearmSlots", "firearmStorageList"])(
+    "keeps an open <details> in %s across a rebuild",
+    (containerId) => {
+      document.body.innerHTML = `
+        <div id="${containerId}"><table><tbody>
+          <tr data-instance-id="F-1"></tr>
+          <tr class="detail-row"><td><details open></details></td></tr>
+        </tbody></table></div>
+      `;
+      const snapshot = snapshotAll();
+      document.querySelector(`#${containerId} tbody`).innerHTML = `
+        <tr data-instance-id="F-1"></tr>
+        <tr class="detail-row"><td><details></details></td></tr>
+      `;
+
+      restoreAll(snapshot);
+
+      expect(
+        document.querySelector(`#${containerId} details`).hasAttribute("open"),
+      ).toBe(true);
+    },
+  );
 });
 
 describe("detailKeyFn", () => {
