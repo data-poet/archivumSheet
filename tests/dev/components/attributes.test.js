@@ -9,7 +9,7 @@ import {
 } from "dev/public/js/localization/pt-BR/index.js";
 import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
-import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { resetState, seedRules } from "tests/dev/helpers/stateFixture.js";
 
 function headerDOM() {
   const ids = [
@@ -56,6 +56,7 @@ function primaryAttrDOM(attr, { base = 10, mod = 0 } = {}) {
 beforeEach(() => {
   resetDOM();
   resetState();
+  seedRules();
 });
 
 describe("initAttributeTableHeaders", () => {

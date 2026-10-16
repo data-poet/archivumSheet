@@ -6,6 +6,7 @@ const { version } = require("../package.json");
 const { loadDataset } = require("../helpers/datasets.js");
 const { MAGIC_APTITUDE_TIERS } = require("../helpers/ids.js");
 const { MASTER_ELIGIBLE_CATEGORIES } = require("../helpers/taxonomy.js");
+const rules = require("../helpers/rules.js");
 const alliesCatalog = require("../helpers/alliesCatalog.js");
 const { buildCharacter } = require("../engine/character/buildCharacter.js");
 const { buildSheet } = require("../engine/buildSheet.js");
@@ -252,6 +253,15 @@ app.get("/api/magic/aptitude-advantage-ids", (req, res) => {
 ------------------------ */
 app.get("/api/skills/master-eligible-categories", (req, res) => {
   res.json([...MASTER_ELIGIBLE_CATEGORIES]);
+});
+
+/* -----------------------
+   ATTRIBUTE RULES
+   Serves helpers/rules.js directly — the engine remains the sole source of
+   truth for these numbers, same rationale as above.
+------------------------ */
+app.get("/api/rules", (req, res) => {
+  res.json(rules);
 });
 
 /* -----------------------

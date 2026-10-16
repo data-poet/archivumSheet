@@ -1,9 +1,7 @@
 import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
-import {
-  UNBUYABLE_SECONDARIES,
-  isVitalAttribute,
-} from "../shared/constants.js";
+import { isVitalAttribute } from "../shared/constants.js";
+import { isUnbuyableSecondary } from "../shared/rules.js";
 
 // th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
 export function initAttributeTableHeaders() {
@@ -85,7 +83,7 @@ export function renderSecondaryAttributes(sheet) {
   tbody.innerHTML = Object.entries(sec)
     .map(([name, data]) => {
       const isBasicSpeed = name === "BasicSpeed";
-      const isNotBuyable = UNBUYABLE_SECONDARIES.includes(name);
+      const isNotBuyable = isUnbuyableSecondary(name);
       const isVital = isVitalAttribute(name);
 
       const baseDisplay = isBasicSpeed

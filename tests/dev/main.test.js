@@ -104,6 +104,9 @@ jest.mock("dev/public/js/engine/inventory/shared/dualUseWeapons.js", () => ({
 jest.mock("dev/public/js/engine/inventory/shared/materials.js", () => ({
   loadMaterials: jest.fn(() => Promise.resolve()),
 }));
+jest.mock("dev/public/js/shared/rules.js", () => ({
+  loadRules: jest.fn(() => Promise.resolve()),
+}));
 jest.mock("dev/public/js/store/characters.js", () => ({
   initCharacters: jest.fn(() => true),
   getActiveKind: jest.fn(() => "character"),
@@ -152,6 +155,7 @@ import { loadMagicGear } from "dev/public/js/engine/inventory/magicGear/index.js
 import { loadEnchantments } from "dev/public/js/engine/inventory/shared/enchantments/index.js";
 import { loadDualUseWeapons } from "dev/public/js/engine/inventory/shared/dualUseWeapons.js";
 import { loadMaterials } from "dev/public/js/engine/inventory/shared/materials.js";
+import { loadRules } from "dev/public/js/shared/rules.js";
 import { initCharacters } from "dev/public/js/store/characters.js";
 import { initCharacterSelector } from "dev/public/js/components/characterSelector.js";
 
@@ -251,6 +255,7 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
       loadMagicGear,
       loadEnchantments,
       loadDualUseWeapons,
+      loadRules,
     ].forEach((loader) => {
       expect(loader).toHaveBeenCalledTimes(1);
     });

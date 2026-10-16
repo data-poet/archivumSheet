@@ -29,6 +29,7 @@ import {
   fetchItemCategories,
   fetchMagicAptitudeAdvantageIds,
   fetchMasterEligibleCategories,
+  fetchRules,
   fetchAppInfo,
   buildSheet,
 } from "dev/public/js/api.js";
@@ -87,6 +88,7 @@ describe.each([
     fetchMasterEligibleCategories,
     "/api/skills/master-eligible-categories",
   ],
+  ["fetchRules", fetchRules, "/api/rules"],
   ["fetchAppInfo", fetchAppInfo, "/api/app-info"],
 ])("%s", (_name, fn, url) => {
   test(`calls fetch(${url}) with no options (a plain GET) and resolves with the parsed body`, async () => {

@@ -1,7 +1,6 @@
 import {
   VITAL_ATTRIBUTES,
   isVitalAttribute,
-  UNBUYABLE_SECONDARIES,
 } from "dev/public/js/shared/constants.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 
@@ -31,13 +30,5 @@ describe("VITAL_ATTRIBUTES", () => {
   test("isVitalAttribute matches the list only", () => {
     expect(isVitalAttribute("FP")).toBe(true);
     expect(isVitalAttribute("Will")).toBe(false);
-  });
-
-  test("Movement, Dodge and DamageResistance are the unbuyable secondaries", () => {
-    expect(UNBUYABLE_SECONDARIES).toEqual([
-      "Movement",
-      "Dodge",
-      "DamageResistance",
-    ]);
   });
 });

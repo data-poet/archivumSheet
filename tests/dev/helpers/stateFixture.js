@@ -1,4 +1,5 @@
 import { state } from "dev/public/js/state.js";
+import rules from "helpers/rules.js";
 
 // compute/index.js captures `state.selected` by reference at import time; mutate it in place here instead of reassigning, or tests desync from that reference.
 const INITIAL_DATA = JSON.parse(JSON.stringify(state.data));
@@ -16,4 +17,9 @@ export function resetState() {
   resetInPlace(state.selected, INITIAL_SELECTED);
   resetInPlace(state.ui, INITIAL_UI);
   state.sheet = undefined;
+}
+
+// What loadRules() leaves in state.data once /api/rules has answered.
+export function seedRules() {
+  state.data.rules = JSON.parse(JSON.stringify(rules));
 }

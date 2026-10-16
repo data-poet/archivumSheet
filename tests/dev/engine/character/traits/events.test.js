@@ -20,7 +20,7 @@ import {
 } from "dev/public/js/engine/character/traits/events.js";
 import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
-import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { resetState, seedRules } from "tests/dev/helpers/stateFixture.js";
 
 function elWithClass(tag, className, dataset = {}, value) {
   const el = document.createElement(tag);
@@ -33,6 +33,7 @@ function elWithClass(tag, className, dataset = {}, value) {
 beforeEach(() => {
   resetDOM();
   resetState();
+  seedRules();
   jest.clearAllMocks();
 });
 

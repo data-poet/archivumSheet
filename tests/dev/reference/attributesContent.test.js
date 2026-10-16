@@ -11,6 +11,14 @@ const {
 const {
   buildSecondaryAttributes,
 } = require("engine/character/js/attributes/secondary");
+const {
+  PRIMARY_COST,
+  POINTS_PER_PURCHASE,
+  SECONDARY_PURCHASE,
+  LOAD_LEVELS,
+  OVERLOADED,
+  LIFT_MULTIPLIERS,
+} = require("helpers/rules");
 
 // The attributes tabs document engine behaviour; these fail when the engine and the text drift apart.
 // Runs of spaces collapse so Prettier's table padding doesn't matter.
@@ -85,13 +93,22 @@ describe("base_damage.md", () => {
 describe("carry_and_movement.md", () => {
   const markdown = read("carry_and_movement.md");
   const { calculateBasicLift } = require("engine/inventory/js/carryWeight");
-  const levels = [
-    ["Nenhuma", 1, "×1", 0],
-    ["Leve", 2, "×0,8", -1],
-    ["Média", 3, "×0,6", -2],
-    ["Pesada", 6, "×0,4", -3],
-    ["Muito Pesada", 10, "×0,2", -4],
-  ];
+  const levelNames = {
+    none: "Nenhuma",
+    light: "Leve",
+    medium: "Média",
+    heavy: "Pesada",
+    veryHeavy: "Muito Pesada",
+  };
+  const levels = LOAD_LEVELS.map(
+    ({ level, multiplier, move_factor, dodge_penalty }) => [
+      levelNames[level],
+      multiplier,
+      `×${String(move_factor).replace(".", ",")}`,
+      dodge_penalty,
+    ],
+  );
+  const heaviest = LOAD_LEVELS[LOAD_LEVELS.length - 1];
 
   test("Basic Lift examples match the engine", () => {
     expect(calculateBasicLift(10)).toBe(10);
@@ -118,12 +135,13 @@ describe("carry_and_movement.md", () => {
     },
   );
 
-  test("over 10 × CB the character can't move", () => {
-    const overloaded = calculateCarryWeight(12, 141);
-    expect(overloaded.move_factor).toBe(0);
-    expect(overloaded.dodge_penalty).toBe(-4);
+  test("over the heaviest level the character can't move", () => {
+    const bl = calculateBasicLift(12);
+    const overloaded = calculateCarryWeight(12, bl * heaviest.multiplier + 1);
+    expect(overloaded.move_factor).toBe(OVERLOADED.move_factor);
+    expect(overloaded.dodge_penalty).toBe(OVERLOADED.dodge_penalty);
     expect(markdown).toContain(
-      "| Acima do limite | mais de **10 × CB** | não se move | **-4** |",
+      `| Acima do limite | mais de **${heaviest.multiplier} × CB** | não se move | **${OVERLOADED.dodge_penalty}** |`,
     );
   });
 
@@ -148,13 +166,21 @@ describe("carry_and_movement.md", () => {
     });
   });
 
-  test.each([
-    ["oneHanded", "Erguer com uma mão (2 segundos)", 2],
-    ["twoHanded", "Erguer com as duas mãos (4 segundos)", 8],
-    ["shove", "Empurrar ou derrubar", 12],
-    ["onBack", "Carregar nas costas", 15],
-    ["shiftSlightly", "Arrastar um pouco (no chão, com esforço)", 50],
-  ])(
+  const liftLabels = {
+    oneHanded: "Erguer com uma mão (2 segundos)",
+    twoHanded: "Erguer com as duas mãos (4 segundos)",
+    shove: "Empurrar ou derrubar",
+    onBack: "Carregar nas costas",
+    shiftSlightly: "Arrastar um pouco (no chão, com esforço)",
+  };
+
+  test.each(
+    Object.entries(LIFT_MULTIPLIERS).map(([key, multiplier]) => [
+      key,
+      liftLabels[key],
+      multiplier,
+    ]),
+  )(
     "lift %s is %s = %i × CB in the engine and the text",
     (key, label, multiplier) => {
       expect(calculateCarryWeight(10, 0).lifts[key]).toBe(10 * multiplier);
@@ -166,18 +192,16 @@ describe("carry_and_movement.md", () => {
 describe("points_and_buying.md", () => {
   const markdown = read("points_and_buying.md");
 
-  test.each([
-    ["ST", 10],
-    ["DX", 20],
-    ["IQ", 20],
-    ["HT", 10],
-  ])("%s costs %i per level above 10", (attr, cost) => {
-    const { character_points } = buildPrimaryAttributes({
-      [attr]: { base_value: 11 },
-    });
-    expect(character_points[attr]).toBe(cost);
-    expect(markdown).toContain(`| [[${attr}]] | **${cost}** |`);
-  });
+  test.each(Object.entries(PRIMARY_COST))(
+    "%s costs %i per level above 10",
+    (attr, cost) => {
+      const { character_points } = buildPrimaryAttributes({
+        [attr]: { base_value: 11 },
+      });
+      expect(character_points[attr]).toBe(cost);
+      expect(markdown).toContain(`| [[${attr}]] | **${cost}** |`);
+    },
+  );
 
   const primaries = {
     ST: { value: 10 },
@@ -186,18 +210,12 @@ describe("points_and_buying.md", () => {
     HT: { value: 11 },
   };
 
-  test.each([
-    ["HP", 4, 5],
-    ["Mana", 4, 5],
-    ["Toxicity", 4, 5],
-    ["BasicSpeed", 0.5, 6],
-    ["FP", 1, 5],
-    ["Will", 1, 5],
-    ["Vision", 1, 5],
-    ["Hearing", 1, 5],
-    ["Smell", 1, 5],
-  ])(
-    "%s: +%s per purchase, at most %i purchases, 5 points each",
+  test.each(
+    Object.entries(SECONDARY_PURCHASE)
+      .filter(([, { maxBought }]) => maxBought > 0)
+      .map(([attr, { step, maxBought }]) => [attr, step, maxBought]),
+  )(
+    "%s: +%s per purchase, at most %i purchases, points per purchase from the rules",
     (attr, step, max) => {
       const base = buildSecondaryAttributes(primaries).attributes[attr];
       const bought = buildSecondaryAttributes(primaries, {
@@ -205,7 +223,7 @@ describe("points_and_buying.md", () => {
       }).attributes[attr];
       expect(bought.bought).toBe(max);
       expect(bought.final_base_value - base.final_base_value).toBe(step * max);
-      expect(bought.points).toBe(max * 5);
+      expect(bought.points).toBe(max * POINTS_PER_PURCHASE);
     },
   );
 

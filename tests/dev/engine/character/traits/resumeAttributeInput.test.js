@@ -1,5 +1,6 @@
 import { handleResumeAttributeInput } from "dev/public/js/engine/character/traits/resumeAttributeInput.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { seedRules } from "tests/dev/helpers/stateFixture.js";
 
 function elWithClass(tag, className, dataset = {}, value) {
   const el = document.createElement(tag);
@@ -19,6 +20,7 @@ function fakeTarget() {
 
 beforeEach(() => {
   resetDOM();
+  seedRules();
 });
 
 describe("handleResumeAttributeInput — resume-primary-mod-input", () => {

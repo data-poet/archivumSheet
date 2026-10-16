@@ -24,7 +24,7 @@ import { PC_EDIT_TARGET } from "dev/public/js/engine/character/traits/pcEditTarg
 import { handleTraitInput } from "dev/public/js/engine/character/traits/events.js";
 import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
-import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { resetState, seedRules } from "tests/dev/helpers/stateFixture.js";
 
 function stepper(className, dataset, value) {
   const el = document.createElement("input");
@@ -54,6 +54,7 @@ function fakeTarget() {
 beforeEach(() => {
   resetDOM();
   resetState();
+  seedRules();
   clearEditTarget();
   jest.clearAllMocks();
 });

@@ -3,10 +3,11 @@
 // file's compute/autorun.js / pcEditTarget.js dependencies. `target` is whatever
 // shared/editTarget.js resolves to — PC_EDIT_TARGET until an ally edit target is
 // registered (see shared/editTarget.js for why this is a registration, not a page check).
+import { isVitalAttribute } from "../../../shared/constants.js";
 import {
-  UNBUYABLE_SECONDARIES,
-  isVitalAttribute,
-} from "../../../shared/constants.js";
+  isUnbuyableSecondary,
+  secondaryMaxBought,
+} from "../../../shared/rules.js";
 
 export function handleResumeAttributeInput(e, target) {
   if (e.target.classList.contains("resume-primary-mod-input")) {
@@ -34,8 +35,8 @@ export function handleResumeAttributeInput(e, target) {
 
     target.ensureSecondary(name);
     if (field === "bought") {
-      if (UNBUYABLE_SECONDARIES.includes(name)) return true;
-      const max = name === "BasicSpeed" ? 6 : 5;
+      if (isUnbuyableSecondary(name)) return true;
+      const max = secondaryMaxBought(name);
       target.setSecondary(name, "bought", Math.max(0, Math.min(max, value)));
     }
     if (field === "modifier") {

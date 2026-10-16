@@ -41,6 +41,7 @@ describe("state.data shape", () => {
         "metaRaces",
         "races",
         "ranged_weapons",
+        "rules",
         "shields",
         "skills",
         "spells",

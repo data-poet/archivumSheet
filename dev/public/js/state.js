@@ -46,6 +46,11 @@ export const state = {
     magicAptitudeAdvantageIds: [],
     // Feeds helpers/taxonomy.js's MASTER_ELIGIBLE_CATEGORIES directly.
     masterEligibleCategories: [],
+    // Feeds helpers/rules.js directly.
+    rules: {
+      SECONDARY_PURCHASE: {},
+      DEFAULT_SECONDARY_PURCHASE: {},
+    },
   },
 
   selected: {

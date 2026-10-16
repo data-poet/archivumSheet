@@ -53,5 +53,3 @@ export const VITAL_ATTRIBUTES = [
 export function isVitalAttribute(key) {
   return VITAL_ATTRIBUTES.some((vital) => vital.key === key);
 }
-
-export const UNBUYABLE_SECONDARIES = ["Movement", "Dodge", "DamageResistance"];

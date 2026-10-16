@@ -19,6 +19,7 @@ import { loadMagicGear } from "../engine/inventory/magicGear/index.js";
 import { loadEnchantments } from "../engine/inventory/shared/enchantments/index.js";
 import { loadDualUseWeapons } from "../engine/inventory/shared/dualUseWeapons.js";
 import { loadMaterials } from "../engine/inventory/shared/materials.js";
+import { loadRules } from "../shared/rules.js";
 
 // Every load*() below refetches unconditionally except loadRaces, which caches on
 // data.races.length — clearing it here is what forces a re-fetch under the new audience.
@@ -49,5 +50,6 @@ export async function reloadCatalogs(audience) {
     loadMagicGear(),
     loadEnchantments(),
     loadDualUseWeapons(),
+    loadRules(),
   ]);
 }

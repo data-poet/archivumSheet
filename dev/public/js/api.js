@@ -130,6 +130,10 @@ export async function fetchMasterEligibleCategories() {
   return getJSON("/api/skills/master-eligible-categories");
 }
 
+export async function fetchRules() {
+  return getJSON("/api/rules");
+}
+
 export async function fetchAllyIndex() {
   return getJSON("/api/allies");
 }
