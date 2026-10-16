@@ -22,10 +22,8 @@ import { state } from "dev/public/js/state.js";
 import {
   getStore,
   getActiveKind,
-  setActiveKind,
   listCharacters,
   getActiveCharacterId,
-  getCharacterData,
   withCharacterInventory,
   saveActiveCharacter,
   loadCharacter,
@@ -38,6 +36,8 @@ import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
 const STORAGE_KEY = "archivum_characters";
+
+const dataOf = (id) => getStore().list.find((c) => c.id === id)?.data ?? null;
 
 beforeEach(() => {
   localStorage.clear();
@@ -81,23 +81,7 @@ describe("listCharacters / getActiveCharacterId", () => {
   });
 });
 
-describe("getCharacterData / withCharacterInventory", () => {
-  test("getCharacterData reads a non-active entry's data without disturbing state.selected", () => {
-    const secondId = addCharacter("Second Character");
-    const firstId = getStore().list.find((c) => c.id !== secondId).id;
-    state.selected.character.character_name = "Still Active One";
-
-    const data = getCharacterData(firstId);
-
-    expect(data).not.toBeNull();
-    expect(getActiveCharacterId()).toBe(secondId);
-    expect(state.selected.character.character_name).toBe("Still Active One");
-  });
-
-  test("getCharacterData returns null for an unknown id", () => {
-    expect(getCharacterData("does-not-exist")).toBeNull();
-  });
-
+describe("withCharacterInventory", () => {
   test("withCharacterInventory mutates and persists a non-active entry's inventory", () => {
     const secondId = addCharacter("Second Character");
     const firstId = getStore().list.find((c) => c.id !== secondId).id;
@@ -108,9 +92,7 @@ describe("getCharacterData / withCharacterInventory", () => {
 
     expect(ok).toBe(true);
     expect(getActiveCharacterId()).toBe(secondId);
-    expect(getCharacterData(firstId).inventory.armors).toEqual([
-      { id: "armor-1" },
-    ]);
+    expect(dataOf(firstId).inventory.armors).toEqual([{ id: "armor-1" }]);
   });
 
   test("withCharacterInventory returns false and writes nothing for an unknown id", () => {
@@ -400,23 +382,6 @@ describe("entry kind", () => {
     expect(listCharacters()[0].kind).toBe("character");
   });
 
-  test("setActiveKind persists onto the active entry only", () => {
-    const first = getActiveCharacterId();
-    const second = addCharacter("Outro");
-
-    setActiveKind("ally");
-
-    expect(getActiveKind()).toBe("ally");
-    const list = listCharacters();
-    expect(list.find((c) => c.id === second).kind).toBe("ally");
-    expect(list.find((c) => c.id === first).kind).toBe("character");
-  });
-
-  test("an unrecognized kind falls back to character rather than sticking", () => {
-    setActiveKind("nonsense");
-    expect(getActiveKind()).toBe("character");
-  });
-
   test("addCharacter can create a draft directly", () => {
     const id = addCharacter("Rascunho", "ally");
     expect(listCharacters().find((c) => c.id === id).kind).toBe("ally");
@@ -432,18 +397,6 @@ describe("entry kind", () => {
 
     loadCharacter(draftId);
     expect(getActiveKind()).toBe("ally");
-  });
-
-  test("converting a draft back keeps its sheet data untouched", () => {
-    const draftId = addCharacter("Rascunho", "ally");
-    state.selected.advantages = { "ADV-031": {} };
-    saveActiveCharacter();
-
-    setActiveKind("character");
-
-    const entry = getStore().list.find((c) => c.id === draftId);
-    expect(entry.kind).toBe("character");
-    expect(entry.data.character.advantages).toEqual({ "ADV-031": {} });
   });
 });
 

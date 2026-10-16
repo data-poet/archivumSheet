@@ -115,7 +115,11 @@ describe("renderResumeImage", () => {
   test("falls back to a path portrait, centred, when nothing is uploaded", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
-    renderResumeImage(undefined, "/images/allies/ALLY-000.png");
+    renderResumeImage({
+      uploaded: false,
+      data: "",
+      path: "/images/allies/ALLY-000.png",
+    });
 
     const wrapper = document.getElementById("resume-charimg-wrapper");
     expect(wrapper.hidden).toBe(false);
@@ -129,32 +133,20 @@ describe("renderResumeImage", () => {
     ).toBe("");
   });
 
-  test("prefers an uploaded image over the path fallback", () => {
-    resetDOM(`<div id="resume-charimg-wrapper"></div>`);
-
-    renderResumeImage(UPLOADED_IMAGE, "/images/allies/ALLY-000.png");
-
-    expect(
-      document.getElementById("resume-charimg-img").getAttribute("src"),
-    ).toBe(UPLOADED_IMAGE.data);
-  });
-
   // An ally exported from the sheet keeps its framing but drops the base64 blob, so the
   // position/scale set on the character page must survive into the path-based portrait.
   test("applies stored framing to a path portrait", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
-    renderResumeImage(
-      {
-        uploaded: false,
-        data: "",
-        background: "average",
-        color: { r: 10, g: 20, b: 30 },
-        position: { x: 42, y: 61 },
-        scale: 120,
-      },
-      "/images/allies/ally-0001-bran.png",
-    );
+    renderResumeImage({
+      uploaded: false,
+      data: "",
+      background: "average",
+      color: { r: 10, g: 20, b: 30 },
+      position: { x: 42, y: 61 },
+      scale: 120,
+      path: "/images/allies/ally-0001-bran.png",
+    });
 
     const img = document.getElementById("resume-charimg-img");
     expect(img.getAttribute("src")).toBe("/images/allies/ally-0001-bran.png");
@@ -169,10 +161,13 @@ describe("renderResumeImage", () => {
   test("centres a path portrait when the image block carries no framing", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
-    renderResumeImage(
-      { uploaded: false, data: "", scale: "", position: { x: "", y: "" } },
-      "/images/allies/ally-0001-bran.png",
-    );
+    renderResumeImage({
+      uploaded: false,
+      data: "",
+      scale: "",
+      position: { x: "", y: "" },
+      path: "/images/allies/ally-0001-bran.png",
+    });
 
     const img = document.getElementById("resume-charimg-img");
     expect(img.style.width).toBe("100%");
@@ -183,15 +178,13 @@ describe("renderResumeImage", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
     expect(() =>
-      renderResumeImage(
-        {
-          uploaded: false,
-          background: "average",
-          scale: 100,
-          position: { x: 50, y: 50 },
-        },
-        "/images/allies/ally-0001-bran.png",
-      ),
+      renderResumeImage({
+        uploaded: false,
+        background: "average",
+        scale: 100,
+        position: { x: 50, y: 50 },
+        path: "/images/allies/ally-0001-bran.png",
+      }),
     ).not.toThrow();
     expect(
       document.getElementById("resume-charimg-bg").style.backgroundColor,
@@ -228,7 +221,7 @@ describe("renderResumeImage", () => {
   test("escapes a hostile path fallback", () => {
     resetDOM(`<div id="resume-charimg-wrapper"></div>`);
 
-    renderResumeImage(undefined, `x" onerror="alert(1)`);
+    renderResumeImage({ uploaded: false, path: `x" onerror="alert(1)` });
 
     const img = document.getElementById("resume-charimg-img");
     expect(img.getAttribute("src")).toBe(`x" onerror="alert(1)`);

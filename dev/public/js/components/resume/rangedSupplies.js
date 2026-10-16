@@ -13,7 +13,7 @@ import {
   nhCell,
 } from "./shared.js";
 
-export function renderResumeFirearms(sheet, { editable = true } = {}) {
+export function renderResumeFirearms(sheet) {
   const skills = sheet?.character?.skills;
 
   renderResumeWeaponTable({
@@ -22,7 +22,6 @@ export function renderResumeFirearms(sheet, { editable = true } = {}) {
     weapons: sheet?.inventory?.firearms?.equipped ?? [],
     hpCssClass: "resume-firearm-hp",
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
-    editable,
     columns: [
       { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
       {
@@ -45,19 +44,13 @@ export function renderResumeFirearms(sheet, { editable = true } = {}) {
         dataAttrs: `data-instance-id="${instanceId}"`,
         magazineSize: w.weapon_final_magazine_size ?? 0,
         roundsLoaded: w.rounds_loaded ?? 0,
-        editable,
       }),
   });
 }
 
 // Quantities are aggregated across all equipped containers per ammo_id; the stepper
 // writes back to the first equipped container (by insertion order) holding that ammo_id.
-export function renderResumeAmmo(
-  sheet,
-  data,
-  selected,
-  { editable = true } = {},
-) {
+export function renderResumeAmmo(sheet, data, selected) {
   const equippedContainers = sheet?.inventory?.ammo?.containers?.equipped ?? [];
   const ammoDb = data?.ammo ?? [];
   const container = el("resume_ammo_container");
@@ -104,7 +97,6 @@ export function renderResumeAmmo(
           cssClass: "resume-ammo-qty",
           dataAttrs: `data-ammo-id="${e.ammo_id}" data-instance-id="${e.instanceId}"`,
           quantity: e.quantity,
-          editable,
         })}
       </tr>
     `,

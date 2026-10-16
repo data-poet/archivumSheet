@@ -5,7 +5,6 @@ import {
   availableFor,
   setCatalogAudience,
   getCatalogAudience,
-  audienceAffectsCatalogs,
   getDroppedIds,
   getDroppedRow,
   resetAudienceRecord,
@@ -172,30 +171,6 @@ describe("the audience record", () => {
   test("records nothing unless asked", () => {
     availableFor(ROWS, AUDIENCE.PLAYER);
 
-    expect(audienceAffectsCatalogs()).toBe(false);
-    expect(getDroppedIds().size).toBe(0);
-  });
-
-  test("an unmarked catalog leaves the audiences equivalent", () => {
-    availableFor([{ race_id: "R1" }, { race_id: "R2" }], AUDIENCE.PLAYER, {
-      record: true,
-    });
-
-    expect(audienceAffectsCatalogs()).toBe(false);
-  });
-
-  // The distinction that matters: a row marked player-only is *kept* by the player audience,
-  // but the ally audience would still see a different catalog — so a reload is needed either way.
-  test("a marked row counts even when the active audience keeps it", () => {
-    availableFor(
-      [{ race_id: "R1", [AVAILABLE_FOR_COLUMN]: "PC" }],
-      AUDIENCE.PLAYER,
-      {
-        record: true,
-      },
-    );
-
-    expect(audienceAffectsCatalogs()).toBe(true);
     expect(getDroppedIds().size).toBe(0);
   });
 
@@ -222,7 +197,6 @@ describe("the audience record", () => {
     availableFor(ROWS, AUDIENCE.PLAYER, { record: true });
     resetAudienceRecord();
 
-    expect(audienceAffectsCatalogs()).toBe(false);
     expect(getDroppedIds().size).toBe(0);
   });
 });

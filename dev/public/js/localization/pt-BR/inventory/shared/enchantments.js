@@ -9,5 +9,4 @@ export const ENCHANTMENTS = {
   extraPoints: "Pontos Extras",
   noneAttached: "Nenhum encantamento aplicado.",
   noneAvailable: "Nenhum encantamento disponível para este item.",
-  subtotalLabel: "Total",
 };

@@ -1,6 +1,4 @@
-// Generic +/- click handling for `.num-stepper` widgets. Split out of events/index.js
-// so ally resume rendering can wire the same steppers without pulling in that file's
-// engine/inventory imports.
+// Generic +/- click handling for `.num-stepper` widgets.
 
 export function bindStepperButtons() {
   document.addEventListener("click", (e) => {

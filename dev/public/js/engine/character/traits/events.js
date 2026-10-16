@@ -3,7 +3,6 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 import { removeAdv } from "./advantages/model.js";
 import { removeDis } from "./disadvantages/model.js";
 import { percentToDecimal } from "../../../components/resistances.js";
-import { getEditTarget } from "../../../shared/editTarget.js";
 import { PC_EDIT_TARGET } from "./pcEditTarget.js";
 import { handleResumeAttributeInput } from "./resumeAttributeInput.js";
 
@@ -21,11 +20,8 @@ export function handleTraitClick(e) {
 
 export function handleTraitInput(e) {
   const selected = state.selected;
-  // Parsing and the clamping rules below are the domain's, so they stay here; the target
-  // only owns where the accepted value is written.
-  const target = getEditTarget() ?? PC_EDIT_TARGET;
 
-  if (handleResumeAttributeInput(e, target)) return true;
+  if (handleResumeAttributeInput(e, PC_EDIT_TARGET)) return true;
 
   if (e.target.classList.contains("damage-input")) {
     const { type } = e.target.dataset;

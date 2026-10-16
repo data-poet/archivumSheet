@@ -1,7 +1,3 @@
-// Split out of portrait.js on purpose: portrait.js imports compute/autorun.js for its
-// editor-side handlers, and ally resume rendering must never reach compute/* since it
-// shares this renderer with the PC sheet. This file stays a leaf so both can use it.
-
 import { state } from "../../../state.js";
 import { escapeAttr } from "../../../shared/renderUtils.js";
 
@@ -38,19 +34,16 @@ function _layoutOf(image) {
 // the sheet travels: an ally file carries the framing but not the pixels, so re-importing one
 // to edit still renders it. Optional everywhere — an image object without `path` behaves
 // exactly as before.
-function _srcOf(image, fallbackSrc = "") {
+function _srcOf(image) {
   if (image?.uploaded && image.data) return image.data;
-  return image?.path || fallbackSrc;
+  return image?.path || "";
 }
 
-// Called from components/resume/index.js after renderResumeHeader(). `image` defaults to
-// the active character's; other sheets (a catalog ally) pass their own, plus fallbackSrc
-// when the portrait ships as a file path rather than uploaded base64.
-export function renderResumeImage(image = _img(), fallbackSrc = "") {
+export function renderResumeImage(image = _img()) {
   const container = document.getElementById("resume-charimg-wrapper");
   if (!container) return;
 
-  const src = _srcOf(image, fallbackSrc);
+  const src = _srcOf(image);
 
   if (!src) {
     container.hidden = true;

@@ -1,4 +1,4 @@
-import { enchantmentsExpander } from "dev/public/js/engine/inventory/shared/enchantments/render.js";
+import { enchantmentsBody } from "dev/public/js/engine/inventory/shared/enchantments/render.js";
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTypeFilter,
@@ -197,26 +197,10 @@ beforeEach(() => {
   seedCatalog();
 });
 
-describe("enchantmentsExpander — structure", () => {
-  test("renders a <details data-detail-kind='enchantments'> with the title", () => {
-    const el = parse(
-      enchantmentsExpander({
-        instanceId: "ITEM-1",
-        entries: [],
-        itemCategory: "Cabeça",
-        resolvedEntries: [],
-      }),
-    );
-    const details = el.querySelector("details");
-    expect(details.dataset.detailKind).toBe("enchantments");
-    expect(
-      details.querySelector(".enchantments-summary span").textContent,
-    ).toBe(t("enchantments.title"));
-  });
-
+describe("enchantmentsBody — structure", () => {
   test("shows the empty-state message when there are no entries", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -227,74 +211,12 @@ describe("enchantmentsExpander — structure", () => {
       t("enchantments.noneAttached"),
     );
   });
-
-  test("shows no subtotal span when there are no entries", () => {
-    const el = parse(
-      enchantmentsExpander({
-        instanceId: "ITEM-1",
-        entries: [],
-        itemCategory: "Cabeça",
-        resolvedEntries: [],
-      }),
-    );
-    expect(el.querySelector(".enchantments-subtotal")).toBeNull();
-  });
 });
 
-describe("enchantmentsExpander — subtotal", () => {
-  const entries = [
-    { id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" },
-    { id: "E2", enchantment_id: "ENCH-DIS", target: "DIS-001" },
-  ];
-
-  test("sums resolved prices across every entry", () => {
-    const el = parse(
-      enchantmentsExpander({
-        instanceId: "ITEM-1",
-        entries,
-        itemCategory: "Cabeça",
-        resolvedEntries: [
-          { id: "E1", price: 10 },
-          { id: "E2", price: 5 },
-        ],
-      }),
-    );
-    expect(el.querySelector(".enchantments-subtotal").textContent).toContain(
-      "15",
-    );
-  });
-
-  test("counts a partially-resolved set (one entry still unresolved) toward the total, not as fully unresolved", () => {
-    const el = parse(
-      enchantmentsExpander({
-        instanceId: "ITEM-1",
-        entries,
-        itemCategory: "Cabeça",
-        resolvedEntries: [{ id: "E1", price: 10 }], // E2 unresolved
-      }),
-    );
-    expect(el.querySelector(".enchantments-subtotal").textContent).toContain(
-      "10",
-    );
-  });
-
-  test("shows no subtotal at all when NO entry has a resolved price yet", () => {
-    const el = parse(
-      enchantmentsExpander({
-        instanceId: "ITEM-1",
-        entries,
-        itemCategory: "Cabeça",
-        resolvedEntries: [],
-      }),
-    );
-    expect(el.querySelector(".enchantments-subtotal")).toBeNull();
-  });
-});
-
-describe("enchantmentsExpander — entry list", () => {
+describe("enchantmentsBody — entry list", () => {
   test("renders an advantage entry's target name and price", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" }],
         itemCategory: "Cabeça",
@@ -312,7 +234,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("shows '—' for an entry's price when unresolved", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-001" }],
         itemCategory: "Cabeça",
@@ -324,7 +246,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders an attribute entry's signed magnitude, no target", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-ATTR", value: 3 }],
         itemCategory: "Cabeça",
@@ -338,7 +260,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a percentage-flagged entry's magnitude as a signed percent, converted from the stored decimal", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-WEIGHT", value: 0.2 }],
         itemCategory: "Cabeça",
@@ -352,7 +274,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a non-percentage value entry's magnitude with no % suffix", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-DR", value: 2 }],
         itemCategory: "Cabeça",
@@ -366,7 +288,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a fixed-target elemental-resistance entry's localized element name, read from the record (not the entry)", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [
           {
@@ -386,7 +308,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a fixed-target damage entry's target stat, read from the record (not the entry)", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-BAL", value: 2 }],
         itemCategory: "Armas Corpo a Corpo",
@@ -400,7 +322,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a fixed-target requisite entry's target stat, read from the record (not the entry)", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [
           {
@@ -420,7 +342,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("renders a skill entry's target name and extraPoints magnitude", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [
           {
@@ -441,7 +363,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("silently omits an entry whose enchantment_id no longer resolves to a catalog record", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "GHOST" }],
         itemCategory: "Cabeça",
@@ -453,7 +375,7 @@ describe("enchantmentsExpander — entry list", () => {
 
   test("falls back to the raw id when a target's name can't be resolved", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "GHOST-ID" }],
         itemCategory: "Cabeça",
@@ -469,7 +391,7 @@ describe("enchantmentsExpander — entry list", () => {
 describe("add-form", () => {
   test("category filter is present when the category offers more than one enchantment_type", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -486,7 +408,7 @@ describe("add-form", () => {
         e.enchantment_type === "Físico",
     );
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -498,7 +420,7 @@ describe("add-form", () => {
 
   test("groups type options into <optgroup>s when more than one type is present", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -513,7 +435,7 @@ describe("add-form", () => {
   test("uses a flat option list (no optgroups) when the category has only one type", () => {
     setEnchantmentAddFormTypeFilter("ITEM-1", "Físico");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -527,7 +449,7 @@ describe("add-form", () => {
 
   test("shows the empty-state guard message among the add-form's markup when nothing is allowed for the category", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Tronco", // nothing seeded allows Tronco
@@ -544,7 +466,7 @@ describe("add-form", () => {
 
   test("the add button carries the item's instanceId", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -566,7 +488,7 @@ describe("edit-form", () => {
 
   test("save/remove buttons carry both the parent and entry instance ids", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [entry],
         itemCategory: "Cabeça",
@@ -583,7 +505,7 @@ describe("edit-form", () => {
 
   test("pre-fills the entry's current value when it hasn't been swapped to a different type", () => {
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [entry],
         itemCategory: "Cabeça",
@@ -599,7 +521,7 @@ describe("edit-form", () => {
   test("falls back to fresh type defaults (not the entry's old value) once swapped to a different enchantment", () => {
     setEnchantmentAddFormSelection("ENTRY-1", "ENCH-ATTR-WEAKEN");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [entry],
         itemCategory: "Cabeça",
@@ -620,7 +542,7 @@ describe("edit-form", () => {
       value: 9,
     };
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [entry, secondEntry],
         itemCategory: "Cabeça",
@@ -641,7 +563,7 @@ describe("valueInput bounds", () => {
   test("a non-weaken attribute type gets a data-min bound at its base value", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -657,7 +579,7 @@ describe("valueInput bounds", () => {
   test("a weaken attribute type gets a data-max bound at the negative base value", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR-WEAKEN");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -672,7 +594,7 @@ describe("valueInput bounds", () => {
   test("shows the plain 'Valor' label for a non-percentage value type", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ATTR");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -686,7 +608,7 @@ describe("valueInput bounds", () => {
   test("a percentage-flagged type displays/steps the input in whole percent units, not the raw decimal", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-WEIGHT");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -703,7 +625,7 @@ describe("valueInput bounds", () => {
   test("a percentage-flagged type shows the '(%)' label instead of the plain one", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-WEIGHT");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -723,7 +645,7 @@ describe("valueInput bounds", () => {
       value: 0.3,
     };
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [entry],
         itemCategory: "Cabeça",
@@ -739,7 +661,7 @@ describe("valueInput bounds", () => {
   test("a non-percentage damage-resistance type displays the whole number as-is", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-DR");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -754,7 +676,7 @@ describe("valueInput bounds", () => {
   test("a fixed-target elemental-resistance type renders a value input but no target picker", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-RESIST-FIRE");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -770,7 +692,7 @@ describe("extraPointsInput bounds", () => {
   test("a fortify type defaults to +1 with a data-min of 1", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-FORTIFY-SKILL");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -785,7 +707,7 @@ describe("extraPointsInput bounds", () => {
   test("a plain skill type (neither fortify nor weaken) defaults to 0 with a data-min of 0", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-SKILL");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -802,7 +724,7 @@ describe("target picker", () => {
   test("excludes racial-type traits from the advantage target list", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-ADV");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -820,7 +742,7 @@ describe("target picker", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-SKILL");
     setEnchantmentAddFormTargetFilter("ITEM-1", "Combate");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -836,7 +758,7 @@ describe("target picker", () => {
   test("the spell target picker is deduplicated by spell name (one option per name, not per tier row)", () => {
     setEnchantmentAddFormSelection("ITEM-1", "ENCH-SPELL");
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [],
         itemCategory: "Cabeça",
@@ -860,7 +782,7 @@ describe("HTML escaping", () => {
       advantage_box_name: "X",
     });
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-ADV", target: "ADV-XSS" }],
         itemCategory: "Cabeça",
@@ -883,7 +805,7 @@ describe("HTML escaping", () => {
       enchantment_type: "Social",
     });
     const el = parse(
-      enchantmentsExpander({
+      enchantmentsBody({
         instanceId: "ITEM-1",
         entries: [{ id: "E1", enchantment_id: "ENCH-XSS", target: "ADV-001" }],
         itemCategory: "Cabeça",

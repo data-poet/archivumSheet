@@ -50,13 +50,8 @@ export function hpStepperCell({
   maxHp,
   modifier,
   actualHp,
-  editable = true,
 }) {
   const actual = `<strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>`;
-
-  if (!editable) {
-    return `<td><div class="hp-modifier">${actual}</div></td>`;
-  }
 
   return stepperCell({ cssClass, dataAttrs, value: modifier, suffix: actual });
 }
@@ -66,13 +61,8 @@ export function roundsStepperCell({
   dataAttrs,
   magazineSize,
   roundsLoaded,
-  editable = true,
 }) {
   const suffix = `/ <strong>${magazineSize}</strong>`;
-
-  if (!editable) {
-    return `<td><div class="hp-modifier"><strong>${roundsLoaded}</strong> ${suffix}</div></td>`;
-  }
 
   return stepperCell({
     cssClass,
@@ -83,16 +73,7 @@ export function roundsStepperCell({
   });
 }
 
-export function quantityStepperCell({
-  cssClass,
-  dataAttrs,
-  quantity,
-  editable = true,
-}) {
-  if (!editable) {
-    return `<td class="col-num">${quantity}</td>`;
-  }
-
+export function quantityStepperCell({ cssClass, dataAttrs, quantity }) {
   return stepperCell({
     tdClass: "col-num",
     wrapped: false,
@@ -137,7 +118,6 @@ export function renderResumeWeaponTable({
   columns,
   hpCssClass,
   computeMaxHp,
-  editable,
   extraHeader = "",
   extraCell = null,
 }) {
@@ -165,7 +145,6 @@ export function renderResumeWeaponTable({
               maxHp,
               modifier,
               actualHp,
-              editable,
             })
           : `<td></td>`;
 

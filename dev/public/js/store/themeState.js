@@ -12,8 +12,3 @@ export function getTheme() {
 export function setTheme(value) {
   localStorage.setItem(STORAGE_KEY, value);
 }
-
-// Not currently wired to any UI control, kept for potential future use.
-export function clearTheme() {
-  localStorage.removeItem(STORAGE_KEY);
-}

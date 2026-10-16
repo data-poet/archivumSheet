@@ -229,24 +229,8 @@ export function getActiveKind() {
   return kindOf(store.list.find((c) => c.id === store.activeId));
 }
 
-// Converting is deliberately just a label change: the sheet's data is identical either way, so
-// nothing is migrated and nothing can be lost by toggling back and forth.
-export function setActiveKind(kind) {
-  const store = getStore();
-  const entry = store.list.find((c) => c.id === store.activeId);
-  if (!entry) return;
-
-  entry.kind =
-    kind === ENTRY_KINDS.ALLY ? ENTRY_KINDS.ALLY : ENTRY_KINDS.CHARACTER;
-  _save(store);
-}
-
 export function getActiveCharacterId() {
   return getStore().activeId;
-}
-
-export function getCharacterData(characterId) {
-  return getStore().list.find((c) => c.id === characterId)?.data ?? null;
 }
 
 // For reading/writing a non-active entry (e.g. an ally) without touching state.selected or

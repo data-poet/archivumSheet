@@ -7,7 +7,6 @@ jest.mock("dev/public/js/store/characters.js", () => ({
   saveActiveCharacter: jest.fn(),
   replaceActiveCharacter: jest.fn(),
   getActiveKind: jest.fn(() => "character"),
-  setActiveKind: jest.fn(),
 }));
 jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
   listCharactersGrouped: jest.fn(),

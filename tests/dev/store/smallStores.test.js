@@ -11,11 +11,7 @@ import {
   getActiveGroup,
   setActiveGroup,
 } from "dev/public/js/store/groupState.js";
-import {
-  getTheme,
-  setTheme,
-  clearTheme,
-} from "dev/public/js/store/themeState.js";
+import { getTheme, setTheme } from "dev/public/js/store/themeState.js";
 
 beforeEach(() => localStorage.clear());
 
@@ -95,12 +91,6 @@ describe("themeState", () => {
 
   test("ignores a corrupted/unexpected stored value, falling back to null", () => {
     localStorage.setItem("archivum:theme", "not-a-real-theme");
-    expect(getTheme()).toBeNull();
-  });
-
-  test("clearTheme reverts to null (system preference)", () => {
-    setTheme("light");
-    clearTheme();
     expect(getTheme()).toBeNull();
   });
 });

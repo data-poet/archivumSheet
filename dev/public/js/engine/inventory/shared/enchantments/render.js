@@ -440,24 +440,6 @@ function renderEnchantmentEntry(
     </details>`;
 }
 
-// Returns null (not 0) when nothing has a resolved price yet, so the caller can show nothing rather than a misleading "0".
-function enchantmentsSubtotal(entries, resolvedEntries) {
-  if (entries.length === 0) return null;
-
-  let total = 0;
-  let hasResolvedPrice = false;
-
-  for (const entry of entries) {
-    const price = resolvedPrice(resolvedEntries, entry.id);
-    if (price != null) {
-      total += price;
-      hasResolvedPrice = true;
-    }
-  }
-
-  return hasResolvedPrice ? total : null;
-}
-
 export function enchantmentsBody({
   instanceId,
   entries,
@@ -483,24 +465,4 @@ export function enchantmentsBody({
       ${list}
       ${renderAddForm(instanceId, itemCategory)}
     </div>`;
-}
-
-// Kept for its own <details data-detail-kind="enchantments"> summary/subtotal — no render.js file
-// calls this directly anymore (itemTabs.js's tab panels use enchantmentsBody instead), but it's
-// still exercised directly by render.test.js.
-function enchantmentsExpanderMarkup(params) {
-  const subtotal = enchantmentsSubtotal(params.entries, params.resolvedEntries);
-
-  return `
-    <details data-detail-kind="enchantments">
-      <summary class="enchantments-summary">
-        <span>${t("enchantments.title")}</span>
-        ${subtotal != null ? `<span class="enchantments-subtotal">${t("enchantments.subtotalLabel")}: ${subtotal}</span>` : ""}
-      </summary>
-      ${enchantmentsBody(params)}
-    </details>`;
-}
-
-export function enchantmentsExpander(params) {
-  return enchantmentsExpanderMarkup(params);
 }

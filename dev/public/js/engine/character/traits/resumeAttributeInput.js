@@ -1,8 +1,5 @@
-// Parsing/clamping for the resume's primary-modifier and secondary-stat inputs. Split out of
-// events.js so ally resume rendering can wire the same markup without pulling in that
-// file's compute/autorun.js / pcEditTarget.js dependencies. `target` is whatever
-// shared/editTarget.js resolves to — PC_EDIT_TARGET until an ally edit target is
-// registered (see shared/editTarget.js for why this is a registration, not a page check).
+// Parsing/clamping for the resume's primary-modifier and secondary-stat inputs: the rules live
+// here, `target` only owns where the accepted value is written.
 import { isVitalAttribute } from "../../../shared/constants.js";
 import {
   isUnbuyableSecondary,

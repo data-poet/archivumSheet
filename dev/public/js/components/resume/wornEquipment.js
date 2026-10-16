@@ -19,7 +19,7 @@ const ARMOR_SLOT_ROWS = ARMOR_SLOTS.map((label) => ({
   label,
 }));
 
-export function renderResumeArmor(sheet, { editable = true } = {}) {
+export function renderResumeArmor(sheet) {
   const equipped = sheet?.inventory?.armor?.equipped || {};
   const container = el("resume_armor_container");
   if (!container) return;
@@ -49,7 +49,6 @@ export function renderResumeArmor(sheet, { editable = true } = {}) {
             maxHp,
             modifier,
             actualHp,
-            editable,
           })
         : `<td></td>`;
 
@@ -76,7 +75,7 @@ export function renderResumeArmor(sheet, { editable = true } = {}) {
   bindCollapse(container);
 }
 
-export function renderResumeShield(sheet, { editable = true } = {}) {
+export function renderResumeShield(sheet) {
   const equippedShield = sheet?.inventory?.shield?.equipped;
   const container = el("resume_shield_container");
   if (!container) return;
@@ -106,7 +105,6 @@ export function renderResumeShield(sheet, { editable = true } = {}) {
           maxHp,
           modifier,
           actualHp,
-          editable,
         })
       : `<td></td>`;
 
@@ -173,7 +171,7 @@ function _unarmedRows(unarmed = []) {
   }));
 }
 
-export function renderResumeMelee(sheet, { editable = true } = {}) {
+export function renderResumeMelee(sheet) {
   const skills = sheet?.character?.skills;
   const weapons = [
     ..._unarmedRows(sheet?.character?.unarmed),
@@ -186,7 +184,6 @@ export function renderResumeMelee(sheet, { editable = true } = {}) {
     weapons,
     hpCssClass: "resume-melee-hp",
     computeMaxHp: meleeMaxHp,
-    editable,
     columns: [
       { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
       {
@@ -209,7 +206,7 @@ export function renderResumeMelee(sheet, { editable = true } = {}) {
   });
 }
 
-export function renderResumeRanged(sheet, { editable = true } = {}) {
+export function renderResumeRanged(sheet) {
   const skills = sheet?.character?.skills;
 
   renderResumeWeaponTable({
@@ -218,7 +215,6 @@ export function renderResumeRanged(sheet, { editable = true } = {}) {
     weapons: sheet?.inventory?.ranged?.equipped ?? [],
     hpCssClass: "resume-ranged-hp",
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,
-    editable,
     columns: [
       { header: t("traits.nh"), cell: (w) => nhCell(w.skill_check, skills) },
       {

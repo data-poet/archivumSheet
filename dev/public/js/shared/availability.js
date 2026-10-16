@@ -33,16 +33,8 @@ function _idOf(row) {
   return key ? row[key] : null;
 }
 
-// Two facts about the data, both recorded as rows stream past the transport filter.
-//
-// `_marked` answers "would a different audience see a different catalog at all?" — false while
-// no CSV declares available_for, which is what lets a kind change skip its reload today.
-// It is not the same as "something was dropped": an ally-only row is invisible to the player
-// audience but would still change what the ally audience sees.
-//
-// `_dropped` is the backstop's raw material: a character must not keep content its audience
-// cannot pick, and the filter is the only place that ever saw both sets.
-let _marked = false;
+// The backstop's raw material: a character must not keep content its audience cannot pick, and
+// the transport filter is the only place that ever saw both sets.
 const _dropped = new Map();
 
 export function availableFor(rows, audience, { record = false } = {}) {
@@ -51,24 +43,13 @@ export function availableFor(rows, audience, { record = false } = {}) {
   return rows.filter((row) => {
     const allowed = isAvailableFor(row, audience);
 
-    if (record) {
-      const raw = row?.[AVAILABLE_FOR_COLUMN];
-      if (raw !== undefined && raw !== null && String(raw).trim() !== "") {
-        _marked = true;
-      }
-      if (!allowed) {
-        const id = _idOf(row);
-        if (id) _dropped.set(id, row);
-      }
+    if (record && !allowed) {
+      const id = _idOf(row);
+      if (id) _dropped.set(id, row);
     }
 
     return allowed;
   });
-}
-
-// True once any catalog row declares an availability, i.e. once the audiences can diverge.
-export function audienceAffectsCatalogs() {
-  return _marked;
 }
 
 export function getDroppedIds() {
@@ -80,7 +61,6 @@ export function getDroppedRow(id) {
 }
 
 export function resetAudienceRecord() {
-  _marked = false;
   _dropped.clear();
 }
 

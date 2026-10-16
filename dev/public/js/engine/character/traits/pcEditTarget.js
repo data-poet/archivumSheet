@@ -1,5 +1,4 @@
-// Where the active character's attribute edits land. See shared/editTarget.js for why
-// this is a registered destination rather than a page check.
+// Where the active character's attribute edits land.
 
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
@@ -7,8 +6,7 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 export const PC_EDIT_TARGET = {
   // The PC's primary modifiers are stored in the edit view's #<attr>_mod inputs, which
   // compute/attributes.js reads at build time — so writing state here means writing that
-  // input and letting its own listener rebuild. A sheet without those inputs (an ally)
-  // needs a different target, which is the whole reason this indirection exists.
+  // input and letting its own listener rebuild.
   setPrimaryModifier(attr, value) {
     const input = document.getElementById(`${attr}_mod`);
     if (!input) return;
