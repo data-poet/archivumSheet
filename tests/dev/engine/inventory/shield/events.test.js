@@ -18,6 +18,7 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
 
+import { DEFAULT_MATERIAL_ID } from "dev/public/js/shared/constants.js";
 import * as model from "dev/public/js/engine/inventory/shield/model.js";
 import * as render from "dev/public/js/engine/inventory/shield/render.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
@@ -354,7 +355,10 @@ describe("handleShieldChange — equipped-shield-name", () => {
 
     handleShieldChange({ target });
 
-    expect(model.equipShield).toHaveBeenCalledWith("SHIELD-DB-1", "MAT-000");
+    expect(model.equipShield).toHaveBeenCalledWith(
+      "SHIELD-DB-1",
+      DEFAULT_MATERIAL_ID,
+    );
     expect(triggerAutoRun).not.toHaveBeenCalled();
   });
 

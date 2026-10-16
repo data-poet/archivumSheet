@@ -3,6 +3,7 @@ const {
   computeActions,
   MASTER_ELIGIBLE_CATEGORIES,
 } = require("engine/character/js/skills/skills");
+const { SKILL } = require("tests/helpers/dataRefs");
 const { REFLEXOS_EM_COMBATE_ID } = require("helpers/ids.js");
 
 const assertShape = require("tests/helpers/assertShape");
@@ -15,8 +16,16 @@ const character = {
 };
 
 const selectedSkills = {
-  "SKILL-000": { base_value: 14, modifier: 0, isTrainedWithMaster: false }, // ADESTRAMENTO DE ANIMAIS
-  "SKILL-001": { base_value: 12, modifier: 1, isTrainedWithMaster: false },
+  [SKILL.adestramentoDeAnimais]: {
+    base_value: 14,
+    modifier: 0,
+    isTrainedWithMaster: false,
+  }, // ADESTRAMENTO DE ANIMAIS
+  [SKILL.falcoaria]: {
+    base_value: 12,
+    modifier: 1,
+    isTrainedWithMaster: false,
+  },
 };
 
 describe("BUILD SKILLS (ENGINE)", () => {
@@ -75,8 +84,8 @@ describe("BUILD SKILLS (ENGINE)", () => {
 });
 
 describe("SKILL PARRY", () => {
-  const parrySkillId = "SKILL-044"; // ESPADAS LONGAS
-  const nonParrySkillId = "SKILL-000"; // ADESTRAMENTO DE ANIMAIS
+  const parrySkillId = SKILL.espadasLongas; // ESPADAS LONGAS
+  const nonParrySkillId = SKILL.adestramentoDeAnimais; // ADESTRAMENTO DE ANIMAIS
 
   const skillsWithParry = {
     [parrySkillId]: { base_value: 14, modifier: 0, isTrainedWithMaster: false },
@@ -144,8 +153,8 @@ describe("SKILL PARRY", () => {
 
 describe("SKILL PARRY — 4e bonuses", () => {
   test.each([
-    ["SKILL-095", "BASTÃO", 2],
-    ["SKILL-076", "FACA", -1],
+    [SKILL.bastao, "BASTÃO", 2],
+    [SKILL.faca, "FACA", -1],
   ])("%s (%s) adds %i to 3 + floor(level / 2)", (id, _name, bonus) => {
     const result = buildSkills(
       { [id]: { base_value: 12, modifier: 0, isTrainedWithMaster: false } },
@@ -156,8 +165,8 @@ describe("SKILL PARRY — 4e bonuses", () => {
 });
 
 describe("IS TRAINED WITH MASTER", () => {
-  const eligibleSkillId = "SKILL-044"; // Armas e Combate
-  const ineligibleSkillId = "SKILL-000"; // Animais
+  const eligibleSkillId = SKILL.espadasLongas; // Armas e Combate
+  const ineligibleSkillId = SKILL.adestramentoDeAnimais; // Animais
 
   test("isTrainedWithMaster defaults to false if not provided", () => {
     const result = buildSkills(
@@ -288,7 +297,7 @@ describe("COMPUTE ACTIONS", () => {
 });
 
 describe("ACTIONS in buildSkills output", () => {
-  const eligibleId = "SKILL-044"; // ESPADAS LONGAS
+  const eligibleId = SKILL.espadasLongas; // ESPADAS LONGAS
 
   test("All skills have an actions field", () => {
     const result = buildSkills(
@@ -367,60 +376,78 @@ describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
       {},
       character,
       {},
-      { "SKILL-000": [2] }, // grant: attributeBase(10) + 2 extra = 12
+      { [SKILL.adestramentoDeAnimais]: [2] }, // grant: attributeBase(10) + 2 extra = 12
     );
 
-    expect(result.skills["SKILL-000"]).toBeDefined();
-    expect(result.skills["SKILL-000"].base_value).toBe(10);
-    expect(result.skills["SKILL-000"].modifier).toBe(2);
-    expect(result.skills["SKILL-000"].value).toBe(12);
-    expect(result.skills["SKILL-000"].is_enchantment).toBe(true);
-    expect(result.skills["SKILL-000"].points).toBe(0);
+    expect(result.skills[SKILL.adestramentoDeAnimais]).toBeDefined();
+    expect(result.skills[SKILL.adestramentoDeAnimais].base_value).toBe(10);
+    expect(result.skills[SKILL.adestramentoDeAnimais].modifier).toBe(2);
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(12);
+    expect(result.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+      true,
+    );
+    expect(result.skills[SKILL.adestramentoDeAnimais].points).toBe(0);
     expect(result.character_points.skills).toBe(0);
   });
 
   test("Should not create any entry from a fortify_skill modifier alone (no-op if not known)", () => {
-    const result = buildSkills({}, character, {}, {}, { "SKILL-000": 3 });
+    const result = buildSkills(
+      {},
+      character,
+      {},
+      {},
+      { [SKILL.adestramentoDeAnimais]: 3 },
+    );
 
-    expect(result.skills["SKILL-000"]).toBeUndefined();
+    expect(result.skills[SKILL.adestramentoDeAnimais]).toBeUndefined();
   });
 
   test("Should prefer the player's own purchase when it's higher than the best grant", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 16, modifier: 0 } }, // player level 16
+      { [SKILL.adestramentoDeAnimais]: { base_value: 16, modifier: 0 } }, // player level 16
       character,
       {},
-      { "SKILL-000": [2] }, // grant level 12
+      { [SKILL.adestramentoDeAnimais]: [2] }, // grant level 12
     );
 
-    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
-    expect(result.skills["SKILL-000"].value).toBe(16);
-    expect(result.skills["SKILL-000"].points).toBeGreaterThan(0);
+    expect(result.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+      false,
+    );
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(16);
+    expect(result.skills[SKILL.adestramentoDeAnimais].points).toBeGreaterThan(
+      0,
+    );
   });
 
   test("Should prefer the grant when it's higher than the player's own purchase", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 11, modifier: 0 } }, // player level 11
+      { [SKILL.adestramentoDeAnimais]: { base_value: 11, modifier: 0 } }, // player level 11
       character,
       {},
-      { "SKILL-000": [5] }, // grant level 10 + 5 = 15
+      { [SKILL.adestramentoDeAnimais]: [5] }, // grant level 10 + 5 = 15
     );
 
-    expect(result.skills["SKILL-000"].is_enchantment).toBe(true);
-    expect(result.skills["SKILL-000"].value).toBe(15);
-    expect(result.skills["SKILL-000"].points).toBe(0);
+    expect(result.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+      true,
+    );
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(15);
+    expect(result.skills[SKILL.adestramentoDeAnimais].points).toBe(0);
   });
 
   test("Should prefer the player's own purchase on a tie", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 12, modifier: 0 } }, // player level 12
+      { [SKILL.adestramentoDeAnimais]: { base_value: 12, modifier: 0 } }, // player level 12
       character,
       {},
-      { "SKILL-000": [2] }, // grant level 10 + 2 = 12 (tie)
+      { [SKILL.adestramentoDeAnimais]: [2] }, // grant level 10 + 2 = 12 (tie)
     );
 
-    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
-    expect(result.skills["SKILL-000"].points).toBeGreaterThan(0);
+    expect(result.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+      false,
+    );
+    expect(result.skills[SKILL.adestramentoDeAnimais].points).toBeGreaterThan(
+      0,
+    );
   });
 
   test("Should use the single highest grant when multiple items grant the same skill (no stacking)", () => {
@@ -428,54 +455,58 @@ describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
       {},
       character,
       {},
-      { "SKILL-000": [1, 4, 2] }, // best is +4 -> level 14
+      { [SKILL.adestramentoDeAnimais]: [1, 4, 2] }, // best is +4 -> level 14
     );
 
-    expect(result.skills["SKILL-000"].modifier).toBe(4);
-    expect(result.skills["SKILL-000"].value).toBe(14);
+    expect(result.skills[SKILL.adestramentoDeAnimais].modifier).toBe(4);
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(14);
   });
 
   test("Should add a positive fortify_skill enchantment_modifier on top of the winning source", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      { [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 } },
       character,
       {},
       {},
-      { "SKILL-000": 3 },
+      { [SKILL.adestramentoDeAnimais]: 3 },
     );
 
-    expect(result.skills["SKILL-000"].enchantment_modifier).toBe(3);
-    expect(result.skills["SKILL-000"].has_enchantment_modifier).toBe(true);
-    expect(result.skills["SKILL-000"].value).toBe(17); // 14 + 3
+    expect(
+      result.skills[SKILL.adestramentoDeAnimais].enchantment_modifier,
+    ).toBe(3);
+    expect(
+      result.skills[SKILL.adestramentoDeAnimais].has_enchantment_modifier,
+    ).toBe(true);
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(17); // 14 + 3
   });
 
   test("Should subtract a negative weaken_skill enchantment_modifier", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      { [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 } },
       character,
       {},
       {},
-      { "SKILL-000": -3 },
+      { [SKILL.adestramentoDeAnimais]: -3 },
     );
 
-    expect(result.skills["SKILL-000"].value).toBe(11); // 14 - 3
+    expect(result.skills[SKILL.adestramentoDeAnimais].value).toBe(11); // 14 - 3
   });
 
   test("Should not let enchantment_modifier affect points cost (cost reflects investment only)", () => {
     const withoutModifier = buildSkills(
-      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      { [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 } },
       character,
     );
     const withModifier = buildSkills(
-      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      { [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 } },
       character,
       {},
       {},
-      { "SKILL-000": 5 },
+      { [SKILL.adestramentoDeAnimais]: 5 },
     );
 
-    expect(withModifier.skills["SKILL-000"].points).toBe(
-      withoutModifier.skills["SKILL-000"].points,
+    expect(withModifier.skills[SKILL.adestramentoDeAnimais].points).toBe(
+      withoutModifier.skills[SKILL.adestramentoDeAnimais].points,
     );
     expect(withModifier.character_points.skills).toBe(
       withoutModifier.character_points.skills,
@@ -484,18 +515,24 @@ describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
 
   test("Should default has_enchantment_modifier to false for a skill with no equipped fortify/weaken", () => {
     const result = buildSkills(
-      { "SKILL-000": { base_value: 14, modifier: 0 } },
+      { [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 } },
       character,
     );
 
-    expect(result.skills["SKILL-000"].enchantment_modifier).toBe(0);
-    expect(result.skills["SKILL-000"].has_enchantment_modifier).toBe(false);
+    expect(
+      result.skills[SKILL.adestramentoDeAnimais].enchantment_modifier,
+    ).toBe(0);
+    expect(
+      result.skills[SKILL.adestramentoDeAnimais].has_enchantment_modifier,
+    ).toBe(false);
   });
 
   test("Should default is_enchantment to false for a normal player purchase", () => {
     const result = buildSkills(selectedSkills, character);
 
-    expect(result.skills["SKILL-000"].is_enchantment).toBe(false);
+    expect(result.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+      false,
+    );
   });
 
   test("Should use the FINAL (post-enchantment) attribute value as the grant base, not the pre-enchantment base_value", () => {
@@ -510,9 +547,9 @@ describe("BUILD SKILLS — equipped enchantment grants and modifiers", () => {
       {},
       enchantedCharacter,
       {},
-      { "SKILL-000": [0] },
+      { [SKILL.adestramentoDeAnimais]: [0] },
     );
 
-    expect(result.skills["SKILL-000"].base_value).toBe(12); // final IQ, not base_value 10
+    expect(result.skills[SKILL.adestramentoDeAnimais].base_value).toBe(12); // final IQ, not base_value 10
   });
 });

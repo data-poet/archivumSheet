@@ -2,6 +2,7 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
 
+const { ADVANTAGE, ARMOR, MATERIAL, SKILL } = require("tests/helpers/dataRefs");
 import {
   slugify,
   allyIdFor,
@@ -144,15 +145,22 @@ describe("an exported ally file feeds the ally pipeline", () => {
     document.getElementById("ST_base").value = "11";
     document.getElementById("DX_base").value = "12";
     state.selected.character.character_name = "Elemental de Água";
-    state.selected.advantages = { "ADV-031": {}, "ADV-086": {} };
+    state.selected.advantages = {
+      [ADVANTAGE.prontidao1]: {},
+      [ADVANTAGE.visaoNoturna]: {},
+    };
     state.selected.skills = {
-      "SKILL-044": { base_value: 12, modifier: 0, isTrainedWithMaster: false },
+      [SKILL.espadasLongas]: {
+        base_value: 12,
+        modifier: 0,
+        isTrainedWithMaster: false,
+      },
     };
     state.selected.armors = [
       {
         id: "armor-1",
-        armor_id: "ARMOR-015",
-        material_id: "MAT-000",
+        armor_id: ARMOR.gibao,
+        material_id: MATERIAL.ferro,
         hit_points_modifier: 0,
         is_equipped: true,
         storedAt: null,
@@ -168,7 +176,7 @@ describe("an exported ally file feeds the ally pipeline", () => {
         race_sub_name: "Elemental de Água",
         modifiers: { ST: 2, DX: 0, IQ: -1, HT: 1 },
         elemental_modifiers: { Fire: 0.5, Water: 0 },
-        innate_advantage_ids: ["ADV-086"],
+        innate_advantage_ids: [ADVANTAGE.visaoNoturna],
         innate_disadvantage_ids: [],
       },
     };
@@ -183,7 +191,7 @@ describe("an exported ally file feeds the ally pipeline", () => {
     // 11 base + 2 from the custom race
     expect(sheet.character.primary_attributes.ST.value).toBe(13);
     expect(sheet.character.secondary_attributes.HP.value).toBeGreaterThan(0);
-    expect(sheet.character.skills["SKILL-044"]).toBeDefined();
+    expect(sheet.character.skills[SKILL.espadasLongas]).toBeDefined();
     expect(sheet.inventory.armor.equipped.torso).toBeDefined();
   });
 
@@ -194,8 +202,8 @@ describe("an exported ally file feeds the ally pipeline", () => {
     const sheet = buildSheet(toEnginePayload(payload));
 
     expect(sheet.character.elemental_resistances.Fire).toBeDefined();
-    // ADV-086 is innate here and also purchased; it must resolve either way.
-    expect(sheet.character.advantages["ADV-086"]).toBeDefined();
+    // Visão Noturna is innate here and also purchased; it must resolve either way.
+    expect(sheet.character.advantages[ADVANTAGE.visaoNoturna]).toBeDefined();
   });
 
   test("matches the shape the catalog index reads", () => {

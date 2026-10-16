@@ -1,3 +1,4 @@
+const { MATERIAL } = require("tests/helpers/dataRefs");
 const {
   buildArmorSlots,
   SLOTS,
@@ -10,7 +11,7 @@ describe("EQUIPMENT ARMOR", () => {
 
   const armorId = Object.keys(db)[0];
 
-  const materialId = "MAT-003"; // must exist in the CSV materials DB
+  const materialId = MATERIAL.aco;
 
   const slotMap = {
     Cabeça: "head",

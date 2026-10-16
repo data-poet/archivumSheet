@@ -1,3 +1,4 @@
+const { ENCHANTMENT, MATERIAL } = require("tests/helpers/dataRefs");
 const {
   buildMeleeSlots,
   VALID_STORED_AT,
@@ -9,7 +10,7 @@ describe("EQUIPMENT MELEE", () => {
 
   const weaponId = Object.keys(db)[0];
 
-  const materialId = "MAT-003";
+  const materialId = MATERIAL.aco;
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -199,7 +200,7 @@ describe("EQUIPMENT MELEE", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Armas Corpo a Corpo
+              enchantment_id: ENCHANTMENT.addWeight, // add_weight, allowed on Armas Corpo a Corpo
               value: 0.1,
             },
           ],
@@ -225,7 +226,7 @@ describe("EQUIPMENT MELEE", () => {
             weapon_id: weaponId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-000" }],
+            enchantments: [{ id: "e1", enchantment_id: ENCHANTMENT.fortifyST }],
           },
         ]);
       }).toThrow("Invalid enchantments");

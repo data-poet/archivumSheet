@@ -1,4 +1,5 @@
 // These values are load-bearing keys matched against CSV data (e.g. ARMOR_SLOTS vs db_equipment_armors.csv); pinning them locks in a regression that would otherwise fail silently.
+const { MATERIAL } = require("tests/helpers/dataRefs");
 import fs from "fs";
 import path from "path";
 import {
@@ -64,7 +65,7 @@ describe("RACIAL_TRAIT_TYPE", () => {
 
 describe("DEFAULT_MATERIAL_ID", () => {
   test("matches the CSV's default material row id", () => {
-    expect(DEFAULT_MATERIAL_ID).toBe("MAT-000");
+    expect(DEFAULT_MATERIAL_ID).toBe(MATERIAL.ferro);
   });
 
   test("is the only place the frontend spells the default material id", () => {

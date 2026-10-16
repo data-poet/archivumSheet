@@ -1,3 +1,4 @@
+const { ENCHANTMENT } = require("tests/helpers/dataRefs");
 const {
   buildMagicGearSlots,
   VALID_STORED_AT,
@@ -188,28 +189,28 @@ describe("MAGIC GEAR", () => {
           enchantments: [
             {
               id: "ench-1",
-              enchantment_id: "ENCHANTMENT-012",
+              enchantment_id: ENCHANTMENT.fortifyMana,
               value: 1,
             },
           ],
         },
       ]);
 
-      // ENCHANTMENT-012 (Fortificar Mana) at base value: base_price 1000
+      // Fortificar Mana at base value: base_price 1000
       expect(result.equipped[0].enchantments_total_price).toBe(1000);
       expect(result.equipped[0].total_value).toBe(1150); // 150 (wand) + 1000
       expect(result.carried_magic_gear_value).toBe(1150);
     });
 
     test("Should throw when applying an enchantment not allowed on magic gear", () => {
-      // ENCHANTMENT-000 (Fortificar ST) is only allowed on "Acessórios"
+      // Fortificar ST is only allowed on "Acessórios"
       expect(() =>
         buildMagicGearSlots([
           {
             magic_gear_id: wandId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1 }],
+            enchantments: [{ enchantment_id: ENCHANTMENT.fortifyST, value: 1 }],
           },
         ]),
       ).toThrow(/Invalid enchantments/);

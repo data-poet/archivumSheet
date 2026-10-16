@@ -2,6 +2,7 @@ const {
   buildCharacterPrimary,
 } = require("engine/character/buildCharacterPrimary");
 
+const { ADVANTAGE, DISADVANTAGE } = require("tests/helpers/dataRefs");
 const assertShape = require("tests/helpers/assertShape");
 
 describe("BUILD CHARACTER PRIMARY", () => {
@@ -121,36 +122,46 @@ describe("BUILD CHARACTER PRIMARY", () => {
     it("Should merge enchantmentAdvantageIds into the resolved advantages with is_enchantment true and 0 cost", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        enchantmentAdvantageIds: ["ADV-002"],
+        enchantmentAdvantageIds: [ADVANTAGE.muitoBonito],
       });
 
-      expect(result.advantages["ADV-002"]).toBeDefined();
-      expect(result.advantages["ADV-002"].is_enchantment).toBe(true);
-      expect(result.advantages["ADV-002"].points).toBe(0);
+      expect(result.advantages[ADVANTAGE.muitoBonito]).toBeDefined();
+      expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(
+        true,
+      );
+      expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
       expect(result.character_points.advantages).toBe(0);
     });
 
     it("Should merge enchantmentDisadvantageIds into the resolved disadvantages with is_enchantment true and 0 cost", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        enchantmentDisadvantageIds: ["DIS-000"],
+        enchantmentDisadvantageIds: [DISADVANTAGE.aparenciaDesagradavel],
       });
 
-      expect(result.disadvantages["DIS-000"]).toBeDefined();
-      expect(result.disadvantages["DIS-000"].is_enchantment).toBe(true);
-      expect(result.disadvantages["DIS-000"].points).toBe(0);
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel],
+      ).toBeDefined();
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_enchantment,
+      ).toBe(true);
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+      ).toBe(0);
     });
 
     it("Should treat an advantage that is BOTH player-selected and enchantment-granted as free — same precedence as the pre-existing is_race_innate behavior", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        advantages: ["ADV-002"],
-        enchantmentAdvantageIds: ["ADV-002"],
+        advantages: [ADVANTAGE.muitoBonito],
+        enchantmentAdvantageIds: [ADVANTAGE.muitoBonito],
       });
 
       // mirrors is_race_innate precedence, not a deliberate new rule
-      expect(result.advantages["ADV-002"].is_enchantment).toBe(true);
-      expect(result.advantages["ADV-002"].points).toBe(0);
+      expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(
+        true,
+      );
+      expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
     });
   });
 
@@ -178,36 +189,44 @@ describe("BUILD CHARACTER PRIMARY", () => {
     it("Should merge metaRaceAdvantageIds into the resolved advantages with is_meta_race true and 0 cost", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        metaRaceAdvantageIds: ["ADV-002"],
+        metaRaceAdvantageIds: [ADVANTAGE.muitoBonito],
       });
 
-      expect(result.advantages["ADV-002"]).toBeDefined();
-      expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
-      expect(result.advantages["ADV-002"].points).toBe(0);
+      expect(result.advantages[ADVANTAGE.muitoBonito]).toBeDefined();
+      expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(true);
+      expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
       expect(result.character_points.advantages).toBe(0);
     });
 
     it("Should merge metaRaceDisadvantageIds into the resolved disadvantages with is_meta_race true and 0 cost", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        metaRaceDisadvantageIds: ["DIS-000"],
+        metaRaceDisadvantageIds: [DISADVANTAGE.aparenciaDesagradavel],
       });
 
-      expect(result.disadvantages["DIS-000"]).toBeDefined();
-      expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
-      expect(result.disadvantages["DIS-000"].points).toBe(0);
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel],
+      ).toBeDefined();
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_meta_race,
+      ).toBe(true);
+      expect(
+        result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+      ).toBe(0);
     });
 
     it("Should let is_meta_race take priority over is_enchantment when an id is both", () => {
       const result = buildCharacterPrimary({
         ...mockInput,
-        metaRaceAdvantageIds: ["ADV-002"],
-        enchantmentAdvantageIds: ["ADV-002"],
+        metaRaceAdvantageIds: [ADVANTAGE.muitoBonito],
+        enchantmentAdvantageIds: [ADVANTAGE.muitoBonito],
       });
 
-      expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
-      expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-      expect(result.advantages["ADV-002"].points).toBe(0);
+      expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(true);
+      expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(
+        false,
+      );
+      expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
     });
   });
 });

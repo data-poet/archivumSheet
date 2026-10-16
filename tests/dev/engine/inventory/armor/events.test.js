@@ -19,6 +19,7 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
 
+import { DEFAULT_MATERIAL_ID } from "dev/public/js/shared/constants.js";
 import * as model from "dev/public/js/engine/inventory/armor/model.js";
 import * as render from "dev/public/js/engine/inventory/armor/render.js";
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
@@ -429,7 +430,7 @@ describe("handleArmorChange — equipped-armor-name", () => {
     expect(model.equipArmor).toHaveBeenCalledWith(
       "Cabeça",
       "ARMOR-DB-1",
-      "MAT-000",
+      DEFAULT_MATERIAL_ID,
     );
     expect(render.renderArmorSlots).toHaveBeenCalledTimes(1);
   });
@@ -502,7 +503,7 @@ describe("handleArmorChange — equipped-armor-tier", () => {
     expect(model.equipArmor).toHaveBeenCalledWith(
       "Cabeça",
       "ARMOR-DB-1",
-      "MAT-000",
+      DEFAULT_MATERIAL_ID,
     );
   });
 

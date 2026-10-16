@@ -1,12 +1,13 @@
+const { ADVANTAGE, DISADVANTAGE, SKILL } = require("tests/helpers/dataRefs");
 const { buildCharacter } = require("engine/character/buildCharacter");
 
 const assertShape = require("tests/helpers/assertShape");
 
 describe("BUILD CHARACTER", () => {
   const mockInput = {
-    advantages: ["ADV-001"],
+    advantages: [ADVANTAGE.eleganteBonito],
 
-    disadvantages: ["DIS-001"],
+    disadvantages: [DISADVANTAGE.feio],
 
     primaryAttributes: {
       ST: { bought: 2 },
@@ -25,9 +26,9 @@ describe("BUILD CHARACTER", () => {
     },
 
     skills: {
-      "SKILL-000": { base: 14, modifier: 0 },
+      [SKILL.adestramentoDeAnimais]: { base: 14, modifier: 0 },
 
-      "SKILL-001": { base: 12, modifier: 1 },
+      [SKILL.falcoaria]: { base: 12, modifier: 1 },
     },
 
     carry_weight: {
@@ -132,12 +133,14 @@ describe("BUILD CHARACTER", () => {
     it("Should carry a granted advantage through with 0 cost and is_enchantment true", () => {
       const { character } = buildCharacter({
         ...mockInput,
-        enchantmentAdvantageIds: ["ADV-002"],
+        enchantmentAdvantageIds: [ADVANTAGE.muitoBonito],
       });
 
-      expect(character.advantages["ADV-002"]).toBeDefined();
-      expect(character.advantages["ADV-002"].is_enchantment).toBe(true);
-      expect(character.advantages["ADV-002"].points).toBe(0);
+      expect(character.advantages[ADVANTAGE.muitoBonito]).toBeDefined();
+      expect(character.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(
+        true,
+      );
+      expect(character.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
       expect(character.character_points.advantages).toBe(
         buildCharacter(mockInput).character.character_points.advantages,
       );
@@ -151,26 +154,34 @@ describe("BUILD CHARACTER", () => {
         disadvantages: [],
         skills: {},
         enchantmentAttributeModifiers: { IQ: 2 },
-        enchantmentSkillGrants: { "SKILL-000": [0] },
+        enchantmentSkillGrants: { [SKILL.adestramentoDeAnimais]: [0] },
       });
 
       const finalIQ = character.primary_attributes.IQ.value;
 
-      expect(character.skills["SKILL-000"]).toBeDefined();
-      expect(character.skills["SKILL-000"].base_value).toBe(finalIQ);
-      expect(character.skills["SKILL-000"].is_enchantment).toBe(true);
-      expect(character.skills["SKILL-000"].points).toBe(0);
+      expect(character.skills[SKILL.adestramentoDeAnimais]).toBeDefined();
+      expect(character.skills[SKILL.adestramentoDeAnimais].base_value).toBe(
+        finalIQ,
+      );
+      expect(character.skills[SKILL.adestramentoDeAnimais].is_enchantment).toBe(
+        true,
+      );
+      expect(character.skills[SKILL.adestramentoDeAnimais].points).toBe(0);
     });
 
     it("Should carry a fortify_skill enchantment_modifier through to the final skill value", () => {
       const { character } = buildCharacter({
         ...mockInput,
-        skills: { "SKILL-000": { base_value: 14, modifier: 0 } },
-        enchantmentSkillModifiers: { "SKILL-000": 3 },
+        skills: {
+          [SKILL.adestramentoDeAnimais]: { base_value: 14, modifier: 0 },
+        },
+        enchantmentSkillModifiers: { [SKILL.adestramentoDeAnimais]: 3 },
       });
 
-      expect(character.skills["SKILL-000"].enchantment_modifier).toBe(3);
-      expect(character.skills["SKILL-000"].value).toBe(17);
+      expect(
+        character.skills[SKILL.adestramentoDeAnimais].enchantment_modifier,
+      ).toBe(3);
+      expect(character.skills[SKILL.adestramentoDeAnimais].value).toBe(17);
     });
   });
 });

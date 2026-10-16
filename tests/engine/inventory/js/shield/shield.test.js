@@ -1,3 +1,4 @@
+const { ENCHANTMENT, MATERIAL } = require("tests/helpers/dataRefs");
 const {
   buildShieldSlots,
   VALID_STORED_AT,
@@ -9,7 +10,7 @@ describe("EQUIPMENT SHIELD", () => {
 
   const shieldId = Object.keys(db)[0];
 
-  const materialId = "MAT-003"; // assuming exists in your CSV DB
+  const materialId = MATERIAL.aco; // assuming exists in your CSV DB
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -185,7 +186,7 @@ describe("EQUIPMENT SHIELD", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Escudos
+              enchantment_id: ENCHANTMENT.addWeight, // add_weight, allowed on Escudos
               value: 0.1,
             },
           ],
@@ -209,7 +210,7 @@ describe("EQUIPMENT SHIELD", () => {
             shield_id: shieldId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-000" }],
+            enchantments: [{ id: "e1", enchantment_id: ENCHANTMENT.fortifyST }],
           },
         ]);
       }).toThrow("Invalid enchantments");

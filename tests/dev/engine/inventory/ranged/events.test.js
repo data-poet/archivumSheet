@@ -20,6 +20,7 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
 
+import { DEFAULT_MATERIAL_ID } from "dev/public/js/shared/constants.js";
 import * as model from "dev/public/js/engine/inventory/ranged/model.js";
 import * as rangedRender from "dev/public/js/engine/inventory/ranged/render.js";
 import * as meleeRender from "dev/public/js/engine/inventory/melee/render.js";
@@ -98,7 +99,7 @@ describe("handleRangedClick", () => {
     );
   });
 
-  test("equip-stored-ranged falls back to MAT-000 when the stored instance has no material_id", () => {
+  test("equip-stored-ranged falls back to the default material when the stored instance has no material_id", () => {
     model.findRangedByInstanceId.mockReturnValue({ weapon_id: "RANGED-DB-1" });
     const target = elWithClass("button", "equip-stored-ranged", {
       instanceId: "RANGED-1",
@@ -107,7 +108,7 @@ describe("handleRangedClick", () => {
     expect(model.equipRanged).toHaveBeenCalledWith(
       "RANGED-1",
       "RANGED-DB-1",
-      "MAT-000",
+      DEFAULT_MATERIAL_ID,
     );
   });
 

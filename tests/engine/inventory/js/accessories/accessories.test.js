@@ -1,3 +1,4 @@
+const { ADVANTAGE, ENCHANTMENT } = require("tests/helpers/dataRefs");
 const {
   buildAccessorySlots,
   VALID_STORED_AT,
@@ -219,14 +220,14 @@ describe("EQUIPMENT ACCESSORIES", () => {
           enchantments: [
             {
               id: "ench-1",
-              enchantment_id: "ENCHANTMENT-000",
+              enchantment_id: ENCHANTMENT.fortifyST,
               value: 1,
             },
           ],
         },
       ]);
 
-      // ENCHANTMENT-000 (Fortificar ST) at base value: base_price 5000
+      // Fortificar ST at base value: base_price 5000
       expect(result.equipped[0].enchantments_total_price).toBe(5000);
       expect(result.equipped[0].total_value).toBe(5000);
       expect(result.carried_accessory_value).toBe(5000);
@@ -242,14 +243,14 @@ describe("EQUIPMENT ACCESSORIES", () => {
           enchantments: [
             {
               id: "ench-1",
-              enchantment_id: "ENCHANTMENT-030",
-              target: "ADV-000",
+              enchantment_id: ENCHANTMENT.addAdvantage,
+              target: ADVANTAGE.atraente,
             },
           ],
         },
       ]);
 
-      // ENCHANTMENT-030 (Adicionar Vantagem) price_per_point 2000 × ADV-000 cost 5
+      // Adicionar Vantagem price_per_point 2000 × the advantage's cost 5
       expect(result.equipped[0].enchantments_total_price).toBe(10000);
     });
 
@@ -278,7 +279,9 @@ describe("EQUIPMENT ACCESSORIES", () => {
             is_equipped: true,
             storedAt: null,
             price: 0,
-            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: 1.5 }],
+            enchantments: [
+              { enchantment_id: ENCHANTMENT.fortifyST, value: 1.5 },
+            ],
           },
         ]),
       ).toThrow(/Invalid enchantments/);
@@ -292,7 +295,9 @@ describe("EQUIPMENT ACCESSORIES", () => {
             is_equipped: true,
             storedAt: null,
             price: 0,
-            enchantments: [{ enchantment_id: "ENCHANTMENT-000", value: -1 }],
+            enchantments: [
+              { enchantment_id: ENCHANTMENT.fortifyST, value: -1 },
+            ],
           },
         ]),
       ).toThrow(/Invalid enchantments/);
@@ -306,7 +311,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
             is_equipped: true,
             storedAt: null,
             price: 0,
-            enchantments: [{ enchantment_id: "ENCHANTMENT-001", value: 1 }],
+            enchantments: [{ enchantment_id: ENCHANTMENT.weakenST, value: 1 }],
           },
         ]),
       ).toThrow(/Invalid enchantments/);
@@ -322,7 +327,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
             price: 0,
             enchantments: [
               {
-                enchantment_id: "ENCHANTMENT-030",
+                enchantment_id: ENCHANTMENT.addAdvantage,
                 target: "ADV-DOES-NOT-EXIST",
               },
             ],

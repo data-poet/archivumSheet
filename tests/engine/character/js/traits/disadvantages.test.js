@@ -2,12 +2,17 @@ const {
   buildDisadvantages,
 } = require("engine/character/js/traits/disadvantages");
 
+const { DISADVANTAGE } = require("tests/helpers/dataRefs");
 const assertShape = require("tests/helpers/assertShape");
 const assertNumericMap = require("tests/helpers/assertNumericMap");
 
 describe("DISADVANTAGES", () => {
   test("Should correctly calculate the selected disadvantages.", () => {
-    const selected = ["DIS-002", "DIS-023", "DIS-058"];
+    const selected = [
+      DISADVANTAGE.hediondo,
+      DISADVANTAGE.epilepsia,
+      DISADVANTAGE.compulsaoPesada,
+    ];
 
     const result = buildDisadvantages(selected);
 
@@ -29,7 +34,11 @@ describe("DISADVANTAGES", () => {
   });
 
   test("Should add up the costs correctly.", () => {
-    const selected = ["DIS-002", "DIS-023", "DIS-058"];
+    const selected = [
+      DISADVANTAGE.hediondo,
+      DISADVANTAGE.epilepsia,
+      DISADVANTAGE.compulsaoPesada,
+    ];
 
     const result = buildDisadvantages(selected);
 
@@ -42,40 +51,73 @@ describe("DISADVANTAGES", () => {
   });
 
   test("Should mark enchantment-granted disadvantages with is_enchantment and cost 0", () => {
-    const result = buildDisadvantages(["DIS-000"], [], ["DIS-000"]);
+    const result = buildDisadvantages(
+      [DISADVANTAGE.aparenciaDesagradavel],
+      [],
+      [DISADVANTAGE.aparenciaDesagradavel],
+    );
 
-    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(true);
-    expect(result.disadvantages["DIS-000"].is_race_innate).toBe(false);
-    expect(result.disadvantages["DIS-000"].points).toBe(0);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_enchantment,
+    ).toBe(true);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_race_innate,
+    ).toBe(false);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+    ).toBe(0);
     expect(result.character_points.disadvantages).toBe(0);
   });
 
   test("Should default is_enchantment to false for a normally-purchased disadvantage", () => {
-    const result = buildDisadvantages(["DIS-000"]);
+    const result = buildDisadvantages([DISADVANTAGE.aparenciaDesagradavel]);
 
-    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
-    expect(result.disadvantages["DIS-000"].points).not.toBe(0);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_enchantment,
+    ).toBe(false);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+    ).not.toBe(0);
   });
 
   test("Should mark meta-race-granted disadvantages with is_meta_race and cost 0", () => {
-    const result = buildDisadvantages(["DIS-000"], [], [], ["DIS-000"]);
+    const result = buildDisadvantages(
+      [DISADVANTAGE.aparenciaDesagradavel],
+      [],
+      [],
+      [DISADVANTAGE.aparenciaDesagradavel],
+    );
 
-    expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
-    expect(result.disadvantages["DIS-000"].is_race_innate).toBe(false);
-    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
-    expect(result.disadvantages["DIS-000"].points).toBe(0);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_meta_race,
+    ).toBe(true);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_race_innate,
+    ).toBe(false);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_enchantment,
+    ).toBe(false);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+    ).toBe(0);
   });
 
   test("Should let is_meta_race take priority over is_enchantment", () => {
     const result = buildDisadvantages(
-      ["DIS-000"],
+      [DISADVANTAGE.aparenciaDesagradavel],
       [],
-      ["DIS-000"],
-      ["DIS-000"],
+      [DISADVANTAGE.aparenciaDesagradavel],
+      [DISADVANTAGE.aparenciaDesagradavel],
     );
 
-    expect(result.disadvantages["DIS-000"].is_meta_race).toBe(true);
-    expect(result.disadvantages["DIS-000"].is_enchantment).toBe(false);
-    expect(result.disadvantages["DIS-000"].points).toBe(0);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_meta_race,
+    ).toBe(true);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].is_enchantment,
+    ).toBe(false);
+    expect(
+      result.disadvantages[DISADVANTAGE.aparenciaDesagradavel].points,
+    ).toBe(0);
   });
 });

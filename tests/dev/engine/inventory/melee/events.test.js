@@ -20,6 +20,7 @@ jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
 
+import { DEFAULT_MATERIAL_ID } from "dev/public/js/shared/constants.js";
 import * as model from "dev/public/js/engine/inventory/melee/model.js";
 import * as meleeRender from "dev/public/js/engine/inventory/melee/render.js";
 import * as rangedRender from "dev/public/js/engine/inventory/ranged/render.js";
@@ -96,7 +97,7 @@ describe("handleMeleeClick", () => {
     );
   });
 
-  test("equip-stored-melee falls back to MAT-000 when the stored instance has no material_id", () => {
+  test("equip-stored-melee falls back to the default material when the stored instance has no material_id", () => {
     model.findMeleeByInstanceId.mockReturnValue({ weapon_id: "MELEE-DB-1" });
     const target = elWithClass("button", "equip-stored-melee", {
       instanceId: "MELEE-1",
@@ -105,7 +106,7 @@ describe("handleMeleeClick", () => {
     expect(model.equipMelee).toHaveBeenCalledWith(
       "MELEE-1",
       "MELEE-DB-1",
-      "MAT-000",
+      DEFAULT_MATERIAL_ID,
     );
   });
 

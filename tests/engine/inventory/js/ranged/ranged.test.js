@@ -1,3 +1,4 @@
+const { ENCHANTMENT, MATERIAL } = require("tests/helpers/dataRefs");
 const {
   buildRangedSlots,
   VALID_STORED_AT,
@@ -9,7 +10,7 @@ describe("EQUIPMENT RANGED", () => {
 
   const weaponId = Object.keys(db)[0];
 
-  const materialId = "MAT-003";
+  const materialId = MATERIAL.aco;
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -223,7 +224,7 @@ describe("EQUIPMENT RANGED", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Armas de Longo Alcance
+              enchantment_id: ENCHANTMENT.addWeight, // add_weight, allowed on Armas de Longo Alcance
               value: 0.1,
             },
           ],
@@ -249,7 +250,9 @@ describe("EQUIPMENT RANGED", () => {
             weapon_id: weaponId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-058" }],
+            enchantments: [
+              { id: "e1", enchantment_id: ENCHANTMENT.fortifyBAL },
+            ],
           },
         ]);
       }).toThrow("Invalid enchantments");

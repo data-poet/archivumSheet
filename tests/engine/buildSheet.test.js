@@ -1,3 +1,13 @@
+const {
+  ACCESSORY,
+  ADVANTAGE,
+  ARMOR,
+  DISADVANTAGE,
+  ENCHANTMENT,
+  META_RACE,
+  RANGED,
+  SHIELD,
+} = require("tests/helpers/dataRefs");
 const { buildSheet } = require("engine/buildSheet");
 const assertShape = require("tests/helpers/assertShape");
 const { calculateBasicLift } = require("engine/inventory/js/carryWeight");
@@ -224,14 +234,14 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-000",
+                  enchantment_id: ENCHANTMENT.fortifyST,
                   value: 2,
                 },
               ],
@@ -263,14 +273,14 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: false,
               storedAt: "backpack",
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-000",
+                  enchantment_id: ENCHANTMENT.fortifyST,
                   value: 2,
                 },
               ],
@@ -298,15 +308,15 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-030",
-                  target: "ADV-000",
+                  enchantment_id: ENCHANTMENT.addAdvantage,
+                  target: ADVANTAGE.atraente,
                 },
               ],
             },
@@ -314,9 +324,11 @@ describe("BUILD SHEET", () => {
         },
       });
 
-      expect(result.character.advantages["ADV-000"]).toBeDefined();
-      expect(result.character.advantages["ADV-000"].is_enchantment).toBe(true);
-      expect(result.character.advantages["ADV-000"].points).toBe(0);
+      expect(result.character.advantages[ADVANTAGE.atraente]).toBeDefined();
+      expect(
+        result.character.advantages[ADVANTAGE.atraente].is_enchantment,
+      ).toBe(true);
+      expect(result.character.advantages[ADVANTAGE.atraente].points).toBe(0);
     });
 
     it("Should boost a secondary attribute from an equipped fortify_attribute magic gear item", () => {
@@ -333,7 +345,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-012",
+                  enchantment_id: ENCHANTMENT.fortifyMana,
                   value: 2,
                 },
               ],
@@ -367,7 +379,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-012",
+                  enchantment_id: ENCHANTMENT.fortifyMana,
                   value: 2,
                 },
               ],
@@ -395,14 +407,14 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-000",
+                  enchantment_id: ENCHANTMENT.fortifyST,
                   value: 1,
                 },
               ],
@@ -417,7 +429,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-2",
-                  enchantment_id: "ENCHANTMENT-012",
+                  enchantment_id: ENCHANTMENT.fortifyMana,
                   value: 1,
                 },
               ],
@@ -444,13 +456,13 @@ describe("BUILD SHEET", () => {
           armor: [
             {
               id: "arm-1",
-              armor_id: "ARMOR-000",
+              armor_id: ARMOR.capuz,
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-042",
+                  enchantment_id: ENCHANTMENT.fortifyFireResistance,
                   value: 0.05,
                 },
               ],
@@ -481,13 +493,13 @@ describe("BUILD SHEET", () => {
           armor: [
             {
               id: "arm-1",
-              armor_id: "ARMOR-000",
+              armor_id: ARMOR.capuz,
               is_equipped: false,
               storedAt: "backpack",
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-042",
+                  enchantment_id: ENCHANTMENT.fortifyFireResistance,
                   value: 0.05,
                 },
               ],
@@ -514,7 +526,7 @@ describe("BUILD SHEET", () => {
           ranged: [
             {
               id: "rng-1",
-              weapon_id: "RANGED-001",
+              weapon_id: RANGED.facaDeArremessoBoa,
               is_equipped: true,
               storedAt: null,
             },
@@ -522,14 +534,14 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-000",
+                  enchantment_id: ENCHANTMENT.fortifyST,
                   value: 2,
                 },
               ],
@@ -572,7 +584,7 @@ describe("BUILD SHEET", () => {
           ranged: [
             {
               id: "rng-1",
-              weapon_id: "RANGED-001",
+              weapon_id: RANGED.facaDeArremessoBoa,
               is_equipped: true,
               storedAt: null,
             },
@@ -609,7 +621,7 @@ describe("BUILD SHEET", () => {
           shield: [
             {
               id: "sh-1",
-              shield_id: "SHIELD-010",
+              shield_id: SHIELD.escudoTorre,
               is_equipped: true,
               storedAt: null,
             },
@@ -636,7 +648,7 @@ describe("BUILD SHEET", () => {
           ranged: [
             {
               id: "rng-1",
-              weapon_id: "RANGED-001",
+              weapon_id: RANGED.facaDeArremessoBoa,
               is_equipped: true,
               storedAt: null,
             },
@@ -674,14 +686,14 @@ describe("BUILD SHEET", () => {
         withWeight([
           {
             id: "acc-1",
-            accessory_id: "ACCESSORY-000",
+            accessory_id: ACCESSORY.anel,
             is_equipped: true,
             storedAt: null,
             price: 0,
             enchantments: [
               {
                 id: "ench-1",
-                enchantment_id: "ENCHANTMENT-000",
+                enchantment_id: ENCHANTMENT.fortifyST,
                 value: 2,
               },
             ],
@@ -716,14 +728,14 @@ describe("BUILD SHEET", () => {
           accessories: [
             {
               id: "acc-1",
-              accessory_id: "ACCESSORY-000",
+              accessory_id: ACCESSORY.anel,
               is_equipped: true,
               storedAt: null,
               price: 0,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-004",
+                  enchantment_id: ENCHANTMENT.fortifyIQ,
                   value: 2,
                 },
               ],
@@ -751,13 +763,13 @@ describe("BUILD SHEET", () => {
           armor: [
             {
               id: "arm-1",
-              armor_id: "ARMOR-000",
+              armor_id: ARMOR.capuz,
               is_equipped: true,
               storedAt: null,
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-040",
+                  enchantment_id: ENCHANTMENT.fortifyDamageResistance,
                   value: 1,
                 },
               ],
@@ -777,27 +789,31 @@ describe("BUILD SHEET", () => {
   });
 
   describe("Meta-race integration (character.meta_race_ids)", () => {
-    it("Should resolve META-000 (Zumbi) end-to-end: immune to Necrotic, double weak to Holy, innate traits free", () => {
+    it("Should resolve Zumbi end-to-end: immune to Necrotic, double weak to Holy, innate traits free", () => {
       const result = buildSheet({
         ...mockInput,
         character: {
           ...mockInput.character,
-          meta_race_ids: ["META-000"],
+          meta_race_ids: [META_RACE.zumbi],
         },
       });
 
       expect(result.character.elemental_resistances.Necrotic.final).toBe(0);
       expect(result.character.elemental_resistances.Holy.final).toBe(2);
-      expect(result.character.advantages["ADV-049"].is_meta_race).toBe(true);
-      expect(result.character.advantages["ADV-049"].points).toBe(0);
-      expect(result.character.disadvantages["DIS-143"].is_meta_race).toBe(true);
+      expect(
+        result.character.advantages[ADVANTAGE.hipoalgia].is_meta_race,
+      ).toBe(true);
+      expect(result.character.advantages[ADVANTAGE.hipoalgia].points).toBe(0);
+      expect(
+        result.character.disadvantages[DISADVANTAGE.monstruoso].is_meta_race,
+      ).toBe(true);
     });
 
     it("Should fold the meta-race's ST modifier into ST before it reaches inventory (carry weight)", () => {
       const baseline = buildSheet(mockInput);
       const zombified = buildSheet({
         ...mockInput,
-        character: { ...mockInput.character, meta_race_ids: ["META-000"] },
+        character: { ...mockInput.character, meta_race_ids: [META_RACE.zumbi] },
       });
 
       expect(zombified.character.primary_attributes.ST.value).toBe(
@@ -819,13 +835,13 @@ describe("BUILD SHEET", () => {
     it("Should multiply two stacked meta-races' elemental multipliers together", () => {
       const single = buildSheet({
         ...mockInput,
-        character: { ...mockInput.character, meta_race_ids: ["META-000"] },
+        character: { ...mockInput.character, meta_race_ids: [META_RACE.zumbi] },
       });
       const stacked = buildSheet({
         ...mockInput,
         character: {
           ...mockInput.character,
-          meta_race_ids: ["META-000", "META-001"],
+          meta_race_ids: [META_RACE.zumbi, META_RACE.esqueleto],
         },
       });
 

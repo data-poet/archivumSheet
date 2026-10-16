@@ -1,3 +1,4 @@
+const { ADVANTAGE } = require("tests/helpers/dataRefs");
 const { buildAdvantages } = require("engine/character/js/traits/advantages");
 const { REFLEXOS_EM_COMBATE_ID } = require("helpers/ids.js");
 
@@ -6,7 +7,11 @@ const assertNumericMap = require("tests/helpers/assertNumericMap");
 
 describe("ADVANTAGES", () => {
   test("Should correctly calculate the selected advantages.", () => {
-    const selected = ["ADV-002", "ADV-053", REFLEXOS_EM_COMBATE_ID];
+    const selected = [
+      ADVANTAGE.muitoBonito,
+      ADVANTAGE.memoriaEideticaTotal,
+      REFLEXOS_EM_COMBATE_ID,
+    ];
 
     const result = buildAdvantages(selected);
 
@@ -28,7 +33,11 @@ describe("ADVANTAGES", () => {
   });
 
   test("Should add up the costs correctly.", () => {
-    const selected = ["ADV-002", "ADV-053", REFLEXOS_EM_COMBATE_ID];
+    const selected = [
+      ADVANTAGE.muitoBonito,
+      ADVANTAGE.memoriaEideticaTotal,
+      REFLEXOS_EM_COMBATE_ID,
+    ];
 
     const result = buildAdvantages(selected);
 
@@ -41,68 +50,94 @@ describe("ADVANTAGES", () => {
   });
 
   test("Should mark innate advantages with is_race_innate and cost 0", () => {
-    const result = buildAdvantages(["ADV-002"], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
     expect(result.character_points.advantages).toBe(0);
   });
 
   test("Should mark enchantment-granted advantages with is_enchantment and cost 0", () => {
-    const result = buildAdvantages(["ADV-002"], [], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(true);
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
     expect(result.character_points.advantages).toBe(0);
   });
 
   test("Should default is_race_innate and is_enchantment to false for a normally-purchased advantage", () => {
-    const result = buildAdvantages(["ADV-002"]);
+    const result = buildAdvantages([ADVANTAGE.muitoBonito]);
 
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-    expect(result.advantages["ADV-002"].points).not.toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).not.toBe(0);
   });
 
   test("Should let is_race_innate take priority if an id is somehow both innate and enchantment-granted", () => {
-    const result = buildAdvantages(["ADV-002"], ["ADV-002"], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [ADVANTAGE.muitoBonito],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
   });
 
   test("Should mark meta-race-granted advantages with is_meta_race and cost 0", () => {
-    const result = buildAdvantages(["ADV-002"], [], [], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [],
+      [],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(false);
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
     expect(result.character_points.advantages).toBe(0);
   });
 
   test("Should default is_meta_race to false for a normally-purchased advantage", () => {
-    const result = buildAdvantages(["ADV-002"]);
+    const result = buildAdvantages([ADVANTAGE.muitoBonito]);
 
-    expect(result.advantages["ADV-002"].is_meta_race).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(false);
   });
 
   test("Should let is_race_innate take priority over is_meta_race", () => {
-    const result = buildAdvantages(["ADV-002"], ["ADV-002"], [], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [ADVANTAGE.muitoBonito],
+      [],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_race_innate).toBe(true);
-    expect(result.advantages["ADV-002"].is_meta_race).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_race_innate).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
   });
 
   test("Should let is_meta_race take priority over is_enchantment", () => {
-    const result = buildAdvantages(["ADV-002"], [], ["ADV-002"], ["ADV-002"]);
+    const result = buildAdvantages(
+      [ADVANTAGE.muitoBonito],
+      [],
+      [ADVANTAGE.muitoBonito],
+      [ADVANTAGE.muitoBonito],
+    );
 
-    expect(result.advantages["ADV-002"].is_meta_race).toBe(true);
-    expect(result.advantages["ADV-002"].is_enchantment).toBe(false);
-    expect(result.advantages["ADV-002"].points).toBe(0);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_meta_race).toBe(true);
+    expect(result.advantages[ADVANTAGE.muitoBonito].is_enchantment).toBe(false);
+    expect(result.advantages[ADVANTAGE.muitoBonito].points).toBe(0);
   });
 });

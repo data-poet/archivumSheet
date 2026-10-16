@@ -7,6 +7,7 @@ const {
   getMeleeCounterpart,
   resolveDualUseEnchantmentCategory,
 } = require("engine/inventory/js/shared/dualUseWeapons");
+const { MELEE, RANGED } = require("tests/helpers/dataRefs");
 const { DUAL_USE_WEAPON_PAIRS } = require("helpers/ids.js");
 
 const [LANCA_MELEE_ID, LANCA_RANGED_ID] = DUAL_USE_WEAPON_PAIRS[0];
@@ -37,7 +38,7 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns false for a regular melee weapon", () => {
-      expect(isMeleeDualUse("MELEE-000")).toBe(false);
+      expect(isMeleeDualUse(MELEE.foiceCurta)).toBe(false);
     });
 
     test("returns false for a ranged weapon_id", () => {
@@ -54,7 +55,7 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns false for a regular ranged weapon", () => {
-      expect(isRangedDualUse("RANGED-015")).toBe(false);
+      expect(isRangedDualUse(RANGED.arcoCurto)).toBe(false);
     });
 
     test("returns false for a melee weapon_id", () => {
@@ -70,7 +71,7 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns null for a non-dual-use melee weapon", () => {
-      expect(getRangedCounterpart("MELEE-000")).toBeNull();
+      expect(getRangedCounterpart(MELEE.foiceCurta)).toBeNull();
     });
   });
 
@@ -80,7 +81,7 @@ describe("DUAL-USE WEAPONS", () => {
     });
 
     test("returns null for a non-dual-use ranged weapon", () => {
-      expect(getMeleeCounterpart("RANGED-015")).toBeNull();
+      expect(getMeleeCounterpart(RANGED.arcoCurto)).toBeNull();
     });
   });
 
@@ -88,7 +89,7 @@ describe("DUAL-USE WEAPONS", () => {
     test("returns the own category alone for a non-dual-use weapon", () => {
       expect(
         resolveDualUseEnchantmentCategory(
-          "MELEE-000",
+          MELEE.foiceCurta,
           "Armas Corpo a Corpo",
           "Armas de Longo Alcance",
           isMeleeDualUse,

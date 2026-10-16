@@ -2,10 +2,19 @@
 // every bucket empty. This fixture is a real exported player sheet with a dual-use weapon
 // pair, an ammo container with contents, and enchanted accessories/magic gear all present at
 // once — combinations nothing else in the suite exercises together through the real engine.
+const {
+  AMMO,
+  ENCHANTMENT,
+  MELEE,
+  RANGED,
+  remapLegacyIds,
+} = require("tests/helpers/dataRefs");
 import { toEnginePayload } from "dev/public/js/shared/enginePayload.js";
 
-const fixture = require("tests/dev/helpers/fixtures/sheet.full.json");
+const rawFixture = require("tests/dev/helpers/fixtures/sheet.full.json");
 const { buildSheet } = require("engine/buildSheet.js");
+
+const fixture = remapLegacyIds(rawFixture);
 
 const sheet = buildSheet(toEnginePayload(fixture));
 
@@ -35,15 +44,15 @@ test("resolves the dual-use melee/ranged pair as two distinct, linked instances"
 
   expect(melee).toBeDefined();
   expect(ranged).toBeDefined();
-  expect(melee.weapon_id).toBe("MELEE-280");
-  expect(ranged.weapon_id).toBe("RANGED-005");
+  expect(melee.weapon_id).toBe(MELEE.machadinha);
+  expect(ranged.weapon_id).toBe(RANGED.machadinha);
 });
 
 test("resolves the ammo container's contents and remaining capacity", () => {
   const container = sheet.inventory.ammo.containers.equipped[0];
 
   expect(container.contents).toEqual([
-    { ammo_id: "AMMO-022", quantity: 16, weight: expect.any(Number) },
+    { ammo_id: AMMO.bolaDeFerro, quantity: 16, weight: expect.any(Number) },
   ]);
   expect(container.used_capacity).toBe(16);
   expect(container.remaining_capacity).toBe(container.container_capacity - 16);
@@ -54,9 +63,11 @@ test("applies the accessory's and magic gear's enchantments", () => {
   const magicGear = sheet.inventory.magicGear.equipped[0];
 
   expect(accessory.enchantments).toHaveLength(1);
-  expect(accessory.enchantments[0].enchantment_id).toBe("ENCHANTMENT-006");
+  expect(accessory.enchantments[0].enchantment_id).toBe(ENCHANTMENT.fortifyHT);
   expect(magicGear.enchantments).toHaveLength(1);
-  expect(magicGear.enchantments[0].enchantment_id).toBe("ENCHANTMENT-012");
+  expect(magicGear.enchantments[0].enchantment_id).toBe(
+    ENCHANTMENT.fortifyMana,
+  );
 });
 
 test("resolves every elemental resistance", () => {
