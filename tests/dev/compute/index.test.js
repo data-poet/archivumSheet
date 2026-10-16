@@ -11,7 +11,6 @@ jest.mock("dev/public/js/store/persistence.js", () => ({
 jest.mock("dev/public/js/ui.js", () => ({
   renderOutput: jest.fn(),
   renderLists: jest.fn(),
-  updateInventoryUI: jest.fn(),
   renderSecondaryAttributes: jest.fn(),
   renderDamage: jest.fn(),
   renderElementalResistances: jest.fn(),
@@ -27,7 +26,6 @@ import { showToast } from "dev/public/js/store/persistence.js";
 import {
   renderOutput,
   renderLists,
-  updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
   renderElementalResistances,
@@ -381,7 +379,6 @@ describe("render orchestration", () => {
     await runEngine();
 
     expect(renderOutput).toHaveBeenCalledWith(json);
-    expect(updateInventoryUI).toHaveBeenCalledWith(json);
     expect(renderSecondaryAttributes).toHaveBeenCalledWith(json);
     expect(renderDamage).toHaveBeenCalledWith(json);
     expect(renderElementalResistances).toHaveBeenCalledWith(json);
@@ -465,7 +462,6 @@ describe("error handling", () => {
     await runEngine();
 
     expect(renderOutput).toHaveBeenCalledWith({ error: "network exploded" });
-    expect(updateInventoryUI).not.toHaveBeenCalled();
     expect(renderLists).not.toHaveBeenCalled();
     expect(saveActiveCharacter).not.toHaveBeenCalled();
     expect(updateSelectorButton).not.toHaveBeenCalled();

@@ -93,17 +93,6 @@ export function renderResumeWeight(sheet) {
     const e = el(id);
     if (e) e.textContent = val;
   };
-  set("armor_weight", armorWeight);
-  set("shield_weight", shieldWeight);
-  set("melee_weight", meleeWeight);
-  set("ranged_weight", rangedWeight);
-  set("firearms_weight", firearmsWeight);
-  set("ammo_weight", ammoWeight);
-  set("alchemy_weight", alchemyWeight);
-  set("survival_gear_weight", survivalGearWeight);
-  set("magic_gear_weight", magicGearWeight);
-  set("custom_inventory_weight", customWeight);
-  set("total_weight", totalWeight);
   set("encumbrance", encumbranceLabel);
 
   const limitsEl = el("carry_limits");

@@ -6,7 +6,6 @@ import { getPrimaryAttributes } from "./attributes.js";
 import {
   renderOutput,
   renderLists,
-  updateInventoryUI,
   renderSecondaryAttributes,
   renderDamage,
   renderElementalResistances,
@@ -115,7 +114,6 @@ export async function runEngine() {
     });
 
     renderOutput(json);
-    updateInventoryUI(json);
     renderSecondaryAttributes(json);
     renderDamage(json);
     renderElementalResistances(json);

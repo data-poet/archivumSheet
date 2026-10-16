@@ -31,17 +31,6 @@ const REQUIRED_IDS = [
   "resume_coins_row",
   "encumbrance",
   "carry_limits",
-  "armor_weight",
-  "shield_weight",
-  "melee_weight",
-  "ranged_weight",
-  "firearms_weight",
-  "ammo_weight",
-  "alchemy_weight",
-  "survival_gear_weight",
-  "magic_gear_weight",
-  "custom_inventory_weight",
-  "total_weight",
 ];
 
 beforeEach(() => {

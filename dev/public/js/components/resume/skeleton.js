@@ -104,19 +104,6 @@ export const RESUME_PANEL_HTML = `
           <span id="encumbrance">—</span>
         </p>
         <div id="carry_limits"></div>
-
-        <!-- Legacy hidden spans kept for updateInventoryUI compatibility -->
-        <span id="armor_weight" style="display: none">0</span>
-        <span id="shield_weight" style="display: none">0</span>
-        <span id="melee_weight" style="display: none">0</span>
-        <span id="ranged_weight" style="display: none">0</span>
-        <span id="firearms_weight" style="display: none">0</span>
-        <span id="ammo_weight" style="display: none">0</span>
-        <span id="alchemy_weight" style="display: none">0</span>
-        <span id="survival_gear_weight" style="display: none">0</span>
-        <span id="magic_gear_weight" style="display: none">0</span>
-        <span id="custom_inventory_weight" style="display: none">0</span>
-        <span id="total_weight" style="display: none">0</span>
       </div>
 
       <div class="resume-col">
@@ -151,9 +138,6 @@ export const RESUME_PANEL_HTML = `
   </div>
 `;
 
-// The PC sheet also sets these via initAppShell() in index.html — duplicated here so a
-// dynamically mounted ally resume panel (which never runs initAppShell()) gets them too.
-// Harmless to set twice.
 function applyResumeStaticLabels() {
   const setText = (id, text) => {
     const elem = document.getElementById(id);

@@ -54,8 +54,7 @@ describe("renderResumeWeight", () => {
 
     // 5 base + 10+3+2+1+4+0.5+0.5+1+1+1+1 = 30
     expect(id("resume_total_weight_cell").textContent).toContain("30");
-    expect(id("total_weight").textContent).toBe("30");
-    expect(id("armor_weight").textContent).toBe("10");
+    expect(id("resume_weight_tbody").textContent).toContain("10");
   });
 
   test("rounds up (ceiling, not nearest) to 3 decimal places — a documented quirk, not a rounding bug", () => {
@@ -67,14 +66,14 @@ describe("renderResumeWeight", () => {
         armor: { carried_armor_weight: 0.2 },
       },
     });
-    expect(id("total_weight").textContent).toBe("0.301");
+    expect(id("resume_total_weight_cell").textContent).toContain("0.301");
   });
 
   test("treats a missing #weight input and missing per-type fields as 0", () => {
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     id("weight").remove();
     renderResume({ inventory: { carry_weight: carry() } });
-    expect(id("total_weight").textContent).toBe("0");
+    expect(id("resume_total_weight_cell").textContent).toContain("0");
     expect(warnSpy).toHaveBeenCalledWith("[dom] Element #weight not found");
     warnSpy.mockRestore();
   });

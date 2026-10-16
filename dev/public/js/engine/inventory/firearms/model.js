@@ -223,26 +223,6 @@ export function computeFinalMagazineSize(instance, weaponData) {
   return Math.max(0, base + modifier);
 }
 
-// Clamps rounds_loaded only; no ammo is consumed.
-export function setFirearmRoundsLoaded(instanceId, rawValue) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance) return;
-
-  const weaponData = data.firearms.find(
-    (w) => w.weapon_id === instance.weapon_id,
-  );
-  const max = computeFinalMagazineSize(instance, weaponData);
-
-  const parsed = parseInt(rawValue, 10);
-  instance.rounds_loaded = Math.min(
-    Math.max(isNaN(parsed) ? 0 : parsed, 0),
-    max,
-  );
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
-}
-
 // Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
 export function saveFirearmCustomFields(
   instanceId,

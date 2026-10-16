@@ -6,14 +6,6 @@ export function el(id) {
   return element;
 }
 
-export function qs(selector, scope = document) {
-  const element = scope.querySelector(selector);
-  if (!element) {
-    console.warn(`[dom] Selector "${selector}" matched nothing`);
-  }
-  return element;
-}
-
 export function on(id, event, handler) {
   const element = el(id);
   if (element) {
