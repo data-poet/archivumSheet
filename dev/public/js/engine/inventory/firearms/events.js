@@ -36,7 +36,6 @@ import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 // Firearms have their own dedicated tab, with its own containers.
 
 const _renderFirearmLists = createListRenderer(
@@ -98,8 +97,6 @@ const TUNING_FIELDS = {
   },
 };
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleFirearmClick(e) {
   if (e.target.classList.contains("remove-firearm")) {
     removeFirearm(e.target.dataset.instanceId);
@@ -122,8 +119,6 @@ export function handleFirearmClick(e) {
     );
     return true;
   }
-
-  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleFirearmCustomFieldsClick(e)) return true;
 
   if (_firearmEnchantments.handleClick(e)) return true;
@@ -132,8 +127,6 @@ export function handleFirearmClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 const _handleFirearmHpInput = createHpInputHandler({
   variants: [
@@ -219,8 +212,6 @@ export function handleFirearmInput(e) {
   return false;
 }
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 // No dual-use counterpart for firearms, so no onMoved mirror and both renders are firearm-only.
 const _handleFirearmWeaponChange = createWeaponChangeHandler({
   classPrefix: "firearm",
@@ -238,8 +229,6 @@ export function handleFirearmChange(e) {
 
   return false;
 }
-
-// ─── Add form ─────────────────────────────────────────────────────────────────
 
 export const handleAddFirearm = createWeaponAddHandler({
   idPrefix: "firearm",

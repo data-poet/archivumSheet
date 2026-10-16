@@ -1,9 +1,7 @@
-// Shared factory for the enchantments add/remove/save click branches and the
-// category/type/target cascading-filter change branches, previously copy-pasted
-// byte-for-byte between accessories/events.js and magicGear/events.js.
-// readEnchantmentFormParams and the clear/set form-selection helpers have zero variance
-// across equipment types (they only touch the shared UI-state Maps in model.js), so
-// they're used directly here rather than threaded through as config.
+// Shared factory for the enchantments add/remove/save click branches and the category/type/target
+// cascading-filter change branches of accessories and magicGear. readEnchantmentFormParams and the
+// form-selection helpers do not vary per equipment type (they only touch the UI-state Maps in model.js),
+// so they are used directly.
 import {
   setEnchantmentAddFormSelection,
   setEnchantmentAddFormTargetFilter,

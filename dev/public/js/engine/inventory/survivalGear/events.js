@@ -21,8 +21,6 @@ const _handleSendSurvivalGearToAllyClick = createSendToAllyHandler({
     selected.survivalGear.some((g) => g.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleSurvivalGearClick(e) {
   if (e.target.classList.contains("remove-survival-gear")) {
     removeSurvivalGear(e.target.dataset.gearId, e.target.dataset.storedAt);
@@ -33,8 +31,6 @@ export function handleSurvivalGearClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleSurvivalGearInput(e) {
   if (e.target.classList.contains("survival-gear-qty")) {
@@ -53,8 +49,6 @@ export function handleSurvivalGearInput(e) {
   return false;
 }
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 export function handleSurvivalGearChange(e) {
   if (e.target.classList.contains("survival-gear-location-select")) {
     const gearId = e.target.dataset.gearId;
@@ -69,8 +63,6 @@ export function handleSurvivalGearChange(e) {
   }
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddSurvivalGear() {
   const typeEl = document.getElementById("survivalGearTypeFilter");

@@ -114,10 +114,6 @@ function armorDetailFields(resolved, armorData) {
   ];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED ARMOR SLOTS
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderArmorSlots(selected, data, sheet) {
   const html = ARMOR_SLOTS.map((slot) =>
     renderArmorSlot(slot, selected, data, sheet),
@@ -220,10 +216,6 @@ function renderArmorSlot(slot, selected, data, sheet) {
     }
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED ARMORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredArmors(selected, data, sheet) {
   const stored = selected.armors.filter((a) => !a.is_equipped);

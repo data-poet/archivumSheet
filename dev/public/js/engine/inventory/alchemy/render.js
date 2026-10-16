@@ -17,10 +17,6 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function getConsumableRecord(consumableId, alchemyData) {
   return alchemyData.find((c) => c.consumable_id === consumableId) ?? null;
 }
@@ -80,10 +76,6 @@ function alchemyLocationSelect(consumableId, currentLocation) {
     data-stored-at="${currentLocation}"
   >${options}</select>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN RENDER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderAlchemy(selected, data, sheet) {
   const entries = selected.alchemy ?? [];

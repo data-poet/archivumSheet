@@ -90,10 +90,6 @@ function meleeDetailFields(resolved, weaponData) {
   ];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED MELEE
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderEquippedMelee(selected, data, sheet) {
   const equippedWeapons = selected.melee_weapons.filter((w) => w.is_equipped);
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
@@ -191,10 +187,6 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
     ])}
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED MELEE
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredMelee(selected, data, sheet) {
   const stored = selected.melee_weapons.filter((w) => !w.is_equipped);

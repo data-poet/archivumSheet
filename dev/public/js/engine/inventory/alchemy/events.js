@@ -21,8 +21,6 @@ const _handleSendAlchemyToAllyClick = createSendToAllyHandler({
   canHandle: (instanceId) => selected.alchemy.some((a) => a.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleAlchemyClick(e) {
   if (e.target.classList.contains("remove-alchemy")) {
     removeAlchemy(e.target.dataset.consumableId, e.target.dataset.storedAt);
@@ -33,8 +31,6 @@ export function handleAlchemyClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleAlchemyInput(e) {
   if (e.target.classList.contains("alchemy-qty")) {
@@ -52,8 +48,6 @@ export function handleAlchemyInput(e) {
   }
   return false;
 }
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleAlchemyChange(e) {
   if (e.target.classList.contains("alchemy-location-select")) {
@@ -73,8 +67,6 @@ export function handleAlchemyChange(e) {
   }
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddAlchemy() {
   const typeEl = document.getElementById("alchemyTypeFilter");

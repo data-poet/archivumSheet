@@ -20,8 +20,6 @@ function _renderSkillList() {
   });
 }
 
-// ─── Load ─────────────────────────────────────────────────────────────────────
-
 export async function loadSkills() {
   const [skills, masterEligibleCategories] = await Promise.all([
     fetchSkills(),
@@ -43,8 +41,6 @@ export async function loadSkills() {
   populateSkillSelect("");
 }
 
-// ─── Filter helpers ───────────────────────────────────────────────────────────
-
 function populateSkillSelect(category) {
   const sel = document.getElementById("skillSelect");
   const filtered = category
@@ -64,8 +60,6 @@ export function filterSkillsByCategory() {
   const category = document.getElementById("skillCategorySelect").value;
   populateSkillSelect(category);
 }
-
-// ─── Add / Remove / Update ────────────────────────────────────────────────────
 
 export function addSkill() {
   const sel = document.getElementById("skillSelect");

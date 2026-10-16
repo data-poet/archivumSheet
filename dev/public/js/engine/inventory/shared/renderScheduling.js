@@ -1,6 +1,4 @@
-// Shared render-scheduling helpers, previously copy-pasted as a private
-// _renderXLists + _deferTimer/_deferRender pair in armor, shield, melee, ranged
-// and firearms events.js.
+// Shared render-scheduling helpers for the equipment events files.
 
 import { state } from "../../../state.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
@@ -8,19 +6,11 @@ import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 const data = state.data;
 const selected = state.selected;
 
-// Re-renders only the passed render functions rather than the full renderLists()
-// sweep, preserving open <details> and horizontal scroll across the swap.
-//
-// Uses snapshotAll()/restoreAll() rather than a single-scope helper because one
-// action can move an item BETWEEN an equipped container and a storage list
-// (equip/unequip/move), so both need their state captured together.
-//
-// Deferred by one rAF because several callers fire from native <select> "change"
-// handlers, and replacing the select's DOM ancestor before the browser finishes
-// its own change/native-picker cycle causes a visible flicker (worst on mobile
-// Safari). Restore happens in the same frame as the render, not a later one, to
-// avoid painting the rebuilt DOM in its default-collapsed state first. Mirrors
-// openState.js's withOpenState.
+// Re-renders only the passed render functions rather than the full renderLists() sweep, preserving open <details>
+// and horizontal scroll. Uses snapshotAll()/restoreAll() because one action can move an item between an equipped
+// container and a storage list. Deferred by one rAF: callers fire from native <select> "change" handlers, and
+// replacing the select's ancestor before the browser finishes its change cycle flickers (worst on mobile Safari);
+// restoring in the same frame keeps the rebuilt DOM from painting collapsed first.
 export function createListRenderer(...renderFns) {
   return function renderScopedLists(sheet) {
     const snapshots = snapshotAll();

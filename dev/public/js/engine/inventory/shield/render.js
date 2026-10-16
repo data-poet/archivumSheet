@@ -110,10 +110,6 @@ function shieldDetailFields(resolved, shieldData) {
   ];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED SHIELD
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderEquippedShield(selected, data, sheet) {
   const equippedInstance = selected.shields.find((s) => s.is_equipped);
   const equippedShield = equippedInstance
@@ -204,10 +200,6 @@ export function renderEquippedShield(selected, data, sheet) {
   `,
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED SHIELDS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredShields(selected, data, sheet) {
   const stored = selected.shields.filter((s) => !s.is_equipped);

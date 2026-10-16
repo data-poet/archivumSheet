@@ -1,10 +1,5 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// SEND TO ALLY — shared UI control
-//
-// One destination-select + optional quantity + send-button row, reused across every
-// inventory category's render.js. The click handler is a factory so each category can
-// bind its own sendFn/render without this file depending on any category-specific module.
-// ─────────────────────────────────────────────────────────────────────────────
+// The click handler is a factory so each category binds its own sendFn/render without this file
+// depending on any category-specific module.
 
 import { getActiveCharacterId, getStore } from "../../../store/characters.js";
 import { getAllyOwnerId } from "../../../store/allies/characterLinking.js";

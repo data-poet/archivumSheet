@@ -17,10 +17,6 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAmmo() {
   [data.ammo, data.ammo_containers] = await Promise.all([
@@ -30,10 +26,6 @@ export async function loadAmmo() {
 
   loadAmmoSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadAmmoSelectors() {
   updateContainerTypeOptions();
@@ -114,10 +106,6 @@ export function updateLooseAmmoOptions() {
     filtered.map((a) => ({ value: a.ammo_id, label: a.ammo_name })),
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CONTAINER OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addContainer(containerId, storedAt = STORED_AT.EQUIPPED) {
   if (!containerId) return;
@@ -266,10 +254,6 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// LOOSE AMMO OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addLooseAmmo(ammoId, quantity, storedAt = STORED_AT.BACKPACK) {
   if (!ammoId || quantity <= 0) return;
@@ -433,10 +417,6 @@ export function sendLooseAmmoToAlly(
 
   return true;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findContainerByInstanceId(instanceId) {
   return selected.ammo_containers.find((c) => c.id === instanceId) || null;

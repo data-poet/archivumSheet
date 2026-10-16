@@ -10,7 +10,7 @@ import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
 const data = state.data;
 const selected = state.selected;
 
-// Race-innate grants only; excluded from filters below but data.disadvantages keeps every row so renderTraits.js can still display them.
+// Race-innate grants only; excluded from filters below but data.disadvantages keeps every row so render.js can still display them.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
 // Re-renders only the disadvantages list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
@@ -22,8 +22,6 @@ function _renderDisadvantagesList() {
     restoreAll(snapshots);
   });
 }
-
-// ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadDisadvantages() {
   data.disadvantages = await fetchDisadvantages();
@@ -47,8 +45,6 @@ export async function loadDisadvantages() {
   populateDisSelect("");
 }
 
-// ─── Filter helpers ───────────────────────────────────────────────────────────
-
 function populateDisSelect(type) {
   const sel = document.getElementById("disSelect");
   const filtered = (
@@ -70,8 +66,6 @@ export function filterDisByType() {
   const type = document.getElementById("disTypeSelect").value;
   populateDisSelect(type);
 }
-
-// ─── Add / Remove ─────────────────────────────────────────────────────────────
 
 export function addDis() {
   const sel = document.getElementById("disSelect");

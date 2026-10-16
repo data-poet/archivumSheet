@@ -1,7 +1,4 @@
-// Fills every add-form's destination <select>. The options used to be spelled out
-// in index.html — four <option> elements per section, each with its own id, plus a
-// matching setText entry in the hydration script — so adding a section meant
-// keeping three lists in sync. Now it's one descriptor entry.
+// Fills every add-form's destination <select> from one descriptor list, so a new section is one entry.
 
 import {
   STORAGE_LOCATIONS,

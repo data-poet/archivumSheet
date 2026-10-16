@@ -41,12 +41,10 @@ app.use(
   }),
 );
 
-// prevent favicon noise
 app.get("/favicon.ico", (req, res) => {
   res.status(204).end();
 });
 
-// serve UI
 app.use(express.static(path.join(__dirname, "public")));
 
 // Repo-catalog ally portraits live beside their JSON under data/allies/<type>/[<subtype>/], not
@@ -57,10 +55,6 @@ app.use(
   express.static(path.join(__dirname, "../data/allies")),
 );
 
-/* -----------------------
-   DATASETS
-   One route per CSV, serving its parsed rows as they are.
------------------------- */
 const DATASET_ROUTES = {
   "/api/advantages": "ADVANTAGES",
   "/api/disadvantages": "DISADVANTAGES",
@@ -89,9 +83,6 @@ Object.entries(DATASET_ROUTES).forEach(([route, dataset]) => {
   });
 });
 
-/* -----------------------
-   APP INFO
------------------------- */
 app.get("/api/app-info", (req, res) => {
   res.json({ version });
 });
@@ -100,12 +91,7 @@ app.get("/api/enchantments/effect-types", (req, res) => {
   res.json(enchantmentsConstants);
 });
 
-/* -----------------------
-   DUAL-USE WEAPONS
-   Serves engine/inventory/js/shared/dualUseWeapons.js's own maps directly —
-   the engine is the sole source of truth for these pairings, the client
-   never hardcodes them.
------------------------- */
+// The endpoints below serve engine constants as they are: the engine is the source of truth and the client never hardcodes them.
 app.get("/api/inventory/dual-use-weapons", (req, res) => {
   res.json({
     MELEE_TO_RANGED: dualUseWeapons.MELEE_TO_RANGED,
@@ -113,21 +99,10 @@ app.get("/api/inventory/dual-use-weapons", (req, res) => {
   });
 });
 
-/* -----------------------
-   MAGIC GEAR EQUIP LIMITS
-   Serves engine/inventory/js/magicGear/magicGearConstants.js's
-   MAGIC_GEAR_EQUIP_LIMITS directly — same rationale as effect-types above.
------------------------- */
 app.get("/api/magic-gear/equip-limits", (req, res) => {
   res.json(magicGearConstants.MAGIC_GEAR_EQUIP_LIMITS);
 });
 
-/* -----------------------
-   ENCHANTMENT-ALLOWED ITEM CATEGORIES
-   Serves the enchantment_allowed_itens category strings owned by each
-   equipment type's validation module directly — the engine remains the
-   sole source of truth for these, same rationale as the endpoints above.
------------------------- */
 app.get("/api/inventory/item-categories", (req, res) => {
   res.json({
     ACCESSORY: ACCESSORY_ITEM_CATEGORY,
@@ -139,39 +114,19 @@ app.get("/api/inventory/item-categories", (req, res) => {
   });
 });
 
-/* -----------------------
-   MAGIC APTITUDE ADVANTAGE IDS
-   Serves helpers/ids.js's MAGIC_APTITUDE_TIERS keys directly — the engine
-   remains the sole source of truth for these, same rationale as above.
------------------------- */
 app.get("/api/magic/aptitude-advantage-ids", (req, res) => {
   res.json(Object.keys(MAGIC_APTITUDE_TIERS));
 });
 
-/* -----------------------
-   MASTER-ELIGIBLE SKILL CATEGORIES
-   Serves helpers/taxonomy.js's MASTER_ELIGIBLE_CATEGORIES directly — the
-   engine remains the sole source of truth for these, same rationale as above.
------------------------- */
 app.get("/api/skills/master-eligible-categories", (req, res) => {
   res.json([...MASTER_ELIGIBLE_CATEGORIES]);
 });
 
-/* -----------------------
-   ATTRIBUTE RULES
-   Serves helpers/rules.js directly — the engine remains the sole source of
-   truth for these numbers, same rationale as above.
------------------------- */
 app.get("/api/rules", (req, res) => {
   res.json(rules);
 });
 
-/* -----------------------
-   ALLIES CATALOG
-   The index is served separately from the full payloads so the picker doesn't
-   pull every ally's whole sheet on page load. Allies are built by the client
-   through /api/sheet/build — an ally is just another character.
------------------------- */
+// The index is served apart from the full payloads so the picker does not load every ally's sheet; the client builds allies through /api/sheet/build.
 app.get("/api/allies", (req, res) => {
   res.json(alliesCatalog.listAllies());
 });
@@ -186,9 +141,6 @@ app.get("/api/allies/:allyId", (req, res) => {
   res.json(ally);
 });
 
-/* -----------------------
-   CHARACTER BUILDER
------------------------- */
 app.post("/api/character/build", (req, res) => {
   const {
     advantages = [],
@@ -211,9 +163,6 @@ app.post("/api/character/build", (req, res) => {
   }
 });
 
-/* -----------------------
-   SHEET BUILDER (MAIN ENGINE)
------------------------- */
 app.post("/api/sheet/build", (req, res) => {
   const { pc = {}, race_id = null, character = {}, inventory = {} } = req.body;
 
@@ -233,9 +182,6 @@ app.post("/api/sheet/build", (req, res) => {
   }
 });
 
-/* -----------------------
-   START SERVER
------------------------- */
 if (require.main === module) {
   app.listen(3000, () => {
     console.log("API running on http://localhost:3000");

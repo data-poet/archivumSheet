@@ -10,15 +10,7 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────────────────────────────────────
-
 const COIN_TYPES = ["copper", "silver", "gold"];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 function coinLabel(coinType) {
   return t(`coinPurse.${coinType}`);
@@ -43,10 +35,6 @@ function locationSelect(coinType, currentLocation) {
       ${options}
     </select>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SECTION RENDERER
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderCoinSection(location, coins, sheet) {
   const entries = coins.filter((c) => c.storedAt === location);
@@ -130,10 +118,6 @@ function renderCoinSection(location, coins, sheet) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD FORM
-// ─────────────────────────────────────────────────────────────────────────────
-
 function renderAddForm() {
   const coinOptions = COIN_TYPES.map(
     (ct) => `<option value="${ct}">${coinLabel(ct)}</option>`,
@@ -162,10 +146,6 @@ function renderAddForm() {
       <button id="addCoinBtn">${t("coinPurse.addCoins")}</button>
     </div>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN EXPORT
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderCoinPurse(selected, data, sheet) {
   const coins = selected.coins ?? [];

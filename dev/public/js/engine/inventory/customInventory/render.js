@@ -17,10 +17,6 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function customItemLocationSelect(customItemId, currentLocation) {
   const options = STORAGE_LOCATIONS.map(
     (loc) =>
@@ -32,10 +28,6 @@ function customItemLocationSelect(customItemId, currentLocation) {
   >${options}</select>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN RENDER
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderCustomInventory(selected, data, sheet) {
   const entries = selected.customInventory ?? [];
 
@@ -45,10 +37,6 @@ export function renderCustomInventory(selected, data, sheet) {
 
   setHTML("customInventoryList", sections);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SECTION
-// ─────────────────────────────────────────────────────────────────────────────
 
 function renderCustomInventorySection(location, entries, sheet) {
   const sectionEntries = entries.filter((e) => e.storedAt === location);

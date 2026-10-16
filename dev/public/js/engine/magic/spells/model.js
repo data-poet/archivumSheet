@@ -20,8 +20,6 @@ function _renderSpellList() {
   });
 }
 
-// ─── Load ─────────────────────────────────────────────────────────────────────
-
 export async function loadSpells() {
   const [spells, magicAptitudeAdvantageIds] = await Promise.all([
     fetchSpells(),
@@ -42,8 +40,6 @@ export async function loadSpells() {
 
   populateSpellSelect("");
 }
-
-// ─── Filter helpers ───────────────────────────────────────────────────────────
 
 function populateSpellSelect(school) {
   const sel = document.getElementById("spellSelect");
@@ -68,8 +64,6 @@ export function filterSpellsBySchool() {
   const school = document.getElementById("spellSchoolSelect").value;
   populateSpellSelect(school);
 }
-
-// ─── Add / Remove / Update ────────────────────────────────────────────────────
 
 export function addSpell() {
   const sel = document.getElementById("spellSelect");

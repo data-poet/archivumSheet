@@ -18,20 +18,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAccessories() {
   data.accessories = await fetchAccessories();
 
   loadAccessorySelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadAccessorySelectors() {
   updateAccessoryNameOptions();
@@ -71,10 +63,6 @@ export function updateAccessoryEquipOptionAvailability() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP LIMITS
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function countEquippedAccessories(accessoryId) {
   return selected.accessories.filter(
     (a) => a.accessory_id === accessoryId && a.is_equipped,
@@ -94,10 +82,6 @@ export function isAccessoryAtEquipLimit(accessoryId) {
     countEquippedAccessories(accessoryId) >= getAccessoryEquipLimit(accessoryId)
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _newAccessoryInstance(accessoryId, price, isEquipped, storedAt) {
   return {
@@ -142,10 +126,6 @@ export function addStoredAccessory(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP / STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Equip a stored accessory. Refuses silently if at the type's equip limit. */
 export function equipAccessory(instanceId) {
@@ -241,10 +221,6 @@ export function sendAccessoryToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (price + custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function updateAccessoryPrice(instanceId, rawValue) {
   const instance = findAccessoryByInstanceId(instanceId);
   if (!instance) return;
@@ -273,10 +249,7 @@ export function saveAccessoryCustomFields(
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-// instance.enchantments defaults to [] since accessories saved before this feature existed won't have the field.
-// ─────────────────────────────────────────────────────────────────────────────
+// Saves from before enchantments existed have no enchantments field.
 
 export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   const instance = findAccessoryByInstanceId(instanceId);
@@ -349,10 +322,6 @@ export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findAccessoryByInstanceId(instanceId) {
   return selected.accessories.find((a) => a.id === instanceId) || null;

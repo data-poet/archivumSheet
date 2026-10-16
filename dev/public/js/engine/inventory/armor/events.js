@@ -34,8 +34,6 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const _renderArmorLists = createListRenderer(
   renderArmorSlots,
   renderStoredArmors,
@@ -65,8 +63,6 @@ const _handleSendArmorToAllyClick = createSendToAllyHandler({
   render: _renderArmorLists,
   canHandle: (instanceId) => selected.armors.some((a) => a.id === instanceId),
 });
-
-// ─── Click ────────────────────────────────────────────────────────────────────
 
 export function handleArmorClick(e) {
   if (e.target.classList.contains("remove-armor")) {
@@ -103,19 +99,14 @@ export function handleArmorClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
   if (_handleArmorCustomFieldsClick(e)) return true;
 
-  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
   if (_armorEnchantments.handleClick(e)) return true;
 
-  // ── Send to ally ────────────────────────────────────────────────────────────
   if (_handleSendArmorToAllyClick(e)) return true;
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 // Armor's equipped rows are addressed by slot (one piece per body location), not by
 // instance id — only the storage rows carry data-instance-id.
@@ -142,8 +133,6 @@ export const handleArmorInput = createHpInputHandler({
   baseHpField: "armor_hit_points",
   deferRender: _deferRender,
 });
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleArmorChange(e) {
   if (e.target.classList.contains("equipped-armor-name")) {
@@ -243,13 +232,10 @@ export function handleArmorChange(e) {
     return true;
   }
 
-  // ── Enchantments: cascading category/type/target filters ───────────────────
   if (_armorEnchantments.handleChange(e)) return true;
 
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddArmor() {
   const slotEl = document.getElementById("armorSlotSelect");

@@ -1,10 +1,6 @@
-// Shared factory for the name / tier / material / storage / move "change" branches
-// of the three weapon types (melee, ranged, firearms), previously copy-pasted
-// byte-for-byte apart from the class prefix and which catalog they read.
-//
-// Armor and shield deliberately do NOT use this: armor addresses its equipped rows
-// by body slot and shield has only one equippable instance, so both carry extra
-// equip/unequip fallbacks that don't generalize.
+// Shared factory for the name / tier / material / storage / move "change" branches of melee, ranged and
+// firearms. Armor and shield do not use it: armor addresses its equipped rows by body slot and shield has one
+// equippable instance, so both need extra equip/unequip fallbacks.
 
 import { triggerAutoRun } from "../../../compute/autorun.js";
 

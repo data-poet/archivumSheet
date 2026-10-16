@@ -37,8 +37,6 @@ import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const _renderMeleeLists = createListRenderer(
   renderEquippedMelee,
   renderStoredMelee,
@@ -86,8 +84,6 @@ const _handleSendMeleeToAllyClick = createSendToAllyHandler({
     selected.melee_weapons.some((m) => m.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleMeleeClick(e) {
   if (e.target.classList.contains("remove-melee")) {
     removeMelee(e.target.dataset.instanceId);
@@ -109,8 +105,6 @@ export function handleMeleeClick(e) {
     );
     return true;
   }
-
-  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleMeleeCustomFieldsClick(e)) return true;
 
   // Delegated to the shared factory, which ownership-checks the instanceId the same way as the custom-fields factory above.
@@ -120,8 +114,6 @@ export function handleMeleeClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 // A dual-use pair is one physical weapon, so damage taken on the melee side shows
 // up on the ranged side too — mirrors ranged/events.js's _mirrorHpToLinkedMelee.
@@ -155,8 +147,6 @@ export const handleMeleeInput = createHpInputHandler({
   onApplied: _mirrorHpToLinkedRanged,
 });
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 const _handleMeleeWeaponChange = createWeaponChangeHandler({
   classPrefix: "melee",
   catalog: () => data.melee_weapons,
@@ -188,8 +178,6 @@ export function handleMeleeChange(e) {
 
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export const handleAddMelee = createWeaponAddHandler({
   idPrefix: "melee",

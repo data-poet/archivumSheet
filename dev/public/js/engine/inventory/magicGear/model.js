@@ -18,10 +18,6 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadMagicGear() {
   const [magicGear, equipLimits] = await Promise.all([
@@ -34,10 +30,6 @@ export async function loadMagicGear() {
 
   loadMagicGearSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadMagicGearSelectors() {
   updateMagicGearTypeOptions();
@@ -106,11 +98,7 @@ export function updateMagicGearEquipOptionAvailability() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP LIMITS
-//
-// Per-magic_gear_type caps fetched from the engine at bootstrap; the client never hardcodes them.
-// ─────────────────────────────────────────────────────────────────────────────
+// Caps per magic_gear_type come from the engine at bootstrap.
 
 function magicGearType(magicGearId) {
   return data.magicGear.find((g) => g.magic_gear_id === magicGearId)
@@ -131,10 +119,6 @@ export function isMagicGearAtEquipLimit(magicGearId) {
 
   return countEquippedMagicGearByType(type) >= limit;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _newMagicGearInstance(magicGearId, isEquipped, storedAt) {
   return {
@@ -169,10 +153,6 @@ export function addStoredMagicGear(magicGearId, storedAt = STORED_AT.BACKPACK) {
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP / STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 // Refuses silently if the item's type is at its equip limit.
 export function equipMagicGear(instanceId) {
@@ -265,10 +245,6 @@ export function sendMagicGearToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields only — price/weight are DB-driven, not user-input)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
 export function saveMagicGearCustomFields(
   instanceId,
@@ -286,12 +262,6 @@ export function saveMagicGearCustomFields(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-//
-// Thin wrappers around the generic entry helpers in enchantments.js.
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addMagicGearEnchantment(instanceId, enchantmentId, params) {
   const instance = findMagicGearByInstanceId(instanceId);
@@ -364,10 +334,6 @@ export function removeMagicGearEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findMagicGearByInstanceId(instanceId) {
   return selected.magicGear.find((g) => g.id === instanceId) || null;

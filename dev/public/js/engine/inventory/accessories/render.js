@@ -30,10 +30,6 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function accessoryRecord(accessoryId, data) {
   return data.accessories.find((a) => a.accessory_id === accessoryId) ?? null;
 }
@@ -65,10 +61,6 @@ function resolvedAccessory(sheet, instanceId) {
     instanceId,
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED ACCESSORIES
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderEquippedAccessories(selected, data, sheet) {
   const equipped = selected.accessories.filter((a) => a.is_equipped);
@@ -141,10 +133,6 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
     ])}
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED ACCESSORIES
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredAccessories(selected, data, sheet) {
   const stored = selected.accessories.filter((a) => !a.is_equipped);

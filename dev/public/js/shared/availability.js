@@ -1,27 +1,16 @@
 import { toList } from "./rowParsers.js";
 
-// Who a catalog row may be picked by.
-//
-// Ally-only content (an elemental's race, a construct's innate traits) lives in the same
-// data/db_*.csv tables as everything else, marked with an `available_for` column. One table per
-// domain is not a convenience — 17 engine resolvers each load their own CSV and match by id, so a
-// parallel db_ally_*.csv would mean teaching all 17 about a second source, and getting it wrong
-// fails silently (the id resolves to nothing and the trait just never appears on the built sheet).
-//
-// An extra column costs the engine nothing: loadCSV passes `columns: true`, so unknown columns are
-// ignored, and resolution is by id regardless. Availability is purely an authoring-UI concern.
-//
-// THE ENGINE MUST NEVER FILTER ON THIS. An ally's ally-only content has to resolve at build time;
-// only the pickers care who may choose it.
+// Who a catalog row may be picked by. Ally-only content lives in the same data/db_*.csv tables, marked by an
+// `available_for` column: 17 engine resolvers each load their own CSV by id, so a parallel table would mean teaching
+// all of them a second source, and a miss fails silently.
+// THE ENGINE MUST NEVER FILTER ON THIS: ally-only content has to resolve at build time; only the pickers care.
 
 export const AUDIENCE = { PLAYER: "pc", ALLY: "npc" };
 
 export const AVAILABLE_FOR_COLUMN = "available_for";
 
-// Blank means "both", so none of the existing rows need editing and new content is opt-in marked.
-// An unrecognized value is also treated as both: showing a row that should have been hidden is a
-// visible, fixable mistake, while hiding one that should have shown is the silent failure this
-// whole design is trying to avoid.
+// Blank, or an unrecognized value, means "both": showing a row that should be hidden is a visible, fixable mistake,
+// while hiding one that should show fails silently.
 export function isAvailableFor(row, audience) {
   const raw = row?.[AVAILABLE_FOR_COLUMN];
   if (raw === undefined || raw === null) return true;

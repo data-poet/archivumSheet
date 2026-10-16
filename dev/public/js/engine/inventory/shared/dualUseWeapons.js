@@ -1,12 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// DUAL-USE WEAPONS  (ES module — dev/public layer)
-//
-// MELEE_TO_RANGED / RANGED_TO_MELEE are NOT duplicated here. They're fetched
-// from /api/inventory/dual-use-weapons at bootstrap (see loadDualUseWeapons
-// below), which serves engine/inventory/js/shared/dualUseWeapons.js's own
-// maps directly — the engine remains the single source of truth for these
-// pairings.
-// ─────────────────────────────────────────────────────────────────────────────
+// Fetched from /api/inventory/dual-use-weapons at bootstrap; the engine owns the pairings.
 
 import { state } from "../../../state.js";
 import { fetchDualUseWeapons } from "../../../api.js";
@@ -14,17 +6,9 @@ import { withCharacterInventory } from "../../../store/characters.js";
 
 const data = state.data;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function loadDualUseWeapons() {
   data.dualUseWeapons = await fetchDualUseWeapons();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// LOOKUPS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function getRangedCounterpart(meleeWeaponId) {
   return data.dualUseWeapons.MELEE_TO_RANGED[meleeWeaponId] ?? null;

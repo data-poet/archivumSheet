@@ -94,10 +94,6 @@ function rangedDetailFields(resolved, weaponData) {
   ];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED RANGED
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function renderEquippedRanged(selected, data, sheet) {
   const equippedWeapons = selected.ranged_weapons.filter((w) => w.is_equipped);
   const names = [...new Set(data.ranged_weapons.map((w) => w.weapon_name))];
@@ -195,10 +191,6 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
     ])}
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED RANGED
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredRanged(selected, data, sheet) {
   const stored = selected.ranged_weapons.filter((w) => !w.is_equipped);

@@ -23,20 +23,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadRangedWeapons() {
   data.ranged_weapons = await fetchRangedWeapons();
 
   loadRangedSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadRangedSelectors() {
   updateRangedTypeOptions();
@@ -115,10 +107,6 @@ export function updateRangedMaterialOptions() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Multiple ranged weapons can be equipped simultaneously.
 export function equipRanged(
   instanceId,
@@ -143,14 +131,6 @@ export function equipRanged(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DUAL-USE SYNC HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 // If weaponId is dual-use, pushes a mirrored melee instance linked back via _linkedInstanceId.
 function _syncMeleeCounterpart(
@@ -367,10 +347,6 @@ export function sendRangedToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
 // Mirrors to the linked melee counterpart, same as hit_points_modifier/equip/storage state.
 export function saveRangedCustomFields(
@@ -396,10 +372,6 @@ export function saveRangedCustomFields(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addRangedEnchantment(instanceId, enchantmentId, params) {
   const instance = findRangedByInstanceId(instanceId);
@@ -483,10 +455,6 @@ export function removeRangedEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findRangedByInstanceId(instanceId) {
   return selected.ranged_weapons.find((w) => w.id === instanceId) || null;

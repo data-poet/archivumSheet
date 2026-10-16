@@ -1,4 +1,4 @@
-// Keys must stay flat (not nested under .editor): dev/public/index.html reads them via flat paths like L.characterImage.tabLabel, and nesting breaks the text silently since setText() swallows undefined.
+// Keys must stay flat (not under .editor): index.html reads them by flat path and setText() swallows undefined, so nesting breaks the text silently.
 export const CHARACTER_IMAGE = {
   invalidType: "Arquivo inválido. Use JPG, PNG, GIF ou WEBP.",
   tooLarge: "Imagem muito grande. Tamanho máximo: 1 MB.",

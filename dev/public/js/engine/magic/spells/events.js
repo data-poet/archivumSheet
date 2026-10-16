@@ -3,7 +3,6 @@ import { removeSpell, updateSpell } from "./model.js";
 import { renderSpells } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 // Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
 
 function _renderSpellList(sheet) {
@@ -15,8 +14,6 @@ function _renderSpellList(sheet) {
   });
 }
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleSpellClick(e) {
   if (e.target.classList.contains("remove-spell")) {
     removeSpell(e.target.dataset.name);
@@ -24,8 +21,6 @@ export function handleSpellClick(e) {
   }
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleSpellInput(e) {
   if (e.target.classList.contains("spell-input")) {

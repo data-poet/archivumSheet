@@ -15,20 +15,12 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadSurvivalGear() {
   data.survivalGear = await fetchSurvivalGear();
 
   loadSurvivalGearSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadSurvivalGearSelectors() {
   updateSurvivalGearTypeOptions();
@@ -73,10 +65,6 @@ export function updateSurvivalGearNameOptions() {
     names.map((n) => ({ value: n, label: n })),
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 function findEntry(gearId, storedAt) {
   return selected.survivalGear.find(

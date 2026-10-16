@@ -69,8 +69,6 @@ const _handleSendAccessoryToAllyClick = createSendToAllyHandler({
     selected.accessories.some((a) => a.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleAccessoryClick(e) {
   if (
     e.target.classList.contains("remove-accessory") ||
@@ -85,23 +83,18 @@ export function handleAccessoryClick(e) {
     return true;
   }
 
-  // ── Custom fields: edit / save / cancel ───────────────────────────────────
   // Delegated to the shared factory, which ownership-checks the instanceId so other equipment types can reuse the same block/button classes.
 
   if (_handleAccessoryCustomFieldsClick(e)) return true;
 
-  // ── Enchantments: remove / add / save (edit or swap) ───────────────────────
   // Delegated to the shared factory, same ownership-check as custom fields above.
 
   if (_accessoryEnchantments.handleClick(e)) return true;
 
-  // ── Send to ally ────────────────────────────────────────────────────────────
   if (_handleSendAccessoryToAllyClick(e)) return true;
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleAccessoryInput(e) {
   if (
@@ -117,8 +110,6 @@ export function handleAccessoryInput(e) {
   return false;
 }
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 export function handleAccessoryChange(e) {
   if (e.target.id === "accessoryNameSelect") {
     updateAccessoryEquipOptionAvailability();
@@ -133,13 +124,10 @@ export function handleAccessoryChange(e) {
     return true;
   }
 
-  // ── Enchantments: cascading category/type/target filters ───────────────────
   if (_accessoryEnchantments.handleChange(e)) return true;
 
   return false;
 }
-
-// ─── Add form ─────────────────────────────────────────────────────────────────
 
 export function handleAddAccessory() {
   const nameEl = document.getElementById("accessoryNameSelect");

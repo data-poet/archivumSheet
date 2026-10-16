@@ -9,10 +9,6 @@ import { t } from "../../../localization/pt-BR/index.js";
 
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Every field is provided by the caller — there is no DB to look up.
 export function addCustomItem({
   name,
@@ -110,10 +106,6 @@ export function moveCustomItem(customItemId, toLocation) {
   renderListsPreserving(selected, state.data, state.sheet);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES
-// ─────────────────────────────────────────────────────────────────────────────
 
 // Unlike catalog-backed items, every field here IS the item, so invalid input is rejected outright
 // rather than silently discarded. Returns true if updated, false if rejected.

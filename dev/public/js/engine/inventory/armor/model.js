@@ -18,20 +18,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadArmors() {
   data.armors = await fetchArmors();
 
   loadArmorSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadArmorSelectors() {
   const slotSelect = el("armorSlotSelect");
@@ -104,10 +96,6 @@ export function updateArmorMaterialOptions() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Only one armor per slot; passing an empty armorId clears the slot. */
 export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   const currentEquipped = findEquippedArmorInSlot(slot);
@@ -141,10 +129,6 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addStoredArmor(
   armorId,
@@ -229,10 +213,6 @@ export function sendArmorToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Commits all three custom fields at once, only on "Salvar", never per keystroke. Blank strings normalize to null.
 export function saveArmorCustomFields(
   instanceId,
@@ -251,11 +231,7 @@ export function saveArmorCustomFields(
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-// Same shape as accessories'/magicGear's wrappers. instance.enchantments defaults to [] since armor saved
-// before this feature existed won't have the field.
-// ─────────────────────────────────────────────────────────────────────────────
+// Saves from before enchantments existed have no enchantments field.
 
 export function addArmorEnchantment(instanceId, enchantmentId, params) {
   const instance = findArmorByInstanceId(instanceId);
@@ -328,10 +304,6 @@ export function removeArmorEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findEquippedArmorInSlot(slot) {
   return selected.armors.find((inst) => {

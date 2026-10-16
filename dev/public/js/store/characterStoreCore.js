@@ -1,6 +1,5 @@
-// Shared localStorage primitives for the character store. Extracted out of characters.js so
-// that other store modules (e.g. persistence.js) can read/write the same store without
-// importing characters.js itself, which assumes the sheet page's live DOM.
+// Shared localStorage primitives for the character store, for modules (e.g. persistence.js) that must not
+// import characters.js, which assumes the sheet page's live DOM.
 
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { STORAGE_KEYS } from "../shared/storageKeys.js";

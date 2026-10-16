@@ -10,7 +10,7 @@ import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
 const data = state.data;
 const selected = state.selected;
 
-// Race-innate grants only; excluded from filters below but data.advantages keeps every row so renderTraits.js can still display them.
+// Race-innate grants only; excluded from filters below but data.advantages keeps every row so render.js can still display them.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
 // Re-renders only the advantages list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
@@ -22,8 +22,6 @@ function _renderAdvantagesList() {
     restoreAll(snapshots);
   });
 }
-
-// ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadAdvantages() {
   data.advantages = await fetchAdvantages();
@@ -47,8 +45,6 @@ export async function loadAdvantages() {
   populateAdvSelect("");
 }
 
-// ─── Filter helpers ───────────────────────────────────────────────────────────
-
 function populateAdvSelect(type) {
   const sel = document.getElementById("advSelect");
   const filtered = (
@@ -70,8 +66,6 @@ export function filterAdvByType() {
   const type = document.getElementById("advTypeSelect").value;
   populateAdvSelect(type);
 }
-
-// ─── Add / Remove ─────────────────────────────────────────────────────────────
 
 export function addAdv() {
   const sel = document.getElementById("advSelect");

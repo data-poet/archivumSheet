@@ -4,7 +4,6 @@ import { removeSkill, updateSkill } from "./model.js";
 import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 // Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 
 function _renderSkillList(sheet) {
@@ -16,8 +15,6 @@ function _renderSkillList(sheet) {
   });
 }
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleSkillClick(e) {
   if (e.target.classList.contains("remove-skill")) {
     removeSkill(e.target.dataset.id);
@@ -25,8 +22,6 @@ export function handleSkillClick(e) {
   }
   return false;
 }
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleSkillChange(e) {
   if (e.target.classList.contains("skill-master-checkbox")) {
@@ -41,8 +36,6 @@ export function handleSkillChange(e) {
   return false;
 }
 
-// ─── Input ────────────────────────────────────────────────────────────────────
-
 export function handleSkillInput(e) {
   if (e.target.classList.contains("skill-input")) {
     updateSkill(e.target.dataset.id, e.target.dataset.field, e.target.value);
@@ -52,8 +45,6 @@ export function handleSkillInput(e) {
   }
   return false;
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function _updateFinalCell(changedInput, cssClass, key, attr) {
   const row = changedInput.closest("tr");

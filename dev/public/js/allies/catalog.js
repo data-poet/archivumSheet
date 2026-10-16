@@ -1,12 +1,7 @@
-// The single resolution point for allies. Everything else in the allies feature asks
-// here rather than fetching, which is what keeps the planned migration cheap: today only
-// the repo catalog (data/allies/) answers, and adding user-authored allies later means
-// teaching these two functions about a second source — not touching every call site.
-//
-// IDs are namespaced by source from the start: repo allies are `ALLY_*`, user-created
-// ones will use the `ally-<ts>-<rand>` form that store/characters.js already generates.
-// That keeps a merged list collision-free and lets callers tell read-only from editable
-// by looking at the id alone.
+// The single resolution point for allies: everything else asks here rather than fetching, so adding user-authored
+// allies later means teaching these two functions about a second source, not touching every call site.
+// IDs are namespaced by source (repo allies `ALLY_*`, user-created `ally-<ts>-<rand>` from store/characters.js),
+// which keeps a merged list collision-free and tells read-only from editable by id alone.
 
 import { fetchAllyIndex, fetchAlly } from "../api.js";
 

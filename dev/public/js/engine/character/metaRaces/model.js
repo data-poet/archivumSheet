@@ -10,10 +10,8 @@ import { offerUndo } from "../../../components/undo.js";
 const data = state.data;
 const selected = state.selected;
 
-// meta_race_ids is a list (stacking, e.g. future Undead + something else — see
-// docs/proposals/meta-race-templates.md). The name -> sub-name selects are a pure picker (mirrors
-// race's cascading filter, but never commit on their own); "Adicionar" is what actually pushes
-// the chosen id into the list, and the table below is the one source of truth for what's applied.
+// meta_race_ids is a list so meta-races can stack. The name and sub-name selects only pick; "Adicionar" pushes the
+// id, and the table below is the source of truth for what is applied.
 
 // Re-renders only the meta-race list, avoiding a full renderLists() sweep — mirrors advantages'
 // own _renderAdvantagesList.
@@ -26,8 +24,6 @@ function _renderMetaRacesList() {
   });
 }
 
-// ─── Load ─────────────────────────────────────────────────────────────────────
-
 export async function loadMetaRaces() {
   if (data.metaRaces.length) {
     _showMetaRaceSelects();
@@ -39,8 +35,6 @@ export async function loadMetaRaces() {
   _populateMetaRaceNameSelect();
   _showMetaRaceSelects();
 }
-
-// ─── Filter helpers (picker only — does not touch meta_race_ids) ─────────────
 
 function _populateMetaRaceNameSelect() {
   const nameSelect = document.getElementById("metaRaceNameSelect");
@@ -87,8 +81,6 @@ export function filterSubMetaRacesByName() {
   }
 }
 
-// ─── Add / Remove (the only operations that touch meta_race_ids) ─────────────
-
 export function addMetaRace() {
   const subSelect = document.getElementById("metaRaceSubSelect");
   const metaRaceId = subSelect?.value;
@@ -118,8 +110,6 @@ export function removeMetaRace(id) {
     triggerAutoRun();
   });
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function _showMetaRaceSelects() {
   const nameSelect = document.getElementById("metaRaceNameSelect");

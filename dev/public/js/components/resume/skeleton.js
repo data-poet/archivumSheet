@@ -1,7 +1,6 @@
-// The resume panel's static markup, extracted from index.html so PC rendering, ally
-// rendering, and tests/dev/helpers/resumeDomFixture.js all mount one source instead of
-// keeping hand-synced copies. Containers are empty on purpose — every renderer in this
-// folder writes into them by id.
+// The resume panel's static markup, shared by PC rendering, ally rendering and
+// tests/dev/helpers/resumeDomFixture.js. Containers are empty on purpose: every renderer in this folder writes
+// into them by id.
 
 import { t } from "../../localization/pt-BR/index.js";
 import { icon } from "../../shared/icons.js";
@@ -173,8 +172,7 @@ function applyResumeStaticLabels() {
     coinsCarried.innerHTML = `${icon("coins-carried")} ${t("resume.coinsCarried")}`;
 }
 
-// Must run before anything that reads the panel — initViewMode() moves #tab-char-resume,
-// and updateActualValues() reads the legacy weight spans above.
+// Must run before anything that reads the panel: initViewMode() moves #tab-char-resume.
 export function mountResumePanel(hostId = HOST_ID) {
   const host = document.getElementById(hostId);
   if (!host || document.getElementById(PANEL_ID)) return;

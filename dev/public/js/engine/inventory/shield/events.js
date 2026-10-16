@@ -33,8 +33,6 @@ import {
 const data = state.data;
 const selected = state.selected;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const _renderShieldLists = createListRenderer(
   renderEquippedShield,
   renderStoredShields,
@@ -65,8 +63,6 @@ const _handleSendShieldToAllyClick = createSendToAllyHandler({
   canHandle: (instanceId) => selected.shields.some((s) => s.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleShieldClick(e) {
   if (e.target.classList.contains("remove-shield")) {
     removeShield(e.target.dataset.instanceId);
@@ -93,8 +89,6 @@ export function handleShieldClick(e) {
     triggerAutoRun();
     return true;
   }
-
-  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleShieldCustomFieldsClick(e)) return true;
 
   if (_shieldEnchantments.handleClick(e)) return true;
@@ -103,8 +97,6 @@ export function handleShieldClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 // Only one shield can be equipped at a time, so the equipped rows don't need an id
 // to address — "the equipped shield" is unambiguous.
@@ -131,8 +123,6 @@ export const handleShieldInput = createHpInputHandler({
   baseHpField: "shield_hit_points",
   deferRender: _deferRender,
 });
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleShieldChange(e) {
   if (e.target.classList.contains("equipped-shield-name")) {
@@ -219,8 +209,6 @@ export function handleShieldChange(e) {
 
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddShield() {
   const nameEl = document.getElementById("shieldNameSelect");

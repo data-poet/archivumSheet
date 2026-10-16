@@ -3,8 +3,6 @@ import { triggerAutoRun } from "../../../compute/autorun.js";
 
 const selected = state.selected;
 
-// ─── Input ────────────────────────────────────────────────────────────────────
-
 export function handleCharacterInput(e) {
   const el = e.target;
   if (!el.classList.contains("character-input")) return false;
@@ -39,8 +37,6 @@ export function handleCharacterInput(e) {
   triggerAutoRun();
   return true;
 }
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleCharacterChange(e) {
   const el = e.target;

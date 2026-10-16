@@ -18,22 +18,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadFirearms() {
   data.firearms = await fetchFirearms();
 
   loadFirearmSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-//
-// Firearms have their own tab, separate from Ranged, so these only pull from data.firearms.
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadFirearmSelectors() {
   updateFirearmTypeOptions();
@@ -110,10 +100,6 @@ export function updateFirearmMaterialOptions() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function equipFirearm(instanceId, weaponId, materialId = null) {
   const instance = findFirearmByInstanceId(instanceId);
   if (!instance) return;
@@ -126,10 +112,6 @@ export function equipFirearm(instanceId, weaponId, materialId = null) {
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _newFirearmInstance(weaponId, materialId, isEquipped, storedAt) {
   return {
@@ -174,10 +156,6 @@ export function addStoredFirearm(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function moveFirearm(instanceId, storedAt) {
   const firearm = findFirearmByInstanceId(instanceId);
@@ -239,10 +217,6 @@ export function sendFirearmToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// AMMO
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function computeFinalMagazineSize(instance, weaponData) {
   const base = Number(weaponData?.weapon_magazine_size || 0);
   const modifier = Number(instance.magazine_size_modifier || 0);
@@ -269,10 +243,6 @@ export function setFirearmRoundsLoaded(instanceId, rawValue) {
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
 export function saveFirearmCustomFields(
   instanceId,
@@ -291,11 +261,7 @@ export function saveFirearmCustomFields(
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-//
-// No dual-use counterpart sync — firearms aren't part of any dual-use pairing.
-// ─────────────────────────────────────────────────────────────────────────────
+// Firearms are in no dual-use pair, so there is no counterpart to sync.
 
 export function addFirearmEnchantment(instanceId, enchantmentId, params) {
   const instance = findFirearmByInstanceId(instanceId);
@@ -367,10 +333,6 @@ export function removeFirearmEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findFirearmByInstanceId(instanceId) {
   return selected.firearms.find((w) => w.id === instanceId) || null;

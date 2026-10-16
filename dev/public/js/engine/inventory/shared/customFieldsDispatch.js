@@ -1,8 +1,6 @@
-// Shared factory for the custom-fields edit/cancel/save click branches, previously copy-pasted
-// near-identically across armor, melee, ranged, firearms, shield, accessories, and magicGear.
-// The three buttons share generic markup across equipment types (see customFieldsBlock in
-// renderUtils.js), so each type must ownership-check the instanceId before acting — that guard,
-// plus open/close/read sequencing, is what this factory centralizes.
+// Shared factory for the custom-fields edit/cancel/save click branches. The buttons share generic markup
+// across equipment types (see customFieldsBlock in renderUtils.js), so each type must ownership-check the
+// instanceId before acting; that guard plus the open/close/read sequencing lives here.
 import {
   openCustomFieldsEditor,
   closeCustomFieldsEditor,

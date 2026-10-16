@@ -113,7 +113,7 @@ function recordDescriptionMarkup(record) {
   return `<div class="item-detail-block"><em>${t("traits.description")}:</em>${desc}</div>`;
 }
 
-// Matches the existing advantage/disadvantage/skill/spell pickers elsewhere in the app: a filter narrows a second select of *_box_name targets (which encode cost/difficulty, e.g. "ATRAENTE | 5").
+// Like the other pickers: a filter narrows a second select of *_box_name targets (which encode cost/difficulty, e.g. "ATRAENTE | 5").
 const TARGET_PICKER_CONFIG = {
   advantage: {
     rows: () =>
@@ -224,7 +224,7 @@ function renderTargetPicker(formKey, type, currentEntry) {
 }
 
 // Fortify types are always positive, weaken types always negative (enforced server-side too).
-// Percentage-flagged types display/step in whole percent units; currentEntry.value stays the raw decimal fraction and is converted here for display only — model.js's _buildEntryFields converts back on submit.
+// Percentage types display and step in whole percent; currentEntry.value stays the decimal fraction and model.js's _buildEntryFields converts back on submit.
 function valueInput(record, formKey, currentEntry) {
   const percentage = isPercentageType(record);
   const weaken = isWeakenType(record.enchantment_effect_type);

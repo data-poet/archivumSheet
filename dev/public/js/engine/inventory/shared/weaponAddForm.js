@@ -1,11 +1,6 @@
-// Shared factory for the "Adicionar" button handler of the three weapon types
-// (melee, ranged, firearms), whose add-forms are all name + tier + material +
-// destination and were previously copy-pasted with only the element-id prefix
-// changed.
-//
-// Armor (extra body-slot select), shield (storage only, no equip option),
-// accessories (price), magicGear (name only) and alchemy/survivalGear (quantity +
-// type filter) each read a different set of controls, so they keep their own.
+// Shared factory for the "Adicionar" handler of melee, ranged and firearms (name + tier + material +
+// destination, differing only in the element-id prefix). Armor, shield, accessories, magicGear, alchemy and
+// survivalGear read different controls, so they keep their own.
 
 import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";

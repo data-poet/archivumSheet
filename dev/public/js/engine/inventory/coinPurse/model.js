@@ -12,19 +12,11 @@ import {
 
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function findEntry(coinType, storedAt) {
   return selected.coins.find(
     (c) => c.coin_type === coinType && c.storedAt === storedAt,
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Merges with an existing entry for the same coin_type + storedAt. */
 export function addCoins(coinType, quantity, storedAt = STORED_AT.BACKPACK) {
@@ -46,10 +38,6 @@ export function addCoins(coinType, quantity, storedAt = STORED_AT.BACKPACK) {
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// UPDATE QUANTITY
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Removes the entry if quantity reaches zero. */
 export function updateCoinQuantity(coinType, storedAt, quantity) {
   if (quantity <= 0) {
@@ -64,10 +52,6 @@ export function updateCoinQuantity(coinType, storedAt, quantity) {
   renderListsPreserving(selected, state.data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MOVE
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Merges into the destination if an entry already exists there — the destination row's
  * id wins and the source row's id is discarded on merge. */
@@ -98,10 +82,6 @@ export function moveCoins(coinType, fromLocation, toLocation) {
   renderListsPreserving(selected, state.data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SEND TO ALLY
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function sendCoinsToAlly(
   instanceId,

@@ -1,13 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   ARCHIVUM SHEET — style.css (orchestrator)
-   Mobile-first, responsive. Primary users: phones during tabletop sessions.
-
-   This file no longer contains rules directly — it only imports the split
-   files below. Order matters: @import rules are applied in the order they
-   appear here, and it mirrors the original single-file cascade exactly, so
-   moving a line up/down this list changes the cascade the same way moving
-   it in the old monolithic file would have.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* Imports only. Order matters: @import rules apply in the order listed, so moving a line changes the cascade. */
 
 /* ── Foundations ─────────────────────────────────────────────────────────── */
 @import url("base/variables.css");

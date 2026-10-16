@@ -23,7 +23,7 @@ import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.j
 const data = state.data;
 const selected = state.selected;
 
-// Re-renders only the magic gear lists, not the full renderLists() sweep — same rationale as accessoriesEvents.js's _renderAccessoryLists (enchantment-type-select flicker fix).
+// Re-renders only the magic gear lists, not the full sweep, so the enchantment-type select does not flicker.
 function _renderMagicGearLists(sheet) {
   renderEquippedMagicGear(selected, data, sheet);
   renderStoredMagicGear(selected, data, sheet);
@@ -60,8 +60,6 @@ const _handleSendMagicGearToAllyClick = createSendToAllyHandler({
     selected.magicGear.some((m) => m.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleMagicGearClick(e) {
   if (
     e.target.classList.contains("remove-magic-gear") ||
@@ -75,11 +73,7 @@ export function handleMagicGearClick(e) {
     equipMagicGear(e.target.dataset.instanceId);
     return true;
   }
-
-  // Delegated to the shared factory — see accessoriesEvents.js for the full rationale.
   if (_handleMagicGearCustomFieldsClick(e)) return true;
-
-  // Delegated to the shared factory — see accessoriesEvents.js for the full rationale.
   if (_magicGearEnchantments.handleClick(e)) return true;
 
   if (_handleSendMagicGearToAllyClick(e)) return true;
@@ -87,14 +81,10 @@ export function handleMagicGearClick(e) {
   return false;
 }
 
-// ─── Input ────────────────────────────────────────────────────────────────────
-
 export function handleMagicGearInput() {
   // No user-input numeric fields on magic gear (price/weight are DB-driven).
   return false;
 }
-
-// ─── Change ───────────────────────────────────────────────────────────────────
 
 export function handleMagicGearChange(e) {
   if (
@@ -104,14 +94,10 @@ export function handleMagicGearChange(e) {
     moveMagicGear(e.target.dataset.instanceId, e.target.value);
     return true;
   }
-
-  // Delegated to the shared factory — see accessoriesEvents.js's click section for the ownership-guard rationale.
   if (_magicGearEnchantments.handleChange(e)) return true;
 
   return false;
 }
-
-// ─── Add form ─────────────────────────────────────────────────────────────────
 
 export function handleAddMagicGear() {
   const nameEl = document.getElementById("magicGearNameSelect");

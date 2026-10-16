@@ -34,10 +34,6 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function magicGearRecord(magicGearId, data) {
   return data.magicGear.find((g) => g.magic_gear_id === magicGearId) ?? null;
 }
@@ -55,10 +51,6 @@ function resolvedMagicGear(sheet, instanceId) {
     instanceId,
   );
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED MAGIC GEAR
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderEquippedMagicGear(selected, data, sheet) {
   const equipped = selected.magicGear.filter((g) => g.is_equipped);
@@ -121,10 +113,6 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
     ])}
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED MAGIC GEAR
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredMagicGear(selected, data, sheet) {
   const stored = selected.magicGear.filter((g) => !g.is_equipped);

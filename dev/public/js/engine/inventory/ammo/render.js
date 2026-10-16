@@ -28,10 +28,6 @@ const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = STORAGE_LOCATIONS.filter(
   (loc) => loc !== STORED_AT.BACKPACK,
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function resolvedContainer(sheet, instanceId) {
   if (!sheet?.inventory?.ammo?.containers) return null;
   for (const bucket of Object.values(sheet.inventory.ammo.containers)) {
@@ -88,8 +84,6 @@ function compatibleAmmoOptions(containerId, containerData, ammoData) {
     .join("");
 }
 
-// ─── Storage options for containers (respects is_carriable) ──────────────────
-
 function containerStorageOptions(currentLocation, isCarriable) {
   // Coerce non-carriable containers that ended up in equipped/backpack → stash
   const locations = isCarriable
@@ -110,8 +104,6 @@ function containerStorageOptions(currentLocation, isCarriable) {
     .join("");
 }
 
-// ─── Move select for loose ammo ───────────────────────────────────────────────
-
 function looseAmmoLocationSelect(ammoId, currentLocation) {
   const options = STORAGE_LOCATIONS.map(
     (loc) =>
@@ -123,10 +115,6 @@ function looseAmmoLocationSelect(ammoId, currentLocation) {
     data-stored-at="${currentLocation}"
   >${options}</select>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER CONTAINERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderAmmoContainers(selected, data, sheet) {
   const containers = selected.ammo_containers;
@@ -310,10 +298,6 @@ function renderContainerSlot(
     </details>
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER LOOSE AMMO
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderLooseAmmo(selected, data, sheet) {
   const looseAmmo = selected.loose_ammo ?? [];

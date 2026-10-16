@@ -41,10 +41,6 @@ import {
   weaponDescriptionField,
 } from "../shared/weaponDetailFields.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Firearms-local wrapper around withEnchantmentBadge, same relationship melee/ranged's wrappers have with it.
 function withFirearmEnchantmentBadge(finalValue, delta, suffix = "") {
   return withEnchantmentBadge(finalValue, delta, {
@@ -151,10 +147,6 @@ function tuningBody({ weaponData, inst, instanceId, prefix }) {
 
   return `<div class="item-detail-grid">${content}</div>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIPPED FIREARMS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderEquippedFirearms(selected, data, sheet) {
   const equippedFirearms = selected.firearms.filter((w) => w.is_equipped);
@@ -272,10 +264,6 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     ])}
   `;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORED FIREARMS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderStoredFirearms(selected, data, sheet) {
   const stored = selected.firearms.filter((w) => !w.is_equipped);

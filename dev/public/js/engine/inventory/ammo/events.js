@@ -24,8 +24,7 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 const selected = state.selected;
 const data = state.data;
 
-// ─── Resume ammo stepper helper ───────────────────────────────────────────────
-// The resume view aggregates quantity for an ammo_id across all equipped containers; adjusting the stepper translates the new total into a delta applied to the first equipped container (by insertion order) holding that ammo_id.
+// The resume view totals an ammo_id across equipped containers; a stepper change becomes a delta on the first equipped container holding it.
 
 function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
   const equippedContainers = selected.ammo_containers.filter(
@@ -65,8 +64,6 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
     }
   }
 }
-
-// ─── Open-state helpers ───────────────────────────────────────────────────────
 
 function _snapshot() {
   return {
@@ -119,8 +116,6 @@ const _handleSendLooseAmmoToAllyClick = createSendToAllyHandler({
     selected.loose_ammo.some((e) => e.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleAmmoClick(e) {
   if (_handleSendContainerToAllyClick(e)) return true;
 
@@ -159,7 +154,6 @@ export function handleAmmoClick(e) {
   return false;
 }
 
-// ─── Input ────────────────────────────────────────────────────────────────────
 // The global stepper handler (events/index.js) fires input events on ± clicks; these enforce capacity clamping via the inventory layer.
 
 export function handleAmmoInput(e) {
@@ -198,8 +192,6 @@ export function handleAmmoInput(e) {
   return false;
 }
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 export function handleAmmoChange(e) {
   if (e.target.classList.contains("ammo-container-storage-select")) {
     moveContainer(e.target.dataset.instanceId, e.target.value);
@@ -228,8 +220,6 @@ export function handleAmmoChange(e) {
   return false;
 }
 
-// ─── Add-form: container ──────────────────────────────────────────────────────
-
 export function handleAddContainer() {
   const containerSelect = document.getElementById("ammoContainerSelect");
   const storageSelect = document.getElementById("ammoContainerStorage");
@@ -239,8 +229,6 @@ export function handleAddContainer() {
   if (!containerId) return;
   addContainer(containerId, storedAt);
 }
-
-// ─── Add-form: loose ammo ─────────────────────────────────────────────────────
 
 export function handleAddLooseAmmo() {
   const ammoSelect = document.getElementById("looseAmmoSelect");

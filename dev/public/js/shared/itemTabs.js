@@ -1,5 +1,4 @@
-// One outer <details> per item (collapsed by default) revealing a Detalhes/Personalizar/
-// Encantamentos(/Ajustes) tab strip, replacing what used to be 3-4 separate top-level <details>.
+// One outer <details> per item (collapsed by default) revealing a Detalhes/Personalizar/Encantamentos(/Ajustes) tab strip.
 import { t } from "../localization/pt-BR/index.js";
 import { getActiveTab, setActiveTab } from "../store/tabState.js";
 import { buildDetailContent } from "./renderUtils.js";

@@ -48,23 +48,17 @@ const _handleSendCustomItemToAllyClick = createSendToAllyHandler({
     state.selected.customInventory.some((c) => c.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleCustomInventoryClick(e) {
   if (e.target.classList.contains("remove-custom-item")) {
     removeCustomItem(e.target.dataset.customItemId);
     return true;
   }
-
-  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleCustomInventoryCustomFieldsClick(e)) return true;
 
   if (_handleSendCustomItemToAllyClick(e)) return true;
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleCustomInventoryInput(e) {
   if (e.target.classList.contains("custom-item-qty")) {
@@ -78,8 +72,6 @@ export function handleCustomInventoryInput(e) {
   return false;
 }
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 export function handleCustomInventoryChange(e) {
   if (e.target.classList.contains("custom-item-location-select")) {
     const customItemId = e.target.dataset.customItemId;
@@ -89,8 +81,6 @@ export function handleCustomInventoryChange(e) {
   }
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export function handleAddCustomItem() {
   const nameEl = document.getElementById("customItemName");

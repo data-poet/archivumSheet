@@ -1,6 +1,4 @@
-// Shared factory for the hit-points-modifier "input" branches, previously
-// copy-pasted as three near-identical ~30-line blocks per equipment type across
-// armor, shield, melee, ranged and firearms — 13 blocks differing only in a CSS
+// Shared factory for the hit-points-modifier "input" branches: they differ per equipment type only in a CSS
 // class, how the instance is located, and which <strong> gets the new total.
 
 import { state } from "../../../state.js";

@@ -288,8 +288,6 @@ async function _loadFile(file) {
   reader.readAsDataURL(file);
 }
 
-// ── Public event handlers ─────────────────────────────────────────────────────
-
 export function handleCharacterImageClick(e) {
   // Background radio buttons — the whole swatch+label is one button, so clicking either works
   const bgBtn = e.target.closest(".charimg-radio-wrap");
@@ -433,8 +431,6 @@ export function handleCharacterImageInput(e) {
   }
   return false;
 }
-
-// ── Init ──────────────────────────────────────────────────────────────────────
 
 /**
  * Call once from main.js after bindUI().

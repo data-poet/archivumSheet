@@ -18,20 +18,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadShields() {
   data.shields = await fetchShields();
 
   loadShieldSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadShieldSelectors() {
   updateShieldNameOptions();
@@ -84,10 +76,6 @@ export function updateShieldMaterialOptions() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Only one shield can be equipped at a time; pass an empty shieldId to clear.
 export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   const currentEquipped = selected.shields.find((s) => s.is_equipped);
@@ -117,10 +105,6 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addStoredShield(
   shieldId,
@@ -205,10 +189,6 @@ export function sendShieldToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Blank strings are normalized to null.
 export function saveShieldCustomFields(
   instanceId,
@@ -226,10 +206,6 @@ export function saveShieldCustomFields(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function addShieldEnchantment(instanceId, enchantmentId, params) {
   const instance = findShieldByInstanceId(instanceId);
@@ -301,10 +277,6 @@ export function removeShieldEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findShieldByInstanceId(instanceId) {
   return selected.shields.find((s) => s.id === instanceId) || null;

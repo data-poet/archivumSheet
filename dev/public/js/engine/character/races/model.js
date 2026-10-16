@@ -7,8 +7,6 @@ import { escapeHtml } from "../../../shared/renderUtils.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─── Load ─────────────────────────────────────────────────────────────────────
-
 export async function loadRaces() {
   if (data.races.length) {
     _showRaceSelects();
@@ -25,8 +23,6 @@ export async function loadRaces() {
     restoreRaceSelection(selected.character.race_id);
   }
 }
-
-// ─── Filter helpers ───────────────────────────────────────────────────────────
 
 function _populateRaceNameSelect() {
   const nameSelect = document.getElementById("raceNameSelect");
@@ -83,8 +79,6 @@ export function selectSubRace() {
   triggerAutoRun();
 }
 
-// ─── Modifiers display ────────────────────────────────────────────────────────
-
 export function updateRaceModifiers() {
   const container = document.getElementById("raceModifiers");
   if (!container) return;
@@ -123,8 +117,6 @@ export function updateRaceModifiers() {
   container.style.display = "";
 }
 
-// ─── Hydrate (called by persistence after import) ─────────────────────────────
-
 export function restoreRaceSelection(raceId) {
   const row = data.races.find((r) => r.race_id === raceId);
   if (!row) return;
@@ -149,8 +141,6 @@ export function restoreRaceSelection(raceId) {
 
   updateRaceModifiers();
 }
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function _showRaceSelects() {
   const btn = document.getElementById("loadRacesBtn");

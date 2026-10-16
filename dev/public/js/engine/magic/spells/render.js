@@ -9,8 +9,6 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
-// ===== SPELLS =====
-
 function getSpellTier(level) {
   if (level <= 12) return "Aprendiz";
   if (level <= 15) return "Experiente";

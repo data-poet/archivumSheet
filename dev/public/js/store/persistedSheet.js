@@ -1,13 +1,6 @@
-// The one writer of the persisted sheet shape.
-//
-// This payload is produced in two situations — autosaving the active character
-// (store/characters.js) and writing an export file (store/persistence.js) — and it used to be
-// hand-written in both. That made adding a field a two-file change where missing the second file
-// fails silently: the field saves but never leaves the device, and the player only finds out on
-// another machine. One writer, one shape.
-//
-// shared/enginePayload.js translates this shape into what buildSheet() wants; the two are
-// deliberately different vocabularies (see that file).
+// The one writer of the persisted sheet shape, used by the autosave (store/characters.js) and the export
+// (store/persistence.js): two hand-written copies let a field save but never leave the device.
+// shared/enginePayload.js translates this shape for buildSheet().
 
 import { state } from "../state.js";
 import { getPrimaryAttributes } from "../compute/attributes.js";

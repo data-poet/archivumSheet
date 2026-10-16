@@ -15,10 +15,6 @@ const _handleSendCoinsToAllyClick = createSendToAllyHandler({
     state.selected.coins.some((c) => c.id === instanceId),
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CLICK
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function handleCoinPurseClick(e) {
   if (e.target.classList.contains("remove-coin")) {
     const { coinType, storedAt } = e.target.dataset;
@@ -36,10 +32,6 @@ export function handleCoinPurseClick(e) {
   return false;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INPUT
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function handleCoinPurseInput(e) {
   if (e.target.classList.contains("coin-qty")) {
     const { coinType, storedAt } = e.target.dataset;
@@ -52,10 +44,6 @@ export function handleCoinPurseInput(e) {
   return false;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CHANGE
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function handleCoinPurseChange(e) {
   if (e.target.classList.contains("coin-location-select")) {
     const { coinType, storedAt } = e.target.dataset;
@@ -65,10 +53,6 @@ export function handleCoinPurseChange(e) {
   }
   return false;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD FORM
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function handleAddCoins() {
   const coinTypeSelect = document.getElementById("coinTypeSelect");

@@ -9,8 +9,6 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
-// ===== SKILLS =====
-
 export function renderSkills(selected, data, sheet) {
   const sheetSkills = sheet?.character?.skills ?? {};
 
@@ -71,7 +69,6 @@ export function renderSkills(selected, data, sheet) {
               ? Boolean(skillState?.isTrainedWithMaster ?? false)
               : false;
 
-            // ── Detail items ─────────────────────────────────────────────────
             const detailItems = [
               {
                 label: t("traits.source"),

@@ -23,20 +23,12 @@ import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOAD
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadMeleeWeapons() {
   data.melee_weapons = await fetchMeleeWeapons();
 
   loadMeleeSelectors();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD-FORM SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function loadMeleeSelectors() {
   updateMeleeTypeOptions();
@@ -115,10 +107,6 @@ export function updateMeleeMaterialOptions() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EQUIP
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Multiple melee weapons can be equipped simultaneously.
 export function equipMelee(
   instanceId,
@@ -143,14 +131,6 @@ export function equipMelee(
   renderListsPreserving(selected, data);
   triggerAutoRun();
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STORAGE OPERATIONS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DUAL-USE SYNC HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 
 function _findLinkedRanged(meleeInstance) {
   return findLinkedCounterpart(meleeInstance, selected.ranged_weapons);
@@ -367,10 +347,6 @@ export function sendMeleeToAlly(
   return true;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FIELD UPDATES (custom fields)
-// ─────────────────────────────────────────────────────────────────────────────
-
 // Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
 // Mirrors to the linked ranged counterpart — a dual-use weapon is one physical item, so renaming applies to both sides.
 export function saveMeleeCustomFields(
@@ -397,16 +373,8 @@ export function saveMeleeCustomFields(
   triggerAutoRun();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENCHANTMENTS
-//
-// Thin wrappers around the generic entry helpers in shared/enchantments/model.js. instance.enchantments
-// defaults to [] defensively since melee weapons saved before this feature existed won't have the field.
-//
-// A melee/ranged pair is one physical weapon, so enchantments stay identical on both sides via the same
-// bidirectional-lookup mirroring used by saveMeleeCustomFields/equipMelee/moveMelee. Ranged's own
-// add/update/remove wrappers mirror back onto melee the same way.
-// ─────────────────────────────────────────────────────────────────────────────
+// A melee/ranged pair is one physical weapon: its enchantments stay identical on both sides, as in
+// saveMeleeCustomFields/equipMelee/moveMelee, and ranged's wrappers mirror back.
 
 export function addMeleeEnchantment(instanceId, enchantmentId, params) {
   const instance = findMeleeByInstanceId(instanceId);
@@ -491,10 +459,6 @@ export function removeMeleeEnchantment(instanceId, entryInstanceId) {
     triggerAutoRun();
   });
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SELECTORS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function findMeleeByInstanceId(instanceId) {
   return selected.melee_weapons.find((w) => w.id === instanceId) || null;

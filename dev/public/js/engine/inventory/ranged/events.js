@@ -37,8 +37,6 @@ import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 const data = state.data;
 const selected = state.selected;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const _renderRangedLists = createListRenderer(
   renderEquippedRanged,
   renderStoredRanged,
@@ -84,8 +82,6 @@ const _handleSendRangedToAllyClick = createSendToAllyHandler({
     selected.ranged_weapons.some((r) => r.id === instanceId),
 });
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleRangedClick(e) {
   if (e.target.classList.contains("remove-ranged")) {
     removeRanged(e.target.dataset.instanceId);
@@ -107,8 +103,6 @@ export function handleRangedClick(e) {
     );
     return true;
   }
-
-  // Delegated to the shared factory — see armorEvents.js for the full rationale.
   if (_handleRangedCustomFieldsClick(e)) return true;
 
   if (_rangedEnchantments.handleClick(e)) return true;
@@ -117,8 +111,6 @@ export function handleRangedClick(e) {
 
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 // A dual-use pair is one physical weapon, so damage taken on the ranged side shows
 // up on the melee side too — mirrors melee/events.js's _mirrorHpToLinkedRanged.
@@ -152,8 +144,6 @@ export const handleRangedInput = createHpInputHandler({
   onApplied: _mirrorHpToLinkedMelee,
 });
 
-// ─── Change ───────────────────────────────────────────────────────────────────
-
 const _handleRangedWeaponChange = createWeaponChangeHandler({
   classPrefix: "ranged",
   catalog: () => data.ranged_weapons,
@@ -184,8 +174,6 @@ export function handleRangedChange(e) {
 
   return false;
 }
-
-// ─── Add-form ─────────────────────────────────────────────────────────────────
 
 export const handleAddRanged = createWeaponAddHandler({
   idPrefix: "ranged",

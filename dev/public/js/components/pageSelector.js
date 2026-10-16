@@ -1,13 +1,7 @@
 // Switches between the app's pages (sheet / reference). Mounted on every page.
-//
-// Navigation is same-tab and deliberately so: every engine rebuild persists the active
-// character (compute/index.js calls saveActiveCharacter), and that writer rebuilds the
-// whole payload from the page it runs on. Two live tabs sharing localStorage would race
-// and silently drop edits. One live page at a time makes that impossible. The rows stay
-// real <a href> elements so ⌘/ctrl-click can still open a deliberate new tab.
-//
-// The popover reuses the `char-selector-*` classes: those are the app's generic
-// popover-list styles, and renaming them is a separate cleanup.
+// Navigation is same-tab on purpose: every engine rebuild persists the active character from the page it runs on, so
+// two live tabs sharing localStorage would race and drop edits. Rows stay real <a href> so ⌘/ctrl-click can still
+// open a deliberate new tab. The popover reuses the `char-selector-*` classes (the generic popover-list styles).
 
 import { icon } from "../shared/icons.js";
 import { LABELS } from "../localization/pt-BR/index.js";

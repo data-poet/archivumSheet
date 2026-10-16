@@ -7,8 +7,6 @@ import { getEditTarget } from "../../../shared/editTarget.js";
 import { PC_EDIT_TARGET } from "./pcEditTarget.js";
 import { handleResumeAttributeInput } from "./resumeAttributeInput.js";
 
-// ─── Click ────────────────────────────────────────────────────────────────────
-
 export function handleTraitClick(e) {
   if (e.target.classList.contains("remove-adv")) {
     removeAdv(e.target.dataset.id);
@@ -20,8 +18,6 @@ export function handleTraitClick(e) {
   }
   return false;
 }
-
-// ─── Input ────────────────────────────────────────────────────────────────────
 
 export function handleTraitInput(e) {
   const selected = state.selected;
@@ -46,7 +42,7 @@ export function handleTraitInput(e) {
     return true;
   }
 
-  // Typed as whole percentage points (e.g. "-20"), converted to the decimal fraction the engine expects (-0.2). Left uncapped: only the engine's final value is floored at 0.
+  // Typed as whole percentage points ("-20") and converted to the engine's decimal (-0.2); uncapped, only the final value is floored at 0.
   if (e.target.classList.contains("resistance-input")) {
     const { type } = e.target.dataset;
     const raw = e.target.value;

@@ -17,10 +17,6 @@ import {
 } from "../shared/sendToAllyControl.js";
 import { getActiveCharacterId } from "../../../store/characters.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-
 function getGearRecord(gearId, survivalGearData) {
   return survivalGearData.find((g) => g.adventure_gear_id === gearId) ?? null;
 }
@@ -62,10 +58,6 @@ function survivalGearLocationSelect(gearId, currentLocation) {
     data-stored-at="${currentLocation}"
   >${options}</select>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN RENDER
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function renderSurvivalGear(selected, data, sheet) {
   const entries = selected.survivalGear ?? [];

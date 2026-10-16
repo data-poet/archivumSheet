@@ -7,13 +7,9 @@ import {
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 function emptyRow(colspan) {
   return `<tr class="empty-row"><td colspan="${colspan}">—</td></tr>`;
 }
-
-// ===== ADVANTAGES =====
 
 export function renderAdvantages(selected, data, sheet) {
   const advMap = sheet?.character?.advantages ?? selected.advantages;
@@ -88,8 +84,6 @@ export function renderAdvantages(selected, data, sheet) {
   `,
   );
 }
-
-// ===== DISADVANTAGES =====
 
 export function renderDisadvantages(selected, data, sheet) {
   const disMap = sheet?.character?.disadvantages ?? selected.disadvantages;
