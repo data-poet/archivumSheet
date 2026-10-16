@@ -1,6 +1,7 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { ELEMENTAL_TYPES } = require("../attributes/elementalResistances");
 const { multiplierOf } = require("../shared/multiplierOf");
+const { toList } = require("../../../../helpers/rowParsers.js");
 
 const ELEMENT_COLUMN = {
   Fire: "meta_race_fire_damage_multiplier",
@@ -22,15 +23,6 @@ const ATTRIBUTE_COLUMN = {
   HT: "meta_race_ht_modifier",
 };
 
-function idListOf(raw) {
-  if (!raw) return [];
-
-  return raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
 // Resolves selected meta_race_ids against db_yrth_meta_races.csv. Elemental multipliers from every
 // selected row multiply together (and later against race's own multiplier — see
 // elementalResistances.js); attribute modifiers and advantage/disadvantage ids sum/union instead,
@@ -50,10 +42,8 @@ function resolveMetaRaces(metaRaceIds = []) {
   const attributeModifiers = { ST: 0, DX: 0, IQ: 0, HT: 0 };
 
   for (const row of selectedRows) {
-    innateAdvantageIds.push(...idListOf(row.meta_race_innate_advantage_id));
-    innateDisadvantageIds.push(
-      ...idListOf(row.meta_race_innate_disadvantage_id),
-    );
+    innateAdvantageIds.push(...toList(row.meta_race_innate_advantage_id));
+    innateDisadvantageIds.push(...toList(row.meta_race_innate_disadvantage_id));
 
     for (const type of ELEMENTAL_TYPES) {
       elementalMultipliers[type] *= multiplierOf(row[ELEMENT_COLUMN[type]]);

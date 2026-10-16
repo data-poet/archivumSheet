@@ -1,27 +1,11 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
+const {
+  toBool,
+  toList,
+  toNumberOrNull,
+} = require("../../../../helpers/rowParsers.js");
 
 let _enchantmentsDB = null;
-
-function toNumberOrNull(value) {
-  if (value === undefined || value === null || value === "") {
-    return null;
-  }
-
-  const num = Number(value);
-
-  return isFinite(num) ? num : null;
-}
-
-function toBoolean(value) {
-  return String(value).trim().toUpperCase() === "TRUE";
-}
-
-function toItemList(value) {
-  return String(value || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
 
 function getEnchantmentsDB() {
   if (_enchantmentsDB) {
@@ -40,7 +24,7 @@ function getEnchantmentsDB() {
       // UI grouping/filtering only — computation branches on enchantment_effect_type below, never this.
       enchantment_type: row.enchantment_type,
       enchantment_effect_type: row.enchantment_effect_type,
-      enchantment_is_parametric: toBoolean(row.enchantment_is_parametric),
+      enchantment_is_parametric: toBool(row.enchantment_is_parametric),
 
       // null for player-picked targets and for item-stat types with no target at all.
       enchantment_target: row.enchantment_target || null,
@@ -48,9 +32,9 @@ function getEnchantmentsDB() {
       // Whole numbers unless enchantment_is_percentage, in which case decimal fractions (0.05 = 5%).
       enchantment_base_value: toNumberOrNull(row.enchantment_base_value),
       enchantment_step: toNumberOrNull(row.enchantment_step),
-      enchantment_is_percentage: toBoolean(row.enchantment_is_percentage),
+      enchantment_is_percentage: toBool(row.enchantment_is_percentage),
 
-      enchantment_allowed_itens: toItemList(row.enchantment_allowed_itens),
+      enchantment_allowed_itens: toList(row.enchantment_allowed_itens),
 
       enchantment_base_price: toNumberOrNull(row.enchantment_base_price),
       enchantment_price_per_extra_value: toNumberOrNull(

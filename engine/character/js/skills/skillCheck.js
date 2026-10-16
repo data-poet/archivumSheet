@@ -1,3 +1,4 @@
+const { toList } = require("../../../../helpers/rowParsers.js");
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
 
@@ -11,10 +12,7 @@ function computeParry(row, level, hasReflexos) {
 }
 
 function parseSkillDefaults(text = "") {
-  return String(text)
-    .split(";")
-    .map((entry) => entry.trim())
-    .filter(Boolean)
+  return toList(text, ";")
     .map((entry) => {
       const [skillId, penalty] = entry.split(":");
       return { skillId: skillId.trim(), penalty: Number(penalty) };

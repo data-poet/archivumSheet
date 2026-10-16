@@ -8,6 +8,7 @@ const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { criticalRanges } = require("../helpers/criticalRanges");
 const { REFLEXOS_EM_COMBATE_ID } = require("../helpers/ids");
 const { pickRace } = require("./character/js/traits/races");
+const { toBool } = require("../helpers/rowParsers");
 const { VALID_STORED_AT, ALL_BUCKETS } = require("../helpers/storage");
 const {
   shieldSkillId,
@@ -339,11 +340,7 @@ function buildSheet({
       damage: _unarmedDamage,
     },
     ...Object.values(_skillRows)
-      .filter(
-        (row) =>
-          String(row.skill_is_unarmed).trim().toUpperCase() === "TRUE" &&
-          _skills[row.skill_id],
-      )
+      .filter((row) => toBool(row.skill_is_unarmed) && _skills[row.skill_id])
       .map((row) => ({
         ..._skillCheck(row.skill_id),
         damage: _unarmedDamage,

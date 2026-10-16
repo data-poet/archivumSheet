@@ -1,3 +1,4 @@
+import { toBool, toList } from "../../../../shared/rowParsers.js";
 import { state } from "../../../../state.js";
 import {
   fetchEnchantments,
@@ -79,9 +80,9 @@ export function isRequisiteType(effectType) {
   );
 }
 
-// Reads the raw catalog record (unparsed CSV), so checks the string "TRUE" rather than a parsed boolean.
+// Reads the raw catalog record (unparsed CSV), so it parses the cell itself.
 export function isPercentageType(record) {
-  return record?.enchantment_is_percentage === "TRUE";
+  return toBool(record?.enchantment_is_percentage);
 }
 
 export function isAdvantageType(effectType) {
@@ -121,10 +122,7 @@ export function getEnchantmentRecord(enchantmentId) {
 // enchantment_allowed_itens is still a raw comma string here (unparsed CSV row), unlike the engine's own parsed DB.
 export function getAllowedEnchantments(itemCategory, typeFilter) {
   const allowed = data.enchantments.filter((e) =>
-    (e.enchantment_allowed_itens || "")
-      .split(",")
-      .map((s) => s.trim())
-      .includes(itemCategory),
+    toList(e.enchantment_allowed_itens).includes(itemCategory),
   );
 
   return typeFilter

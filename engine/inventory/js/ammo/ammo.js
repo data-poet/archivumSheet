@@ -1,3 +1,4 @@
+const { toBool } = require("../../../../helpers/rowParsers.js");
 const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const {
@@ -63,7 +64,7 @@ function getContainerDB() {
       container_weight: Number(row.container_weight),
       container_price: Number(row.container_price),
       container_ammo_type: row.container_ammo_type,
-      is_carriable: String(row.is_carriable).toLowerCase() === "true",
+      is_carriable: toBool(row.is_carriable),
     };
   }
 

@@ -1,3 +1,5 @@
+import { toList } from "./rowParsers.js";
+
 // Who a catalog row may be picked by.
 //
 // Ally-only content (an elemental's race, a construct's innate traits) lives in the same
@@ -24,10 +26,7 @@ export function isAvailableFor(row, audience) {
   const raw = row?.[AVAILABLE_FOR_COLUMN];
   if (raw === undefined || raw === null) return true;
 
-  const declared = String(raw)
-    .split(",")
-    .map((value) => value.trim().toLowerCase())
-    .filter(Boolean);
+  const declared = toList(raw).map((value) => value.toLowerCase());
 
   if (declared.length === 0) return true;
 

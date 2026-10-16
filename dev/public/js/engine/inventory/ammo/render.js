@@ -1,3 +1,4 @@
+import { toBool } from "../../../shared/rowParsers.js";
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
@@ -166,7 +167,7 @@ function renderContainerSlot(
     ? parseInt(containerRecord.container_capacity, 10)
     : "?";
   const ammoType = containerRecord?.container_ammo_type ?? "?";
-  const isCarriable = containerRecord?.is_carriable === "TRUE";
+  const isCarriable = toBool(containerRecord?.is_carriable);
 
   const usedCap =
     resolved?.used_capacity ??

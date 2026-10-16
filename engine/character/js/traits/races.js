@@ -1,6 +1,7 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { ELEMENTAL_TYPES } = require("../attributes/elementalResistances");
 const { multiplierOf } = require("../shared/multiplierOf");
+const { toList } = require("../../../../helpers/rowParsers.js");
 
 const MODIFIER_COLUMNS = {
   ST: "race_st_modifier",
@@ -11,13 +12,6 @@ const MODIFIER_COLUMNS = {
 
 const multiplierColumn = (type) =>
   `race_${type.toLowerCase()}_damage_multiplier`;
-
-function idListOf(raw) {
-  return String(raw ?? "")
-    .split(",")
-    .map((part) => part.trim())
-    .filter(Boolean);
-}
 
 // Builds what the rest of the engine reads about a race from its db_yrth_races.csv row. {} when there is no
 // race (none chosen, or an id the dataset no longer has).
@@ -46,10 +40,10 @@ function resolveRace(raceId) {
         multiplierOf(row[multiplierColumn(type)]),
       ]),
     ),
-    innate_advantage_ids: idListOf(row.race_innate_advantage_id),
-    innate_disadvantage_ids: idListOf(row.race_innate_disadvantage_id),
-    innate_advantage_names: idListOf(row.race_innate_advantage_name),
-    innate_disadvantage_names: idListOf(row.race_innate_disadvantage_name),
+    innate_advantage_ids: toList(row.race_innate_advantage_id),
+    innate_disadvantage_ids: toList(row.race_innate_disadvantage_id),
+    innate_advantage_names: toList(row.race_innate_advantage_name),
+    innate_disadvantage_names: toList(row.race_innate_disadvantage_name),
   };
 }
 
