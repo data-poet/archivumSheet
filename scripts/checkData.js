@@ -14,6 +14,7 @@ const {
 const { ID_COLUMN, KEY_COLUMN } = require("../helpers/datasetColumns.js");
 const { DAMAGE_TYPES } = require("../helpers/taxonomy.js");
 const { resolveRuleKeys } = require("../helpers/ruleKeys.js");
+const { REFERENCES, idsInCell } = require("../helpers/datasetReferences.js");
 const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
 const { SLOT_MAP } = require("../engine/inventory/js/armor/armorConstants.js");
 const {
@@ -46,15 +47,6 @@ const ID_FORMAT = /^[A-Z][A-Z_]*(-[A-Z]+)*-\d{3,4}$/;
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const EQUIPMENT_TIERS = ["Comum", "Boa", "Superior", "Excelente", "Obra-Prima"];
 const WEAPON_DATASETS = ["MELEE_WEAPONS", "RANGED_WEAPONS", "FIREARMS"];
-
-// [dataset, column, target dataset]: the cell holds one id, or a comma/semicolon list of ids.
-const REFERENCES = [
-  ...WEAPON_DATASETS.map((d) => [d, "weapon_skill_id", "SKILLS"]),
-  ["RACES", "race_innate_advantage_id", "ADVANTAGES"],
-  ["RACES", "race_innate_disadvantage_id", "DISADVANTAGES"],
-  ["META_RACES", "meta_race_innate_advantage_id", "ADVANTAGES"],
-  ["META_RACES", "meta_race_innate_disadvantage_id", "DISADVANTAGES"],
-];
 
 // [dataset, column, allowed values, separator]: every value must be one of the allowed ones.
 const allowedItemTokens = [
@@ -276,13 +268,14 @@ function checkIdsAndKeys(findings) {
 }
 
 function checkReferences(findings) {
-  REFERENCES.forEach(([dataset, column, target]) => {
+  REFERENCES.forEach(({ dataset, column, target }) => {
     const targetIds = new Set(
       loadDataset(target).map((row) => idOf(target, row)),
     );
     loadDataset(dataset).forEach((row) => {
-      splitList(row[column]).forEach((reference) => {
-        if (!targetIds.has(reference)) {
+      idsInCell(row[column])
+        .filter((reference) => !targetIds.has(reference))
+        .forEach((reference) => {
           findings.push(
             finding(
               "error",
@@ -292,26 +285,7 @@ function checkReferences(findings) {
               `${column} points at ${reference}, which is not in ${target}`,
             ),
           );
-        }
-      });
-    });
-  });
-
-  const skillIds = new Set(loadDataset("SKILLS").map((row) => row.skill_id));
-  loadDataset("SKILLS").forEach((row) => {
-    splitList(row.skill_defaults, ";").forEach((entry) => {
-      const [skillId] = entry.split(":");
-      if (!skillIds.has(skillId)) {
-        findings.push(
-          finding(
-            "error",
-            "reference",
-            "SKILLS",
-            row.skill_id,
-            `skill_defaults points at ${skillId}, which is not in SKILLS`,
-          ),
-        );
-      }
+        });
     });
   });
 
@@ -649,8 +623,7 @@ function printGrouped(title, list) {
   });
 }
 
-function main(args) {
-  const result = runChecks({ verbose: args.includes("--verbose") });
+function printReport(result) {
   printSection("ERRORS", result.errors, 50);
   printGrouped("KNOWN ISSUES (scripts/dataKnownIssues.json)", result.known);
   printGrouped("WARNINGS", result.warnings);
@@ -658,9 +631,14 @@ function main(args) {
   console.log(
     `\n${result.errors.length} error(s), ${result.known.length} known, ${result.warnings.length} warning(s)`,
   );
+}
+
+function main(args) {
+  const result = runChecks({ verbose: args.includes("--verbose") });
+  printReport(result);
   process.exitCode = result.errors.length > 0 ? 1 : 0;
 }
 
-module.exports = { runChecks, splitList };
+module.exports = { runChecks, printReport, splitList };
 
 if (require.main === module) main(process.argv.slice(2));

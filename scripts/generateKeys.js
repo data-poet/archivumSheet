@@ -308,6 +308,7 @@ function main(args) {
 module.exports = {
   KEYED_DATASETS,
   slugify,
+  joinSlugs,
   deriveKeys,
   recordSpans,
   rewriteCsv,
