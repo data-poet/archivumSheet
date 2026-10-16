@@ -3,6 +3,7 @@ const path = require("path");
 const {
   PRIMARY_DEFAULT_VALUE,
   PRIMARY_COST,
+  PRIMARY_KEYS,
   POINTS_PER_PURCHASE,
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,
@@ -42,6 +43,7 @@ describe("primary attribute rules", () => {
   test("values are pinned", () => {
     expect(PRIMARY_DEFAULT_VALUE).toBe(10);
     expect(PRIMARY_COST).toEqual({ ST: 10, DX: 20, IQ: 20, HT: 10 });
+    expect(PRIMARY_KEYS).toEqual(["ST", "DX", "IQ", "HT"]);
   });
 
   test.each(Object.entries(PRIMARY_COST))(

@@ -17,15 +17,23 @@ export const STORAGE_LOCATIONS = [
 
 export const STORAGE_LABELS = LABELS.storage;
 
-// These are the DB's Portuguese slot-name keys; keep in sync with LABELS.armor.slots.
-export const ARMOR_SLOTS = [
-  "Cabeça",
-  "Tronco",
-  "Braços",
-  "Mãos",
-  "Pernas",
-  "Pés",
-];
+// The DB's Portuguese slot names (also the UI labels) → the engine's slot keys.
+// Mirrors SLOT_MAP in engine/inventory/js/armor/armorConstants.js; a test pins the parity.
+export const ARMOR_SLOT_KEYS = Object.freeze({
+  Cabeça: "head",
+  Tronco: "torso",
+  Braços: "arms",
+  Mãos: "hands",
+  Pernas: "legs",
+  Pés: "feet",
+});
+
+export const ARMOR_SLOTS = Object.keys(ARMOR_SLOT_KEYS);
+
+// Mirror PRIMARY_KEYS and PRIMARY_DEFAULT_VALUE in helpers/rules.js. Unlike the numbers served by
+// /api/rules, these are needed before the rules load (blank characters, index.html's inputs).
+export const PRIMARY_ATTRIBUTES = ["ST", "DX", "IQ", "HT"];
+export const DEFAULT_PRIMARY_VALUE = 10;
 
 // ACCESSORY_ITEM_CATEGORY / MAGIC_GEAR_ITEM_CATEGORY are fetched from
 // /api/inventory/item-categories at bootstrap (see shared/enchantments/model.js),

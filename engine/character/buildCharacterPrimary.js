@@ -1,3 +1,4 @@
+const { PRIMARY_KEYS } = require("../../helpers/rules");
 const { buildAdvantages } = require("./js/traits/advantages");
 const { buildDisadvantages } = require("./js/traits/disadvantages");
 const { buildPrimaryAttributes } = require("./js/attributes/primary");
@@ -25,7 +26,7 @@ function buildCharacterPrimary({
   const attributesWithRace = withEnchantmentModifier(
     primaryAttributes,
     enchantmentAttributeModifiers,
-    ["ST", "DX", "IQ", "HT"],
+    PRIMARY_KEYS,
     (attr) => ({
       race_modifier:
         (raceModifiers[attr] ?? 0) + (metaRaceAttributeModifiers[attr] ?? 0),

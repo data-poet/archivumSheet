@@ -1,6 +1,6 @@
 import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
-import { isVitalAttribute } from "../shared/constants.js";
+import { PRIMARY_ATTRIBUTES, isVitalAttribute } from "../shared/constants.js";
 import { isUnbuyableSecondary } from "../shared/rules.js";
 
 // th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
@@ -42,7 +42,7 @@ export function initAttributeTableHeaders() {
 }
 
 export function updateActualValues() {
-  ["ST", "DX", "IQ", "HT"].forEach((attr) => {
+  PRIMARY_ATTRIBUTES.forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
     const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
 

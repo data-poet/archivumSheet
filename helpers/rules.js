@@ -11,6 +11,8 @@ const PRIMARY_COST = {
   HT: 10,
 };
 
+const PRIMARY_KEYS = Object.keys(PRIMARY_COST);
+
 const POINTS_PER_PURCHASE = 5;
 
 const DEFAULT_SECONDARY_PURCHASE = { step: 1, maxBought: 5 };
@@ -71,6 +73,7 @@ const BASIC_LIFT = { divisor: 10, wholeKgFrom: 5 };
 module.exports = {
   PRIMARY_DEFAULT_VALUE,
   PRIMARY_COST,
+  PRIMARY_KEYS,
   POINTS_PER_PURCHASE,
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,

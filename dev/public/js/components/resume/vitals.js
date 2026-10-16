@@ -7,7 +7,10 @@ import {
   getExperienceRankName,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
-import { VITAL_ATTRIBUTES } from "../../shared/constants.js";
+import {
+  PRIMARY_ATTRIBUTES,
+  VITAL_ATTRIBUTES,
+} from "../../shared/constants.js";
 import { thresholdChip, fillThreshold } from "../thresholds.js";
 import { getExperienceRank } from "../../engine/character/experienceRank.js";
 import { collapsibleHeader, bindCollapse } from "./shared.js";
@@ -80,13 +83,10 @@ export function renderResumePrimaryAttributes(sheet) {
     return;
   }
 
-  const attrs = ["ST", "DX", "IQ", "HT"];
-
-  container.innerHTML = attrs
-    .map((key) => {
-      const value = primary[key]?.value ?? "—";
-      const modVal = primary[key]?.modifier ?? 0;
-      return `
+  container.innerHTML = PRIMARY_ATTRIBUTES.map((key) => {
+    const value = primary[key]?.value ?? "—";
+    const modVal = primary[key]?.modifier ?? 0;
+    return `
         <div class="resume-attr-box">
           <span class="resume-attr-acronym">${key}</span>
           <span class="resume-attr-value">${value}</span>
@@ -105,8 +105,7 @@ export function renderResumePrimaryAttributes(sheet) {
           </div>
         </div>
       `;
-    })
-    .join("");
+  }).join("");
 }
 
 const SECONDARY_SNAPSHOT_KEYS = [

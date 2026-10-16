@@ -3,7 +3,11 @@
 
 import { state } from "../state.js";
 import { capturePersistedSheet, SCHEMA_VERSION } from "./persistedSheet.js";
-import { ENTRY_KINDS } from "../shared/constants.js";
+import {
+  ENTRY_KINDS,
+  PRIMARY_ATTRIBUTES,
+  DEFAULT_PRIMARY_VALUE,
+} from "../shared/constants.js";
 import { renderListsPreserving } from "../ui.js";
 import { triggerAutoRun } from "../compute/autorun.js";
 import { ensureInstanceIds } from "./instanceId.js";
@@ -58,12 +62,12 @@ function _blankData() {
     },
     race: {},
     character: {
-      primary: {
-        ST: { base_value: 10, modifier: 0 },
-        DX: { base_value: 10, modifier: 0 },
-        IQ: { base_value: 10, modifier: 0 },
-        HT: { base_value: 10, modifier: 0 },
-      },
+      primary: Object.fromEntries(
+        PRIMARY_ATTRIBUTES.map((attr) => [
+          attr,
+          { base_value: DEFAULT_PRIMARY_VALUE, modifier: 0 },
+        ]),
+      ),
       secondary: {},
       damage: {},
       resistances: {},
@@ -165,12 +169,12 @@ function _applyData(data) {
     restoreRaceSelection(selected.character.race_id);
   }
 
-  ["ST", "DX", "IQ", "HT"].forEach((attr) => {
+  PRIMARY_ATTRIBUTES.forEach((attr) => {
     const src = character.primary?.[attr];
     if (!src) return;
     const base = document.getElementById(`${attr}_base`);
     const mod = document.getElementById(`${attr}_mod`);
-    if (base) base.value = src.base_value ?? 10;
+    if (base) base.value = src.base_value ?? DEFAULT_PRIMARY_VALUE;
     if (mod) mod.value = src.modifier ?? 0;
   });
 

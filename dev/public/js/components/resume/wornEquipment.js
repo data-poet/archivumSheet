@@ -3,6 +3,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { ARMOR_SLOTS, ARMOR_SLOT_KEYS } from "../../shared/constants.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 import {
   collapsibleHeader,
@@ -13,28 +14,24 @@ import {
   nhCell,
 } from "./shared.js";
 
-const ARMOR_SLOTS = [
-  { key: "head", label: "Cabeça" },
-  { key: "torso", label: "Tronco" },
-  { key: "arms", label: "Braços" },
-  { key: "hands", label: "Mãos" },
-  { key: "legs", label: "Pernas" },
-  { key: "feet", label: "Pés" },
-];
+const ARMOR_SLOT_ROWS = ARMOR_SLOTS.map((label) => ({
+  key: ARMOR_SLOT_KEYS[label],
+  label,
+}));
 
 export function renderResumeArmor(sheet, { editable = true } = {}) {
   const equipped = sheet?.inventory?.armor?.equipped || {};
   const container = el("resume_armor_container");
   if (!container) return;
 
-  const hasAny = ARMOR_SLOTS.some((s) => equipped[s.key] != null);
+  const hasAny = ARMOR_SLOT_ROWS.some((s) => equipped[s.key] != null);
   if (!hasAny) {
     container.hidden = true;
     return;
   }
   container.hidden = false;
 
-  const rows = ARMOR_SLOTS.map(({ key, label }) => {
+  const rows = ARMOR_SLOT_ROWS.map(({ key, label }) => {
     const piece = equipped[key];
     if (!piece) {
       return `<tr><td>${label}</td><td class="col-num">—</td><td></td></tr>`;

@@ -1,4 +1,8 @@
 import { state } from "../state.js";
+import {
+  PRIMARY_ATTRIBUTES,
+  DEFAULT_PRIMARY_VALUE,
+} from "../shared/constants.js";
 import { capturePersistedSheet } from "./persistedSheet.js";
 import { buildAllyFile } from "./allies/allyExport.js";
 import { getActiveCharacterId } from "./characters.js";
@@ -198,12 +202,12 @@ function _applyImport(payload) {
     restoreRaceSelection(selected.character.race_id);
   }
 
-  ["ST", "DX", "IQ", "HT"].forEach((attr) => {
+  PRIMARY_ATTRIBUTES.forEach((attr) => {
     const src = character.primary?.[attr];
     if (!src) return;
     const base = document.getElementById(`${attr}_base`);
     const mod = document.getElementById(`${attr}_mod`);
-    if (base) base.value = src.base_value ?? 10;
+    if (base) base.value = src.base_value ?? DEFAULT_PRIMARY_VALUE;
     if (mod) mod.value = src.modifier ?? 0;
   });
 
