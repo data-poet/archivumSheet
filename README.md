@@ -30,6 +30,7 @@ The app runs at `http://localhost:3000`.
 ```bash
 npm test          # run the full test suite once
 npm run test:watch
+npm run test:renumber   # re-run the suite on a copy with every dataset id shifted
 ```
 
 ---
@@ -108,6 +109,8 @@ Load-bearing constraints, not preferences — all contributions must follow them
 Jest tests live in `tests/`, mirroring `engine/`'s structure exactly. The UI layer has no tests by design — it's a thin renderer with no logic of its own.
 
 Reusable assertion helpers in `tests/helpers/`: `assertShape.js`, `assertBasePlusModifier.js`, `assertNumericMap.js`, `assertSelectedOnly.js`.
+
+Tests never hardcode a dataset id. `tests/helpers/dataRefs.js` finds each row by what it is (a name, or an effect and target) and returns its current id, and the ids production code owns live in `helpers/ids.js`. To renumber or reorder a dataset, edit the CSV and `helpers/ids.js`, then run `npm test` and `npm run test:renumber`; no test file should need to change. A ref that matches no row (or several) fails with a message pointing at the spec to update.
 
 ---
 

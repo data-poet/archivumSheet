@@ -11,7 +11,8 @@
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "test:renumber": "node scripts/renumberCheck.js"
   },
   "author": "",
   "license": "ISC",
