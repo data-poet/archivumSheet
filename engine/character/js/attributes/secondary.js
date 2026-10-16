@@ -1,5 +1,10 @@
 const { calculateCarryWeight } = require("../../../inventory/js/carryWeight");
 const { calculateDamage } = require("./baseDamage");
+const {
+  POINTS_PER_PURCHASE,
+  DEFAULT_SECONDARY_PURCHASE,
+  SECONDARY_PURCHASE,
+} = require("../../../../helpers/rules");
 
 const LOW_RESERVES = ["HP", "FP"];
 
@@ -14,8 +19,8 @@ function resolveSecondary({
   enchantment_modifier = 0,
   has_enchantment_modifier = false,
   max_modifier = 0,
-  maxBought = 5,
-  step = 1,
+  maxBought = DEFAULT_SECONDARY_PURCHASE.maxBought,
+  step = DEFAULT_SECONDARY_PURCHASE.step,
 }) {
   const safeBought = clamp(bought, 0, maxBought);
   const final_base_value = base_value + safeBought * step;
@@ -29,7 +34,7 @@ function resolveSecondary({
     max_modifier,
     final_base_value,
     value: final_base_value + modifier + enchantment_modifier + max_modifier,
-    points: safeBought * 5,
+    points: safeBought * POINTS_PER_PURCHASE,
   };
 }
 
@@ -78,57 +83,61 @@ function buildSecondaryAttributes(
   const result = {
     HP: resolveSecondary({
       base_value: base.HP,
-      step: 4,
+      ...SECONDARY_PURCHASE.HP,
       ...config.HP,
     }),
 
     FP: resolveSecondary({
       base_value: base.FP,
+      ...SECONDARY_PURCHASE.FP,
       ...config.FP,
     }),
 
     Mana: resolveSecondary({
       base_value: base.Mana,
-      step: 4,
+      ...SECONDARY_PURCHASE.Mana,
       ...config.Mana,
     }),
 
     Toxicity: resolveSecondary({
       base_value: base.Toxicity,
-      step: 4,
+      ...SECONDARY_PURCHASE.Toxicity,
       ...config.Toxicity,
     }),
 
     Will: resolveSecondary({
       base_value: base.Will,
+      ...SECONDARY_PURCHASE.Will,
       ...config.Will,
     }),
 
     Vision: resolveSecondary({
       base_value: base.Vision,
+      ...SECONDARY_PURCHASE.Vision,
       ...config.Vision,
     }),
 
     Hearing: resolveSecondary({
       base_value: base.Hearing,
+      ...SECONDARY_PURCHASE.Hearing,
       ...config.Hearing,
     }),
 
     Smell: resolveSecondary({
       base_value: base.Smell,
+      ...SECONDARY_PURCHASE.Smell,
       ...config.Smell,
     }),
 
     BasicSpeed: resolveSecondary({
       base_value: base.BasicSpeed,
-      step: 0.5,
-      maxBought: 6,
+      ...SECONDARY_PURCHASE.BasicSpeed,
       ...config.BasicSpeed,
     }),
 
     DamageResistance: resolveSecondary({
       base_value: 0,
-      maxBought: 0,
+      ...SECONDARY_PURCHASE.DamageResistance,
       ...config.DamageResistance,
     }),
   };
@@ -143,7 +152,7 @@ function buildSecondaryAttributes(
 
   const unencumbered = resolveSecondary({
     base_value: basicMove,
-    maxBought: 0,
+    ...SECONDARY_PURCHASE.Movement,
     bought: 0,
     modifier: config.Movement?.modifier ?? 0,
     enchantment_modifier: config.Movement?.enchantment_modifier ?? 0,
@@ -168,7 +177,7 @@ function buildSecondaryAttributes(
 
   result.Dodge = resolveSecondary({
     base_value: dodgeBase,
-    maxBought: 0,
+    ...SECONDARY_PURCHASE.Dodge,
     bought: 0,
     modifier: config.Dodge?.modifier ?? 0,
     enchantment_modifier: config.Dodge?.enchantment_modifier ?? 0,
