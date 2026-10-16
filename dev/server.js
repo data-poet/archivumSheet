@@ -58,140 +58,42 @@ app.use(
 );
 
 /* -----------------------
+   DATASETS
+   One route per CSV, serving its parsed rows as they are.
+------------------------ */
+const DATASET_ROUTES = {
+  "/api/advantages": "ADVANTAGES",
+  "/api/disadvantages": "DISADVANTAGES",
+  "/api/skills": "SKILLS",
+  "/api/spells": "GRIMOIRE",
+  "/api/races": "RACES",
+  "/api/meta-races": "META_RACES",
+  "/api/materials": "CRAFTING_MATERIALS",
+  "/api/armors": "ARMORS",
+  "/api/shields": "SHIELDS",
+  "/api/melee_weapons": "MELEE_WEAPONS",
+  "/api/ranged_weapons": "RANGED_WEAPONS",
+  "/api/firearms": "FIREARMS",
+  "/api/ammo": "AMMO",
+  "/api/ammo_containers": "AMMO_CONTAINERS",
+  "/api/alchemy": "ALCHEMY",
+  "/api/survival_gear": "ADVENTURE_GEAR",
+  "/api/accessories": "ACCESSORIES",
+  "/api/magic_gear": "MAGIC_GEAR",
+  "/api/enchantments": "ENCHANTMENTS",
+};
+
+Object.entries(DATASET_ROUTES).forEach(([route, dataset]) => {
+  app.get(route, (req, res) => {
+    res.json(loadDataset(dataset));
+  });
+});
+
+/* -----------------------
    APP INFO
 ------------------------ */
 app.get("/api/app-info", (req, res) => {
   res.json({ version });
-});
-
-/* -----------------------
-   ADVANTAGES
------------------------- */
-app.get("/api/advantages", (req, res) => {
-  const data = loadDataset("ADVANTAGES");
-
-  res.json(data);
-});
-
-/* -----------------------
-   DISADVANTAGES
------------------------- */
-app.get("/api/disadvantages", (req, res) => {
-  const data = loadDataset("DISADVANTAGES");
-
-  res.json(data);
-});
-
-/* -----------------------
-   SKILLS
------------------------- */
-app.get("/api/skills", (req, res) => {
-  const data = loadDataset("SKILLS");
-
-  res.json(data);
-});
-
-/* -----------------------
-   SPELLS
------------------------- */
-app.get("/api/spells", (req, res) => {
-  const data = loadDataset("GRIMOIRE");
-
-  res.json(data);
-});
-
-/* -----------------------
-   RACES
------------------------- */
-app.get("/api/races", (req, res) => {
-  const data = loadDataset("RACES");
-  res.json(data);
-});
-
-/* -----------------------
-   META-RACES
------------------------- */
-app.get("/api/meta-races", (req, res) => {
-  const data = loadDataset("META_RACES");
-
-  res.json(data);
-});
-
-/* -----------------------
-   MATERIALS
------------------------- */
-app.get("/api/materials", (req, res) => {
-  const data = loadDataset("CRAFTING_MATERIALS");
-
-  res.json(data);
-});
-
-/* -----------------------
-   INVENTORY
------------------------- */
-app.get("/api/armors", (req, res) => {
-  const data = loadDataset("ARMORS");
-
-  res.json(data);
-});
-
-app.get("/api/shields", (req, res) => {
-  const data = loadDataset("SHIELDS");
-
-  res.json(data);
-});
-
-app.get("/api/melee_weapons", (req, res) => {
-  const data = loadDataset("MELEE_WEAPONS");
-
-  res.json(data);
-});
-
-app.get("/api/ranged_weapons", (req, res) => {
-  const data = loadDataset("RANGED_WEAPONS");
-
-  res.json(data);
-});
-
-app.get("/api/firearms", (req, res) => {
-  const data = loadDataset("FIREARMS");
-
-  res.json(data);
-});
-
-app.get("/api/ammo", (req, res) => {
-  const data = loadDataset("AMMO");
-  res.json(data);
-});
-
-app.get("/api/ammo_containers", (req, res) => {
-  const data = loadDataset("AMMO_CONTAINERS");
-  res.json(data);
-});
-
-app.get("/api/alchemy", (req, res) => {
-  const data = loadDataset("ALCHEMY");
-  res.json(data);
-});
-
-app.get("/api/survival_gear", (req, res) => {
-  const data = loadDataset("ADVENTURE_GEAR");
-  res.json(data);
-});
-
-app.get("/api/accessories", (req, res) => {
-  const data = loadDataset("ACCESSORIES");
-  res.json(data);
-});
-
-app.get("/api/magic_gear", (req, res) => {
-  const data = loadDataset("MAGIC_GEAR");
-  res.json(data);
-});
-
-app.get("/api/enchantments", (req, res) => {
-  const data = loadDataset("ENCHANTMENTS");
-  res.json(data);
 });
 
 app.get("/api/enchantments/effect-types", (req, res) => {
@@ -334,8 +236,10 @@ app.post("/api/sheet/build", (req, res) => {
 /* -----------------------
    START SERVER
 ------------------------ */
-app.listen(3000, () => {
-  console.log("API running on http://localhost:3000");
-});
+if (require.main === module) {
+  app.listen(3000, () => {
+    console.log("API running on http://localhost:3000");
+  });
+}
 
 module.exports = app;
