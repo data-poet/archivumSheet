@@ -4,9 +4,8 @@ const {
   POINTS_PER_PURCHASE,
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,
+  LOW_RESERVE,
 } = require("../../../../helpers/rules");
-
-const LOW_RESERVES = ["HP", "FP"];
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -185,8 +184,12 @@ function buildSecondaryAttributes(
   });
 
   // 4e B419/B426: each reserve under 1/3 of its natural max (gear bonuses excluded) halves current Move and Dodge, rounding up; they stack.
-  LOW_RESERVES.forEach((key) => {
-    if (result[key].value >= result[key].final_base_value / 3) return;
+  LOW_RESERVE.keys.forEach((key) => {
+    if (
+      result[key].value >=
+      result[key].final_base_value / LOW_RESERVE.belowDivisor
+    )
+      return;
     result.Movement = {
       ...result.Movement,
       value: Math.ceil(result.Movement.value / 2),

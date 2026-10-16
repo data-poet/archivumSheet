@@ -1,21 +1,30 @@
+const {
+  PRIMARY_DEFAULT_VALUE,
+  LOW_RESERVE,
+  HP_THRESHOLDS,
+} = require("../../../../helpers/rules");
+
+const FIRST_DEATH_CHECK = HP_THRESHOLDS.deathCheckMultiples[0];
+const DEATH_CHECK_COUNT = HP_THRESHOLDS.deathCheckMultiples.length;
+
 // Archivum death thresholds use natural HT (base + race, meta-race included) instead of 4e's HP multiples.
 function naturalHT(HT = {}) {
-  return (HT.base_value ?? 10) + (HT.race_modifier ?? 0);
+  return (HT.base_value ?? PRIMARY_DEFAULT_VALUE) + (HT.race_modifier ?? 0);
 }
 
 function hpState(current, natural, ht) {
-  if (current <= -10 * ht) return "destroyed";
-  if (current <= -5 * ht) return "dead";
-  if (current <= -ht) return "dying";
+  if (current <= -HP_THRESHOLDS.destroyedMultiple * ht) return "destroyed";
+  if (current <= -HP_THRESHOLDS.deathMultiple * ht) return "dead";
+  if (current <= -FIRST_DEATH_CHECK * ht) return "dying";
   if (current <= 0) return "collapsing";
-  if (current < natural / 3) return "reeling";
+  if (current < natural / LOW_RESERVE.belowDivisor) return "reeling";
   return "ok";
 }
 
 function fpState(current, natural) {
   if (current <= -natural) return "unconscious";
   if (current <= 0) return "collapsing";
-  if (current < natural / 3) return "exhausted";
+  if (current < natural / LOW_RESERVE.belowDivisor) return "exhausted";
   return "ok";
 }
 
@@ -24,25 +33,28 @@ function computeThresholds({ HT, HP, FP }) {
   const naturalHP = HP.final_base_value;
   const naturalFP = FP.final_base_value;
   const deathChecks =
-    HP.value <= -ht ? Math.min(Math.floor(-HP.value / ht), 10) : 0;
+    HP.value <= -FIRST_DEATH_CHECK * ht
+      ? Math.min(Math.floor(-HP.value / ht), HP_THRESHOLDS.destroyedMultiple)
+      : 0;
 
   return {
     ht,
     hp: {
-      major_wound_over: naturalHP / 2,
-      head_stun_over: naturalHP / 3,
-      reeling_below: naturalHP / 3,
-      death_checks_from: -ht,
+      major_wound_over: naturalHP / HP_THRESHOLDS.majorWoundDivisor,
+      head_stun_over: naturalHP / HP_THRESHOLDS.headStunDivisor,
+      reeling_below: naturalHP / LOW_RESERVE.belowDivisor,
+      death_checks_from: -FIRST_DEATH_CHECK * ht,
       death_check_step: ht,
-      death_at: -5 * ht,
-      destroyed_at: -10 * ht,
-      death_check_values: [1, 2, 3, 4].map((n) => -n * ht),
+      death_at: -HP_THRESHOLDS.deathMultiple * ht,
+      destroyed_at: -HP_THRESHOLDS.destroyedMultiple * ht,
+      death_check_values: HP_THRESHOLDS.deathCheckMultiples.map((n) => -n * ht),
       state: hpState(HP.value, naturalHP, ht),
       death_checks: deathChecks,
-      next_death_check: deathChecks < 4 ? -(deathChecks + 1) * ht : null,
+      next_death_check:
+        deathChecks < DEATH_CHECK_COUNT ? -(deathChecks + 1) * ht : null,
     },
     fp: {
-      exhausted_below: naturalFP / 3,
+      exhausted_below: naturalFP / LOW_RESERVE.belowDivisor,
       unconscious_at: -naturalFP,
       state: fpState(FP.value, naturalFP),
     },
