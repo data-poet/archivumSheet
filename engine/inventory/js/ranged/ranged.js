@@ -3,11 +3,6 @@ const { loadDataset } = require("../../../../helpers/datasets.js");
 const { VALID_STORED_AT } = require("./rangedConstants.js");
 
 const {
-  isRangedDualUse,
-  getMeleeCounterpart,
-} = require("../shared/dualUseWeapons.js");
-
-const {
   validateRangedInstance,
   validateRangedEnchantments,
 } = require("./rangedValidation.js");
@@ -114,7 +109,4 @@ module.exports = {
   VALID_STORED_AT,
   _getRangedDB: getRangedDB,
   _getMaterialDB: getMaterialsDB,
-  _validateRangedInstance: validateRangedInstance,
-  _isRangedDualUse: isRangedDualUse,
-  _getMeleeCounterpart: getMeleeCounterpart,
 };

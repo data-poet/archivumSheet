@@ -65,7 +65,6 @@ details > *:not(summary) {
 .box--character details summary {
   border-left: 3px solid var(--accent-attributes);
 }
-.box--engine details summary,
 .box--output details summary {
   border-left: 3px solid var(--color-neutral-border);
 }

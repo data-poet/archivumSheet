@@ -113,6 +113,4 @@ module.exports = {
   VALID_STORED_AT,
   _getArmorDB: getArmorDB,
   _getMaterialDB: getMaterialsDB,
-  _validateArmorInstance: validateArmorInstance,
-  _validateSingleEquippedPerSlot: validateSingleEquippedPerSlot,
 };

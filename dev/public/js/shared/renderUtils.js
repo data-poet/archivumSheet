@@ -1,6 +1,3 @@
-// The old .spell-detail* class names are kept as CSS aliases in style.css so render files
-// that haven't migrated to .item-detail* yet still work.
-
 import { t } from "../localization/pt-BR/index.js";
 import { el } from "./dom.js";
 

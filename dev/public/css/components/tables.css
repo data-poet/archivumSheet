@@ -205,16 +205,14 @@ tr.detail-row details[open] summary {
   padding: 0;
 }
 
-.item-detail-grid,
-.spell-detail-grid {
+.item-detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--space-2) var(--space-7);
   padding: var(--space-3) var(--space-4) var(--space-5);
 }
 
-.item-detail,
-.spell-detail {
+.item-detail {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
   display: flex;
@@ -223,8 +221,7 @@ tr.detail-row details[open] summary {
   line-height: 1.4;
 }
 
-.item-detail em,
-.spell-detail em {
+.item-detail em {
   font-style: normal;
   font-weight: 700;
   color: var(--color-text);
@@ -232,16 +229,14 @@ tr.detail-row details[open] summary {
   min-width: var(--detail-label-w);
 }
 
-.item-detail-block,
-.spell-detail-block {
+.item-detail-block {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
   grid-column: 1 / -1;
   line-height: 1.5;
 }
 
-.item-detail-block em,
-.spell-detail-block em {
+.item-detail-block em {
   font-style: normal;
   font-weight: 700;
   color: var(--color-text);

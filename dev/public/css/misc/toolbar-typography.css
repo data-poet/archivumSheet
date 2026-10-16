@@ -1,9 +1,3 @@
-.persistence-toolbar {
-  display: flex;
-  gap: var(--space-4);
-  margin-bottom: var(--space-7);
-}
-
 h1 {
   font-size: var(--fs-xl);
   margin: 0 0 var(--space-6);

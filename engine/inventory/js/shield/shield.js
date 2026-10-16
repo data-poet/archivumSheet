@@ -97,6 +97,4 @@ module.exports = {
   VALID_STORED_AT,
   _getShieldDB: getShieldDB,
   _getMaterialDB: getMaterialsDB,
-  _validateShieldInstance: validateShieldInstance,
-  _validateSingleEquippedShield: validateSingleEquippedShield,
 };

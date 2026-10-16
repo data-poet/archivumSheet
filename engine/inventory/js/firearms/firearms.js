@@ -113,5 +113,4 @@ module.exports = {
   VALID_STORED_AT,
   _getFirearmsDB: getFirearmsDB,
   _getMaterialDB: getMaterialsDB,
-  _validateFirearmInstance: validateFirearmInstance,
 };

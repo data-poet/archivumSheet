@@ -3,11 +3,6 @@ const { loadDataset } = require("../../../../helpers/datasets.js");
 const { VALID_STORED_AT } = require("./meleeConstants.js");
 
 const {
-  isMeleeDualUse,
-  getRangedCounterpart,
-} = require("../shared/dualUseWeapons.js");
-
-const {
   validateMeleeInstance,
   validateMeleeEnchantments,
 } = require("./meleeValidation.js");
@@ -101,7 +96,4 @@ module.exports = {
   VALID_STORED_AT,
   _getMeleeDB: getMeleeDB,
   _getMaterialDB: getMaterialsDB,
-  _validateMeleeInstance: validateMeleeInstance,
-  _isMeleeDualUse: isMeleeDualUse,
-  _getRangedCounterpart: getRangedCounterpart,
 };
