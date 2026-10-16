@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
   equipArmor,
@@ -176,7 +177,7 @@ export function handleArmorChange(e) {
       return true;
     }
 
-    equipArmor(slot, firstArmor.armor_id, "MAT-000");
+    equipArmor(slot, firstArmor.armor_id, DEFAULT_MATERIAL_ID);
     _renderArmorLists();
     return true;
   }
@@ -205,7 +206,7 @@ export function handleArmorChange(e) {
       return true;
     }
 
-    equipArmor(slot, armor.armor_id, "MAT-000");
+    equipArmor(slot, armor.armor_id, DEFAULT_MATERIAL_ID);
     return true;
   }
 

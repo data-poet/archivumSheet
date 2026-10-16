@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import {
   equipMelee,
   addStoredMelee,
@@ -104,7 +105,7 @@ export function handleMeleeClick(e) {
     equipMelee(
       instanceId,
       meleeToEquip.weapon_id,
-      meleeToEquip.material_id || "MAT-000",
+      meleeToEquip.material_id || DEFAULT_MATERIAL_ID,
     );
     return true;
   }

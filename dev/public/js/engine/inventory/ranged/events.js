@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import {
   equipRanged,
   addStoredRanged,
@@ -102,7 +103,7 @@ export function handleRangedClick(e) {
     equipRanged(
       instanceId,
       rangedToEquip.weapon_id,
-      rangedToEquip.material_id || "MAT-000",
+      rangedToEquip.material_id || DEFAULT_MATERIAL_ID,
     );
     return true;
   }

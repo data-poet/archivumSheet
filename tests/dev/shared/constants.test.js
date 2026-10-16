@@ -1,4 +1,6 @@
 // These values are load-bearing keys matched against CSV data (e.g. ARMOR_SLOTS vs db_equipment_armors.csv); pinning them locks in a regression that would otherwise fail silently.
+import fs from "fs";
+import path from "path";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -49,5 +51,17 @@ describe("RACIAL_TRAIT_TYPE", () => {
 describe("DEFAULT_MATERIAL_ID", () => {
   test("matches the CSV's default material row id", () => {
     expect(DEFAULT_MATERIAL_ID).toBe("MAT-000");
+  });
+
+  test("is the only place the frontend spells the default material id", () => {
+    const jsDir = path.join(__dirname, "../../../dev/public/js");
+    const offenders = fs
+      .readdirSync(jsDir, { recursive: true })
+      .filter((f) => f.endsWith(".js"))
+      .filter((f) => f !== path.join("shared", "constants.js"))
+      .filter((f) =>
+        fs.readFileSync(path.join(jsDir, f), "utf8").includes('"MAT-000"'),
+      );
+    expect(offenders).toEqual([]);
   });
 });

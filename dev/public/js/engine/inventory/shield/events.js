@@ -1,4 +1,5 @@
 import { state } from "../../../state.js";
+import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
   equipShield,
@@ -156,7 +157,7 @@ export function handleShieldChange(e) {
       equippedInstance.shield_id = firstShield.shield_id;
       equippedInstance.hit_points_modifier = 0;
     } else {
-      equipShield(firstShield.shield_id, "MAT-000");
+      equipShield(firstShield.shield_id, DEFAULT_MATERIAL_ID);
       return true;
     }
     triggerAutoRun();
@@ -176,7 +177,7 @@ export function handleShieldChange(e) {
       equippedInstance.shield_id = shield.shield_id;
       equippedInstance.hit_points_modifier = 0;
     } else {
-      equipShield(shield.shield_id, "MAT-000");
+      equipShield(shield.shield_id, DEFAULT_MATERIAL_ID);
       return true;
     }
     triggerAutoRun();
