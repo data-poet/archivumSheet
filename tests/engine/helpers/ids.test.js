@@ -98,8 +98,12 @@ describe("ids registry resolves against the real datasets", () => {
     },
   );
 
-  test("MAGIC_RETURN_ENCHANTMENT_ID exists in ENCHANTMENTS", () => {
-    expect(enchantmentIds.has(MAGIC_RETURN_ENCHANTMENT_ID)).toBe(true);
+  test("MAGIC_RETURN_ENCHANTMENT_ID is still the magic-return special effect", () => {
+    const row = loadDataset("ENCHANTMENTS").find(
+      (r) => r.enchantment_id === MAGIC_RETURN_ENCHANTMENT_ID,
+    );
+    expect(row.enchantment_effect_type).toBe("special_effect");
+    expect(row.enchantment_name).toBe("Retorno Mágico");
   });
 
   test.each(DUAL_USE_WEAPON_PAIRS)(

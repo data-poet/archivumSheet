@@ -188,14 +188,14 @@ describe("MAGIC GEAR", () => {
           enchantments: [
             {
               id: "ench-1",
-              enchantment_id: "ENCHANTMENT-010",
+              enchantment_id: "ENCHANTMENT-012",
               value: 1,
             },
           ],
         },
       ]);
 
-      // ENCHANTMENT-010 (Fortificar Mana) at base value: base_price 1000
+      // ENCHANTMENT-012 (Fortificar Mana) at base value: base_price 1000
       expect(result.equipped[0].enchantments_total_price).toBe(1000);
       expect(result.equipped[0].total_value).toBe(1150); // 150 (wand) + 1000
       expect(result.carried_magic_gear_value).toBe(1150);

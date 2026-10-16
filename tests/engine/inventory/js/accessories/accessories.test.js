@@ -242,14 +242,14 @@ describe("EQUIPMENT ACCESSORIES", () => {
           enchantments: [
             {
               id: "ench-1",
-              enchantment_id: "ENCHANTMENT-028",
+              enchantment_id: "ENCHANTMENT-030",
               target: "ADV-000",
             },
           ],
         },
       ]);
 
-      // ENCHANTMENT-028 (Adicionar Vantagem) price_per_point 2000 × ADV-000 cost 5
+      // ENCHANTMENT-030 (Adicionar Vantagem) price_per_point 2000 × ADV-000 cost 5
       expect(result.equipped[0].enchantments_total_price).toBe(10000);
     });
 
@@ -322,7 +322,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
             price: 0,
             enchantments: [
               {
-                enchantment_id: "ENCHANTMENT-028",
+                enchantment_id: "ENCHANTMENT-030",
                 target: "ADV-DOES-NOT-EXIST",
               },
             ],

@@ -276,7 +276,7 @@ describe("EQUIPMENT FIREARMS", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas de Fogo
+              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Armas de Fogo
               value: 0.1,
             },
           ],
@@ -303,7 +303,7 @@ describe("EQUIPMENT FIREARMS", () => {
             weapon_id: weaponId,
             is_equipped: true,
             storedAt: null,
-            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-056" }],
+            enchantments: [{ id: "e1", enchantment_id: "ENCHANTMENT-058" }],
           },
         ]);
       }).toThrow("Invalid enchantments");

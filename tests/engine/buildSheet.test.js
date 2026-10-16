@@ -305,7 +305,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-028",
+                  enchantment_id: "ENCHANTMENT-030",
                   target: "ADV-000",
                 },
               ],
@@ -333,7 +333,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-010",
+                  enchantment_id: "ENCHANTMENT-012",
                   value: 2,
                 },
               ],
@@ -367,7 +367,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-010",
+                  enchantment_id: "ENCHANTMENT-012",
                   value: 2,
                 },
               ],
@@ -417,7 +417,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-2",
-                  enchantment_id: "ENCHANTMENT-010",
+                  enchantment_id: "ENCHANTMENT-012",
                   value: 1,
                 },
               ],
@@ -450,7 +450,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-040",
+                  enchantment_id: "ENCHANTMENT-042",
                   value: 0.05,
                 },
               ],
@@ -487,7 +487,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-040",
+                  enchantment_id: "ENCHANTMENT-042",
                   value: 0.05,
                 },
               ],
@@ -757,7 +757,7 @@ describe("BUILD SHEET", () => {
               enchantments: [
                 {
                   id: "ench-1",
-                  enchantment_id: "ENCHANTMENT-038",
+                  enchantment_id: "ENCHANTMENT-040",
                   value: 1,
                 },
               ],

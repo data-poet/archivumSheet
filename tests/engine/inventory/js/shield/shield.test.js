@@ -185,7 +185,7 @@ describe("EQUIPMENT SHIELD", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Escudos
+              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Escudos
               value: 0.1,
             },
           ],

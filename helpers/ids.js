@@ -72,7 +72,7 @@ const BROQUEL_SHIELD_IDS = new Set([
 ]);
 
 // has_magic_return (rangedResolver.js) keys off this id, not effect_type.
-const MAGIC_RETURN_ENCHANTMENT_ID = "ENCHANTMENT-066";
+const MAGIC_RETURN_ENCHANTMENT_ID = "ENCHANTMENT-068";
 
 // Weapons that appear in both the melee and ranged tables and are auto-mirrored
 // across them. Pairs listed as [meleeId, rangedId] for each tier (Comum → Obra-Prima).

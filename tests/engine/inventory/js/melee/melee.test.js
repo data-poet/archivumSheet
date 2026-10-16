@@ -199,7 +199,7 @@ describe("EQUIPMENT MELEE", () => {
           enchantments: [
             {
               id: "e1",
-              enchantment_id: "ENCHANTMENT-036", // add_weight, allowed on Armas Corpo a Corpo
+              enchantment_id: "ENCHANTMENT-038", // add_weight, allowed on Armas Corpo a Corpo
               value: 0.1,
             },
           ],

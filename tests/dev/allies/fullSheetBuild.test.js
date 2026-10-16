@@ -56,7 +56,7 @@ test("applies the accessory's and magic gear's enchantments", () => {
   expect(accessory.enchantments).toHaveLength(1);
   expect(accessory.enchantments[0].enchantment_id).toBe("ENCHANTMENT-006");
   expect(magicGear.enchantments).toHaveLength(1);
-  expect(magicGear.enchantments[0].enchantment_id).toBe("ENCHANTMENT-010");
+  expect(magicGear.enchantments[0].enchantment_id).toBe("ENCHANTMENT-012");
 });
 
 test("resolves every elemental resistance", () => {
