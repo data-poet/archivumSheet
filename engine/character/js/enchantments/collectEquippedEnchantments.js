@@ -3,6 +3,21 @@
 // Doubles as the bridge into magic/: spellGrants/spellModifiers are consumed by spellsResolver.js via buildSheet.js.
 
 const { ATTRIBUTE_TARGET_MAP } = require("../../../../helpers/taxonomy.js");
+const {
+  ATTRIBUTE_EFFECT_TYPES,
+  ELEMENTAL_RESISTANCE_EFFECT_TYPES,
+  POINT_EFFECT_TYPES,
+  SKILL_EFFECT_TYPES,
+  SPELL_EFFECT_TYPES,
+  FORTIFY_EFFECT_TYPES,
+  WEAKEN_EFFECT_TYPES,
+} = require("../../../inventory/js/shared/enchantmentsConstants.js");
+
+const [ADVANTAGE_EFFECT_TYPE, DISADVANTAGE_EFFECT_TYPE] = POINT_EFFECT_TYPES;
+
+// A skill/spell type that is neither fortify nor weaken is a grant (learned at extraPoints).
+const isDirectional = (type) =>
+  FORTIFY_EFFECT_TYPES.includes(type) || WEAKEN_EFFECT_TYPES.includes(type);
 
 function addToSumMap(map, key, value) {
   if (!key) return;
@@ -31,49 +46,30 @@ function collectEquippedEnchantments(equippedItems = []) {
       const type = enchantment.enchantment_effect_type;
       const target = enchantment.target;
 
-      switch (type) {
-        case "fortify_attribute":
-        case "weaken_attribute": {
-          const key = ATTRIBUTE_TARGET_MAP[target] || target;
-          addToSumMap(attributeModifiers, key, enchantment.value);
-          break;
-        }
-
-        case "fortify_resistance":
-        case "weaken_resistance":
-          // Elemental keys already match 1:1 between CSV and elementalResistances.js, so no target-map translation needed here.
-          addToSumMap(elementalModifiers, target, enchantment.value);
-          break;
-
-        case "advantage":
-          if (target) advantageIds.push(target);
-          break;
-
-        case "disadvantage":
-          if (target) disadvantageIds.push(target);
-          break;
-
-        case "skill":
-          addToGrantMap(skillGrants, target, enchantment.extraPoints);
-          break;
-
-        case "fortify_skill":
-        case "weaken_skill":
+      if (ATTRIBUTE_EFFECT_TYPES.includes(type)) {
+        const key = ATTRIBUTE_TARGET_MAP[target] || target;
+        addToSumMap(attributeModifiers, key, enchantment.value);
+      } else if (ELEMENTAL_RESISTANCE_EFFECT_TYPES.includes(type)) {
+        // Elemental keys already match 1:1 between CSV and elementalResistances.js, so no target-map translation needed here.
+        addToSumMap(elementalModifiers, target, enchantment.value);
+      } else if (type === ADVANTAGE_EFFECT_TYPE) {
+        if (target) advantageIds.push(target);
+      } else if (type === DISADVANTAGE_EFFECT_TYPE) {
+        if (target) disadvantageIds.push(target);
+      } else if (SKILL_EFFECT_TYPES.includes(type)) {
+        if (isDirectional(type)) {
           addToSumMap(skillModifiers, target, enchantment.extraPoints);
-          break;
-
-        case "spell":
-          addToGrantMap(spellGrants, target, enchantment.extraPoints);
-          break;
-
-        case "fortify_spell":
-        case "weaken_spell":
+        } else {
+          addToGrantMap(skillGrants, target, enchantment.extraPoints);
+        }
+      } else if (SPELL_EFFECT_TYPES.includes(type)) {
+        if (isDirectional(type)) {
           addToSumMap(spellModifiers, target, enchantment.extraPoints);
-          break;
-
-        default:
-        // Item-intrinsic effects (weight, damage resistance) are already applied in armorResolver.js; no character-level effect to collect.
+        } else {
+          addToGrantMap(spellGrants, target, enchantment.extraPoints);
+        }
       }
+      // Item-intrinsic effects (weight, damage resistance) are already applied in armorResolver.js; no character-level effect to collect.
     }
   }
 

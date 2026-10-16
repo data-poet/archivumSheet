@@ -3,9 +3,10 @@ import {
   loadRules,
   secondaryMaxBought,
   isUnbuyableSecondary,
+  spellTierForLevel,
 } from "dev/public/js/shared/rules.js";
 import { state } from "dev/public/js/state.js";
-import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { resetState, seedRules } from "tests/dev/helpers/stateFixture.js";
 import {
   installMockFetch,
   mockFetchResponse,
@@ -57,5 +58,20 @@ describe("secondary purchase lookups", () => {
   test("before the rules load, nothing is buyable", () => {
     resetState();
     expect(secondaryMaxBought("HP")).toBe(0);
+  });
+});
+
+describe("spellTierForLevel", () => {
+  beforeEach(seedRules);
+
+  test.each([
+    [12, "Aprendiz"],
+    [13, "Experiente"],
+    [15, "Experiente"],
+    [17, "Veterano"],
+    [19, "Especialista"],
+    [20, "Mestre"],
+  ])("level %i is %s", (level, tier) => {
+    expect(spellTierForLevel(level)).toBe(tier);
   });
 });

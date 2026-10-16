@@ -57,6 +57,15 @@ const LOAD_LEVELS = [
   { level: "veryHeavy", multiplier: 10, move_factor: 0.2, dodge_penalty: -4 },
 ];
 
+// Spell tier by final level: ordered ascending by max, the first threshold the level doesn't exceed wins; above the last, SPELL_TIER_DEFAULT.
+const SPELL_TIER_THRESHOLDS = [
+  { max: 12, tier: "Aprendiz" },
+  { max: 15, tier: "Experiente" },
+  { max: 17, tier: "Veterano" },
+  { max: 19, tier: "Especialista" },
+];
+const SPELL_TIER_DEFAULT = "Mestre";
+
 const OVERLOADED = { level: "overloaded", move_factor: 0, dodge_penalty: -4 };
 
 const LIFT_MULTIPLIERS = {
@@ -80,6 +89,8 @@ module.exports = {
   LOW_RESERVE,
   HP_THRESHOLDS,
   LOAD_LEVELS,
+  SPELL_TIER_THRESHOLDS,
+  SPELL_TIER_DEFAULT,
   OVERLOADED,
   LIFT_MULTIPLIERS,
   BASIC_LIFT,

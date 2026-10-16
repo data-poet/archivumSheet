@@ -3,6 +3,7 @@
 const ATTRIBUTE_EFFECT_TYPES = ["fortify_attribute", "weaken_attribute"];
 
 // Price scales with the picked trait's own point cost.
+// Order matters: advantage first, disadvantage second.
 const POINT_EFFECT_TYPES = ["advantage", "disadvantage"];
 
 const SKILL_EFFECT_TYPES = ["skill", "fortify_skill", "weaken_skill"];

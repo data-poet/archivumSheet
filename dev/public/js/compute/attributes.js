@@ -1,36 +1,20 @@
 import { triggerAutoRun } from "./autorun.js";
+import { PRIMARY_ATTRIBUTES } from "../shared/constants.js";
+
+const _field = (id) => Number(document.getElementById(id).value);
 
 export function getPrimaryAttributes() {
-  return {
-    ST: {
-      base_value: Number(document.getElementById("ST_base").value),
-      modifier: Number(document.getElementById("ST_mod").value),
-    },
-    DX: {
-      base_value: Number(document.getElementById("DX_base").value),
-      modifier: Number(document.getElementById("DX_mod").value),
-    },
-    IQ: {
-      base_value: Number(document.getElementById("IQ_base").value),
-      modifier: Number(document.getElementById("IQ_mod").value),
-    },
-    HT: {
-      base_value: Number(document.getElementById("HT_base").value),
-      modifier: Number(document.getElementById("HT_mod").value),
-    },
-  };
+  return Object.fromEntries(
+    PRIMARY_ATTRIBUTES.map((attr) => [
+      attr,
+      { base_value: _field(`${attr}_base`), modifier: _field(`${attr}_mod`) },
+    ]),
+  );
 }
 
 export function setupAutoRun() {
   [
-    "ST_base",
-    "ST_mod",
-    "DX_base",
-    "DX_mod",
-    "IQ_base",
-    "IQ_mod",
-    "HT_base",
-    "HT_mod",
+    ...PRIMARY_ATTRIBUTES.flatMap((attr) => [`${attr}_base`, `${attr}_mod`]),
     "weight",
   ].forEach((id) => {
     document.getElementById(id).addEventListener("input", triggerAutoRun);

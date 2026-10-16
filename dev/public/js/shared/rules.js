@@ -15,3 +15,9 @@ export function secondaryMaxBought(key) {
 export function isUnbuyableSecondary(key) {
   return secondaryMaxBought(key) === 0;
 }
+
+export function spellTierForLevel(level) {
+  const { SPELL_TIER_THRESHOLDS, SPELL_TIER_DEFAULT } = state.data.rules;
+  const match = SPELL_TIER_THRESHOLDS.find(({ max }) => level <= max);
+  return match ? match.tier : SPELL_TIER_DEFAULT;
+}

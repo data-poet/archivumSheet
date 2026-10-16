@@ -50,6 +50,8 @@ export const state = {
     rules: {
       SECONDARY_PURCHASE: {},
       DEFAULT_SECONDARY_PURCHASE: {},
+      SPELL_TIER_THRESHOLDS: [],
+      SPELL_TIER_DEFAULT: "",
     },
   },
 

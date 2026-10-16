@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
+import { spellTierForLevel } from "../../../shared/rules.js";
 import {
   formatRichText,
   detailRow,
@@ -8,14 +9,6 @@ import {
   emptyRow,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-
-function getSpellTier(level) {
-  if (level <= 12) return "Aprendiz";
-  if (level <= 15) return "Experiente";
-  if (level <= 17) return "Veterano";
-  if (level <= 19) return "Especialista";
-  return "Mestre";
-}
 
 function normalize(str) {
   return String(str ?? "")
@@ -87,7 +80,7 @@ export function renderSpells(selected, data, sheet) {
             // Final value + tier read from the engine; local estimate is only a fallback
             // for the brief window before the debounced engine call first completes.
             const final = grimoireEntry?.value ?? base + mod + aptitude;
-            const tier = grimoireEntry?.tier ?? getSpellTier(final);
+            const tier = grimoireEntry?.tier ?? spellTierForLevel(final);
 
             const spell =
               data.spells?.find(

@@ -1,6 +1,7 @@
 import { renderSpells } from "dev/public/js/engine/magic/spells/render.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { resetState, seedRules } from "tests/dev/helpers/stateFixture.js";
 
 function spellList() {
   return document.getElementById("spellList");
@@ -8,6 +9,8 @@ function spellList() {
 
 beforeEach(() => {
   resetDOM(`<div id="spellList"></div>`);
+  resetState();
+  seedRules();
 });
 
 describe("renderSpells — empty state", () => {

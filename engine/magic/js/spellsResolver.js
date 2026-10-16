@@ -2,9 +2,11 @@ const { loadDataset } = require("../../../helpers/datasets.js");
 const {
   SPELL_ATTRIBUTE,
   MAGIC_APTITUDE_GROUP,
+} = require("./spellsConstants.js");
+const {
   SPELL_TIER_THRESHOLDS,
   SPELL_TIER_DEFAULT,
-} = require("./spellsConstants.js");
+} = require("../../../helpers/rules.js");
 
 let _dbCache = null;
 

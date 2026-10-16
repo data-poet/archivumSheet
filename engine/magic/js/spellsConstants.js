@@ -72,19 +72,8 @@ const COST_TABLES = {
 
 const MAGIC_APTITUDE_GROUP = MAGIC_APTITUDE_TIERS;
 
-// Ordered ascending by max; the first threshold the level doesn't exceed wins. Anything above the last entry falls through to SPELL_TIER_DEFAULT.
-const SPELL_TIER_THRESHOLDS = [
-  { max: 12, tier: "Aprendiz" },
-  { max: 15, tier: "Experiente" },
-  { max: 17, tier: "Veterano" },
-  { max: 19, tier: "Especialista" },
-];
-const SPELL_TIER_DEFAULT = "Mestre";
-
 module.exports = {
   SPELL_ATTRIBUTE,
   COST_TABLES,
   MAGIC_APTITUDE_GROUP,
-  SPELL_TIER_THRESHOLDS,
-  SPELL_TIER_DEFAULT,
 };
