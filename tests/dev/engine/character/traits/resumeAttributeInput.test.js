@@ -108,6 +108,54 @@ describe("handleResumeAttributeInput — secondary-input", () => {
     },
   );
 
+  test("DamageResistance's base_value is written, rounded and floored at 0", () => {
+    const write = (raw) => {
+      const target = fakeTarget();
+      handleResumeAttributeInput(
+        {
+          target: elWithClass(
+            "input",
+            "secondary-input",
+            { name: "DamageResistance", field: "base_value" },
+            raw,
+          ),
+        },
+        target,
+      );
+      return target;
+    };
+
+    expect(write("3").setSecondary).toHaveBeenCalledWith(
+      "DamageResistance",
+      "base_value",
+      3,
+    );
+    expect(write("-2").setSecondary).toHaveBeenCalledWith(
+      "DamageResistance",
+      "base_value",
+      0,
+    );
+  });
+
+  test.each(["HP", "Will", "Movement"])(
+    "%s's base_value is never written",
+    (name) => {
+      const target = fakeTarget();
+      handleResumeAttributeInput(
+        {
+          target: elWithClass(
+            "input",
+            "secondary-input",
+            { name, field: "base_value" },
+            "4",
+          ),
+        },
+        target,
+      );
+      expect(target.setSecondary).not.toHaveBeenCalled();
+    },
+  );
+
   test("PF's modifier is capped at 0 like the other vitals", () => {
     const target = fakeTarget();
     handleResumeAttributeInput(

@@ -275,6 +275,32 @@ describe("renderSecondaryAttributes", () => {
     expect(row.children[2].textContent).toBe("—");
   });
 
+  test("DamageResistance's base is an editable stepper floored at 0; other bases stay plain text", () => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<table><tbody id="secondaryTable"></tbody></table>`,
+    );
+    renderSecondaryAttributes({
+      character: {
+        secondary_attributes: {
+          DamageResistance: {
+            base_value: 2,
+            bought: 0,
+            modifier: 0,
+            value: 2,
+          },
+          Will: { base_value: 10, bought: 0, modifier: 0, value: 10 },
+        },
+      },
+    });
+
+    const [drRow, willRow] = document.querySelectorAll("#secondaryTable tr");
+    const baseInput = drRow.querySelector('[data-field="base_value"]');
+    expect(baseInput.value).toBe("2");
+    expect(baseInput.dataset.min).toBe("0");
+    expect(willRow.querySelector('[data-field="base_value"]')).toBeNull();
+  });
+
   test("Dodge has no 'bought' stepper — shows a plain dash cell instead", () => {
     document.body.insertAdjacentHTML(
       "beforeend",

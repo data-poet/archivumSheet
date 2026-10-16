@@ -524,6 +524,40 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes).toHaveProperty("DamageResistance");
     });
 
+    it("DamageResistance starts at 0 and takes a configured base_value at no cost", () => {
+      const defaults = buildSecondaryAttributes(
+        mockPrimary,
+        {},
+        mockCarryWeight,
+      );
+      expect(defaults.attributes.DamageResistance.base_value).toBe(0);
+
+      const configured = buildSecondaryAttributes(
+        mockPrimary,
+        { DamageResistance: { base_value: 3, modifier: 1 } },
+        mockCarryWeight,
+      );
+      expect(configured.attributes.DamageResistance).toMatchObject({
+        base_value: 3,
+        final_base_value: 3,
+        value: 4,
+        points: 0,
+      });
+      expect(configured.points.DamageResistance).toBe(0);
+    });
+
+    it.each([-2, "abc", null, undefined])(
+      "DamageResistance base_value %p falls back to 0",
+      (base_value) => {
+        const { attributes } = buildSecondaryAttributes(
+          mockPrimary,
+          { DamageResistance: { base_value } },
+          mockCarryWeight,
+        );
+        expect(attributes.DamageResistance.base_value).toBe(0);
+      },
+    );
+
     it("Each attribute should have base_value, bought, modifier, value, final_base_value", () => {
       const { attributes } = buildSecondaryAttributes(
         mockPrimary,

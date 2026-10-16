@@ -1,6 +1,9 @@
 // Parsing/clamping for the resume's primary-modifier and secondary-stat inputs: the rules live
 // here, `target` only owns where the accepted value is written.
-import { isVitalAttribute } from "../../../shared/constants.js";
+import {
+  hasEditableBase,
+  isVitalAttribute,
+} from "../../../shared/constants.js";
 import {
   isUnbuyableSecondary,
   secondaryMaxBought,
@@ -35,6 +38,9 @@ export function handleResumeAttributeInput(e, target) {
       if (isUnbuyableSecondary(name)) return true;
       const max = secondaryMaxBought(name);
       target.setSecondary(name, "bought", Math.max(0, Math.min(max, value)));
+    }
+    if (field === "base_value" && hasEditableBase(name)) {
+      target.setSecondary(name, "base_value", Math.max(0, Math.round(value)));
     }
     if (field === "modifier") {
       // A vital's modifier tracks missing points, so it's capped at 0; gear bonuses flow through enchantment_modifier.

@@ -199,6 +199,6 @@ Sem carga: $5 + 4 = 9$. Com carga média (**-2**): $5 + 4 - 2 = 7$.
 <details>
 <summary>Resistência a Dano (RD)</summary>
 
-A [[RD]] do personagem começa em **0** e não pode ser comprada. Ela só muda por modificadores e encantamentos. A RD das armaduras é contada à parte, por peça e local do corpo.
+A [[RD]] do personagem começa em **0** por padrão. Você pode definir o valor inicial na tabela de atributos (nunca negativo), sem custo em pontos. Ela não pode ser comprada e, além do valor inicial, só muda por modificadores e encantamentos. A RD das armaduras é contada à parte, por peça e local do corpo.
 
 </details>

@@ -135,9 +135,9 @@ function buildSecondaryAttributes(
     }),
 
     DamageResistance: resolveSecondary({
-      base_value: 0,
       ...SECONDARY_PURCHASE.DamageResistance,
       ...config.DamageResistance,
+      base_value: Math.max(0, Number(config.DamageResistance?.base_value) || 0),
     }),
   };
 

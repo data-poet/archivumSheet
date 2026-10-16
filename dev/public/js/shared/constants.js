@@ -58,6 +58,10 @@ export const VITAL_ATTRIBUTES = [
   { key: "Toxicity", bar: "toxicity" },
 ];
 
+export function hasEditableBase(key) {
+  return key === "DamageResistance";
+}
+
 export function isVitalAttribute(key) {
   return VITAL_ATTRIBUTES.some((vital) => vital.key === key);
 }

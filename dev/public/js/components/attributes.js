@@ -1,6 +1,10 @@
 import { getSecondaryAttributeLabel, t } from "../localization/pt-BR/index.js";
 import { state } from "../state.js";
-import { PRIMARY_ATTRIBUTES, isVitalAttribute } from "../shared/constants.js";
+import {
+  PRIMARY_ATTRIBUTES,
+  hasEditableBase,
+  isVitalAttribute,
+} from "../shared/constants.js";
 import { isUnbuyableSecondary } from "../shared/rules.js";
 
 // th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
@@ -103,6 +107,26 @@ export function renderSecondaryAttributes(sheet) {
           : `${enchantmentMod}`
         : "—";
 
+      const baseCell = hasEditableBase(name)
+        ? `<td>
+            <div class="num-stepper">
+              <input
+                type="text"
+                inputmode="numeric"
+                class="secondary-input"
+                data-name="${name}"
+                data-field="base_value"
+                data-min="0"
+                value="${data.base_value}"
+              />
+              <div class="stepper-btns">
+                <button class="stepper-btn stepper-inc" tabindex="-1" aria-label="+">+</button>
+                <button class="stepper-btn stepper-dec" tabindex="-1" aria-label="−">−</button>
+              </div>
+            </div>
+          </td>`
+        : `<td>${baseDisplay}</td>`;
+
       const boughtCell = isNotBuyable
         ? `<td>—</td>`
         : `<td>
@@ -126,7 +150,7 @@ export function renderSecondaryAttributes(sheet) {
         <tr>
           <td><strong>${getSecondaryAttributeLabel(name)}</strong></td>
 
-          <td>${baseDisplay}</td>
+          ${baseCell}
 
           ${boughtCell}
 
