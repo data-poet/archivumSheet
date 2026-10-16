@@ -1,5 +1,5 @@
 const { DATASETS, loadDataset } = require("helpers/datasets.js");
-const { ID_COLUMN } = require("tests/helpers/dataRefs");
+const { ID_COLUMN } = require("helpers/datasetColumns.js");
 const { _getArmorDB } = require("engine/inventory/js/armor/armor");
 const { _getShieldDB } = require("engine/inventory/js/shield/shield");
 const { _getMeleeDB } = require("engine/inventory/js/melee/melee");

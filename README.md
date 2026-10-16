@@ -31,6 +31,8 @@ The app runs at `http://localhost:3000`.
 npm test          # run the full test suite once
 npm run test:watch
 npm run test:data       # only the guards that read the real CSVs (fast feedback after a data edit)
+npm run check:data      # validate the CSVs: ids, keys, references, vocabularies, number formats
+npm run data:format     # after a spreadsheet export: LF endings and a final newline
 npm run test:renumber   # re-run the suite on a copy with every dataset id shifted
 ```
 

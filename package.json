@@ -13,6 +13,8 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:data": "jest --selectProjects data",
+    "check:data": "node scripts/checkData.js",
+    "data:format": "node scripts/formatData.js",
     "test:renumber": "node scripts/renumberCheck.js"
   },
   "author": "",

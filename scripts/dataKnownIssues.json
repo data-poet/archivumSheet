@@ -1,0 +1,25 @@
+[
+  {
+    "check": "id-unique",
+    "dataset": "GRIMOIRE",
+    "note": "30 spell ids are shared by two different spells; removed by the grimoire rework"
+  },
+  {
+    "check": "enum",
+    "dataset": "MELEE_WEAPONS",
+    "ids": ["MELEE-220", "MELEE-221", "MELEE-222", "MELEE-223", "MELEE-224"],
+    "note": "damage type typo 'Perfuação' (missing r) on Lança de Arremesso"
+  },
+  {
+    "check": "enum",
+    "dataset": "RANGED_WEAPONS",
+    "ids": [
+      "RANGED-055",
+      "RANGED-056",
+      "RANGED-057",
+      "RANGED-058",
+      "RANGED-059"
+    ],
+    "note": "damage type typo 'Perfuação' (missing r) on Lança de Arremesso"
+  }
+]

@@ -10,7 +10,11 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const ROOT = path.join(__dirname, "..");
-const ID_FILES = ["helpers/ids.js", "dev/public/js/shared/constants.js"];
+const ID_FILES = [
+  "helpers/ids.js",
+  "dev/public/js/shared/constants.js",
+  "scripts/dataKnownIssues.json",
+];
 const SKIP = new Set(["node_modules", ".git", ".claude", ".DS_Store"]);
 const ID_PATTERN = /\b([A-Z][A-Z]*(?:[-_][A-Z]+)*)-(\d{3,4})\b/g;
 

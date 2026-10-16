@@ -3,50 +3,8 @@
 // name never touches a test. A key that matches zero or several rows throws: edit the key here, or in the
 // CSV, when a row is deleted or re-keyed. Ids that production code owns (helpers/ids.js) come from there.
 const { loadDataset } = require("helpers/datasets.js");
+const { ID_COLUMN, KEY_COLUMN } = require("helpers/datasetColumns.js");
 const { REFLEXOS_EM_COMBATE_ID, ESCUDO_SKILL_ID } = require("helpers/ids.js");
-
-const ID_COLUMN = {
-  ACCESSORIES: "accessory_id",
-  ADVANTAGES: "advantage_id",
-  ADVENTURE_GEAR: "adventure_gear_id",
-  ALCHEMY: "consumable_id",
-  AMMO: "ammo_id",
-  AMMO_CONTAINERS: "container_id",
-  ARMORS: "armor_id",
-  CRAFTING_MATERIALS: "material_id",
-  DISADVANTAGES: "disadvantage_id",
-  ENCHANTMENTS: "enchantment_id",
-  FIREARMS: "weapon_id",
-  GRIMOIRE: "spell_id",
-  MAGIC_GEAR: "magic_gear_id",
-  MELEE_WEAPONS: "weapon_id",
-  META_RACES: "meta_race_id",
-  RACES: "race_id",
-  RANGED_WEAPONS: "weapon_id",
-  SHIELDS: "shield_id",
-  SKILLS: "skill_id",
-};
-
-const KEY_COLUMN = {
-  ACCESSORIES: "accessory_key",
-  ADVANTAGES: "advantage_key",
-  ADVENTURE_GEAR: "adventure_gear_key",
-  ALCHEMY: "consumable_key",
-  AMMO: "ammo_key",
-  AMMO_CONTAINERS: "container_key",
-  ARMORS: "armor_key",
-  CRAFTING_MATERIALS: "material_key",
-  DISADVANTAGES: "disadvantage_key",
-  ENCHANTMENTS: "enchantment_key",
-  FIREARMS: "weapon_key",
-  MAGIC_GEAR: "magic_gear_key",
-  MELEE_WEAPONS: "weapon_key",
-  META_RACES: "meta_race_key",
-  RACES: "race_key",
-  RANGED_WEAPONS: "weapon_key",
-  SHIELDS: "shield_key",
-  SKILLS: "skill_key",
-};
 
 function idOfKey(dataset, key) {
   const rows = loadDataset(dataset).filter(

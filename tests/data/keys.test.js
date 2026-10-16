@@ -1,5 +1,5 @@
 const { loadDataset } = require("helpers/datasets.js");
-const { KEY_COLUMN } = require("tests/helpers/dataRefs");
+const { KEY_COLUMN } = require("helpers/datasetColumns.js");
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
