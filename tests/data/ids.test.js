@@ -1,4 +1,5 @@
 const { loadDataset } = require("helpers/datasets.js");
+const { ID_COLUMN, KEY_COLUMN } = require("helpers/datasetColumns.js");
 const {
   WILL_BONUS_TIERS,
   WILL_PENALTY_TIERS,
@@ -15,102 +16,116 @@ const {
   DUAL_USE_WEAPON_PAIRS,
 } = require("helpers/ids.js");
 
-// Guards against a dataset revamp silently dropping/renumbering an id this
-// registry hardcodes — every id here must resolve to a real CSV row.
-function idsOf(datasetKey, column) {
-  return new Set(loadDataset(datasetKey).map((row) => row[column]));
+// helpers/ids.js hardcodes ids, so a renumbered or reordered dataset can leave one pointing at a
+// different row that still exists. Each id is checked against the stable key of the row it must be.
+const keysById = {};
+function keyOf(dataset, id) {
+  keysById[dataset] ??= new Map(
+    loadDataset(dataset).map((r) => [
+      r[ID_COLUMN[dataset]],
+      r[KEY_COLUMN[dataset]],
+    ]),
+  );
+  return keysById[dataset].get(id);
 }
 
-describe("ids registry resolves against the real datasets", () => {
-  const advantageIds = idsOf("ADVANTAGES", "advantage_id");
-  const disadvantageIds = idsOf("DISADVANTAGES", "disadvantage_id");
-  const skillIds = idsOf("SKILLS", "skill_id");
-  const shieldIds = idsOf("SHIELDS", "shield_id");
-  const enchantmentIds = idsOf("ENCHANTMENTS", "enchantment_id");
-  const meleeIds = idsOf("MELEE_WEAPONS", "weapon_id");
-  const rangedIds = idsOf("RANGED_WEAPONS", "weapon_id");
+const TIER_GROUPS = [
+  ["WILL_BONUS_TIERS", WILL_BONUS_TIERS, "ADVANTAGES", "forca-de-vontade"],
+  ["WILL_PENALTY_TIERS", WILL_PENALTY_TIERS, "DISADVANTAGES", "vontade"],
+  ["HEARING_BONUS_TIERS", HEARING_BONUS_TIERS, "ADVANTAGES", "ouvido-agucado"],
+  [
+    "SMELL_BONUS_TIERS",
+    SMELL_BONUS_TIERS,
+    "ADVANTAGES",
+    "paladar-olfato-apurados",
+  ],
+  ["VISION_BONUS_TIERS", VISION_BONUS_TIERS, "ADVANTAGES", "visao-agucada"],
+  ["FULL_SENSE_BONUS_TIERS", FULL_SENSE_BONUS_TIERS, "ADVANTAGES", "prontidao"],
+  [
+    "MAGIC_APTITUDE_TIERS",
+    MAGIC_APTITUDE_TIERS,
+    "ADVANTAGES",
+    "aptidao-magica",
+  ],
+];
 
-  test.each(Object.keys(WILL_BONUS_TIERS))(
-    "WILL_BONUS_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test.each(Object.keys(WILL_PENALTY_TIERS))(
-    "WILL_PENALTY_TIERS id %s exists in DISADVANTAGES",
-    (id) => {
-      expect(disadvantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test.each(Object.keys(HEARING_BONUS_TIERS))(
-    "HEARING_BONUS_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test.each(Object.keys(SMELL_BONUS_TIERS))(
-    "SMELL_BONUS_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test.each(Object.keys(VISION_BONUS_TIERS))(
-    "VISION_BONUS_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test.each(Object.keys(FULL_SENSE_BONUS_TIERS))(
-    "FULL_SENSE_BONUS_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
-    },
-  );
-
-  test("REFLEXOS_EM_COMBATE_ID exists in ADVANTAGES", () => {
-    expect(advantageIds.has(REFLEXOS_EM_COMBATE_ID)).toBe(true);
+describe.each(TIER_GROUPS)("%s", (_name, tiers, dataset, keyPrefix) => {
+  test("registers every tier of the group once", () => {
+    const dataTiers = loadDataset(dataset)
+      .map((row) => row[KEY_COLUMN[dataset]])
+      .filter((key) => new RegExp(`^${keyPrefix}-\\d+$`).test(key))
+      .map((key) => Number(key.split("-").pop()))
+      .sort();
+    expect(Object.values(tiers).sort()).toEqual(dataTiers);
   });
 
-  test.each(Object.keys(MAGIC_APTITUDE_TIERS))(
-    "MAGIC_APTITUDE_TIERS id %s exists in ADVANTAGES",
-    (id) => {
-      expect(advantageIds.has(id)).toBe(true);
+  test.each(Object.entries(tiers))(
+    "id %s is tier %i of the group",
+    (id, tier) => {
+      expect(keyOf(dataset, id)).toBe(`${keyPrefix}-${tier}`);
     },
   );
+});
 
-  test("BROQUEL_SKILL_ID exists in SKILLS", () => {
-    expect(skillIds.has(BROQUEL_SKILL_ID)).toBe(true);
+describe("single ids", () => {
+  test.each([
+    [
+      "REFLEXOS_EM_COMBATE_ID",
+      "ADVANTAGES",
+      REFLEXOS_EM_COMBATE_ID,
+      "reflexos-em-combate",
+    ],
+    ["BROQUEL_SKILL_ID", "SKILLS", BROQUEL_SKILL_ID, "broquel"],
+    ["ESCUDO_SKILL_ID", "SKILLS", ESCUDO_SKILL_ID, "escudo"],
+    [
+      "MAGIC_RETURN_ENCHANTMENT_ID",
+      "ENCHANTMENTS",
+      MAGIC_RETURN_ENCHANTMENT_ID,
+      "retorno-magico",
+    ],
+  ])("%s is the row keyed %s", (_name, dataset, id, expectedKey) => {
+    expect(keyOf(dataset, id)).toBe(expectedKey);
   });
 
-  test("ESCUDO_SKILL_ID exists in SKILLS", () => {
-    expect(skillIds.has(ESCUDO_SKILL_ID)).toBe(true);
-  });
-
-  test.each([...BROQUEL_SHIELD_IDS])(
-    "BROQUEL_SHIELD_IDS id %s exists in SHIELDS",
-    (id) => {
-      expect(shieldIds.has(id)).toBe(true);
-    },
-  );
-
-  test("MAGIC_RETURN_ENCHANTMENT_ID is still the magic-return special effect", () => {
+  test("the magic-return enchantment is still a special effect", () => {
     const row = loadDataset("ENCHANTMENTS").find(
       (r) => r.enchantment_id === MAGIC_RETURN_ENCHANTMENT_ID,
     );
     expect(row.enchantment_effect_type).toBe("special_effect");
-    expect(row.enchantment_name).toBe("Retorno Mágico");
   });
+});
+
+describe("BROQUEL_SHIELD_IDS", () => {
+  test("is exactly the shields whose key is a broquel", () => {
+    const broquels = loadDataset("SHIELDS")
+      .filter((row) => row.shield_key.startsWith("broquel-"))
+      .map((row) => row.shield_id);
+    expect([...BROQUEL_SHIELD_IDS].sort()).toEqual(broquels.sort());
+  });
+});
+
+describe("DUAL_USE_WEAPON_PAIRS", () => {
+  const melee = loadDataset("MELEE_WEAPONS");
+  const ranged = loadDataset("RANGED_WEAPONS");
 
   test.each(DUAL_USE_WEAPON_PAIRS)(
-    "dual-use pair [%s, %s] exists in both the melee and ranged datasets",
+    "%s and %s are the same weapon in both tables",
     (meleeId, rangedId) => {
-      expect(meleeIds.has(meleeId)).toBe(true);
-      expect(rangedIds.has(rangedId)).toBe(true);
+      expect(keyOf("MELEE_WEAPONS", meleeId)).toBeDefined();
+      expect(keyOf("MELEE_WEAPONS", meleeId)).toBe(
+        keyOf("RANGED_WEAPONS", rangedId),
+      );
     },
   );
+
+  test("every weapon key present in both tables is registered as a pair", () => {
+    const rangedKeys = new Set(ranged.map((row) => row.weapon_key));
+    const sharedKeys = melee
+      .map((row) => row.weapon_key)
+      .filter((key) => rangedKeys.has(key));
+    const registeredKeys = DUAL_USE_WEAPON_PAIRS.map(([meleeId]) =>
+      keyOf("MELEE_WEAPONS", meleeId),
+    );
+    expect(registeredKeys.sort()).toEqual(sharedKeys.sort());
+  });
 });
