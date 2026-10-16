@@ -20,7 +20,6 @@
 }
 
 .reference-prose {
-  max-width: 80ch; /* keeps desktop lines readable; tables and boxes follow the same measure */
   font-size: var(--fs-sm);
   line-height: 1.55;
   color: var(--color-text);
