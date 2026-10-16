@@ -16,7 +16,6 @@ import {
 } from "../ui.js";
 import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
-  toEngineRace,
   toEngineCharacter,
   toEngineInventory,
 } from "../shared/enginePayload.js";
@@ -54,13 +53,9 @@ export async function runEngine() {
       },
     };
 
-    const raceRow = info.race_id
-      ? state.data.races.find((r) => r.race_id === info.race_id)
-      : null;
-
     const json = await buildSheet({
       pc,
-      race: toEngineRace(raceRow),
+      race_id: info.race_id ?? null,
       character: toEngineCharacter(
         {
           advantages: selected.advantages,

@@ -2,66 +2,10 @@
 // tests cover the mapper directly, including the stored-sheet path (a catalog ally) that
 // the sheet never exercises.
 import {
-  toEngineRace,
   toEngineCharacter,
   toEngineInventory,
   toEnginePayload,
 } from "dev/public/js/shared/enginePayload.js";
-
-describe("toEngineRace", () => {
-  test("returns an empty object for a missing row", () => {
-    expect(toEngineRace(null)).toEqual({});
-    expect(toEngineRace(undefined)).toEqual({});
-  });
-
-  test("coerces modifiers to numbers, treating a blank cell as 0", () => {
-    const race = toEngineRace({
-      race_id: "R1",
-      race_st_modifier: "-1",
-      race_dx_modifier: "2",
-      race_iq_modifier: "",
-      race_ht_modifier: "0",
-    });
-
-    expect(race.modifiers).toEqual({ ST: -1, DX: 2, IQ: 0, HT: 0 });
-  });
-
-  test("defaults a blank or non-numeric elemental multiplier to 1 but keeps a literal 0", () => {
-    const race = toEngineRace({
-      race_id: "R1",
-      race_fire_damage_multiplier: "0.5",
-      race_water_damage_multiplier: "",
-      race_electricity_damage_multiplier: "not-a-number",
-      race_corrosion_damage_multiplier: "0",
-    });
-
-    expect(race.elemental_modifiers.Fire).toBe(0.5);
-    expect(race.elemental_modifiers.Water).toBe(1);
-    expect(race.elemental_modifiers.Electricity).toBe(1);
-    // A 0 multiplier means immune — `|| 1` would silently erase it.
-    expect(race.elemental_modifiers.Corrosion).toBe(0);
-  });
-
-  test("splits the comma-joined innate trait columns and trims each id", () => {
-    const race = toEngineRace({
-      race_id: "R1",
-      race_innate_advantage_id: "ADV-001, ADV-002",
-      race_innate_disadvantage_id: "",
-      race_innate_advantage_name: "Visão Noturna, Ágil",
-    });
-
-    expect(race.innate_advantage_ids).toEqual(["ADV-001", "ADV-002"]);
-    expect(race.innate_disadvantage_ids).toEqual([]);
-    expect(race.innate_advantage_names).toEqual(["Visão Noturna", "Ágil"]);
-  });
-
-  test("normalizes absent optional columns to null", () => {
-    const race = toEngineRace({ race_id: "R1", race_name: "Elfo" });
-
-    expect(race.race_sub_name).toBeNull();
-    expect(race.race_life_expectancy).toBeNull();
-  });
-});
 
 describe("toEngineCharacter", () => {
   test("turns the trait maps into id arrays", () => {
@@ -236,6 +180,7 @@ describe("toEnginePayload", () => {
       "inventory",
       "pc",
       "race",
+      "race_id",
     ]);
     expect(payload.character.advantages).toEqual(["ADV-031"]);
     expect(payload.character.primaryAttributes).toEqual({
@@ -244,10 +189,17 @@ describe("toEnginePayload", () => {
     expect(payload.inventory.armor).toEqual([{ armor_id: "ARMOR-015" }]);
   });
 
-  // A stored sheet's `race` is already the built engine object (export keeps sheet.race),
-  // so it must pass through untouched rather than being re-derived from a CSV row.
-  test("passes a stored race through unchanged", () => {
-    expect(toEnginePayload(STORED).race).toBe(STORED.race);
+  // The engine reads the race from the dataset by id; the snapshot only matters for a custom race.
+  test("takes the race id from the stored snapshot and passes the snapshot along", () => {
+    const payload = toEnginePayload(STORED);
+    expect(payload.race_id).toBe("RACE-023");
+    expect(payload.race).toBe(STORED.race);
+  });
+
+  test("an explicit race_id wins over the snapshot's", () => {
+    expect(toEnginePayload({ ...STORED, race_id: "RACE-001" }).race_id).toBe(
+      "RACE-001",
+    );
   });
 
   test("drops the persistence-only version field", () => {
@@ -259,6 +211,7 @@ describe("toEnginePayload", () => {
 
     expect(payload.pc).toEqual({});
     expect(payload.race).toEqual({});
+    expect(payload.race_id).toBeNull();
     expect(payload.character.advantages).toEqual([]);
     expect(payload.inventory.weight).toBe(0);
   });

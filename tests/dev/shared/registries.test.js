@@ -7,7 +7,7 @@ import {
   ARMOR_SLOT_KEYS,
 } from "dev/public/js/shared/constants.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
-import { toEngineRace } from "dev/public/js/shared/enginePayload.js";
+import { resolveRace } from "engine/character/js/traits/races.js";
 import { PRIMARY_KEYS, PRIMARY_DEFAULT_VALUE } from "helpers/rules.js";
 import { loadDataset } from "helpers/datasets.js";
 import { SLOT_MAP } from "engine/inventory/js/armor/armorConstants.js";
@@ -52,8 +52,9 @@ describe("elemental types line up across engine, labels and payload", () => {
     );
   });
 
-  test("toEngineRace emits a multiplier for every engine element", () => {
-    const { elemental_modifiers } = toEngineRace({});
+  test("resolveRace emits a multiplier for every engine element", () => {
+    const [{ race_id }] = loadDataset("RACES");
+    const { elemental_modifiers } = resolveRace(race_id);
     expect(Object.keys(elemental_modifiers).sort()).toEqual(
       [...ELEMENTAL_TYPES].sort(),
     );

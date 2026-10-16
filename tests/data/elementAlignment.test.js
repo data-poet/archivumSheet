@@ -1,6 +1,7 @@
 import { ELEMENTAL_TYPES } from "engine/character/js/attributes/elementalResistances.js";
 import { ELEMENT_COLUMN } from "engine/character/js/traits/metaRaces.js";
-import { toEngineRace } from "dev/public/js/shared/enginePayload.js";
+import { resolveRace } from "engine/character/js/traits/races.js";
+import { withEditedData } from "tests/helpers/tempData";
 import { loadDataset } from "helpers/datasets.js";
 import fs from "fs";
 import path from "path";
@@ -21,10 +22,18 @@ const metaRaceColumn = (element) =>
 
 // A misspelled column reads as "no multiplier" (1) instead of failing, so the names are pinned to the element keys.
 describe.each(ELEMENTAL_TYPES)("%s columns", (element) => {
-  test("the races CSV has the column, and toEngineRace reads it", () => {
+  test("the races CSV has the column, and resolveRace reads it", () => {
     expect(headerOf("db_yrth_races.csv")).toContain(raceColumn(element));
 
-    const race = toEngineRace({ race_id: "R", [raceColumn(element)]: "0" });
+    const [{ race_id }] = loadDataset("RACES");
+    const race = withEditedData(
+      "db_yrth_races.csv",
+      (rows) => {
+        rows[0][raceColumn(element)] = "0";
+        return rows;
+      },
+      () => resolveRace(race_id),
+    );
     expect(race.elemental_modifiers[element]).toBe(0);
   });
 

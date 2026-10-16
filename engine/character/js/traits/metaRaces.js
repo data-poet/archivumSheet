@@ -1,5 +1,6 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { ELEMENTAL_TYPES } = require("../attributes/elementalResistances");
+const { multiplierOf } = require("../shared/multiplierOf");
 
 const ELEMENT_COLUMN = {
   Fire: "meta_race_fire_damage_multiplier",
@@ -20,14 +21,6 @@ const ATTRIBUTE_COLUMN = {
   IQ: "meta_race_iq_modifier",
   HT: "meta_race_ht_modifier",
 };
-
-// Not `Number(x) || 1` — a literal 0 (immune) is a real value that `||` would erase.
-// Mirrors dev/public/js/shared/enginePayload.js's toEngineRace on the client.
-function multiplierOf(raw) {
-  if (raw === undefined || raw === null || raw === "") return 1;
-  const n = Number(raw);
-  return Number.isNaN(n) ? 1 : n;
-}
 
 function idListOf(raw) {
   if (!raw) return [];

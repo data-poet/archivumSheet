@@ -7,6 +7,7 @@ const { buildGrimoire } = require("./magic/buildGrimoire");
 const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { criticalRanges } = require("../helpers/criticalRanges");
 const { REFLEXOS_EM_COMBATE_ID } = require("../helpers/ids");
+const { pickRace } = require("./character/js/traits/races");
 const { VALID_STORED_AT, ALL_BUCKETS } = require("../helpers/storage");
 const {
   shieldSkillId,
@@ -26,10 +27,13 @@ const {
 
 function buildSheet({
   pc = {},
-  race = {},
+  race_id = null,
+  race: resolvedRace,
   character = {},
   inventory = {},
 } = {}) {
+  const race = pickRace({ race_id, race: resolvedRace });
+
   /**
    * ───────────────────────────────────────────────────────────────────────────
    * 0. META-RACE RESOLUTION

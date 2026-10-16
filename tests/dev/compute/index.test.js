@@ -126,41 +126,20 @@ describe("buildSheet payload — pc", () => {
 });
 
 describe("buildSheet payload — race", () => {
-  test("is an empty object when race_id is unset", async () => {
+  test("race_id is null when no race is selected", async () => {
     await runEngine();
-    expect(buildSheet.mock.calls[0][0].race).toEqual({});
+    expect(buildSheet.mock.calls[0][0].race_id).toBeNull();
   });
 
-  test("is an empty object when race_id doesn't match any loaded race", async () => {
-    selected.character.race_id = "GHOST";
-    state.data.races = [{ race_id: "R1", race_name: "Elfo" }];
-
-    await runEngine();
-
-    expect(buildSheet.mock.calls[0][0].race).toEqual({});
-  });
-
-  // Coercion rules (modifiers to numbers, elemental multiplier defaulting, comma-split
-  // innate ids) are exhaustively covered directly against toEngineRace in
-  // enginePayload.test.js; this only confirms data.races actually reaches buildSheet
-  // through that mapper.
-  test("resolves the full race row and passes toEngineRace's output through to buildSheet", async () => {
+  // The engine resolves the race from its dataset; the frontend only says which one.
+  test("sends the selected race_id and no race object", async () => {
     selected.character.race_id = "R1";
-    state.data.races = [
-      {
-        race_id: "R1",
-        race_name: "Elfo",
-        race_sub_name: "Elfo Silvestre",
-        race_st_modifier: "-1",
-      },
-    ];
 
     await runEngine();
 
-    const { race } = buildSheet.mock.calls[0][0];
-    expect(race.race_id).toBe("R1");
-    expect(race.race_sub_name).toBe("Elfo Silvestre");
-    expect(race.modifiers.ST).toBe(-1);
+    const payload = buildSheet.mock.calls[0][0];
+    expect(payload.race_id).toBe("R1");
+    expect(payload).not.toHaveProperty("race");
   });
 });
 

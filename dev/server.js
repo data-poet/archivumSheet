@@ -313,12 +313,12 @@ app.post("/api/character/build", (req, res) => {
    SHEET BUILDER (MAIN ENGINE)
 ------------------------ */
 app.post("/api/sheet/build", (req, res) => {
-  const { pc = {}, race = {}, character = {}, inventory = {} } = req.body;
+  const { pc = {}, race_id = null, character = {}, inventory = {} } = req.body;
 
   try {
     const result = buildSheet({
       pc,
-      race,
+      race_id,
       character,
       inventory,
     });
