@@ -18,8 +18,6 @@ import {
 } from "../engine/character/portrait/portrait.js";
 import { showToast } from "../shared/toast.js";
 
-export { showToast };
-
 // A linked local ally is another row in this same browser's store, keyed by an id that only
 // means something here — the file has to carry its full data so importing elsewhere (or later,
 // once the ids may already be reused) can recreate it under a fresh id (see

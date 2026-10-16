@@ -104,6 +104,9 @@ export const state = {
     coins: [],
   },
 
+  // Last engine build, set by runEngine().
+  sheet: undefined,
+
   ui: {
     debounceTimer: null,
   },

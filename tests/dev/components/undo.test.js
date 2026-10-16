@@ -1,8 +1,8 @@
-jest.mock("dev/public/js/store/persistence.js", () => ({
+jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
 
-import { showToast } from "dev/public/js/store/persistence.js";
+import { showToast } from "dev/public/js/shared/toast.js";
 import { offerUndo } from "dev/public/js/components/undo.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 

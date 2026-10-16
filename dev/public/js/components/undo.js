@@ -1,5 +1,5 @@
 // Caller must snapshot state before mutating and restore it (+ re-render) in restoreFn.
-import { showToast } from "../store/persistence.js";
+import { showToast } from "../shared/toast.js";
 import { t } from "../localization/pt-BR/index.js";
 
 const UNDO_DURATION_MS = 5000;

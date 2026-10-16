@@ -5,7 +5,7 @@ jest.mock("dev/public/js/store/characters.js", () => ({
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   updateSelectorButton: jest.fn(),
 }));
-jest.mock("dev/public/js/store/persistence.js", () => ({
+jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
 jest.mock("dev/public/js/ui.js", () => ({
@@ -22,7 +22,7 @@ jest.mock("dev/public/js/ui.js", () => ({
 import { buildSheet } from "dev/public/js/api.js";
 import { saveActiveCharacter } from "dev/public/js/store/characters.js";
 import { updateSelectorButton } from "dev/public/js/components/characterSelector.js";
-import { showToast } from "dev/public/js/store/persistence.js";
+import { showToast } from "dev/public/js/shared/toast.js";
 import {
   renderOutput,
   renderLists,

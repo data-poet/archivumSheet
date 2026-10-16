@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { showToast } from "../../../store/persistence.js";
+import { showToast } from "../../../shared/toast.js";
 import { showConfirm } from "../../../components/dialog.js";
 import { renderResumeImage } from "./resumeImage.js";
 

@@ -24,6 +24,8 @@ jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),
   exportAllySheet: jest.fn(),
   importSheet: jest.fn(),
+}));
+jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
 jest.mock("dev/public/js/components/dialog.js", () => ({
@@ -50,8 +52,8 @@ import {
 import {
   exportSheet,
   exportAllySheet,
-  showToast,
 } from "dev/public/js/store/persistence.js";
+import { showToast } from "dev/public/js/shared/toast.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
 import { renderEntryKind } from "dev/public/js/components/entryKind.js";
 import { reloadCatalogs } from "dev/public/js/store/catalogs.js";

@@ -18,7 +18,7 @@ import {
   toEngineCharacter,
   toEngineInventory,
 } from "../shared/enginePayload.js";
-import { showToast } from "../store/persistence.js";
+import { showToast } from "../shared/toast.js";
 import { t } from "../localization/pt-BR/index.js";
 
 const selected = state.selected;

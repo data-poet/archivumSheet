@@ -4,13 +4,13 @@ jest.mock("dev/public/js/store/characters.js", () => ({
 jest.mock("dev/public/js/store/allies/allyOnlyContent.js", () => ({
   findAllyOnlyContent: jest.fn(() => []),
 }));
-jest.mock("dev/public/js/store/persistence.js", () => ({
+jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
 
 import { getActiveKind } from "dev/public/js/store/characters.js";
 import { findAllyOnlyContent } from "dev/public/js/store/allies/allyOnlyContent.js";
-import { showToast } from "dev/public/js/store/persistence.js";
+import { showToast } from "dev/public/js/shared/toast.js";
 import {
   renderEntryKind,
   warnAllyOnlyContent,

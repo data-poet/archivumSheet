@@ -6,7 +6,7 @@ import { t } from "../localization/pt-BR/index.js";
 import { getActiveKind } from "../store/characters.js";
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { findAllyOnlyContent } from "../store/allies/allyOnlyContent.js";
-import { showToast } from "../store/persistence.js";
+import { showToast } from "../shared/toast.js";
 
 const BODY_CLASS = "is-ally-draft";
 

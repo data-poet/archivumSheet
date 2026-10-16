@@ -16,8 +16,8 @@ import {
   exportSheet,
   exportAllySheet,
   importSheet,
-  showToast,
 } from "../store/persistence.js";
+import { showToast } from "../shared/toast.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";
 import { escapeHtml } from "../shared/renderUtils.js";

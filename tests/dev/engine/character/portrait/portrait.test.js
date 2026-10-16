@@ -1,7 +1,7 @@
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
 }));
-jest.mock("dev/public/js/store/persistence.js", () => ({
+jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
 jest.mock("dev/public/js/components/dialog.js", () => ({
@@ -9,7 +9,7 @@ jest.mock("dev/public/js/components/dialog.js", () => ({
 }));
 
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";
-import { showToast } from "dev/public/js/store/persistence.js";
+import { showToast } from "dev/public/js/shared/toast.js";
 import { showConfirm } from "dev/public/js/components/dialog.js";
 import {
   renderResumeImage,
