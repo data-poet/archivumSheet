@@ -68,7 +68,7 @@ DOM event → state.selected (raw input) → POST /api/sheet/build
 
 - **`engine/`** — server-side computation, called via `POST /api/sheet/build` and `/api/character/build`. `buildSheet()` orchestrates `buildCharacter()` (attributes, traits, skills, base damage) and `buildInventory()` (per-category item resolution, carry weight, encumbrance, combat stats). Each inventory category under `engine/inventory/js/<category>/` follows the same shape: `constants` → `validation` → `resolver` → main `build*` function — mirror this when adding a new one.
 - **`dev/server.js`** — thin Express layer: GET endpoints serve each CSV as JSON (dropdown data), POST endpoints run the engine.
-- **`dev/public/js/`** — UI layer, organized by responsibility: `state.js` (the 3-part global state below), `engine/` (client-side callers of the API), `events/` (all DOM wiring, delegated through `events/index.js`), `components/` + `ui/` (renderers), `store/` (persistence, tab/view-mode state), `compute/` (client-side attribute preview before an engine round-trip), `localization/pt-BR/` (every visible string).
+- **`dev/public/js/`** — UI layer, organized by responsibility: `state.js` (the 3-part global state below), `engine/` (per-domain model, render and event handlers; its structure mirrors the server-side `engine/`), `events/index.js` (the sheet's delegated document listeners, which route to those handlers), `components/` (page-level renderers and widgets, including the resume), `ui.js` (the render entry points), `store/` (characters, persistence, theme and view state), `allies/` (the repo ally catalog), `compute/` (collects the raw input, calls the engine and drives the re-render), `layout/` (page assembly), `reference/` (the rules reference page), `shared/` (helpers used across domains), `localization/pt-BR/` (every visible string).
 
 **State (`state.js`)** has three sections:
 
@@ -100,7 +100,9 @@ Conventions every CSV follows:
 - **Equipment** — armor, shields, melee/ranged/firearms weapons, ammo (containers + loose), accessories, and magic gear, each with **equipped / backpack / stash / camp** storage buckets. Only equipped (and backpack, for weight) items count toward carry weight and combat stats.
 - **Magic enchantments** — applied to individual equipment instances; the engine resolves pricing, stacking/collision rules against a character's own purchased skills/spells, and dual-use weapon (melee ⇄ ranged) category syncing.
 - **Inventory** — alchemy consumables, survival gear, coin purse (denominations tracked separately from weight), and fully freeform custom items.
-- **Resume / View Mode** — a compact read-only summary of the whole character; replaces the main view on mobile, overlays it on desktop.
+- **Resume / View Mode** — a compact summary of the whole character that doubles as the play surface (HP, ammo and durability steppers); replaces the main view on mobile, overlays it on desktop.
+- **Allies** — characters can be saved as allies and linked to a PC's roster; a catalog of ready-made allies ships in `data/allies/` (portraits beside their JSON), and an ally file exports and imports like a sheet.
+- **Rules reference** — `reference.html` renders the markdown rules in `dev/public/reference-content/` with search and deep links.
 - **Multi-character & persistence** — any number of characters saved to `localStorage`; JSON import/export uses the same `state.selected` shape.
 
 ---
@@ -112,7 +114,7 @@ Load-bearing constraints, not preferences — all contributions must follow them
 - **Engine owns computed values.** `state.selected` never holds a computed field.
 - **Mirror existing patterns.** Adding an inventory type? Copy `engine/inventory/js/ammo/`'s structure exactly.
 - **All strings go through `localization/pt-BR/`.** No hardcoded text in JS/HTML.
-- **Delegated events.** All `addEventListener` calls live in `events/index.js`; other files are pure handlers.
+- **Delegated events.** The sheet's list and form interactions are wired once, on `document`, in `events/index.js`; the domain `events.js` files only export handlers. Self-contained widgets (dialogs, tabs, the character selector, toasts) bind their own listeners.
 - **Open-state preservation.** Re-rendering a list must not collapse rows the user had expanded (`shared/openState.js`).
 - **Debounced engine calls.** Modifier inputs debounce before triggering a rebuild, so the DOM doesn't rebuild mid-keystroke.
 - **Comments explain WHY, not WHAT** — see `CLAUDE.md`.
@@ -122,9 +124,15 @@ Load-bearing constraints, not preferences — all contributions must follow them
 
 ## Testing
 
-Jest tests live in `tests/`, mirroring `engine/`'s structure exactly. The UI layer has no tests by design — it's a thin renderer with no logic of its own.
+Jest runs three projects (`jest.config.js`), and `tests/` is split to match:
 
-Reusable assertion helpers in `tests/helpers/`: `assertShape.js`, `assertBasePlusModifier.js`, `assertNumericMap.js`, `assertSelectedOnly.js`.
+- `tests/engine/` mirrors `engine/` (Node). The engine is pure computation, so most of the suite is here.
+- `tests/data/` holds the guards that read the real CSVs (ids, keys, references, vocabularies); `npm run test:data` runs only these.
+- `tests/dev/` mirrors `dev/public/js/` (jsdom): renderers, event handlers, stores and the reference page. The UI layer has logic worth testing (open-state preservation, steppers, persistence), so it is covered, with `tests/dev/helpers/` holding the DOM, state and fetch fixtures.
+
+`tests/golden/` is not part of `npm test`: it backs `golden:record` and `golden:compare` (see `scripts/README.md`).
+
+Shared helpers in `tests/helpers/`: the assertion helpers (`assertShape.js`, `assertBasePlusModifier.js`, `assertNumericMap.js`, `assertSelectedOnly.js`), `dataRefs.js` and `tempData.js` (edit a copy of the data for one test).
 
 Neither tests nor code hardcode a dataset id. `tests/helpers/dataRefs.js` finds each row by its stable key, lazily, and `helpers/ids.js` resolves the ids the engine needs from keys (the list of keys the code depends on is in `helpers/ruleKeys.js`; dual-use weapons are the weapon keys present in both the melee and ranged tables). To renumber or reorder a dataset, edit the CSV, keep the keys on their rows, then run `npm run check:data`, `npm test` and `npm run test:renumber`; no code or test file should need to change. A key the code depends on that no row has fails `check:data` and `tests/data/ids.test.js`; a test ref that matches no row (or several) fails with a message pointing at the spec to update.
 
