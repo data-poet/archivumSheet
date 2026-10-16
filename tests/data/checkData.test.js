@@ -1,59 +1,24 @@
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const { parse } = require("csv-parse/sync");
 const { runChecks } = require("scripts/checkData.js");
+const { withEditedData } = require("tests/helpers/tempData");
 
-const ROOT = path.join(__dirname, "../..");
-
-function toCsv(rows) {
-  const header = Object.keys(rows[0]).join(",");
-  const quote = (value) => `"${String(value).replace(/"/g, '""')}"`;
-  const lines = rows.map((row) => Object.values(row).map(quote).join(","));
-  return `${[header, ...lines].join("\n")}\n`;
-}
-
-// Runs the checks on a copy of data/ where one cell of one row has been changed.
 function checksAfterEdit(file, rowIndex, column, value) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "check-data-"));
-  const previous = process.cwd();
-  try {
-    fs.cpSync(path.join(ROOT, "data"), path.join(directory, "data"), {
-      recursive: true,
-    });
-    const target = path.join(directory, "data", file);
-    const rows = parse(fs.readFileSync(target, "utf8"), {
-      columns: true,
-      skip_empty_lines: true,
-      trim: true,
-    });
-    rows[rowIndex][column] = value;
-    fs.writeFileSync(target, toCsv(rows));
-    process.chdir(directory);
-    return runChecks();
-  } finally {
-    process.chdir(previous);
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
+  return withEditedData(
+    file,
+    (rows) => {
+      rows[rowIndex][column] = value;
+      return rows;
+    },
+    () => runChecks(),
+  );
 }
 
-// Same copy, but a column of the header is renamed (what a spreadsheet edit of a header looks like).
+// A renamed header, which is what a spreadsheet edit of a column name looks like.
 function checksAfterRenamingColumn(file, from, to) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "check-data-"));
-  const previous = process.cwd();
-  try {
-    fs.cpSync(path.join(ROOT, "data"), path.join(directory, "data"), {
-      recursive: true,
-    });
-    const target = path.join(directory, "data", file);
-    const text = fs.readFileSync(target, "utf8");
-    fs.writeFileSync(target, text.replace(from, to));
-    process.chdir(directory);
-    return runChecks();
-  } finally {
-    process.chdir(previous);
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
+  return withEditedData(
+    file,
+    (_rows, text) => text.replace(from, to),
+    () => runChecks(),
+  );
 }
 
 describe("check:data on the real datasets", () => {
@@ -158,5 +123,42 @@ describe("check:data catches a header the code still reads", () => {
         message: expect.stringContaining("row.armor_price"),
       }),
     );
+  });
+});
+
+describe("check:data guards the keys the code depends on", () => {
+  test("a renamed rule key is an error", () => {
+    const { errors } = withEditedData(
+      "db_traits_advantages.csv",
+      (rows) => {
+        rows.find(
+          (r) => r.advantage_key === "reflexos-em-combate",
+        ).advantage_key = "reflexos";
+        return rows;
+      },
+      () => runChecks(),
+    );
+    expect(errors).toContainEqual(
+      expect.objectContaining({
+        check: "rule-key",
+        id: "reflexos-em-combate",
+      }),
+    );
+  });
+
+  test("a tier beyond the registered ones is an error", () => {
+    const { errors } = withEditedData(
+      "db_traits_advantages.csv",
+      (rows) => [
+        ...rows,
+        {
+          ...rows.find((r) => r.advantage_key === "prontidao-5"),
+          advantage_id: "ADV-999",
+          advantage_key: "prontidao-6",
+        },
+      ],
+      () => runChecks(),
+    );
+    expect(errors.map((e) => e.check)).toContain("rule-tier");
   });
 });

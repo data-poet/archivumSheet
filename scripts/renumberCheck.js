@@ -1,4 +1,4 @@
-// Proves that renumbering dataset ids only needs the data and the id-owning files edited.
+// Proves that renumbering dataset ids only needs the data (and the frontend's default material id) edited.
 // Copies the repo to a temp dir, shifts every PREFIX-NNN id consistently in data/ and in the files
 // below, then runs the whole Jest suite there. Any failure means a test (or code) hardcodes an id.
 // The default shift is large so that no old id still exists after it: with a small shift a test that
@@ -11,7 +11,6 @@ const { spawnSync } = require("child_process");
 
 const ROOT = path.join(__dirname, "..");
 const ID_FILES = [
-  "helpers/ids.js",
   "dev/public/js/shared/constants.js",
   "scripts/dataKnownIssues.json",
 ];

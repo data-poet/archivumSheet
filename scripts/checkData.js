@@ -13,6 +13,7 @@ const {
 } = require("../helpers/datasets.js");
 const { ID_COLUMN, KEY_COLUMN } = require("../helpers/datasetColumns.js");
 const { DAMAGE_TYPES } = require("../helpers/taxonomy.js");
+const { resolveRuleKeys } = require("../helpers/ruleKeys.js");
 const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
 const { SLOT_MAP } = require("../engine/inventory/js/armor/armorConstants.js");
 const {
@@ -390,6 +391,45 @@ function checkSkillCostTables(findings) {
   });
 }
 
+// The code addresses these rows by key (helpers/ruleKeys.js): the keys must exist, and a tier group must
+// not have more tiers in the data than the code registers.
+function checkRuleKeys(findings, { verbose }) {
+  const { missing, unregistered, dualUsePairs } = resolveRuleKeys();
+  missing.forEach(({ dataset, key }) => {
+    findings.push(
+      finding(
+        "error",
+        "rule-key",
+        dataset,
+        key,
+        "the code depends on this key, but no row has it",
+      ),
+    );
+  });
+  unregistered.forEach(({ dataset, key }) => {
+    findings.push(
+      finding(
+        "error",
+        "rule-tier",
+        dataset,
+        key,
+        "tier beyond the ones the code registers (helpers/ruleKeys.js)",
+      ),
+    );
+  });
+  if (verbose) {
+    findings.push(
+      finding(
+        "info",
+        "dual-use",
+        null,
+        `${dualUsePairs.length} pairs`,
+        "weapons whose key exists in both the melee and ranged tables",
+      ),
+    );
+  }
+}
+
 function checkValueTypes(findings) {
   Object.keys(DATASETS).forEach((dataset) => {
     const rows = loadDataset(dataset);
@@ -572,6 +612,7 @@ function runChecks({ verbose = false } = {}) {
   checkReferences(findings);
   checkEnums(findings);
   checkSkillCostTables(findings);
+  checkRuleKeys(findings, { verbose });
   checkValueTypes(findings);
   checkNaturalKeys(findings);
   checkDerivedNames(findings);

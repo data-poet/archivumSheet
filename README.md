@@ -124,7 +124,7 @@ Jest tests live in `tests/`, mirroring `engine/`'s structure exactly. The UI lay
 
 Reusable assertion helpers in `tests/helpers/`: `assertShape.js`, `assertBasePlusModifier.js`, `assertNumericMap.js`, `assertSelectedOnly.js`.
 
-Tests never hardcode a dataset id. `tests/helpers/dataRefs.js` finds each row by what it is (a name, or an effect and target), lazily, and returns its current id, and the ids production code owns live in `helpers/ids.js`. To renumber or reorder a dataset, edit the CSV and `helpers/ids.js`, then run `npm test` and `npm run test:renumber`; no test file should need to change. A ref that matches no row (or several) fails with a message pointing at the spec to update.
+Neither tests nor code hardcode a dataset id. `tests/helpers/dataRefs.js` finds each row by its stable key, lazily, and `helpers/ids.js` resolves the ids the engine needs from keys (the list of keys the code depends on is in `helpers/ruleKeys.js`; dual-use weapons are the weapon keys present in both the melee and ranged tables). To renumber or reorder a dataset, edit the CSV, keep the keys on their rows, then run `npm run check:data`, `npm test` and `npm run test:renumber`; no code or test file should need to change. A key the code depends on that no row has fails `check:data` and `tests/data/ids.test.js`; a test ref that matches no row (or several) fails with a message pointing at the spec to update.
 
 ---
 
