@@ -1,6 +1,6 @@
 {
   "name": "archivumsheet",
-  "version": "1.10.31",
+  "version": "1.10.32",
   "description": "Online GURPS (Archivum) Character Sheet",
   "main": "dev/server.js",
   "directories": {
