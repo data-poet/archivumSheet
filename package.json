@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "node dev/server.js",
+    "dev": "node --watch-path=data --watch-path=engine --watch-path=helpers dev/server.js",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest",

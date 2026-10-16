@@ -20,3 +20,43 @@ describe("datasets registry", () => {
     );
   });
 });
+
+describe("loadDataset caching", () => {
+  const fs = require("fs");
+  const { withEditedData } = require("tests/helpers/tempData");
+
+  test("parses a file once and hands every caller the same frozen rows", () => {
+    const first = loadDataset("ARMORS");
+    expect(loadDataset("ARMORS")).toBe(first);
+    expect(Object.isFrozen(first)).toBe(true);
+    expect(Object.isFrozen(first[0])).toBe(true);
+  });
+
+  test("reads the file again as soon as it changes on disk", () => {
+    withEditedData(
+      "db_equipment_armors.csv",
+      (rows) => rows,
+      () => {
+        const before = loadDataset("ARMORS");
+        const file = datasetPath("ARMORS");
+        const text = fs.readFileSync(file, "utf8");
+        fs.writeFileSync(file, text.replace(`"Capuz",`, `"Capuz Editado",`));
+
+        const after = loadDataset("ARMORS");
+        expect(after).not.toBe(before);
+        expect(after[0].armor_name).toBe("Capuz Editado");
+      },
+    );
+  });
+
+  test("keeps the data of different working directories apart", () => {
+    const real = loadDataset("ARMORS");
+    const edited = withEditedData(
+      "db_equipment_armors.csv",
+      (rows) => rows.slice(0, 1),
+      () => loadDataset("ARMORS"),
+    );
+    expect(edited).toHaveLength(1);
+    expect(loadDataset("ARMORS")).toBe(real);
+  });
+});

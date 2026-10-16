@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 const { loadCSV } = require("./dataUtils.js");
 
@@ -31,8 +32,26 @@ function datasetPath(key) {
   return path.join(process.cwd(), "data", fileName);
 }
 
+// Parsed once per file and reused until the file changes on disk (its size or modification time), so a
+// sheet build or an API request never re-parses a CSV and an edited CSV is picked up without a restart.
+// Callers share the same rows, so they are frozen: copy before changing.
+const cache = new Map();
+
+function deepFreeze(rows) {
+  rows.forEach((row) => Object.freeze(row));
+  return Object.freeze(rows);
+}
+
 function loadDataset(key) {
-  return loadCSV(datasetPath(key));
+  const file = datasetPath(key);
+  const { mtimeMs, size } = fs.statSync(file);
+  const stamp = `${mtimeMs}:${size}`;
+  const cached = cache.get(file);
+  if (cached?.stamp === stamp) return cached.rows;
+
+  const rows = deepFreeze(loadCSV(file));
+  cache.set(file, { stamp, rows });
+  return rows;
 }
 
 module.exports = {

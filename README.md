@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-The app runs at `http://localhost:3000`.
+The app runs at `http://localhost:3000`. `npm run dev` restarts the server when anything in `data/`, `engine/` or `helpers/` changes, and the datasets are re-read from disk when a CSV changes.
 
 ```bash
 npm test          # run the full test suite once
