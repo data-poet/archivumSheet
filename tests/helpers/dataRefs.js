@@ -1,7 +1,7 @@
-// The only test-side file that knows how datasets identify their rows. Tests ask for a row by what it
-// is (a name, or an effect and target) and get whatever id it has now, so renumbering a dataset never
-// touches a test. A spec that matches zero or several rows throws: edit the spec here when a row is
-// renamed. Ids that production code owns (helpers/ids.js) come from there, not from a lookup.
+// The only test-side file that knows how datasets identify their rows. Tests ask for a row by its stable
+// key (the `<prefix>_key` column) and get whatever id it has now, so renumbering a dataset or correcting a
+// name never touches a test. A key that matches zero or several rows throws: edit the key here, or in the
+// CSV, when a row is deleted or re-keyed. Ids that production code owns (helpers/ids.js) come from there.
 const { loadDataset } = require("helpers/datasets.js");
 const { REFLEXOS_EM_COMBATE_ID, ESCUDO_SKILL_ID } = require("helpers/ids.js");
 
@@ -27,13 +27,34 @@ const ID_COLUMN = {
   SKILLS: "skill_id",
 };
 
-function idOf(dataset, where) {
-  const rows = loadDataset(dataset).filter((row) =>
-    Object.entries(where).every(([column, value]) => row[column] === value),
+const KEY_COLUMN = {
+  ACCESSORIES: "accessory_key",
+  ADVANTAGES: "advantage_key",
+  ADVENTURE_GEAR: "adventure_gear_key",
+  ALCHEMY: "consumable_key",
+  AMMO: "ammo_key",
+  AMMO_CONTAINERS: "container_key",
+  ARMORS: "armor_key",
+  CRAFTING_MATERIALS: "material_key",
+  DISADVANTAGES: "disadvantage_key",
+  ENCHANTMENTS: "enchantment_key",
+  FIREARMS: "weapon_key",
+  MAGIC_GEAR: "magic_gear_key",
+  MELEE_WEAPONS: "weapon_key",
+  META_RACES: "meta_race_key",
+  RACES: "race_key",
+  RANGED_WEAPONS: "weapon_key",
+  SHIELDS: "shield_key",
+  SKILLS: "skill_key",
+};
+
+function idOfKey(dataset, key) {
+  const rows = loadDataset(dataset).filter(
+    (row) => row[KEY_COLUMN[dataset]] === key,
   );
   if (rows.length !== 1) {
     throw new Error(
-      `[dataRefs] ${dataset} ${JSON.stringify(where)} matched ${rows.length} rows — update tests/helpers/dataRefs.js`,
+      `[dataRefs] ${dataset} key "${key}" matched ${rows.length} rows — update tests/helpers/dataRefs.js`,
     );
   }
   return rows[0][ID_COLUMN[dataset]];
@@ -58,317 +79,149 @@ function lazy(entries) {
 }
 
 const ACCESSORY = lazy({
-  anel: () => idOf("ACCESSORIES", { accessory_name: "Anel" }),
-  colar: () => idOf("ACCESSORIES", { accessory_name: "Colar" }),
-  coroa: () => idOf("ACCESSORIES", { accessory_name: "Coroa" }),
+  anel: () => idOfKey("ACCESSORIES", "anel"),
+  colar: () => idOfKey("ACCESSORIES", "colar"),
+  coroa: () => idOfKey("ACCESSORIES", "coroa"),
 });
 
 const ADVANTAGE = lazy({
-  atraente: () => idOf("ADVANTAGES", { advantage_name: "ATRAENTE" }),
-  eleganteBonito: () =>
-    idOf("ADVANTAGES", { advantage_name: "ELEGANTE/BONITO" }),
-  hipoalgia: () => idOf("ADVANTAGES", { advantage_name: "HIPOALGIA" }),
-  inabalavel: () => idOf("ADVANTAGES", { advantage_name: "INABALÁVEL" }),
-  indomavel: () => idOf("ADVANTAGES", { advantage_name: "INDOMÁVEL" }),
-  memoriaEideticaTotal: () =>
-    idOf("ADVANTAGES", {
-      advantage_name: "MEMORIA EIDÉTICA TOTAL",
-    }),
-  muitoBonito: () => idOf("ADVANTAGES", { advantage_name: "MUITO BONITO" }),
-  naoComeOuBebe: () =>
-    idOf("ADVANTAGES", { advantage_name: "NÃO COME OU BEBE" }),
-  naoDorme: () => idOf("ADVANTAGES", { advantage_name: "NÃO DORME" }),
-  naoRespira: () => idOf("ADVANTAGES", { advantage_name: "NÃO RESPIRA" }),
-  prontidao1: () => idOf("ADVANTAGES", { advantage_name: "PRONTIDÃO +1" }),
+  atraente: () => idOfKey("ADVANTAGES", "atraente"),
+  eleganteBonito: () => idOfKey("ADVANTAGES", "elegante-bonito"),
+  hipoalgia: () => idOfKey("ADVANTAGES", "hipoalgia"),
+  inabalavel: () => idOfKey("ADVANTAGES", "inabalavel"),
+  indomavel: () => idOfKey("ADVANTAGES", "indomavel"),
+  memoriaEideticaTotal: () => idOfKey("ADVANTAGES", "memoria-eidetica-total"),
+  muitoBonito: () => idOfKey("ADVANTAGES", "muito-bonito"),
+  naoComeOuBebe: () => idOfKey("ADVANTAGES", "nao-come-ou-bebe"),
+  naoDorme: () => idOfKey("ADVANTAGES", "nao-dorme"),
+  naoRespira: () => idOfKey("ADVANTAGES", "nao-respira"),
+  prontidao1: () => idOfKey("ADVANTAGES", "prontidao-1"),
   reflexosEmCombate: REFLEXOS_EM_COMBATE_ID,
   resistenciaNaturalAFogo: () =>
-    idOf("ADVANTAGES", {
-      advantage_name: "RESISTÊNCIA NATURAL A FOGO",
-    }),
-  suportePressorico3: () =>
-    idOf("ADVANTAGES", {
-      advantage_name: "SUPORTE PRESSÓRICO 3",
-    }),
+    idOfKey("ADVANTAGES", "resistencia-natural-a-fogo"),
+  suportePressorico3: () => idOfKey("ADVANTAGES", "suporte-pressorico-3"),
   toleranciaAFerimentosHomogeneo: () =>
-    idOf("ADVANTAGES", {
-      advantage_name: "TOLERÂNCIA À FERIMENTOS | HOMOGÊNEO",
-    }),
+    idOfKey("ADVANTAGES", "tolerancia-a-ferimentos-homogeneo"),
   toleranciaAFerimentosSemSangue: () =>
-    idOf("ADVANTAGES", {
-      advantage_name: "TOLERÂNCIA À FERIMENTOS | SEM SANGUE",
-    }),
-  visaoNoturna: () => idOf("ADVANTAGES", { advantage_name: "VISÃO NOTURNA" }),
+    idOfKey("ADVANTAGES", "tolerancia-a-ferimentos-sem-sangue"),
+  visaoNoturna: () => idOfKey("ADVANTAGES", "visao-noturna"),
 });
 
 const AMMO = lazy({
-  bolaDeFerro: () => idOf("AMMO", { ammo_name: "Bola de Ferro" }),
+  bolaDeFerro: () => idOfKey("AMMO", "bola-de-ferro"),
 });
 
 const ARMOR = lazy({
-  botasReforcadas: () =>
-    idOf("ARMORS", {
-      armor_name: "Botas Reforçadas",
-      armor_piece_location: "Pés",
-      armor_tier: "Comum",
-    }),
-  bracadeiras: () =>
-    idOf("ARMORS", {
-      armor_name: "Braçadeiras",
-      armor_piece_location: "Braços",
-      armor_tier: "Comum",
-    }),
-  capuz: () =>
-    idOf("ARMORS", {
-      armor_name: "Capuz",
-      armor_piece_location: "Cabeça",
-      armor_tier: "Comum",
-    }),
-  cotaDeMalha: () =>
-    idOf("ARMORS", {
-      armor_name: "Cota de Malha",
-      armor_piece_location: "Tronco",
-      armor_tier: "Comum",
-    }),
-  gibao: () =>
-    idOf("ARMORS", {
-      armor_name: "Gibão",
-      armor_piece_location: "Tronco",
-      armor_tier: "Comum",
-    }),
-  grevasDeMalha: () =>
-    idOf("ARMORS", {
-      armor_name: "Grevas de Malha",
-      armor_piece_location: "Pernas",
-      armor_tier: "Comum",
-    }),
-  manoplasDeMalha: () =>
-    idOf("ARMORS", {
-      armor_name: "Manoplas de Malha",
-      armor_piece_location: "Mãos",
-      armor_tier: "Comum",
-    }),
+  botasReforcadas: () => idOfKey("ARMORS", "botas-reforcadas-comum"),
+  bracadeiras: () => idOfKey("ARMORS", "bracadeiras-comum"),
+  capuz: () => idOfKey("ARMORS", "capuz-comum"),
+  cotaDeMalha: () => idOfKey("ARMORS", "cota-de-malha-comum"),
+  gibao: () => idOfKey("ARMORS", "gibao-comum"),
+  grevasDeMalha: () => idOfKey("ARMORS", "grevas-de-malha-comum"),
+  manoplasDeMalha: () => idOfKey("ARMORS", "manoplas-de-malha-comum"),
 });
 
 const CONTAINER = lazy({
-  estojoDeCintura: () =>
-    idOf("AMMO_CONTAINERS", {
-      container_name: "Estojo de Cintura",
-      container_capacity: "18",
-    }),
+  estojoDeCintura: () => idOfKey("AMMO_CONTAINERS", "estojo-de-cintura-18"),
 });
 
 const DISADVANTAGE = lazy({
   aparenciaDesagradavel: () =>
-    idOf("DISADVANTAGES", {
-      disadvantage_name: "APARÊNCIA DESAGRADÁVEL",
-    }),
-  compulsaoPesada: () =>
-    idOf("DISADVANTAGES", {
-      disadvantage_name: "COMPULSÃO PESADA",
-    }),
-  epilepsia: () => idOf("DISADVANTAGES", { disadvantage_name: "EPILEPSIA" }),
-  feio: () => idOf("DISADVANTAGES", { disadvantage_name: "FEIO" }),
-  fragilNaoNatural: () =>
-    idOf("DISADVANTAGES", {
-      disadvantage_name: "FRÁGIL | NÃO NATURAL",
-    }),
-  furia: () => idOf("DISADVANTAGES", { disadvantage_name: "FÚRIA" }),
-  hediondo: () => idOf("DISADVANTAGES", { disadvantage_name: "HEDIONDO" }),
-  monstruoso: () => idOf("DISADVANTAGES", { disadvantage_name: "MONSTRUOSO" }),
-  reprogramavel: () =>
-    idOf("DISADVANTAGES", { disadvantage_name: "REPROGRAMÁVEL" }),
-  semRecuperacaoTotal: () =>
-    idOf("DISADVANTAGES", {
-      disadvantage_name: "SEM RECUPERAÇÃO | TOTAL",
-    }),
+    idOfKey("DISADVANTAGES", "aparencia-desagradavel"),
+  compulsaoPesada: () => idOfKey("DISADVANTAGES", "compulsao-pesada"),
+  epilepsia: () => idOfKey("DISADVANTAGES", "epilepsia"),
+  feio: () => idOfKey("DISADVANTAGES", "feio"),
+  fragilNaoNatural: () => idOfKey("DISADVANTAGES", "fragil-nao-natural"),
+  furia: () => idOfKey("DISADVANTAGES", "furia"),
+  hediondo: () => idOfKey("DISADVANTAGES", "hediondo"),
+  monstruoso: () => idOfKey("DISADVANTAGES", "monstruoso"),
+  reprogramavel: () => idOfKey("DISADVANTAGES", "reprogramavel"),
+  semRecuperacaoTotal: () => idOfKey("DISADVANTAGES", "sem-recuperacao-total"),
   vunerabilidadeNaturalAFogo: () =>
-    idOf("DISADVANTAGES", {
-      disadvantage_name: "VUNERABILIDADE NATURAL A FOGO",
-    }),
+    idOfKey("DISADVANTAGES", "vunerabilidade-natural-a-fogo"),
 });
 
 const ENCHANTMENT = lazy({
-  addAdvantage: () =>
-    idOf("ENCHANTMENTS", { enchantment_effect_type: "advantage" }),
-  addWeight: () =>
-    idOf("ENCHANTMENTS", { enchantment_effect_type: "add_weight" }),
-  fortifyBAL: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_damage",
-      enchantment_target: "BAL",
-    }),
+  addAdvantage: () => idOfKey("ENCHANTMENTS", "adicionar-vantagem"),
+  addWeight: () => idOfKey("ENCHANTMENTS", "aumentar-peso"),
+  fortifyBAL: () => idOfKey("ENCHANTMENTS", "fortificar-bal"),
   fortifyDamageResistance: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_damage_resistance",
-    }),
+    idOfKey("ENCHANTMENTS", "aumentar-resistencia-a-dano"),
   fortifyFireResistance: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_resistance",
-      enchantment_target: "Fire",
-    }),
-  fortifyHT: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_attribute",
-      enchantment_target: "HT",
-    }),
-  fortifyIQ: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_attribute",
-      enchantment_target: "IQ",
-    }),
-  fortifyMana: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_attribute",
-      enchantment_target: "Mana",
-    }),
-  fortifyST: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "fortify_attribute",
-      enchantment_target: "ST",
-    }),
-  weakenST: () =>
-    idOf("ENCHANTMENTS", {
-      enchantment_effect_type: "weaken_attribute",
-      enchantment_target: "ST",
-    }),
+    idOfKey("ENCHANTMENTS", "fortificar-resistencia-a-fogo"),
+  fortifyHT: () => idOfKey("ENCHANTMENTS", "fortificar-ht"),
+  fortifyIQ: () => idOfKey("ENCHANTMENTS", "fortificar-iq"),
+  fortifyMana: () => idOfKey("ENCHANTMENTS", "fortificar-mana"),
+  fortifyST: () => idOfKey("ENCHANTMENTS", "fortificar-st"),
+  weakenST: () => idOfKey("ENCHANTMENTS", "enfraquecer-st"),
 });
 
 const FIREARM = lazy({
-  pistolaFlintlock: () =>
-    idOf("FIREARMS", {
-      weapon_name: "Pistola Flintlock",
-      weapon_tier: "Comum",
-    }),
+  pistolaFlintlock: () => idOfKey("FIREARMS", "pistola-flintlock-comum"),
 });
 
 const GEAR = lazy({
-  basicoPessoal: () =>
-    idOf("ADVENTURE_GEAR", {
-      adventure_gear_name: "Básico Pessoal",
-    }),
+  basicoPessoal: () => idOfKey("ADVENTURE_GEAR", "basico-pessoal"),
 });
 
 const MAGIC_GEAR = lazy({
-  alaude: () => idOf("MAGIC_GEAR", { magic_gear_name: "Alaúde" }),
-  bastao: () => idOf("MAGIC_GEAR", { magic_gear_name: "Bastão" }),
-  cajado: () => idOf("MAGIC_GEAR", { magic_gear_name: "Cajado" }),
-  grimorio: () => idOf("MAGIC_GEAR", { magic_gear_name: "Grimório" }),
-  varinha: () => idOf("MAGIC_GEAR", { magic_gear_name: "Varinha" }),
+  alaude: () => idOfKey("MAGIC_GEAR", "alaude"),
+  bastao: () => idOfKey("MAGIC_GEAR", "bastao"),
+  cajado: () => idOfKey("MAGIC_GEAR", "cajado"),
+  grimorio: () => idOfKey("MAGIC_GEAR", "grimorio"),
+  varinha: () => idOfKey("MAGIC_GEAR", "varinha"),
 });
 
 const MATERIAL = lazy({
-  aco: () =>
-    idOf("CRAFTING_MATERIALS", {
-      material_name: "Aço",
-      material_tier: "Incomum",
-    }),
-  ferro: () =>
-    idOf("CRAFTING_MATERIALS", {
-      material_name: "Ferro",
-      material_tier: "Comum",
-    }),
+  aco: () => idOfKey("CRAFTING_MATERIALS", "aco-incomum"),
+  ferro: () => idOfKey("CRAFTING_MATERIALS", "ferro-comum"),
 });
 
 const MELEE = lazy({
-  foiceCurta: () =>
-    idOf("MELEE_WEAPONS", {
-      weapon_name: "Foice Curta",
-      weapon_tier: "Comum",
-    }),
-  machadinha: () =>
-    idOf("MELEE_WEAPONS", {
-      weapon_name: "Machadinha",
-      weapon_tier: "Comum",
-    }),
-  machadoMilitar: () =>
-    idOf("MELEE_WEAPONS", {
-      weapon_name: "Machado Militar",
-      weapon_tier: "Comum",
-    }),
+  foiceCurta: () => idOfKey("MELEE_WEAPONS", "foice-curta-comum"),
+  machadinha: () => idOfKey("MELEE_WEAPONS", "machadinha-comum"),
+  machadoMilitar: () => idOfKey("MELEE_WEAPONS", "machado-militar-comum"),
 });
 
 const META_RACE = lazy({
-  esqueleto: () =>
-    idOf("META_RACES", {
-      meta_race_name: "Morto-Vivo",
-      meta_race_sub_name: "Esqueleto",
-    }),
-  zumbi: () =>
-    idOf("META_RACES", {
-      meta_race_name: "Morto-Vivo",
-      meta_race_sub_name: "Zumbi",
-    }),
+  esqueleto: () => idOfKey("META_RACES", "morto-vivo-esqueleto"),
+  zumbi: () => idOfKey("META_RACES", "morto-vivo-zumbi"),
 });
 
 const POTION = lazy({
-  pocaoDeVida: () =>
-    idOf("ALCHEMY", {
-      consumable_name: "Poção de Vida",
-      consumable_tier: "Comum",
-    }),
+  pocaoDeVida: () => idOfKey("ALCHEMY", "pocao-de-vida-comum"),
 });
 
 const RACE = lazy({
-  dracontoVermelho: () =>
-    idOf("RACES", {
-      race_name: "Draconato",
-      race_sub_name: "Draconto Vermelho",
-    }),
-  elementalDeTerra: () =>
-    idOf("RACES", {
-      race_name: "Elemental",
-      race_sub_name: "Elemental de Terra",
-    }),
+  dracontoVermelho: () => idOfKey("RACES", "draconato-draconto-vermelho"),
+  elementalDeTerra: () => idOfKey("RACES", "elemental-de-terra"),
 });
 
 const RANGED = lazy({
-  arcoCurto: () =>
-    idOf("RANGED_WEAPONS", {
-      weapon_name: "Arco Curto",
-      weapon_tier: "Comum",
-    }),
-  facaDeArremessoBoa: () =>
-    idOf("RANGED_WEAPONS", {
-      weapon_name: "Faca de Arremesso",
-      weapon_tier: "Boa",
-    }),
-  machadinha: () =>
-    idOf("RANGED_WEAPONS", {
-      weapon_name: "Machadinha",
-      weapon_tier: "Comum",
-    }),
+  arcoCurto: () => idOfKey("RANGED_WEAPONS", "arco-curto-comum"),
+  facaDeArremessoBoa: () => idOfKey("RANGED_WEAPONS", "faca-de-arremesso-boa"),
+  machadinha: () => idOfKey("RANGED_WEAPONS", "machadinha-comum"),
 });
 
 const SHIELD = lazy({
-  escudo: () =>
-    idOf("SHIELDS", { shield_name: "Escudo", shield_tier: "Comum" }),
-  escudoTorre: () =>
-    idOf("SHIELDS", {
-      shield_name: "Escudo Torre",
-      shield_tier: "Comum",
-    }),
+  escudo: () => idOfKey("SHIELDS", "escudo-comum"),
+  escudoTorre: () => idOfKey("SHIELDS", "escudo-torre-comum"),
 });
 
 const SKILL = lazy({
-  adestramentoDeAnimais: () =>
-    idOf("SKILLS", {
-      skill_name: "ADESTRAMENTO DE ANIMAIS",
-    }),
-  arco: () => idOf("SKILLS", { skill_name: "ARCO" }),
-  arremessarFeitico: () => idOf("SKILLS", { skill_name: "ARREMESSAR FEITIÇO" }),
-  arremessoDeMachado: () =>
-    idOf("SKILLS", { skill_name: "ARREMESSO DE MACHADO" }),
-  bastao: () => idOf("SKILLS", { skill_name: "BASTÃO" }),
+  adestramentoDeAnimais: () => idOfKey("SKILLS", "adestramento-de-animais"),
+  arco: () => idOfKey("SKILLS", "arco"),
+  arremessarFeitico: () => idOfKey("SKILLS", "arremessar-feitico"),
+  arremessoDeMachado: () => idOfKey("SKILLS", "arremesso-de-machado"),
+  bastao: () => idOfKey("SKILLS", "bastao"),
   escudo: ESCUDO_SKILL_ID,
-  espadasCurtas: () => idOf("SKILLS", { skill_name: "ESPADAS CURTAS" }),
-  espadasLongas: () => idOf("SKILLS", { skill_name: "ESPADAS LONGAS" }),
-  faca: () => idOf("SKILLS", { skill_name: "FACA" }),
-  falcoaria: () => idOf("SKILLS", { skill_name: "FALCOARIA" }),
-  machadoMaca: () => idOf("SKILLS", { skill_name: "MACHADO/MAÇA" }),
+  espadasCurtas: () => idOfKey("SKILLS", "espadas-curtas"),
+  espadasLongas: () => idOfKey("SKILLS", "espadas-longas"),
+  faca: () => idOfKey("SKILLS", "faca"),
+  falcoaria: () => idOfKey("SKILLS", "falcoaria"),
+  machadoMaca: () => idOfKey("SKILLS", "machado-maca"),
   sacarRapidoMachadosMaca: () =>
-    idOf("SKILLS", {
-      skill_name: "SACAR RAPIDO | MACHADOS/MAÇA",
-    }),
+    idOfKey("SKILLS", "sacar-rapido-machados-maca"),
 });
 
 // Ids that sheet.full.json and older fixtures were captured with, mapped to what they are now.
@@ -466,6 +319,7 @@ function remapLegacyIds(value) {
 
 module.exports = {
   ID_COLUMN,
+  KEY_COLUMN,
   ACCESSORY,
   ADVANTAGE,
   AMMO,

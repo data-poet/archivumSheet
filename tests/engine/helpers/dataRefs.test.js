@@ -1,7 +1,7 @@
 const refs = require("tests/helpers/dataRefs");
 const ids = require("helpers/ids.js");
 
-const { ID_COLUMN, LEGACY_IDS, remapLegacyIds, ...groups } = refs;
+const { ID_COLUMN, KEY_COLUMN, LEGACY_IDS, remapLegacyIds, ...groups } = refs;
 
 function unresolved(entries, label) {
   return Object.keys(entries).flatMap((key) => {

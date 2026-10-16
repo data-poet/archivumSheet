@@ -80,6 +80,7 @@ Conventions every CSV follows:
 - LF line endings and a trailing newline (`.gitattributes` normalizes `data/*.csv` on commit, so an editor that saves CRLF does not create diffs).
 - Booleans are the strings `TRUE` and `FALSE`; an empty cell means "none".
 - Empty and zero differ where it matters: `skill_parry_modifier` empty means the skill cannot parry, `0` means parry +0.
+- Every dataset except the grimoire has a `<prefix>_key` column right after the id (`advantage_key`, `weapon_key`, ...): a lowercase slug unique within the dataset that identifies the row for good. Renumbering ids or correcting names never changes it; tests refer to rows by key. Add one to every new row (`node scripts/generateKeys.js --fill-missing` fills the empty ones from the name).
 - List cells are comma-separated (`skill_defaults` uses `;` between entries and `:` between a skill and its penalty).
 
 ---
