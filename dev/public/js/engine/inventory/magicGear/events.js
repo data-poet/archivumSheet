@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import {
   addEquippedMagicGear,
@@ -120,7 +121,7 @@ export function handleAddMagicGear() {
   const magicGearId = nameEl.value;
   if (!magicGearId) return;
 
-  if (storageEl.value === "equipped") {
+  if (storageEl.value === STORED_AT.EQUIPPED) {
     addEquippedMagicGear(magicGearId);
   } else {
     addStoredMagicGear(magicGearId, storageEl.value);

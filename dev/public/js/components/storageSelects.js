@@ -3,10 +3,14 @@
 // matching setText entry in the hydration script — so adding a section meant
 // keeping three lists in sync. Now it's one descriptor entry.
 
-import { STORAGE_LOCATIONS, STORAGE_LABELS } from "../shared/constants.js";
+import {
+  STORAGE_LOCATIONS,
+  STORAGE_LABELS,
+  STORED_AT,
+} from "../shared/constants.js";
 
-// equippable sections offer "equipped" ahead of the storage locations; the rest
-// can only be stored.
+// equippable sections can also be equipped, listed ahead of the storage locations;
+// the rest can only be stored.
 export const STORAGE_SELECTS = [
   { id: "armorStorage", equippable: false },
   { id: "shieldStorage", equippable: false },
@@ -22,7 +26,7 @@ export const STORAGE_SELECTS = [
   { id: "customItemStorage", equippable: false },
 ];
 
-// Sections that render an "equipped" list above a "stored" list.
+// Sections that render an equipped list above a stored list.
 export const EQUIP_SECTION_PREFIXES = [
   "armor",
   "shield",
@@ -34,7 +38,9 @@ export const EQUIP_SECTION_PREFIXES = [
 ];
 
 export function storageValuesFor(equippable) {
-  return equippable ? ["equipped", ...STORAGE_LOCATIONS] : STORAGE_LOCATIONS;
+  return equippable
+    ? [STORED_AT.EQUIPPED, ...STORAGE_LOCATIONS]
+    : STORAGE_LOCATIONS;
 }
 
 export function populateStorageSelects() {

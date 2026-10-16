@@ -1,4 +1,4 @@
-const { VALID_STORED_AT } = require("../shared/storageLocations");
+const { VALID_STORED_AT } = require("../../../../helpers/storage.js");
 const { MAGIC_RETURN_ENCHANTMENT_ID } = require("../../../../helpers/ids.js");
 
 const RANGED_ITEM_CATEGORY = "Armas de Longo Alcance";

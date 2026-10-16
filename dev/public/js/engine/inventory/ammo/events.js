@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import {
   addContainer,
@@ -28,7 +29,7 @@ const data = state.data;
 
 function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
   const equippedContainers = selected.ammo_containers.filter(
-    (c) => c.storedAt === "equipped",
+    (c) => c.storedAt === STORED_AT.EQUIPPED,
   );
   const currentTotal = equippedContainers.reduce((sum, c) => {
     const entry = c.contents.find((e) => e.ammo_id === ammoId);

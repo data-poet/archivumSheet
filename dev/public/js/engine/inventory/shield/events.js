@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
   equipShield,
@@ -85,7 +85,7 @@ export function handleShieldClick(e) {
     selected.shields.forEach((inst) => {
       if (!inst.is_equipped) return;
       inst.is_equipped = false;
-      inst.storedAt = "backpack";
+      inst.storedAt = STORED_AT.BACKPACK;
     });
     shieldToEquip.is_equipped = true;
     shieldToEquip.storedAt = null;

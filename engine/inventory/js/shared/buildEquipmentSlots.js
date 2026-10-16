@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 // Shared validate -> unknown-id checks -> resolve -> bucket-by-storedAt -> sum-weight/value pipeline
 // used by armor/shield/melee/ranged/firearms. Each category supplies its own DB, id key, resolver,
 // instance validator, any extra validation steps (slot conflicts, enchantments), and equipped-slot
@@ -86,19 +87,19 @@ function buildEquipmentSlots({
       continue;
     }
 
-    if (instance.storedAt === "stash") {
+    if (instance.storedAt === STORED_AT.STASH) {
       stash = storageBucket.place(stash, resolved, instance, item);
 
       continue;
     }
 
-    if (instance.storedAt === "camp") {
+    if (instance.storedAt === STORED_AT.CAMP) {
       camp = storageBucket.place(camp, resolved, instance, item);
 
       continue;
     }
 
-    if (instance.storedAt === "backpack") {
+    if (instance.storedAt === STORED_AT.BACKPACK) {
       backpack = storageBucket.place(backpack, resolved, instance, item);
 
       carriedWeight += resolved[weightKey];

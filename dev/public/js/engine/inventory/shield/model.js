@@ -3,7 +3,7 @@ import { fetchShields } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
@@ -125,7 +125,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
 export function addStoredShield(
   shieldId,
   materialId = null,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!shieldId) return;
 
@@ -174,7 +174,7 @@ export function removeShield(instanceId) {
 export function sendShieldToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.shields);
 

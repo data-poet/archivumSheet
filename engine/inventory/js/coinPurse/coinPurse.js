@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 const { VALID_STORED_AT, VALID_COIN_TYPES } = require("./coinPurseConstants");
 
 const { validateCoinInstance } = require("./coinPurseValidation");
@@ -36,17 +37,17 @@ function buildCoinPurseSlots(coinInventory = []) {
   for (const instance of coinInventory) {
     const resolved = resolveCoin(instance);
 
-    if (instance.storedAt === "stash") {
+    if (instance.storedAt === STORED_AT.STASH) {
       stash.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "camp") {
+    if (instance.storedAt === STORED_AT.CAMP) {
       camp.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "backpack") {
+    if (instance.storedAt === STORED_AT.BACKPACK) {
       backpack.push(resolved);
     }
   }

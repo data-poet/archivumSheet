@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchFirearms } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -162,7 +163,7 @@ export function addEquippedFirearm(weaponId, materialId = null) {
 export function addStoredFirearm(
   weaponId,
   materialId = null,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!weaponId) return;
 
@@ -207,7 +208,7 @@ export function removeFirearm(instanceId) {
 export function sendFirearmToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.firearms);
 

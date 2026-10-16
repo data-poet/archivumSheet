@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
@@ -69,7 +70,7 @@ export function removeCustomItem(customItemId) {
 export function sendCustomItemToAlly(
   customItemId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.customInventory);
 

@@ -1,5 +1,6 @@
 // Firearms plus the consumables they draw on: loaded rounds, ammo stores, alchemy.
 
+import { STORED_AT } from "../../shared/constants.js";
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import {
@@ -64,7 +65,7 @@ export function renderResumeAmmo(
 
   const entries = [];
   const equippedSelected = (selected?.ammo_containers ?? []).filter(
-    (c) => c.storedAt === "equipped",
+    (c) => c.storedAt === STORED_AT.EQUIPPED,
   );
 
   for (const cont of equippedContainers) {

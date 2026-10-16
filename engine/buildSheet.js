@@ -7,6 +7,7 @@ const { buildGrimoire } = require("./magic/buildGrimoire");
 const { SPELL_ATTRIBUTE } = require("./magic/js/spellsConstants");
 const { criticalRanges } = require("../helpers/criticalRanges");
 const { REFLEXOS_EM_COMBATE_ID } = require("../helpers/ids");
+const { VALID_STORED_AT, ALL_BUCKETS } = require("../helpers/storage");
 const {
   shieldSkillId,
   blockFromLevel,
@@ -249,7 +250,7 @@ function buildSheet({
   }
 
   _attachBlock(_shieldInv.equipped);
-  for (const bucket of ["backpack", "stash", "camp"]) {
+  for (const bucket of VALID_STORED_AT) {
     (_shieldInv[bucket] || []).forEach(_attachBlock);
   }
 
@@ -289,7 +290,7 @@ function buildSheet({
     }
   }
 
-  for (const bucket of ["equipped", "backpack", "stash", "camp"]) {
+  for (const bucket of ALL_BUCKETS) {
     (_meleeInv[bucket] || []).forEach(_attachWeaponDamage);
     (_rangedInv[bucket] || []).forEach(_attachWeaponDamage);
   }
@@ -307,7 +308,7 @@ function buildSheet({
     _rangedInv,
     inventoryResult.inventory.firearms,
   ]) {
-    for (const bucket of ["equipped", "backpack", "stash", "camp"]) {
+    for (const bucket of ALL_BUCKETS) {
       (inv?.[bucket] || []).forEach(_attachSkillCheck);
     }
   }

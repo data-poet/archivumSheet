@@ -4,6 +4,7 @@ import { setHTML } from "../../../shared/dom.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
+  STORED_AT,
 } from "../../../shared/constants.js";
 import {
   detailRow,
@@ -19,11 +20,11 @@ import { getActiveCharacterId } from "../../../store/characters.js";
 import { state } from "../../../state.js";
 
 const CONTAINER_STORAGE_LOCATIONS_CARRIABLE = [
-  "equipped",
+  STORED_AT.EQUIPPED,
   ...STORAGE_LOCATIONS,
 ];
 const CONTAINER_STORAGE_LOCATIONS_NOT_CARRIABLE = STORAGE_LOCATIONS.filter(
-  (loc) => loc !== "backpack",
+  (loc) => loc !== STORED_AT.BACKPACK,
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -96,7 +97,7 @@ function containerStorageOptions(currentLocation, isCarriable) {
 
   const safeLocation = locations.includes(currentLocation)
     ? currentLocation
-    : "stash";
+    : STORED_AT.STASH;
 
   return locations
     .map(

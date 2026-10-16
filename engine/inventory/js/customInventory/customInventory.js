@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 const { VALID_STORED_AT } = require("./customInventoryConstants.js");
 
 const {
@@ -34,17 +35,17 @@ function buildCustomInventorySlots(customInventory = []) {
   for (const instance of customInventory) {
     const resolved = resolveCustomInventoryItem(instance);
 
-    if (instance.storedAt === "stash") {
+    if (instance.storedAt === STORED_AT.STASH) {
       stash.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "camp") {
+    if (instance.storedAt === STORED_AT.CAMP) {
       camp.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "backpack") {
+    if (instance.storedAt === STORED_AT.BACKPACK) {
       backpack.push(resolved);
     }
   }

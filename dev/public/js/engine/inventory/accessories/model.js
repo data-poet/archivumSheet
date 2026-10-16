@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAccessories } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -58,15 +59,15 @@ export function updateAccessoryEquipOptionAvailability() {
   if (!nameSelect || !storageSelect) return;
 
   const equipOption = Array.from(storageSelect.options).find(
-    (o) => o.value === "equipped",
+    (o) => o.value === STORED_AT.EQUIPPED,
   );
   if (!equipOption) return;
 
   const atLimit = isAccessoryAtEquipLimit(nameSelect.value);
   equipOption.disabled = atLimit;
 
-  if (atLimit && storageSelect.value === "equipped") {
-    storageSelect.value = "backpack";
+  if (atLimit && storageSelect.value === STORED_AT.EQUIPPED) {
+    storageSelect.value = STORED_AT.BACKPACK;
   }
 }
 
@@ -130,7 +131,7 @@ export function addEquippedAccessory(accessoryId, price = 0) {
 export function addStoredAccessory(
   accessoryId,
   price = 0,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!accessoryId) return;
 
@@ -207,7 +208,7 @@ export function removeAccessory(instanceId) {
 export function sendAccessoryToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.accessories);
 

@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { withCharacterInventory } from "../../../store/characters.js";
 import { cloneEnchantmentsWithFreshIds } from "./enchantments/model.js";
@@ -22,7 +23,7 @@ export function transferInstance({
   instanceId,
   destinationCharacterId,
   destinationInventoryKey,
-  destinationStoredAt = "backpack",
+  destinationStoredAt = STORED_AT.BACKPACK,
   canReceive,
   cloneInstance = _defaultCloneInstance,
 }) {
@@ -70,7 +71,7 @@ export function transferStackQuantity({
   amount,
   destinationCharacterId,
   destinationInventoryKey,
-  destinationStoredAt = "backpack",
+  destinationStoredAt = STORED_AT.BACKPACK,
   matchKeyFields,
 }) {
   const row = sourceArray.find((entry) => entry.id === instanceId);

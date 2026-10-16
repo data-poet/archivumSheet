@@ -3,7 +3,7 @@ import { fetchRangedWeapons } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import {
   getMeleeCounterpart,
@@ -223,7 +223,7 @@ export function addEquippedRanged(weaponId, materialId = null) {
 export function addStoredRanged(
   rangedId,
   materialId = null,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!rangedId) return;
 
@@ -293,7 +293,7 @@ export function removeRanged(instanceId) {
 export function sendRangedToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const instance = findRangedByInstanceId(instanceId);
   if (!instance) return false;

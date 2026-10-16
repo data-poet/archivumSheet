@@ -7,6 +7,7 @@
 // accessories (price), magicGear (name only) and alchemy/survivalGear (quantity +
 // type filter) each read a different set of controls, so they keep their own.
 
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 
 const data = state.data;
@@ -34,7 +35,7 @@ export function createWeaponAddHandler({
     );
     const materialId = material?.material_id ?? null;
 
-    if (storageEl.value === "equipped") {
+    if (storageEl.value === STORED_AT.EQUIPPED) {
       addEquipped(weapon.weapon_id, materialId);
     } else {
       addStored(weapon.weapon_id, materialId, storageEl.value);

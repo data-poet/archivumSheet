@@ -1,7 +1,7 @@
 // Shields have no slots — a character can equip at most one shield at a time,
 // but there is no positional slot system like armor pieces have.
 
-const { VALID_STORED_AT } = require("../shared/storageLocations");
+const { VALID_STORED_AT } = require("../../../../helpers/storage.js");
 const {
   BROQUEL_SKILL_ID,
   ESCUDO_SKILL_ID,

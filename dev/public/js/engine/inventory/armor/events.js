@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import {
   equipArmor,
@@ -93,7 +93,7 @@ export function handleArmorClick(e) {
       const db = data.armors.find((a) => a.armor_id === inst.armor_id);
       if (db?.armor_piece_location === slot) {
         inst.is_equipped = false;
-        inst.storedAt = "backpack";
+        inst.storedAt = STORED_AT.BACKPACK;
       }
     });
     armorToEquip.is_equipped = true;

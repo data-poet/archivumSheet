@@ -1,7 +1,19 @@
 // All labels come from the localization file — never hardcoded here.
 import { LABELS } from "../localization/pt-BR/index.js";
 
-export const STORAGE_LOCATIONS = ["backpack", "stash", "camp"];
+// Mirrors helpers/storage.js (the browser can't import it); tests/dev/shared/constants.test.js pins the parity.
+export const STORED_AT = Object.freeze({
+  EQUIPPED: "equipped",
+  BACKPACK: "backpack",
+  STASH: "stash",
+  CAMP: "camp",
+});
+
+export const STORAGE_LOCATIONS = [
+  STORED_AT.BACKPACK,
+  STORED_AT.STASH,
+  STORED_AT.CAMP,
+];
 
 export const STORAGE_LABELS = LABELS.storage;
 

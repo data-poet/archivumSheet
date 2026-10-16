@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
@@ -26,7 +27,7 @@ function findEntry(coinType, storedAt) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Merges with an existing entry for the same coin_type + storedAt. */
-export function addCoins(coinType, quantity, storedAt = "backpack") {
+export function addCoins(coinType, quantity, storedAt = STORED_AT.BACKPACK) {
   if (!coinType || quantity <= 0) return;
 
   const existing = findEntry(coinType, storedAt);
@@ -106,7 +107,7 @@ export function sendCoinsToAlly(
   instanceId,
   destinationCharacterId,
   amount,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.coins);
 

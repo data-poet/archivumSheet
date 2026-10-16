@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 const {
   VALID_CONTAINER_STORED_AT,
   VALID_LOOSE_STORED_AT,
@@ -101,7 +102,7 @@ function validateContainerCrossRules(
     const { storedAt, container_id } = instance;
 
     if (
-      (storedAt === "equipped" || storedAt === "backpack") &&
+      (storedAt === STORED_AT.EQUIPPED || storedAt === STORED_AT.BACKPACK) &&
       !container.is_carriable
     ) {
       errors.push(
@@ -109,11 +110,11 @@ function validateContainerCrossRules(
       );
     }
 
-    if (storedAt === "equipped") {
+    if (storedAt === STORED_AT.EQUIPPED) {
       equippedCount[container_id] = (equippedCount[container_id] || 0) + 1;
     }
 
-    if (storedAt === "backpack") {
+    if (storedAt === STORED_AT.BACKPACK) {
       backpackCount[container_id] = (backpackCount[container_id] || 0) + 1;
     }
 
@@ -136,7 +137,7 @@ function validateContainerCrossRules(
   for (const [container_id, count] of Object.entries(equippedCount)) {
     if (count > 1) {
       errors.push(
-        `ammoContainerInventory: container_id "${container_id}" appears ${count} times at "equipped" — max 1 allowed`,
+        `ammoContainerInventory: container_id "${container_id}" appears ${count} times at "${STORED_AT.EQUIPPED}" — max 1 allowed`,
       );
     }
   }
@@ -144,7 +145,7 @@ function validateContainerCrossRules(
   for (const [container_id, count] of Object.entries(backpackCount)) {
     if (count > 1) {
       errors.push(
-        `ammoContainerInventory: container_id "${container_id}" appears ${count} times at "backpack" — max 1 allowed`,
+        `ammoContainerInventory: container_id "${container_id}" appears ${count} times at "${STORED_AT.BACKPACK}" — max 1 allowed`,
       );
     }
   }

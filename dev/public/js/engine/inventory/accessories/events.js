@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import {
   addEquippedAccessory,
@@ -151,7 +152,7 @@ export function handleAddAccessory() {
 
   const price = parseFloat(priceEl.value) || 0;
 
-  if (storageEl.value === "equipped") {
+  if (storageEl.value === STORED_AT.EQUIPPED) {
     addEquippedAccessory(accessoryId, price);
   } else {
     addStoredAccessory(accessoryId, price, storageEl.value);

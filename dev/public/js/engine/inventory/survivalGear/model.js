@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchSurvivalGear } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -84,7 +85,11 @@ function findEntry(gearId, storedAt) {
 }
 
 /** Merges with an existing entry for the same adventure_gear_id + storedAt. */
-export function addSurvivalGear(gearId, quantity, storedAt = "backpack") {
+export function addSurvivalGear(
+  gearId,
+  quantity,
+  storedAt = STORED_AT.BACKPACK,
+) {
   if (!gearId || quantity <= 0) return;
 
   const existing = findEntry(gearId, storedAt);
@@ -167,7 +172,7 @@ export function sendSurvivalGearToAlly(
   instanceId,
   destinationCharacterId,
   amount,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.survivalGear);
 

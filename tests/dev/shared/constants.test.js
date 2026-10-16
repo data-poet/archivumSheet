@@ -2,13 +2,27 @@
 import fs from "fs";
 import path from "path";
 import {
+  STORED_AT,
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
   ARMOR_SLOTS,
   RACIAL_TRAIT_TYPE,
   DEFAULT_MATERIAL_ID,
 } from "dev/public/js/shared/constants.js";
+import * as engineStorage from "helpers/storage.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
+
+describe("STORED_AT", () => {
+  test("mirrors the engine registry in helpers/storage.js", () => {
+    expect(STORED_AT).toEqual(engineStorage.STORED_AT);
+  });
+
+  test("STORAGE_LOCATIONS lists the same locations as the engine's VALID_STORED_AT", () => {
+    expect([...STORAGE_LOCATIONS].sort()).toEqual(
+      [...engineStorage.VALID_STORED_AT].sort(),
+    );
+  });
+});
 
 describe("STORAGE_LOCATIONS", () => {
   test("is exactly backpack, stash, camp, in that order", () => {

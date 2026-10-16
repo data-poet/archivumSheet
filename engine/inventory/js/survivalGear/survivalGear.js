@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./survivalGearConstants.js");
@@ -72,17 +73,17 @@ function buildSurvivalGearSlots(survivalGearInventory = []) {
     const gear = survivalGearDb[instance.adventure_gear_id];
     const resolved = resolveSurvivalGearItem(instance, gear);
 
-    if (instance.storedAt === "stash") {
+    if (instance.storedAt === STORED_AT.STASH) {
       stash.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "camp") {
+    if (instance.storedAt === STORED_AT.CAMP) {
       camp.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "backpack") {
+    if (instance.storedAt === STORED_AT.BACKPACK) {
       backpack.push(resolved);
     }
   }

@@ -3,7 +3,7 @@ import { fetchMeleeWeapons } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import {
   getRangedCounterpart,
@@ -223,7 +223,7 @@ export function addEquippedMelee(weaponId, materialId = null) {
 export function addStoredMelee(
   meleeId,
   materialId = null,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!meleeId) return;
 
@@ -293,7 +293,7 @@ export function removeMelee(instanceId) {
 export function sendMeleeToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const instance = findMeleeByInstanceId(instanceId);
   if (!instance) return false;

@@ -3,7 +3,7 @@ import { fetchArmors } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
@@ -149,7 +149,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
 export function addStoredArmor(
   armorId,
   materialId = null,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   if (!armorId) return;
 
@@ -198,7 +198,7 @@ export function removeArmor(instanceId) {
 export function sendArmorToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.armors);
 

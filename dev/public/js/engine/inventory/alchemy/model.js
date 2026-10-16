@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAlchemy } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -112,7 +113,11 @@ function findEntry(consumableId, storedAt) {
 }
 
 /** Merges with an existing entry for the same consumable_id + storedAt. */
-export function addAlchemy(consumableId, quantity, storedAt = "backpack") {
+export function addAlchemy(
+  consumableId,
+  quantity,
+  storedAt = STORED_AT.BACKPACK,
+) {
   if (!consumableId || quantity <= 0) return;
 
   const existing = findEntry(consumableId, storedAt);
@@ -195,7 +200,7 @@ export function sendAlchemyToAlly(
   instanceId,
   destinationCharacterId,
   amount,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.alchemy);
 

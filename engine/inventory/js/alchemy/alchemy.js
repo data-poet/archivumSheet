@@ -1,3 +1,4 @@
+const { STORED_AT } = require("../../../../helpers/storage.js");
 const { loadDataset } = require("../../../../helpers/datasets.js");
 
 const { VALID_STORED_AT } = require("./alchemyConstants.js");
@@ -83,17 +84,17 @@ function buildAlchemySlots(alchemyInventory = []) {
     const consumable = alchemyDb[instance.consumable_id];
     const resolved = resolveAlchemyConsumable(instance, consumable);
 
-    if (instance.storedAt === "stash") {
+    if (instance.storedAt === STORED_AT.STASH) {
       stash.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "camp") {
+    if (instance.storedAt === STORED_AT.CAMP) {
       camp.push(resolved);
       continue;
     }
 
-    if (instance.storedAt === "backpack") {
+    if (instance.storedAt === STORED_AT.BACKPACK) {
       backpack.push(resolved);
     }
   }

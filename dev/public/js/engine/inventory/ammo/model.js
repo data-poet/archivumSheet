@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAmmo, fetchAmmoContainers } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -118,7 +119,7 @@ export function updateLooseAmmoOptions() {
 // CONTAINER OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function addContainer(containerId, storedAt = "equipped") {
+export function addContainer(containerId, storedAt = STORED_AT.EQUIPPED) {
   if (!containerId) return;
 
   selected.ammo_containers.push({
@@ -161,7 +162,7 @@ export function removeContainer(instanceId) {
 export function sendContainerToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.ammo_containers);
 
@@ -270,7 +271,7 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
 // LOOSE AMMO OPERATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function addLooseAmmo(ammoId, quantity, storedAt = "backpack") {
+export function addLooseAmmo(ammoId, quantity, storedAt = STORED_AT.BACKPACK) {
   if (!ammoId || quantity <= 0) return;
 
   const existing = selected.loose_ammo.find(
@@ -400,7 +401,7 @@ export function sendLooseAmmoToAlly(
   instanceId,
   destinationCharacterId,
   amount,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.loose_ammo);
 

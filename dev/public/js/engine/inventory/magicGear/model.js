@@ -1,3 +1,4 @@
+import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchMagicGear, fetchMagicGearEquipLimits } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
@@ -93,15 +94,15 @@ export function updateMagicGearEquipOptionAvailability() {
   if (!storageSelect || !nameSelect) return;
 
   const equipOption = Array.from(storageSelect.options).find(
-    (o) => o.value === "equipped",
+    (o) => o.value === STORED_AT.EQUIPPED,
   );
   if (!equipOption) return;
 
   const atLimit = isMagicGearAtEquipLimit(nameSelect.value);
   equipOption.disabled = atLimit;
 
-  if (atLimit && storageSelect.value === "equipped") {
-    storageSelect.value = "backpack";
+  if (atLimit && storageSelect.value === STORED_AT.EQUIPPED) {
+    storageSelect.value = STORED_AT.BACKPACK;
   }
 }
 
@@ -160,7 +161,7 @@ export function addEquippedMagicGear(magicGearId) {
   triggerAutoRun();
 }
 
-export function addStoredMagicGear(magicGearId, storedAt = "backpack") {
+export function addStoredMagicGear(magicGearId, storedAt = STORED_AT.BACKPACK) {
   if (!magicGearId) return;
 
   selected.magicGear.push(_newMagicGearInstance(magicGearId, false, storedAt));
@@ -231,7 +232,7 @@ export function removeMagicGear(instanceId) {
 export function sendMagicGearToAlly(
   instanceId,
   destinationCharacterId,
-  storedAt = "backpack",
+  storedAt = STORED_AT.BACKPACK,
 ) {
   const before = structuredClone(selected.magicGear);
 
