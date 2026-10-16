@@ -2,7 +2,7 @@
 
 Everything here is run through `npm run <name>`; each script is plain Node and can also be run directly with `node scripts/<file>.js`. Keep this file in step with the scripts: when a script gains a flag or a new one is added, update its section.
 
-Contents: [`data:import`](#dataimport-the-one-to-run-after-every-spreadsheet-export) · [`check:data`](#checkdata) · [`data:format`](#dataformat) · [`data:remap`](#dataremap) · [`data:keys`](#datakeys) · [`test:renumber`](#testrenumber) · [`golden:*` and `coverage:*`](#golden-dumps-and-coverage-for-refactors) · [`test:data`](#testdata) · [known issues file](#the-known-issues-file)
+Contents: [`data:import`](#dataimport-the-one-to-run-after-every-spreadsheet-export) · [`check:data`](#checkdata) · [`data:format`](#dataformat) · [`data:remap`](#dataremap) · [`data:keys`](#datakeys) · [`check:comments-only`](#checkcomments-only) · [`test:renumber`](#testrenumber) · [`golden:*` and `coverage:*`](#golden-dumps-and-coverage-for-refactors) · [`test:data`](#testdata) · [known issues file](#the-known-issues-file)
 
 ---
 
@@ -113,6 +113,19 @@ A key is a lowercase slug (`reflexos-em-combate`, `machadinha-comum`) unique wit
 - The keys the game code depends on are listed in `helpers/ruleKeys.js` (trait tiers, Reflexos em Combate, the Broquel and Escudo skills, the broquel shields, the magic return enchantment). `check:data` fails if one disappears.
 - A weapon is dual-use (melee and ranged mirror each other) when its `weapon_key` exists in both weapon tables.
 - Keys that the tool had to number (`...-2`) are listed as "needs a better key": give them a real one by hand.
+
+---
+
+## `check:comments-only`
+
+**Use it when:** you edited comments (or formatting) and want proof that no code changed.
+
+```bash
+npm run check:comments-only          # working tree vs HEAD
+npm run check:comments-only -- <ref> # working tree vs another git ref
+```
+
+Every changed `.js` file is compiled with comments stripped, once as it is in the ref and once now; the two outputs must be identical. It prints the files whose code differs and exits 1 if there is any. New files are skipped. Pair it with `npm test` after a comment cleanup.
 
 ---
 
