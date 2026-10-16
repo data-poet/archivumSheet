@@ -31,8 +31,10 @@ The app runs at `http://localhost:3000`.
 npm test          # run the full test suite once
 npm run test:watch
 npm run test:data       # only the guards that read the real CSVs (fast feedback after a data edit)
+npm run data:import     # after exporting CSVs from the spreadsheet: format, keys, remap references, check (see scripts/README.md)
 npm run check:data      # validate the CSVs: ids, keys, references, vocabularies, number formats
 npm run data:format     # after a spreadsheet export: LF endings and a final newline
+npm run data:remap -- SKILLS   # after renumbering a dataset: repoint every id reference to it (dry run; add --write)
 npm run golden:record     # before a refactor: freeze data/ at HEAD and dump what the engine builds from it
 npm run golden:compare    # after it: every dump must be identical, whatever the live CSVs are doing
 npm run coverage:record   # per-file coverage baseline; coverage:compare fails if a file's lines or branches drop
