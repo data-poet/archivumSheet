@@ -7,7 +7,6 @@ const {
 describe("meleeResolver", () => {
   const mockWeapon = {
     weapon_id: "MELEE-001",
-    weapon_box_name: "Espada Longa | Comum",
     weapon_name: "Espada Longa",
     weapon_type: "Espada",
     weapon_skill: "Lâminas",
@@ -81,7 +80,6 @@ describe("meleeResolver", () => {
       expect(result).toEqual({
         weapon_id: "MELEE-001",
         weapon_name: "Espada Longa",
-        weapon_box_name: "Espada Longa | Comum",
         weapon_type: "Espada",
         weapon_skill: "Lâminas",
         weapon_skill_id: null,
@@ -154,7 +152,6 @@ describe("meleeResolver", () => {
       expect(result).toEqual({
         weapon_id: "MELEE-001",
         weapon_name: "Espada Longa",
-        weapon_box_name: "Espada Longa | Comum",
         weapon_type: "Espada",
         weapon_skill: "Lâminas",
         weapon_skill_id: null,

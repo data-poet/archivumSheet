@@ -8,7 +8,6 @@ const { MAGIC_RETURN_ENCHANTMENT_ID } = require("helpers/ids.js");
 describe("rangedResolver", () => {
   const mockWeapon = {
     weapon_id: "RANGED-001",
-    weapon_box_name: "Arco Curto | Comum",
     weapon_name: "Arco Curto",
     weapon_type: "Arco",
     weapon_skill: "Arcos",
@@ -86,7 +85,6 @@ describe("rangedResolver", () => {
       expect(result).toEqual({
         weapon_id: "RANGED-001",
         weapon_name: "Arco Curto",
-        weapon_box_name: "Arco Curto | Comum",
         weapon_type: "Arco",
         weapon_skill: "Arcos",
         weapon_skill_id: null,
@@ -162,7 +160,6 @@ describe("rangedResolver", () => {
       expect(result).toEqual({
         weapon_id: "RANGED-001",
         weapon_name: "Arco Curto",
-        weapon_box_name: "Arco Curto | Comum",
         weapon_type: "Arco",
         weapon_skill: "Arcos",
         weapon_skill_id: null,

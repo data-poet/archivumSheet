@@ -137,7 +137,6 @@ function resolveRangedWeapons(
   return {
     weapon_id: weapon.weapon_id,
     weapon_name: weapon.weapon_name,
-    weapon_box_name: weapon.weapon_box_name,
     weapon_type: weapon.weapon_type,
     weapon_skill: weapon.weapon_skill,
     weapon_skill_id: weapon.weapon_skill_id ?? null,
