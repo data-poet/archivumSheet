@@ -5,6 +5,8 @@ const {
 } = require("engine/character/js/skills/skills");
 const { SKILL } = require("tests/helpers/dataRefs");
 const { REFLEXOS_EM_COMBATE_ID } = require("helpers/ids.js");
+const { loadDataset } = require("helpers/datasets.js");
+const { getSkillCost } = require("engine/character/js/skills/skillsCost");
 
 const assertShape = require("tests/helpers/assertShape");
 
@@ -29,6 +31,28 @@ const selectedSkills = {
 };
 
 describe("BUILD SKILLS (ENGINE)", () => {
+  test("Should price an HT skill like the same skill on DX", () => {
+    const htCharacter = {
+      primary_attributes: { HT: { base_value: 12 } },
+    };
+    const row = loadDataset("SKILLS").find((r) => r.skill_id === SKILL.corrida);
+    expect(row.skill_base_attribute).toBe("HT");
+
+    const { skills } = buildSkills(
+      { [SKILL.corrida]: { base_value: 14, modifier: 0 } },
+      htCharacter,
+    );
+
+    const expected = getSkillCost({
+      attribute: "DX",
+      base: 12,
+      level: 14,
+      difficulty: row.skill_difficulty,
+    });
+    expect(expected).toBeGreaterThan(0);
+    expect(skills[SKILL.corrida].points).toBe(expected);
+  });
+
   test("Should build selected skills only", () => {
     const result = buildSkills(selectedSkills, character);
     assertShape(result, ["skills", "character_points"]);

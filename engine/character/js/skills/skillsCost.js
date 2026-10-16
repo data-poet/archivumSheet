@@ -127,6 +127,15 @@ const COST_TABLES = {
   },
 };
 
+// House rule: HT skills (Canto, Corrida...) are priced from the DX table.
+const COST_TABLE_ATTRIBUTE = { HT: "DX" };
+
+function costTableFor(attribute, difficulty) {
+  return COST_TABLES[COST_TABLE_ATTRIBUTE[attribute] ?? attribute]?.[
+    difficulty
+  ];
+}
+
 function getRelativeLevel(base, level) {
   return level - base;
 }
@@ -134,7 +143,7 @@ function getRelativeLevel(base, level) {
 function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
   const relative = getRelativeLevel(base, level);
 
-  const table = COST_TABLES[attribute]?.[difficulty];
+  const table = costTableFor(attribute, difficulty);
   if (!table) {
     console.warn(
       `[getSkillCost] Unknown attribute/difficulty combination: ${attribute}/${difficulty}`,
@@ -149,6 +158,7 @@ function getSkillCost({ attribute, base = 0, level = 0, difficulty }) {
 
 module.exports = {
   getSkillCost,
+  costTableFor,
   getRelativeLevel,
   COST_TABLES,
 };

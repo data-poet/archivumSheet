@@ -124,6 +124,14 @@ describe("check:data catches the mistakes a hand edit or export makes", () => {
       "decimal-comma",
     ],
     [
+      "a skill attribute with no cost table",
+      "db_skills.csv",
+      0,
+      "skill_base_attribute",
+      "ST",
+      "skill-cost-table",
+    ],
+    [
       "an unknown damage type",
       "db_equipment_melee_weapons.csv",
       0,

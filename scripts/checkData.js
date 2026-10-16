@@ -13,6 +13,7 @@ const {
 } = require("../helpers/datasets.js");
 const { ID_COLUMN, KEY_COLUMN } = require("../helpers/datasetColumns.js");
 const { DAMAGE_TYPES } = require("../helpers/taxonomy.js");
+const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
 const { SLOT_MAP } = require("../engine/inventory/js/armor/armorConstants.js");
 const {
   MAGIC_GEAR_TYPES,
@@ -372,6 +373,23 @@ function checkEnums(findings) {
   });
 }
 
+// A skill whose attribute and difficulty have no cost table is silently priced at zero points.
+function checkSkillCostTables(findings) {
+  loadDataset("SKILLS").forEach((row) => {
+    if (!costTableFor(row.skill_base_attribute, row.skill_difficulty)) {
+      findings.push(
+        finding(
+          "error",
+          "skill-cost-table",
+          "SKILLS",
+          row.skill_id,
+          `${row.skill_base_attribute}/${row.skill_difficulty} has no cost table`,
+        ),
+      );
+    }
+  });
+}
+
 function checkValueTypes(findings) {
   Object.keys(DATASETS).forEach((dataset) => {
     const rows = loadDataset(dataset);
@@ -553,6 +571,7 @@ function runChecks({ verbose = false } = {}) {
   checkIdsAndKeys(findings);
   checkReferences(findings);
   checkEnums(findings);
+  checkSkillCostTables(findings);
   checkValueTypes(findings);
   checkNaturalKeys(findings);
   checkDerivedNames(findings);

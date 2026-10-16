@@ -168,6 +168,7 @@ const SHIELD = lazy({
 
 const SKILL = lazy({
   adestramentoDeAnimais: () => idOfKey("SKILLS", "adestramento-de-animais"),
+  corrida: () => idOfKey("SKILLS", "corrida"),
   arco: () => idOfKey("SKILLS", "arco"),
   arremessarFeitico: () => idOfKey("SKILLS", "arremessar-feitico"),
   arremessoDeMachado: () => idOfKey("SKILLS", "arremesso-de-machado"),

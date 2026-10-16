@@ -1,6 +1,7 @@
 const {
   getSkillCost,
   getRelativeLevel,
+  costTableFor,
   COST_TABLES,
 } = require("engine/character/js/skills/skillsCost");
 
@@ -153,6 +154,49 @@ describe("skillsCost", () => {
       });
 
       expect(typeof cost).toBe("number");
+    });
+  });
+
+  describe("getSkillCost - HT skills", () => {
+    const levels = Array.from({ length: 15 }, (_, i) => i - 4);
+
+    it.each(["F", "M", "D", "MD"])(
+      "Should price a %s skill from the DX table at every relative level",
+      (difficulty) => {
+        levels.forEach((relative) => {
+          const ht = getSkillCost({
+            attribute: "HT",
+            base: 10,
+            level: 10 + relative,
+            difficulty,
+          });
+          const dx = getSkillCost({
+            attribute: "DX",
+            base: 10,
+            level: 10 + relative,
+            difficulty,
+          });
+          expect(ht).toBe(dx);
+        });
+      },
+    );
+
+    it("Should no longer price an HT skill at zero", () => {
+      const cost = getSkillCost({
+        attribute: "HT",
+        base: 10,
+        level: 12,
+        difficulty: "M",
+      });
+      expect(cost).toBeGreaterThan(0);
+    });
+  });
+
+  describe("costTableFor", () => {
+    it("Should resolve HT to the DX table and leave other attributes alone", () => {
+      expect(costTableFor("HT", "F")).toBe(COST_TABLES.DX.F);
+      expect(costTableFor("IQ", "M")).toBe(COST_TABLES.IQ.M);
+      expect(costTableFor("STRANGE", "F")).toBeUndefined();
     });
   });
 
