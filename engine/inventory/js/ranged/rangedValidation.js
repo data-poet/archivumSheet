@@ -20,7 +20,7 @@ function validateRangedInstance(instance, index) {
   });
 }
 
-// For a dual-use weapon, itemCategory is [RANGED_ITEM_CATEGORY, MELEE_ITEM_CATEGORY] — an entry added via the melee side (e.g. BAL) ends up on this ranged mirror too, so validating against ranged's category alone would wrongly reject it.
+// A dual-use weapon accepts both categories: an entry added on the melee side is mirrored here.
 function validateRangedEnchantments(
   rangedInventory,
   enchantmentsDb,

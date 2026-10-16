@@ -56,7 +56,7 @@ function buildSkills(
       (primary?.[attribute]?.base_value ?? 0) +
       (primary?.[attribute]?.race_modifier ?? 0);
 
-    // A granted skill's base_value uses the FINAL (post-enchantment) attribute value; attributeBase stays unchanged since cost/relative_level must not be inflated by equipment.
+    // A granted skill uses the post-enchantment attribute for base_value; attributeBase stays so equipment does not inflate cost.
     const grantAttributeBase = primary?.[attribute]?.value ?? attributeBase;
 
     // Winning source is whichever produces the higher pre-fortify level; a tie favors the player's paid entry so already-spent points aren't forfeited.

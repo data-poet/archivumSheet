@@ -22,7 +22,7 @@ const DAMAGE_RESISTANCE_EFFECT_TYPES = [
   "weaken_damage_resistance",
 ];
 
-// Modifies a CHARACTER-level elemental resistance; which element is fixed per DB row, not player-picked — see collectEquippedEnchantments.js. Value is a decimal fraction (0.05 = 5%).
+// Modifies a character-level elemental resistance; the element is fixed per DB row (see collectEquippedEnchantments.js). Value is a decimal fraction (0.05 = 5%).
 const ELEMENTAL_RESISTANCE_EFFECT_TYPES = [
   "fortify_resistance",
   "weaken_resistance",
@@ -37,7 +37,7 @@ const REQUISITE_EFFECT_TYPES = ["add_requisite", "remove_requisite"];
 // Presence/absence on the item IS the effect — no value/target/extraPoints, so it's excluded from VALUE_EFFECT_TYPES' price formula.
 const FLAT_EFFECT_TYPES = ["special_effect"];
 
-// Effect types whose entry carries a magnitude `value` (vs. POINT_EFFECT_TYPES' `target` or DIFFICULTY_EFFECT_TYPES' `target`+`extraPoints`); share one price formula in resolveEnchantmentPrice.
+// Effect types carrying a magnitude `value` (rather than `target` or `target`+`extraPoints`); they share one price formula in resolveEnchantmentPrice.
 const VALUE_EFFECT_TYPES = [
   ...ATTRIBUTE_EFFECT_TYPES,
   ...WEIGHT_EFFECT_TYPES,

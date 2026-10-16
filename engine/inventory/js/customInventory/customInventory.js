@@ -11,12 +11,7 @@ const {
   calculateCarriedCustomInventoryValue,
 } = require("./customInventoryResolver.js");
 
-/**
- * Builds the resolved custom inventory, distributed across storage locations.
- *
- * There is no backing database — every item is fully self-described by the
- * instance object. Only backpack items contribute to carried weight.
- */
+// No backing database: every item is fully described by its instance. Only backpack items count toward carried weight.
 function buildCustomInventorySlots(customInventory = []) {
   const instanceErrors = customInventory.flatMap((instance, index) =>
     validateCustomInventoryInstance(instance, index),

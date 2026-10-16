@@ -38,7 +38,7 @@ function applyMaterialToShield(shield, material) {
   };
 }
 
-// shield_final_weight/shield_final_damage_resistance stay material-derived only; final_weight/final_damage_resistance layer enchantments on top, mirroring armorResolver.js.
+// shield_final_* stay material-derived; final_* layer enchantments on top, as in armorResolver.js.
 function resolveShieldPiece(
   instance,
   shield,

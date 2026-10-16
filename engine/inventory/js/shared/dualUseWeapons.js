@@ -1,4 +1,4 @@
-// Some weapons appear in both melee and ranged tables and are auto-mirrored across them. Weight/price are canonical on the melee side; the ranged counterpart is 0/0 in the CSV so it doesn't double-count totals.
+// Dual-use weapons are mirrored across melee and ranged; weight and price live on the melee row (the ranged copy is 0/0 so totals are not doubled).
 
 const { DUAL_USE_WEAPON_PAIRS } = require("../../../../helpers/ids.js");
 

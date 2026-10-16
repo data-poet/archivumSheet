@@ -76,7 +76,7 @@ function applyMaterialToRanged(weapon, material) {
   };
 }
 
-// GDP/Min Strength/PREC/TR enchantment deltas apply directly onto the terminal fields (no separate truly-final tier, unlike weight's two-tier split — see meleeResolver.js).
+// GDP/Min Strength/PREC/TR enchantment deltas apply directly onto the terminal fields; only weight has a two-tier split (see meleeResolver.js).
 // has_magic_return is keyed by enchantment_id, not effect_type, so a future special_effect row won't also flip this flag.
 function resolveRangedWeapons(
   instance,

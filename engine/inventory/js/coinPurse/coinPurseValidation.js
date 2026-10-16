@@ -1,9 +1,5 @@
 const { VALID_COIN_TYPES, VALID_STORED_AT } = require("./coinPurseConstants");
 
-/**
- * Validates a single coin instance object (shape only).
- * Returns an array of error strings (empty = valid).
- */
 function validateCoinInstance(instance, index) {
   const errors = [];
   const prefix = `coinInventory[${index}]`;

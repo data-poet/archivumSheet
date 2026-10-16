@@ -20,7 +20,7 @@ function validateMeleeInstance(instance, index) {
   });
 }
 
-// For a dual-use weapon, itemCategory is [MELEE_ITEM_CATEGORY, RANGED_ITEM_CATEGORY] — an entry added via the ranged side (e.g. PREC) ends up on this melee mirror too, so validating against melee's category alone would wrongly reject it.
+// A dual-use weapon accepts both categories: an entry added on the ranged side is mirrored here.
 function validateMeleeEnchantments(meleeInventory, enchantmentsDb, targetsDb) {
   const errors = [];
 

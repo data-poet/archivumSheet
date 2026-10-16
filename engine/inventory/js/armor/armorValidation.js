@@ -15,7 +15,7 @@ function validateArmorInstance(instance, index) {
   });
 }
 
-// Unlike accessories' single fixed category, armor's itemCategory is per-instance (each piece's own armor_piece_location) — a helmet enchantment isn't necessarily allowed on boots.
+// Armor's itemCategory is per instance (each piece's armor_piece_location): a helmet enchantment is not necessarily allowed on boots.
 function validateArmorEnchantments(
   armorInventory,
   armorDb,

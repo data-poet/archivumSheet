@@ -46,15 +46,8 @@ function buildStorageBucket() {
   return [];
 }
 
-/**
- * Builds the resolved magic gear inventory, distributed across storage
- * locations. Each instance is a distinct physical item (no quantity), since
- * every magic gear item may carry its own custom name/description/effect.
- *
- * Only equipped + backpack items contribute to carried value and weight.
- * Equip limits are PER magic_gear_type (see MAGIC_GEAR_EQUIP_LIMITS) —
- * Arcano allows 2 equipped in any combination, Musical allows only 1.
- */
+// Each instance is a distinct item (no quantity) that may carry its own custom name/description/effect. Only equipped and
+// backpack items count toward carried value and weight. Equip limits are per magic_gear_type (see MAGIC_GEAR_EQUIP_LIMITS).
 function buildMagicGearSlots(magicGearInventory = []) {
   const magicGearDb = getMagicGearDB();
 

@@ -7,7 +7,7 @@ const {
   WEAKEN_EFFECT_TYPES,
 } = require("./enchantmentsConstants.js");
 
-// Doesn't know which fields are required (that depends on effect_type, looked up from the DB) — only rejects a wrong type for a field that IS present. Sign checking happens in the application pass below.
+// Rejects a wrong type for a field that is present; required fields depend on effect_type. Sign checks happen in the application pass below.
 function validateEnchantmentEntryShape(entry, index, parentPrefix) {
   const prefix = `${parentPrefix}.enchantments[${index}]`;
 

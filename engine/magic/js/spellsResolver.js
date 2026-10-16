@@ -47,7 +47,7 @@ function spellIndexKey(name, tier) {
   return `${normalize(name)}|${normalize(tier)}`;
 }
 
-// First occurrence wins on duplicate name+tier rows (the CSV has a few, e.g. "Jato de Fogo"), matching the previous rows.find() behavior.
+// First occurrence wins on duplicate name+tier rows (the CSV has a few, e.g. "Jato de Fogo").
 function buildSpellIndex(rows) {
   const index = new Map();
 
@@ -61,7 +61,7 @@ function buildSpellIndex(rows) {
   return index;
 }
 
-// enchantmentSpellGrants/enchantmentSpellModifiers follow the same collision/no-op rules as skills (see skills.js): multiple grants don't stack, and a fortify/weaken on a spell nobody has is a no-op.
+// Spell grants and modifiers follow the skills rules (see skills.js): grants don't stack, and a fortify/weaken on a spell nobody has is a no-op.
 function resolveSpells({
   selectedSpells = {},
   character = {},

@@ -51,7 +51,8 @@ function applyMaterialToMelee(weapon, material) {
   };
 }
 
-// BAL/GDP/Min Strength enchantment deltas apply directly onto the terminal fields (weaponDamage.js/render.js/buildSheet.js read these directly, no separate truly-final tier). Weight is the exception: it keeps a two-tier material-only vs. truly-final split, mirroring armor's final_weight calc.
+// BAL/GDP/Min Strength enchantment deltas apply directly onto the terminal fields (no separate final tier).
+// Weight keeps a material-only vs final split, like armor.
 function resolveMeleeWeapons(
   instance,
   weapon,

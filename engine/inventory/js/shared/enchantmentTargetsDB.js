@@ -1,5 +1,5 @@
 // Character-layer builders only export lookups filtered to *selected* ids, so enchantment target validation needs its own full, unfiltered, id-keyed loader.
-// Spells are keyed by spell_name, not spell_id, since db_magic_grimoire.csv has one row per tier per spell and the resolver looks spells up by name + computed tier — indexing by spell_id would pin an enchantment to one tier.
+// Spells are keyed by spell_name: the grimoire has one row per tier and the resolver looks up name + computed tier, so a spell_id would pin an enchantment to one tier.
 const { loadDataset } = require("../../../../helpers/datasets.js");
 
 let _enchantmentTargetsDB = null;

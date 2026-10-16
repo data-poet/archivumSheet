@@ -37,8 +37,8 @@ function applyMaterialToFirearm(weapon, material) {
   };
 }
 
-// Firearms don't depend on character ST: damage comes from the weapon's own dice, and combat stats (GDP/TR/PREC/magazine size) are each a CSV base plus a player-editable runtime modifier.
-// Enchantment deltas for GDP/TR/PREC stack on top of that runtime modifier; Min Strength has no runtime modifier so its delta applies directly, mirroring rangedResolver.js.
+// Firearms don't depend on character ST: damage comes from the weapon's dice, and GDP/TR/PREC/magazine are a CSV base plus a runtime modifier.
+// GDP/TR/PREC enchantment deltas stack on that modifier; Min Strength has none, so its delta applies directly (as in rangedResolver.js).
 function resolveFirearmWeapon(
   instance,
   weapon,

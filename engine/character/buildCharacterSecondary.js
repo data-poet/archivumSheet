@@ -51,7 +51,7 @@ function buildCharacterSecondary({
     effects,
   );
 
-  // No equipped enchantment currently produces enchantmentElementalModifiers, so this stays empty until that's wired up.
+  // Equipped resistance enchantments (fortify/weaken_resistance) are folded into the player's own elemental entries.
   const elementalWithEnchantments = withEnchantmentModifier(
     secondaryAttributes.elementalResistances || {},
     enchantmentElementalModifiers,

@@ -9,16 +9,8 @@ const {
   sumCoinValue,
 } = require("./coinPurseResolver");
 
-/**
- * Builds the resolved coin purse, distributed across storage locations.
- *
- * State shape: one entry per coin_type + storedAt combination.
- * There is no backing database — coin types are defined by constants.
- *
- * Carried weight: backpack only (stash and camp excluded).
- * total_coin_purse_value: all coins across all locations (copper equivalent).
- * carried_coin_purse_value: backpack coins only (copper equivalent).
- */
+// One entry per coin_type + storedAt, no backing database (coin types are constants). Carried weight counts the backpack
+// only; total_coin_purse_value spans every location in copper, carried_coin_purse_value the backpack only.
 function buildCoinPurseSlots(coinInventory = []) {
   const instanceErrors = coinInventory.flatMap((instance, index) =>
     validateCoinInstance(instance, index),

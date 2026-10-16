@@ -37,11 +37,7 @@ function buildStorageBucket() {
   return [];
 }
 
-/**
- * Builds the resolved survival gear inventory, distributed across storage locations.
- *
- * Only backpack items contribute to carried weight.
- */
+// Only backpack items contribute to carried weight.
 function buildSurvivalGearSlots(survivalGearInventory = []) {
   const survivalGearDb = getSurvivalGearDB();
 

@@ -42,8 +42,8 @@ function applyMaterialToArmor(armor, material) {
   };
 }
 
-// armor_final_weight/armor_final_damage_resistance stay material-derived only; final_weight/final_damage_resistance layer enchantments on top, mirroring the hit_points -> final_hit_points pattern.
-// Enchantment price/weight/DR effects are item-intrinsic (apply whether worn or in the backpack) — only the character-level elemental-resistance effect is equipped-only, resolved separately in collectEquippedEnchantments.js.
+// armor_final_* stay material-derived; final_* layer enchantments on top, like hit_points -> final_hit_points.
+// Enchantment price/weight/DR effects belong to the item (worn or not); only the elemental-resistance effect is equipped-only (collectEquippedEnchantments.js).
 function resolveArmorPiece(
   instance,
   armor,

@@ -6,7 +6,7 @@ function formatDamageString(dice, sum) {
   return `${dice}${sign}${Math.abs(sum)}`;
 }
 
-// Both GDP and BAL damage can be set simultaneously when weapon_damage_type names more than one type (e.g. "Corte, Perfuração"); missing base_damage/keys silently yields {} rather than throwing.
+// GDP and BAL can both be set when weapon_damage_type names several types ("Corte, Perfuração"); missing base damage yields {} instead of throwing.
 function computeWeaponDamage(
   weapon_damage_type,
   weapon_gdp_modifier,

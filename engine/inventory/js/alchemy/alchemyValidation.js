@@ -1,9 +1,5 @@
 const { VALID_STORED_AT } = require("./alchemyConstants");
 
-/**
- * Validates a single alchemy consumable instance object (shape only, no DB lookups).
- * Returns an array of error strings (empty = valid).
- */
 function validateAlchemyInstance(instance, index) {
   const errors = [];
   const prefix = `alchemyInventory[${index}]`;

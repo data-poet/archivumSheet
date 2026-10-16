@@ -22,7 +22,7 @@ function buildCharacterPrimary({
 }) {
   // has_enchantment_modifier is presence-based (item touches attribute), not magnitude-based (nonzero sum) — see collectEquippedEnchantments.js.
   // race_modifier folds in the meta-race attribute delta too — the two are shown as one combined
-  // number in the UI (see docs/proposals/meta-race-templates.md), not as separate fields.
+  // number in the UI, not as separate fields.
   const attributesWithRace = withEnchantmentModifier(
     primaryAttributes,
     enchantmentAttributeModifiers,

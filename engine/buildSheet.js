@@ -35,23 +35,8 @@ function buildSheet({
 } = {}) {
   const race = pickRace({ race_id, race: resolvedRace });
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 0. META-RACE RESOLUTION
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Resolves character.meta_race_ids (e.g. Undead) against db_yrth_meta_races.csv before either
-   * character build — same rationale as race: attribute modifiers can shift ST, which the
-   * inventory layer needs, so this can't wait until step 2.5 like equipped enchantments do.
-   */
-
+  // Meta-races resolve first: their attribute modifiers can shift ST, which the inventory layer needs.
   const metaRaces = resolveMetaRaces(character.meta_race_ids || []);
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 1. INITIAL CHARACTER BUILD
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   const initialCharacterResult = buildCharacter({
     advantages: character.advantages,
@@ -73,12 +58,6 @@ function buildSheet({
   const initialCharacter = initialCharacterResult.character;
 
   const st = initialCharacter.primary_attributes.ST.value;
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 2. INVENTORY LAYER
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   function runInventory(inventoryST, liftingST) {
     return buildInventory({
@@ -107,36 +86,14 @@ function buildSheet({
   );
   let inventoryResult = runInventory(st, initialLiftingST);
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 2.5 EQUIPPED ENCHANTMENT EFFECTS
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Bridges the inventory layer into the character layer: reads ONLY
-   * equipped items' resolved enchantments (accessories, magic gear, armor,
-   * shield) and turns them into attribute modifiers, elemental-resistance
-   * modifiers, advantage/disadvantage grants, and skill/spell
-   * grants+modifiers. Must happen after inventory is built (equipped items
-   * aren't known before that) and before the final character build (which
-   * needs to consume this).
-   *
-   * Armor's `equipped` is slot-keyed (one piece per slot, some slots
-   * null), unlike accessories/magicGear's flat equipped array — flatten
-   * it here before merging. Shield's `equipped` is simpler still: a
-   * single object or null (no slot map at all — see shieldConstants.js),
-   * so it's just wrapped into a one-item array.
-   */
-
+  // Equipped enchantments bridge inventory into character: they need the built inventory and feed the final
+  // character build. Armor's equipped is slot-keyed and shield's a single object, so both are flattened first.
   const equippedAccessories =
     inventoryResult.inventory.accessories?.equipped || [];
   const equippedMagicGear = inventoryResult.inventory.magicGear?.equipped || [];
   const equippedArmor = Object.values(
     inventoryResult.inventory.armor?.equipped || {},
   ).filter(Boolean);
-  // Shield's `equipped` is a single object (or null), unlike armor's
-  // slot-keyed map — wrap it into a one-item array (or none) before
-  // merging, same flattening armor needs, just simpler since there's no
-  // slot map to flatten.
   const equippedShield = inventoryResult.inventory.shield?.equipped
     ? [inventoryResult.inventory.shield.equipped]
     : [];
@@ -146,12 +103,6 @@ function buildSheet({
     ...equippedArmor,
     ...equippedShield,
   ]);
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3. FINAL CHARACTER BUILD
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   function runCharacter(carryWeight) {
     return buildCharacter({
@@ -180,26 +131,9 @@ function buildSheet({
 
   let characterResult = runCharacter(inventoryResult.inventory.carry_weight);
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3.5 ST-DEPENDENT INVENTORY CORRECTION
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * ST-boosting/weakening equipped enchantments (e.g. ENCHANTMENT-000/001,
-   * "Fortificar/Enfraquecer ST") are only known after step 2.5, but ranged
-   * weapon distances and carry_weight were already resolved in step 2 using
-   * the pre-enchantment ST. Re-run the inventory layer with the corrected ST
-   * and rebuild the character once more so Movement (which is derived from
-   * carry_weight's load level) reflects it too.
-   *
-   * IQ/DX/HT have no equivalent leak: their only consumers (skills, spells,
-   * shield block, weapon damage) all run after this final character build,
-   * so they already see enchantment-corrected values with no extra pass.
-   *
-   * Skipped when ST didn't change — the common case with no ST-affecting
-   * gear equipped — so this costs nothing for the vast majority of sheets.
-   */
-
+  // Equipped ST enchantments are known only after the step above, but ranged distances and carry_weight (hence Movement)
+  // were resolved with the base ST: re-run the inventory and the character once when ST changed.
+  // IQ/DX/HT need no extra pass, their consumers run after the final character build.
   const correctedST = characterResult.character.primary_attributes.ST.value;
   const correctedLiftingST = liftingStrength(
     correctedST,
@@ -214,18 +148,7 @@ function buildSheet({
   const characterData = characterResult.character;
   const iq = characterData.primary_attributes[SPELL_ATTRIBUTE].value;
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3.6 SHIELD BLOCK COMPUTATION
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Block depends on the final character skills and DX, so it is computed here
-   * after both the character and inventory layers are fully resolved.
-   *
-   * Each resolved shield (equipped + all storage buckets) receives its
-   * `skill_check` (Broquel/Escudo, learned or default) and a 4e `block`.
-   */
-
+  // Shield block needs the final skills and DX, so it is computed once both layers are resolved.
   const _primary = characterData.primary_attributes;
   const _skills = characterData.skills || {};
   const _hasReflexos =
@@ -259,22 +182,8 @@ function buildSheet({
     (_shieldInv[bucket] || []).forEach(_attachBlock);
   }
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 3.7 WEAPON DAMAGE COMPUTATION
-   * ───────────────────────────────────────────────────────────────────────────
-   *
-   * Depends on the final character base_damage, so it is computed here after
-   * both the character and inventory layers are fully resolved.
-   *
-   * Each resolved melee and ranged instance (all buckets) receives
-   * weapon_gdp_damage and/or weapon_bal_damage fields, depending on the
-   * weapon's damage type:
-   *   - "Perfuração" → weapon_gdp_damage
-   *   - "Contusão" or "Corte" → weapon_bal_damage
-   * Both can appear simultaneously (e.g. "Corte, Perfuração").
-   */
-
+  // Weapon damage needs the final base damage. "Perfuração" gets weapon_gdp_damage, "Contusão" and "Corte"
+  // weapon_bal_damage, and a weapon can have both.
   const _baseDamage = characterData.base_damage;
   const _meleeInv = inventoryResult.inventory.melee;
   const _rangedInv = inventoryResult.inventory.ranged;
@@ -347,12 +256,6 @@ function buildSheet({
       })),
   ];
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 4. SPELL RESOLUTION
-   * ───────────────────────────────────────────────────────────────────────────
-   */
-
   const resolvedSpells = resolveAll({
     spells: character.spells,
     character: { ...characterData, iq },
@@ -360,22 +263,10 @@ function buildSheet({
     enchantmentSpellModifiers: enchantmentEffects.spellModifiers,
   });
 
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 5. GRIMOIRE BUILD
-   * ───────────────────────────────────────────────────────────────────────────
-   */
-
   const grimoireResult = buildGrimoire(resolvedSpells.spells, {
     ...characterData,
     iq,
   });
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 6. CHARACTER POINTS SUMMARY
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   const basePoints = characterResult.character.character_points;
 
@@ -387,12 +278,6 @@ function buildSheet({
     disadvantages: basePoints.disadvantages || 0,
     spells: grimoireResult.character_points.spells || 0,
   };
-
-  /**
-   * ───────────────────────────────────────────────────────────────────────────
-   * 7. FINAL SHEET — pc and race come first
-   * ───────────────────────────────────────────────────────────────────────────
-   */
 
   return {
     pc,

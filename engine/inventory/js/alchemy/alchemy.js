@@ -48,11 +48,7 @@ function buildStorageBucket() {
   return [];
 }
 
-/**
- * Builds the resolved alchemy inventory, distributed across storage locations.
- *
- * Only backpack consumables contribute to carried weight.
- */
+// Only backpack consumables contribute to carried weight.
 function buildAlchemySlots(alchemyInventory = []) {
   const alchemyDb = getAlchemyDB();
 
