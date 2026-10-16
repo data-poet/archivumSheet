@@ -1,4 +1,6 @@
-const STORAGE_KEY = "archivum:theme";
+import { STORAGE_KEYS } from "../shared/storageKeys.js";
+
+const STORAGE_KEY = STORAGE_KEYS.theme;
 
 // Returns null when the user has never chosen — callers should then fall back to
 // the OS-level prefers-color-scheme preference.

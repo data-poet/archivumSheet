@@ -3,8 +3,7 @@
 // importing characters.js itself, which assumes the sheet page's live DOM.
 
 import { ENTRY_KINDS } from "../shared/constants.js";
-
-export const STORAGE_KEY = "archivum_characters";
+import { STORAGE_KEYS } from "../shared/storageKeys.js";
 
 export function generateId(prefix = "c") {
   return (
@@ -21,7 +20,7 @@ export function kindOf(entry) {
 
 export function loadStore() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEYS.characters);
     if (raw) return JSON.parse(raw);
   } catch (_) {}
   return null;
@@ -29,7 +28,7 @@ export function loadStore() {
 
 export function saveStore(store) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+    localStorage.setItem(STORAGE_KEYS.characters, JSON.stringify(store));
   } catch (err) {
     console.error("[characterStoreCore] localStorage write failed:", err);
   }

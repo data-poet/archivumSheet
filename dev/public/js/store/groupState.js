@@ -1,4 +1,6 @@
-const DEFAULT_STORAGE_KEY = "archivum:activeGroup";
+import { STORAGE_KEYS } from "../shared/storageKeys.js";
+
+const DEFAULT_STORAGE_KEY = STORAGE_KEYS.activeGroup;
 
 export function getActiveGroup(storageKey = DEFAULT_STORAGE_KEY) {
   return localStorage.getItem(storageKey);

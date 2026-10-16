@@ -11,9 +11,10 @@ import { initTheme } from "../components/theme.js";
 import { initPageSelector } from "../components/pageSelector.js";
 import { LABELS } from "../localization/pt-BR/index.js";
 import { icon } from "../shared/icons.js";
+import { STORAGE_KEYS } from "../shared/storageKeys.js";
 
 // Separate from the sheet's key, whose group ids would otherwise fall back to the first group here.
-const GROUP_STORAGE_KEY = "archivum:referenceGroup";
+const GROUP_STORAGE_KEY = STORAGE_KEYS.referenceGroup;
 
 function _hydrateShell() {
   const L = LABELS.reference;
