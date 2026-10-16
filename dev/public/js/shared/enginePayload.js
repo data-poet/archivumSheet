@@ -56,7 +56,7 @@ export function toEngineRace(raceRow) {
       Air: _raceMultiplier(raceRow.race_air_damage_multiplier),
       Electricity: _raceMultiplier(raceRow.race_electricity_damage_multiplier),
       Earth: _raceMultiplier(raceRow.race_earth_damage_multiplier),
-      Corrosion: _raceMultiplier(raceRow.race_corrossion_damage_multiplier),
+      Corrosion: _raceMultiplier(raceRow.race_corrosion_damage_multiplier),
       Necrotic: _raceMultiplier(raceRow.race_necrotic_damage_multiplier),
       Holy: _raceMultiplier(raceRow.race_holy_damage_multiplier),
       Void: _raceMultiplier(raceRow.race_void_damage_multiplier),

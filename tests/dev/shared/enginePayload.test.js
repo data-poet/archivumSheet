@@ -32,7 +32,7 @@ describe("toEngineRace", () => {
       race_fire_damage_multiplier: "0.5",
       race_water_damage_multiplier: "",
       race_electricity_damage_multiplier: "not-a-number",
-      race_corrossion_damage_multiplier: "0",
+      race_corrosion_damage_multiplier: "0",
     });
 
     expect(race.elemental_modifiers.Fire).toBe(0.5);

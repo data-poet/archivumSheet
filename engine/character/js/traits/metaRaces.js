@@ -7,7 +7,7 @@ const ELEMENT_COLUMN = {
   Air: "meta_race_air_damage_multiplier",
   Electricity: "meta_race_electricity_damage_multiplier",
   Earth: "meta_race_earth_damage_multiplier",
-  Corrosion: "meta_race_corrossion_damage_multiplier",
+  Corrosion: "meta_race_corrosion_damage_multiplier",
   Necrotic: "meta_race_necrotic_damage_multiplier",
   Holy: "meta_race_holy_damage_multiplier",
   Void: "meta_race_void_damage_multiplier",
@@ -80,5 +80,6 @@ function resolveMetaRaces(metaRaceIds = []) {
 }
 
 module.exports = {
+  ELEMENT_COLUMN,
   resolveMetaRaces,
 };
