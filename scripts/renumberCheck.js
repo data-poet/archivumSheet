@@ -12,7 +12,7 @@ const { spawnSync } = require("child_process");
 const ROOT = path.join(__dirname, "..");
 const ID_FILES = ["helpers/ids.js", "dev/public/js/shared/constants.js"];
 const SKIP = new Set(["node_modules", ".git", ".claude", ".DS_Store"]);
-const ID_PATTERN = /\b([A-Z][A-Z]*(?:-[A-Z]+)*)-(\d{3})\b/g;
+const ID_PATTERN = /\b([A-Z][A-Z]*(?:[-_][A-Z]+)*)-(\d{3,4})\b/g;
 
 const byFlag = process.argv.indexOf("--by");
 const shiftBy = byFlag === -1 ? 500 : Number(process.argv[byFlag + 1]);
@@ -39,10 +39,12 @@ function renumber(file, prefixes) {
   const shifted = source.replace(ID_PATTERN, (match, prefix, number) => {
     if (!prefixes.has(prefix)) return match;
     const shiftedNumber = Number(number) + shiftBy;
-    if (shiftedNumber > 999) {
-      throw new Error(`${match} + ${shiftBy} no longer fits three digits`);
+    if (String(shiftedNumber).length > number.length) {
+      throw new Error(
+        `${match} + ${shiftBy} no longer fits ${number.length} digits`,
+      );
     }
-    return `${prefix}-${String(shiftedNumber).padStart(3, "0")}`;
+    return `${prefix}-${String(shiftedNumber).padStart(number.length, "0")}`;
   });
   fs.writeFileSync(file, shifted);
 }

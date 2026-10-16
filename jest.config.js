@@ -16,6 +16,12 @@ module.exports = {
       // which is stable and behaviorally a no-op for CommonJS.
     },
     {
+      displayName: "data",
+      testEnvironment: "node",
+      modulePaths: ["<rootDir>"],
+      testMatch: ["<rootDir>/tests/data/**/*.test.js"],
+    },
+    {
       displayName: "dev",
       testEnvironment: "jsdom",
       modulePaths: ["<rootDir>"],

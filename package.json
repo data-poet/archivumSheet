@@ -12,6 +12,7 @@
     "lint:fix": "prettier --write .",
     "test": "jest",
     "test:watch": "jest --watchAll",
+    "test:data": "jest --selectProjects data",
     "test:renumber": "node scripts/renumberCheck.js"
   },
   "author": "",

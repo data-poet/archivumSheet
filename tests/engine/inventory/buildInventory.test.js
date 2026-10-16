@@ -1,3 +1,4 @@
+const { MAGIC_GEAR } = require("tests/helpers/dataRefs");
 const { buildInventory } = require("engine/inventory/buildInventory");
 
 const { _getArmorDB } = require("engine/inventory/js/armor/armor");
@@ -625,7 +626,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       magicGearInventory: [
         {
-          magic_gear_id: "MAGIC_GEAR-001",
+          magic_gear_id: MAGIC_GEAR.varinha,
           is_equipped: true,
           storedAt: null,
         },
@@ -643,7 +644,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       magicGearInventory: [
         {
-          magic_gear_id: "MAGIC_GEAR-001",
+          magic_gear_id: MAGIC_GEAR.varinha,
           is_equipped: false,
           storedAt: "backpack",
         },
@@ -661,7 +662,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       magicGearInventory: [
         {
-          magic_gear_id: "MAGIC_GEAR-001",
+          magic_gear_id: MAGIC_GEAR.varinha,
           is_equipped: false,
           storedAt: "stash",
         },
@@ -679,7 +680,7 @@ describe("INVENTORY BUILDER", () => {
       weight: 0,
       magicGearInventory: [
         {
-          magic_gear_id: "MAGIC_GEAR-001",
+          magic_gear_id: MAGIC_GEAR.varinha,
           is_equipped: false,
           storedAt: "camp",
         },
@@ -704,7 +705,7 @@ describe("INVENTORY BUILDER", () => {
       ],
       magicGearInventory: [
         {
-          magic_gear_id: "MAGIC_GEAR-001",
+          magic_gear_id: MAGIC_GEAR.varinha,
           is_equipped: false,
           storedAt: "backpack",
         },

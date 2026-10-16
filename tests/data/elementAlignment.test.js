@@ -5,7 +5,7 @@ import { loadDataset } from "helpers/datasets.js";
 import fs from "fs";
 import path from "path";
 
-const DATA = path.join(__dirname, "../../../data");
+const DATA = path.join(__dirname, "../../data");
 
 function headerOf(file) {
   return fs

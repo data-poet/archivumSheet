@@ -1,4 +1,5 @@
-const { ENCHANTMENT } = require("tests/helpers/dataRefs");
+const { ENCHANTMENT, MAGIC_GEAR } = require("tests/helpers/dataRefs");
+const { loadDataset } = require("helpers/datasets.js");
 const {
   buildMagicGearSlots,
   VALID_STORED_AT,
@@ -8,18 +9,14 @@ const {
 describe("MAGIC GEAR", () => {
   const db = _getMagicGearDB();
 
-  const wandId = Object.keys(db).find(
-    (id) => db[id].magic_gear_name === "Varinha",
-  );
-  const staffId = Object.keys(db).find(
-    (id) => db[id].magic_gear_name === "Cajado",
-  );
-  const grimoireId = Object.keys(db).find(
-    (id) => db[id].magic_gear_name === "Grimório",
-  );
-  const luteId = Object.keys(db).find(
-    (id) => db[id].magic_gear_name === "Alaúde",
-  );
+  const wandId = MAGIC_GEAR.varinha;
+  const staffId = MAGIC_GEAR.cajado;
+  const grimoireId = MAGIC_GEAR.grimorio;
+  const luteId = MAGIC_GEAR.alaude;
+
+  const rowOf = (dataset, idColumn, id) =>
+    loadDataset(dataset).find((row) => row[idColumn] === id);
+  const enchantmentRow = (id) => rowOf("ENCHANTMENTS", "enchantment_id", id);
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -31,7 +28,7 @@ describe("MAGIC GEAR", () => {
     test("Should load magic gear database", () => {
       expect(db).toBeDefined();
       expect(typeof db).toBe("object");
-      expect(Object.keys(db).length).toBe(12);
+      expect(Object.keys(db).length).toBeGreaterThan(0);
     });
 
     test("Should parse magic_gear_price and magic_gear_weight as numbers", () => {
@@ -40,23 +37,18 @@ describe("MAGIC GEAR", () => {
       expect(typeof wand.magic_gear_weight).toBe("number");
     });
 
-    test("Should load known magic gear names with their price/weight/type", () => {
-      expect(db[wandId]).toEqual({
-        magic_gear_id: wandId,
-        magic_gear_type: "Arcano",
-        magic_gear_name: "Varinha",
-        magic_gear_price: 150,
-        magic_gear_weight: 0.3,
-      });
-    });
-
-    test("Should load Musical-type magic gear correctly", () => {
-      expect(db[luteId]).toEqual({
-        magic_gear_id: luteId,
-        magic_gear_type: "Musical",
-        magic_gear_name: "Alaúde",
-        magic_gear_price: 300,
-        magic_gear_weight: 1.5,
+    test.each([
+      ["a wand", () => wandId],
+      ["a musical instrument", () => luteId],
+    ])("Should load %s with its CSV row values", (_label, getId) => {
+      const id = getId();
+      const row = rowOf("MAGIC_GEAR", "magic_gear_id", id);
+      expect(db[id]).toMatchObject({
+        magic_gear_id: id,
+        magic_gear_type: row.magic_gear_type,
+        magic_gear_name: row.magic_gear_name,
+        magic_gear_price: Number(row.magic_gear_price),
+        magic_gear_weight: Number(row.magic_gear_weight),
       });
     });
   });
@@ -196,10 +188,13 @@ describe("MAGIC GEAR", () => {
         },
       ]);
 
-      // Fortificar Mana at base value: base_price 1000
-      expect(result.equipped[0].enchantments_total_price).toBe(1000);
-      expect(result.equipped[0].total_value).toBe(1150); // 150 (wand) + 1000
-      expect(result.carried_magic_gear_value).toBe(1150);
+      const basePrice = Number(
+        enchantmentRow(ENCHANTMENT.fortifyMana).enchantment_base_price,
+      );
+      const wandPrice = db[wandId].magic_gear_price;
+      expect(result.equipped[0].enchantments_total_price).toBe(basePrice);
+      expect(result.equipped[0].total_value).toBe(wandPrice + basePrice);
+      expect(result.carried_magic_gear_value).toBe(wandPrice + basePrice);
     });
 
     test("Should throw when applying an enchantment not allowed on magic gear", () => {

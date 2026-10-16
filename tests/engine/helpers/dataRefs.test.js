@@ -1,14 +1,34 @@
 const refs = require("tests/helpers/dataRefs");
 const ids = require("helpers/ids.js");
 
-const { LEGACY_IDS, remapLegacyIds, ...groups } = refs;
+const { ID_COLUMN, LEGACY_IDS, remapLegacyIds, ...groups } = refs;
+
+function unresolved(entries, label) {
+  return Object.keys(entries).flatMap((key) => {
+    try {
+      return typeof entries[key] === "string" ? [] : [`${label}.${key}`];
+    } catch (error) {
+      return [`${label}.${key}: ${error.message}`];
+    }
+  });
+}
 
 describe("dataRefs", () => {
+  test("every ref resolves, and every failure is reported at once", () => {
+    const failures = [
+      ...Object.entries(groups).flatMap(([group, entries]) =>
+        unresolved(entries, group),
+      ),
+      ...unresolved(LEGACY_IDS, "LEGACY_IDS"),
+    ];
+    expect(failures).toEqual([]);
+  });
+
   test.each(Object.entries(groups))(
-    "%s: every ref resolves to a distinct id",
+    "%s: refs are distinct ids with the dataset's id shape",
     (_group, entries) => {
       const values = Object.values(entries);
-      values.forEach((id) => expect(id).toMatch(/^[A-Z][A-Z-]*-\d{3}$/));
+      values.forEach((id) => expect(id).toMatch(/^[A-Z][A-Z_-]*-\d{3,4}$/));
       expect(new Set(values).size).toBe(values.length);
     },
   );

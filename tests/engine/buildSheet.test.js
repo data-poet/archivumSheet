@@ -4,6 +4,7 @@ const {
   ARMOR,
   DISADVANTAGE,
   ENCHANTMENT,
+  MAGIC_GEAR,
   META_RACE,
   RANGED,
   SHIELD,
@@ -339,7 +340,7 @@ describe("BUILD SHEET", () => {
           magic_gear: [
             {
               id: "mg-1",
-              magic_gear_id: "MAGIC_GEAR-001",
+              magic_gear_id: MAGIC_GEAR.varinha,
               is_equipped: true,
               storedAt: null,
               enchantments: [
@@ -373,7 +374,7 @@ describe("BUILD SHEET", () => {
           magic_gear: [
             {
               id: "mg-1",
-              magic_gear_id: "MAGIC_GEAR-001",
+              magic_gear_id: MAGIC_GEAR.varinha,
               is_equipped: false,
               storedAt: "backpack",
               enchantments: [
@@ -423,7 +424,7 @@ describe("BUILD SHEET", () => {
           magic_gear: [
             {
               id: "mg-1",
-              magic_gear_id: "MAGIC_GEAR-001",
+              magic_gear_id: MAGIC_GEAR.varinha,
               is_equipped: true,
               storedAt: null,
               enchantments: [

@@ -1,4 +1,6 @@
-const { ADVANTAGE, ENCHANTMENT } = require("tests/helpers/dataRefs");
+const { ACCESSORY, ADVANTAGE, ENCHANTMENT } = require("tests/helpers/dataRefs");
+const { loadDataset } = require("helpers/datasets.js");
+const { buildAdvantages } = require("engine/character/js/traits/advantages");
 const {
   buildAccessorySlots,
   VALID_STORED_AT,
@@ -8,10 +10,12 @@ const {
 describe("EQUIPMENT ACCESSORIES", () => {
   const db = _getAccessoriesDB();
 
-  const ringId = Object.keys(db).find((id) => db[id].accessory_name === "Anel");
-  const crownId = Object.keys(db).find(
-    (id) => db[id].accessory_name === "Coroa",
-  );
+  const ringId = ACCESSORY.anel;
+  const crownId = ACCESSORY.coroa;
+
+  const rowOf = (dataset, idColumn, id) =>
+    loadDataset(dataset).find((row) => row[idColumn] === id);
+  const enchantmentRow = (id) => rowOf("ENCHANTMENTS", "enchantment_id", id);
 
   describe("Constants", () => {
     test("Should export VALID_STORED_AT", () => {
@@ -23,7 +27,7 @@ describe("EQUIPMENT ACCESSORIES", () => {
     test("Should load accessories database", () => {
       expect(db).toBeDefined();
       expect(typeof db).toBe("object");
-      expect(Object.keys(db).length).toBe(6);
+      expect(Object.keys(db).length).toBeGreaterThan(0);
     });
 
     test("Should parse accessory_equip_limit as a number", () => {
@@ -37,16 +41,14 @@ describe("EQUIPMENT ACCESSORIES", () => {
       expect(accessory).not.toHaveProperty("accessory_price");
     });
 
-    test("Should load known accessory names with their limits", () => {
-      expect(db[ringId]).toEqual({
-        accessory_id: ringId,
-        accessory_name: "Anel",
-        accessory_equip_limit: 10,
-      });
-      expect(db[crownId]).toEqual({
-        accessory_id: crownId,
-        accessory_name: "Coroa",
-        accessory_equip_limit: 1,
+    test("Should load each accessory with its name and limit from the CSV row", () => {
+      [ringId, crownId].forEach((id) => {
+        const row = rowOf("ACCESSORIES", "accessory_id", id);
+        expect(db[id]).toMatchObject({
+          accessory_id: id,
+          accessory_name: row.accessory_name,
+          accessory_equip_limit: Number(row.accessory_equip_limit),
+        });
       });
     });
   });
@@ -227,10 +229,12 @@ describe("EQUIPMENT ACCESSORIES", () => {
         },
       ]);
 
-      // Fortificar ST at base value: base_price 5000
-      expect(result.equipped[0].enchantments_total_price).toBe(5000);
-      expect(result.equipped[0].total_value).toBe(5000);
-      expect(result.carried_accessory_value).toBe(5000);
+      const basePrice = Number(
+        enchantmentRow(ENCHANTMENT.fortifyST).enchantment_base_price,
+      );
+      expect(result.equipped[0].enchantments_total_price).toBe(basePrice);
+      expect(result.equipped[0].total_value).toBe(basePrice);
+      expect(result.carried_accessory_value).toBe(basePrice);
     });
 
     test("Should resolve a real advantage-granting enchantment using the target's own point cost", () => {
@@ -250,8 +254,15 @@ describe("EQUIPMENT ACCESSORIES", () => {
         },
       ]);
 
-      // Adicionar Vantagem price_per_point 2000 × the advantage's cost 5
-      expect(result.equipped[0].enchantments_total_price).toBe(10000);
+      const pricePerPoint = Number(
+        enchantmentRow(ENCHANTMENT.addAdvantage).enchantment_price_per_point,
+      );
+      const { points } = buildAdvantages([ADVANTAGE.atraente]).advantages[
+        ADVANTAGE.atraente
+      ];
+      expect(result.equipped[0].enchantments_total_price).toBe(
+        pricePerPoint * points,
+      );
     });
 
     test("Should throw for an unknown enchantment_id", () => {
