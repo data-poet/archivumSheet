@@ -1,7 +1,7 @@
-accessory_id,accessory_name,accessory_equip_limit
-ACCESSORY-000,Anel,10
-ACCESSORY-001,Colar,4
-ACCESSORY-002,Pulseira,2
-ACCESSORY-003,Braçadeira,2
-ACCESSORY-004,Coroa,1
-ACCESSORY-005,Tiara,1
+accessory_id,accessory_key,accessory_name,accessory_equip_limit
+ACCESSORY-000,anel,Anel,10
+ACCESSORY-001,colar,Colar,4
+ACCESSORY-002,pulseira,Pulseira,2
+ACCESSORY-003,bracadeira,Braçadeira,2
+ACCESSORY-004,coroa,Coroa,1
+ACCESSORY-005,tiara,Tiara,1

@@ -1,70 +1,70 @@
-enchantment_id,enchantment_name,enchantment_type,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enchantment_is_percentage,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
-ENCHANTMENT-000,Fortificar ST,Fortificar Atributo,fortify_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Aumenta a ST do usuário.
-ENCHANTMENT-001,Enfraquecer ST,Enfraquecer Atributo,weaken_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Diminui a ST do usuário.
-ENCHANTMENT-002,Fortificar DX,Fortificar Atributo,fortify_attribute,FALSE,DX,FALSE,1,1,Acessórios,10000,10000,,,Aumenta a DX do usuário.
-ENCHANTMENT-003,Enfraquecer DX,Enfraquecer Atributo,weaken_attribute,FALSE,DX,FALSE,1,1,Acessórios,10000,10000,,,Diminui a DX do usuário.
-ENCHANTMENT-004,Fortificar IQ,Fortificar Atributo,fortify_attribute,FALSE,IQ,FALSE,1,1,Acessórios,10000,10000,,,Aumenta a IQ do usuário.
-ENCHANTMENT-005,Enfraquecer IQ,Enfraquecer Atributo,weaken_attribute,FALSE,IQ,FALSE,1,1,Acessórios,10000,10000,,,Diminui a IQ do usuário.
-ENCHANTMENT-006,Fortificar HT,Fortificar Atributo,fortify_attribute,FALSE,HT,FALSE,1,1,Acessórios,5000,5000,,,Aumenta a HT do usuário.
-ENCHANTMENT-007,Enfraquecer HT,Enfraquecer Atributo,weaken_attribute,FALSE,HT,FALSE,1,1,Acessórios,5000,5000,,,Diminui a HT do usuário.
-ENCHANTMENT-008,Fortificar PV,Fortificar Atributo,fortify_attribute,FALSE,HP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta os PV do usuário.
-ENCHANTMENT-009,Enfraquecer PV,Enfraquecer Atributo,weaken_attribute,FALSE,HP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui os PV do usuário.
-ENCHANTMENT-010,Fortificar PF,Fortificar Atributo,fortify_attribute,FALSE,FP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta os PF do usuário.
-ENCHANTMENT-011,Enfraquecer PF,Enfraquecer Atributo,weaken_attribute,FALSE,FP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui os PF do usuário.
-ENCHANTMENT-012,Fortificar Mana,Fortificar Atributo,fortify_attribute,FALSE,Mana,FALSE,1,1,"Acessórios,Instrumentos Mágicos, Tronco",1000,1000,,,Aumenta a Mana do usuário.
-ENCHANTMENT-013,Enfraquecer Mana,Enfraquecer Atributo,weaken_attribute,FALSE,Mana,FALSE,1,1,"Acessórios,Instrumentos Mágicos, Tronco",1000,1000,,,Diminui a Mana do usuário.
-ENCHANTMENT-014,Fortificar Toxicidade,Fortificar Atributo,fortify_attribute,FALSE,Toxicity,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta a Toxicidade do usuário.
-ENCHANTMENT-015,Enfraquecer Toxicidade,Enfraquecer Atributo,weaken_attribute,FALSE,Toxicity,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui a Toxicidade do usuário.
-ENCHANTMENT-016,Fortificar Vontade,Fortificar Atributo,fortify_attribute,FALSE,Will,FALSE,1,1,"Acessórios, Cabeça",5000,5000,,,Aumenta a Vontade do usuário.
-ENCHANTMENT-017,Enfraquecer Vontade,Enfraquecer Atributo,weaken_attribute,FALSE,Will,FALSE,1,1,"Acessórios, Cabeça",5000,5000,,,Diminui a Vontade do usuário.
-ENCHANTMENT-018,Fortificar Visão,Fortificar Atributo,fortify_attribute,FALSE,Vision,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta a Visão do usuário.
-ENCHANTMENT-019,Enfraquecer Visão,Enfraquecer Atributo,weaken_attribute,FALSE,Vision,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui a Visão do usuário.
-ENCHANTMENT-020,Fortificar Audição,Fortificar Atributo,fortify_attribute,FALSE,Hearing,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta a Audição do usuário.
-ENCHANTMENT-021,Enfraquecer Audição,Enfraquecer Atributo,weaken_attribute,FALSE,Hearing,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui a Audição do usuário.
-ENCHANTMENT-022,Fortificar Olfato,Fortificar Atributo,fortify_attribute,FALSE,Smell,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta o Olfato do usuário.
-ENCHANTMENT-023,Enfraquecer Olfato,Enfraquecer Atributo,weaken_attribute,FALSE,Smell,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui o Olfato do usuário.
-ENCHANTMENT-024,Fortificar Velocidade Básica,Fortificar Atributo,fortify_attribute,FALSE,Basic Speed,FALSE,0.5,0.5,"Acessórios, Pés",2000,2000,,,Aumenta a Velocidade Básica do usuário.
-ENCHANTMENT-025,Enfraquecer Velocidade Básica,Enfraquecer Atributo,weaken_attribute,FALSE,Basic Speed,FALSE,0.5,0.5,"Acessórios, Pés",2000,2000,,,Diminui a Velocidade Básica do usuário.
-ENCHANTMENT-026,Fortificar Deslocamento,Fortificar Atributo,fortify_attribute,FALSE,Movement,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Aumenta o Deslocamento do usuário.
-ENCHANTMENT-027,Enfraquecer Deslocamento,Enfraquecer Atributo,weaken_attribute,FALSE,Movement,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Diminui o Deslocamento do usuário.
-ENCHANTMENT-028,Fortificar Esquiva,Fortificar Atributo,fortify_attribute,FALSE,Dodge,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Aumenta a Esquiva do usuário.
-ENCHANTMENT-029,Enfraquecer Esquiva,Enfraquecer Atributo,weaken_attribute,FALSE,Dodge,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Diminui a Esquiva do usuário.
-ENCHANTMENT-030,Adicionar Vantagem,Peculiaridade,advantage,TRUE,,FALSE,,,Acessórios,,,2000,,Adiciona uma vantagem ao usuário.
-ENCHANTMENT-031,Adicionar Desvantagem,Peculiaridade,disadvantage,TRUE,,FALSE,,,Acessórios,,,2000,,Adiciona uma desvantagem ao usuário.
-ENCHANTMENT-032,Adicionar Perícia,Perícia,skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Adiciona uma perícia ao usuário.
-ENCHANTMENT-033,Fortificar Perícia,Perícia,fortify_skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Fortifica uma perícia do usuário.
-ENCHANTMENT-034,Enfraquecer Perícia,Perícia,weaken_skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Enfraquece uma perícia do usuário.
-ENCHANTMENT-035,Adicionar Feitiço,Feitiço,spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Adiciona um feitiço ao usuário.
-ENCHANTMENT-036,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Fortifica um feitiço do usuário.
-ENCHANTMENT-037,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Enfraquece um feitiço do usuário.
-ENCHANTMENT-038,Aumentar Peso,Peso,add_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o peso do item.
-ENCHANTMENT-039,Reduzir Peso,Peso,remove_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Reduz o peso do item.
-ENCHANTMENT-040,Aumentar Resistência à Dano,RD,fortify_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano do item.
-ENCHANTMENT-041,Diminuir Resistência à Dano,RD,weaken_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano do item.
-ENCHANTMENT-042,Fortificar Resistência à Fogo,Fortificar Resistência,fortify_resistance,FALSE,Fire,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano de fogo do usuário.
-ENCHANTMENT-043,Enfraquecer Resistência à Fogo,Enfraquecer Resistência,weaken_resistance,FALSE,Fire,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano de fogo do usuário.
-ENCHANTMENT-044,Fortificar Resistência à Água,Fortificar Resistência,fortify_resistance,FALSE,Water,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano de água do usuário.
-ENCHANTMENT-045,Enfraquecer Resistência à Água,Enfraquecer Resistência,weaken_resistance,FALSE,Water,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano de água do usuário.
-ENCHANTMENT-046,Fortificar Resistência à Eletricidade,Fortificar Resistência,fortify_resistance,FALSE,Electricity,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano elétrico do usuário.
-ENCHANTMENT-047,Enfraquecer Resistência à Eletricidade,Enfraquecer Resistência,weaken_resistance,FALSE,Electricity,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano elétrico do usuário.
-ENCHANTMENT-048,Fortificar Resistência à Corrosão,Fortificar Resistência,fortify_resistance,FALSE,Corrosion,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano corrosivo do usuário.
-ENCHANTMENT-049,Enfraquecer Resistência à Corrosão,Enfraquecer Resistência,weaken_resistance,FALSE,Corrosion,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano corrosivo do usuário.
-ENCHANTMENT-050,Fortificar Resistência à Sagrado,Fortificar Resistência,fortify_resistance,FALSE,Holy,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano sagrado do usuário.
-ENCHANTMENT-051,Enfraquecer Resistência à Sagrado,Enfraquecer Resistência,weaken_resistance,FALSE,Holy,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano sagrado do usuário.
-ENCHANTMENT-052,Fortificar Resistência à Necrótico,Fortificar Resistência,fortify_resistance,FALSE,Necrotic,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano necrótico do usuário.
-ENCHANTMENT-053,Enfraquecer Resistência à Necrótico,Enfraquecer Resistência,weaken_resistance,FALSE,Necrotic,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano necrótico do usuário.
-ENCHANTMENT-054,Fortificar Resistência à Vazio,Fortificar Resistência,fortify_resistance,FALSE,Void,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano vazio do usuário.
-ENCHANTMENT-055,Enfraquecer Resistência à Vazio,Enfraquecer Resistência,weaken_resistance,FALSE,Void,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano vazio do usuário.
-ENCHANTMENT-056,Fortificar Resistência à Arcano,Fortificar Resistência,fortify_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano arcano do usuário.
-ENCHANTMENT-057,Enfraquecer Resistência à Arcano,Enfraquecer Resistência,weaken_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano arcano do usuário.
-ENCHANTMENT-058,Fortificar BAL,Fortificar Dano,fortify_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Aumenta o dano de BAL da Arma
-ENCHANTMENT-059,Enfraquecer BAL,Enfraquecer Dano,weaken_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Diminui o dano de BAL da Arma
-ENCHANTMENT-060,Fortificar GDP,Fortificar Dano,fortify_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Aumenta o dano de GDP da Arma
-ENCHANTMENT-061,Enfraquecer GDP,Enfraquecer Dano,weaken_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Diminui o dano de GDP da Arma
-ENCHANTMENT-062,Aumentar ST Mín,Aumentar Requisito,add_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Aumenta o ST Mínimo necessário para empunhar a arma corretamente.
-ENCHANTMENT-063,Diminuir ST Mín,Diminuir Requisito,remove_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Diminui o ST Mínimo necessário para empunhar a arma corretamente.
-ENCHANTMENT-064,Aumentar Precisão (PREC),Aumentar Requisito,add_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o bônus de precisão da arma.
-ENCHANTMENT-065,Reduzir Precisão (PREC),Diminuir Requisito,remove_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui o bônus de precisão da arma.
-ENCHANTMENT-066,Aumentar Tiro Rápido (TR),Aumentar Requisito,add_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta a dificuldade de tiro rápido da arma.
-ENCHANTMENT-067,Reduzir Tiro Rápido (TR),Diminuir Requisito,remove_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui a dificuldade de tiro rápido da arma.
-ENCHANTMENT-068,Retorno Mágico,Efeito,special_effect,FALSE,,FALSE,,,Armas de Longo Alcance,5000,,,,A arma pode ser acionada e retornar para o usuário após ser arremessada.
+enchantment_id,enchantment_key,enchantment_name,enchantment_type,enchantment_effect_type,enchantment_is_parametric,enchantment_target,enchantment_is_percentage,enchantment_base_value,enchantment_step,enchantment_allowed_itens,enchantment_base_price,enchantment_price_per_extra_value,enchantment_price_per_point,enchantment_price_per_difficulty,enchantment_description
+ENCHANTMENT-000,fortificar-st,Fortificar ST,Fortificar Atributo,fortify_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Aumenta a ST do usuário.
+ENCHANTMENT-001,enfraquecer-st,Enfraquecer ST,Enfraquecer Atributo,weaken_attribute,FALSE,ST,FALSE,1,1,Acessórios,5000,5000,,,Diminui a ST do usuário.
+ENCHANTMENT-002,fortificar-dx,Fortificar DX,Fortificar Atributo,fortify_attribute,FALSE,DX,FALSE,1,1,Acessórios,10000,10000,,,Aumenta a DX do usuário.
+ENCHANTMENT-003,enfraquecer-dx,Enfraquecer DX,Enfraquecer Atributo,weaken_attribute,FALSE,DX,FALSE,1,1,Acessórios,10000,10000,,,Diminui a DX do usuário.
+ENCHANTMENT-004,fortificar-iq,Fortificar IQ,Fortificar Atributo,fortify_attribute,FALSE,IQ,FALSE,1,1,Acessórios,10000,10000,,,Aumenta a IQ do usuário.
+ENCHANTMENT-005,enfraquecer-iq,Enfraquecer IQ,Enfraquecer Atributo,weaken_attribute,FALSE,IQ,FALSE,1,1,Acessórios,10000,10000,,,Diminui a IQ do usuário.
+ENCHANTMENT-006,fortificar-ht,Fortificar HT,Fortificar Atributo,fortify_attribute,FALSE,HT,FALSE,1,1,Acessórios,5000,5000,,,Aumenta a HT do usuário.
+ENCHANTMENT-007,enfraquecer-ht,Enfraquecer HT,Enfraquecer Atributo,weaken_attribute,FALSE,HT,FALSE,1,1,Acessórios,5000,5000,,,Diminui a HT do usuário.
+ENCHANTMENT-008,fortificar-pv,Fortificar PV,Fortificar Atributo,fortify_attribute,FALSE,HP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta os PV do usuário.
+ENCHANTMENT-009,enfraquecer-pv,Enfraquecer PV,Enfraquecer Atributo,weaken_attribute,FALSE,HP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui os PV do usuário.
+ENCHANTMENT-010,fortificar-pf,Fortificar PF,Fortificar Atributo,fortify_attribute,FALSE,FP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta os PF do usuário.
+ENCHANTMENT-011,enfraquecer-pf,Enfraquecer PF,Enfraquecer Atributo,weaken_attribute,FALSE,FP,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui os PF do usuário.
+ENCHANTMENT-012,fortificar-mana,Fortificar Mana,Fortificar Atributo,fortify_attribute,FALSE,Mana,FALSE,1,1,"Acessórios,Instrumentos Mágicos, Tronco",1000,1000,,,Aumenta a Mana do usuário.
+ENCHANTMENT-013,enfraquecer-mana,Enfraquecer Mana,Enfraquecer Atributo,weaken_attribute,FALSE,Mana,FALSE,1,1,"Acessórios,Instrumentos Mágicos, Tronco",1000,1000,,,Diminui a Mana do usuário.
+ENCHANTMENT-014,fortificar-toxicidade,Fortificar Toxicidade,Fortificar Atributo,fortify_attribute,FALSE,Toxicity,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Aumenta a Toxicidade do usuário.
+ENCHANTMENT-015,enfraquecer-toxicidade,Enfraquecer Toxicidade,Enfraquecer Atributo,weaken_attribute,FALSE,Toxicity,FALSE,1,1,"Acessórios, Tronco",1000,1000,,,Diminui a Toxicidade do usuário.
+ENCHANTMENT-016,fortificar-vontade,Fortificar Vontade,Fortificar Atributo,fortify_attribute,FALSE,Will,FALSE,1,1,"Acessórios, Cabeça",5000,5000,,,Aumenta a Vontade do usuário.
+ENCHANTMENT-017,enfraquecer-vontade,Enfraquecer Vontade,Enfraquecer Atributo,weaken_attribute,FALSE,Will,FALSE,1,1,"Acessórios, Cabeça",5000,5000,,,Diminui a Vontade do usuário.
+ENCHANTMENT-018,fortificar-visao,Fortificar Visão,Fortificar Atributo,fortify_attribute,FALSE,Vision,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta a Visão do usuário.
+ENCHANTMENT-019,enfraquecer-visao,Enfraquecer Visão,Enfraquecer Atributo,weaken_attribute,FALSE,Vision,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui a Visão do usuário.
+ENCHANTMENT-020,fortificar-audicao,Fortificar Audição,Fortificar Atributo,fortify_attribute,FALSE,Hearing,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta a Audição do usuário.
+ENCHANTMENT-021,enfraquecer-audicao,Enfraquecer Audição,Enfraquecer Atributo,weaken_attribute,FALSE,Hearing,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui a Audição do usuário.
+ENCHANTMENT-022,fortificar-olfato,Fortificar Olfato,Fortificar Atributo,fortify_attribute,FALSE,Smell,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Aumenta o Olfato do usuário.
+ENCHANTMENT-023,enfraquecer-olfato,Enfraquecer Olfato,Enfraquecer Atributo,weaken_attribute,FALSE,Smell,FALSE,1,1,"Acessórios, Cabeça",1000,1000,,,Diminui o Olfato do usuário.
+ENCHANTMENT-024,fortificar-velocidade-basica,Fortificar Velocidade Básica,Fortificar Atributo,fortify_attribute,FALSE,Basic Speed,FALSE,0.5,0.5,"Acessórios, Pés",2000,2000,,,Aumenta a Velocidade Básica do usuário.
+ENCHANTMENT-025,enfraquecer-velocidade-basica,Enfraquecer Velocidade Básica,Enfraquecer Atributo,weaken_attribute,FALSE,Basic Speed,FALSE,0.5,0.5,"Acessórios, Pés",2000,2000,,,Diminui a Velocidade Básica do usuário.
+ENCHANTMENT-026,fortificar-deslocamento,Fortificar Deslocamento,Fortificar Atributo,fortify_attribute,FALSE,Movement,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Aumenta o Deslocamento do usuário.
+ENCHANTMENT-027,enfraquecer-deslocamento,Enfraquecer Deslocamento,Enfraquecer Atributo,weaken_attribute,FALSE,Movement,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Diminui o Deslocamento do usuário.
+ENCHANTMENT-028,fortificar-esquiva,Fortificar Esquiva,Fortificar Atributo,fortify_attribute,FALSE,Dodge,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Aumenta a Esquiva do usuário.
+ENCHANTMENT-029,enfraquecer-esquiva,Enfraquecer Esquiva,Enfraquecer Atributo,weaken_attribute,FALSE,Dodge,FALSE,1,1,"Acessórios, Pés",1000,1000,,,Diminui a Esquiva do usuário.
+ENCHANTMENT-030,adicionar-vantagem,Adicionar Vantagem,Peculiaridade,advantage,TRUE,,FALSE,,,Acessórios,,,2000,,Adiciona uma vantagem ao usuário.
+ENCHANTMENT-031,adicionar-desvantagem,Adicionar Desvantagem,Peculiaridade,disadvantage,TRUE,,FALSE,,,Acessórios,,,2000,,Adiciona uma desvantagem ao usuário.
+ENCHANTMENT-032,adicionar-pericia,Adicionar Perícia,Perícia,skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Adiciona uma perícia ao usuário.
+ENCHANTMENT-033,fortificar-pericia,Fortificar Perícia,Perícia,fortify_skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Fortifica uma perícia do usuário.
+ENCHANTMENT-034,enfraquecer-pericia,Enfraquecer Perícia,Perícia,weaken_skill,TRUE,,FALSE,1,1,Acessórios,,2000,,1250,Enfraquece uma perícia do usuário.
+ENCHANTMENT-035,adicionar-feitico,Adicionar Feitiço,Feitiço,spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Adiciona um feitiço ao usuário.
+ENCHANTMENT-036,fortificar-feitico,Fortificar Feitiço,Feitiço,fortify_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Fortifica um feitiço do usuário.
+ENCHANTMENT-037,enfraquecer-feitico,Enfraquecer Feitiço,Feitiço,weaken_spell,TRUE,,FALSE,1,1,"Acessórios,Instrumentos Mágicos",,2000,,1250,Enfraquece um feitiço do usuário.
+ENCHANTMENT-038,aumentar-peso,Aumentar Peso,Peso,add_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o peso do item.
+ENCHANTMENT-039,reduzir-peso,Reduzir Peso,Peso,remove_weight,FALSE,,TRUE,0.1,0.1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos, Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Reduz o peso do item.
+ENCHANTMENT-040,aumentar-resistencia-a-dano,Aumentar Resistência à Dano,RD,fortify_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano do item.
+ENCHANTMENT-041,diminuir-resistencia-a-dano,Diminuir Resistência à Dano,RD,weaken_damage_resistance,FALSE,,FALSE,1,1,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano do item.
+ENCHANTMENT-042,fortificar-resistencia-a-fogo,Fortificar Resistência à Fogo,Fortificar Resistência,fortify_resistance,FALSE,Fire,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano de fogo do usuário.
+ENCHANTMENT-043,enfraquecer-resistencia-a-fogo,Enfraquecer Resistência à Fogo,Enfraquecer Resistência,weaken_resistance,FALSE,Fire,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano de fogo do usuário.
+ENCHANTMENT-044,fortificar-resistencia-a-agua,Fortificar Resistência à Água,Fortificar Resistência,fortify_resistance,FALSE,Water,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano de água do usuário.
+ENCHANTMENT-045,enfraquecer-resistencia-a-agua,Enfraquecer Resistência à Água,Enfraquecer Resistência,weaken_resistance,FALSE,Water,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano de água do usuário.
+ENCHANTMENT-046,fortificar-resistencia-a-eletricidade,Fortificar Resistência à Eletricidade,Fortificar Resistência,fortify_resistance,FALSE,Electricity,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano elétrico do usuário.
+ENCHANTMENT-047,enfraquecer-resistencia-a-eletricidade,Enfraquecer Resistência à Eletricidade,Enfraquecer Resistência,weaken_resistance,FALSE,Electricity,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano elétrico do usuário.
+ENCHANTMENT-048,fortificar-resistencia-a-corrosao,Fortificar Resistência à Corrosão,Fortificar Resistência,fortify_resistance,FALSE,Corrosion,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Aumenta a resistência à dano corrosivo do usuário.
+ENCHANTMENT-049,enfraquecer-resistencia-a-corrosao,Enfraquecer Resistência à Corrosão,Enfraquecer Resistência,weaken_resistance,FALSE,Corrosion,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",500,500,,,Diminui a resistência à dano corrosivo do usuário.
+ENCHANTMENT-050,fortificar-resistencia-a-sagrado,Fortificar Resistência à Sagrado,Fortificar Resistência,fortify_resistance,FALSE,Holy,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano sagrado do usuário.
+ENCHANTMENT-051,enfraquecer-resistencia-a-sagrado,Enfraquecer Resistência à Sagrado,Enfraquecer Resistência,weaken_resistance,FALSE,Holy,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano sagrado do usuário.
+ENCHANTMENT-052,fortificar-resistencia-a-necrotico,Fortificar Resistência à Necrótico,Fortificar Resistência,fortify_resistance,FALSE,Necrotic,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano necrótico do usuário.
+ENCHANTMENT-053,enfraquecer-resistencia-a-necrotico,Enfraquecer Resistência à Necrótico,Enfraquecer Resistência,weaken_resistance,FALSE,Necrotic,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano necrótico do usuário.
+ENCHANTMENT-054,fortificar-resistencia-a-vazio,Fortificar Resistência à Vazio,Fortificar Resistência,fortify_resistance,FALSE,Void,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano vazio do usuário.
+ENCHANTMENT-055,enfraquecer-resistencia-a-vazio,Enfraquecer Resistência à Vazio,Enfraquecer Resistência,weaken_resistance,FALSE,Void,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano vazio do usuário.
+ENCHANTMENT-056,fortificar-resistencia-a-arcano,Fortificar Resistência à Arcano,Fortificar Resistência,fortify_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Aumenta a resistência à dano arcano do usuário.
+ENCHANTMENT-057,enfraquecer-resistencia-a-arcano,Enfraquecer Resistência à Arcano,Enfraquecer Resistência,weaken_resistance,FALSE,Arcane,TRUE,0.05,0.05,"Cabeça, Tronco, Braços, Mãos, Pernas, Pés, Escudos",1000,1000,,,Diminui a resistência à dano arcano do usuário.
+ENCHANTMENT-058,fortificar-bal,Fortificar BAL,Fortificar Dano,fortify_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Aumenta o dano de BAL da Arma
+ENCHANTMENT-059,enfraquecer-bal,Enfraquecer BAL,Enfraquecer Dano,weaken_damage,FALSE,BAL,FALSE,1,1,Armas Corpo a Corpo,1000,1000,,,Diminui o dano de BAL da Arma
+ENCHANTMENT-060,fortificar-gdp,Fortificar GDP,Fortificar Dano,fortify_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Aumenta o dano de GDP da Arma
+ENCHANTMENT-061,enfraquecer-gdp,Enfraquecer GDP,Enfraquecer Dano,weaken_damage,FALSE,GDP,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",2000,2000,,,Diminui o dano de GDP da Arma
+ENCHANTMENT-062,aumentar-st-min,Aumentar ST Mín,Aumentar Requisito,add_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Aumenta o ST Mínimo necessário para empunhar a arma corretamente.
+ENCHANTMENT-063,diminuir-st-min,Diminuir ST Mín,Diminuir Requisito,remove_requisite,FALSE,Min Strength,FALSE,1,1,"Armas Corpo a Corpo, Armas de Longo Alcance, Armas de Fogo",500,500,,,Diminui o ST Mínimo necessário para empunhar a arma corretamente.
+ENCHANTMENT-064,aumentar-precisao-prec,Aumentar Precisão (PREC),Aumentar Requisito,add_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta o bônus de precisão da arma.
+ENCHANTMENT-065,reduzir-precisao-prec,Reduzir Precisão (PREC),Diminuir Requisito,remove_requisite,FALSE,PREC,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui o bônus de precisão da arma.
+ENCHANTMENT-066,aumentar-tiro-rapido-tr,Aumentar Tiro Rápido (TR),Aumentar Requisito,add_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Aumenta a dificuldade de tiro rápido da arma.
+ENCHANTMENT-067,reduzir-tiro-rapido-tr,Reduzir Tiro Rápido (TR),Diminuir Requisito,remove_requisite,FALSE,TR,FALSE,1,1,"Armas de Longo Alcance, Armas de Fogo",1000,1000,,,Diminui a dificuldade de tiro rápido da arma.
+ENCHANTMENT-068,retorno-magico,Retorno Mágico,Efeito,special_effect,FALSE,,FALSE,,,Armas de Longo Alcance,5000,,,,A arma pode ser acionada e retornar para o usuário após ser arremessada.
