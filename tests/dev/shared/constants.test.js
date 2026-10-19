@@ -6,12 +6,14 @@ import {
   STORED_AT,
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
+  WEAPON_DAMAGE_TYPE_LABELS,
   ARMOR_SLOTS,
   RACIAL_TRAIT_TYPE,
   DEFAULT_MATERIAL_ID,
 } from "dev/public/js/shared/constants.js";
 import * as engineStorage from "helpers/storage.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
+import { DAMAGE_TYPES } from "helpers/taxonomy.js";
 
 describe("STORED_AT", () => {
   test("mirrors the engine registry in helpers/storage.js", () => {
@@ -41,6 +43,18 @@ describe("STORAGE_LABELS", () => {
       expect(STORAGE_LABELS[location]).toEqual(expect.any(String));
     });
     expect(STORAGE_LABELS.equipped).toEqual(expect.any(String));
+  });
+});
+
+describe("WEAPON_DAMAGE_TYPE_LABELS", () => {
+  test("is sourced from LABELS.weaponDamageTypes, not a hardcoded copy", () => {
+    expect(WEAPON_DAMAGE_TYPE_LABELS).toBe(LABELS.weaponDamageTypes);
+  });
+
+  test("has a label for every DAMAGE_TYPES sigla", () => {
+    Object.values(DAMAGE_TYPES).forEach((sigla) => {
+      expect(WEAPON_DAMAGE_TYPE_LABELS[sigla]).toEqual(expect.any(String));
+    });
   });
 });
 

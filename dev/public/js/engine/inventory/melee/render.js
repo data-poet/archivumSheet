@@ -10,6 +10,7 @@ import {
   hpModifierBlock,
   renderStorageLocationBlock,
   findInstance,
+  formatWeaponDamageType,
 } from "../shared/inventoryRenderUtils.js";
 import {
   materialOptions,
@@ -78,7 +79,10 @@ function meleeDetailFields(resolved, weaponData) {
     ...weaponWeightPriceFields(resolved, src, withMeleeEnchantmentBadge),
     { label: t("melee.reach"), value: resolved?.weapon_reach ?? reach },
     { label: t("melee.minST"), value: src.weapon_min_strength ?? "—" },
-    { label: t("melee.damageType"), value: src.weapon_damage_type ?? "—" },
+    {
+      label: t("melee.damageType"),
+      value: formatWeaponDamageType(src.weapon_damage_type),
+    },
     ...(resolved?.weapon_gdp_damage != null
       ? [{ label: t("melee.gdpDmg"), value: resolved.weapon_gdp_damage }]
       : []),

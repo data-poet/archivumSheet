@@ -11,6 +11,7 @@ import {
   statModifierBlock,
   renderStorageLocationBlock,
   findInstance,
+  formatWeaponDamageType,
 } from "../shared/inventoryRenderUtils.js";
 import {
   materialOptions,
@@ -67,7 +68,10 @@ function firearmDetailFields(resolved, weaponData) {
     { label: t("firearms.cdt"), value: src.weapon_cdt ?? "—" },
     ...weaponWeightPriceFields(resolved, src, withFirearmEnchantmentBadge),
     { label: t("ranged.minST"), value: src.weapon_min_strength ?? "—" },
-    { label: t("ranged.damageType"), value: src.weapon_damage_type ?? "—" },
+    {
+      label: t("ranged.damageType"),
+      value: formatWeaponDamageType(src.weapon_damage_type),
+    },
     ...(resolved?.weapon_gdp_damage != null
       ? [{ label: t("ranged.gdpDmg"), value: resolved.weapon_gdp_damage }]
       : []),

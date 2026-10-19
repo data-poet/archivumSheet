@@ -182,8 +182,8 @@ function buildSheet({
     (_shieldInv[bucket] || []).forEach(_attachBlock);
   }
 
-  // Weapon damage needs the final base damage. "Perfuração" gets weapon_gdp_damage, "Contusão" and "Corte"
-  // weapon_bal_damage, and a weapon can have both.
+  // Weapon damage needs the final base damage. "cr"/"cut" get weapon_bal_damage, every other
+  // type gets weapon_gdp_damage, and a weapon can have both.
   const _baseDamage = characterData.base_damage;
   const _meleeInv = inventoryResult.inventory.melee;
   const _rangedInv = inventoryResult.inventory.ranged;

@@ -1,4 +1,10 @@
-const { DAMAGE_TYPES } = require("../../../../helpers/taxonomy.js");
+const { DAMAGE_TYPES, BAL_DAMAGE_TYPES } = require("../../../../helpers/taxonomy.js");
+const { toList } = require("../../../../helpers/rowParsers.js");
+
+// Every type that isn't swing-based (see BAL_DAMAGE_TYPES) rolls off thrust instead.
+const GDP_DAMAGE_TYPES = Object.values(DAMAGE_TYPES).filter(
+  (type) => !BAL_DAMAGE_TYPES.includes(type),
+);
 
 // Sign is always explicit, even at 0 (e.g. "1d6+0"), to match GURPS damage notation conventions.
 function formatDamageString(dice, sum) {
@@ -6,7 +12,8 @@ function formatDamageString(dice, sum) {
   return `${dice}${sign}${Math.abs(sum)}`;
 }
 
-// GDP and BAL can both be set when weapon_damage_type names several types ("Corte, Perfuração"); missing base damage yields {} instead of throwing.
+// GDP and BAL can both be set when weapon_damage_type names several types ("cut, pi"); missing base damage yields {} instead of throwing.
+// weapon_bal_modifier is only ever populated on melee rows, so ranged/firearms naturally fall through to GDP even for cr/cut.
 function computeWeaponDamage(
   weapon_damage_type,
   weapon_gdp_modifier,
@@ -17,9 +24,9 @@ function computeWeaponDamage(
 
   const result = {};
 
-  const dmgType = String(weapon_damage_type);
+  const types = toList(weapon_damage_type);
 
-  if (dmgType.includes(DAMAGE_TYPES.PERFURACAO)) {
+  if (types.some((type) => GDP_DAMAGE_TYPES.includes(type))) {
     const gdp = base_damage.GDP;
 
     if (gdp?.dice != null && gdp?.final_modifier != null) {
@@ -28,10 +35,7 @@ function computeWeaponDamage(
     }
   }
 
-  if (
-    dmgType.includes(DAMAGE_TYPES.CONTUSAO) ||
-    dmgType.includes(DAMAGE_TYPES.CORTE)
-  ) {
+  if (types.some((type) => BAL_DAMAGE_TYPES.includes(type))) {
     const bal = base_damage.BAL;
 
     if (

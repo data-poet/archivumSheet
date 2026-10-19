@@ -13,7 +13,7 @@ describe("meleeResolver", () => {
     weapon_skill_id: null,
     weapon_tier: "Comum",
     weapon_min_strength: 5,
-    weapon_damage_type: "Corte",
+    weapon_damage_type: "cut",
     weapon_length: 3,
     weapon_bal_modifier: 2,
     weapon_gdp_modifier: 4,
@@ -85,7 +85,7 @@ describe("meleeResolver", () => {
         weapon_skill_id: null,
         weapon_tier: "Comum",
         weapon_min_strength: 5,
-        weapon_damage_type: "Corte",
+        weapon_damage_type: "cut",
         weapon_reach: 3,
 
         material_id: "MAT-003",
@@ -157,7 +157,7 @@ describe("meleeResolver", () => {
         weapon_skill_id: null,
         weapon_tier: "Comum",
         weapon_min_strength: 5,
-        weapon_damage_type: "Corte",
+        weapon_damage_type: "cut",
         weapon_reach: 3,
 
         material_id: null,

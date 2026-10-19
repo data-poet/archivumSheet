@@ -2,8 +2,10 @@ import {
   hpModifierBlock,
   resolveHp,
   statModifierBlock,
+  formatWeaponDamageType,
 } from "dev/public/js/engine/inventory/shared/inventoryRenderUtils.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
+import { WEAPON_DAMAGE_TYPE_LABELS } from "dev/public/js/shared/constants.js";
 
 function parseBlock(html) {
   const container = document.createElement("div");
@@ -84,6 +86,34 @@ describe("resolveHp", () => {
     expect(result.material).toBeNull();
     expect(result.maxHp).toBe(10);
     expect(result.actualHp).toBe(10);
+  });
+});
+
+describe("formatWeaponDamageType", () => {
+  test("maps a single sigla to its PT-BR label", () => {
+    expect(formatWeaponDamageType("cut")).toBe(WEAPON_DAMAGE_TYPE_LABELS.cut);
+  });
+
+  test("maps a comma-separated cell to comma-separated labels", () => {
+    expect(formatWeaponDamageType("cut, pi")).toBe(
+      `${WEAPON_DAMAGE_TYPE_LABELS.cut}, ${WEAPON_DAMAGE_TYPE_LABELS.pi}`,
+    );
+  });
+
+  test("trims whitespace around each sigla", () => {
+    expect(formatWeaponDamageType("cr,  cut ,pi")).toBe(
+      `${WEAPON_DAMAGE_TYPE_LABELS.cr}, ${WEAPON_DAMAGE_TYPE_LABELS.cut}, ${WEAPON_DAMAGE_TYPE_LABELS.pi}`,
+    );
+  });
+
+  test("falls back to the raw sigla when it has no known label", () => {
+    expect(formatWeaponDamageType("mystery")).toBe("mystery");
+  });
+
+  test("returns an em dash placeholder for an empty value", () => {
+    expect(formatWeaponDamageType(null)).toBe("—");
+    expect(formatWeaponDamageType(undefined)).toBe("—");
+    expect(formatWeaponDamageType("")).toBe("—");
   });
 });
 

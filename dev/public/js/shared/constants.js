@@ -17,6 +17,8 @@ export const STORAGE_LOCATIONS = [
 
 export const STORAGE_LABELS = LABELS.storage;
 
+export const WEAPON_DAMAGE_TYPE_LABELS = LABELS.weaponDamageTypes;
+
 // The DB's Portuguese slot names (also the UI labels) → the engine's slot keys.
 // Mirrors SLOT_MAP in engine/inventory/js/armor/armorConstants.js; a test pins the parity.
 export const ARMOR_SLOT_KEYS = Object.freeze({

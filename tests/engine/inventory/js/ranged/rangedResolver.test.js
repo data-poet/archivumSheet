@@ -15,7 +15,7 @@ describe("rangedResolver", () => {
     weapon_tier: "Comum",
     weapon_half_distance: "ST",
     weapon_max_distance: "ST x 2",
-    weapon_damage_type: "Perfuração",
+    weapon_damage_type: "pi",
     weapon_min_strength: 5,
     weapon_gdp_modifier: 3,
     weapon_tr: 1,
@@ -90,7 +90,7 @@ describe("rangedResolver", () => {
         weapon_skill_id: null,
         weapon_tier: "Comum",
         weapon_min_strength: 5,
-        weapon_damage_type: "Perfuração",
+        weapon_damage_type: "pi",
         weapon_tr: 1,
         weapon_prec: 2,
 
@@ -165,7 +165,7 @@ describe("rangedResolver", () => {
         weapon_skill_id: null,
         weapon_tier: "Comum",
         weapon_min_strength: 5,
-        weapon_damage_type: "Perfuração",
+        weapon_damage_type: "pi",
         weapon_tr: 1,
         weapon_prec: 2,
 

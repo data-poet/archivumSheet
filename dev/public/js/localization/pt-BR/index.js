@@ -46,6 +46,7 @@ import { SHIELD } from "./inventory/shield.js";
 import { SURVIVAL_GEAR } from "./inventory/survivalGear.js";
 import { ENCHANTMENTS } from "./inventory/shared/enchantments.js";
 import { STORAGE } from "./inventory/shared/equipmentSelectors.js";
+import { WEAPON_DAMAGE_TYPES } from "./inventory/shared/weaponDamageTypes.js";
 
 export const LABELS = {
   app: APP,
@@ -79,6 +80,7 @@ export const LABELS = {
   ammo: AMMO,
   coinPurse: COIN_PURSE,
   storage: STORAGE,
+  weaponDamageTypes: WEAPON_DAMAGE_TYPES,
   inventory: INVENTORY,
   viewMode: VIEW_MODE,
   theme: THEME,

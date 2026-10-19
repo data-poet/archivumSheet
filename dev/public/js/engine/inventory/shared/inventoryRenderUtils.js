@@ -1,5 +1,16 @@
 import { t } from "../../../localization/pt-BR/index.js";
 import { calcMaxHp, calcActualHp, resolveMaterial } from "./durabilityUtils.js";
+import { WEAPON_DAMAGE_TYPE_LABELS } from "../../../shared/constants.js";
+import { toList } from "../../../shared/rowParsers.js";
+
+// weapon_damage_type cells hold comma-separated sigla (e.g. "cut, pi"); render the PT-BR labels instead.
+export function formatWeaponDamageType(weapon_damage_type) {
+  if (!weapon_damage_type) return "—";
+
+  return toList(weapon_damage_type)
+    .map((type) => WEAPON_DAMAGE_TYPE_LABELS[type] ?? type)
+    .join(", ");
+}
 
 /**
  * Build the HP modifier input block HTML shared across all equipment renders.
