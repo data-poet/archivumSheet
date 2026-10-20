@@ -66,6 +66,15 @@ const SPELL_TIER_THRESHOLDS = [
 ];
 const SPELL_TIER_DEFAULT = "Mestre";
 
+// A status tag can imply others, and its roll penalty counts once however many active conditions grant it.
+const CONDITION_RULES = {
+  tagImplies: {
+    incapacitated: ["stunned", "cannot_act"],
+    unconscious: ["incapacitated"],
+  },
+  tagPenalties: { stunned: { defense: -4 } },
+};
+
 const OVERLOADED = { level: "overloaded", move_factor: 0, dodge_penalty: -4 };
 
 const LIFT_MULTIPLIERS = {
@@ -91,6 +100,7 @@ module.exports = {
   LOAD_LEVELS,
   SPELL_TIER_THRESHOLDS,
   SPELL_TIER_DEFAULT,
+  CONDITION_RULES,
   OVERLOADED,
   LIFT_MULTIPLIERS,
   BASIC_LIFT,

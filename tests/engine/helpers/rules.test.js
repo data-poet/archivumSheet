@@ -13,6 +13,7 @@ const {
   OVERLOADED,
   LIFT_MULTIPLIERS,
   BASIC_LIFT,
+  CONDITION_RULES,
 } = require("helpers/rules.js");
 const {
   buildPrimaryAttributes,
@@ -200,5 +201,17 @@ describe("no rule literal where the rules are applied", () => {
   test.each(Object.entries(forbidden))("%s", (file, patterns) => {
     const code = codeOf(path.join(ENGINE_DIR, file));
     patterns.forEach((pattern) => expect(code).not.toMatch(pattern));
+  });
+});
+
+describe("condition rules", () => {
+  test("values are pinned", () => {
+    expect(CONDITION_RULES).toEqual({
+      tagImplies: {
+        incapacitated: ["stunned", "cannot_act"],
+        unconscious: ["incapacitated"],
+      },
+      tagPenalties: { stunned: { defense: -4 } },
+    });
   });
 });
