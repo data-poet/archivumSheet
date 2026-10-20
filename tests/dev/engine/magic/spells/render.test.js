@@ -423,3 +423,54 @@ describe("renderSpells — mobile card layout", () => {
     ).toBe("false");
   });
 });
+
+describe("renderSpells — a spell modified by a condition", () => {
+  const data = {
+    magicAptitudeAdvantageIds: [],
+    spells: [
+      {
+        spell_name: "bola-de-fogo",
+        spell_box_name: "Bola de Fogo",
+        spell_tier: "Aprendiz",
+        spell_difficulty: "Difícil",
+      },
+    ],
+  };
+  const selected = {
+    spells: { "bola-de-fogo": { base_value: 18, modifier: 0 } },
+  };
+  const sheetWith = (entry) => ({
+    grimoire: {
+      "SPELL-1": {
+        name: "bola-de-fogo",
+        base_value: 18,
+        modifier: 0,
+        ...entry,
+      },
+    },
+  });
+
+  test("shows the effective casting level with the base beside it", () => {
+    renderSpells(selected, data, sheetWith({ value: 18, effective_value: 11 }));
+
+    expect(
+      spellList().querySelector("td strong .condition-modified").textContent,
+    ).toMatch(/^11\s+\(18\)$/);
+  });
+
+  test("keeps the tier of the unmodified level, so a condition never demotes a spell", () => {
+    renderSpells(selected, data, sheetWith({ value: 18, effective_value: 11 }));
+
+    const tierCell = spellList().querySelector(
+      `[data-label="${t("traits.tier")}"]`,
+    );
+    expect(tierCell.textContent).toBe("Especialista");
+  });
+
+  test("shows a plain level when no condition applies", () => {
+    renderSpells(selected, data, sheetWith({ value: 18 }));
+
+    expect(spellList().querySelector(".condition-modified")).toBeNull();
+    expect(spellList().querySelector("td strong").textContent).toBe("18");
+  });
+});

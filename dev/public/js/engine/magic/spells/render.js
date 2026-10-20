@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
+import { conditionCell } from "../../../shared/conditionDisplay.js";
 import { spellTierForLevel } from "../../../shared/rules.js";
 import {
   formatRichText,
@@ -80,7 +81,12 @@ export function renderSpells(selected, data, sheet) {
             // Final value + tier read from the engine; local estimate is only a fallback
             // for the brief window before the debounced engine call first completes.
             const final = grimoireEntry?.value ?? base + mod + aptitude;
+            // The tier follows the unmodified level: a condition must not demote a spell.
             const tier = grimoireEntry?.tier ?? spellTierForLevel(final);
+            const finalCell =
+              grimoireEntry?.value != null
+                ? conditionCell(grimoireEntry, "value")
+                : String(final);
 
             const spell =
               data.spells?.find(
@@ -149,7 +155,7 @@ export function renderSpells(selected, data, sheet) {
             ${modCell}
             ${showAptitude ? `<td class="col-num" data-label="${t("traits.aptitude")}">${aptitude}</td>` : ""}
             <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}" data-label="${t("traits.enchantment")}">${enchantmentDisplay}</td>
-            <td class="col-num" data-label="${t("traits.final")}"><strong>${final}</strong></td>
+            <td class="col-num" data-label="${t("traits.final")}"><strong>${finalCell}</strong></td>
             ${actionCell}
           </tr>
           ${detailRow(COLS + 1, detailItems)}`;

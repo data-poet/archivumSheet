@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { setHTML } from "../../../shared/dom.js";
+import { conditionCell } from "../../../shared/conditionDisplay.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -59,7 +60,7 @@ function shieldDetailFields(resolved, shieldData) {
   const src = resolved ?? shieldData;
   if (!src) return [];
   return [
-    { label: t("shield.block"), value: resolved?.block ?? "—" },
+    { label: t("shield.block"), value: conditionCell(resolved, "block") },
     { label: t("common.type"), value: src.shield_type ?? "—" },
     {
       label: t("shield.gdpMod"),

@@ -18,12 +18,14 @@ function headerDOM() {
     "th-attr-race",
     "th-attr-modifier",
     "th-attr-enchantment",
+    "th-attr-condition",
     "th-attr-actual",
     "th-sec-attribute",
     "th-sec-base",
     "th-sec-bought",
     "th-sec-modifier",
     "th-sec-enchantment",
+    "th-sec-condition",
     "th-sec-final",
     "th-res-type",
     "th-res-race",
@@ -334,7 +336,7 @@ describe("renderSecondaryAttributes", () => {
 
     const row = document.querySelector("#secondaryTable tr");
     expect(row.children[1].textContent).toBe("5.00");
-    expect(row.children[5].textContent).toBe("5.50");
+    expect(row.children[6].textContent).toBe("5.50");
     const modInput = row.querySelector('[data-field="modifier"]');
     expect(modInput.dataset.step).toBe("0.5");
   });
@@ -404,5 +406,161 @@ describe("renderSecondaryAttributes", () => {
     const rows = document.querySelectorAll("#secondaryTable tr");
     expect(rows).toHaveLength(1);
     expect(rows[0].textContent).toContain(getSecondaryAttributeLabel("Dodge"));
+  });
+});
+
+function conditionPanelDOM(panelId, attrs) {
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `<div id="${panelId}"><table>
+      <thead><tr><th class="condition-col" id="th-${panelId}-condition" hidden></th></tr></thead>
+      <tbody>${attrs
+        .map(
+          (attr) => `<tr>
+            <td id="${attr}_race"></td>
+            <td id="${attr}_enchantment"></td>
+            <td class="condition-col" id="${attr}_condition" hidden></td>
+            <td id="${attr}_actual"></td>
+          </tr>`,
+        )
+        .join("")}</tbody>
+    </table></div>`,
+  );
+}
+
+describe("the Condições column of the primary table", () => {
+  const ATTRS = ["ST", "DX", "IQ", "HT"];
+
+  beforeEach(() => {
+    ATTRS.forEach((a) => primaryAttrDOM(a));
+    conditionPanelDOM("tab-attr-primary", ATTRS);
+  });
+
+  const cellOf = (attr) => document.getElementById(`${attr}_condition`);
+
+  test("stamps its header with the localized label", () => {
+    headerDOM();
+    initAttributeTableHeaders();
+
+    expect(document.getElementById("th-attr-condition").textContent).toBe(
+      t("attributes.condition"),
+    );
+    expect(document.getElementById("th-sec-condition").textContent).toBe(
+      t("attributes.condition"),
+    );
+  });
+
+  test("stays hidden, with dashes, while no condition modifies an attribute", () => {
+    state.sheet = { character: { primary_attributes: { DX: { value: 12 } } } };
+
+    updateActualValues();
+
+    expect(cellOf("DX").textContent).toBe("—");
+    document
+      .querySelectorAll("#tab-attr-primary .condition-col")
+      .forEach((cell) => expect(cell.hidden).toBe(true));
+  });
+
+  test("shows the signed modifier, highlights it, and reveals the whole column", () => {
+    state.sheet = {
+      character: {
+        primary_attributes: {
+          DX: { value: 12, effective_value: 8, condition_modifier: -4 },
+          IQ: { value: 11, effective_value: 7, condition_modifier: -4 },
+        },
+      },
+    };
+
+    updateActualValues();
+
+    expect(cellOf("DX").textContent).toBe("−4");
+    expect(cellOf("DX").classList.contains("condition-mod-active")).toBe(true);
+    expect(cellOf("ST").textContent).toBe("—");
+    expect(cellOf("ST").classList.contains("condition-mod-active")).toBe(false);
+    document
+      .querySelectorAll("#tab-attr-primary .condition-col")
+      .forEach((cell) => expect(cell.hidden).toBe(false));
+  });
+
+  test("leaves Atual as the character's own attribute", () => {
+    document.getElementById("DX_base").value = "12";
+    state.sheet = {
+      character: {
+        primary_attributes: {
+          DX: { value: 12, effective_value: 8, condition_modifier: -4 },
+        },
+      },
+    };
+
+    updateActualValues();
+
+    expect(document.getElementById("DX_actual").textContent).toBe("12");
+  });
+
+  test("hides the column again once the condition is gone", () => {
+    state.sheet = {
+      character: {
+        primary_attributes: { DX: { condition_modifier: -4 } },
+      },
+    };
+    updateActualValues();
+    state.sheet = { character: { primary_attributes: { DX: {} } } };
+
+    updateActualValues();
+
+    document
+      .querySelectorAll("#tab-attr-primary .condition-col")
+      .forEach((cell) => expect(cell.hidden).toBe(true));
+  });
+});
+
+describe("the Condições column of the secondary table", () => {
+  beforeEach(() => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<div id="tab-attr-secondary"><table>
+        <thead><tr><th class="condition-col" id="th-sec-condition" hidden></th></tr></thead>
+        <tbody id="secondaryTable"></tbody>
+      </table></div>`,
+    );
+  });
+
+  const secondary = (dodge) => ({
+    character: {
+      secondary_attributes: {
+        Will: { base_value: 11, bought: 0, modifier: 0, value: 11 },
+        Dodge: { base_value: 8, bought: 0, modifier: 0, value: 8, ...dodge },
+      },
+    },
+  });
+  const columnHidden = () =>
+    [...document.querySelectorAll("#tab-attr-secondary .condition-col")].map(
+      (cell) => cell.hidden,
+    );
+
+  test("stays hidden while nothing is modified", () => {
+    renderSecondaryAttributes(secondary({}));
+
+    expect(columnHidden().every(Boolean)).toBe(true);
+    expect(
+      document.querySelector("#secondaryTable .condition-mod-cell").textContent,
+    ).toBe("—");
+  });
+
+  test("shows the modifier on the row it applies to, leaves Valor alone, and reveals the column", () => {
+    renderSecondaryAttributes(
+      secondary({ condition_modifier: -4, effective_value: 4 }),
+    );
+
+    const [will, dodge] = document.querySelectorAll("#secondaryTable tr");
+    expect(will.querySelector(".condition-mod-cell").textContent).toBe("—");
+    expect(dodge.querySelector(".condition-mod-cell").textContent).toBe("−4");
+    expect(
+      dodge
+        .querySelector(".condition-mod-cell")
+        .classList.contains("condition-mod-active"),
+    ).toBe(true);
+    expect(dodge.lastElementChild.textContent).toBe("8");
+    expect(columnHidden().every((hidden) => !hidden)).toBe(true);
   });
 });

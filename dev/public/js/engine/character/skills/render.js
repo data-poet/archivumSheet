@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { setHTML } from "../../../shared/dom.js";
 import { t } from "../../../localization/pt-BR/index.js";
+import { conditionCell } from "../../../shared/conditionDisplay.js";
 import {
   formatRichText,
   detailRow,
@@ -58,6 +59,11 @@ export function renderSkills(selected, data, sheet) {
             // base+mod is only a placeholder until the debounced engine call first completes.
             const final = sheetSkill?.value ?? base + mod;
 
+            const finalCell =
+              sheetSkill?.value != null
+                ? conditionCell(sheetSkill, "value")
+                : String(final);
+
             const parry = sheetSkill?.parry ?? null;
             const actions = sheetSkill?.actions ?? 1;
 
@@ -79,7 +85,7 @@ export function renderSkills(selected, data, sheet) {
             if (parry !== null) {
               detailItems.push({
                 label: t("traits.parry"),
-                value: String(parry),
+                value: conditionCell(sheetSkill, "parry"),
               });
             }
 
@@ -143,7 +149,7 @@ export function renderSkills(selected, data, sheet) {
             ${baseCell}
             ${modCell}
             <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}" data-label="${t("traits.enchantment")}">${enchantmentDisplay}</td>
-            <td class="col-num" data-label="${t("traits.final")}"><strong>${final}</strong></td>
+            <td class="col-num" data-label="${t("traits.final")}"><strong>${finalCell}</strong></td>
             ${actionCell}
           </tr>
           ${detailRow(8, detailItems)}`;

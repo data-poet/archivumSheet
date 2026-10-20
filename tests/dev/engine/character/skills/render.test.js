@@ -268,3 +268,53 @@ describe("renderSkills — parry detail", () => {
     expect(parse().textContent).not.toContain(t("traits.parry"));
   });
 });
+
+describe("renderSkills — a skill modified by a condition", () => {
+  const selected = {
+    skills: {
+      "SK-1": { base_value: 14, modifier: 0, isTrainedWithMaster: false },
+    },
+  };
+  const data = {
+    skills: [
+      {
+        skill_id: "SK-1",
+        skill_name: "Bastão",
+        skill_category: "Armas e Combate",
+      },
+    ],
+  };
+  const sheetWith = (skill) => ({
+    character: {
+      skills: {
+        "SK-1": { name: "Bastão", base_value: 14, modifier: 0, ...skill },
+      },
+    },
+  });
+
+  test("shows the effective level with the base beside it, and the modified Parry in the details", () => {
+    renderSkills(
+      selected,
+      data,
+      sheetWith({
+        value: 14,
+        effective_value: 10,
+        parry: 12,
+        effective_parry: 8,
+      }),
+    );
+
+    const row = parse().querySelector("tbody tr");
+    expect(
+      row.querySelector("td strong .condition-modified").textContent,
+    ).toMatch(/^10\s+\(14\)$/);
+    expect(parse().textContent).toMatch(/8\s+\(12\)/);
+  });
+
+  test("shows plain numbers when no condition applies", () => {
+    renderSkills(selected, data, sheetWith({ value: 14, parry: 12 }));
+
+    expect(parse().querySelector(".condition-modified")).toBeNull();
+    expect(parse().querySelector("td strong").textContent).toBe("14");
+  });
+});

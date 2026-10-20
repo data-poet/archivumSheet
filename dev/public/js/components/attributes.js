@@ -6,6 +6,7 @@ import {
   isVitalAttribute,
 } from "../shared/constants.js";
 import { isUnbuyableSecondary } from "../shared/rules.js";
+import { signedModifier } from "../shared/conditionDisplay.js";
 
 // th-attr-*/th-sec-* ids existed in the HTML but were never populated before this.
 export function initAttributeTableHeaders() {
@@ -15,6 +16,7 @@ export function initAttributeTableHeaders() {
     "th-attr-race": "attributes.race",
     "th-attr-modifier": "attributes.modifier",
     "th-attr-enchantment": "attributes.enchantment",
+    "th-attr-condition": "attributes.condition",
     "th-attr-actual": "attributes.actual",
   };
 
@@ -24,6 +26,7 @@ export function initAttributeTableHeaders() {
     "th-sec-bought": "attributes.bought",
     "th-sec-modifier": "attributes.modifier",
     "th-sec-enchantment": "attributes.enchantment",
+    "th-sec-condition": "attributes.condition",
     "th-sec-final": "attributes.final",
   };
 
@@ -45,7 +48,25 @@ export function initAttributeTableHeaders() {
   }
 }
 
+function _conditionDisplay(entry) {
+  const modifier = entry?.condition_modifier ?? 0;
+  return {
+    modifier,
+    text: modifier === 0 ? "—" : signedModifier(modifier),
+    className: `col-num condition-col condition-mod-cell${modifier !== 0 ? " condition-mod-active" : ""}`,
+  };
+}
+
+// The column exists only to show what a condition does, so it stays out of the way while none applies.
+function _showConditionColumn(panelId, visible) {
+  document
+    .querySelectorAll(`#${panelId} .condition-col`)
+    .forEach((cell) => (cell.hidden = !visible));
+}
+
 export function updateActualValues() {
+  let anyCondition = false;
+
   PRIMARY_ATTRIBUTES.forEach((attr) => {
     const base = Number(document.getElementById(`${attr}_base`).value) || 0;
     const mod = Number(document.getElementById(`${attr}_mod`).value) || 0;
@@ -72,10 +93,20 @@ export function updateActualValues() {
       enchantmentCell.className = `col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}`;
     }
 
+    const conditionCell = document.getElementById(`${attr}_condition`);
+    if (conditionCell) {
+      const shown = _conditionDisplay(sheetAttr);
+      conditionCell.textContent = shown.text;
+      conditionCell.className = shown.className;
+      anyCondition ||= shown.modifier !== 0;
+    }
+
     // enchantment_modifier has no DOM input — it's purely engine-derived.
     document.getElementById(`${attr}_actual`).textContent =
       base + raceMod + mod + enchantmentMod;
   });
+
+  _showConditionColumn("tab-attr-primary", anyCondition);
 }
 
 export function renderSecondaryAttributes(sheet) {
@@ -98,6 +129,7 @@ export function renderSecondaryAttributes(sheet) {
         : data.value;
 
       const modifierStep = isBasicSpeed ? 0.5 : 1;
+      const condition = _conditionDisplay(data);
 
       const enchantmentMod = data.enchantment_modifier ?? 0;
       const hasEnchantment = data.has_enchantment_modifier ?? false;
@@ -175,9 +207,16 @@ export function renderSecondaryAttributes(sheet) {
 
           <td class="col-num enchantment-mod-cell${hasEnchantment ? " enchantment-mod-active" : ""}">${enchantmentDisplay}</td>
 
+          <td class="${condition.className}" hidden>${condition.text}</td>
+
           <td>${valueDisplay}</td>
         </tr>
       `;
     })
     .join("");
+
+  _showConditionColumn(
+    "tab-attr-secondary",
+    Object.values(sec).some((data) => (data.condition_modifier ?? 0) !== 0),
+  );
 }

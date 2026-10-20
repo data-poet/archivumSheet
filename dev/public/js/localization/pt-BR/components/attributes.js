@@ -4,6 +4,7 @@ export const ATTRIBUTES = {
   race: "Raça",
   modifier: "Modificador",
   enchantment: "Encantamento",
+  condition: "Condições",
   actual: "Atual",
   bought: "Comprado",
   final: "Final",
