@@ -240,6 +240,77 @@ describe("active conditions", () => {
   });
 });
 
+describe("the condition's name as a link to its rule", () => {
+  const withAnchor = (anchor) => [
+    row("dor-grave", "Dor Grave", "Irritante", {
+      condition_reference_anchor: anchor,
+    }),
+  ];
+  const render = (anchor, extra = {}) =>
+    renderResumeConditions(
+      sheetWith(
+        resolved({ active: [{ key: "dor-grave", name: "Dor Grave" }] }),
+        extra.immunities,
+      ),
+      { conditions: withAnchor(anchor) },
+      { conditions: { "dor-grave": true } },
+    );
+  const link = () => container().querySelector(".condition-entry-link");
+
+  test("opens the reference entry in a new tab, safely", () => {
+    render("tab-afflictions-conditions--dor");
+
+    expect(link().textContent).toBe("Dor Grave");
+    expect(link().getAttribute("href")).toBe(
+      "/reference.html#tab-afflictions-conditions--dor",
+    );
+    expect(link().target).toBe("_blank");
+    expect(link().rel).toBe("noopener noreferrer");
+    expect(link().title).toBe(t("conditions.ruleTitle"));
+  });
+
+  test("a condition with no anchor keeps a plain name", () => {
+    render("");
+
+    expect(link()).toBeNull();
+    expect(container().querySelector(".condition-entry-name").textContent).toBe(
+      "Dor Grave",
+    );
+  });
+
+  test("keeps the scale mark outside the link", () => {
+    renderResumeConditions(
+      sheetWith(
+        resolved({
+          active: [{ key: "dor-grave", name: "Dor Grave", scale: 0.5 }],
+        }),
+      ),
+      { conditions: withAnchor("tab-afflictions-conditions--dor") },
+      { conditions: { "dor-grave": true } },
+    );
+
+    expect(link().textContent).toBe("Dor Grave");
+    expect(container().querySelector(".condition-entry-name").textContent).toBe(
+      "Dor Grave (×½)",
+    );
+  });
+
+  test("an immune entry links too", () => {
+    render("tab-afflictions-conditions--dor", {
+      immunities: [{ key: "dor-grave", trait_key: "x", trait_name: "Y" }],
+    });
+
+    expect(link()).not.toBeNull();
+  });
+
+  test("a hostile anchor cannot break out of the attribute", () => {
+    render('x"><img src=x onerror=alert(1)>');
+
+    expect(container().querySelector("img")).toBeNull();
+    expect(link().getAttribute("href")).toContain("x");
+  });
+});
+
 describe("a pain condition scaled by the pain threshold", () => {
   const render = (scale) =>
     renderResumeConditions(

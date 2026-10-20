@@ -8,6 +8,7 @@ import {
   signedModifier,
   conditionCell,
 } from "../../shared/conditionDisplay.js";
+import { referenceHref } from "../../layout/referenceLinks.js";
 
 export const TARGET_ORDER = [
   "DX",
@@ -75,9 +76,18 @@ function _scaleMark(scale) {
   return ` <span class="condition-scale" title="${escapeAttr(t("conditions.scaledTitle"))}">(${escapeHtml(text)})</span>`;
 }
 
+// The name opens the rule in the reference; a condition with no anchor stays plain text.
+function _nameHtml(row) {
+  const name = escapeHtml(row.condition_name);
+  const anchor = row.condition_reference_anchor;
+  if (!anchor) return name;
+
+  return `<a class="condition-entry-link" href="${escapeAttr(referenceHref(anchor))}" target="_blank" rel="noopener noreferrer" title="${escapeAttr(t("conditions.ruleTitle"))}">${name}</a>`;
+}
+
 function _entry({ row, immunity, scale, notes }) {
   const key = row.condition_key;
-  const name = escapeHtml(row.condition_name);
+  const name = _nameHtml(row);
   const label = `${t("conditions.removeTitle")}: ${row.condition_name}`;
   const noteItems = notes.map((note) => `<li>${note}</li>`).join("");
 

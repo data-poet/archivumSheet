@@ -5,6 +5,7 @@ export const CONDITIONS = {
   clearedMessage: "Condições removidas",
   noneActive: "Nenhuma condição ativa.",
   removeTitle: "Desativar",
+  ruleTitle: "Ver a regra",
   immune: "imune",
   immuneTitle: "Imune: {trait}",
   modifiedTitle: "Condições {modifier} (base {base})",

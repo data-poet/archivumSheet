@@ -182,6 +182,13 @@ describe("check:data catches a bad conditions edit", () => {
       "condition-immune-key",
     ],
     [
+      "a malformed reference anchor",
+      "coma",
+      "condition_reference_anchor",
+      "Coma",
+      "condition-anchor",
+    ],
+    [
       "an exclusive group left with one row",
       "ligeiramente-embriagado",
       "condition_exclusive_group",

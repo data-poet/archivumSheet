@@ -55,6 +55,7 @@ const KNOWN_ISSUES_FILE = path.join(__dirname, "dataKnownIssues.json");
 
 const ID_FORMAT = /^[A-Z][A-Z_]*(-[A-Z]+)*-\d{3,4}$/;
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const REFERENCE_ANCHOR = /^tab-[a-z0-9-]+--[a-z0-9-]+$/;
 const EQUIPMENT_TIERS = ["Comum", "Boa", "Superior", "Excelente", "Obra-Prima"];
 const WEAPON_DATASETS = ["MELEE_WEAPONS", "RANGED_WEAPONS", "FIREARMS"];
 
@@ -477,6 +478,14 @@ function checkConditions(findings) {
         );
       }
     });
+
+    const anchor = String(row.condition_reference_anchor ?? "");
+    if (anchor !== "" && !REFERENCE_ANCHOR.test(anchor)) {
+      report(
+        "condition-anchor",
+        `condition_reference_anchor "${anchor}" is not <tab id>--<slug>`,
+      );
+    }
 
     unknownIn(row.condition_grants, CONDITION_STATUS_TAGS).forEach((tag) =>
       report("condition-tag", `condition_grants "${tag}" is not a known tag`),
