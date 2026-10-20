@@ -27,6 +27,7 @@ export function capturePersistedSheet() {
       resistances: selected.resistances,
       advantages: selected.advantages,
       disadvantages: selected.disadvantages,
+      conditions: selected.conditions,
       skills: selected.skills,
       spells: selected.spells,
       allies: selected.allies,

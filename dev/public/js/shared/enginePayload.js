@@ -22,6 +22,9 @@ export function toEngineCharacter(character = {}, primary = character.primary) {
   return {
     advantages: Object.keys(character.advantages ?? {}),
     disadvantages: Object.keys(character.disadvantages ?? {}),
+    conditions: Object.entries(character.conditions ?? {})
+      .filter(([, on]) => on)
+      .map(([key]) => key),
     meta_race_ids: character.meta_race_ids ?? [],
     primaryAttributes: primary ?? {},
 

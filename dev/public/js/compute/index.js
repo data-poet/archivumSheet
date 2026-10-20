@@ -59,6 +59,7 @@ export async function runEngine() {
         {
           advantages: selected.advantages,
           disadvantages: selected.disadvantages,
+          conditions: selected.conditions,
           secondary: selected.secondary,
           damage: selected.damage,
           resistances: selected.resistances,

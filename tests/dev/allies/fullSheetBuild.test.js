@@ -80,3 +80,42 @@ test("resolves every elemental resistance", () => {
 test("computes carry weight limits", () => {
   expect(sheet.inventory.carry_weight.limits.none).toBeGreaterThan(0);
 });
+
+describe("active conditions through the real payload and engine", () => {
+  const withConditions = (conditions) =>
+    buildSheet(
+      toEnginePayload({
+        ...fixture,
+        character: { ...fixture.character, conditions },
+      }),
+    );
+
+  test("a sheet with no conditions switched on carries no condition fields", () => {
+    expect(JSON.stringify(sheet)).not.toMatch(
+      /condition_modifier|effective_|"conditions"/,
+    );
+    expect(JSON.stringify(withConditions({ "dor-grave": false }))).toBe(
+      JSON.stringify(sheet),
+    );
+  });
+
+  test("pain and stun reach skills, spells and defenses of a full sheet", () => {
+    const hit = withConditions({
+      "dor-grave": true,
+      "atordoamento-fisico": true,
+    });
+
+    expect(hit.character.conditions.active.map((c) => c.key)).toEqual([
+      "atordoamento-fisico",
+      "dor-grave",
+    ]);
+    Object.values(hit.character.skills).forEach((skill) => {
+      expect(skill.effective_value).toBe(skill.value - 4);
+    });
+    Object.values(hit.grimoire).forEach((spell) => {
+      expect(spell.effective_value).toBe(spell.value - 4);
+    });
+    const { Dodge } = hit.character.secondary_attributes;
+    expect(Dodge.effective_value).toBe(Dodge.value - 4);
+  });
+});

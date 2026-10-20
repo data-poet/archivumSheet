@@ -106,6 +106,15 @@ describe("toEngineCharacter", () => {
     expect(character.spells).toEqual({});
     expect(character.primaryAttributes).toEqual({});
     expect(character.meta_race_ids).toEqual([]);
+    expect(character.conditions).toEqual([]);
+  });
+
+  test("sends the keys of the conditions that are on, ignoring any that are off", () => {
+    const character = toEngineCharacter({
+      conditions: { "dor-grave": true, nauseado: false, coma: true },
+    });
+
+    expect(character.conditions).toEqual(["dor-grave", "coma"]);
   });
 
   test("passes meta_race_ids through untouched", () => {

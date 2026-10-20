@@ -98,6 +98,17 @@ describe("exportSheet", () => {
     expect(parsed.inventory.armors).toEqual([{ instance_id: "armor-inst-1" }]);
   });
 
+  test("includes the active conditions", async () => {
+    state.selected.conditions = { "atordoamento-mental": true };
+
+    exportSheet();
+
+    const text = await readBlobText(URL.createObjectURL.mock.calls[0][0]);
+    expect(JSON.parse(text).character.conditions).toEqual({
+      "atordoamento-mental": true,
+    });
+  });
+
   test("includes the current elemental resistances", async () => {
     state.selected.resistances = { Fire: { modifier: -0.5 } };
 
@@ -267,6 +278,23 @@ describe("importSheet", () => {
       (w) => w.id === "melee-inst-2",
     );
     expect(melee._linkedInstanceId).toBe("ranged-inst-1");
+  });
+
+  test("hydrates the active conditions, and none for a file saved before they existed", async () => {
+    await importSheet(
+      jsonFile(
+        validPayload({
+          character: {
+            ...validPayload().character,
+            conditions: { "dor-grave": true },
+          },
+        }),
+      ),
+    );
+    expect(state.selected.conditions).toEqual({ "dor-grave": true });
+
+    await importSheet(jsonFile(validPayload()));
+    expect(state.selected.conditions).toEqual({});
   });
 
   test("hydrates elemental resistances from the payload", async () => {

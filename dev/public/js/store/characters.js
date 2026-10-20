@@ -73,6 +73,7 @@ function _blankData() {
       resistances: {},
       advantages: {},
       disadvantages: {},
+      conditions: {},
       skills: {},
       spells: {},
       allies: [],
@@ -186,6 +187,7 @@ function _applyData(data) {
   selected.resistances = character.resistances ?? {};
   selected.advantages = character.advantages ?? {};
   selected.disadvantages = character.disadvantages ?? {};
+  selected.conditions = character.conditions ?? {};
   selected.skills = character.skills ?? {};
   selected.spells = character.spells ?? {};
   selected.allies = character.allies ?? [];

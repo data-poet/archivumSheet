@@ -44,6 +44,14 @@ describe("capturePersistedSheet", () => {
     });
   });
 
+  test("carries the active conditions", () => {
+    state.selected.conditions = { "dor-grave": true };
+
+    expect(capturePersistedSheet().character.conditions).toEqual({
+      "dor-grave": true,
+    });
+  });
+
   test("reads carried weight from the #weight input, defaulting to 0", () => {
     expect(capturePersistedSheet().inventory.weight).toBe(0);
 
@@ -108,6 +116,7 @@ describe("capturePersistedSheet", () => {
       "advantages",
       "allies",
       "alliesActiveId",
+      "conditions",
       "damage",
       "disadvantages",
       "meta_race_ids",

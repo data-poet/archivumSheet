@@ -85,6 +85,8 @@ export const state = {
     secondary: {},
     damage: {},
     resistances: {},
+    // { [condition_key]: true }; a key is deleted, not set to false, when its condition is switched off.
+    conditions: {},
     // Roster data owned by store/characters.js's ally-linking helpers — the sheet rendering
     // never reads or writes these, it just round-trips them through save/load so a PC's
     // roster survives autosave.

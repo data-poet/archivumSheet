@@ -217,6 +217,7 @@ function _applyImport(payload) {
   selected.resistances = character.resistances ?? {};
   selected.advantages = character.advantages ?? {};
   selected.disadvantages = character.disadvantages ?? {};
+  selected.conditions = character.conditions ?? {};
   selected.skills = character.skills ?? {};
   selected.spells = character.spells ?? {};
   selected.armors = ensureInstanceIds(inventory.armors ?? []);

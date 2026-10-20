@@ -153,6 +153,21 @@ describe("buildSheet payload — character", () => {
     expect(character.disadvantages).toEqual(["DIS-001"]);
   });
 
+  test("conditions are the keys of the ones switched on", async () => {
+    selected.conditions = { "atordoamento-fisico": true, "dor-grave": true };
+
+    await runEngine();
+
+    const { character } = buildSheet.mock.calls[0][0];
+    expect(character.conditions).toEqual(["atordoamento-fisico", "dor-grave"]);
+  });
+
+  test("no conditions means an empty list, not a missing key", async () => {
+    await runEngine();
+
+    expect(buildSheet.mock.calls[0][0].character.conditions).toEqual([]);
+  });
+
   test("primaryAttributes reflects the DOM inputs", async () => {
     document.getElementById("ST_base").value = "14";
     document.getElementById("ST_mod").value = "1";

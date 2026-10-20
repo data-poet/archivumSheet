@@ -255,6 +255,29 @@ describe("loadCharacter", () => {
     expect(state.selected.meta_race_ids).toEqual(["META-000"]);
   });
 
+  test("restores the active conditions", () => {
+    state.selected.conditions = { "dor-grave": true };
+    saveActiveCharacter();
+    state.selected.conditions = {};
+
+    loadCharacter(getStore().activeId);
+
+    expect(state.selected.conditions).toEqual({ "dor-grave": true });
+  });
+
+  test("a character saved before conditions existed loads with none", () => {
+    saveActiveCharacter();
+    const store = getStore();
+    delete store.list.find((c) => c.id === store.activeId).data.character
+      .conditions;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+    state.selected.conditions = { "dor-grave": true };
+
+    loadCharacter(store.activeId);
+
+    expect(state.selected.conditions).toEqual({});
+  });
+
   test("is a no-op for an unknown id", () => {
     loadCharacter("does-not-exist");
     expect(renderListsPreserving).not.toHaveBeenCalled();
