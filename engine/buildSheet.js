@@ -25,6 +25,9 @@ const {
 const {
   collectEquippedEnchantments,
 } = require("./character/js/enchantments/collectEquippedEnchantments");
+const {
+  applyConditions,
+} = require("./character/js/conditions/applyConditions");
 
 function buildSheet({
   pc = {},
@@ -266,6 +269,14 @@ function buildSheet({
   const grimoireResult = buildGrimoire(resolvedSpells.spells, {
     ...characterData,
     iq,
+  });
+
+  applyConditions({
+    activeKeys: character.conditions,
+    characterData,
+    grimoire: grimoireResult.spells,
+    inventory: inventoryResult.inventory,
+    skillRows: _skillRows,
   });
 
   const basePoints = characterResult.character.character_points;
