@@ -29,13 +29,16 @@ const {
 // Shield ids that use the BROQUEL skill for block (the rest use ESCUDO).
 const BROQUEL_SHIELD_IDS = new Set(resolved.broquelShieldIds);
 
-// Immunity trait ids by key, only for the keys that have a row; the rest are listed as pending.
-const IMMUNITY_TRAIT_IDS = resolved.immunityTraitIds;
-const PENDING_IMMUNITY_KEYS = resolved.pendingImmunityKeys;
-
-// Pain threshold trait ids by key (hipoalgia, hiperalgia), only for the keys that have a row.
-const PAIN_THRESHOLD_TRAIT_IDS = resolved.painThresholdTraitIds;
-const PENDING_PAIN_THRESHOLD_KEYS = resolved.pendingPainThresholdKeys;
+// Trait ids by key for each lenient group (immunity, painThreshold), only for the keys that have a row; the rest are pending.
+const LENIENT_TRAIT_IDS = Object.fromEntries(
+  Object.entries(resolved.lenient).map(([group, { ids }]) => [group, ids]),
+);
+const PENDING_LENIENT_KEYS = Object.fromEntries(
+  Object.entries(resolved.lenient).map(([group, { pending }]) => [
+    group,
+    pending,
+  ]),
+);
 
 // Weapons present in both the melee and ranged tables (same weapon_key) are auto-mirrored across them.
 // Pairs are [meleeId, rangedId].
@@ -54,10 +57,8 @@ module.exports = {
   ESCUDO_SKILL_ID,
   BROQUEL_SHIELD_IDS,
   MAGIC_RETURN_ENCHANTMENT_ID,
-  IMMUNITY_TRAIT_IDS,
-  PENDING_IMMUNITY_KEYS,
-  PAIN_THRESHOLD_TRAIT_IDS,
-  PENDING_PAIN_THRESHOLD_KEYS,
+  LENIENT_TRAIT_IDS,
+  PENDING_LENIENT_KEYS,
   DUAL_USE_WEAPON_PAIRS,
   UNRESOLVED_RULE_KEYS,
 };

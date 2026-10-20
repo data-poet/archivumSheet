@@ -3,7 +3,7 @@ const {
   CONDITION_MODIFIER_COLUMNS,
   CONDITION_STATUS_TAGS,
 } = require("helpers/taxonomy.js");
-const { IMMUNITY_TRAIT_KEYS } = require("helpers/ruleKeys.js");
+const { LENIENT_TRAIT_KEYS } = require("helpers/ruleKeys.js");
 const { runChecks } = require("scripts/checkData.js");
 const { withEditedData } = require("tests/helpers/tempData");
 
@@ -56,7 +56,7 @@ describe("the conditions dataset", () => {
   });
 
   test("every immunity key is registered in helpers/ruleKeys.js", () => {
-    const registered = IMMUNITY_TRAIT_KEYS.map(([, key]) => key);
+    const registered = LENIENT_TRAIT_KEYS.immunity.map(([, key]) => key);
     const used = rows.flatMap((row) => list(row.condition_immune_trait_keys));
     expect(used.filter((key) => !registered.includes(key))).toEqual([]);
   });

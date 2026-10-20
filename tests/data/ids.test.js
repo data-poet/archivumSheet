@@ -1,12 +1,12 @@
-const { loadDataset } = require("helpers/datasets.js");
+const { loadDataset, DATASETS } = require("helpers/datasets.js");
 const { ID_COLUMN, KEY_COLUMN } = require("helpers/datasetColumns.js");
 const {
   resolveRuleKeys,
   TIER_GROUPS,
-  IMMUNITY_TRAIT_KEYS,
-  PAIN_THRESHOLD_TRAIT_KEYS,
+  LENIENT_TRAIT_KEYS,
 } = require("helpers/ruleKeys.js");
 const ids = require("helpers/ids.js");
+const { runChecks } = require("scripts/checkData.js");
 const { CONDITION_RULES } = require("helpers/rules.js");
 const { withEditedData } = require("tests/helpers/tempData");
 
@@ -109,94 +109,114 @@ describe("DUAL_USE_WEAPON_PAIRS", () => {
   });
 });
 
-describe("immunity traits", () => {
-  test("every registered key is either resolved or pending", () => {
-    const registered = IMMUNITY_TRAIT_KEYS.map(([, key]) => key).sort();
-    const accounted = [
-      ...Object.keys(ids.IMMUNITY_TRAIT_IDS),
-      ...ids.PENDING_IMMUNITY_KEYS,
-    ].sort();
-    expect(accounted).toEqual(registered);
-  });
+describe.each(Object.keys(LENIENT_TRAIT_KEYS))(
+  "lenient trait keys: %s",
+  (group) => {
+    const entries = LENIENT_TRAIT_KEYS[group];
+    const idsOfGroup = ids.LENIENT_TRAIT_IDS[group];
+    // The trait tables are being rebuilt: the edit-based tests need one registered row that exists, and skip otherwise.
+    const live = entries.find(([, key]) => key in idsOfGroup);
+    const whenLive = live ? test : test.skip;
 
-  test("a resolved id belongs to the row with that key", () => {
-    const datasetOf = Object.fromEntries(
-      IMMUNITY_TRAIT_KEYS.map(([dataset, key]) => [key, dataset]),
-    );
-    Object.entries(ids.IMMUNITY_TRAIT_IDS).forEach(([key, id]) => {
-      expect(keyOf(datasetOf[key], id)).toBe(key);
+    test("every registered key is either resolved or pending", () => {
+      const accounted = [
+        ...Object.keys(idsOfGroup),
+        ...ids.PENDING_LENIENT_KEYS[group],
+      ].sort();
+      expect(accounted).toEqual(entries.map(([, key]) => key).sort());
     });
-  });
 
-  test("a key with no row is pending, not missing", () => {
-    const { pendingImmunityKeys, missing } = withEditedData(
-      "db_traits_advantages.csv",
-      (rows) => {
-        rows.find((r) => r.advantage_key === "nao-respira").advantage_key =
-          "nao-respira-antigo";
-        return rows;
-      },
-      () => resolveRuleKeys(),
-    );
-    expect(pendingImmunityKeys).toContain("nao-respira");
-    expect(missing.map((m) => m.key)).not.toContain("nao-respira");
-  });
+    test("a resolved id belongs to the row with that key", () => {
+      const datasetOf = Object.fromEntries(
+        entries.map(([dataset, key]) => [key, dataset]),
+      );
+      Object.entries(idsOfGroup).forEach(([key, id]) => {
+        expect(keyOf(datasetOf[key], id)).toBe(key);
+      });
+    });
 
-  test("a trait added later is picked up with no code change", () => {
-    const { immunityTraitIds, pendingImmunityKeys } = withEditedData(
-      "db_traits_disadvantages.csv",
-      (rows) => [
-        ...rows,
-        {
-          ...rows[0],
-          disadvantage_id: "DIS-999",
-          disadvantage_key: "estraga-prazeres",
+    whenLive("a key with no row is pending, not missing", () => {
+      const [dataset, key] = live;
+      const { lenient, missing } = withEditedData(
+        DATASETS[dataset],
+        (rows) => {
+          rows.find((r) => r[KEY_COLUMN[dataset]] === key)[
+            KEY_COLUMN[dataset]
+          ] = `${key}-antigo`;
+          return rows;
         },
-      ],
-      () => resolveRuleKeys(),
-    );
-    expect(immunityTraitIds["estraga-prazeres"]).toBe("DIS-999");
-    expect(pendingImmunityKeys).not.toContain("estraga-prazeres");
-  });
-});
-
-describe("pain threshold traits", () => {
-  test("the factor table and the registry name the same traits", () => {
-    expect(Object.keys(CONDITION_RULES.painScale).sort()).toEqual(
-      PAIN_THRESHOLD_TRAIT_KEYS.map(([, key]) => key).sort(),
-    );
-  });
-
-  test("every registered key is either resolved or pending", () => {
-    const registered = PAIN_THRESHOLD_TRAIT_KEYS.map(([, key]) => key).sort();
-    const accounted = [
-      ...Object.keys(ids.PAIN_THRESHOLD_TRAIT_IDS),
-      ...ids.PENDING_PAIN_THRESHOLD_KEYS,
-    ].sort();
-    expect(accounted).toEqual(registered);
-  });
-
-  test("a resolved id belongs to the row with that key", () => {
-    const datasetOf = Object.fromEntries(
-      PAIN_THRESHOLD_TRAIT_KEYS.map(([dataset, key]) => [key, dataset]),
-    );
-    Object.entries(ids.PAIN_THRESHOLD_TRAIT_IDS).forEach(([key, id]) => {
-      expect(keyOf(datasetOf[key], id)).toBe(key);
+        () => resolveRuleKeys(),
+      );
+      expect(lenient[group].pending).toContain(key);
+      expect(missing.map((m) => m.key)).not.toContain(key);
     });
+
+    whenLive(
+      "a row added later with that key is picked up with no code change",
+      () => {
+        const [dataset, key] = live;
+        const resolvedLater = withEditedData(
+          DATASETS[dataset],
+          (rows) => {
+            const row = rows.find((r) => r[KEY_COLUMN[dataset]] === key);
+            const original = { ...row };
+            row[KEY_COLUMN[dataset]] = `${key}-antigo`;
+            return [
+              ...rows,
+              { ...original, [ID_COLUMN[dataset]]: "TESTE-999" },
+            ];
+          },
+          () => resolveRuleKeys().lenient[group],
+        );
+        expect(resolvedLater.ids[key]).toBe("TESTE-999");
+        expect(resolvedLater.pending).not.toContain(key);
+      },
+    );
+  },
+);
+
+describe("lenient trait groups", () => {
+  test("a new group is one registry entry, resolved and reported with no other change", () => {
+    const [{ advantage_key: existing }] = loadDataset("ADVANTAGES");
+    LENIENT_TRAIT_KEYS.demo = [
+      ["ADVANTAGES", existing],
+      ["ADVANTAGES", "ainda-nao-existe"],
+    ];
+    try {
+      const { lenient } = resolveRuleKeys();
+      expect(Object.keys(lenient.demo.ids)).toEqual([existing]);
+      expect(lenient.demo.pending).toEqual(["ainda-nao-existe"]);
+
+      expect(runChecks().info).toContainEqual(
+        expect.objectContaining({
+          check: "demo-pending",
+          dataset: "ADVANTAGES",
+          id: "ainda-nao-existe",
+        }),
+      );
+    } finally {
+      delete LENIENT_TRAIT_KEYS.demo;
+    }
   });
 
-  test("a key with no row is pending, not missing", () => {
-    const { pendingPainThresholdKeys, missing } = withEditedData(
-      "db_traits_advantages.csv",
-      (rows) => {
-        rows.find((r) => r.advantage_key === "hipoalgia").advantage_key =
-          "hipoalgia-antiga";
-        return rows;
-      },
-      () => resolveRuleKeys(),
+  test("a camelCase group is reported with a hyphenated check name", () => {
+    LENIENT_TRAIT_KEYS.someGroup = [["ADVANTAGES", "ainda-nao-existe"]];
+    try {
+      expect(runChecks().info).toContainEqual(
+        expect.objectContaining({
+          check: "some-group-pending",
+          message: expect.stringContaining("some group trait"),
+        }),
+      );
+    } finally {
+      delete LENIENT_TRAIT_KEYS.someGroup;
+    }
+  });
+
+  test("the pain factor table and the pain-threshold registry name the same traits", () => {
+    expect(Object.keys(CONDITION_RULES.painScale).sort()).toEqual(
+      LENIENT_TRAIT_KEYS.painThreshold.map(([, key]) => key).sort(),
     );
-    expect(pendingPainThresholdKeys).toContain("hipoalgia");
-    expect(missing.map((m) => m.key)).not.toContain("hipoalgia");
   });
 });
 

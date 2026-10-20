@@ -9,10 +9,7 @@ const { CONDITION_RULES } = require("../../../../helpers/rules.js");
 const {
   CONDITION_MODIFIER_COLUMNS,
 } = require("../../../../helpers/taxonomy.js");
-const {
-  IMMUNITY_TRAIT_IDS,
-  PAIN_THRESHOLD_TRAIT_IDS,
-} = require("../../../../helpers/ids.js");
+const { LENIENT_TRAIT_IDS } = require("../../../../helpers/ids.js");
 
 const DEFENSE_ROLL = ["defense"];
 
@@ -87,7 +84,7 @@ function immunityOf(row, ownedTraitIds, immunityTraitIds) {
 // Every condition this character is immune to, whether or not it is switched on.
 function conditionImmunities(
   traitIds = [],
-  { immunityTraitIds = IMMUNITY_TRAIT_IDS } = {},
+  { immunityTraitIds = LENIENT_TRAIT_IDS.immunity } = {},
 ) {
   const owned = new Set(traitIds);
   return loadDataset("CONDITIONS").flatMap((row) => {
@@ -119,8 +116,8 @@ function resolveConditions(
   activeKeys = [],
   {
     traitIds = [],
-    immunityTraitIds = IMMUNITY_TRAIT_IDS,
-    painThresholdTraitIds = PAIN_THRESHOLD_TRAIT_IDS,
+    immunityTraitIds = LENIENT_TRAIT_IDS.immunity,
+    painThresholdTraitIds = LENIENT_TRAIT_IDS.painThreshold,
   } = {},
 ) {
   const rows = loadDataset("CONDITIONS");

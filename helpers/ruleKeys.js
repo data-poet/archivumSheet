@@ -47,20 +47,23 @@ const SINGLE_KEYS = {
 
 const BROQUEL_SHIELD_KEY_PREFIX = "broquel-";
 
-// Traits that exempt a condition; a key with no row is pending, not missing, because the trait tables are being rebuilt.
-const IMMUNITY_TRAIT_KEYS = [
-  ["ADVANTAGES", "nao-respira"],
-  ["DISADVANTAGES", "estraga-prazeres"],
-  ["ADVANTAGES", "tolerancia-a-ferimentos-difuso"],
-  ["ADVANTAGES", "tolerancia-a-ferimentos-homogeneo"],
-  ["ADVANTAGES", "tolerancia-a-ferimentos-sem-vitais"],
-];
-
-// Traits that scale a pain condition: Hipoalgia halves it, Hiperalgia doubles it. Pending, like the immunity keys.
-const PAIN_THRESHOLD_TRAIT_KEYS = [
-  ["ADVANTAGES", "hipoalgia"],
-  ["DISADVANTAGES", "hiperalgia"],
-];
+// Trait rows a rule refers to by key, per group. A key with no row is pending, not missing, because the trait tables
+// are being rebuilt; a new group is one entry here.
+const LENIENT_TRAIT_KEYS = {
+  // Traits that exempt a condition.
+  immunity: [
+    ["ADVANTAGES", "nao-respira"],
+    ["DISADVANTAGES", "estraga-prazeres"],
+    ["ADVANTAGES", "tolerancia-a-ferimentos-difuso"],
+    ["ADVANTAGES", "tolerancia-a-ferimentos-homogeneo"],
+    ["ADVANTAGES", "tolerancia-a-ferimentos-sem-vitais"],
+  ],
+  // Traits that scale a pain condition (the factors are in CONDITION_RULES.painScale).
+  painThreshold: [
+    ["ADVANTAGES", "hipoalgia"],
+    ["DISADVANTAGES", "hiperalgia"],
+  ],
+};
 
 function idsByKey(dataset) {
   return new Map(
@@ -113,8 +116,12 @@ function resolveRuleKeys() {
     });
     return { ids, pending };
   };
-  const immunity = resolveLenient(IMMUNITY_TRAIT_KEYS);
-  const painThreshold = resolveLenient(PAIN_THRESHOLD_TRAIT_KEYS);
+  const lenient = Object.fromEntries(
+    Object.entries(LENIENT_TRAIT_KEYS).map(([group, entries]) => [
+      group,
+      resolveLenient(entries),
+    ]),
+  );
 
   const broquelShieldIds = loadDataset("SHIELDS")
     .filter((row) => row.shield_key.startsWith(BROQUEL_SHIELD_KEY_PREFIX))
@@ -128,10 +135,7 @@ function resolveRuleKeys() {
   return {
     tierGroups,
     singles,
-    immunityTraitIds: immunity.ids,
-    pendingImmunityKeys: immunity.pending,
-    painThresholdTraitIds: painThreshold.ids,
-    pendingPainThresholdKeys: painThreshold.pending,
+    lenient,
     broquelShieldIds,
     dualUsePairs,
     missing,
@@ -143,7 +147,6 @@ module.exports = {
   TIER_GROUPS,
   SINGLE_KEYS,
   BROQUEL_SHIELD_KEY_PREFIX,
-  IMMUNITY_TRAIT_KEYS,
-  PAIN_THRESHOLD_TRAIT_KEYS,
+  LENIENT_TRAIT_KEYS,
   resolveRuleKeys,
 };

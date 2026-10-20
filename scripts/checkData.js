@@ -21,8 +21,7 @@ const {
 } = require("../helpers/taxonomy.js");
 const {
   resolveRuleKeys,
-  IMMUNITY_TRAIT_KEYS,
-  PAIN_THRESHOLD_TRAIT_KEYS,
+  LENIENT_TRAIT_KEYS,
 } = require("../helpers/ruleKeys.js");
 const { REFERENCES, idsInCell } = require("../helpers/datasetReferences.js");
 const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
@@ -379,31 +378,18 @@ function checkSkillCostTables(findings) {
 // The code addresses these rows by key (helpers/ruleKeys.js): the keys must exist, and a tier group must
 // not have more tiers in the data than the code registers.
 function checkRuleKeys(findings, { verbose }) {
-  const {
-    missing,
-    unregistered,
-    dualUsePairs,
-    pendingImmunityKeys,
-    pendingPainThresholdKeys,
-  } = resolveRuleKeys();
-  [
-    ["immunity-pending", "immunity", pendingImmunityKeys, IMMUNITY_TRAIT_KEYS],
-    [
-      "pain-threshold-pending",
-      "pain threshold",
-      pendingPainThresholdKeys,
-      PAIN_THRESHOLD_TRAIT_KEYS,
-    ],
-  ].forEach(([check, label, pending, registered]) => {
+  const { missing, unregistered, dualUsePairs, lenient } = resolveRuleKeys();
+  Object.entries(lenient).forEach(([group, { pending }]) => {
+    const words = group.replace(/([A-Z])/g, " $1").toLowerCase();
     pending.forEach((key) => {
-      const [dataset] = registered.find(([, k]) => k === key);
+      const [dataset] = LENIENT_TRAIT_KEYS[group].find(([, k]) => k === key);
       findings.push(
         finding(
           "info",
-          check,
+          `${words.replaceAll(" ", "-")}-pending`,
           dataset,
           key,
-          `${label} trait with no row yet; it applies once a row has this key`,
+          `${words} trait with no row yet; it applies once a row has this key`,
         ),
       );
     });
@@ -445,7 +431,9 @@ function checkRuleKeys(findings, { verbose }) {
 
 function checkConditions(findings) {
   const rows = loadDataset("CONDITIONS");
-  const knownImmunityKeys = new Set(IMMUNITY_TRAIT_KEYS.map(([, key]) => key));
+  const knownImmunityKeys = new Set(
+    LENIENT_TRAIT_KEYS.immunity.map(([, key]) => key),
+  );
   const exclusiveGroups = new Map();
 
   Object.values(CONDITION_MODIFIER_COLUMNS)
