@@ -97,6 +97,41 @@ describe("the rules the engine will key off", () => {
       embriaguez: ["embriaguez", "ligeiramente-embriagado"],
       nausea: ["nauseado", "gravemente-nauseado"],
       dor: ["dor-moderada", "dor-grave", "dor-terrivel"],
+      choque: [
+        "choque-1",
+        "choque-2",
+        "choque-3",
+        "choque-4",
+        "choque-6",
+        "choque-8",
+      ],
+    });
+  });
+
+  test("shock hits DX and IQ by its level and nothing else", () => {
+    const shock = rows.filter(
+      (row) => row.condition_exclusive_group === "choque",
+    );
+
+    expect(
+      shock.map((row) => [
+        row.condition_dx_modifier,
+        row.condition_iq_modifier,
+      ]),
+    ).toEqual([
+      ["-1", "-1"],
+      ["-2", "-2"],
+      ["-3", "-3"],
+      ["-4", "-4"],
+      ["-6", "-6"],
+      ["-8", "-8"],
+    ]);
+    shock.forEach((row) => {
+      ["Per", "skills", "all_rolls", "self_control", "defense"].forEach(
+        (target) => expect(row[CONDITION_MODIFIER_COLUMNS[target]]).toBe(""),
+      );
+      expect(row.condition_grants).toBe("");
+      expect(row.condition_scales_with_pain_threshold).toBe("");
     });
   });
 

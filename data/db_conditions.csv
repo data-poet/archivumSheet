@@ -21,3 +21,9 @@ COND-018,convulsao,Convulsão,Incapacitante,,,,,,,,,incapacitated,,,,,"Ao final,
 COND-019,inconsciencia,Inconsciência,Incapacitante,,,,,,,,,unconscious,,,,,
 COND-020,coma,Coma,Mortal,,,,,,,,,unconscious,HT,12h,,,"Primeiro teste só após 12 h; sem tratamento, falhar é morte."
 COND-021,ataque-cardiaco,Ataque Cardíaco,Mortal,,,,,,,,,incapacitated,,,,"tolerancia-a-ferimentos-difuso,tolerancia-a-ferimentos-homogeneo,tolerancia-a-ferimentos-sem-vitais",PF caem para -1 x PF. Morre em HT/3 minutos sem reanimação.
+COND-022,choque-1,Choque -1,Choque,choque,-1,-1,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.
+COND-023,choque-2,Choque -2,Choque,choque,-2,-2,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.
+COND-024,choque-3,Choque -3,Choque,choque,-3,-3,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.
+COND-025,choque-4,Choque -4,Choque,choque,-4,-4,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.
+COND-026,choque-6,Choque -6,Choque,choque,-6,-6,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.
+COND-027,choque-8,Choque -8,Choque,choque,-8,-8,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.

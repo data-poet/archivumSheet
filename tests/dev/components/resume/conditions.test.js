@@ -430,6 +430,31 @@ describe("the full list", () => {
     expect(legends).toEqual(["Atordoamento", "Irritantes", "Incapacitantes"]);
   });
 
+  test("gives the Choque group its own heading", () => {
+    renderResumeConditions(
+      {},
+      {
+        conditions: [
+          ...CATALOG,
+          row("choque-4", "Choque -4", "Choque", {
+            condition_exclusive_group: "choque",
+          }),
+        ],
+      },
+      {},
+    );
+
+    const legends = [
+      ...container().querySelectorAll(".conditions-group legend"),
+    ].map((l) => l.textContent);
+    expect(legends).toEqual([
+      "Atordoamento",
+      "Irritantes",
+      "Incapacitantes",
+      "Choque",
+    ]);
+  });
+
   test("checks the boxes of the flags that are on and leaves the rest", () => {
     renderResumeConditions(
       {},

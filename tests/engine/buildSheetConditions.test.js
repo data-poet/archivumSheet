@@ -168,4 +168,21 @@ describe("buildSheet with conditions", () => {
       }).condition_modifier,
     ).toBe(-4);
   });
+
+  test("shock lowers DX and IQ but not HT, an HT-based skill, or the defenses", () => {
+    const base = build([]);
+    const shocked = build(["choque-4"]);
+    const { character, inventory } = shocked;
+
+    expect(character.primary_attributes.DX.condition_modifier).toBe(-4);
+    expect(character.primary_attributes.IQ.condition_modifier).toBe(-4);
+    expect(character.primary_attributes.HT.condition_modifier).toBeUndefined();
+    expect(character.skills[SKILL.corrida].condition_modifier).toBeUndefined();
+    expect(
+      character.secondary_attributes.Dodge.effective_value,
+    ).toBeUndefined();
+    expect(character.unarmed[0].parry).toBe(base.character.unarmed[0].parry);
+    expect(character.unarmed[0].effective_parry).toBeUndefined();
+    expect(inventory.shield.equipped.effective_block).toBeUndefined();
+  });
 });

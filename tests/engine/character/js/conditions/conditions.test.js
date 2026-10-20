@@ -389,3 +389,40 @@ describe("pain threshold", () => {
     expect("IQ" in pain.targets).toBe(false);
   });
 });
+
+describe("shock", () => {
+  test("hits DX and IQ rolls and the skills based on them", () => {
+    expect(penalty(["choque-4"], attributeRollKinds("DX"))).toBe(-4);
+    expect(penalty(["choque-4"], attributeRollKinds("IQ"))).toBe(-4);
+    expect(penalty(["choque-4"], skillRollKinds("DX"))).toBe(-4);
+    expect(penalty(["choque-4"], skillRollKinds("IQ"))).toBe(-4);
+  });
+
+  test("leaves HT and ST rolls, skills based on them, and the senses alone", () => {
+    expect(penalty(["choque-4"], attributeRollKinds("HT"))).toBe(0);
+    expect(penalty(["choque-4"], skillRollKinds("HT"))).toBe(0);
+    expect(penalty(["choque-4"], skillRollKinds("ST"))).toBe(0);
+    expect(penalty(["choque-4"], SENSE_ROLL)).toBe(0);
+  });
+
+  test("leaves the active defenses alone", () => {
+    expect(penalty(["choque-8"], DEFENSE_ROLL)).toBe(0);
+  });
+
+  test("stacks with another condition on the same roll", () => {
+    expect(penalty(["choque-3", "nauseado"], skillRollKinds("DX"))).toBe(-5);
+  });
+
+  test("only one level is kept: the first switched on wins", () => {
+    const resolved = resolveConditions(["choque-2", "choque-6"]);
+
+    expect(resolved.active.map((c) => c.key)).toEqual(["choque-2"]);
+    expect(resolved.dropped).toEqual([
+      { key: "choque-6", reason: "exclusive", kept: "choque-2" },
+    ]);
+  });
+
+  test("grants no status tag, so it never stuns", () => {
+    expect(resolveConditions(["choque-8"]).tags).toEqual([]);
+  });
+});

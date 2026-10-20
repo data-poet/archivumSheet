@@ -65,6 +65,21 @@ Veja o exemplo completo em Personagem › Atributos › Secundários › Pontos 
 </details>
 
 <details>
+<summary>Choque</summary>
+
+- **Efeito:** ao ser ferido, o personagem sofre um redutor nos testes de [[DX]] e [[IQ]] e nas perícias baseadas neles, **até o fim do seu próximo turno**. As defesas ativas não são afetadas.
+- **Valor:** **-1 para cada 3 [[PV]] perdidos** num golpe, até **-4**. Vários ferimentos antes do seu turno somam, dentro desse máximo.
+- **Dobrado:** ferimentos na virilha (alvos masculinos, dano de contusão) e certos acertos críticos dobram o redutor, até **-8**.
+
+> [!HOUSE]
+> No 4e o redutor é de -1 por PV perdido. No Archivum os PV são cerca de 3× maiores, então a conta é por 3 PV.
+
+> [!TIP]
+> Na ficha, marque **Choque** em Condições com o valor do redutor e desmarque ao fim do turno.
+
+</details>
+
+<details>
 <summary>Levantando</summary>
 
 - Um personagem que tenha caído no chão normalmente gastará **2 turnos** para se levantar: um para se agachar e outro para ficar de pé.

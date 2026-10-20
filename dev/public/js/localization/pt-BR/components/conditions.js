@@ -17,6 +17,7 @@ export const CONDITIONS = {
     Irritante: "Irritantes",
     Incapacitante: "Incapacitantes",
     Mortal: "Mortais",
+    Choque: "Choque",
   },
   targets: {
     DX: "DX",
