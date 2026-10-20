@@ -32,6 +32,11 @@ export const RESUME_PANEL_HTML = `
       <div id="resume_secondary_snapshot"></div>
     </div>
 
+    <!-- Row 3.2: conditions — one-tap stuns, active chips and the full list -->
+    <div class="resume-row">
+      <div class="resume-full-col" id="resume_conditions_container" hidden></div>
+    </div>
+
     <!-- Row 3.5: elemental resistances — only shown when one differs from normal -->
     <div class="resume-row">
       <div class="resume-full-col" id="resume_elemental_resistances_container"></div>

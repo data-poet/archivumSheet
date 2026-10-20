@@ -7,6 +7,17 @@ import {
   ARMOR_SLOT_KEYS,
 } from "dev/public/js/shared/constants.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
+import {
+  TARGET_ORDER,
+  TAG_ORDER,
+} from "dev/public/js/components/resume/conditions.js";
+import { CONDITION_RULES } from "helpers/rules.js";
+import {
+  CONDITION_MODIFIER_COLUMNS,
+  CONDITION_STATUS_TAGS,
+  CONDITION_RECOVERY_ATTRIBUTES,
+  CONDITION_RECOVERY_INTERVALS,
+} from "helpers/taxonomy.js";
 import { resolveRace } from "engine/character/js/traits/races.js";
 import { PRIMARY_KEYS, PRIMARY_DEFAULT_VALUE } from "helpers/rules.js";
 import { loadDataset } from "helpers/datasets.js";
@@ -74,6 +85,46 @@ describe("no registry literal outside the registries", () => {
     expect(source).not.toMatch(/\[\s*"ST",\s*"DX",\s*"IQ",\s*"HT"\s*\]/);
     expect(source).not.toMatch(
       /["'](Cabeça|Tronco|Braços|Mãos|Pernas|Pés)["']/,
+    );
+  });
+});
+
+describe("the conditions card mirrors the engine vocabulary", () => {
+  const allTags = [
+    ...new Set([
+      ...CONDITION_STATUS_TAGS,
+      ...Object.keys(CONDITION_RULES.tagImplies),
+      ...Object.values(CONDITION_RULES.tagImplies).flat(),
+    ]),
+  ];
+  const rows = loadDataset("CONDITIONS");
+
+  test("every roll target the engine knows has a label and a place in the summary", () => {
+    const targets = Object.keys(CONDITION_MODIFIER_COLUMNS).sort();
+    expect(Object.keys(LABELS.conditions.targets).sort()).toEqual(targets);
+    expect([...TARGET_ORDER].sort()).toEqual(targets);
+  });
+
+  test("every status tag has a label and a place in the summary", () => {
+    expect(Object.keys(LABELS.conditions.tags).sort()).toEqual(
+      [...allTags].sort(),
+    );
+    expect([...TAG_ORDER].sort()).toEqual([...allTags].sort());
+  });
+
+  test("every recovery attribute and interval has a label", () => {
+    CONDITION_RECOVERY_ATTRIBUTES.forEach((attribute) =>
+      expect(LABELS.conditions.attributes[attribute]).toBeTruthy(),
+    );
+    CONDITION_RECOVERY_INTERVALS.forEach((interval) =>
+      expect(LABELS.conditions.intervals[interval]).toBeTruthy(),
+    );
+  });
+
+  test("every group the dataset uses has a heading", () => {
+    const groups = [...new Set(rows.map((row) => row.condition_group))];
+    groups.forEach((group) =>
+      expect(LABELS.conditions.groups[group]).toBeTruthy(),
     );
   });
 });

@@ -11,6 +11,8 @@ jest.mock("dev/public/js/engine/character/index.js", () => ({
   selectSubRace: jest.fn(),
   handleCharacterInput: jest.fn(() => false),
   handleCharacterChange: jest.fn(() => false),
+  handleConditionClick: jest.fn(() => false),
+  handleConditionChange: jest.fn(() => false),
   handleCharacterImageClick: jest.fn(() => false),
   handleCharacterImageChange: jest.fn(() => false),
   handleCharacterImageInput: jest.fn(() => false),
@@ -401,6 +403,37 @@ describe("bindUI — delegated change chain", () => {
 
   test("a change event that no handler claims does not throw", () => {
     expect(() => fireChange()).not.toThrow();
+  });
+});
+
+describe("bindUI — conditions domain", () => {
+  beforeEach(() => {
+    [
+      character.handleConditionClick,
+      character.handleConditionChange,
+      character.handleTraitClick,
+      character.handleCharacterChange,
+      character.handleSkillChange,
+    ].forEach((fn) => fn.mockReturnValue(false));
+  });
+
+  test("a click reaches handleConditionClick, and a claim stops the handlers after it", () => {
+    character.handleConditionClick.mockReturnValue(true);
+
+    document.body.dispatchEvent(new Event("click", { bubbles: true }));
+
+    expect(character.handleConditionClick).toHaveBeenCalledTimes(1);
+    expect(character.handleTraitClick).not.toHaveBeenCalled();
+  });
+
+  test("a change reaches handleConditionChange after the character handler and before the skill one", () => {
+    character.handleConditionChange.mockReturnValue(true);
+
+    document.body.dispatchEvent(new Event("change", { bubbles: true }));
+
+    expect(character.handleCharacterChange).toHaveBeenCalledTimes(1);
+    expect(character.handleConditionChange).toHaveBeenCalledTimes(1);
+    expect(character.handleSkillChange).not.toHaveBeenCalled();
   });
 });
 

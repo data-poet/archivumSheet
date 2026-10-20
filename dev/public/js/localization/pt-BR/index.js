@@ -7,6 +7,7 @@ import { REFERENCE } from "./reference.js";
 
 import { ATTRIBUTES, SECONDARY_ATTRIBUTES } from "./components/attributes.js";
 import { CHARACTERS } from "./components/characterSelector.js";
+import { CONDITIONS } from "./components/conditions.js";
 import { DIALOG } from "./components/dialog.js";
 import { INVENTORY } from "./components/inventory.js";
 import { NAV } from "./components/nav.js";
@@ -58,6 +59,7 @@ export const LABELS = {
   tabs: TABS,
   sections: SECTIONS,
   resume: RESUME,
+  conditions: CONDITIONS,
   attributes: ATTRIBUTES,
   character: CHARACTER,
   experience: EXPERIENCE,

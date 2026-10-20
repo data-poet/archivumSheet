@@ -39,6 +39,7 @@ describe("state.data shape", () => {
         "materials",
         "melee_weapons",
         "metaRaces",
+        "conditions",
         "races",
         "ranged_weapons",
         "rules",

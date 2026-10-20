@@ -54,6 +54,10 @@ export async function fetchMetaRaces() {
   return getJSON("/api/meta-races");
 }
 
+export async function fetchConditions() {
+  return getJSON("/api/conditions");
+}
+
 export async function fetchMaterials() {
   return getJSON("/api/materials");
 }

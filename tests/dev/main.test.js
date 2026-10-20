@@ -44,6 +44,9 @@ jest.mock("dev/public/js/engine/character/races/index.js", () => ({
 jest.mock("dev/public/js/engine/character/metaRaces/index.js", () => ({
   loadMetaRaces: jest.fn(() => Promise.resolve()),
 }));
+jest.mock("dev/public/js/engine/character/conditions/index.js", () => ({
+  loadConditions: jest.fn(() => Promise.resolve()),
+}));
 jest.mock("dev/public/js/engine/character/portrait/index.js", () => ({
   initCharacterImage: jest.fn(),
 }));
@@ -137,6 +140,7 @@ import {
 } from "dev/public/js/ui.js";
 import { initAutoRun } from "dev/public/js/compute/autorun.js";
 import { loadRaces } from "dev/public/js/engine/character/races/index.js";
+import { loadConditions } from "dev/public/js/engine/character/conditions/index.js";
 import { initCharacterImage } from "dev/public/js/engine/character/portrait/index.js";
 import { loadAdvantages } from "dev/public/js/engine/character/traits/advantages/index.js";
 import { loadDisadvantages } from "dev/public/js/engine/character/traits/disadvantages/index.js";
@@ -238,6 +242,7 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
 
     [
       loadRaces,
+      loadConditions,
       loadAdvantages,
       loadDisadvantages,
       loadSkills,

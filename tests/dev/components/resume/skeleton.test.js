@@ -12,6 +12,7 @@ const REQUIRED_IDS = [
   "resume_bar_mana",
   "resume_bar_toxicity",
   "resume_secondary_snapshot",
+  "resume_conditions_container",
   "resume_elemental_resistances_container",
   "resume_advantages_container",
   "resume_disadvantages_container",

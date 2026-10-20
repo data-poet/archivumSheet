@@ -14,6 +14,8 @@ import {
   filterSubMetaRacesByName,
   addMetaRace,
   handleMetaRaceClick,
+  handleConditionClick,
+  handleConditionChange,
 } from "../engine/character/index.js";
 
 import {
@@ -137,6 +139,7 @@ const DELEGATED_EVENT_TYPES = ["click", "input", "change"];
 const DELEGATED_DOMAINS = [
   { input: handleCharacterInput, change: handleCharacterChange },
   { click: handleMetaRaceClick },
+  { click: handleConditionClick, change: handleConditionChange },
   { click: handleTraitClick, input: handleTraitInput },
   {
     click: handleSkillClick,

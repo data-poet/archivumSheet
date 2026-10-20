@@ -12,6 +12,7 @@ export const state = {
     materials: [],
     races: [],
     metaRaces: [],
+    conditions: [],
     ammo: [],
     ammo_containers: [],
     alchemy: [],

@@ -13,6 +13,7 @@ import {
   renderResumeBars,
   renderResumeSecondarySnapshot,
 } from "./vitals.js";
+import { renderResumeConditions } from "./conditions.js";
 import { renderResumeElementalResistances } from "./elementalResistances.js";
 import {
   renderResumeTraits,
@@ -46,6 +47,7 @@ const SECTIONS = [
   ({ sheet }) => renderResumePrimaryAttributes(sheet),
   ({ sheet }) => renderResumeBars(sheet),
   ({ sheet }) => renderResumeSecondarySnapshot(sheet),
+  ({ sheet, data, selected }) => renderResumeConditions(sheet, data, selected),
   ({ sheet }) => renderResumeElementalResistances(sheet),
   ({ sheet }) => renderResumeTraits(sheet),
   ({ sheet }) => renderResumeSkills(sheet),
