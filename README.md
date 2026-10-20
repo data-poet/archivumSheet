@@ -80,7 +80,7 @@ DOM event → state.selected (raw input) → POST /api/sheet/build
 
 ## Data Files (`data/`)
 
-Flat CSV tables, parsed by `helpers/dataUtils.js`. Covers: traits (advantages/disadvantages), skills, the magic grimoire, magic enchantments, races, armor, shields, melee/ranged/firearms weapons, ammo + containers, alchemy consumables, adventure gear, accessories, magic gear (wands/staves/instruments), and crafting materials (equipment tier modifiers).
+Flat CSV tables, parsed by `helpers/dataUtils.js`. Covers: traits (advantages/disadvantages), skills, the magic grimoire, magic enchantments, races, armor, shields, melee/ranged/firearms weapons, ammo + containers, alchemy consumables, adventure gear, accessories, magic gear (wands/staves/instruments), crafting materials (equipment tier modifiers), and conditions (afflictions, stuns and shock, with the roll penalties and status tags each one carries).
 
 Conventions every CSV follows:
 
@@ -101,6 +101,7 @@ Conventions every CSV follows:
 - **Magic enchantments** — applied to individual equipment instances; the engine resolves pricing, stacking/collision rules against a character's own purchased skills/spells, and dual-use weapon (melee ⇄ ranged) category syncing.
 - **Inventory** — alchemy consumables, survival gear, coin purse (denominations tracked separately from weight), and fully freeform custom items.
 - **Resume / View Mode** — a compact summary of the whole character that doubles as the play surface (HP, ammo and durability steppers); replaces the main view on mobile, overlays it on desktop.
+- **Conditions** — afflictions, Physical/Mental Stun and Shock switch on from the resume or the edit-mode _Condições_ tab; the engine applies their penalties (different conditions stack, stun counts once, immunities and the pain threshold are respected) and the sheet shows each modified number as `effective (base)`.
 - **Allies** — characters can be saved as allies and linked to a PC's roster; a catalog of ready-made allies ships in `data/allies/` (portraits beside their JSON), and an ally file exports and imports like a sheet.
 - **Rules reference** — `reference.html` renders the markdown rules in `dev/public/reference-content/` with search and deep links.
 - **Multi-character & persistence** — any number of characters saved to `localStorage`; JSON import/export uses the same `state.selected` shape.

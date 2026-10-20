@@ -1,3 +1,6 @@
+> [!HOUSE]
+> Na ficha, cada condição é um marcador em **Condições** (no Resumo e em Sobrevivência › Condições). A ficha aplica os redutores nos testes e nas defesas, soma os de condições diferentes, conta o Atordoamento uma vez só e mostra o número já modificado, como **8 (12)**. A Dor se ajusta sozinha com _Hipoalgia_ e _Hiperalgia_, e quem tem a vantagem que o torna imune (como _Não Respira_ contra Sufocamento) não sofre a condição. Perda de PF, rolagens e outros efeitos de evento ficam como lembretes.
+
 ### Condições Irritantes
 
 <details>
