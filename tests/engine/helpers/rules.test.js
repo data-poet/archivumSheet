@@ -15,6 +15,7 @@ const {
   BASIC_LIFT,
   CONDITION_RULES,
 } = require("helpers/rules.js");
+const { CONDITION_MODIFIER_COLUMNS } = require("helpers/taxonomy.js");
 const {
   buildPrimaryAttributes,
 } = require("engine/character/js/attributes/primary");
@@ -205,13 +206,31 @@ describe("no rule literal where the rules are applied", () => {
 });
 
 describe("condition rules", () => {
+  test("every roll name the rules mention is a target, or the attribute's own name", () => {
+    const targets = Object.keys(CONDITION_MODIFIER_COLUMNS);
+
+    Object.values(CONDITION_RULES.tags).forEach(({ penalty = {} }) =>
+      Object.keys(penalty).forEach((target) =>
+        expect(targets).toContain(target),
+      ),
+    );
+    Object.entries(CONDITION_RULES.attributeRollKinds).forEach(
+      ([attribute, kinds]) =>
+        kinds.forEach((kind) =>
+          expect([...targets, attribute]).toContain(kind),
+        ),
+    );
+  });
+
   test("values are pinned", () => {
     expect(CONDITION_RULES).toEqual({
-      tagImplies: {
-        incapacitated: ["stunned", "cannot_act"],
-        unconscious: ["incapacitated"],
+      tags: {
+        stunned: { penalty: { defense: -4 } },
+        incapacitated: { implies: ["stunned", "cannot_act"] },
+        unconscious: { implies: ["incapacitated"] },
+        paralyzed: {},
+        cannot_act: { impliedOnly: true },
       },
-      tagPenalties: { stunned: { defense: -4 } },
       painScale: { hipoalgia: 0.5, hiperalgia: 2 },
       attributeRollKinds: {
         ST: ["ST"],

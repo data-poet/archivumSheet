@@ -53,7 +53,7 @@ function closeTags(granted) {
   const tags = new Set(granted);
   const pending = [...tags];
   while (pending.length > 0) {
-    for (const implied of CONDITION_RULES.tagImplies[pending.pop()] ?? []) {
+    for (const implied of CONDITION_RULES.tags[pending.pop()]?.implies ?? []) {
       if (!tags.has(implied)) {
         tags.add(implied);
         pending.push(implied);
@@ -107,7 +107,7 @@ function summarize(active, tags) {
       totals[target] = (totals[target] ?? 0) + value;
     });
   active.forEach(({ targets }) => add(targets));
-  tags.forEach((tag) => add(CONDITION_RULES.tagPenalties[tag] ?? {}));
+  tags.forEach((tag) => add(CONDITION_RULES.tags[tag]?.penalty ?? {}));
   return totals;
 }
 
@@ -195,7 +195,7 @@ function rollPenalty(resolved, kinds) {
   );
   const fromTags = resolved.tags.reduce(
     (sum, tag) =>
-      sum + strongest(CONDITION_RULES.tagPenalties[tag] ?? {}, kinds),
+      sum + strongest(CONDITION_RULES.tags[tag]?.penalty ?? {}, kinds),
     0,
   );
   return fromConditions + fromTags;

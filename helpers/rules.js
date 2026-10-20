@@ -68,11 +68,14 @@ const SPELL_TIER_DEFAULT = "Mestre";
 
 // A status tag can imply others, and its roll penalty counts once however many active conditions grant it.
 const CONDITION_RULES = {
-  tagImplies: {
-    incapacitated: ["stunned", "cannot_act"],
-    unconscious: ["incapacitated"],
+  // Every status tag: what it implies, the roll penalty it carries, and whether only an implication can give it.
+  tags: {
+    stunned: { penalty: { defense: -4 } },
+    incapacitated: { implies: ["stunned", "cannot_act"] },
+    unconscious: { implies: ["incapacitated"] },
+    paralyzed: {},
+    cannot_act: { impliedOnly: true },
   },
-  tagPenalties: { stunned: { defense: -4 } },
   // Pain-threshold traits by key: the factors of the owned ones multiply, so Hipoalgia and Hiperalgia cancel out.
   painScale: { hipoalgia: 0.5, hiperalgia: 2 },
   // The roll names a penalty may match on each attribute (on top of "all_rolls"); Will and the senses are rolls too.

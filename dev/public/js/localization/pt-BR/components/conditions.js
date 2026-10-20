@@ -31,10 +31,10 @@ export const CONDITIONS = {
   },
   tags: {
     stunned: "Atordoado",
-    cannot_act: "Não pode agir",
     incapacitated: "Incapacitado",
     unconscious: "Inconsciente",
     paralyzed: "Paralisado",
+    cannot_act: "Não pode agir",
   },
   attributes: {
     HT: "HT",

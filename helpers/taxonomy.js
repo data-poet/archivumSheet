@@ -2,6 +2,8 @@
 // categories, enchantment attribute targets). Centralized alongside helpers/ids.js
 // and helpers/datasets.js so a dataset revamp that renames a category is a one-file edit.
 
+const { CONDITION_RULES } = require("./rules.js");
+
 // GURPS 4e damage types (sigla used in weapon_damage_type cells, see B16/B271).
 const DAMAGE_TYPES = {
   CRUSHING: "cr",
@@ -36,13 +38,10 @@ const CONDITION_MODIFIER_COLUMNS = {
   defense: "condition_defense_modifier",
 };
 
-// Tags a condition_grants cell may hold; implied tags (cannot_act) are not granted by a row.
-const CONDITION_STATUS_TAGS = [
-  "stunned",
-  "incapacitated",
-  "unconscious",
-  "paralyzed",
-];
+// Tags a condition_grants cell may hold: every tag except the ones only an implication can give.
+const CONDITION_STATUS_TAGS = Object.entries(CONDITION_RULES.tags)
+  .filter(([, tag]) => !tag.impliedOnly)
+  .map(([name]) => name);
 
 const CONDITION_RECOVERY_ATTRIBUTES = ["HT", "Will", "IQ"];
 const CONDITION_RECOVERY_INTERVALS = ["turn", "roll", "trigger", "12h"];

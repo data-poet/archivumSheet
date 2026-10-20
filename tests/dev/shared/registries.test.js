@@ -7,14 +7,9 @@ import {
   ARMOR_SLOT_KEYS,
 } from "dev/public/js/shared/constants.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
-import {
-  TARGET_ORDER,
-  TAG_ORDER,
-} from "dev/public/js/components/resume/conditions.js";
 import { CONDITION_RULES } from "helpers/rules.js";
 import {
   CONDITION_MODIFIER_COLUMNS,
-  CONDITION_STATUS_TAGS,
   CONDITION_RECOVERY_ATTRIBUTES,
   CONDITION_RECOVERY_INTERVALS,
 } from "helpers/taxonomy.js";
@@ -90,26 +85,38 @@ describe("no registry literal outside the registries", () => {
 });
 
 describe("the conditions card mirrors the engine vocabulary", () => {
-  const allTags = [
-    ...new Set([
-      ...CONDITION_STATUS_TAGS,
-      ...Object.keys(CONDITION_RULES.tagImplies),
-      ...Object.values(CONDITION_RULES.tagImplies).flat(),
-    ]),
-  ];
+  const allTags = Object.keys(CONDITION_RULES.tags);
   const rows = loadDataset("CONDITIONS");
 
-  test("every roll target the engine knows has a label and a place in the summary", () => {
-    const targets = Object.keys(CONDITION_MODIFIER_COLUMNS).sort();
-    expect(Object.keys(LABELS.conditions.targets).sort()).toEqual(targets);
-    expect([...TARGET_ORDER].sort()).toEqual(targets);
+  test("every roll target the engine knows has a label, and only those", () => {
+    expect(Object.keys(LABELS.conditions.targets).sort()).toEqual(
+      Object.keys(CONDITION_MODIFIER_COLUMNS).sort(),
+    );
   });
 
-  test("every status tag has a label and a place in the summary", () => {
+  test("every status tag has a label, and only those", () => {
     expect(Object.keys(LABELS.conditions.tags).sort()).toEqual(
       [...allTags].sort(),
     );
-    expect([...TAG_ORDER].sort()).toEqual([...allTags].sort());
+  });
+
+  test("the summary lists targets and tags in the order of their labels", () => {
+    expect(Object.keys(LABELS.conditions.targets)).toEqual([
+      "DX",
+      "IQ",
+      "Per",
+      "skills",
+      "all_rolls",
+      "self_control",
+      "defense",
+    ]);
+    expect(Object.keys(LABELS.conditions.tags)).toEqual([
+      "stunned",
+      "incapacitated",
+      "unconscious",
+      "paralyzed",
+      "cannot_act",
+    ]);
   });
 
   test("every recovery attribute and interval has a label", () => {

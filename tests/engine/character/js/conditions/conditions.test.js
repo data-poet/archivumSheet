@@ -118,18 +118,18 @@ describe("status tags", () => {
     },
   );
 
-  test("every tag a row grants or a rule implies is accounted for", () => {
-    const known = new Set([
-      ...CONDITION_STATUS_TAGS,
-      ...Object.values(CONDITION_RULES.tagImplies).flat(),
-    ]);
-    Object.entries(CONDITION_RULES.tagImplies).forEach(([tag, implied]) => {
-      expect(known.has(tag)).toBe(true);
-      implied.forEach((other) => expect(known.has(other)).toBe(true));
-    });
-    Object.keys(CONDITION_RULES.tagPenalties).forEach((tag) =>
-      expect(known.has(tag)).toBe(true),
+  test("every tag a rule implies is declared, and rows can grant every tag but the implied-only ones", () => {
+    const declared = Object.keys(CONDITION_RULES.tags);
+    Object.values(CONDITION_RULES.tags).forEach(({ implies = [] }) =>
+      implies.forEach((other) => expect(declared).toContain(other)),
     );
+
+    expect(CONDITION_STATUS_TAGS).toEqual(
+      Object.entries(CONDITION_RULES.tags)
+        .filter(([, tag]) => !tag.impliedOnly)
+        .map(([name]) => name),
+    );
+    expect(CONDITION_STATUS_TAGS).not.toContain("cannot_act");
   });
 });
 
@@ -472,6 +472,31 @@ describe("the rules table drives the engine", () => {
 
   test("an attribute the table does not list matches its own name", () => {
     expect(attributeRollKinds("Zzz")).toEqual(["all_rolls", "Zzz"]);
+  });
+
+  test("a new status tag is one table entry: closed over its implication, penalty counted once", () => {
+    const { tags, defense } = withRules(
+      { tags: { demo: { implies: ["stunned"], penalty: { defense: -2 } } } },
+      () =>
+        withEditedData(
+          "db_conditions.csv",
+          (rows) => {
+            rows.find((r) => r.condition_key === "coma").condition_grants =
+              "demo";
+            return rows;
+          },
+          () => {
+            const resolved = resolveConditions(["coma"]);
+            return {
+              tags: resolved.tags,
+              defense: rollPenalty(resolved, DEFENSE_ROLL),
+            };
+          },
+        ),
+    );
+
+    expect(tags).toEqual(["demo", "stunned"]);
+    expect(defense).toBe(-6);
   });
 
   test("a third pain-threshold trait is one table entry", () => {

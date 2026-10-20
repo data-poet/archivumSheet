@@ -10,23 +10,6 @@ import {
 } from "../../shared/conditionDisplay.js";
 import { referenceHref } from "../../layout/referenceLinks.js";
 
-export const TARGET_ORDER = [
-  "DX",
-  "IQ",
-  "Per",
-  "skills",
-  "all_rolls",
-  "self_control",
-  "defense",
-];
-export const TAG_ORDER = [
-  "stunned",
-  "incapacitated",
-  "unconscious",
-  "paralyzed",
-  "cannot_act",
-];
-
 function _immuneTitle(immunity) {
   return t("conditions.immuneTitle").replace(
     "{trait}",
@@ -35,22 +18,27 @@ function _immuneTitle(immunity) {
 }
 
 // The engine closes the tags (paralysis brings stunned and cannot_act); only the ones no other tag implies are worth showing.
-function _visibleTags(tags, implies) {
+function _visibleTags(tags, ruleTags) {
   return tags.filter(
     (tag) =>
-      !tags.some((other) => other !== tag && implies[other]?.includes(tag)),
+      !tags.some(
+        (other) => other !== tag && ruleTags[other]?.implies?.includes(tag),
+      ),
   );
 }
 
-function _summaryLine({ modifiers, tags }, implies) {
-  const numbers = TARGET_ORDER.filter((target) => modifiers[target]).map(
-    (target) =>
-      `${LABELS.conditions.targets[target]} ${signedModifier(modifiers[target])}`,
-  );
-  const shown = _visibleTags(tags, implies);
-  const statuses = TAG_ORDER.filter((tag) => shown.includes(tag)).map(
-    (tag) => LABELS.conditions.tags[tag],
-  );
+// The labels' key order is the order the summary lists targets and tags in.
+function _summaryLine({ modifiers, tags }, ruleTags) {
+  const numbers = Object.keys(LABELS.conditions.targets)
+    .filter((target) => modifiers[target])
+    .map(
+      (target) =>
+        `${LABELS.conditions.targets[target]} ${signedModifier(modifiers[target])}`,
+    );
+  const shown = _visibleTags(tags, ruleTags);
+  const statuses = Object.keys(LABELS.conditions.tags)
+    .filter((tag) => shown.includes(tag))
+    .map((tag) => LABELS.conditions.tags[tag]);
   return [...numbers, ...statuses].join(" · ");
 }
 
@@ -184,7 +172,7 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
   const immune = new Map(
     (sheet?.character?.condition_immunities ?? []).map((i) => [i.key, i]),
   );
-  const implies = data.rules?.CONDITION_RULES?.tagImplies ?? {};
+  const ruleTags = data.rules?.CONDITION_RULES?.tags ?? {};
 
   const attributeEntries = {
     ...sheet?.character?.secondary_attributes,
@@ -197,7 +185,7 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
     resolved,
     attributeEntries,
   );
-  const summary = resolved ? _summaryLine(resolved, implies) : "";
+  const summary = resolved ? _summaryLine(resolved, ruleTags) : "";
   const list = `
     ${_checklist(catalog, flags, immune)}
     <button type="button" class="conditions-clear">${t("conditions.clear")}</button>`;
