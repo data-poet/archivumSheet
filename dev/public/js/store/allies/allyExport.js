@@ -67,7 +67,8 @@ export function buildAllyFile(name, date = new Date(), type, subtype) {
       portrait,
       pc: _detachPortrait(sheet.pc, portrait),
       race: sheet.race,
-      character: sheet.character,
+      // Conditions are play-time state: a catalog ally must spawn with none switched on.
+      character: { ...sheet.character, conditions: {} },
       inventory: sheet.inventory,
     },
   };

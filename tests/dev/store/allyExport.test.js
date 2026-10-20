@@ -85,6 +85,15 @@ describe("buildAllyFile", () => {
     expect(payload.version).toBe(sheet.version);
   });
 
+  test("leaves active conditions out of the file without switching them off on the sheet", () => {
+    state.selected.conditions = { "dor-grave": true };
+
+    const { payload } = buildAllyFile("Bran", DATE);
+
+    expect(payload.character.conditions).toEqual({});
+    expect(state.selected.conditions).toEqual({ "dor-grave": true });
+  });
+
   // A base64 blob in a committed catalog file would bloat the repo permanently.
   test("drops the base64 portrait but keeps its framing", () => {
     state.selected.character.image = {
