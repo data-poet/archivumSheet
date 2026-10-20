@@ -7,6 +7,7 @@ export const CONDITIONS = {
   removeTitle: "Desativar",
   immune: "imune",
   immuneTitle: "Imune: {trait}",
+  modifiedTitle: "Condições {modifier} (base {base})",
   recovery: "Recuperação",
   recoveryOr: " ou ",
   groups: {

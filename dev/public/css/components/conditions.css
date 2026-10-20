@@ -104,3 +104,13 @@
 .conditions-clear:hover {
   background: var(--color-danger-bg);
 }
+
+.condition-modified {
+  color: var(--accent-attributes);
+  font-weight: 700;
+}
+
+.condition-base {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}

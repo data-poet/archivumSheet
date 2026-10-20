@@ -12,6 +12,7 @@ import {
   renderResumeWeaponTable,
   formatCritical,
   nhCell,
+  conditionCell,
 } from "./shared.js";
 
 const ARMOR_SLOT_ROWS = ARMOR_SLOTS.map((label) => ({
@@ -88,7 +89,7 @@ export function renderResumeShield(sheet) {
 
   // final_damage_resistance includes enchantments, same as renderResumeArmor.
   const dr = equippedShield.final_damage_resistance ?? "—";
-  const block = equippedShield.block ?? "—";
+  const block = conditionCell(equippedShield, "block");
   const check = equippedShield.skill_check;
   const nh = nhCell(check, sheet?.character?.skills);
   const critical = formatCritical(check?.critical);
@@ -162,9 +163,11 @@ function _unarmedRows(unarmed = []) {
       : "—",
     skill_check: {
       level: u.level,
+      effective_level: u.effective_level,
       source: u.source,
       st_penalty: u.st_penalty,
       parry: u.parry,
+      effective_parry: u.effective_parry,
       actions: u.actions,
       critical: u.critical,
     },
@@ -193,7 +196,7 @@ export function renderResumeMelee(sheet) {
       },
       {
         header: t("traits.parry"),
-        cell: (w) => w.skill_check?.parry ?? "—",
+        cell: (w) => conditionCell(w.skill_check, "parry"),
       },
       {
         header: t("traits.actions"),

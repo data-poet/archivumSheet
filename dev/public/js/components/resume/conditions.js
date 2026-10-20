@@ -3,7 +3,7 @@
 import { LABELS, t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { escapeAttr, escapeHtml } from "../../shared/renderUtils.js";
-import { collapsibleHeader, bindCollapse } from "./shared.js";
+import { collapsibleHeader, bindCollapse, signedModifier } from "./shared.js";
 
 export const TARGET_ORDER = [
   "DX",
@@ -21,10 +21,6 @@ export const TAG_ORDER = [
   "paralyzed",
   "cannot_act",
 ];
-
-function _signed(value) {
-  return `${value < 0 ? "−" : "+"}${Math.abs(value)}`;
-}
 
 function _immuneTitle(immunity) {
   return t("conditions.immuneTitle").replace(
@@ -44,7 +40,7 @@ function _visibleTags(tags, implies) {
 function _summaryLine({ modifiers, tags }, implies) {
   const numbers = TARGET_ORDER.filter((target) => modifiers[target]).map(
     (target) =>
-      `${LABELS.conditions.targets[target]} ${_signed(modifiers[target])}`,
+      `${LABELS.conditions.targets[target]} ${signedModifier(modifiers[target])}`,
   );
   const shown = _visibleTags(tags, implies);
   const statuses = TAG_ORDER.filter((tag) => shown.includes(tag)).map(

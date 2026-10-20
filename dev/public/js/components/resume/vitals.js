@@ -13,7 +13,7 @@ import {
 } from "../../shared/constants.js";
 import { thresholdChip, fillThreshold } from "../thresholds.js";
 import { getExperienceRank } from "../../engine/character/experienceRank.js";
-import { collapsibleHeader, bindCollapse } from "./shared.js";
+import { collapsibleHeader, bindCollapse, conditionCell } from "./shared.js";
 
 export function renderResumeHeader(sheet) {
   const nameEl = el("resume_header_name");
@@ -84,7 +84,7 @@ export function renderResumePrimaryAttributes(sheet) {
   }
 
   container.innerHTML = PRIMARY_ATTRIBUTES.map((key) => {
-    const value = primary[key]?.value ?? "—";
+    const value = conditionCell(primary[key], "value");
     const modVal = primary[key]?.modifier ?? 0;
     return `
         <div class="resume-attr-box">
@@ -135,7 +135,7 @@ export function renderResumeSecondarySnapshot(sheet) {
     const isBasicSpeed = key === "BasicSpeed";
     const value = isBasicSpeed
       ? Number(attr.value).toFixed(2)
-      : (attr.value ?? "—");
+      : conditionCell(attr, "value");
     const modifierStep = isBasicSpeed ? 0.5 : 1;
     const rawMod = attr.modifier ?? 0;
 

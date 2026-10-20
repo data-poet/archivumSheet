@@ -3,6 +3,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { escapeAttr } from "../../shared/renderUtils.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 
 const _collapseOpen = new Map();
@@ -195,6 +196,27 @@ export function formatCritical(critical) {
   return critical ? `≤${critical.success} · ≥${critical.failure}` : "—";
 }
 
+export function signedModifier(value) {
+  return `${value < 0 ? "−" : "+"}${Math.abs(value)}`;
+}
+
+// The number you actually roll, with the unmodified one beside it; the tooltip gives the total the conditions add.
+function modifiedNumber({ base, baseHtml = String(base), effective }) {
+  const title = t("conditions.modifiedTitle")
+    .replace("{modifier}", signedModifier(effective - base))
+    .replace("{base}", base);
+  return `<span class="condition-modified" title="${escapeAttr(title)}">${effective} <span class="condition-base">(${baseHtml})</span></span>`;
+}
+
+// A plain number, or `effective (base)` when the engine attached an effective_<field> to the entry.
+export function conditionCell(entry, field) {
+  const base = entry?.[field];
+  if (base == null) return "—";
+
+  const effective = entry[`effective_${field}`];
+  return effective == null ? String(base) : modifiedNumber({ base, effective });
+}
+
 // A defaulted or ST-penalized NH gets a "*" and a tooltip naming the source, so it isn't mistaken for a trained level.
 export function nhCell(check, skills = {}) {
   if (!check || check.level == null) return "—";
@@ -208,8 +230,17 @@ export function nhCell(check, skills = {}) {
   }
   if (check.st_penalty > 0) notes.push(`ST -${check.st_penalty}`);
 
-  if (notes.length === 0) return String(check.level);
-  return `<span class="resume-nh-default" title="${notes.join(" · ")}">${check.level}*</span>`;
+  const baseHtml =
+    notes.length === 0
+      ? String(check.level)
+      : `<span class="resume-nh-default" title="${notes.join(" · ")}">${check.level}*</span>`;
+  if (check.effective_level == null) return baseHtml;
+
+  return modifiedNumber({
+    base: check.level,
+    baseHtml,
+    effective: check.effective_level,
+  });
 }
 
 export function renderCollapsibleNameList(containerId, entries, title) {

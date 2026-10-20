@@ -5,6 +5,7 @@ import {
   bindCollapse,
   renderCollapsibleNameList,
   formatCritical,
+  conditionCell,
 } from "./shared.js";
 
 export function renderResumeTraits(sheet) {
@@ -63,9 +64,9 @@ export function renderResumeSkills(sheet) {
       (s) => `
       <tr>
         <td>${s.name ?? "—"}</td>
-        <td class="col-num">${s.value ?? "—"}</td>
+        <td class="col-num">${conditionCell(s, "value")}</td>
         <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
-        <td class="col-num">${s.parry != null ? s.parry : "—"}</td>
+        <td class="col-num">${conditionCell(s, "parry")}</td>
         <td class="col-num">${s.actions ?? "—"}</td>
       </tr>
     `,
@@ -115,7 +116,7 @@ export function renderResumeMagic(sheet, data) {
         <tr>
           <td>${s.name ?? "—"}</td>
           <td class="col-num">${cost}</td>
-          <td class="col-num">${s.value ?? "—"}</td>
+          <td class="col-num">${conditionCell(s, "value")}</td>
           <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
         </tr>
       `;
