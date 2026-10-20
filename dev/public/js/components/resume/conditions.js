@@ -4,7 +4,10 @@ import { LABELS, t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { escapeAttr, escapeHtml } from "../../shared/renderUtils.js";
 import { collapsibleHeader, bindCollapse } from "./shared.js";
-import { signedModifier } from "../../shared/conditionDisplay.js";
+import {
+  signedModifier,
+  conditionCell,
+} from "../../shared/conditionDisplay.js";
 
 export const TARGET_ORDER = [
   "DX",
@@ -50,18 +53,27 @@ function _summaryLine({ modifiers, tags }, implies) {
   return [...numbers, ...statuses].join(" · ");
 }
 
-function _recoveryText({ attributes, interval }) {
-  const names = attributes.map((a) => LABELS.conditions.attributes[a] ?? a);
-  return `${names.join(t("conditions.recoveryOr"))} ${LABELS.conditions.intervals[interval] ?? interval}`;
+// The number to roll under is the sheet's own, conditions included; without it (the engine has not run) only the name shows.
+function _recoveryHtml({ attributes, interval }, attributeEntries) {
+  const targets = attributes.map((attribute) => {
+    const label = escapeHtml(
+      LABELS.conditions.attributes[attribute] ?? attribute,
+    );
+    const entry = attributeEntries[attribute];
+    return entry?.value == null
+      ? label
+      : `${label} ${conditionCell(entry, "value")}`;
+  });
+  const when = escapeHtml(LABELS.conditions.intervals[interval] ?? interval);
+
+  return `${escapeHtml(t("conditions.recovery"))}: ${targets.join(escapeHtml(t("conditions.recoveryOr")))} ${when}`;
 }
 
 function _entry({ row, immunity, notes }) {
   const key = row.condition_key;
   const name = escapeHtml(row.condition_name);
   const label = `${t("conditions.removeTitle")}: ${row.condition_name}`;
-  const noteItems = notes
-    .map((note) => `<li>${escapeHtml(note)}</li>`)
-    .join("");
+  const noteItems = notes.map((note) => `<li>${note}</li>`).join("");
 
   return `
     <li class="condition-entry${immunity ? " condition-entry--immune" : ""}"${immunity ? ` title="${escapeAttr(_immuneTitle(immunity))}"` : ""}>
@@ -76,7 +88,7 @@ function _entry({ row, immunity, notes }) {
 }
 
 // A flag the engine dropped (unknown or excluded) has nothing to show; an immune one is shown so it can still be removed.
-function _activeList(catalog, flags, immune, resolved) {
+function _activeList(catalog, flags, immune, resolved, attributeEntries) {
   const active = new Set((resolved?.active ?? []).map((c) => c.key));
   const recoveryOf = new Map(
     (resolved?.recoveries ?? []).map((r) => [r.key, r]),
@@ -94,11 +106,11 @@ function _activeList(catalog, flags, immune, resolved) {
 
       const notes = [];
       if (!immunity && recoveryOf.has(key)) {
-        notes.push(
-          `${t("conditions.recovery")}: ${_recoveryText(recoveryOf.get(key))}`,
-        );
+        notes.push(_recoveryHtml(recoveryOf.get(key), attributeEntries));
       }
-      if (!immunity && reminderOf.has(key)) notes.push(reminderOf.get(key));
+      if (!immunity && reminderOf.has(key)) {
+        notes.push(escapeHtml(reminderOf.get(key)));
+      }
 
       return _entry({ row, immunity, notes });
     })
@@ -160,7 +172,17 @@ export function renderResumeConditions(sheet, data = {}, selected = {}) {
   );
   const implies = data.rules?.CONDITION_RULES?.tagImplies ?? {};
 
-  const entries = _activeList(catalog, flags, immune, resolved);
+  const attributeEntries = {
+    ...sheet?.character?.secondary_attributes,
+    ...sheet?.character?.primary_attributes,
+  };
+  const entries = _activeList(
+    catalog,
+    flags,
+    immune,
+    resolved,
+    attributeEntries,
+  );
   const summary = resolved ? _summaryLine(resolved, implies) : "";
 
   container.innerHTML = `

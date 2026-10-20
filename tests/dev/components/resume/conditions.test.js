@@ -240,6 +240,72 @@ describe("active conditions", () => {
   });
 });
 
+describe("the recovery roll's target number", () => {
+  const withRecovery = (attributes, interval, sheetAttributes = {}) =>
+    renderResumeConditions(
+      {
+        character: {
+          ...sheetAttributes,
+          conditions: resolved({
+            active: [
+              { key: "atordoamento-fisico", name: "Atordoamento Físico" },
+            ],
+            recoveries: [{ key: "atordoamento-fisico", attributes, interval }],
+          }),
+        },
+      },
+      { conditions: CATALOG },
+      { conditions: { "atordoamento-fisico": true } },
+    );
+  const note = () =>
+    container()
+      .querySelector(".condition-entry-notes li")
+      .textContent.replace(/\s+/g, " ");
+
+  test("puts the sheet's own HT beside the attribute name", () => {
+    withRecovery(["HT"], "turn", {
+      primary_attributes: { HT: { value: 12 } },
+    });
+
+    expect(note()).toBe("Recuperação: HT 12 a cada turno");
+  });
+
+  test("lists each attribute with its own number when the roll can use either", () => {
+    withRecovery(["Will", "IQ"], "turn", {
+      primary_attributes: { IQ: { value: 10 } },
+      secondary_attributes: { Will: { value: 11 } },
+    });
+
+    expect(note()).toBe("Recuperação: Vontade 11 ou IQ 10 a cada turno");
+  });
+
+  test("shows the effective number with the base beside it when a condition lowers it", () => {
+    withRecovery(["HT"], "trigger", {
+      primary_attributes: { HT: { value: 12, effective_value: 10 } },
+    });
+
+    expect(note()).toBe("Recuperação: HT 10 (12) a cada gatilho");
+    expect(
+      container().querySelector(".condition-entry-notes .condition-modified")
+        .title,
+    ).toBe("Condições −2 (base 12)");
+  });
+
+  test("falls back to the bare attribute name before the engine has numbers", () => {
+    withRecovery(["Will", "IQ"], "turn");
+
+    expect(note()).toBe("Recuperação: Vontade ou IQ a cada turno");
+  });
+
+  test("a roll with no number for one of its attributes names it bare", () => {
+    withRecovery(["Will", "IQ"], "turn", {
+      primary_attributes: { IQ: { value: 10 } },
+    });
+
+    expect(note()).toBe("Recuperação: Vontade ou IQ 10 a cada turno");
+  });
+});
+
 describe("the summary line hides status words another one implies", () => {
   const summaryFor = (tags, data = { conditions: CATALOG, rules }) => {
     renderResumeConditions(
@@ -423,15 +489,19 @@ describe("with the sheet the real engine builds", () => {
     ]);
   });
 
-  test("names the recovery roll of the mental stun under it", () => {
+  test("gives the recovery roll of the mental stun the numbers the engine computed, penalties included", () => {
+    const { Will } = sheet.character.secondary_attributes;
+    const { IQ } = sheet.character.primary_attributes;
     const entry = container()
       .querySelector(
         '.condition-remove[data-condition-key="atordoamento-mental"]',
       )
       .closest(".condition-entry");
 
-    expect(entry.textContent).toContain(
-      "Recuperação: Vontade ou IQ a cada turno",
+    expect(Will.effective_value).toBeUndefined();
+    expect(IQ.effective_value).toBeLessThan(IQ.value);
+    expect(entry.textContent.replace(/\s+/g, " ")).toContain(
+      `Recuperação: Vontade ${Will.value} ou IQ ${IQ.effective_value} (${IQ.value}) a cada turno`,
     );
   });
 
