@@ -1,5 +1,5 @@
 const { criticalRanges } = require("../../../../helpers/criticalRanges.js");
-const { PRIMARY_KEYS } = require("../../../../helpers/rules.js");
+const { CONDITION_RULES } = require("../../../../helpers/rules.js");
 const {
   ALL_BUCKETS,
   VALID_STORED_AT,
@@ -12,10 +12,7 @@ const {
   attributeRollKinds,
   skillRollKinds,
   DEFENSE_ROLL,
-  SENSE_ROLL,
 } = require("./conditions.js");
-
-const SENSE_KEYS = ["Vision", "Hearing", "Smell"];
 
 // The original field stays the pre-condition number: Parry, Block and costs are derived from it.
 function addEffective(entry, field, penalty) {
@@ -66,14 +63,13 @@ function applyConditions({
   }
 
   const primary = characterData.primary_attributes ?? {};
-  PRIMARY_KEYS.forEach((key) =>
-    markRoll(primary[key], "value", penaltyFor(attributeRollKinds(key))),
-  );
-
   const secondary = characterData.secondary_attributes ?? {};
-  markRoll(secondary.Will, "value", penaltyFor(attributeRollKinds("Will")));
-  SENSE_KEYS.forEach((key) =>
-    markRoll(secondary[key], "value", penaltyFor(SENSE_ROLL)),
+  Object.keys(CONDITION_RULES.attributeRollKinds).forEach((key) =>
+    markRoll(
+      primary[key] ?? secondary[key],
+      "value",
+      penaltyFor(attributeRollKinds(key)),
+    ),
   );
   if (addEffective(secondary.Dodge, "value", defense)) {
     secondary.Dodge.condition_modifier = defense;

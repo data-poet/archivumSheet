@@ -212,6 +212,17 @@ describe("condition rules", () => {
         unconscious: ["incapacitated"],
       },
       tagPenalties: { stunned: { defense: -4 } },
+      painScale: { hipoalgia: 0.5, hiperalgia: 2 },
+      attributeRollKinds: {
+        ST: ["ST"],
+        DX: ["DX"],
+        IQ: ["IQ"],
+        HT: ["HT"],
+        Will: ["Will"],
+        Vision: ["Per"],
+        Hearing: ["Per"],
+        Smell: ["Per"],
+      },
     });
   });
 });

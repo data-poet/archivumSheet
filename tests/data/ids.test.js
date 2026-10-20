@@ -7,6 +7,7 @@ const {
   PAIN_THRESHOLD_TRAIT_KEYS,
 } = require("helpers/ruleKeys.js");
 const ids = require("helpers/ids.js");
+const { CONDITION_RULES } = require("helpers/rules.js");
 const { withEditedData } = require("tests/helpers/tempData");
 
 // helpers/ids.js looks its ids up by stable key, so a renumbered dataset changes nothing there. These
@@ -160,6 +161,12 @@ describe("immunity traits", () => {
 });
 
 describe("pain threshold traits", () => {
+  test("the factor table and the registry name the same traits", () => {
+    expect(Object.keys(CONDITION_RULES.painScale).sort()).toEqual(
+      PAIN_THRESHOLD_TRAIT_KEYS.map(([, key]) => key).sort(),
+    );
+  });
+
   test("every registered key is either resolved or pending", () => {
     const registered = PAIN_THRESHOLD_TRAIT_KEYS.map(([, key]) => key).sort();
     const accounted = [

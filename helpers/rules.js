@@ -73,6 +73,19 @@ const CONDITION_RULES = {
     unconscious: ["incapacitated"],
   },
   tagPenalties: { stunned: { defense: -4 } },
+  // Pain-threshold traits by key: the factors of the owned ones multiply, so Hipoalgia and Hiperalgia cancel out.
+  painScale: { hipoalgia: 0.5, hiperalgia: 2 },
+  // The roll names a penalty may match on each attribute (on top of "all_rolls"); Will and the senses are rolls too.
+  attributeRollKinds: {
+    ST: ["ST"],
+    DX: ["DX"],
+    IQ: ["IQ"],
+    HT: ["HT"],
+    Will: ["Will"],
+    Vision: ["Per"],
+    Hearing: ["Per"],
+    Smell: ["Per"],
+  },
 };
 
 const OVERLOADED = { level: "overloaded", move_factor: 0, dodge_penalty: -4 };

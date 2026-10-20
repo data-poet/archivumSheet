@@ -1,7 +1,5 @@
 const {
   DEFENSE_ROLL,
-  SELF_CONTROL_ROLL,
-  SENSE_ROLL,
   attributeRollKinds,
   skillRollKinds,
   resolveConditions,
@@ -71,9 +69,11 @@ describe("stacking", () => {
   });
 
   test("self-control and sense rolls match their own targets", () => {
-    expect(penalty(["embriaguez"], SELF_CONTROL_ROLL)).toBe(-4);
-    expect(penalty(["gravemente-nauseado"], SENSE_ROLL)).toBe(-5);
-    expect(penalty(["dor-grave"], SENSE_ROLL)).toBe(0);
+    expect(penalty(["embriaguez"], ["self_control"])).toBe(-4);
+    expect(penalty(["gravemente-nauseado"], attributeRollKinds("Vision"))).toBe(
+      -5,
+    );
+    expect(penalty(["dor-grave"], attributeRollKinds("Vision"))).toBe(0);
   });
 
   test("the summary adds each target across conditions and tags", () => {
@@ -402,7 +402,7 @@ describe("shock", () => {
     expect(penalty(["choque-4"], attributeRollKinds("HT"))).toBe(0);
     expect(penalty(["choque-4"], skillRollKinds("HT"))).toBe(0);
     expect(penalty(["choque-4"], skillRollKinds("ST"))).toBe(0);
-    expect(penalty(["choque-4"], SENSE_ROLL)).toBe(0);
+    expect(penalty(["choque-4"], attributeRollKinds("Vision"))).toBe(0);
   });
 
   test("leaves the active defenses alone", () => {
@@ -424,5 +424,77 @@ describe("shock", () => {
 
   test("grants no status tag, so it never stuns", () => {
     expect(resolveConditions(["choque-8"]).tags).toEqual([]);
+  });
+});
+
+describe("the rules table drives the engine", () => {
+  const withRules = (patch, run) => {
+    const saved = {};
+    for (const [section, entries] of Object.entries(patch)) {
+      saved[section] = { ...CONDITION_RULES[section] };
+      Object.assign(CONDITION_RULES[section], entries);
+    }
+    try {
+      return run();
+    } finally {
+      for (const [section, copy] of Object.entries(saved)) {
+        Object.keys(CONDITION_RULES[section]).forEach(
+          (key) => delete CONDITION_RULES[section][key],
+        );
+        Object.assign(CONDITION_RULES[section], copy);
+      }
+    }
+  };
+
+  test("Will rolls take IQ penalties once the table says Will follows IQ", () => {
+    expect(penalty(["tosse-ou-espirro"], attributeRollKinds("Will"))).toBe(0);
+
+    const followed = withRules(
+      { attributeRollKinds: { Will: ["Will", "IQ"] } },
+      () => penalty(["tosse-ou-espirro"], attributeRollKinds("Will")),
+    );
+
+    expect(followed).toBe(-1);
+    expect(penalty(["tosse-ou-espirro"], attributeRollKinds("Will"))).toBe(0);
+  });
+
+  test("one sense can follow IQ without the others", () => {
+    const [vision, hearing] = withRules(
+      { attributeRollKinds: { Vision: ["Per", "IQ"] } },
+      () => [
+        penalty(["tosse-ou-espirro"], attributeRollKinds("Vision")),
+        penalty(["tosse-ou-espirro"], attributeRollKinds("Hearing")),
+      ],
+    );
+
+    expect([vision, hearing]).toEqual([-1, 0]);
+  });
+
+  test("an attribute the table does not list matches its own name", () => {
+    expect(attributeRollKinds("Zzz")).toEqual(["all_rolls", "Zzz"]);
+  });
+
+  test("a third pain-threshold trait is one table entry", () => {
+    const [pain] = withRules({ painScale: { resistente: 0.75 } }, () =>
+      resolveConditions(["dor-grave"], {
+        traitIds: ["ADV-X"],
+        painThresholdTraitIds: { resistente: "ADV-X" },
+      }),
+    ).active;
+
+    expect(pain.targets.DX).toBe(-3);
+    expect(pain.scale).toBe(0.75);
+  });
+
+  test("traits that scale in opposite directions multiply out", () => {
+    const [pain] = withRules({ painScale: { forte: 0.5, fraco: 0.5 } }, () =>
+      resolveConditions(["dor-grave"], {
+        traitIds: ["A", "B"],
+        painThresholdTraitIds: { forte: "A", fraco: "B" },
+      }),
+    ).active;
+
+    expect(pain.targets.DX).toBe(-1);
+    expect(pain.scale).toBe(0.25);
   });
 });

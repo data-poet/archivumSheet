@@ -2,6 +2,7 @@ const {
   applyConditions,
 } = require("engine/character/js/conditions/applyConditions");
 const { criticalRanges } = require("helpers/criticalRanges.js");
+const { CONDITION_RULES } = require("helpers/rules.js");
 const { ADVANTAGE } = require("tests/helpers/dataRefs");
 
 function check(skill_id, level, parry) {
@@ -265,5 +266,41 @@ describe("condition_immunities", () => {
     expect(
       apply(["dor-grave"]).characterData.condition_immunities,
     ).toBeUndefined();
+  });
+});
+
+describe("the attribute roll table decides which entries take a modifier", () => {
+  test("Will takes an IQ penalty when the table says it follows IQ", () => {
+    const saved = CONDITION_RULES.attributeRollKinds.Will;
+    CONDITION_RULES.attributeRollKinds.Will = ["Will", "IQ"];
+    try {
+      const { secondary_attributes: secondary } = apply([
+        "tosse-ou-espirro",
+      ]).characterData;
+
+      expect(secondary.Will).toEqual({
+        value: 11,
+        condition_modifier: -1,
+        effective_value: 10,
+      });
+      expect(secondary.Vision).toEqual({ value: 11 });
+    } finally {
+      CONDITION_RULES.attributeRollKinds.Will = saved;
+    }
+  });
+
+  test("an attribute left out of the table takes no modifier at all", () => {
+    const saved = CONDITION_RULES.attributeRollKinds.Smell;
+    delete CONDITION_RULES.attributeRollKinds.Smell;
+    try {
+      const { secondary_attributes: secondary } = apply([
+        "nauseado",
+      ]).characterData;
+
+      expect(secondary.Smell).toEqual({ value: 11 });
+      expect(secondary.Hearing.condition_modifier).toBe(-2);
+    } finally {
+      CONDITION_RULES.attributeRollKinds.Smell = saved;
+    }
   });
 });

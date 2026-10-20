@@ -15,17 +15,17 @@ const {
 } = require("../../../../helpers/ids.js");
 
 const DEFENSE_ROLL = ["defense"];
-const SELF_CONTROL_ROLL = ["self_control"];
-const SENSE_ROLL = ["all_rolls", "Per"];
 
 const TRAIT_NAME_COLUMNS = [
   ["ADVANTAGES", "advantage_name"],
   ["DISADVANTAGES", "disadvantage_name"],
 ];
 
-// A DX or IQ roll matches the penalties on its own name; ST, HT and Will only match "all_rolls".
 function attributeRollKinds(attribute) {
-  return ["all_rolls", attribute];
+  return [
+    "all_rolls",
+    ...(CONDITION_RULES.attributeRollKinds[attribute] ?? [attribute]),
+  ];
 }
 
 function skillRollKinds(attribute) {
@@ -42,12 +42,14 @@ function targetsOf(row, scale = 1) {
   return targets;
 }
 
-// Hipoalgia halves a pain condition and Hiperalgia doubles it; a character with both gets neither.
 function painScale(ownedTraitIds, painThresholdTraitIds) {
-  const high = ownedTraitIds.has(painThresholdTraitIds.hipoalgia);
-  const low = ownedTraitIds.has(painThresholdTraitIds.hiperalgia);
-  if (high === low) return 1;
-  return high ? 0.5 : 2;
+  return Object.entries(CONDITION_RULES.painScale).reduce(
+    (scale, [traitKey, factor]) =>
+      ownedTraitIds.has(painThresholdTraitIds[traitKey])
+        ? scale * factor
+        : scale,
+    1,
+  );
 }
 
 function closeTags(granted) {
@@ -204,8 +206,6 @@ function rollPenalty(resolved, kinds) {
 
 module.exports = {
   DEFENSE_ROLL,
-  SELF_CONTROL_ROLL,
-  SENSE_ROLL,
   attributeRollKinds,
   skillRollKinds,
   resolveConditions,

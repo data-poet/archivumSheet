@@ -6,6 +6,7 @@ const {
   SKILL,
 } = require("tests/helpers/dataRefs");
 const { loadDataset } = require("helpers/datasets.js");
+const { CONDITION_RULES } = require("helpers/rules.js");
 const { buildSheet } = require("engine/buildSheet");
 const { computeParry } = require("engine/character/js/skills/skillCheck");
 
@@ -184,5 +185,16 @@ describe("buildSheet with conditions", () => {
     expect(character.unarmed[0].parry).toBe(base.character.unarmed[0].parry);
     expect(character.unarmed[0].effective_parry).toBeUndefined();
     expect(inventory.shield.equipped.effective_block).toBeUndefined();
+  });
+
+  test("every attribute in the roll table is a real entry of the built sheet", () => {
+    const { primary_attributes: primary, secondary_attributes: secondary } =
+      build(["nauseado"]).character;
+
+    Object.keys(CONDITION_RULES.attributeRollKinds).forEach((key) => {
+      const entry = primary[key] ?? secondary[key];
+      expect(entry).toBeDefined();
+      expect(entry.condition_modifier).toBe(-2);
+    });
   });
 });
