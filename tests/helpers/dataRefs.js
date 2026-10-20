@@ -92,6 +92,7 @@ const DISADVANTAGE = lazy({
   fragilNaoNatural: () => idOfKey("DISADVANTAGES", "fragil-nao-natural"),
   furia: () => idOfKey("DISADVANTAGES", "furia"),
   hediondo: () => idOfKey("DISADVANTAGES", "hediondo"),
+  hiperalgia: () => idOfKey("DISADVANTAGES", "hiperalgia"),
   monstruoso: () => idOfKey("DISADVANTAGES", "monstruoso"),
   reprogramavel: () => idOfKey("DISADVANTAGES", "reprogramavel"),
   semRecuperacaoTotal: () => idOfKey("DISADVANTAGES", "sem-recuperacao-total"),

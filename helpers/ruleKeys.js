@@ -56,6 +56,12 @@ const IMMUNITY_TRAIT_KEYS = [
   ["ADVANTAGES", "tolerancia-a-ferimentos-sem-vitais"],
 ];
 
+// Traits that scale a pain condition: Hipoalgia halves it, Hiperalgia doubles it. Pending, like the immunity keys.
+const PAIN_THRESHOLD_TRAIT_KEYS = [
+  ["ADVANTAGES", "hipoalgia"],
+  ["DISADVANTAGES", "hiperalgia"],
+];
+
 function idsByKey(dataset) {
   return new Map(
     loadDataset(dataset).map((row) => [
@@ -97,13 +103,18 @@ function resolveRuleKeys() {
     else missing.push({ dataset, key });
   });
 
-  const immunityTraitIds = {};
-  const pendingImmunityKeys = [];
-  IMMUNITY_TRAIT_KEYS.forEach(([dataset, key]) => {
-    const id = idsOf(dataset).get(key);
-    if (id) immunityTraitIds[key] = id;
-    else pendingImmunityKeys.push(key);
-  });
+  const resolveLenient = (entries) => {
+    const ids = {};
+    const pending = [];
+    entries.forEach(([dataset, key]) => {
+      const id = idsOf(dataset).get(key);
+      if (id) ids[key] = id;
+      else pending.push(key);
+    });
+    return { ids, pending };
+  };
+  const immunity = resolveLenient(IMMUNITY_TRAIT_KEYS);
+  const painThreshold = resolveLenient(PAIN_THRESHOLD_TRAIT_KEYS);
 
   const broquelShieldIds = loadDataset("SHIELDS")
     .filter((row) => row.shield_key.startsWith(BROQUEL_SHIELD_KEY_PREFIX))
@@ -117,8 +128,10 @@ function resolveRuleKeys() {
   return {
     tierGroups,
     singles,
-    immunityTraitIds,
-    pendingImmunityKeys,
+    immunityTraitIds: immunity.ids,
+    pendingImmunityKeys: immunity.pending,
+    painThresholdTraitIds: painThreshold.ids,
+    pendingPainThresholdKeys: painThreshold.pending,
     broquelShieldIds,
     dualUsePairs,
     missing,
@@ -131,5 +144,6 @@ module.exports = {
   SINGLE_KEYS,
   BROQUEL_SHIELD_KEY_PREFIX,
   IMMUNITY_TRAIT_KEYS,
+  PAIN_THRESHOLD_TRAIT_KEYS,
   resolveRuleKeys,
 };

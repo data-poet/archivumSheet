@@ -7,9 +7,9 @@ COND-004,embriaguez,Embriaguez,Irritante,embriaguez,-2,-2,,,,-4,,,,,,,Autocontro
 COND-005,ligeiramente-embriagado,Ligeiramente Embriagado,Irritante,embriaguez,-1,-1,,,,-2,,,,,,,Autocontrole -2 (exceto contra Covardia). Reduza Timidez em 1 nível.
 COND-006,euforia,Euforia,Irritante,,-3,-3,,-3,,-3,,,,,,,
 COND-007,nauseado,Nauseado,Irritante,nausea,,,,,-2,,-1,,HT,trigger,,,"HT após comer, odor desagradável, Pânico, atordoamento, queda livre ou enjoo de movimento; falha = Gravemente Nauseado."
-COND-008,dor-moderada,Dor Moderada,Irritante,dor,-2,-2,,-2,,-2,,,,,TRUE,,Hipoalgia reduz pela metade; Hiperalgia dobra.
-COND-009,dor-grave,Dor Grave,Irritante,dor,-4,-4,,-4,,-4,,,,,TRUE,,Hipoalgia reduz pela metade; Hiperalgia dobra.
-COND-010,dor-terrivel,Dor Terrível,Irritante,dor,-6,-6,,-6,,-6,,,,,TRUE,,Hipoalgia reduz pela metade; Hiperalgia dobra.
+COND-008,dor-moderada,Dor Moderada,Irritante,dor,-2,-2,,-2,,-2,,,,,TRUE,,
+COND-009,dor-grave,Dor Grave,Irritante,dor,-4,-4,,-4,,-4,,,,,TRUE,,
+COND-010,dor-terrivel,Dor Terrível,Irritante,dor,-6,-6,,-6,,-6,,,,,TRUE,,
 COND-011,agonia,Agonia,Incapacitante,,,,,,,,,incapacitated,,,,,Perde 1 PF por minuto. Cai se estiver de pé ou sentado. Hiperalgia dobra a perda de PF; Hipoalgia permite agir com -3 em DX e IQ.
 COND-012,sufocamento,Sufocamento,Incapacitante,,,,,,,,,incapacitated,,,,"nao-respira,tolerancia-a-ferimentos-homogeneo",Efeitos de asfixia.
 COND-013,torpor,Torpor,Incapacitante,,,,,,,,,incapacitated,,,,,"Se atingido, esbofeteado ou sacudido, recupera no próximo turno."

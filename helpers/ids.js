@@ -33,6 +33,10 @@ const BROQUEL_SHIELD_IDS = new Set(resolved.broquelShieldIds);
 const IMMUNITY_TRAIT_IDS = resolved.immunityTraitIds;
 const PENDING_IMMUNITY_KEYS = resolved.pendingImmunityKeys;
 
+// Pain threshold trait ids by key (hipoalgia, hiperalgia), only for the keys that have a row.
+const PAIN_THRESHOLD_TRAIT_IDS = resolved.painThresholdTraitIds;
+const PENDING_PAIN_THRESHOLD_KEYS = resolved.pendingPainThresholdKeys;
+
 // Weapons present in both the melee and ranged tables (same weapon_key) are auto-mirrored across them.
 // Pairs are [meleeId, rangedId].
 const DUAL_USE_WEAPON_PAIRS = resolved.dualUsePairs;
@@ -52,6 +56,8 @@ module.exports = {
   MAGIC_RETURN_ENCHANTMENT_ID,
   IMMUNITY_TRAIT_IDS,
   PENDING_IMMUNITY_KEYS,
+  PAIN_THRESHOLD_TRAIT_IDS,
+  PENDING_PAIN_THRESHOLD_KEYS,
   DUAL_USE_WEAPON_PAIRS,
   UNRESOLVED_RULE_KEYS,
 };

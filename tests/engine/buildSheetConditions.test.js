@@ -1,4 +1,10 @@
-const { ADVANTAGE, RANGED, SHIELD, SKILL } = require("tests/helpers/dataRefs");
+const {
+  ADVANTAGE,
+  DISADVANTAGE,
+  RANGED,
+  SHIELD,
+  SKILL,
+} = require("tests/helpers/dataRefs");
 const { loadDataset } = require("helpers/datasets.js");
 const { buildSheet } = require("engine/buildSheet");
 const { computeParry } = require("engine/character/js/skills/skillCheck");
@@ -142,5 +148,24 @@ describe("buildSheet with conditions", () => {
     expect(JSON.parse(JSON.stringify(sheet)).character.conditions).toEqual(
       sheet.character.conditions,
     );
+  });
+
+  test("Hipoalgia halves a pain condition and Hiperalgia doubles it, through the whole sheet", () => {
+    const dx = (overrides) =>
+      build(["dor-grave"], overrides).character.primary_attributes.DX;
+
+    expect(dx({}).condition_modifier).toBe(-4);
+    expect(dx({ advantages: [ADVANTAGE.hipoalgia] }).condition_modifier).toBe(
+      -2,
+    );
+    expect(
+      dx({ disadvantages: [DISADVANTAGE.hiperalgia] }).condition_modifier,
+    ).toBe(-8);
+    expect(
+      dx({
+        advantages: [ADVANTAGE.hipoalgia],
+        disadvantages: [DISADVANTAGE.hiperalgia],
+      }).condition_modifier,
+    ).toBe(-4);
   });
 });

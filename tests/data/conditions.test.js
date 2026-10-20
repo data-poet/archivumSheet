@@ -179,4 +179,24 @@ describe("check:data catches a bad conditions edit", () => {
       expect.objectContaining({ check: "immunity-pending", id: "nao-respira" }),
     );
   });
+
+  test("a pain threshold trait whose row is gone is pending, never an error", () => {
+    const { errors, info } = withEditedData(
+      "db_traits_disadvantages.csv",
+      (edited) => {
+        edited.find(
+          (row) => row.disadvantage_key === "hiperalgia",
+        ).disadvantage_key = "hiperalgia-antiga";
+        return edited;
+      },
+      () => runChecks(),
+    );
+    expect(errors.filter((e) => e.check === "rule-key")).toEqual([]);
+    expect(info).toContainEqual(
+      expect.objectContaining({
+        check: "pain-threshold-pending",
+        id: "hiperalgia",
+      }),
+    );
+  });
 });

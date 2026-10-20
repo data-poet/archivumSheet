@@ -4,6 +4,7 @@ const {
   resolveRuleKeys,
   TIER_GROUPS,
   IMMUNITY_TRAIT_KEYS,
+  PAIN_THRESHOLD_TRAIT_KEYS,
 } = require("helpers/ruleKeys.js");
 const ids = require("helpers/ids.js");
 const { withEditedData } = require("tests/helpers/tempData");
@@ -155,6 +156,40 @@ describe("immunity traits", () => {
     );
     expect(immunityTraitIds["estraga-prazeres"]).toBe("DIS-999");
     expect(pendingImmunityKeys).not.toContain("estraga-prazeres");
+  });
+});
+
+describe("pain threshold traits", () => {
+  test("every registered key is either resolved or pending", () => {
+    const registered = PAIN_THRESHOLD_TRAIT_KEYS.map(([, key]) => key).sort();
+    const accounted = [
+      ...Object.keys(ids.PAIN_THRESHOLD_TRAIT_IDS),
+      ...ids.PENDING_PAIN_THRESHOLD_KEYS,
+    ].sort();
+    expect(accounted).toEqual(registered);
+  });
+
+  test("a resolved id belongs to the row with that key", () => {
+    const datasetOf = Object.fromEntries(
+      PAIN_THRESHOLD_TRAIT_KEYS.map(([dataset, key]) => [key, dataset]),
+    );
+    Object.entries(ids.PAIN_THRESHOLD_TRAIT_IDS).forEach(([key, id]) => {
+      expect(keyOf(datasetOf[key], id)).toBe(key);
+    });
+  });
+
+  test("a key with no row is pending, not missing", () => {
+    const { pendingPainThresholdKeys, missing } = withEditedData(
+      "db_traits_advantages.csv",
+      (rows) => {
+        rows.find((r) => r.advantage_key === "hipoalgia").advantage_key =
+          "hipoalgia-antiga";
+        return rows;
+      },
+      () => resolveRuleKeys(),
+    );
+    expect(pendingPainThresholdKeys).toContain("hipoalgia");
+    expect(missing.map((m) => m.key)).not.toContain("hipoalgia");
   });
 });
 

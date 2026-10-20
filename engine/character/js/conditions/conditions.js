@@ -1,11 +1,18 @@
 const { loadDataset } = require("../../../../helpers/datasets.js");
 const { ID_COLUMN } = require("../../../../helpers/datasetColumns.js");
-const { toList, toNumberOrNull } = require("../../../../helpers/rowParsers.js");
+const {
+  toBool,
+  toList,
+  toNumberOrNull,
+} = require("../../../../helpers/rowParsers.js");
 const { CONDITION_RULES } = require("../../../../helpers/rules.js");
 const {
   CONDITION_MODIFIER_COLUMNS,
 } = require("../../../../helpers/taxonomy.js");
-const { IMMUNITY_TRAIT_IDS } = require("../../../../helpers/ids.js");
+const {
+  IMMUNITY_TRAIT_IDS,
+  PAIN_THRESHOLD_TRAIT_IDS,
+} = require("../../../../helpers/ids.js");
 
 const DEFENSE_ROLL = ["defense"];
 const SELF_CONTROL_ROLL = ["self_control"];
@@ -25,13 +32,22 @@ function skillRollKinds(attribute) {
   return ["all_rolls", "skills", attribute];
 }
 
-function targetsOf(row) {
+// An odd penalty rounds toward zero when halved; the shipped pain rows are all even.
+function targetsOf(row, scale = 1) {
   const targets = {};
   for (const [target, column] of Object.entries(CONDITION_MODIFIER_COLUMNS)) {
-    const value = toNumberOrNull(row[column]) ?? 0;
+    const value = Math.trunc((toNumberOrNull(row[column]) ?? 0) * scale);
     if (value !== 0) targets[target] = value;
   }
   return targets;
+}
+
+// Hipoalgia halves a pain condition and Hiperalgia doubles it; a character with both gets neither.
+function painScale(ownedTraitIds, painThresholdTraitIds) {
+  const high = ownedTraitIds.has(painThresholdTraitIds.hipoalgia);
+  const low = ownedTraitIds.has(painThresholdTraitIds.hiperalgia);
+  if (high === low) return 1;
+  return high ? 0.5 : 2;
 }
 
 function closeTags(granted) {
@@ -99,7 +115,11 @@ function summarize(active, tags) {
 // Immune conditions are listed and ignored; an exclusive-group loser or an unknown key is dropped and reported.
 function resolveConditions(
   activeKeys = [],
-  { traitIds = [], immunityTraitIds = IMMUNITY_TRAIT_IDS } = {},
+  {
+    traitIds = [],
+    immunityTraitIds = IMMUNITY_TRAIT_IDS,
+    painThresholdTraitIds = PAIN_THRESHOLD_TRAIT_IDS,
+  } = {},
 ) {
   const rows = loadDataset("CONDITIONS");
   const rowByKey = new Map(rows.map((row) => [row.condition_key, row]));
@@ -132,12 +152,18 @@ function resolveConditions(
   }
 
   const chosenRows = rows.filter((row) => chosen.has(row.condition_key));
-  const active = chosenRows.map((row) => ({
-    key: row.condition_key,
-    name: row.condition_name,
-    group: row.condition_group,
-    targets: targetsOf(row),
-  }));
+  const pain = painScale(ownedTraitIds, painThresholdTraitIds);
+  const active = chosenRows.map((row) => {
+    const scale =
+      pain !== 1 && toBool(row.condition_scales_with_pain_threshold) ? pain : 1;
+    return {
+      key: row.condition_key,
+      name: row.condition_name,
+      group: row.condition_group,
+      targets: targetsOf(row, scale),
+      ...(scale !== 1 ? { scale } : {}),
+    };
+  });
   const tags = closeTags(chosenRows.flatMap((r) => toList(r.condition_grants)));
 
   return {

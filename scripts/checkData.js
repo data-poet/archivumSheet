@@ -22,6 +22,7 @@ const {
 const {
   resolveRuleKeys,
   IMMUNITY_TRAIT_KEYS,
+  PAIN_THRESHOLD_TRAIT_KEYS,
 } = require("../helpers/ruleKeys.js");
 const { REFERENCES, idsInCell } = require("../helpers/datasetReferences.js");
 const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
@@ -377,19 +378,34 @@ function checkSkillCostTables(findings) {
 // The code addresses these rows by key (helpers/ruleKeys.js): the keys must exist, and a tier group must
 // not have more tiers in the data than the code registers.
 function checkRuleKeys(findings, { verbose }) {
-  const { missing, unregistered, dualUsePairs, pendingImmunityKeys } =
-    resolveRuleKeys();
-  pendingImmunityKeys.forEach((key) => {
-    const [dataset] = IMMUNITY_TRAIT_KEYS.find(([, k]) => k === key);
-    findings.push(
-      finding(
-        "info",
-        "immunity-pending",
-        dataset,
-        key,
-        "immunity trait with no row yet; it applies once a row has this key",
-      ),
-    );
+  const {
+    missing,
+    unregistered,
+    dualUsePairs,
+    pendingImmunityKeys,
+    pendingPainThresholdKeys,
+  } = resolveRuleKeys();
+  [
+    ["immunity-pending", "immunity", pendingImmunityKeys, IMMUNITY_TRAIT_KEYS],
+    [
+      "pain-threshold-pending",
+      "pain threshold",
+      pendingPainThresholdKeys,
+      PAIN_THRESHOLD_TRAIT_KEYS,
+    ],
+  ].forEach(([check, label, pending, registered]) => {
+    pending.forEach((key) => {
+      const [dataset] = registered.find(([, k]) => k === key);
+      findings.push(
+        finding(
+          "info",
+          check,
+          dataset,
+          key,
+          `${label} trait with no row yet; it applies once a row has this key`,
+        ),
+      );
+    });
   });
   missing.forEach(({ dataset, key }) => {
     findings.push(

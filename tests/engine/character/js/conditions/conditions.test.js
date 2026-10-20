@@ -11,6 +11,7 @@ const {
 const { CONDITION_RULES } = require("helpers/rules.js");
 const { CONDITION_STATUS_TAGS } = require("helpers/taxonomy.js");
 const { loadDataset } = require("helpers/datasets.js");
+const { withEditedData } = require("tests/helpers/tempData");
 
 const penalty = (keys, kinds, options) =>
   rollPenalty(resolveConditions(keys, options), kinds);
@@ -292,5 +293,99 @@ describe("conditionImmunities", () => {
     expect(conditionImmunities(["DIS-900"], { immunityTraitIds: {} })).toEqual(
       [],
     );
+  });
+});
+
+describe("pain threshold", () => {
+  const painThresholdTraitIds = { hipoalgia: "ADV-049", hiperalgia: "DIS-034" };
+  const resolve = (keys, traitIds, options = {}) =>
+    resolveConditions(keys, { traitIds, painThresholdTraitIds, ...options });
+
+  test("Hipoalgia halves every target of a pain condition and reports the scale", () => {
+    const [pain] = resolve(["dor-grave"], ["ADV-049"]).active;
+
+    expect(pain.targets).toEqual({
+      DX: -2,
+      IQ: -2,
+      skills: -2,
+      self_control: -2,
+    });
+    expect(pain.scale).toBe(0.5);
+  });
+
+  test("Hiperalgia doubles it", () => {
+    const [pain] = resolve(["dor-grave"], ["DIS-034"]).active;
+
+    expect(pain.targets).toEqual({
+      DX: -8,
+      IQ: -8,
+      skills: -8,
+      self_control: -8,
+    });
+    expect(pain.scale).toBe(2);
+  });
+
+  test("a character with both gets neither, and no scale is reported", () => {
+    const [pain] = resolve(["dor-grave"], ["ADV-049", "DIS-034"]).active;
+
+    expect(pain.targets.DX).toBe(-4);
+    expect("scale" in pain).toBe(false);
+  });
+
+  test("without either trait nothing changes", () => {
+    const [pain] = resolve(["dor-grave"], ["ADV-001"]).active;
+
+    expect(pain.targets.DX).toBe(-4);
+    expect("scale" in pain).toBe(false);
+  });
+
+  test("only the conditions flagged as pain are scaled", () => {
+    const resolved = resolve(["euforia", "nauseado", "agonia"], ["ADV-049"]);
+
+    expect(resolved.active.map((c) => [c.key, c.scale])).toEqual([
+      ["euforia", undefined],
+      ["nauseado", undefined],
+      ["agonia", undefined],
+    ]);
+    expect(resolved.active.find((c) => c.key === "euforia").targets.DX).toBe(
+      -3,
+    );
+  });
+
+  test("the roll penalty and the summary follow the scaled numbers", () => {
+    const resolved = resolve(["dor-grave"], ["DIS-034"]);
+
+    expect(rollPenalty(resolved, skillRollKinds("DX"))).toBe(-8);
+    expect(resolved.modifiers).toEqual({
+      DX: -8,
+      IQ: -8,
+      skills: -8,
+      self_control: -8,
+    });
+  });
+
+  test("a pending trait key (no row) scales nothing, even when its id is owned", () => {
+    const [pain] = resolveConditions(["dor-grave"], {
+      traitIds: ["ADV-049", "DIS-034"],
+      painThresholdTraitIds: {},
+    }).active;
+
+    expect(pain.targets.DX).toBe(-4);
+  });
+
+  test("an odd penalty rounds toward zero when halved, and a penalty of 1 drops out", () => {
+    const [pain] = withEditedData(
+      "db_conditions.csv",
+      (rows) => {
+        const row = rows.find((r) => r.condition_key === "dor-moderada");
+        row.condition_dx_modifier = "-3";
+        row.condition_iq_modifier = "-1";
+        return rows;
+      },
+      () => resolve(["dor-moderada"], ["ADV-049"]).active,
+    );
+
+    expect(pain.targets.DX).toBe(-1);
+    expect("IQ" in pain.targets).toBe(false);
   });
 });
