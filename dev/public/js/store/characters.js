@@ -111,7 +111,6 @@ function _initStore(firstCharName) {
   return store;
 }
 
-// Mirrors _applyImport in persistence.js.
 function _applyData(data) {
   if (!data) return;
   const { selected } = state;

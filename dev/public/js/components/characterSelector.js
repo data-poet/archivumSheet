@@ -12,11 +12,7 @@ import {
   listCharactersGrouped,
   recreateLinkedAllies,
 } from "../store/allies/characterLinking.js";
-import {
-  exportSheet,
-  exportAllySheet,
-  importSheet,
-} from "../store/persistence.js";
+import { exportSheet, exportAllySheet } from "../store/persistence.js";
 import { showToast } from "../shared/toast.js";
 import { replaceActiveCharacter } from "../store/characters.js";
 import { showConfirm } from "./dialog.js";

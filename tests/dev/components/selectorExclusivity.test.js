@@ -29,7 +29,6 @@ jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
 jest.mock("dev/public/js/store/persistence.js", () => ({
   exportSheet: jest.fn(),
   exportAllySheet: jest.fn(),
-  importSheet: jest.fn(),
 }));
 jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),

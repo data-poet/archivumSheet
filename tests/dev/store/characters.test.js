@@ -507,6 +507,67 @@ describe("replaceActiveCharacter", () => {
     expect(renderListsPreserving).toHaveBeenCalledTimes(1);
   });
 
+  // payload above is a minimal, hand-built shape. This is a real exported file with every inventory
+  // bucket populated and a linked dual-use weapon pair, guarding against _applyData dropping or
+  // mis-mapping a bucket that a minimal payload can't exercise.
+  test("hydrates every inventory bucket from a real exported sheet", () => {
+    const fixture = require("tests/dev/helpers/fixtures/sheet.full.json");
+
+    replaceActiveCharacter(fixture);
+
+    expect(state.selected.character.character_name).toBe(
+      fixture.pc.character_name,
+    );
+    expect(state.selected.armors).toEqual(fixture.inventory.armors);
+    expect(state.selected.melee_weapons).toEqual(
+      fixture.inventory.melee_weapons,
+    );
+    expect(state.selected.ranged_weapons).toEqual(
+      fixture.inventory.ranged_weapons,
+    );
+    expect(state.selected.ammo_containers).toEqual(
+      fixture.inventory.ammo_containers,
+    );
+    expect(state.selected.accessories).toEqual(fixture.inventory.accessories);
+    expect(state.selected.magicGear).toEqual(fixture.inventory.magicGear);
+    expect(state.selected.coins).toEqual(fixture.inventory.coins);
+
+    const melee = state.selected.melee_weapons.find(
+      (w) => w.id === "melee-inst-2",
+    );
+    expect(melee._linkedInstanceId).toBe("ranged-inst-1");
+  });
+
+  test("takes the roster, meta-races and conditions from the sheet, not from the previous character", () => {
+    state.selected.allies = [{ id: "ai-old", ally_id: "c-old", overrides: {} }];
+    state.selected.alliesActiveId = "ai-old";
+    state.selected.meta_race_ids = ["META-999"];
+    state.selected.conditions = { coma: true };
+
+    replaceActiveCharacter({
+      ...payload,
+      character: {
+        ...payload.character,
+        allies: [{ id: "ai-1", ally_id: "c-1", overrides: {} }],
+        alliesActiveId: "ai-1",
+        meta_race_ids: ["META-000"],
+        conditions: { "dor-grave": true },
+      },
+    });
+    expect(state.selected.allies).toEqual([
+      { id: "ai-1", ally_id: "c-1", overrides: {} },
+    ]);
+    expect(state.selected.alliesActiveId).toBe("ai-1");
+    expect(state.selected.meta_race_ids).toEqual(["META-000"]);
+    expect(state.selected.conditions).toEqual({ "dor-grave": true });
+
+    replaceActiveCharacter(payload);
+    expect(state.selected.allies).toEqual([]);
+    expect(state.selected.alliesActiveId).toBeNull();
+    expect(state.selected.meta_race_ids).toEqual([]);
+    expect(state.selected.conditions).toEqual({});
+  });
+
   test("updates the display name from the payload", () => {
     replaceActiveCharacter(payload);
     expect(listCharacters()[0].name).toBe("Replaced Hero");
