@@ -1,6 +1,6 @@
 {
   "name": "archivumsheet",
-  "version": "1.10.33",
+  "version": "1.10.34",
   "description": "Online GURPS (Archivum) Character Sheet",
   "main": "dev/server.js",
   "engines": {
@@ -28,7 +28,7 @@
     "coverage:compare": "node scripts/golden.js coverage-compare",
     "test:renumber": "node scripts/renumberCheck.js"
   },
-  "author": "",
+  "author": "Victor Vinci Fantucci <r4ven.project@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^8.0.1",
