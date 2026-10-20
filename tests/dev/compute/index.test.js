@@ -15,6 +15,7 @@ jest.mock("dev/public/js/ui.js", () => ({
   renderDamage: jest.fn(),
   renderElementalResistances: jest.fn(),
   renderThresholds: jest.fn(),
+  renderEditConditions: jest.fn(),
   renderResume: jest.fn(),
   syncViewMode: jest.fn(),
 }));
@@ -30,6 +31,7 @@ import {
   renderDamage,
   renderElementalResistances,
   renderThresholds,
+  renderEditConditions,
   renderResume,
   syncViewMode,
 } from "dev/public/js/ui.js";
@@ -435,6 +437,11 @@ describe("render orchestration", () => {
     expect(renderDamage).toHaveBeenCalledWith(json);
     expect(renderElementalResistances).toHaveBeenCalledWith(json);
     expect(renderThresholds).toHaveBeenCalledWith(json);
+    expect(renderEditConditions).toHaveBeenCalledWith(
+      json,
+      state.data,
+      state.selected,
+    );
     expect(renderResume).toHaveBeenCalledWith(json, state.data, state.selected);
     expect(syncViewMode).toHaveBeenCalledTimes(1);
     expect(state.sheet).toBe(json);

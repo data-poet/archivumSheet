@@ -31,6 +31,7 @@ export const SHEET_LAYOUT = [
           "tab-attr-damage",
           "tab-attr-resistances",
           "tab-survival-thresholds",
+          "tab-survival-conditions",
         ],
       },
       {

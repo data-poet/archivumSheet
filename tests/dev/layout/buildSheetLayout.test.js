@@ -164,6 +164,23 @@ describe("buildSheetLayout — reference help links", () => {
     ).toBe(true);
   });
 
+  test("the Condições tab follows Limiares in Sobrevivência and links to the conditions page", () => {
+    poolDOM();
+    buildSheetLayout();
+
+    const buttons = [
+      ...document.querySelectorAll("#section-survival .tab-strip .tab-btn"),
+    ];
+    expect(buttons.slice(-2).map((b) => b.dataset.tab)).toEqual([
+      "tab-survival-thresholds",
+      "tab-survival-conditions",
+    ]);
+    expect(buttons.at(-1).textContent).toContain(
+      LABELS.tabs["tab-survival-conditions"],
+    );
+    expect(buttons.at(-1).dataset.reference).toBe("tab-afflictions-conditions");
+  });
+
   test("sections without mapped tabs get no link", () => {
     poolDOM();
     buildSheetLayout();

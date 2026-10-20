@@ -10,6 +10,7 @@ import {
   renderDamage,
   renderElementalResistances,
   renderThresholds,
+  renderEditConditions,
   renderResume,
   syncViewMode,
 } from "../ui.js";
@@ -131,6 +132,7 @@ export async function runEngine() {
     renderDamage(json);
     renderElementalResistances(json);
     renderThresholds(json);
+    renderEditConditions(json, state.data, state.selected);
     renderResume(json, state.data, state.selected);
     syncViewMode();
 

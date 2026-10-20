@@ -169,10 +169,8 @@ function _checklist(catalog, flags, immune) {
     .join("");
 }
 
-export function renderResumeConditions(sheet, data = {}, selected = {}) {
-  const container = el("resume_conditions_container");
-  if (!container) return;
-
+// The edit tab shows the list open under its own tab title, so it drops the heading and the collapse toggle.
+function _renderCard(container, sheet, data, selected, { inTab }) {
   const catalog = data.conditions ?? [];
   if (catalog.length === 0) {
     container.hidden = true;
@@ -200,9 +198,12 @@ export function renderResumeConditions(sheet, data = {}, selected = {}) {
     attributeEntries,
   );
   const summary = resolved ? _summaryLine(resolved, implies) : "";
+  const list = `
+    ${_checklist(catalog, flags, immune)}
+    <button type="button" class="conditions-clear">${t("conditions.clear")}</button>`;
 
   container.innerHTML = `
-    <h3 class="resume-col-title">${t("conditions.title")}</h3>
+    ${inTab ? "" : `<h3 class="resume-col-title">${t("conditions.title")}</h3>`}
     ${
       entries
         ? `<ul class="conditions-active">${entries}</ul>`
@@ -210,12 +211,28 @@ export function renderResumeConditions(sheet, data = {}, selected = {}) {
     }
     ${summary ? `<p class="conditions-summary">${escapeHtml(summary)}</p>` : ""}
     <div class="conditions-list">
-      ${collapsibleHeader(t("conditions.listToggle"))}
-      <div class="resume-collapse-body">
-        ${_checklist(catalog, flags, immune)}
-        <button type="button" class="conditions-clear">${t("conditions.clear")}</button>
-      </div>
+      ${
+        inTab
+          ? list
+          : `${collapsibleHeader(t("conditions.listToggle"))}
+      <div class="resume-collapse-body">${list}</div>`
+      }
     </div>
   `;
-  bindCollapse(container);
+  if (!inTab) bindCollapse(container);
+}
+
+export function renderResumeConditions(sheet, data = {}, selected = {}) {
+  const container = el("resume_conditions_container");
+  if (!container) return;
+
+  _renderCard(container, sheet, data, selected, { inTab: false });
+}
+
+// Silent when the tab is absent: only the full page has it.
+export function renderEditConditions(sheet, data = {}, selected = {}) {
+  const container = document.getElementById("edit_conditions_container");
+  if (!container) return;
+
+  _renderCard(container, sheet, data, selected, { inTab: true });
 }

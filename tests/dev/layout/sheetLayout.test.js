@@ -77,3 +77,14 @@ describe("SHEET_LAYOUT ↔ localization", () => {
     });
   });
 });
+
+describe("the edit-mode conditions tab", () => {
+  test("its panel holds the container the card renders into, hidden until there is a catalog", () => {
+    const container = pool.querySelector(
+      "#tab-survival-conditions #edit_conditions_container",
+    );
+
+    expect(container).not.toBeNull();
+    expect(container.hidden).toBe(true);
+  });
+});

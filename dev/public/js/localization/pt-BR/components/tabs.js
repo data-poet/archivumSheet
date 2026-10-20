@@ -7,6 +7,7 @@ export const TABS = {
   "tab-attr-damage": "Dano Base",
   "tab-attr-resistances": "Resistências",
   "tab-survival-thresholds": "Limiares",
+  "tab-survival-conditions": "Condições",
   "tab-traits-advantages": "Vantagens",
   "tab-traits-disadvantages": "Desvantagens",
   "tab-skills-list": "Perícias",

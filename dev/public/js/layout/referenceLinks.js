@@ -6,6 +6,7 @@ export const REFERENCE_LINKS = {
   "tab-attr-damage": "tab-attr-base-damage",
   "tab-attr-resistances": "tab-attr-resistances",
   "tab-survival-thresholds": "tab-combat-rules",
+  "tab-survival-conditions": "tab-afflictions-conditions",
 };
 
 export function referenceHref(anchor) {

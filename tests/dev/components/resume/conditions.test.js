@@ -1,4 +1,7 @@
-import { renderResumeConditions } from "dev/public/js/components/resume/conditions.js";
+import {
+  renderResumeConditions,
+  renderEditConditions,
+} from "dev/public/js/components/resume/conditions.js";
 import { renderResume } from "dev/public/js/components/resume/index.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
@@ -557,6 +560,77 @@ describe("the full list", () => {
     expect(container().querySelector(".conditions-clear").textContent).toBe(
       t("conditions.clear"),
     );
+  });
+});
+
+describe("the card in the edit tab", () => {
+  const editContainer = () => id("edit_conditions_container");
+  const flags = { conditions: { "dor-grave": true } };
+  const sheet = sheetWith(
+    resolved({
+      active: [{ key: "dor-grave", name: "Dor Grave" }],
+      tags: ["stunned"],
+      modifiers: { DX: -4, defense: -4 },
+    }),
+  );
+
+  beforeEach(() => {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      '<div id="edit_conditions_container" hidden></div>',
+    );
+  });
+
+  test("shows the list open under the tab, with no heading and no collapse toggle", () => {
+    renderEditConditions(sheet, { conditions: CATALOG }, flags);
+
+    expect(editContainer().hidden).toBe(false);
+    expect(editContainer().querySelector(".resume-col-title")).toBeNull();
+    expect(editContainer().querySelector(".resume-section-toggle")).toBeNull();
+    expect(editContainer().querySelectorAll(".condition-toggle").length).toBe(
+      CATALOG.length,
+    );
+    expect(editContainer().querySelector(".conditions-clear")).not.toBeNull();
+  });
+
+  test("shows the same entries and summary as the resume card", () => {
+    renderResumeConditions(sheet, { conditions: CATALOG }, flags);
+    renderEditConditions(sheet, { conditions: CATALOG }, flags);
+
+    const text = (container) =>
+      [
+        ...container.querySelectorAll(".condition-entry, .conditions-summary"),
+      ].map((node) => node.textContent.replace(/\s+/g, " ").trim());
+    expect(text(editContainer())).toEqual(text(container()));
+    expect(text(editContainer())).toContain("DX −4 · Defesas −4 · Atordoado");
+  });
+
+  test("checks the boxes of the flags that are on", () => {
+    renderEditConditions(sheet, { conditions: CATALOG }, flags);
+
+    expect(
+      [...editContainer().querySelectorAll(".condition-toggle:checked")].map(
+        (box) => box.dataset.conditionKey,
+      ),
+    ).toEqual(["dor-grave"]);
+  });
+
+  test("hides itself until the conditions are loaded", () => {
+    renderEditConditions({}, { conditions: [] }, {});
+
+    expect(editContainer().hidden).toBe(true);
+    expect(editContainer().innerHTML).toBe("");
+  });
+
+  test("does nothing, and does not warn, on a page without the tab", () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    editContainer().remove();
+
+    expect(() =>
+      renderEditConditions(sheet, { conditions: CATALOG }, flags),
+    ).not.toThrow();
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
   });
 });
 
