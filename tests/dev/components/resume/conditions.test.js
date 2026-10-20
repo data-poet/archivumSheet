@@ -240,6 +240,45 @@ describe("active conditions", () => {
   });
 });
 
+describe("a pain condition scaled by the pain threshold", () => {
+  const render = (scale) =>
+    renderResumeConditions(
+      sheetWith(
+        resolved({
+          active: [
+            {
+              key: "dor-grave",
+              name: "Dor Grave",
+              ...(scale ? { scale } : {}),
+            },
+          ],
+        }),
+      ),
+      { conditions: CATALOG },
+      { conditions: { "dor-grave": true } },
+    );
+  const name = () => container().querySelector(".condition-entry-name");
+
+  test.each([
+    [0.5, "Dor Grave (×½)"],
+    [2, "Dor Grave (×2)"],
+  ])("a scale of %s shows %s beside the name", (scale, expected) => {
+    render(scale);
+
+    expect(name().textContent).toBe(expected);
+    expect(name().querySelector(".condition-scale").title).toBe(
+      t("conditions.scaledTitle"),
+    );
+  });
+
+  test("an unscaled condition shows no mark", () => {
+    render(undefined);
+
+    expect(name().textContent).toBe("Dor Grave");
+    expect(container().querySelector(".condition-scale")).toBeNull();
+  });
+});
+
 describe("the recovery roll's target number", () => {
   const withRecovery = (attributes, interval, sheetAttributes = {}) =>
     renderResumeConditions(

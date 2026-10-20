@@ -69,7 +69,13 @@ function _recoveryHtml({ attributes, interval }, attributeEntries) {
   return `${escapeHtml(t("conditions.recovery"))}: ${targets.join(escapeHtml(t("conditions.recoveryOr")))} ${when}`;
 }
 
-function _entry({ row, immunity, notes }) {
+function _scaleMark(scale) {
+  if (!scale) return "";
+  const text = LABELS.conditions.scales[scale] ?? `×${scale}`;
+  return ` <span class="condition-scale" title="${escapeAttr(t("conditions.scaledTitle"))}">(${escapeHtml(text)})</span>`;
+}
+
+function _entry({ row, immunity, scale, notes }) {
   const key = row.condition_key;
   const name = escapeHtml(row.condition_name);
   const label = `${t("conditions.removeTitle")}: ${row.condition_name}`;
@@ -78,7 +84,7 @@ function _entry({ row, immunity, notes }) {
   return `
     <li class="condition-entry${immunity ? " condition-entry--immune" : ""}"${immunity ? ` title="${escapeAttr(_immuneTitle(immunity))}"` : ""}>
       <span class="condition-entry-head">
-        <span class="condition-entry-name">${name}${immunity ? ` (${t("conditions.immune")})` : ""}</span>
+        <span class="condition-entry-name">${name}${immunity ? ` (${t("conditions.immune")})` : ""}${_scaleMark(scale)}</span>
         <button type="button" class="condition-remove"
           data-condition-key="${escapeAttr(key)}"
           title="${escapeAttr(label)}" aria-label="${escapeAttr(label)}">×</button>
@@ -89,7 +95,7 @@ function _entry({ row, immunity, notes }) {
 
 // A flag the engine dropped (unknown or excluded) has nothing to show; an immune one is shown so it can still be removed.
 function _activeList(catalog, flags, immune, resolved, attributeEntries) {
-  const active = new Set((resolved?.active ?? []).map((c) => c.key));
+  const active = new Map((resolved?.active ?? []).map((c) => [c.key, c]));
   const recoveryOf = new Map(
     (resolved?.recoveries ?? []).map((r) => [r.key, r]),
   );
@@ -112,7 +118,7 @@ function _activeList(catalog, flags, immune, resolved, attributeEntries) {
         notes.push(escapeHtml(reminderOf.get(key)));
       }
 
-      return _entry({ row, immunity, notes });
+      return _entry({ row, immunity, scale: active.get(key)?.scale, notes });
     })
     .join("");
 }

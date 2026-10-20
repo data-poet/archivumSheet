@@ -123,3 +123,8 @@
   color: var(--accent-attributes);
   font-weight: 700;
 }
+
+.condition-scale {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}

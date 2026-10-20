@@ -8,6 +8,8 @@ export const CONDITIONS = {
   immune: "imune",
   immuneTitle: "Imune: {trait}",
   modifiedTitle: "Condições {modifier} (base {base})",
+  scaledTitle: "Ajustada pelo limiar de dor",
+  scales: { 0.5: "×½", 2: "×2" },
   recovery: "Recuperação",
   recoveryOr: " ou ",
   groups: {
