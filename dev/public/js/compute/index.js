@@ -114,6 +114,18 @@ export async function runEngine() {
       }
     });
 
+    // A flag for a condition the dataset no longer has would stay invisible, and uncheckable, until "Limpar".
+    const unknownConditions = (json.character?.conditions?.dropped ?? [])
+      .filter((entry) => entry.reason === "unknown")
+      .map((entry) => entry.key);
+    if (unknownConditions.length > 0) {
+      selected.conditions = Object.fromEntries(
+        Object.entries(selected.conditions).filter(
+          ([key]) => !unknownConditions.includes(key),
+        ),
+      );
+    }
+
     renderOutput(json);
     renderSecondaryAttributes(json);
     renderDamage(json);

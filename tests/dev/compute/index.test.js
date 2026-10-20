@@ -162,6 +162,43 @@ describe("buildSheet payload — character", () => {
     expect(character.conditions).toEqual(["atordoamento-fisico", "dor-grave"]);
   });
 
+  test("a flag the engine reports as unknown is dropped from the saved conditions, the rest are kept", async () => {
+    selected.conditions = {
+      "nao-existe": true,
+      "dor-moderada": true,
+      coma: true,
+    };
+    buildSheet.mockResolvedValue(
+      makeJson({
+        character: {
+          secondary_attributes: {},
+          base_damage: {},
+          character_points: {},
+          conditions: {
+            dropped: [
+              { key: "nao-existe", reason: "unknown" },
+              { key: "dor-moderada", reason: "exclusive", kept: "dor-grave" },
+            ],
+          },
+        },
+      }),
+    );
+
+    await runEngine();
+
+    expect(selected.conditions).toEqual({ "dor-moderada": true, coma: true });
+    expect(saveActiveCharacter).toHaveBeenCalledTimes(1);
+  });
+
+  test("leaves the conditions object alone when nothing is unknown", async () => {
+    const flags = { coma: true };
+    selected.conditions = flags;
+
+    await runEngine();
+
+    expect(selected.conditions).toBe(flags);
+  });
+
   test("no conditions means an empty list, not a missing key", async () => {
     await runEngine();
 
