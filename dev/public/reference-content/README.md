@@ -6,6 +6,7 @@ Placing a file: add it to `js/reference/referenceLayout.js` and add its label to
 ## File structure
 
 - No title at the top. The tab already shows the name.
+- A title is its own anchor (`<tab id>--<slug of the title>`), so renaming a `<summary>` or a `###` breaks any link to it. `tests/dev/reference/conditionAnchors.test.js` fails when a condition links to a title that no longer exists.
 - Structure comes from `###` headings, which stay visible. Collapsibles are only for **lists of peers you look up one at a time** (maneuvers, conditions, hit locations, long tables).
 - **Never nest `<details>`**, with one exception: worked examples. If an item has parts, label them in bold inside it.
 - Consecutive `<details>` render as one boxed list of rows, and only one row per list stays open (added at render, no markup needed).

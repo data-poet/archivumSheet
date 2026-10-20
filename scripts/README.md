@@ -200,6 +200,7 @@ Part of `npm test` as well. Run it alone for quick feedback after a CSV edit.
 | `scripts/remapReferences.js`                    | the remap logic and command                |
 | `scripts/formatData.js`                         | line-ending normalization                  |
 | `scripts/checkData.js`                          | the validation rules                       |
+| `scripts/checks/*.js`                           | per-dataset checks and their helpers       |
 | `scripts/renumberCheck.js`, `scripts/golden.js` | refactor safety nets                       |
 | `helpers/datasetReferences.js`                  | which columns hold ids of another dataset  |
 | `helpers/ruleKeys.js`                           | rows the game code depends on, by key      |

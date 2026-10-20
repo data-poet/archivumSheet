@@ -69,6 +69,7 @@ DOM event → state.selected (raw input) → POST /api/sheet/build
 - **`engine/`** — server-side computation, called via `POST /api/sheet/build` and `/api/character/build`. `buildSheet()` orchestrates `buildCharacter()` (attributes, traits, skills, base damage) and `buildInventory()` (per-category item resolution, carry weight, encumbrance, combat stats). Each inventory category under `engine/inventory/js/<category>/` follows the same shape: `constants` → `validation` → `resolver` → main `build*` function — mirror this when adding a new one.
 - **`dev/server.js`** — thin Express layer: GET endpoints serve each CSV as JSON (dropdown data), POST endpoints run the engine.
 - **`dev/public/js/`** — UI layer, organized by responsibility: `state.js` (the 3-part global state below), `engine/` (per-domain model, render and event handlers; its structure mirrors the server-side `engine/`), `events/index.js` (the sheet's delegated document listeners, which route to those handlers), `components/` (page-level renderers and widgets, including the resume), `ui.js` (the render entry points), `store/` (characters, persistence, theme and view state), `allies/` (the repo ally catalog), `compute/` (collects the raw input, calls the engine and drives the re-render), `layout/` (page assembly), `reference/` (the rules reference page), `shared/` (helpers used across domains), `localization/pt-BR/` (every visible string).
+- **`helpers/`** — what the engine, the scripts and (through `/api/rules`, or a mirror pinned by a parity test) the UI share: numeric rules, stable-key ids, vocabularies and the dataset registry. Where each kind of constant lives, and why, is in `CLAUDE.md`.
 
 **State (`state.js`)** has three sections:
 
@@ -114,6 +115,7 @@ Load-bearing constraints, not preferences — all contributions must follow them
 
 - **Engine owns computed values.** `state.selected` never holds a computed field.
 - **Mirror existing patterns.** Adding an inventory type? Copy `engine/inventory/js/ammo/`'s structure exactly.
+- **No literal rules.** Numbers go in `helpers/rules.js`, references to rows are stable keys (`helpers/ruleKeys.js`, `helpers/ids.js`), vocabularies live in `helpers/taxonomy.js` — see `CLAUDE.md`.
 - **All strings go through `localization/pt-BR/`.** No hardcoded text in JS/HTML.
 - **Delegated events.** The sheet's list and form interactions are wired once, on `document`, in `events/index.js`; the domain `events.js` files only export handlers. Self-contained widgets (dialogs, tabs, the character selector, toasts) bind their own listeners.
 - **Open-state preservation.** Re-rendering a list must not collapse rows the user had expanded (`shared/openState.js`).
