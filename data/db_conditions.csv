@@ -1,6 +1,6 @@
 condition_id,condition_key,condition_name,condition_group,condition_exclusive_group,condition_dx_modifier,condition_iq_modifier,condition_perception_modifier,condition_skills_modifier,condition_all_rolls_modifier,condition_self_control_modifier,condition_defense_modifier,condition_grants,condition_recovery_attribute,condition_recovery_interval,condition_scales_with_pain_threshold,condition_immune_trait_keys,condition_reminders
-COND-000,atordoamento-fisico,Atordoamento Físico,Atordoamento,,,,,,,,,stunned,HT,turn,,,Teste de HT no início de cada turno para se recuperar.
-COND-001,atordoamento-mental,Atordoamento Mental,Atordoamento,,,,,,,,,stunned,"Will,IQ",turn,,,Vontade (Verificação de Pânico) ou IQ (falha crítica de magia) a cada turno para se recuperar.
+COND-000,atordoamento-fisico,Atordoamento Físico,Atordoamento,,,,,,,,,stunned,HT,turn,,,
+COND-001,atordoamento-mental,Atordoamento Mental,Atordoamento,,,,,,,,,stunned,"Will,IQ",turn,,,Vontade após Verificação de Pânico; IQ após falha crítica de magia.
 COND-002,tosse-ou-espirro,Tosse ou Espirro,Irritante,,-3,-1,,,,,,,,,,,Não pode usar a perícia Furtividade.
 COND-003,sonolencia,Sonolência,Irritante,,-2,-2,,,,-2,,,,,,,Vontade a cada 2 h inativo; falha = dorme. Marque só o estado após o sucesso.
 COND-004,embriaguez,Embriaguez,Irritante,embriaguez,-2,-2,,,,-4,,,,,,,Autocontrole -4 (exceto contra Covardia). Reduza Timidez em 2 níveis.
@@ -19,5 +19,5 @@ COND-016,paralisia,Paralisia,Incapacitante,,,,,,,,,"incapacitated,paralyzed",,,,
 COND-017,gravemente-nauseado,Gravemente Nauseado,Incapacitante,nausea,-5,-5,-5,,,,,,,,,,Valores valem se tentar agir (não atordoado). Falha automática em Concentrar; perde 1 PF ao final.
 COND-018,convulsao,Convulsão,Incapacitante,,,,,,,,,incapacitated,,,,,"Ao final, perde 1d PF."
 COND-019,inconsciencia,Inconsciência,Incapacitante,,,,,,,,,unconscious,,,,,
-COND-020,coma,Coma,Mortal,,,,,,,,,unconscious,HT,12h,,,"Um teste de HT após 12 h; sem tratamento, HT a cada 12 h ou morre."
+COND-020,coma,Coma,Mortal,,,,,,,,,unconscious,HT,12h,,,"Primeiro teste só após 12 h; sem tratamento, falhar é morte."
 COND-021,ataque-cardiaco,Ataque Cardíaco,Mortal,,,,,,,,,incapacitated,,,,"tolerancia-a-ferimentos-difuso,tolerancia-a-ferimentos-homogeneo,tolerancia-a-ferimentos-sem-vitais",PF caem para -1 x PF. Morre em HT/3 minutos sem reanimação.
