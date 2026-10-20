@@ -3,6 +3,9 @@
   "version": "1.10.33",
   "description": "Online GURPS (Archivum) Character Sheet",
   "main": "dev/server.js",
+  "engines": {
+    "node": ">=24"
+  },
   "directories": {
     "test": "tests"
   },

@@ -16,7 +16,7 @@ archivumSheet replaces paper sheets and generic spreadsheets: it enforces the ru
 
 ## Getting Started
 
-**Requirements:** Node.js v20+ (see `.nvmrc`)
+**Requirements:** Node.js v24+ (see `.nvmrc`)
 
 ```bash
 git clone https://github.com/data-poet/archivumSheet.git
