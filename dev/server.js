@@ -62,6 +62,7 @@ const DATASET_ROUTES = {
   "/api/spells": "GRIMOIRE",
   "/api/races": "RACES",
   "/api/meta-races": "META_RACES",
+  "/api/conditions": "CONDITIONS",
   "/api/materials": "CRAFTING_MATERIALS",
   "/api/armors": "ARMORS",
   "/api/shields": "SHIELDS",

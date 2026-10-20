@@ -87,6 +87,7 @@ const KEYED_DATASETS = {
   ACCESSORIES: { column: "accessory_key", name: "accessory_name" },
   MAGIC_GEAR: { column: "magic_gear_key", name: "magic_gear_name" },
   ENCHANTMENTS: { column: "enchantment_key", name: "enchantment_name" },
+  CONDITIONS: { column: "condition_key", name: "condition_name" },
   CRAFTING_MATERIALS: {
     column: "material_key",
     name: "material_name",

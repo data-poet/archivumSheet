@@ -12,8 +12,17 @@ const {
   loadDataset,
 } = require("../helpers/datasets.js");
 const { ID_COLUMN, KEY_COLUMN } = require("../helpers/datasetColumns.js");
-const { DAMAGE_TYPES } = require("../helpers/taxonomy.js");
-const { resolveRuleKeys } = require("../helpers/ruleKeys.js");
+const {
+  DAMAGE_TYPES,
+  CONDITION_MODIFIER_COLUMNS,
+  CONDITION_STATUS_TAGS,
+  CONDITION_RECOVERY_ATTRIBUTES,
+  CONDITION_RECOVERY_INTERVALS,
+} = require("../helpers/taxonomy.js");
+const {
+  resolveRuleKeys,
+  IMMUNITY_TRAIT_KEYS,
+} = require("../helpers/ruleKeys.js");
 const { REFERENCES, idsInCell } = require("../helpers/datasetReferences.js");
 const { costTableFor } = require("../engine/character/js/skills/skillsCost.js");
 const { SLOT_MAP } = require("../engine/inventory/js/armor/armorConstants.js");
@@ -368,7 +377,20 @@ function checkSkillCostTables(findings) {
 // The code addresses these rows by key (helpers/ruleKeys.js): the keys must exist, and a tier group must
 // not have more tiers in the data than the code registers.
 function checkRuleKeys(findings, { verbose }) {
-  const { missing, unregistered, dualUsePairs } = resolveRuleKeys();
+  const { missing, unregistered, dualUsePairs, pendingImmunityKeys } =
+    resolveRuleKeys();
+  pendingImmunityKeys.forEach((key) => {
+    const [dataset] = IMMUNITY_TRAIT_KEYS.find(([, k]) => k === key);
+    findings.push(
+      finding(
+        "info",
+        "immunity-pending",
+        dataset,
+        key,
+        "immunity trait with no row yet; it applies once a row has this key",
+      ),
+    );
+  });
   missing.forEach(({ dataset, key }) => {
     findings.push(
       finding(
@@ -402,6 +424,105 @@ function checkRuleKeys(findings, { verbose }) {
       ),
     );
   }
+}
+
+function checkConditions(findings) {
+  const rows = loadDataset("CONDITIONS");
+  const knownImmunityKeys = new Set(IMMUNITY_TRAIT_KEYS.map(([, key]) => key));
+  const exclusiveGroups = new Map();
+
+  Object.values(CONDITION_MODIFIER_COLUMNS)
+    .filter((column) => !(column in rows[0]))
+    .forEach((column) => {
+      findings.push(
+        finding(
+          "error",
+          "condition-column",
+          "CONDITIONS",
+          column,
+          "numeric condition column is missing from the header",
+        ),
+      );
+    });
+
+  rows.forEach((row) => {
+    const id = idOf("CONDITIONS", row);
+    const report = (check, message) =>
+      findings.push(finding("error", check, "CONDITIONS", id, message));
+    const unknownIn = (cell, allowed) =>
+      splitList(cell).filter((value) => !allowed.includes(value));
+
+    Object.values(CONDITION_MODIFIER_COLUMNS).forEach((column) => {
+      const value = String(row[column] ?? "");
+      if (value !== "" && !/^-?\d+$/.test(value)) {
+        report(
+          "condition-number",
+          `${column} "${value}" is not a whole number`,
+        );
+      }
+    });
+
+    unknownIn(row.condition_grants, CONDITION_STATUS_TAGS).forEach((tag) =>
+      report("condition-tag", `condition_grants "${tag}" is not a known tag`),
+    );
+
+    unknownIn(
+      row.condition_recovery_attribute,
+      CONDITION_RECOVERY_ATTRIBUTES,
+    ).forEach((value) =>
+      report(
+        "condition-recovery",
+        `condition_recovery_attribute "${value}" is not a known attribute`,
+      ),
+    );
+    unknownIn(
+      row.condition_recovery_interval,
+      CONDITION_RECOVERY_INTERVALS,
+    ).forEach((value) =>
+      report(
+        "condition-recovery",
+        `condition_recovery_interval "${value}" is not a known interval`,
+      ),
+    );
+    if (
+      Boolean(row.condition_recovery_attribute) !==
+      Boolean(row.condition_recovery_interval)
+    ) {
+      report(
+        "condition-recovery",
+        "condition_recovery_attribute and condition_recovery_interval go together",
+      );
+    }
+
+    unknownIn(row.condition_immune_trait_keys, [...knownImmunityKeys]).forEach(
+      (key) =>
+        report(
+          "condition-immune-key",
+          `condition_immune_trait_keys "${key}" is not registered in helpers/ruleKeys.js`,
+        ),
+    );
+
+    if (row.condition_exclusive_group) {
+      exclusiveGroups.set(row.condition_exclusive_group, [
+        ...(exclusiveGroups.get(row.condition_exclusive_group) ?? []),
+        id,
+      ]);
+    }
+  });
+
+  exclusiveGroups.forEach((ids, group) => {
+    if (ids.length < 2) {
+      findings.push(
+        finding(
+          "error",
+          "condition-exclusive-group",
+          "CONDITIONS",
+          ids[0],
+          `exclusive group "${group}" has a single row, so it excludes nothing`,
+        ),
+      );
+    }
+  });
 }
 
 function checkValueTypes(findings) {
@@ -587,6 +708,7 @@ function runChecks({ verbose = false } = {}) {
   checkEnums(findings);
   checkSkillCostTables(findings);
   checkRuleKeys(findings, { verbose });
+  checkConditions(findings);
   checkValueTypes(findings);
   checkNaturalKeys(findings);
   checkDerivedNames(findings);

@@ -47,6 +47,15 @@ const SINGLE_KEYS = {
 
 const BROQUEL_SHIELD_KEY_PREFIX = "broquel-";
 
+// Traits that exempt a condition; a key with no row is pending, not missing, because the trait tables are being rebuilt.
+const IMMUNITY_TRAIT_KEYS = [
+  ["ADVANTAGES", "nao-respira"],
+  ["DISADVANTAGES", "estraga-prazeres"],
+  ["ADVANTAGES", "tolerancia-a-ferimentos-difuso"],
+  ["ADVANTAGES", "tolerancia-a-ferimentos-homogeneo"],
+  ["ADVANTAGES", "tolerancia-a-ferimentos-sem-vitais"],
+];
+
 function idsByKey(dataset) {
   return new Map(
     loadDataset(dataset).map((row) => [
@@ -88,6 +97,14 @@ function resolveRuleKeys() {
     else missing.push({ dataset, key });
   });
 
+  const immunityTraitIds = {};
+  const pendingImmunityKeys = [];
+  IMMUNITY_TRAIT_KEYS.forEach(([dataset, key]) => {
+    const id = idsOf(dataset).get(key);
+    if (id) immunityTraitIds[key] = id;
+    else pendingImmunityKeys.push(key);
+  });
+
   const broquelShieldIds = loadDataset("SHIELDS")
     .filter((row) => row.shield_key.startsWith(BROQUEL_SHIELD_KEY_PREFIX))
     .map((row) => row.shield_id);
@@ -100,6 +117,8 @@ function resolveRuleKeys() {
   return {
     tierGroups,
     singles,
+    immunityTraitIds,
+    pendingImmunityKeys,
     broquelShieldIds,
     dualUsePairs,
     missing,
@@ -111,5 +130,6 @@ module.exports = {
   TIER_GROUPS,
   SINGLE_KEYS,
   BROQUEL_SHIELD_KEY_PREFIX,
+  IMMUNITY_TRAIT_KEYS,
   resolveRuleKeys,
 };

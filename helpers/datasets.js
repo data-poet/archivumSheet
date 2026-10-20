@@ -10,6 +10,7 @@ const DATASETS = {
   DISADVANTAGES: "db_traits_disadvantages.csv",
   RACES: "db_yrth_races.csv",
   META_RACES: "db_yrth_meta_races.csv",
+  CONDITIONS: "db_conditions.csv",
   ARMORS: "db_equipment_armors.csv",
   SHIELDS: "db_equipment_shields.csv",
   MELEE_WEAPONS: "db_equipment_melee_weapons.csv",

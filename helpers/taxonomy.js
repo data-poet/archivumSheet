@@ -25,9 +25,35 @@ const ATTRIBUTE_TARGET_MAP = {
   "Basic Speed": "BasicSpeed",
 };
 
+// Roll target of each numeric condition column; a blank cell means no penalty on that target.
+const CONDITION_MODIFIER_COLUMNS = {
+  DX: "condition_dx_modifier",
+  IQ: "condition_iq_modifier",
+  Per: "condition_perception_modifier",
+  skills: "condition_skills_modifier",
+  all_rolls: "condition_all_rolls_modifier",
+  self_control: "condition_self_control_modifier",
+  defense: "condition_defense_modifier",
+};
+
+// Tags a condition_grants cell may hold; implied tags (cannot_act) are not granted by a row.
+const CONDITION_STATUS_TAGS = [
+  "stunned",
+  "incapacitated",
+  "unconscious",
+  "paralyzed",
+];
+
+const CONDITION_RECOVERY_ATTRIBUTES = ["HT", "Will", "IQ"];
+const CONDITION_RECOVERY_INTERVALS = ["turn", "roll", "trigger", "12h"];
+
 module.exports = {
   DAMAGE_TYPES,
   BAL_DAMAGE_TYPES,
   MASTER_ELIGIBLE_CATEGORIES,
   ATTRIBUTE_TARGET_MAP,
+  CONDITION_MODIFIER_COLUMNS,
+  CONDITION_STATUS_TAGS,
+  CONDITION_RECOVERY_ATTRIBUTES,
+  CONDITION_RECOVERY_INTERVALS,
 };

@@ -29,6 +29,10 @@ const {
 // Shield ids that use the BROQUEL skill for block (the rest use ESCUDO).
 const BROQUEL_SHIELD_IDS = new Set(resolved.broquelShieldIds);
 
+// Immunity trait ids by key, only for the keys that have a row; the rest are listed as pending.
+const IMMUNITY_TRAIT_IDS = resolved.immunityTraitIds;
+const PENDING_IMMUNITY_KEYS = resolved.pendingImmunityKeys;
+
 // Weapons present in both the melee and ranged tables (same weapon_key) are auto-mirrored across them.
 // Pairs are [meleeId, rangedId].
 const DUAL_USE_WEAPON_PAIRS = resolved.dualUsePairs;
@@ -46,6 +50,8 @@ module.exports = {
   ESCUDO_SKILL_ID,
   BROQUEL_SHIELD_IDS,
   MAGIC_RETURN_ENCHANTMENT_ID,
+  IMMUNITY_TRAIT_IDS,
+  PENDING_IMMUNITY_KEYS,
   DUAL_USE_WEAPON_PAIRS,
   UNRESOLVED_RULE_KEYS,
 };

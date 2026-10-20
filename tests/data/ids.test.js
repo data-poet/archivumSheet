@@ -1,6 +1,10 @@
 const { loadDataset } = require("helpers/datasets.js");
 const { ID_COLUMN, KEY_COLUMN } = require("helpers/datasetColumns.js");
-const { resolveRuleKeys, TIER_GROUPS } = require("helpers/ruleKeys.js");
+const {
+  resolveRuleKeys,
+  TIER_GROUPS,
+  IMMUNITY_TRAIT_KEYS,
+} = require("helpers/ruleKeys.js");
 const ids = require("helpers/ids.js");
 const { withEditedData } = require("tests/helpers/tempData");
 
@@ -100,6 +104,57 @@ describe("DUAL_USE_WEAPON_PAIRS", () => {
     expect(ids.DUAL_USE_WEAPON_PAIRS.map(([meleeId]) => meleeId)).toEqual(
       shared,
     );
+  });
+});
+
+describe("immunity traits", () => {
+  test("every registered key is either resolved or pending", () => {
+    const registered = IMMUNITY_TRAIT_KEYS.map(([, key]) => key).sort();
+    const accounted = [
+      ...Object.keys(ids.IMMUNITY_TRAIT_IDS),
+      ...ids.PENDING_IMMUNITY_KEYS,
+    ].sort();
+    expect(accounted).toEqual(registered);
+  });
+
+  test("a resolved id belongs to the row with that key", () => {
+    const datasetOf = Object.fromEntries(
+      IMMUNITY_TRAIT_KEYS.map(([dataset, key]) => [key, dataset]),
+    );
+    Object.entries(ids.IMMUNITY_TRAIT_IDS).forEach(([key, id]) => {
+      expect(keyOf(datasetOf[key], id)).toBe(key);
+    });
+  });
+
+  test("a key with no row is pending, not missing", () => {
+    const { pendingImmunityKeys, missing } = withEditedData(
+      "db_traits_advantages.csv",
+      (rows) => {
+        rows.find((r) => r.advantage_key === "nao-respira").advantage_key =
+          "nao-respira-antigo";
+        return rows;
+      },
+      () => resolveRuleKeys(),
+    );
+    expect(pendingImmunityKeys).toContain("nao-respira");
+    expect(missing.map((m) => m.key)).not.toContain("nao-respira");
+  });
+
+  test("a trait added later is picked up with no code change", () => {
+    const { immunityTraitIds, pendingImmunityKeys } = withEditedData(
+      "db_traits_disadvantages.csv",
+      (rows) => [
+        ...rows,
+        {
+          ...rows[0],
+          disadvantage_id: "DIS-999",
+          disadvantage_key: "estraga-prazeres",
+        },
+      ],
+      () => resolveRuleKeys(),
+    );
+    expect(immunityTraitIds["estraga-prazeres"]).toBe("DIS-999");
+    expect(pendingImmunityKeys).not.toContain("estraga-prazeres");
   });
 });
 
