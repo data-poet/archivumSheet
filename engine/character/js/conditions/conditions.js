@@ -66,6 +66,18 @@ function immunityOf(row, ownedTraitIds, immunityTraitIds) {
   return null;
 }
 
+// Every condition this character is immune to, whether or not it is switched on.
+function conditionImmunities(
+  traitIds = [],
+  { immunityTraitIds = IMMUNITY_TRAIT_IDS } = {},
+) {
+  const owned = new Set(traitIds);
+  return loadDataset("CONDITIONS").flatMap((row) => {
+    const immunity = immunityOf(row, owned, immunityTraitIds);
+    return immunity ? [{ key: row.condition_key, ...immunity }] : [];
+  });
+}
+
 function strongest(targets, kinds) {
   return kinds.reduce((best, kind) => {
     const value = targets[kind] ?? 0;
@@ -171,5 +183,6 @@ module.exports = {
   attributeRollKinds,
   skillRollKinds,
   resolveConditions,
+  conditionImmunities,
   rollPenalty,
 };

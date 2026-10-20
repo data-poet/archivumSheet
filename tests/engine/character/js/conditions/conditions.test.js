@@ -5,6 +5,7 @@ const {
   attributeRollKinds,
   skillRollKinds,
   resolveConditions,
+  conditionImmunities,
   rollPenalty,
 } = require("engine/character/js/conditions/conditions");
 const { CONDITION_RULES } = require("helpers/rules.js");
@@ -253,5 +254,43 @@ describe("recoveries and reminders", () => {
 
   test("a condition with no reminder adds none", () => {
     expect(resolveConditions(["euforia"]).reminders).toEqual([]);
+  });
+});
+
+describe("conditionImmunities", () => {
+  const immunityTraitIds = {
+    "nao-respira": "ADV-136",
+    "tolerancia-a-ferimentos-homogeneo": "ADV-128",
+    "tolerancia-a-ferimentos-difuso": "ADV-127",
+  };
+
+  test("lists every condition a trait grants immunity to, switched on or not", () => {
+    const keys = conditionImmunities(["ADV-128"], { immunityTraitIds }).map(
+      (entry) => entry.key,
+    );
+    expect(keys).toEqual(["sufocamento", "ataque-cardiaco"]);
+  });
+
+  test("names the trait that grants each one", () => {
+    const [sufocamento] = conditionImmunities(["ADV-136"], {
+      immunityTraitIds,
+    });
+    expect(sufocamento).toEqual({
+      key: "sufocamento",
+      trait_key: "nao-respira",
+      trait_name: expect.any(String),
+    });
+  });
+
+  test("a character with no immunity trait has none", () => {
+    expect(conditionImmunities(["ADV-001"], { immunityTraitIds })).toEqual([]);
+    expect(conditionImmunities([], { immunityTraitIds })).toEqual([]);
+    expect(conditionImmunities()).toEqual([]);
+  });
+
+  test("a trait key with no row (pending) grants nothing", () => {
+    expect(conditionImmunities(["DIS-900"], { immunityTraitIds: {} })).toEqual(
+      [],
+    );
   });
 });

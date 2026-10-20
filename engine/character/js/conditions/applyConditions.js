@@ -7,6 +7,7 @@ const {
 const { SPELL_ATTRIBUTE } = require("../../../magic/js/spellsConstants.js");
 const {
   resolveConditions,
+  conditionImmunities,
   rollPenalty,
   attributeRollKinds,
   skillRollKinds,
@@ -31,7 +32,7 @@ function markRoll(entry, field, penalty) {
   }
 }
 
-// Mutates the built sheet in place; with no active conditions it does nothing, so a sheet with no flags is unchanged.
+// Mutates the built sheet in place; a sheet with no flags and no immunity trait is left unchanged.
 function applyConditions({
   activeKeys,
   characterData,
@@ -39,14 +40,17 @@ function applyConditions({
   inventory = {},
   skillRows = {},
 }) {
+  const traitIds = [
+    ...Object.keys(characterData.advantages ?? {}),
+    ...Object.keys(characterData.disadvantages ?? {}),
+  ];
+
+  const immunities = conditionImmunities(traitIds);
+  if (immunities.length > 0) characterData.condition_immunities = immunities;
+
   if (!Array.isArray(activeKeys) || activeKeys.length === 0) return;
 
-  const resolved = resolveConditions(activeKeys, {
-    traitIds: [
-      ...Object.keys(characterData.advantages ?? {}),
-      ...Object.keys(characterData.disadvantages ?? {}),
-    ],
-  });
+  const resolved = resolveConditions(activeKeys, { traitIds });
   characterData.conditions = resolved;
 
   const penaltyFor = (kinds) => rollPenalty(resolved, kinds);

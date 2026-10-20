@@ -239,3 +239,31 @@ describe("the conditions summary", () => {
     });
   });
 });
+
+describe("condition_immunities", () => {
+  const immuneData = () => ({
+    ...parts().characterData,
+    advantages: { [ADVANTAGE.naoRespira]: {} },
+  });
+
+  test("is listed with no condition switched on, and changes nothing else", () => {
+    const result = apply([], { characterData: immuneData() });
+
+    expect(result.characterData.condition_immunities).toEqual([
+      expect.objectContaining({
+        key: "sufocamento",
+        trait_key: "nao-respira",
+      }),
+    ]);
+    expect(result.characterData.conditions).toBeUndefined();
+    expect(result.characterData.secondary_attributes.Dodge).toEqual({
+      value: 8,
+    });
+  });
+
+  test("is left off a sheet whose character has no immunity trait", () => {
+    expect(
+      apply(["dor-grave"]).characterData.condition_immunities,
+    ).toBeUndefined();
+  });
+});
