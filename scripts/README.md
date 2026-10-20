@@ -65,6 +65,8 @@ What it checks:
 
 How to read a line: `DATASET  id-or-key  check-name: message`. The check name tells you what rule failed.
 
+The conditions dataset has its own checks in `scripts/checks/conditions.js`, kept apart from `checkData.js`, which stays about mistakes any CSV can have: the numeric modifier columns hold whole numbers (`condition-number`), `condition_grants` uses known tags (`condition-tag`), a recovery attribute and its interval come as a pair of known values (`condition-recovery`), an exclusive group has at least two rows (`condition-exclusive-group`), immunity keys are registered in `helpers/ruleKeys.js` (`condition-immune-key`), and a reference anchor is shaped `<tab id>--<slug>` (`condition-anchor`). A registered trait key with no row is not an error: it shows up as an info line (`immunity-pending`, `pain-threshold-pending`) until the trait exists.
+
 ---
 
 ## `data:format`
