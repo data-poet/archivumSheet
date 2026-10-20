@@ -13,7 +13,8 @@ import {
 } from "../../shared/constants.js";
 import { thresholdChip, fillThreshold } from "../thresholds.js";
 import { getExperienceRank } from "../../engine/character/experienceRank.js";
-import { collapsibleHeader, bindCollapse, conditionCell } from "./shared.js";
+import { collapsibleHeader, bindCollapse } from "./shared.js";
+import { conditionCell } from "../../shared/conditionDisplay.js";
 
 export function renderResumeHeader(sheet) {
   const nameEl = el("resume_header_name");

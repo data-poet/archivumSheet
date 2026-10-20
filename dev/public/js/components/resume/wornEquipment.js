@@ -12,8 +12,8 @@ import {
   renderResumeWeaponTable,
   formatCritical,
   nhCell,
-  conditionCell,
 } from "./shared.js";
+import { conditionCell } from "../../shared/conditionDisplay.js";
 
 const ARMOR_SLOT_ROWS = ARMOR_SLOTS.map((label) => ({
   key: ARMOR_SLOT_KEYS[label],

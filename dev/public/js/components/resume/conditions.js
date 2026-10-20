@@ -3,7 +3,8 @@
 import { LABELS, t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { escapeAttr, escapeHtml } from "../../shared/renderUtils.js";
-import { collapsibleHeader, bindCollapse, signedModifier } from "./shared.js";
+import { collapsibleHeader, bindCollapse } from "./shared.js";
+import { signedModifier } from "../../shared/conditionDisplay.js";
 
 export const TARGET_ORDER = [
   "DX",

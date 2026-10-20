@@ -1,8 +1,6 @@
 import { renderResume } from "dev/public/js/components/resume/index.js";
-import {
-  conditionCell,
-  nhCell,
-} from "dev/public/js/components/resume/shared.js";
+import { nhCell } from "dev/public/js/components/resume/shared.js";
+import { conditionCell } from "dev/public/js/shared/conditionDisplay.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
 import { RANGED, SHIELD, SKILL } from "tests/helpers/dataRefs";
 import { buildSheet } from "engine/buildSheet";

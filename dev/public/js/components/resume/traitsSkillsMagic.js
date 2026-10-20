@@ -5,8 +5,8 @@ import {
   bindCollapse,
   renderCollapsibleNameList,
   formatCritical,
-  conditionCell,
 } from "./shared.js";
+import { conditionCell } from "../../shared/conditionDisplay.js";
 
 export function renderResumeTraits(sheet) {
   const advantages = sheet?.character?.advantages || {};
