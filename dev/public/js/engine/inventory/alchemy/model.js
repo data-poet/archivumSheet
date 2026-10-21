@@ -1,19 +1,9 @@
-import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAlchemy } from "../../../api.js";
-import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { offerUndo } from "../../../components/undo.js";
-import { generateInstanceId } from "../../../store/instanceId.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  transferStackQuantity,
-  undoTransferStackQuantity,
-} from "../shared/transfer.js";
+import { createStackableInventory } from "../shared/stackableInventory.js";
 
 const data = state.data;
-const selected = state.selected;
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadAlchemy() {
@@ -94,129 +84,18 @@ export function updateAlchemyTierOptions() {
   );
 }
 
-function findEntry(consumableId, storedAt) {
-  return selected.alchemy.find(
-    (e) => e.consumable_id === consumableId && e.storedAt === storedAt,
-  );
-}
+const {
+  add: addAlchemy,
+  updateQuantity: updateAlchemyQuantity,
+  remove: removeAlchemy,
+  move: moveAlchemy,
+  sendToAlly: sendAlchemyToAlly,
+} = createStackableInventory("alchemy", "consumable_id");
 
-/** Merges with an existing entry for the same consumable_id + storedAt. */
-export function addAlchemy(
-  consumableId,
-  quantity,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  if (!consumableId || quantity <= 0) return;
-
-  const existing = findEntry(consumableId, storedAt);
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    selected.alchemy.push({
-      id: generateInstanceId(),
-      consumable_id: consumableId,
-      quantity,
-      storedAt,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-/** Removes the entry if quantity reaches zero. */
-export function updateAlchemyQuantity(consumableId, storedAt, quantity) {
-  if (quantity <= 0) {
-    selected.alchemy = selected.alchemy.filter(
-      (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
-    );
-  } else {
-    const entry = findEntry(consumableId, storedAt);
-    if (entry) entry.quantity = quantity;
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
-}
-
-export function removeAlchemy(consumableId, storedAt) {
-  const before = structuredClone(selected.alchemy);
-  selected.alchemy = selected.alchemy.filter(
-    (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
-  );
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.alchemy = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-/** Merges into the destination if an entry already exists there — the destination row's
- * id wins and the source row's id is discarded on merge. */
-export function moveAlchemy(consumableId, fromLocation, toLocation) {
-  if (fromLocation === toLocation) return;
-
-  const source = findEntry(consumableId, fromLocation);
-  if (!source) return;
-
-  const qty = source.quantity;
-
-  selected.alchemy = selected.alchemy.filter(
-    (e) => !(e.consumable_id === consumableId && e.storedAt === fromLocation),
-  );
-
-  const dest = findEntry(consumableId, toLocation);
-  if (dest) {
-    dest.quantity += qty;
-  } else {
-    selected.alchemy.push({
-      id: source.id,
-      consumable_id: consumableId,
-      quantity: qty,
-      storedAt: toLocation,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function sendAlchemyToAlly(
-  instanceId,
-  destinationCharacterId,
-  amount,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.alchemy);
-
-  const result = transferStackQuantity({
-    sourceArray: selected.alchemy,
-    instanceId,
-    amount,
-    destinationCharacterId,
-    destinationInventoryKey: "alchemy",
-    destinationStoredAt: storedAt,
-    matchKeyFields: ["consumable_id"],
-  });
-  if (!result) return false;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferStackQuantity({
-      destinationCharacterId,
-      destinationInventoryKey: "alchemy",
-      destinationRowId: result.destinationRowId,
-      amount: result.amount,
-    });
-    selected.alchemy = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
+export {
+  addAlchemy,
+  updateAlchemyQuantity,
+  removeAlchemy,
+  moveAlchemy,
+  sendAlchemyToAlly,
+};

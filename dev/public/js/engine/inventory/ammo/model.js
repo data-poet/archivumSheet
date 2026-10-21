@@ -7,12 +7,8 @@ import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import {
-  transferInstance,
-  undoTransferInstance,
-  transferStackQuantity,
-  undoTransferStackQuantity,
-} from "../shared/transfer.js";
+import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { createStackableInventory } from "../shared/stackableInventory.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -255,89 +251,21 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
   });
 }
 
-export function addLooseAmmo(ammoId, quantity, storedAt = STORED_AT.BACKPACK) {
-  if (!ammoId || quantity <= 0) return;
+const {
+  add: addLooseAmmo,
+  updateQuantity: updateLooseAmmoQuantity,
+  remove: removeLooseAmmo,
+  move: moveLooseAmmo,
+  sendToAlly: sendLooseAmmoToAlly,
+} = createStackableInventory("loose_ammo", "ammo_id");
 
-  const existing = selected.loose_ammo.find(
-    (a) => a.ammo_id === ammoId && a.storedAt === storedAt,
-  );
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    selected.loose_ammo.push({
-      id: generateInstanceId(),
-      ammo_id: ammoId,
-      quantity,
-      storedAt,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
-  if (quantity <= 0) {
-    selected.loose_ammo = selected.loose_ammo.filter(
-      (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
-    );
-  } else {
-    const entry = selected.loose_ammo.find(
-      (a) => a.ammo_id === ammoId && a.storedAt === storedAt,
-    );
-    if (entry) entry.quantity = quantity;
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
-}
-
-export function removeLooseAmmo(ammoId, storedAt) {
-  const before = structuredClone(selected.loose_ammo);
-  selected.loose_ammo = selected.loose_ammo.filter(
-    (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
-  );
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.loose_ammo = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-/** Merges into an existing entry at the destination for the same ammo_id, if any — the
- * destination row's id wins and the source row's id is discarded on merge. */
-export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
-  if (fromLocation === toLocation) return;
-
-  const source = selected.loose_ammo.find(
-    (a) => a.ammo_id === ammoId && a.storedAt === fromLocation,
-  );
-  if (!source) return;
-
-  const qty = source.quantity;
-  selected.loose_ammo = selected.loose_ammo.filter(
-    (a) => !(a.ammo_id === ammoId && a.storedAt === fromLocation),
-  );
-  const dest = selected.loose_ammo.find(
-    (a) => a.ammo_id === ammoId && a.storedAt === toLocation,
-  );
-  if (dest) {
-    dest.quantity += qty;
-  } else {
-    selected.loose_ammo.push({
-      id: source.id,
-      ammo_id: ammoId,
-      quantity: qty,
-      storedAt: toLocation,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
+export {
+  addLooseAmmo,
+  updateLooseAmmoQuantity,
+  removeLooseAmmo,
+  moveLooseAmmo,
+  sendLooseAmmoToAlly,
+};
 
 /** Clamped to destination capacity; merges if the destination already has that ammo_id. */
 export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
@@ -379,43 +307,6 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
 
   renderListsPreserving(selected, data);
   triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function sendLooseAmmoToAlly(
-  instanceId,
-  destinationCharacterId,
-  amount,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.loose_ammo);
-
-  const result = transferStackQuantity({
-    sourceArray: selected.loose_ammo,
-    instanceId,
-    amount,
-    destinationCharacterId,
-    destinationInventoryKey: "loose_ammo",
-    destinationStoredAt: storedAt,
-    matchKeyFields: ["ammo_id"],
-  });
-  if (!result) return false;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferStackQuantity({
-      destinationCharacterId,
-      destinationInventoryKey: "loose_ammo",
-      destinationRowId: result.destinationRowId,
-      amount: result.amount,
-    });
-    selected.loose_ammo = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
 }
 
 export function findContainerByInstanceId(instanceId) {

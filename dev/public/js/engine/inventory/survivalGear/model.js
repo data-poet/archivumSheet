@@ -1,19 +1,9 @@
-import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchSurvivalGear } from "../../../api.js";
-import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
-import { offerUndo } from "../../../components/undo.js";
-import { generateInstanceId } from "../../../store/instanceId.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  transferStackQuantity,
-  undoTransferStackQuantity,
-} from "../shared/transfer.js";
+import { createStackableInventory } from "../shared/stackableInventory.js";
 
 const data = state.data;
-const selected = state.selected;
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadSurvivalGear() {
@@ -66,129 +56,18 @@ export function updateSurvivalGearNameOptions() {
   );
 }
 
-function findEntry(gearId, storedAt) {
-  return selected.survivalGear.find(
-    (e) => e.adventure_gear_id === gearId && e.storedAt === storedAt,
-  );
-}
+const {
+  add: addSurvivalGear,
+  updateQuantity: updateSurvivalGearQuantity,
+  remove: removeSurvivalGear,
+  move: moveSurvivalGear,
+  sendToAlly: sendSurvivalGearToAlly,
+} = createStackableInventory("survivalGear", "adventure_gear_id");
 
-/** Merges with an existing entry for the same adventure_gear_id + storedAt. */
-export function addSurvivalGear(
-  gearId,
-  quantity,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  if (!gearId || quantity <= 0) return;
-
-  const existing = findEntry(gearId, storedAt);
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    selected.survivalGear.push({
-      id: generateInstanceId(),
-      adventure_gear_id: gearId,
-      quantity,
-      storedAt,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-/** Removes the entry if quantity reaches zero. */
-export function updateSurvivalGearQuantity(gearId, storedAt, quantity) {
-  if (quantity <= 0) {
-    selected.survivalGear = selected.survivalGear.filter(
-      (e) => !(e.adventure_gear_id === gearId && e.storedAt === storedAt),
-    );
-  } else {
-    const entry = findEntry(gearId, storedAt);
-    if (entry) entry.quantity = quantity;
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun();
-}
-
-export function removeSurvivalGear(gearId, storedAt) {
-  const before = structuredClone(selected.survivalGear);
-  selected.survivalGear = selected.survivalGear.filter(
-    (e) => !(e.adventure_gear_id === gearId && e.storedAt === storedAt),
-  );
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.survivalGear = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-/** Merges into the destination if an entry already exists there — the destination row's
- * id wins and the source row's id is discarded on merge. */
-export function moveSurvivalGear(gearId, fromLocation, toLocation) {
-  if (fromLocation === toLocation) return;
-
-  const source = findEntry(gearId, fromLocation);
-  if (!source) return;
-
-  const qty = source.quantity;
-
-  selected.survivalGear = selected.survivalGear.filter(
-    (e) => !(e.adventure_gear_id === gearId && e.storedAt === fromLocation),
-  );
-
-  const dest = findEntry(gearId, toLocation);
-  if (dest) {
-    dest.quantity += qty;
-  } else {
-    selected.survivalGear.push({
-      id: source.id,
-      adventure_gear_id: gearId,
-      quantity: qty,
-      storedAt: toLocation,
-    });
-  }
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function sendSurvivalGearToAlly(
-  instanceId,
-  destinationCharacterId,
-  amount,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.survivalGear);
-
-  const result = transferStackQuantity({
-    sourceArray: selected.survivalGear,
-    instanceId,
-    amount,
-    destinationCharacterId,
-    destinationInventoryKey: "survivalGear",
-    destinationStoredAt: storedAt,
-    matchKeyFields: ["adventure_gear_id"],
-  });
-  if (!result) return false;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferStackQuantity({
-      destinationCharacterId,
-      destinationInventoryKey: "survivalGear",
-      destinationRowId: result.destinationRowId,
-      amount: result.amount,
-    });
-    selected.survivalGear = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
+export {
+  addSurvivalGear,
+  updateSurvivalGearQuantity,
+  removeSurvivalGear,
+  moveSurvivalGear,
+  sendSurvivalGearToAlly,
+};
