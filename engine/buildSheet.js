@@ -29,6 +29,14 @@ const {
   applyConditions,
 } = require("./character/js/conditions/applyConditions");
 
+function forEachStoredInstance(inventories, buckets, fn) {
+  for (const inv of inventories) {
+    for (const bucket of buckets) {
+      (inv?.[bucket] || []).forEach(fn);
+    }
+  }
+}
+
 function buildSheet({
   pc = {},
   race_id = null,
@@ -181,9 +189,7 @@ function buildSheet({
   }
 
   _attachBlock(_shieldInv.equipped);
-  for (const bucket of VALID_STORED_AT) {
-    (_shieldInv[bucket] || []).forEach(_attachBlock);
-  }
+  forEachStoredInstance([_shieldInv], VALID_STORED_AT, _attachBlock);
 
   // Weapon damage needs the final base damage. "cr"/"cut" get weapon_bal_damage, every other
   // type gets weapon_gdp_damage, and a weapon can have both.
@@ -207,10 +213,11 @@ function buildSheet({
     }
   }
 
-  for (const bucket of ALL_BUCKETS) {
-    (_meleeInv[bucket] || []).forEach(_attachWeaponDamage);
-    (_rangedInv[bucket] || []).forEach(_attachWeaponDamage);
-  }
+  forEachStoredInstance(
+    [_meleeInv, _rangedInv],
+    ALL_BUCKETS,
+    _attachWeaponDamage,
+  );
 
   function _attachSkillCheck(weapon) {
     if (!weapon) return;
@@ -220,15 +227,11 @@ function buildSheet({
     );
   }
 
-  for (const inv of [
-    _meleeInv,
-    _rangedInv,
-    inventoryResult.inventory.firearms,
-  ]) {
-    for (const bucket of ALL_BUCKETS) {
-      (inv?.[bucket] || []).forEach(_attachSkillCheck);
-    }
-  }
+  forEachStoredInstance(
+    [_meleeInv, _rangedInv, inventoryResult.inventory.firearms],
+    ALL_BUCKETS,
+    _attachSkillCheck,
+  );
 
   // Punch is thrust-1 and kick is thrust (4e); a skill flagged skill_is_unarmed gets its own row once learned.
   const _gdp = _baseDamage?.GDP;
