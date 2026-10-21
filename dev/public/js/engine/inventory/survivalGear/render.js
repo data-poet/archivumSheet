@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -67,7 +68,7 @@ export function renderSurvivalGear(selected, data, sheet) {
     renderSurvivalGearSection(loc, entries, survivalGearData, sheet),
   ).join("");
 
-  setHTML("survivalGearList", sections);
+  morphHTML(el("survivalGearList"), sections);
 }
 
 function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
@@ -89,9 +90,10 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
           (e) => e.adventure_gear_id === entry.adventure_gear_id,
         );
         const totalWeight = resolvedEntry ? resolvedEntry.total_weight : "—";
+        const rowKey = `${entry.adventure_gear_id}-${location}`;
 
         return `
-          <tr>
+          <tr id="survival-gear-stored-${rowKey}">
             ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("survivalGear.qty")}">
               <div class="num-stepper">
@@ -131,7 +133,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
                 : ""
             }
           </tr>
-          ${detailRow(colCount, gearDetailFields(record))}`;
+          ${detailRow(colCount, gearDetailFields(record), rowKey)}`;
       })
       .join("");
   }
@@ -151,5 +153,6 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "survival-gear",
   );
 }

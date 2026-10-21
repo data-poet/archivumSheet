@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -85,7 +86,7 @@ export function renderAlchemy(selected, data, sheet) {
     renderAlchemySection(loc, entries, alchemyData, sheet),
   ).join("");
 
-  setHTML("alchemyList", sections);
+  morphHTML(el("alchemyList"), sections);
 }
 
 function renderAlchemySection(location, entries, alchemyData, sheet) {
@@ -108,9 +109,10 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
           (e) => e.consumable_id === entry.consumable_id,
         );
         const totalWeight = resolvedEntry ? resolvedEntry.total_weight : "—";
+        const rowKey = `${entry.consumable_id}-${location}`;
 
         return `
-          <tr>
+          <tr id="alchemy-stored-${rowKey}">
             ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("alchemy.tier")}">${tier}</td>
             <td class="col-num" data-label="${t("alchemy.qty")}">
@@ -151,7 +153,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
                 : ""
             }
           </tr>
-          ${detailRow(colCount, consumableDetailFields(record))}`;
+          ${detailRow(colCount, consumableDetailFields(record), rowKey)}`;
       })
       .join("");
   }
@@ -172,5 +174,6 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "alchemy",
   );
 }

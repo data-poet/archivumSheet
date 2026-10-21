@@ -191,12 +191,16 @@ export function buildDetailContent(fields) {
     .join("");
 }
 
-export function detailRow(colspan, fields) {
+// `key` is optional: only a caller migrated to morphHTML needs a stable id here (idiomorph's
+// own identity tracking, not openState.js's) — omit it and nothing changes for callers still
+// on innerHTML/openState.js.
+export function detailRow(colspan, fields, key) {
   const content = buildDetailContent(fields);
   if (!content) return "";
 
+  const idAttr = key ? ` id="detail-row-${key}"` : "";
   return `
-    <tr class="detail-row">
+    <tr class="detail-row"${idAttr}>
       <td colspan="${colspan}">
         <details>
           <summary>${t("common.details")}</summary>
