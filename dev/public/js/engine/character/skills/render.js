@@ -1,5 +1,6 @@
 import { icon } from "../../../shared/icons.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { conditionCell } from "../../../shared/conditionDisplay.js";
 import {
@@ -8,6 +9,7 @@ import {
   numStepper,
   emptyRow,
   cardTitleCell,
+  safeId,
 } from "../../../shared/renderUtils.js";
 
 export function renderSkills(selected, data, sheet) {
@@ -142,7 +144,7 @@ export function renderSkills(selected, data, sheet) {
               : "";
 
             return `
-          <tr class="${isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+          <tr id="skill-${safeId(id)}" class="${isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
             ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td class="col-center" data-label="${t("traits.attr")}">${attr}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
@@ -152,12 +154,12 @@ export function renderSkills(selected, data, sheet) {
             <td class="col-num" data-label="${t("traits.final")}"><strong>${finalCell}</strong></td>
             ${actionCell}
           </tr>
-          ${detailRow(8, detailItems)}`;
+          ${detailRow(8, detailItems, `skill-${safeId(id)}`)}`;
           })
           .join("");
 
-  setHTML(
-    "skillList",
+  morphHTML(
+    el("skillList"),
     `
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>

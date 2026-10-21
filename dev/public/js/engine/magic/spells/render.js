@@ -1,5 +1,6 @@
 import { icon } from "../../../shared/icons.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { conditionCell } from "../../../shared/conditionDisplay.js";
 import { spellTierForLevel } from "../../../shared/rules.js";
@@ -9,6 +10,7 @@ import {
   numStepper,
   emptyRow,
   cardTitleCell,
+  safeId,
 } from "../../../shared/renderUtils.js";
 
 function normalize(str) {
@@ -144,8 +146,10 @@ export function renderSpells(selected, data, sheet) {
               { label: t("traits.observation"), value: obs, rich: true },
             ];
 
+            const rowId = `spell-${safeId(name)}`;
+
             return `
-          <tr class="${isEnchantment ? "trait-enchantment" : ""}" data-name="${name}">
+          <tr id="${rowId}" class="${isEnchantment ? "trait-enchantment" : ""}" data-name="${name}">
             ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td data-label="${t("traits.school")}">${school}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
@@ -158,12 +162,12 @@ export function renderSpells(selected, data, sheet) {
             <td class="col-num" data-label="${t("traits.final")}"><strong>${finalCell}</strong></td>
             ${actionCell}
           </tr>
-          ${detailRow(COLS + 1, detailItems)}`;
+          ${detailRow(COLS + 1, detailItems, rowId)}`;
           })
           .join("");
 
-  setHTML(
-    "spellList",
+  morphHTML(
+    el("spellList"),
     `
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>

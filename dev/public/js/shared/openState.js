@@ -15,17 +15,11 @@ function _withDetailKind(detailsEl, key) {
 
 // Single source of truth for which containers snapshotAll/restoreAll and withOpenState operate
 // on. Shield, armor, melee, ranged, firearms, accessories, magic gear, alchemy, survival gear,
-// custom inventory, coin purse, advantages and disadvantages are deliberately absent: migrated
-// to morphHTML (shared/morph.js), whose idiomorph-based identity tracking preserves
-// <details>-open/card-expand/scroll on its own — no snapshot/restore needed. Part of a wider
-// pass (see the resume study doc's phase J); the rest stay snapshot/restore-managed until
-// migrated the same way.
-const MANAGED_CONTAINER_IDS = [
-  "skillList",
-  "spellList",
-  "ammoContainerList",
-  "looseAmmoList",
-];
+// custom inventory, coin purse, advantages, disadvantages, skills and spells are deliberately
+// absent: migrated to morphHTML (shared/morph.js), whose idiomorph-based identity tracking
+// preserves <details>-open/card-expand/scroll on its own — no snapshot/restore needed. Only
+// ammo is left (phase J's most complex container, nested container-level <details>).
+const MANAGED_CONTAINER_IDS = ["ammoContainerList", "looseAmmoList"];
 
 function _snapshotContainer(container, keyFn) {
   const open = new Set();

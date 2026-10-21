@@ -179,7 +179,7 @@ describe("withOpenState", () => {
 describe("snapshotAll / restoreAll — mobile card expand state", () => {
   test("an expanded card row is re-expanded after a full rebuild, aria-expanded included", () => {
     document.body.innerHTML = `
-      <table id="skillList"><tbody>
+      <table id="ammoContainerList"><tbody>
         <tr data-id="SK-1" class="is-card-expanded">
           <td class="col-title">
             <button class="card-toggle" aria-expanded="true">Espada</button>
@@ -190,7 +190,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#skillList tbody").innerHTML = `
+    document.querySelector("#ammoContainerList tbody").innerHTML = `
       <tr data-id="SK-1">
         <td class="col-title">
           <button class="card-toggle" aria-expanded="false">Espada</button>
@@ -200,7 +200,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     restoreAll(snapshot);
 
-    const row = document.querySelector("#skillList tr");
+    const row = document.querySelector("#ammoContainerList tr");
     expect(row.classList.contains("is-card-expanded")).toBe(true);
     expect(
       row.querySelector(".card-toggle").getAttribute("aria-expanded"),
@@ -209,14 +209,14 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
   test("a row that was collapsed stays collapsed after the rebuild", () => {
     document.body.innerHTML = `
-      <table id="skillList"><tbody>
+      <table id="ammoContainerList"><tbody>
         <tr data-id="SK-1"><td class="col-title"></td></tr>
       </tbody></table>
     `;
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#skillList tbody").innerHTML = `
+    document.querySelector("#ammoContainerList tbody").innerHTML = `
       <tr data-id="SK-1"><td class="col-title"></td></tr>
     `;
 
@@ -224,35 +224,35 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     expect(
       document
-        .querySelector("#skillList tr")
+        .querySelector("#ammoContainerList tr")
         .classList.contains("is-card-expanded"),
     ).toBe(false);
   });
 
   test("a stale key (row removed) is dropped, not applied to an unrelated row", () => {
     document.body.innerHTML = `
-      <table id="skillList"><tbody>
+      <table id="ammoContainerList"><tbody>
         <tr data-id="SK-1" class="is-card-expanded"><td class="col-title"></td></tr>
       </tbody></table>
     `;
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#skillList tbody").innerHTML = `
+    document.querySelector("#ammoContainerList tbody").innerHTML = `
       <tr data-id="SK-2"><td class="col-title"></td></tr>
     `;
 
     expect(() => restoreAll(snapshot)).not.toThrow();
     expect(
       document
-        .querySelector("#skillList tr")
+        .querySelector("#ammoContainerList tr")
         .classList.contains("is-card-expanded"),
     ).toBe(false);
   });
 
   test("expand state and <details> open state are tracked independently in the same container", () => {
     document.body.innerHTML = `
-      <table id="spellList"><tbody>
+      <table id="looseAmmoList"><tbody>
         <tr data-id="ADV-1" class="is-card-expanded"><td class="col-title"></td></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
@@ -260,7 +260,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#spellList tbody").innerHTML = `
+    document.querySelector("#looseAmmoList tbody").innerHTML = `
       <tr data-id="ADV-1"><td class="col-title"></td></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
@@ -269,11 +269,11 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     expect(
       document
-        .querySelector("#spellList tr")
+        .querySelector("#looseAmmoList tr")
         .classList.contains("is-card-expanded"),
     ).toBe(true);
     expect(
-      document.querySelector("#spellList details").hasAttribute("open"),
+      document.querySelector("#looseAmmoList details").hasAttribute("open"),
     ).toBe(true);
   });
 });
@@ -281,11 +281,11 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 describe("snapshotAll / restoreAll", () => {
   test("captures open state independently per managed container and restores each correctly", () => {
     document.body.innerHTML = `
-      <table id="spellList"><tbody>
+      <table id="looseAmmoList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
-      <table id="skillList"><tbody>
+      <table id="ammoContainerList"><tbody>
         <tr data-instance-id="SKILL-1"></tr>
         <tr class="detail-row"><td><details></details></td></tr>
       </tbody></table>
@@ -293,32 +293,32 @@ describe("snapshotAll / restoreAll", () => {
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#spellList tbody").innerHTML = `
+    document.querySelector("#looseAmmoList tbody").innerHTML = `
       <tr data-instance-id="ADV-1"></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
-    document.querySelector("#skillList tbody").innerHTML = `
+    document.querySelector("#ammoContainerList tbody").innerHTML = `
       <tr data-instance-id="SKILL-1"></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
 
     restoreAll(snapshot);
 
-    const spellDetails = document.querySelector("#spellList details");
-    const skillDetails = document.querySelector("#skillList details");
+    const spellDetails = document.querySelector("#looseAmmoList details");
+    const skillDetails = document.querySelector("#ammoContainerList details");
     expect(spellDetails.hasAttribute("open")).toBe(true);
     expect(skillDetails.hasAttribute("open")).toBe(false);
   });
 
   test("a container id from MANAGED_CONTAINER_IDS that isn't present in the DOM is skipped without throwing", () => {
-    document.body.innerHTML = `<table id="spellList"><tbody></tbody></table>`;
+    document.body.innerHTML = `<table id="looseAmmoList"><tbody></tbody></table>`;
 
     expect(() => snapshotAll()).not.toThrow();
   });
 
   test("restoreAll skips a container id absent from the current DOM without throwing", () => {
     document.body.innerHTML = `
-      <table id="spellList"><tbody>
+      <table id="looseAmmoList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
@@ -332,13 +332,13 @@ describe("snapshotAll / restoreAll", () => {
 
   test("restoreAll is a synchronous call — no rAF deferral, unlike withOpenState", () => {
     document.body.innerHTML = `
-      <table id="spellList"><tbody>
+      <table id="looseAmmoList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
     `;
     const snapshot = snapshotAll();
-    document.querySelector("#spellList tbody").innerHTML = `
+    document.querySelector("#looseAmmoList tbody").innerHTML = `
       <tr data-instance-id="ADV-1"></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
@@ -346,29 +346,29 @@ describe("snapshotAll / restoreAll", () => {
     restoreAll(snapshot);
 
     // No advanceTimersToNextFrame call — a deferred restoreAll would fail this immediately.
-    const details = document.querySelector("#spellList details");
+    const details = document.querySelector("#looseAmmoList details");
     expect(details.hasAttribute("open")).toBe(true);
   });
 
   test("restores .table-wrapper scroll positions per container using snapshotAll's generic keyFn", () => {
     document.body.innerHTML = `
-      <div id="skillList">
+      <div id="ammoContainerList">
         <div class="table-wrapper"></div>
       </div>
     `;
-    const wrapper = document.querySelector("#skillList .table-wrapper");
+    const wrapper = document.querySelector("#ammoContainerList .table-wrapper");
     Object.defineProperty(wrapper, "scrollLeft", {
       value: 77,
       writable: true,
     });
 
     const snapshot = snapshotAll();
-    document.querySelector("#skillList").innerHTML = `
+    document.querySelector("#ammoContainerList").innerHTML = `
       <div class="table-wrapper"></div>
     `;
     restoreAll(snapshot);
 
-    const rebuilt = document.querySelector("#skillList .table-wrapper");
+    const rebuilt = document.querySelector("#ammoContainerList .table-wrapper");
     expect(rebuilt.scrollLeft).toBe(77);
   });
 
