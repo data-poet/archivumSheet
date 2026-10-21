@@ -3,6 +3,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import { modifiedNumber } from "../../shared/conditionDisplay.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 
@@ -132,11 +133,16 @@ export function renderResumeWeaponTable({
   container.hidden = false;
 
   const rows = weapons
-    .map((w) => {
+    .map((w, i) => {
       const maxHp = computeMaxHp(w);
       const modifier = w.hit_points_modifier ?? 0;
       const actualHp = calcActualHp(maxHp, modifier);
       const instanceId = w.id ?? "";
+      // Unarmed entries (no instance id — they're derived from skills, not equipped gear)
+      // still need a stable row id for the morph to track; their position is all there is.
+      const rowId = instanceId
+        ? `resume-weapon-${containerId}-${instanceId}`
+        : `resume-weapon-${containerId}-unarmed-${i}`;
 
       const hpCell =
         maxHp > 0
@@ -157,7 +163,7 @@ export function renderResumeWeaponTable({
         .join("");
 
       return `
-        <tr>
+        <tr id="${rowId}">
           <td>${w.weapon_name ?? "—"}</td>
           ${statCells}
           ${hpCell}
@@ -171,7 +177,9 @@ export function renderResumeWeaponTable({
     .map((col) => `<th class="col-num">${col.header}</th>`)
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(title)}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -188,8 +196,15 @@ export function renderResumeWeaponTable({
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
+}
+
+// Row keys across the resume are mostly dataset ids (safe as bare DOM ids already) but some
+// are display names (advantages/disadvantages/grimoire) with no character guarantee.
+export function safeId(raw) {
+  return String(raw).replace(/[^a-zA-Z0-9_-]+/g, "-");
 }
 
 export function formatCritical(critical) {
@@ -222,6 +237,8 @@ export function nhCell(check, skills = {}) {
   });
 }
 
+// entries are [id, item] pairs (e.g. Object.entries(sheet.character.advantages)) — the id is
+// only ever the object key, never a field on the item itself, so it can't be dropped upstream.
 export function renderCollapsibleNameList(containerId, entries, title) {
   const container = el(containerId);
   if (!container) return;
@@ -233,10 +250,15 @@ export function renderCollapsibleNameList(containerId, entries, title) {
   container.hidden = false;
 
   const rows = entries
-    .map((item) => `<tr><td>${item.name ?? "—"}</td></tr>`)
+    .map(
+      ([id, item]) =>
+        `<tr id="resume-trait-${containerId}-${safeId(id)}"><td>${item.name ?? "—"}</td></tr>`,
+    )
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(title)}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -245,7 +267,8 @@ export function renderCollapsibleNameList(containerId, entries, title) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 

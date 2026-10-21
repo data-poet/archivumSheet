@@ -3,6 +3,7 @@
 
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import { ARMOR_SLOTS, ARMOR_SLOT_KEYS } from "../../shared/constants.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 import {
@@ -33,9 +34,10 @@ export function renderResumeArmor(sheet) {
   container.hidden = false;
 
   const rows = ARMOR_SLOT_ROWS.map(({ key, label }) => {
+    const rowId = `resume-armor-slot-${key}`;
     const piece = equipped[key];
     if (!piece) {
-      return `<tr><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
+      return `<tr id="${rowId}"><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
     }
     // final_damage_resistance includes enchantments; armor_final_damage_resistance is material-only.
     const dr = piece.final_damage_resistance ?? "—";
@@ -53,10 +55,12 @@ export function renderResumeArmor(sheet) {
           })
         : `<td></td>`;
 
-    return `<tr><td>${label}</td><td class="col-num">${dr}</td>${hpCell}</tr>`;
+    return `<tr id="${rowId}"><td>${label}</td><td class="col-num">${dr}</td>${hpCell}</tr>`;
   }).join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("sections.armor"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -72,7 +76,8 @@ export function renderResumeArmor(sheet) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 
@@ -109,7 +114,9 @@ export function renderResumeShield(sheet) {
         })
       : `<td></td>`;
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("sections.shields"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -126,7 +133,7 @@ export function renderResumeShield(sheet) {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr id="resume-shield-equipped">
               <td>${equippedShield.shield_name ?? "—"}</td>
               <td class="col-num">${nh}</td>
               <td class="col-num resume-critical">${critical}</td>
@@ -139,7 +146,8 @@ export function renderResumeShield(sheet) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 

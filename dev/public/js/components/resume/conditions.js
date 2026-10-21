@@ -2,8 +2,9 @@
 
 import { LABELS, t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import { escapeAttr, escapeHtml } from "../../shared/renderUtils.js";
-import { collapsibleHeader, bindCollapse } from "./shared.js";
+import { collapsibleHeader, bindCollapse, safeId } from "./shared.js";
 import {
   signedModifier,
   conditionCell,
@@ -73,14 +74,17 @@ function _nameHtml(row) {
   return `<a class="condition-entry-link" href="${escapeAttr(referenceHref(anchor))}" target="_blank" rel="noopener noreferrer" title="${escapeAttr(t("conditions.ruleTitle"))}">${name}</a>`;
 }
 
-function _entry({ row, immunity, scale, notes }) {
+// `scope` namespaces ids by container (the resume card and the edit tab run this same
+// template into two different containers, live in the DOM at once — a bare condition_key
+// would collide between them).
+function _entry(scope, { row, immunity, scale, notes }) {
   const key = row.condition_key;
   const name = _nameHtml(row);
   const label = `${t("conditions.removeTitle")}: ${row.condition_name}`;
   const noteItems = notes.map((note) => `<li>${note}</li>`).join("");
 
   return `
-    <li class="condition-entry${immunity ? " condition-entry--immune" : ""}"${immunity ? ` title="${escapeAttr(_immuneTitle(immunity))}"` : ""}>
+    <li id="${scope}-active-${safeId(key)}" class="condition-entry${immunity ? " condition-entry--immune" : ""}"${immunity ? ` title="${escapeAttr(_immuneTitle(immunity))}"` : ""}>
       <span class="condition-entry-head">
         <span class="condition-entry-name">${name}${immunity ? ` (${t("conditions.immune")})` : ""}${_scaleMark(scale)}</span>
         <button type="button" class="condition-remove"
@@ -92,7 +96,14 @@ function _entry({ row, immunity, scale, notes }) {
 }
 
 // A flag the engine dropped (unknown or excluded) has nothing to show; an immune one is shown so it can still be removed.
-function _activeList(catalog, flags, immune, resolved, attributeEntries) {
+function _activeList(
+  scope,
+  catalog,
+  flags,
+  immune,
+  resolved,
+  attributeEntries,
+) {
   const active = new Map((resolved?.active ?? []).map((c) => [c.key, c]));
   const recoveryOf = new Map(
     (resolved?.recoveries ?? []).map((r) => [r.key, r]),
@@ -116,12 +127,17 @@ function _activeList(catalog, flags, immune, resolved, attributeEntries) {
         notes.push(escapeHtml(reminderOf.get(key)));
       }
 
-      return _entry({ row, immunity, scale: active.get(key)?.scale, notes });
+      return _entry(scope, {
+        row,
+        immunity,
+        scale: active.get(key)?.scale,
+        notes,
+      });
     })
     .join("");
 }
 
-function _checklist(catalog, flags, immune) {
+function _checklist(scope, catalog, flags, immune) {
   const groups = [];
   catalog.forEach((row) => {
     const name = row.condition_group;
@@ -140,7 +156,7 @@ function _checklist(catalog, flags, immune) {
             ? _immuneTitle(immunity)
             : row.condition_reminders;
           return `
-            <label class="condition-option${immunity ? " is-immune" : ""}"${hint ? ` title="${escapeAttr(hint)}"` : ""}>
+            <label id="${scope}-option-${safeId(key)}" class="condition-option${immunity ? " is-immune" : ""}"${hint ? ` title="${escapeAttr(hint)}"` : ""}>
               <input type="checkbox" class="condition-toggle"
                 data-condition-key="${escapeAttr(key)}"
                 ${flags[key] ? "checked" : ""} ${immunity ? "disabled" : ""} />
@@ -178,7 +194,9 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
     ...sheet?.character?.secondary_attributes,
     ...sheet?.character?.primary_attributes,
   };
+  const scope = container.id;
   const entries = _activeList(
+    scope,
     catalog,
     flags,
     immune,
@@ -187,10 +205,12 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
   );
   const summary = resolved ? _summaryLine(resolved, ruleTags) : "";
   const list = `
-    ${_checklist(catalog, flags, immune)}
+    ${_checklist(scope, catalog, flags, immune)}
     <button type="button" class="conditions-clear">${t("conditions.clear")}</button>`;
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${inTab ? "" : `<h3 class="resume-col-title">${t("conditions.title")}</h3>`}
     ${
       entries
@@ -206,7 +226,8 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
       <div class="resume-collapse-body">${list}</div>`
       }
     </div>
-  `;
+  `,
+  );
   if (!inTab) bindCollapse(container);
 }
 

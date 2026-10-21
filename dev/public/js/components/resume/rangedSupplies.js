@@ -3,6 +3,7 @@
 import { STORED_AT } from "../../shared/constants.js";
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import {
   collapsibleHeader,
   bindCollapse,
@@ -91,7 +92,7 @@ export function renderResumeAmmo(sheet, data, selected) {
   const rows = entries
     .map(
       (e) => `
-      <tr>
+      <tr id="resume-ammo-${e.ammo_id}">
         <td>${e.name}</td>
         ${quantityStepperCell({
           cssClass: "resume-ammo-qty",
@@ -103,7 +104,9 @@ export function renderResumeAmmo(sheet, data, selected) {
     )
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("sections.munition"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -118,7 +121,8 @@ export function renderResumeAmmo(sheet, data, selected) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 
@@ -136,7 +140,7 @@ export function renderResumeAlchemy(sheet) {
   const rows = backpack
     .map(
       (a) => `
-      <tr>
+      <tr id="resume-alchemy-${a.id}">
         <td>${a.consumable_name ?? "—"}</td>
         <td class="col-num">${a.consumable_tier ?? "—"}</td>
         <td class="col-num">
@@ -161,7 +165,9 @@ export function renderResumeAlchemy(sheet) {
     )
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("alchemy.title"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -177,6 +183,7 @@ export function renderResumeAlchemy(sheet) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }

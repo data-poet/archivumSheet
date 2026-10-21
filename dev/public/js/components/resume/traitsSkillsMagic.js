@@ -1,10 +1,12 @@
 import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import {
   collapsibleHeader,
   bindCollapse,
   renderCollapsibleNameList,
   formatCritical,
+  safeId,
 } from "./shared.js";
 import { conditionCell } from "../../shared/conditionDisplay.js";
 
@@ -14,12 +16,12 @@ export function renderResumeTraits(sheet) {
 
   renderCollapsibleNameList(
     "resume_advantages_container",
-    Object.values(advantages),
+    Object.entries(advantages),
     t("resume.advantages"),
   );
   renderCollapsibleNameList(
     "resume_disadvantages_container",
-    Object.values(disadvantages),
+    Object.entries(disadvantages),
     t("resume.disadvantages"),
   );
 }
@@ -47,9 +49,7 @@ function _shownSkillIds(sheet) {
 export function renderResumeSkills(sheet) {
   const skills = sheet?.character?.skills || {};
   const shown = _shownSkillIds(sheet);
-  const entries = Object.entries(skills)
-    .filter(([id]) => !shown.has(id))
-    .map(([, skill]) => skill);
+  const entries = Object.entries(skills).filter(([id]) => !shown.has(id));
   const container = el("resume_skills_container");
   if (!container) return;
 
@@ -61,8 +61,8 @@ export function renderResumeSkills(sheet) {
 
   const rows = entries
     .map(
-      (s) => `
-      <tr>
+      ([id, s]) => `
+      <tr id="resume-skill-${id}">
         <td>${s.name ?? "—"}</td>
         <td class="col-num">${conditionCell(s, "value")}</td>
         <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
@@ -73,7 +73,9 @@ export function renderResumeSkills(sheet) {
     )
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("resume.skills"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -91,7 +93,8 @@ export function renderResumeSkills(sheet) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 
@@ -113,7 +116,7 @@ export function renderResumeMagic(sheet, data) {
       const dbRow = spellsDb.find((r) => r.spell_id === id);
       const cost = dbRow?.spell_cost ?? "—";
       return `
-        <tr>
+        <tr id="resume-spell-${safeId(id)}">
           <td>${s.name ?? "—"}</td>
           <td class="col-num">${cost}</td>
           <td class="col-num">${conditionCell(s, "value")}</td>
@@ -123,7 +126,9 @@ export function renderResumeMagic(sheet, data) {
     })
     .join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("resume.spells"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -140,6 +145,7 @@ export function renderResumeMagic(sheet, data) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }

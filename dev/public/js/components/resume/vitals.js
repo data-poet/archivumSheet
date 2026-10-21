@@ -7,6 +7,7 @@ import {
   getExperienceRankName,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { morphHTML } from "../../shared/morph.js";
 import { state } from "../../state.js";
 import {
   PRIMARY_ATTRIBUTES,
@@ -53,7 +54,9 @@ export function renderExperienceBar(sheet) {
     ? t("experience.maxRank")
     : `${rank.pointsToNext} ${t("experience.pointsToNextRank")}`;
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     <div class="resume-bar-header">
       <span>
         <span class="resume-bar-badge">${rank.badge}</span>
@@ -72,7 +75,8 @@ export function renderExperienceBar(sheet) {
       ></div>
     </div>
     <div class="resume-bar-caption">${caption}</div>
-  `;
+  `,
+  );
 }
 
 export function renderResumePrimaryAttributes(sheet) {
@@ -85,11 +89,13 @@ export function renderResumePrimaryAttributes(sheet) {
     return;
   }
 
-  container.innerHTML = PRIMARY_ATTRIBUTES.map((key) => {
-    const value = conditionCell(primary[key], "value");
-    const modVal = primary[key]?.modifier ?? 0;
-    return `
-        <div class="resume-attr-box">
+  morphHTML(
+    container,
+    PRIMARY_ATTRIBUTES.map((key) => {
+      const value = conditionCell(primary[key], "value");
+      const modVal = primary[key]?.modifier ?? 0;
+      return `
+        <div id="resume-primary-${key}" class="resume-attr-box">
           <span class="resume-attr-acronym">${key}</span>
           <span class="resume-attr-value">${value}</span>
           <div class="num-stepper resume-attr-mod-stepper">
@@ -107,7 +113,8 @@ export function renderResumePrimaryAttributes(sheet) {
           </div>
         </div>
       `;
-  }).join("");
+    }).join(""),
+  );
 }
 
 const SECONDARY_SNAPSHOT_KEYS = [
@@ -142,7 +149,7 @@ export function renderResumeSecondarySnapshot(sheet) {
     const rawMod = attr.modifier ?? 0;
 
     return `
-      <tr>
+      <tr id="resume-secondary-${key}">
         <td>${getSecondaryAttributeLabel(key)}</td>
         <td class="col-num">${value}</td>
         <td>
@@ -166,7 +173,9 @@ export function renderResumeSecondarySnapshot(sheet) {
     `;
   }).join("");
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     ${collapsibleHeader(t("resume.secondarySnapshot"))}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
@@ -175,7 +184,8 @@ export function renderResumeSecondarySnapshot(sheet) {
         </table>
       </div>
     </div>
-  `;
+  `,
+  );
   bindCollapse(container);
 }
 
@@ -299,7 +309,9 @@ function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
   );
   const label = getSecondaryAttributeLabel(attrName);
 
-  container.innerHTML = `
+  morphHTML(
+    container,
+    `
     <div class="resume-bar-header">
       <span class="resume-bar-label">${label}</span>
       <span class="resume-bar-values">${current}/${total}${caption ? ` · ${caption}` : ""}</span>
@@ -323,7 +335,8 @@ function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
       ${_vitalStepper(attrName, "modifier", rawMod, t("resume.vitalCurrent"))}
       ${_vitalStepper(attrName, "max_modifier", maxMod, t("resume.vitalMax"))}
     </div>
-  `;
+  `,
+  );
 }
 
 // Instant feedback for a vital's modifier/max_modifier stepper: patches the bar's text and

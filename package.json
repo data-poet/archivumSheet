@@ -1,6 +1,6 @@
 {
   "name": "archivumsheet",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "Online GURPS (Archivum) Character Sheet",
   "main": "dev/server.js",
   "engines": {
@@ -34,6 +34,7 @@
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
     "babel-jest": "^30.4.1",
+    "idiomorph": "0.8.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.4.1",
     "prettier": "^3.8.3"
