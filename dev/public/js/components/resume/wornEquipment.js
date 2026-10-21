@@ -15,6 +15,7 @@ import {
   nhCell,
 } from "./shared.js";
 import { conditionCell } from "../../shared/conditionDisplay.js";
+import { cardTitleCell } from "../../shared/renderUtils.js";
 
 const ARMOR_SLOT_ROWS = ARMOR_SLOTS.map((label) => ({
   key: ARMOR_SLOT_KEYS[label],
@@ -33,11 +34,14 @@ export function renderResumeArmor(sheet) {
   }
   container.hidden = false;
 
+  const drLabel = t("armor.dr");
+  const hpLabel = t("armor.hp");
+
   const rows = ARMOR_SLOT_ROWS.map(({ key, label }) => {
     const rowId = `resume-armor-slot-${key}`;
     const piece = equipped[key];
     if (!piece) {
-      return `<tr id="${rowId}"><td>${label}</td><td class="col-num">—</td><td></td></tr>`;
+      return `<tr id="${rowId}">${cardTitleCell(label)}<td class="col-num" data-label="${drLabel}">—</td><td data-label="${hpLabel}"></td></tr>`;
     }
     // final_damage_resistance includes enchantments; armor_final_damage_resistance is material-only.
     const dr = piece.final_damage_resistance ?? "—";
@@ -52,10 +56,11 @@ export function renderResumeArmor(sheet) {
             maxHp,
             modifier,
             actualHp,
+            dataLabel: hpLabel,
           })
-        : `<td></td>`;
+        : `<td data-label="${hpLabel}"></td>`;
 
-    return `<tr id="${rowId}"><td>${label}</td><td class="col-num">${dr}</td>${hpCell}</tr>`;
+    return `<tr id="${rowId}">${cardTitleCell(label)}<td class="col-num" data-label="${drLabel}">${dr}</td>${hpCell}</tr>`;
   }).join("");
 
   morphHTML(
@@ -63,7 +68,7 @@ export function renderResumeArmor(sheet) {
     `
     ${collapsibleHeader(t("sections.armor"), { defaultOpen: true })}
     <div class="resume-collapse-body">
-      <div class="table-wrapper">
+      <div class="table-wrapper table-wrapper--stack">
         <table class="resume-table">
           <thead>
             <tr>
@@ -103,6 +108,7 @@ export function renderResumeShield(sheet) {
   const modifier = equippedShield.hit_points_modifier ?? 0;
   const actualHp = calcActualHp(maxHp, modifier);
 
+  const hpLabel = t("armor.hp");
   const hpCell =
     maxHp > 0
       ? hpStepperCell({
@@ -111,15 +117,16 @@ export function renderResumeShield(sheet) {
           maxHp,
           modifier,
           actualHp,
+          dataLabel: hpLabel,
         })
-      : `<td></td>`;
+      : `<td data-label="${hpLabel}"></td>`;
 
   morphHTML(
     container,
     `
     ${collapsibleHeader(t("sections.shields"), { defaultOpen: true })}
     <div class="resume-collapse-body">
-      <div class="table-wrapper">
+      <div class="table-wrapper table-wrapper--stack">
         <table class="resume-table">
           <thead>
             <tr>
@@ -129,17 +136,17 @@ export function renderResumeShield(sheet) {
               <th class="col-num">${t("traits.actions")}</th>
               <th class="col-num">${t("shield.dr")}</th>
               <th class="col-num">${t("shield.block")}</th>
-              <th class="col-num">${t("armor.hp")}</th>
+              <th class="col-num">${hpLabel}</th>
             </tr>
           </thead>
           <tbody>
             <tr id="resume-shield-equipped">
-              <td>${equippedShield.shield_name ?? "—"}</td>
-              <td class="col-num">${nh}</td>
-              <td class="col-num resume-critical">${critical}</td>
-              <td class="col-num">${actions}</td>
-              <td class="col-num">${dr}</td>
-              <td class="col-num">${block}</td>
+              ${cardTitleCell(equippedShield.shield_name ?? "—")}
+              <td class="col-num" data-label="${t("traits.nh")}">${nh}</td>
+              <td class="col-num resume-critical" data-label="${t("traits.critical")}">${critical}</td>
+              <td class="col-num" data-label="${t("traits.actions")}">${actions}</td>
+              <td class="col-num" data-label="${t("shield.dr")}">${dr}</td>
+              <td class="col-num" data-label="${t("shield.block")}">${block}</td>
               ${hpCell}
             </tr>
           </tbody>

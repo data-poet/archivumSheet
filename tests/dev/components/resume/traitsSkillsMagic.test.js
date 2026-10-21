@@ -95,7 +95,9 @@ describe("renderResumeSkills", () => {
     expect(container.textContent).toContain(t("resume.skills"));
     const row = container.querySelector("tbody tr");
     const cells = row.querySelectorAll("td");
-    expect(cells[0].textContent).toBe("Espadas");
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe(
+      "Espadas",
+    );
     expect(cells[1].textContent).toBe("14");
     expect(cells[2].textContent).toBe("≤4 · ≥17");
     expect(cells[3].textContent).toBe("10");
@@ -110,7 +112,7 @@ describe("renderResumeSkills", () => {
       character: { skills: { "SK-1": { parry: 0 } } },
     });
     const cells = id("resume_skills_container").querySelectorAll("tbody td");
-    expect(cells[0].textContent).toBe("—");
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe("—");
     expect(cells[1].textContent).toBe("—");
     expect(cells[2].textContent).toBe("—");
     expect(cells[3].textContent).toBe("0"); // 0 is a real value, not "missing"
@@ -127,8 +129,8 @@ describe("renderResumeSkills", () => {
 describe("renderResumeSkills — hides skills already shown via gear", () => {
   function names(container) {
     return Array.from(
-      container.querySelectorAll("tbody tr td:first-child"),
-      (td) => td.textContent,
+      container.querySelectorAll("tbody tr .card-title-text"),
+      (span) => span.textContent,
     );
   }
 
@@ -221,7 +223,9 @@ describe("renderResumeMagic", () => {
     expect(container.hidden).toBe(false);
     expect(container.textContent).toContain(t("resume.spells"));
     const cells = container.querySelectorAll("tbody td");
-    expect(cells[0].textContent).toBe("Bola de Fogo");
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe(
+      "Bola de Fogo",
+    );
     expect(cells[1].textContent).toBe("3");
     expect(cells[2].textContent).toBe("15");
     expect(cells[3].textContent).toBe("≤5 · ≥17");

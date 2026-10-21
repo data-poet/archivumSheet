@@ -13,16 +13,31 @@
   margin-bottom: var(--space-7);
 }
 
-/* A missing category (no firearms, no alchemy, ...) is marked by groupBalance.js, not by
-   groupNav's own `hidden` (that one means "not this tab," independent of content) — kept as
-   a class so the two never fight over the same attribute. */
-.resume-section-empty {
-  display: none;
+/* Shared by every resume section that merges a few same-group tables into tabs (weapons;
+   armor/shield) — icon + the edit page's own short category labels (skeleton.js — shorter
+   than the resume section titles), so tabs fit a phone width without relying on
+   .tab-strip's horizontal scroll (still there as a fallback). */
+.resume-tab-strip .tab-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  /* The edit page's tab-strips sit next to varying tab counts and a help/collapse button,
+     so they stay left-aligned there; the resume has the row to itself, so its own tab-strips
+     stretch across it instead of leaving a wide dead band after the last tab. */
+  .resume-tab-strip {
+    overflow-x: visible;
+  }
+  .resume-tab-strip .tab-btn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
 }
 
 /* Alchemy and points are deliberately solo rows (room for more parts later without
-   re-pairing them); groupBalance.js also reaches for this on a row's surviving half when
-   its partner is empty. Inert outside the grid (mobile), so no breakpoint guard needed. */
+   re-pairing them). Inert outside the grid (mobile), so no breakpoint guard needed. */
 .resume-span-full {
   grid-column: 1 / -1;
 }
@@ -39,38 +54,21 @@
     align-items: start;
   }
 
-  /* Ataque: melee needs more room than its ammo count, so that row is 2:1 instead of 1:1 —
-     a finer 6-col track lets row 2 (ranged/firearms) stay even on the very same grid. `dense`
-     backfills ammo (span 2) into the gap melee's span 4 leaves in row 1 instead of pushing it
-     to a row of its own — DOM order stays melee/ranged/firearms/ammo either way. */
-  #tab-char-resume[data-active-group="offense"] .resume-groups {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-auto-flow: row dense;
+  /* Combate: weapons and armor/shield are each one tabbed section (melee/ranged/firearms,
+     armor/shield switched via their own tab-strip) and a wide table squeezed into half a
+     column scrolls sideways and loses columns — so unlike the other groups' row-pairs below,
+     weapons/protection/ammo always stack full-width, one below another, in play order.
+     Alchemy already stacks below them via its own .resume-span-full class in skeleton.js. */
+  #tab-char-resume[data-active-group="combat"] #resume-section-weapons,
+  #tab-char-resume[data-active-group="combat"] #resume-section-protection,
+  #tab-char-resume[data-active-group="combat"] #resume-section-supplies {
+    grid-column: 1 / -1;
   }
 
-  #tab-char-resume[data-active-group="offense"] #resume-section-melee {
-    grid-column: span 4;
-  }
-
-  #tab-char-resume[data-active-group="offense"] #resume-section-supplies {
-    grid-column: span 2;
-  }
-
-  #tab-char-resume[data-active-group="offense"] #resume-section-ranged,
-  #tab-char-resume[data-active-group="offense"] #resume-section-firearms {
-    grid-column: span 3;
-  }
-
-  /* Outranks the span-N rules above (same selectors plus the class) for whichever side
-     groupBalance.js marks as the lone survivor of its row. */
-  #tab-char-resume[data-active-group="offense"]
-    #resume-section-melee.resume-span-full,
-  #tab-char-resume[data-active-group="offense"]
-    #resume-section-supplies.resume-span-full,
-  #tab-char-resume[data-active-group="offense"]
-    #resume-section-ranged.resume-span-full,
-  #tab-char-resume[data-active-group="offense"]
-    #resume-section-firearms.resume-span-full {
+  /* Habilidades: magic/skills and advantages/disadvantages are each one tabbed section now —
+     same full-width-stack treatment as Combate's tabbed sections above, for consistency. */
+  #tab-char-resume[data-active-group="abilities"] #resume-section-training,
+  #tab-char-resume[data-active-group="abilities"] #resume-section-traits {
     grid-column: 1 / -1;
   }
 }

@@ -9,6 +9,7 @@ import {
   safeId,
 } from "./shared.js";
 import { conditionCell } from "../../shared/conditionDisplay.js";
+import { cardTitleCell } from "../../shared/renderUtils.js";
 
 export function renderResumeTraits(sheet) {
   const advantages = sheet?.character?.advantages || {};
@@ -63,11 +64,11 @@ export function renderResumeSkills(sheet) {
     .map(
       ([id, s]) => `
       <tr id="resume-skill-${id}">
-        <td>${s.name ?? "—"}</td>
-        <td class="col-num">${conditionCell(s, "value")}</td>
-        <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
-        <td class="col-num">${conditionCell(s, "parry")}</td>
-        <td class="col-num">${s.actions ?? "—"}</td>
+        ${cardTitleCell(s.name ?? "—")}
+        <td class="col-num" data-label="${t("traits.final")}">${conditionCell(s, "value")}</td>
+        <td class="col-num resume-critical" data-label="${t("traits.critical")}">${formatCritical(s.critical)}</td>
+        <td class="col-num" data-label="${t("traits.parry")}">${conditionCell(s, "parry")}</td>
+        <td class="col-num" data-label="${t("traits.actions")}">${s.actions ?? "—"}</td>
       </tr>
     `,
     )
@@ -78,7 +79,7 @@ export function renderResumeSkills(sheet) {
     `
     ${collapsibleHeader(t("resume.skills"))}
     <div class="resume-collapse-body">
-      <div class="table-wrapper">
+      <div class="table-wrapper table-wrapper--stack">
         <table class="resume-table resume-table--skills">
           <thead>
             <tr>
@@ -117,10 +118,10 @@ export function renderResumeMagic(sheet, data) {
       const cost = dbRow?.spell_cost ?? "—";
       return `
         <tr id="resume-spell-${safeId(id)}">
-          <td>${s.name ?? "—"}</td>
-          <td class="col-num">${cost}</td>
-          <td class="col-num">${conditionCell(s, "value")}</td>
-          <td class="col-num resume-critical">${formatCritical(s.critical)}</td>
+          ${cardTitleCell(s.name ?? "—")}
+          <td class="col-num" data-label="${t("traits.spellCost")}">${cost}</td>
+          <td class="col-num" data-label="${t("traits.final")}">${conditionCell(s, "value")}</td>
+          <td class="col-num resume-critical" data-label="${t("traits.critical")}">${formatCritical(s.critical)}</td>
         </tr>
       `;
     })
@@ -131,7 +132,7 @@ export function renderResumeMagic(sheet, data) {
     `
     ${collapsibleHeader(t("resume.spells"))}
     <div class="resume-collapse-body">
-      <div class="table-wrapper">
+      <div class="table-wrapper table-wrapper--stack">
         <table class="resume-table resume-table--magic">
           <thead>
             <tr>

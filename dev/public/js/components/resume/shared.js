@@ -6,6 +6,7 @@ import { el } from "../../shared/dom.js";
 import { morphHTML } from "../../shared/morph.js";
 import { modifiedNumber } from "../../shared/conditionDisplay.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
+import { cardTitleCell } from "../../shared/renderUtils.js";
 
 const _collapseOpen = new Map();
 
@@ -14,6 +15,7 @@ const _collapseOpen = new Map();
 // an unwritable sheet (an ally) structurally unable to dispatch a write, not just guarded.
 function stepperCell({
   tdClass = "",
+  dataLabel,
   wrapped = true,
   cssClass,
   dataAttrs,
@@ -43,7 +45,9 @@ function stepperCell({
     ? `<div class="hp-modifier">${stepper}${suffix}</div>`
     : stepper;
 
-  return `<td${tdClass ? ` class="${tdClass}"` : ""}>${body}</td>`;
+  const classAttr = tdClass ? ` class="${tdClass}"` : "";
+  const labelAttr = dataLabel ? ` data-label="${dataLabel}"` : "";
+  return `<td${classAttr}${labelAttr}>${body}</td>`;
 }
 
 export function hpStepperCell({
@@ -52,10 +56,17 @@ export function hpStepperCell({
   maxHp,
   modifier,
   actualHp,
+  dataLabel,
 }) {
   const actual = `<strong class="resume-hp-actual">${actualHp}</strong>/<strong>${maxHp}</strong>`;
 
-  return stepperCell({ cssClass, dataAttrs, value: modifier, suffix: actual });
+  return stepperCell({
+    cssClass,
+    dataAttrs,
+    value: modifier,
+    suffix: actual,
+    dataLabel,
+  });
 }
 
 export function roundsStepperCell({
@@ -63,6 +74,7 @@ export function roundsStepperCell({
   dataAttrs,
   magazineSize,
   roundsLoaded,
+  dataLabel,
 }) {
   const suffix = `/ <strong>${magazineSize}</strong>`;
 
@@ -72,10 +84,16 @@ export function roundsStepperCell({
     inputAttrs: `data-min="0" data-max="${magazineSize}"`,
     value: roundsLoaded,
     suffix,
+    dataLabel,
   });
 }
 
-export function quantityStepperCell({ cssClass, dataAttrs, quantity }) {
+export function quantityStepperCell({
+  cssClass,
+  dataAttrs,
+  quantity,
+  dataLabel,
+}) {
   return stepperCell({
     tdClass: "col-num",
     wrapped: false,
@@ -83,6 +101,7 @@ export function quantityStepperCell({ cssClass, dataAttrs, quantity }) {
     dataAttrs,
     inputStyle: "width:50px",
     value: quantity,
+    dataLabel,
   });
 }
 
@@ -115,8 +134,9 @@ export function bindCollapse(container) {
 }
 
 // Shared shape for melee/ranged/firearms' equipped-weapon tables: a name column, caller-supplied
-// stat columns, an HP stepper (maxHp computed per weapon type — melee alone falls back to a
+// stat columns, and an HP stepper (maxHp computed per weapon type — melee alone falls back to a
 // derived value when weapon_final_hit_points is absent, so that stays a per-caller function
+// rather than a fixed field name). `secondaryStepper` (firearms' loaded-rounds) shares the HP
 // rather than a fixed field name), and an optional extra column (firearms' loaded-rounds stepper).
 export function renderResumeWeaponTable({
   containerId,
@@ -149,6 +169,7 @@ export function renderResumeWeaponTable({
         ? `resume-weapon-${containerId}-${instanceId}`
         : `resume-weapon-${containerId}-unarmed-${i}`;
 
+      const hpLabel = t("armor.hp");
       const hpCell =
         maxHp > 0
           ? hpStepperCell({
@@ -157,19 +178,20 @@ export function renderResumeWeaponTable({
               maxHp,
               modifier,
               actualHp,
+              dataLabel: hpLabel,
             })
-          : `<td></td>`;
+          : `<td data-label="${hpLabel}"></td>`;
 
       const statCells = columns
         .map(
           (col) =>
-            `<td class="col-num${col.tdClass ? ` ${col.tdClass}` : ""}">${col.cell(w)}</td>`,
+            `<td class="col-num${col.tdClass ? ` ${col.tdClass}` : ""}" data-label="${col.header}">${col.cell(w)}</td>`,
         )
         .join("");
 
       return `
         <tr id="${rowId}">
-          <td>${w.weapon_name ?? "—"}</td>
+          ${cardTitleCell(w.weapon_name ?? "—")}
           ${statCells}
           ${hpCell}
           ${extraCell ? extraCell(w, instanceId) : ""}
@@ -187,7 +209,7 @@ export function renderResumeWeaponTable({
     `
     ${collapsibleHeader(title, { defaultOpen: true })}
     <div class="resume-collapse-body">
-      <div class="table-wrapper">
+      <div class="table-wrapper table-wrapper--stack">
         <table class="resume-table">
           <thead>
             <tr>

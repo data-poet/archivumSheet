@@ -51,8 +51,7 @@ export const RESUME_NAV = {
   groupsAriaLabel: "Grupos do resumo",
   groups: {
     status: { label: "Status", short: "Status" },
-    offense: { label: "Ataque", short: "Ataque" },
-    defense: { label: "Defesa", short: "Defesa" },
+    combat: { label: "Combate", short: "Combate" },
     abilities: { label: "Habilidades", short: "Hab." },
     info: { label: "Info", short: "Info" },
   },

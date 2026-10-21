@@ -62,73 +62,125 @@ export const RESUME_PANEL_HTML = `
         </div>
       </section>
 
-      <!-- Ataque: each weapon type and ammo is its own part, paired two-per-row by the
-           desktop grid purely through DOM order — no nested two-col rows here. -->
-      <section class="l-section resume-group-section" id="resume-section-melee" data-group="offense">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_melee_container"></div>
+      <!-- Combate: offense (Ataque) and defense (Defesa) merged into one group, in play order
+           — weapons, protection, ammo, alchemy. Weapons and armor/shield each share one section
+           as tabs (reuses components/tabs.js's generic tab-strip — same mechanism the edit
+           page's weapon tables already use, see layout/sheetLayout.js's section-weapons), so
+           only one wide table is on screen at a time; ammo and alchemy are always-visible,
+           not tabs. -->
+      <section class="l-section resume-group-section" id="resume-section-weapons" data-group="combat">
+        <nav class="tab-strip resume-tab-strip" data-section="resume-section-weapons">
+          <button class="tab-btn" data-tab="resume-tab-melee" id="resume-tab-btn-melee">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-melee"></span>
+            <span class="tab-btn-label" id="resume-tab-label-melee"></span>
+          </button>
+          <button class="tab-btn" data-tab="resume-tab-ranged" id="resume-tab-btn-ranged">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-ranged"></span>
+            <span class="tab-btn-label" id="resume-tab-label-ranged"></span>
+          </button>
+          <button class="tab-btn" data-tab="resume-tab-firearms" id="resume-tab-btn-firearms">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-firearms"></span>
+            <span class="tab-btn-label" id="resume-tab-label-firearms"></span>
+          </button>
+        </nav>
+        <div class="tab-panel" id="resume-tab-melee">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_melee_container"></div>
+          </div>
+        </div>
+        <div class="tab-panel" id="resume-tab-ranged">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_ranged_container"></div>
+          </div>
+        </div>
+        <div class="tab-panel" id="resume-tab-firearms">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_firearms_container"></div>
+          </div>
         </div>
       </section>
 
-      <section class="l-section resume-group-section" id="resume-section-ranged" data-group="offense">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_ranged_container"></div>
+      <section class="l-section resume-group-section" id="resume-section-protection" data-group="combat">
+        <nav class="tab-strip resume-tab-strip" data-section="resume-section-protection">
+          <button class="tab-btn" data-tab="resume-tab-armor" id="resume-tab-btn-armor">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-armor"></span>
+            <span class="tab-btn-label" id="resume-tab-label-armor"></span>
+          </button>
+          <button class="tab-btn" data-tab="resume-tab-shield" id="resume-tab-btn-shield">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-shield"></span>
+            <span class="tab-btn-label" id="resume-tab-label-shield"></span>
+          </button>
+        </nav>
+        <div class="tab-panel" id="resume-tab-armor">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_armor_container"></div>
+          </div>
+        </div>
+        <div class="tab-panel" id="resume-tab-shield">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_shield_container"></div>
+          </div>
         </div>
       </section>
 
-      <section class="l-section resume-group-section" id="resume-section-firearms" data-group="offense">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_firearms_container"></div>
-        </div>
-      </section>
-
-      <section class="l-section resume-group-section" id="resume-section-supplies" data-group="offense">
+      <section class="l-section resume-group-section" id="resume-section-supplies" data-group="combat">
         <div class="resume-row">
           <div class="resume-full-col" id="resume_ammo_container"></div>
         </div>
       </section>
 
-      <!-- Defesa: armor, shield, alchemy — each its own part, same pairing rule as Ataque. -->
-      <section class="l-section resume-group-section" id="resume-section-armor" data-group="defense">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_armor_container"></div>
-        </div>
-      </section>
-
-      <section class="l-section resume-group-section" id="resume-section-shield" data-group="defense">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_shield_container"></div>
-        </div>
-      </section>
-
-      <section class="l-section resume-group-section resume-span-full" id="resume-section-alchemy" data-group="defense">
+      <section class="l-section resume-group-section resume-span-full" id="resume-section-alchemy" data-group="combat">
         <div class="resume-row">
           <div class="resume-full-col" id="resume_alchemy_container"></div>
         </div>
       </section>
 
-      <!-- Habilidades: magic, skills, advantages, disadvantages — same pairing rule. -->
-      <section class="l-section resume-group-section" id="resume-section-magic" data-group="abilities">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_magic_container"></div>
+      <!-- Habilidades: magic/skills (room for a future "Golpes" tab) and advantages/
+           disadvantages each share one section as tabs, same treatment as Combate's
+           weapons/protection (components/tabs.js). -->
+      <section class="l-section resume-group-section" id="resume-section-training" data-group="abilities">
+        <nav class="tab-strip resume-tab-strip" data-section="resume-section-training">
+          <button class="tab-btn" data-tab="resume-tab-magic" id="resume-tab-btn-magic">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-magic"></span>
+            <span class="tab-btn-label" id="resume-tab-label-magic"></span>
+          </button>
+          <button class="tab-btn" data-tab="resume-tab-skills" id="resume-tab-btn-skills">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-skills"></span>
+            <span class="tab-btn-label" id="resume-tab-label-skills"></span>
+          </button>
+        </nav>
+        <div class="tab-panel" id="resume-tab-magic">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_magic_container"></div>
+          </div>
+        </div>
+        <div class="tab-panel" id="resume-tab-skills">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_skills_container"></div>
+          </div>
         </div>
       </section>
 
-      <section class="l-section resume-group-section" id="resume-section-skills" data-group="abilities">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_skills_container"></div>
+      <section class="l-section resume-group-section" id="resume-section-traits" data-group="abilities">
+        <nav class="tab-strip resume-tab-strip" data-section="resume-section-traits">
+          <button class="tab-btn" data-tab="resume-tab-advantages" id="resume-tab-btn-advantages">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-advantages"></span>
+            <span class="tab-btn-label" id="resume-tab-label-advantages"></span>
+          </button>
+          <button class="tab-btn" data-tab="resume-tab-disadvantages" id="resume-tab-btn-disadvantages">
+            <span class="tab-btn-icon" aria-hidden="true" id="resume-tab-icon-disadvantages"></span>
+            <span class="tab-btn-label" id="resume-tab-label-disadvantages"></span>
+          </button>
+        </nav>
+        <div class="tab-panel" id="resume-tab-advantages">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_advantages_container"></div>
+          </div>
         </div>
-      </section>
-
-      <section class="l-section resume-group-section" id="resume-section-advantages" data-group="abilities">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_advantages_container"></div>
-        </div>
-      </section>
-
-      <section class="l-section resume-group-section" id="resume-section-disadvantages" data-group="abilities">
-        <div class="resume-row">
-          <div class="resume-full-col" id="resume_disadvantages_container"></div>
+        <div class="tab-panel" id="resume-tab-disadvantages">
+          <div class="resume-row">
+            <div class="resume-full-col" id="resume_disadvantages_container"></div>
+          </div>
         </div>
       </section>
 
@@ -226,6 +278,31 @@ function applyResumeStaticLabels() {
   };
 
   setText("sec-resume-attributes-group", t("resume.attributesGroupTitle"));
+  // Shorter than t("sections.*") (e.g. "Armas Corpo a Corpo") — same labels the edit
+  // page's own weapon tabs use for these three categories, so icon + label fit on a phone
+  // tab-strip without relying on its horizontal scroll.
+  setText("resume-tab-label-melee", LABELS.tabs["tab-equip-melee"]);
+  setText("resume-tab-label-ranged", LABELS.tabs["tab-equip-ranged"]);
+  setText("resume-tab-label-firearms", LABELS.tabs["tab-equip-firearms"]);
+  const setIcon = (id, name) => {
+    const elem = document.getElementById(id);
+    if (elem) elem.innerHTML = icon(name);
+  };
+  setIcon("resume-tab-icon-melee", "melee");
+  setIcon("resume-tab-icon-ranged", "ranged");
+  setIcon("resume-tab-icon-firearms", "firearms");
+  setText("resume-tab-label-armor", LABELS.tabs["tab-equip-armor"]);
+  setText("resume-tab-label-shield", LABELS.tabs["tab-equip-shields"]);
+  setIcon("resume-tab-icon-armor", "armor");
+  setIcon("resume-tab-icon-shield", "shield");
+  setText("resume-tab-label-magic", t("resume.spells"));
+  setText("resume-tab-label-skills", t("resume.skills"));
+  setIcon("resume-tab-icon-magic", "magic");
+  setIcon("resume-tab-icon-skills", "skills");
+  setText("resume-tab-label-advantages", t("resume.advantages"));
+  setText("resume-tab-label-disadvantages", t("resume.disadvantages"));
+  setIcon("resume-tab-icon-advantages", "advantages");
+  setIcon("resume-tab-icon-disadvantages", "disadvantages");
   setText("sec-resume-weight", t("resume.weightTitle"));
   setText("sec-resume-weight-detail", t("resume.weightDetail"));
   setText("sec-resume-value", t("resume.valueTitle"));

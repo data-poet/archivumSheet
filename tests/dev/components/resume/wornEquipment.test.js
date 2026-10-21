@@ -139,7 +139,7 @@ describe("renderResumeShield", () => {
     renderResume({ inventory: { shield: { equipped: {} } } });
     const container = id("resume_shield_container");
     const cells = container.querySelectorAll("tbody td");
-    expect(cells[0].textContent).toBe("—");
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe("—");
     expect(cells[1].textContent).toBe("—");
     expect(cells[2].textContent).toBe("—");
     expect(cells[3].textContent).toBe("—");
@@ -299,7 +299,9 @@ describe("renderResumeMelee", () => {
     });
     const row = id("resume_melee_container").querySelector("tbody tr");
     const cells = row.querySelectorAll("td");
-    expect(cells[0].textContent).toBe(t("resume.unarmed"));
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe(
+      t("resume.unarmed"),
+    );
     // Desarmado is always DX-derived, never a purchased skill, so its NH keeps the default marker.
     expect(cells[1].textContent).toBe("12*");
     expect(cells[3].textContent).toBe("9");
@@ -365,7 +367,9 @@ describe("renderResumeRanged", () => {
 
     const row = id("resume_ranged_container").querySelector("tbody tr");
     const cells = row.querySelectorAll("td");
-    expect(cells[0].textContent).toBe("Arco Longo");
+    expect(cells[0].querySelector(".card-title-text").textContent).toBe(
+      "Arco Longo",
+    );
     expect(cells[4].textContent).toBe("1x2");
     expect(cells[5].textContent).toBe("2");
     expect(cells[6].textContent).toBe("1d+2");

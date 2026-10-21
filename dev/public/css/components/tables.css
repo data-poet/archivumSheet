@@ -628,6 +628,13 @@ tr.detail-row details[open] summary {
     width: auto;
   }
 
+  /* Firearms: PV and loaded rounds are read together — keep them side by side in the
+     card instead of each claiming the full row via the rule above. */
+  .table-wrapper--stack td:has(.resume-firearm-hp),
+  .table-wrapper--stack td:has(.resume-firearm-rounds) {
+    grid-column: auto;
+  }
+
   /* detail / magazine rows are siblings of their data row, so the card border is drawn
      across the whole group and only the last member keeps the bottom corners */
   .table-wrapper--stack tbody tr.detail-row,

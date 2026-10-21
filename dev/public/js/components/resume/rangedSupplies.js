@@ -45,6 +45,7 @@ export function renderResumeFirearms(sheet) {
         dataAttrs: `data-instance-id="${instanceId}"`,
         magazineSize: w.weapon_final_magazine_size ?? 0,
         roundsLoaded: w.rounds_loaded ?? 0,
+        dataLabel: t("firearms.magazine"),
       }),
   });
 }
