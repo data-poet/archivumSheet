@@ -89,6 +89,8 @@ function buildCharacter({
         HT: primary.primary_attributes.HT,
         HP: secondary.secondary_attributes.HP,
         FP: secondary.secondary_attributes.FP,
+        Toxicity: secondary.secondary_attributes.Toxicity,
+        Mana: secondary.secondary_attributes.Mana,
       }),
 
       skills: secondary.skills,

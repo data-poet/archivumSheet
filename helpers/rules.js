@@ -21,8 +21,9 @@ const DEFAULT_SECONDARY_PURCHASE = { step: 1, maxBought: 5 };
 const SECONDARY_PURCHASE = {
   HP: { step: 4, maxBought: 5 },
   FP: { ...DEFAULT_SECONDARY_PURCHASE },
-  Mana: { step: 4, maxBought: 5 },
-  Toxicity: { step: 4, maxBought: 5 },
+  // minValue floors Mana at 0: spending past it casts on PV instead (see effects/fatigue_and_healing.md).
+  Mana: { step: 4, maxBought: 5, minValue: 0 },
+  Toxicity: { ...DEFAULT_SECONDARY_PURCHASE },
   Will: { ...DEFAULT_SECONDARY_PURCHASE },
   Vision: { ...DEFAULT_SECONDARY_PURCHASE },
   Hearing: { ...DEFAULT_SECONDARY_PURCHASE },
@@ -37,6 +38,15 @@ const SECONDARY_PURCHASE = {
 const LOW_RESERVE = {
   keys: ["HP", "FP"],
   belowDivisor: 3,
+};
+
+// Toxicity's auto-applied condition bands (thresholds.js's toxicityState): "bands" splits natural max
+// into thirds, mirroring LOW_RESERVE's "below 1/3" shape for the saturado/ok line; the negative range
+// below 0 is carved into the same thirds, "severeAtBands" of them down, for the three escalating
+// poisoning tiers in data/db_conditions.csv's toxicidade exclusive group.
+const TOXICITY_THRESHOLDS = {
+  bands: 3,
+  severeAtBands: 2,
 };
 
 // Death thresholds are multiples of natural HT (house rule), not of PV.
@@ -112,6 +122,7 @@ module.exports = {
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,
   LOW_RESERVE,
+  TOXICITY_THRESHOLDS,
   HP_THRESHOLDS,
   LOAD_LEVELS,
   SPELL_TIER_THRESHOLDS,

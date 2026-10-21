@@ -60,6 +60,19 @@ export const VITAL_ATTRIBUTES = [
   { key: "Toxicity", bar: "toxicity" },
 ];
 
+// condition_key values engine/character/js/attributes/thresholds.js emits for Toxicity/Mana's
+// auto-applied states; compute/index.js syncs these into selected.conditions after every run so the
+// checklist and active-conditions card reflect them, same as a player-toggled condition would.
+// Mirrors data/db_conditions.csv's "toxicidade" exclusive group; a parity test pins it.
+export const TOXICITY_CONDITION_KEYS = [
+  "saturado",
+  "intoxicado",
+  "envenenamento-leve",
+  "envenenamento-grave",
+  "envenenamento-critico",
+];
+export const MANA_CONDITION_KEY = "esgotamento-arcano";
+
 // Shared by compute/autorun.js (its TYPING trailing delay) and
 // engine/inventory/shared/renderScheduling.js's createDeferredRender default — one number,
 // not two independently hardcoded ones that could drift apart.

@@ -274,8 +274,15 @@ function buildSheet({
     iq,
   });
 
+  // Toxicity/Mana states are resource-driven, not player-toggled: the matching condition_key (if any)
+  // is injected automatically, same exclusive-group/tag resolution as a manually checked condition.
+  const autoConditionKeys = [
+    characterData.thresholds.toxicity.state,
+    characterData.thresholds.mana.state,
+  ].filter((state) => state !== "ok");
+
   applyConditions({
-    activeKeys: character.conditions,
+    activeKeys: [...(character.conditions || []), ...autoConditionKeys],
     characterData,
     grimoire: grimoireResult.spells,
     inventory: inventoryResult.inventory,

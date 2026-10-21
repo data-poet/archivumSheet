@@ -81,6 +81,13 @@
   background: var(--color-remove);
 }
 
+/* FP/Toxicity keep their own bar color when negative (flipping flat red would lose which bar
+   is which at a glance); a red stroke marks the negative state instead. */
+.resume-bar-fill--negative-own-color {
+  outline: 2px solid var(--color-remove);
+  outline-offset: -2px;
+}
+
 .resume-bar-tick {
   position: absolute;
   top: 0;

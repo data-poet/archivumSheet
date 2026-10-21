@@ -209,7 +209,7 @@ export function renderResumeBars(sheet) {
   );
 }
 
-const CHIP_KIND = { HP: "hp", FP: "fp" };
+const CHIP_KIND = { HP: "hp", FP: "fp", Toxicity: "toxicity", Mana: "mana" };
 
 function _chipFor(key, thresholds) {
   const kind = CHIP_KIND[key];
@@ -217,6 +217,8 @@ function _chipFor(key, thresholds) {
 }
 
 // Vitals whose value can go below 0 get a negative zone that runs from 0 down to its floor.
+// HP's own color already reads as danger, so it flips to flat red; FP/Toxicity keep their own
+// bar color (ownColor) with a red stroke instead, so the bar stays identifiable at a glance.
 const ZONES = {
   HP: ({ hp }) => ({
     floor: hp.death_at,
@@ -233,6 +235,7 @@ const ZONES = {
   FP: ({ fp }) => ({
     floor: fp.unconscious_at,
     ticks: [],
+    ownColor: true,
     caption: (current) =>
       current > fp.unconscious_at
         ? fillThreshold(LABELS.thresholds.bar.unconsciousAt, {
@@ -240,9 +243,15 @@ const ZONES = {
           })
         : "",
   }),
+  Toxicity: ({ toxicity = {} }) => ({
+    floor: toxicity.poisoned_critical_at,
+    ticks: [toxicity.poisoned_mild_at, toxicity.poisoned_severe_at],
+    ownColor: true,
+    caption: () => "",
+  }),
 };
 
-function _negativeTrack(current, zone) {
+function _negativeTrack(current, zone, bar) {
   const pct = Math.min(100, Math.round((current / zone.floor) * 100));
   const ticks = zone.ticks
     .map(
@@ -250,11 +259,17 @@ function _negativeTrack(current, zone) {
         `<span class="resume-bar-tick${current <= value ? " is-passed" : ""}" style="left: ${(value / zone.floor) * 100}%"></span>`,
     )
     .join("");
+  const fillClass = zone.ownColor
+    ? "resume-bar-fill resume-bar-fill--negative-own-color"
+    : "resume-bar-fill resume-bar-fill--negative";
+  const fillStyle = zone.ownColor
+    ? `width: ${pct}%; background: var(--color-bar-${bar})`
+    : `width: ${pct}%`;
   return `
     <div class="resume-bar-track resume-bar-track--negative">
       <div
-        class="resume-bar-fill resume-bar-fill--negative"
-        style="width: ${pct}%"
+        class="${fillClass}"
+        style="${fillStyle}"
         role="progressbar"
         aria-valuenow="${current}"
         aria-valuemin="${zone.floor}"
@@ -325,7 +340,7 @@ function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
     </div>
     ${
       zone && current < 0
-        ? _negativeTrack(current, zone)
+        ? _negativeTrack(current, zone, bar)
         : `<div class="resume-bar-track">
       <div
         class="resume-bar-fill resume-bar--${bar}"

@@ -4,6 +4,7 @@ jest.mock("dev/public/js/components/resume/vitals.js", () => ({
 
 import { handleResumeAttributeInput } from "dev/public/js/engine/character/traits/resumeAttributeInput.js";
 import { updateResumeVitalDisplay } from "dev/public/js/components/resume/vitals.js";
+import { state } from "dev/public/js/state.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { seedRules } from "tests/dev/helpers/stateFixture.js";
 
@@ -176,6 +177,34 @@ describe("handleResumeAttributeInput — secondary-input", () => {
       target,
     );
     expect(target.setSecondary).toHaveBeenCalledWith("FP", "modifier", 0);
+  });
+
+  test("Mana's modifier cannot push it below its minValue floor (unlike FP, which has none)", () => {
+    const target = fakeTarget();
+    state.sheet = {
+      character: {
+        secondary_attributes: {
+          Mana: {
+            final_base_value: 10,
+            enchantment_modifier: 0,
+            max_modifier: 0,
+          },
+        },
+      },
+    };
+
+    handleResumeAttributeInput(
+      {
+        target: elWithClass(
+          "input",
+          "secondary-input",
+          { name: "Mana", field: "modifier" },
+          "-15",
+        ),
+      },
+      target,
+    );
+    expect(target.setSecondary).toHaveBeenCalledWith("Mana", "modifier", -10);
   });
 
   test("a vital's max_modifier is written capped at 0; non-vitals ignore it", () => {

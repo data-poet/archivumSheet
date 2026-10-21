@@ -16,6 +16,10 @@ import {
   toEngineCharacter,
   toEngineInventory,
 } from "../shared/enginePayload.js";
+import {
+  TOXICITY_CONDITION_KEYS,
+  MANA_CONDITION_KEY,
+} from "../shared/constants.js";
 import { showToast } from "../shared/toast.js";
 import { t } from "../localization/pt-BR/index.js";
 import { isTimingEnabled, mark, logRunTiming } from "../shared/timing.js";
@@ -112,6 +116,23 @@ export async function runEngine({ signal, isCurrent } = {}) {
           ([key]) => !unknownConditions.includes(key),
         ),
       );
+    }
+
+    // Toxicity/Mana are resource-driven, not player-toggled: mirror the engine's auto-applied
+    // state into selected.conditions so the checklist and active-conditions card reflect it, the
+    // same way engine/buildSheet.js already folds it into this run's own computation. Matches
+    // setCondition's convention (model.js): present and true when on, absent when off.
+    const toxicityState = json.character?.thresholds?.toxicity?.state;
+    TOXICITY_CONDITION_KEYS.forEach((key) => {
+      if (key === toxicityState) selected.conditions[key] = true;
+      else delete selected.conditions[key];
+    });
+
+    const manaState = json.character?.thresholds?.mana?.state;
+    if (manaState === MANA_CONDITION_KEY) {
+      selected.conditions[MANA_CONDITION_KEY] = true;
+    } else {
+      delete selected.conditions[MANA_CONDITION_KEY];
     }
 
     renderOutput(json);

@@ -33,6 +33,16 @@ export const THRESHOLDS = {
       collapsing: "Vontade para agir",
       unconscious: "Inconsciente",
     },
+    toxicity: {
+      saturado: "Saturado: Perícias -1",
+      intoxicado: "Intoxicado: DX/IQ/Perícias -1",
+      "envenenamento-leve": "Envenenado (leve)",
+      "envenenamento-grave": "Envenenado (grave)",
+      "envenenamento-critico": "Incapacitado (envenenamento)",
+    },
+    mana: {
+      "esgotamento-arcano": "Esgotamento Arcano: magias custam PV",
+    },
   },
   bar: {
     nextDeathCheck: "próximo teste em {x}",

@@ -20,9 +20,12 @@ function resolveSecondary({
   max_modifier = 0,
   maxBought = DEFAULT_SECONDARY_PURCHASE.maxBought,
   step = DEFAULT_SECONDARY_PURCHASE.step,
+  minValue = null,
 }) {
   const safeBought = clamp(bought, 0, maxBought);
   const final_base_value = base_value + safeBought * step;
+  const rawValue =
+    final_base_value + modifier + enchantment_modifier + max_modifier;
 
   return {
     base_value,
@@ -32,7 +35,7 @@ function resolveSecondary({
     has_enchantment_modifier,
     max_modifier,
     final_base_value,
-    value: final_base_value + modifier + enchantment_modifier + max_modifier,
+    value: minValue != null ? Math.max(minValue, rawValue) : rawValue,
     points: safeBought * POINTS_PER_PURCHASE,
   };
 }
@@ -54,7 +57,7 @@ function computeBaseSecondary({ ST, HT, IQ, DX }) {
     HP: Math.floor((HT * 4 + ST * 2) / 2),
     FP: HT,
     Mana: Math.floor((IQ * 4 + HT * 2) / 2),
-    Toxicity: Math.floor((HT * 4 + ST * 2 + IQ * 2) / 3),
+    Toxicity: HT,
 
     Will: IQ,
     Vision: IQ,

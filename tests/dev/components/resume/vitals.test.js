@@ -198,7 +198,7 @@ describe("renderResumeBars", () => {
     ).toContain("width: 23%");
   });
 
-  test("negative PF fill toward unconsciousness, with no ticks", () => {
+  test("negative PF fills with its own color (not flat red), with no ticks", () => {
     renderResume({
       character: {
         secondary_attributes: {
@@ -216,9 +216,46 @@ describe("renderResumeBars", () => {
       "-6/12 · inconsciente em -12",
     );
     expect(bar.querySelectorAll(".resume-bar-tick")).toHaveLength(0);
+    expect(bar.querySelector(".resume-bar-fill--negative")).toBeNull();
+    const fill = bar.querySelector(".resume-bar-fill--negative-own-color");
+    expect(fill.getAttribute("style")).toContain(
+      "background: var(--color-bar-fatigue)",
+    );
   });
 
-  test("Mana and Toxicidade stay clamped at 0", () => {
+  test("negative Toxicidade fills with its own color and a tick per poisoning tier, plus a chip", () => {
+    renderResume({
+      character: {
+        secondary_attributes: {
+          Toxicity: { final_base_value: 30, modifier: -35 },
+        },
+        thresholds: {
+          hp: { state: "ok" },
+          fp: { state: "ok" },
+          toxicity: {
+            state: "envenenamento-leve",
+            poisoned_mild_at: -10,
+            poisoned_severe_at: -20,
+            poisoned_critical_at: -30,
+          },
+        },
+      },
+    });
+
+    const bar = id("resume_bar_toxicity");
+    expect(bar.querySelector(".resume-bar-values").textContent).toBe("-5/30");
+    expect(bar.querySelectorAll(".resume-bar-tick")).toHaveLength(2);
+    expect(bar.querySelector(".resume-bar-fill--negative")).toBeNull();
+    const fill = bar.querySelector(".resume-bar-fill--negative-own-color");
+    expect(fill.getAttribute("style")).toContain(
+      "background: var(--color-bar-toxicity)",
+    );
+    expect(
+      bar.querySelector(".threshold-chip--envenenamento-leve"),
+    ).not.toBeNull();
+  });
+
+  test("Mana stays clamped at 0", () => {
     renderResume({
       character: {
         secondary_attributes: { Mana: { final_base_value: 10, modifier: -15 } },

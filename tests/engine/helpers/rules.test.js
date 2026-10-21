@@ -66,8 +66,8 @@ describe("secondary purchase rules", () => {
     expect(SECONDARY_PURCHASE).toEqual({
       HP: { step: 4, maxBought: 5 },
       FP: { step: 1, maxBought: 5 },
-      Mana: { step: 4, maxBought: 5 },
-      Toxicity: { step: 4, maxBought: 5 },
+      Mana: { step: 4, maxBought: 5, minValue: 0 },
+      Toxicity: { step: 1, maxBought: 5 },
       Will: { step: 1, maxBought: 5 },
       Vision: { step: 1, maxBought: 5 },
       Hearing: { step: 1, maxBought: 5 },

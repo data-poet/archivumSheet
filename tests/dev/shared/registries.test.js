@@ -5,6 +5,8 @@ import {
   DEFAULT_PRIMARY_VALUE,
   ARMOR_SLOTS,
   ARMOR_SLOT_KEYS,
+  TOXICITY_CONDITION_KEYS,
+  MANA_CONDITION_KEY,
 } from "dev/public/js/shared/constants.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { CONDITION_RULES } from "helpers/rules.js";
@@ -132,6 +134,19 @@ describe("the conditions card mirrors the engine vocabulary", () => {
     const groups = [...new Set(rows.map((row) => row.condition_group))];
     groups.forEach((group) =>
       expect(LABELS.conditions.groups[group]).toBeTruthy(),
+    );
+  });
+
+  test("TOXICITY_CONDITION_KEYS matches the toxicidade exclusive group, in CSV order", () => {
+    const toxicidade = rows
+      .filter((row) => row.condition_exclusive_group === "toxicidade")
+      .map((row) => row.condition_key);
+    expect(TOXICITY_CONDITION_KEYS).toEqual(toxicidade);
+  });
+
+  test("MANA_CONDITION_KEY is a real condition", () => {
+    expect(rows.some((row) => row.condition_key === MANA_CONDITION_KEY)).toBe(
+      true,
     );
   });
 });

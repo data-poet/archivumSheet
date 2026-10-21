@@ -5,6 +5,7 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
+import { t } from "../../../localization/pt-BR/index.js";
 import { createEquippableItemActions } from "../shared/equippableItemActions.js";
 
 const data = state.data;

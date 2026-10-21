@@ -251,11 +251,15 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
   };
   const { attributes } = buildSecondaryAttributes(primaries);
 
-  test("PV, Mana and Toxicidade results match the engine", () => {
+  test("PV and Mana results match the engine", () => {
     expect(markdown).toContain(`\\right\\rfloor = ${attributes.HP.value}\n`);
     expect(markdown).toContain(`\\right\\rfloor = ${attributes.Mana.value}\n`);
+  });
+
+  test("Toxicidade equals HT", () => {
+    expect(attributes.Toxicity.value).toBe(11);
     expect(markdown).toContain(
-      `\\right\\rfloor = ${attributes.Toxicity.value}\n`,
+      `Com **HT 11**, o personagem tem **${attributes.Toxicity.value}** de Toxicidade`,
     );
   });
 

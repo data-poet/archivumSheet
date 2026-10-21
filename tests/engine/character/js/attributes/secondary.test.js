@@ -33,9 +33,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         Math.floor((11 * 4 + 12 * 2) / 2),
       );
 
-      expect(attributes.Toxicity.base_value).toBe(
-        Math.floor((12 * 4 + 10 * 2 + 11 * 2) / 3),
-      );
+      expect(attributes.Toxicity.base_value).toBe(12);
 
       expect(attributes.Will.base_value).toBe(11);
       expect(attributes.Vision.base_value).toBe(11);

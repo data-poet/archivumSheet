@@ -86,7 +86,7 @@ describe("the rules the engine will key off", () => {
     );
   });
 
-  test("pain, drunkenness and nausea variants exclude each other", () => {
+  test("pain, drunkenness, nausea and toxicity variants exclude each other", () => {
     const groups = {};
     rows
       .filter((row) => row.condition_exclusive_group)
@@ -104,6 +104,13 @@ describe("the rules the engine will key off", () => {
         "choque-4",
         "choque-6",
         "choque-8",
+      ],
+      toxicidade: [
+        "saturado",
+        "intoxicado",
+        "envenenamento-leve",
+        "envenenamento-grave",
+        "envenenamento-critico",
       ],
     });
   });

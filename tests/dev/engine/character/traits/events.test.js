@@ -112,14 +112,15 @@ describe("handleTraitInput — secondary-input", () => {
   });
 
   test("allows a negative vital-stat modifier through unchanged", () => {
+    // FP has no minValue floor (unlike Mana, see resumeAttributeInput.test.js for that case).
     const target = elWithClass(
       "input",
       "secondary-input",
-      { name: "Mana", field: "modifier" },
+      { name: "FP", field: "modifier" },
       "-4",
     );
     handleTraitInput({ target });
-    expect(state.selected.secondary.Mana.modifier).toBe(-4);
+    expect(state.selected.secondary.FP.modifier).toBe(-4);
   });
 
   test("stores a plain (non-vital, non-BasicSpeed) modifier as-is", () => {

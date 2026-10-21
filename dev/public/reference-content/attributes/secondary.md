@@ -68,6 +68,8 @@ $$
 \text{Mana} = \left\lfloor \frac{IQ \times 4 + HT \times 2}{2} \right\rfloor
 $$
 
+A Mana nunca fica negativa. Ao chegar a **0**, conjurar magias passa a custar [[PV]] em vez de Mana, e o personagem fica com a condição Esgotamento Arcano até a Mana voltar a ficar positiva. A ficha aplica isso sozinha. Veja Sistema › Condições › Aflições e Condições.
+
 <details>
 <summary>Exemplo</summary>
 
@@ -82,18 +84,18 @@ $$
 <details>
 <summary>Toxicidade</summary>
 
-A [[Toxicidade]] é o limite do corpo para consumir substâncias alquímicas sem sofrer efeitos adversos.
+A [[Toxicidade]] é o limite do corpo para consumir substâncias alquímicas (poções, elixires) sem sofrer efeitos adversos; cada consumível gasto reduz a Toxicidade pelo seu custo (veja a coluna de toxicidade dos consumíveis alquímicos).
 
 $$
-\text{Toxicidade} = \left\lfloor \frac{HT \times 4 + ST \times 2 + IQ \times 2}{3} \right\rfloor
+\text{Toxicidade} = HT
 $$
+
+Abaixo de **1/3** do máximo, o personagem fica Saturado; ao chegar a **0**, Intoxicado. Negativa, a Toxicidade escala em três estágios de Envenenamento (Leve, Grave e Crítico — este último incapacita), cada terço do máximo abaixo de zero piorando um estágio, até **-Toxicidade** (natural). A ficha aplica e remove essas condições sozinha, conforme o valor muda. Veja Sistema › Condições › Aflições e Condições.
 
 <details>
 <summary>Exemplo</summary>
 
-$$
-\text{Toxicidade} = \left\lfloor \frac{44 + 20 + 24}{3} \right\rfloor = \left\lfloor 29{,}33 \right\rfloor = 29
-$$
+Com **HT 11**, o personagem tem **11** de Toxicidade.
 
 </details>
 

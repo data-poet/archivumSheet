@@ -12,7 +12,6 @@ A [[ST]] mede o poder físico e a massa muscular do personagem. Ela permite:
 **Influencia:**
 
 - [[PV]] (junto com HT).
-- [[Toxicidade]] (junto com HT e IQ).
 - Dano Base: [[GDP]] e [[BAL]].
 - [[CB]] e os limites de [[Carga]].
 
@@ -45,7 +44,6 @@ A [[IQ]] mede o poder mental do personagem: raciocínio, criatividade, intuiçã
 **Influencia:**
 
 - [[Mana]] (junto com HT).
-- [[Toxicidade]] (junto com HT e ST).
 - [[Vontade]].
 - Sentidos ([[Per]]): Visão, Audição e Olfato.
 
@@ -60,8 +58,8 @@ A [[HT]] mede a saúde e a energia do personagem: vigor físico e resistência a
 
 - [[PV]] (junto com ST).
 - [[PF]]: igual à HT.
+- [[Toxicidade]]: igual à HT.
 - [[Mana]] (junto com IQ).
-- [[Toxicidade]] (junto com ST e IQ).
 - [[VB]] (junto com DX), e por consequência o Deslocamento e a Esquiva.
 - Os limiares de morte (veja Pontos de Vida, em Secundários).
 

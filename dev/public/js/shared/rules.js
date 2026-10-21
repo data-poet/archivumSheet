@@ -16,6 +16,11 @@ export function isUnbuyableSecondary(key) {
   return secondaryMaxBought(key) === 0;
 }
 
+// null when the attribute has no floor (most vitals can go negative, e.g. FP exhaustion, Toxicity poisoning).
+export function secondaryMinValue(key) {
+  return state.data.rules.SECONDARY_PURCHASE[key]?.minValue ?? null;
+}
+
 export function spellTierForLevel(level) {
   const { SPELL_TIER_THRESHOLDS, SPELL_TIER_DEFAULT } = state.data.rules;
   const match = SPELL_TIER_THRESHOLDS.find(({ max }) => level <= max);
