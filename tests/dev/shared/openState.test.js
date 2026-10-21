@@ -252,7 +252,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
   test("expand state and <details> open state are tracked independently in the same container", () => {
     document.body.innerHTML = `
-      <table id="advList"><tbody>
+      <table id="spellList"><tbody>
         <tr data-id="ADV-1" class="is-card-expanded"><td class="col-title"></td></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
@@ -260,7 +260,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#advList tbody").innerHTML = `
+    document.querySelector("#spellList tbody").innerHTML = `
       <tr data-id="ADV-1"><td class="col-title"></td></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
@@ -269,11 +269,11 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 
     expect(
       document
-        .querySelector("#advList tr")
+        .querySelector("#spellList tr")
         .classList.contains("is-card-expanded"),
     ).toBe(true);
     expect(
-      document.querySelector("#advList details").hasAttribute("open"),
+      document.querySelector("#spellList details").hasAttribute("open"),
     ).toBe(true);
   });
 });
@@ -281,7 +281,7 @@ describe("snapshotAll / restoreAll — mobile card expand state", () => {
 describe("snapshotAll / restoreAll", () => {
   test("captures open state independently per managed container and restores each correctly", () => {
     document.body.innerHTML = `
-      <table id="advList"><tbody>
+      <table id="spellList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
@@ -293,7 +293,7 @@ describe("snapshotAll / restoreAll", () => {
 
     const snapshot = snapshotAll();
 
-    document.querySelector("#advList tbody").innerHTML = `
+    document.querySelector("#spellList tbody").innerHTML = `
       <tr data-instance-id="ADV-1"></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
@@ -304,21 +304,21 @@ describe("snapshotAll / restoreAll", () => {
 
     restoreAll(snapshot);
 
-    const advDetails = document.querySelector("#advList details");
+    const spellDetails = document.querySelector("#spellList details");
     const skillDetails = document.querySelector("#skillList details");
-    expect(advDetails.hasAttribute("open")).toBe(true);
+    expect(spellDetails.hasAttribute("open")).toBe(true);
     expect(skillDetails.hasAttribute("open")).toBe(false);
   });
 
   test("a container id from MANAGED_CONTAINER_IDS that isn't present in the DOM is skipped without throwing", () => {
-    document.body.innerHTML = `<table id="advList"><tbody></tbody></table>`;
+    document.body.innerHTML = `<table id="spellList"><tbody></tbody></table>`;
 
     expect(() => snapshotAll()).not.toThrow();
   });
 
   test("restoreAll skips a container id absent from the current DOM without throwing", () => {
     document.body.innerHTML = `
-      <table id="advList"><tbody>
+      <table id="spellList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
@@ -332,13 +332,13 @@ describe("snapshotAll / restoreAll", () => {
 
   test("restoreAll is a synchronous call — no rAF deferral, unlike withOpenState", () => {
     document.body.innerHTML = `
-      <table id="advList"><tbody>
+      <table id="spellList"><tbody>
         <tr data-instance-id="ADV-1"></tr>
         <tr class="detail-row"><td><details open></details></td></tr>
       </tbody></table>
     `;
     const snapshot = snapshotAll();
-    document.querySelector("#advList tbody").innerHTML = `
+    document.querySelector("#spellList tbody").innerHTML = `
       <tr data-instance-id="ADV-1"></tr>
       <tr class="detail-row"><td><details></details></td></tr>
     `;
@@ -346,7 +346,7 @@ describe("snapshotAll / restoreAll", () => {
     restoreAll(snapshot);
 
     // No advanceTimersToNextFrame call — a deferred restoreAll would fail this immediately.
-    const details = document.querySelector("#advList details");
+    const details = document.querySelector("#spellList details");
     expect(details.hasAttribute("open")).toBe(true);
   });
 

@@ -248,6 +248,14 @@ export function cardTitleCell(content) {
     </td>`;
 }
 
+// Row keys are mostly dataset ids (safe as bare DOM ids already) but some (advantages/
+// disadvantages/grimoire) can be display names with no character guarantee — sanitize before
+// using as a DOM id. Mirrors components/resume/shared.js's own safeId (same one-liner, kept
+// local rather than a cross-layer import).
+export function safeId(raw) {
+  return String(raw).replace(/[^a-zA-Z0-9_-]+/g, "-");
+}
+
 export function escapeHtml(raw) {
   if (raw == null) return "";
   return String(raw)

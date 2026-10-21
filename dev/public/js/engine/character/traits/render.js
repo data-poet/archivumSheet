@@ -1,10 +1,12 @@
 import { icon } from "../../../shared/icons.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import {
   formatRichText,
   detailRow,
   cardTitleCell,
+  safeId,
 } from "../../../shared/renderUtils.js";
 
 function emptyRow(colspan) {
@@ -51,24 +53,28 @@ export function renderAdvantages(selected, data, sheet) {
                 : `<td class="col-action"><button class="btn-remove remove-adv" data-id="${id}">${icon("remove")}</button></td>`;
 
             return `
-          <tr class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+          <tr id="adv-${safeId(id)}" class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
             ${cardTitleCell(`${name}${innateTag}${metaRaceTag}${enchantmentTag}`)}
             <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
             <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
           </tr>
-          ${detailRow(4, [
-            {
-              label: t("traits.source"),
-              value: book !== "—" ? `${book} p.${page}` : "—",
-            },
-            { label: t("traits.description"), value: desc, rich: true },
-          ])}`;
+          ${detailRow(
+            4,
+            [
+              {
+                label: t("traits.source"),
+                value: book !== "—" ? `${book} p.${page}` : "—",
+              },
+              { label: t("traits.description"), value: desc, rich: true },
+            ],
+            `adv-${safeId(id)}`,
+          )}`;
           })
           .join("");
 
-  setHTML(
-    "advList",
+  morphHTML(
+    el("advList"),
     `
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
@@ -126,24 +132,28 @@ export function renderDisadvantages(selected, data, sheet) {
                 : `<td class="col-action"><button class="btn-remove remove-dis" data-id="${id}">${icon("remove")}</button></td>`;
 
             return `
-          <tr class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+          <tr id="dis-${safeId(id)}" class="${isInnate ? "trait-innate" : isMetaRace ? "trait-meta-race" : isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
             ${cardTitleCell(`${name}${innateTag}${metaRaceTag}${enchantmentTag}`)}
             <td class="col-num" data-label="${t("traits.cost")}">${cost}</td>
             <td data-label="${t("traits.type")}">${type}</td>
             ${actionCell}
           </tr>
-          ${detailRow(4, [
-            {
-              label: t("traits.source"),
-              value: book !== "—" ? `${book} p.${page}` : "—",
-            },
-            { label: t("traits.description"), value: desc, rich: true },
-          ])}`;
+          ${detailRow(
+            4,
+            [
+              {
+                label: t("traits.source"),
+                value: book !== "—" ? `${book} p.${page}` : "—",
+              },
+              { label: t("traits.description"), value: desc, rich: true },
+            ],
+            `dis-${safeId(id)}`,
+          )}`;
           })
           .join("");
 
-  setHTML(
-    "disList",
+  morphHTML(
+    el("disList"),
     `
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
