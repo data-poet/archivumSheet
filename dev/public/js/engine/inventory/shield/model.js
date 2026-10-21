@@ -5,18 +5,21 @@ import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
-import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  addEnchantmentEntry,
-  updateEnchantmentEntry,
-  removeEnchantmentEntry,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
-import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { createEquippableItemActions } from "../shared/equippableItemActions.js";
 
 const data = state.data;
 const selected = state.selected;
+
+const {
+  move: moveShield,
+  remove: removeShield,
+  sendToAlly: sendShieldToAlly,
+  saveCustomFields: saveShieldCustomFields,
+  addEnchantment: addShieldEnchantment,
+  updateEnchantment: updateShieldEnchantment,
+  removeEnchantment: removeShieldEnchantment,
+  findByInstanceId: findShieldByInstanceId,
+} = createEquippableItemActions("shields", "shield");
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadShields() {
@@ -130,154 +133,13 @@ export function addStoredShield(
   triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
-export function moveShield(instanceId, storedAt) {
-  const shield = findShieldByInstanceId(instanceId);
-  if (!shield) return;
-
-  shield.is_equipped = false;
-  shield.storedAt = storedAt;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function removeShield(instanceId) {
-  const before = structuredClone(selected.shields);
-  selected.shields = selected.shields.filter((s) => s.id !== instanceId);
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.shields = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function sendShieldToAlly(
-  instanceId,
-  destinationCharacterId,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.shields);
-
-  const clone = transferInstance({
-    sourceArray: selected.shields,
-    instanceId,
-    destinationCharacterId,
-    destinationInventoryKey: "shields",
-    destinationStoredAt: storedAt,
-  });
-  if (!clone) return false;
-
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferInstance({
-      destinationCharacterId,
-      destinationInventoryKey: "shields",
-      cloneId: clone.id,
-    });
-    selected.shields = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
-
-// Blank strings are normalized to null.
-export function saveShieldCustomFields(
-  instanceId,
-  { name, description, effect },
-) {
-  const instance = findShieldByInstanceId(instanceId);
-  if (!instance) return;
-
-  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
-
-  instance.shield_custom_name = norm(name);
-  instance.shield_custom_description = norm(description);
-  instance.shield_custom_effect = norm(effect);
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function addShieldEnchantment(instanceId, enchantmentId, params) {
-  const instance = findShieldByInstanceId(instanceId);
-  if (!instance) return;
-  if (!instance.enchantments) instance.enchantments = [];
-
-  const before = structuredClone(instance.enchantments);
-
-  const added = addEnchantmentEntry(
-    instance.enchantments,
-    enchantmentId,
-    params,
-  );
-  if (!added) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("common.added"));
-}
-
-export function updateShieldEnchantment(
-  instanceId,
-  entryInstanceId,
-  enchantmentId,
-  params,
-) {
-  const instance = findShieldByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  const updated = updateEnchantmentEntry(
-    instance.enchantments,
-    entryInstanceId,
-    enchantmentId,
-    params,
-  );
-  if (!updated) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function removeShieldEnchantment(instanceId, entryInstanceId) {
-  const instance = findShieldByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function findShieldByInstanceId(instanceId) {
-  return selected.shields.find((s) => s.id === instanceId) || null;
-}
+export {
+  moveShield,
+  removeShield,
+  sendShieldToAlly,
+  saveShieldCustomFields,
+  addShieldEnchantment,
+  updateShieldEnchantment,
+  removeShieldEnchantment,
+  findShieldByInstanceId,
+};

@@ -5,18 +5,22 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
-import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  addEnchantmentEntry,
-  updateEnchantmentEntry,
-  removeEnchantmentEntry,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
-import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { createEquippableItemActions } from "../shared/equippableItemActions.js";
 
 const data = state.data;
 const selected = state.selected;
+
+const {
+  remove: removeMagicGear,
+  sendToAlly: sendMagicGearToAlly,
+  saveCustomFields: saveMagicGearCustomFields,
+  addEnchantment: addMagicGearEnchantment,
+  updateEnchantment: updateMagicGearEnchantment,
+  removeEnchantment: removeMagicGearEnchantment,
+  findByInstanceId: findMagicGearByInstanceId,
+} = createEquippableItemActions("magicGear", "magic_gear", {
+  onEquipStateChanged: () => updateMagicGearEquipOptionAvailability(),
+});
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadMagicGear() {
@@ -192,149 +196,12 @@ export function moveMagicGear(instanceId, storedAt) {
   triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
-export function removeMagicGear(instanceId) {
-  const before = structuredClone(selected.magicGear);
-
-  selected.magicGear = selected.magicGear.filter((g) => g.id !== instanceId);
-  clearEnchantmentAddFormSelection(instanceId);
-  updateMagicGearEquipOptionAvailability();
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.magicGear = before;
-    updateMagicGearEquipOptionAvailability();
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function sendMagicGearToAlly(
-  instanceId,
-  destinationCharacterId,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.magicGear);
-
-  const clone = transferInstance({
-    sourceArray: selected.magicGear,
-    instanceId,
-    destinationCharacterId,
-    destinationInventoryKey: "magicGear",
-    destinationStoredAt: storedAt,
-  });
-  if (!clone) return false;
-
-  clearEnchantmentAddFormSelection(instanceId);
-  updateMagicGearEquipOptionAvailability();
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferInstance({
-      destinationCharacterId,
-      destinationInventoryKey: "magicGear",
-      cloneId: clone.id,
-    });
-    selected.magicGear = before;
-    updateMagicGearEquipOptionAvailability();
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
-
-// Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
-export function saveMagicGearCustomFields(
-  instanceId,
-  { name, description, effect },
-) {
-  const instance = findMagicGearByInstanceId(instanceId);
-  if (!instance) return;
-
-  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
-
-  instance.magic_gear_custom_name = norm(name);
-  instance.magic_gear_custom_description = norm(description);
-  instance.magic_gear_custom_effect = norm(effect);
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function addMagicGearEnchantment(instanceId, enchantmentId, params) {
-  const instance = findMagicGearByInstanceId(instanceId);
-  if (!instance) return;
-  if (!instance.enchantments) instance.enchantments = [];
-
-  const before = structuredClone(instance.enchantments);
-
-  const added = addEnchantmentEntry(
-    instance.enchantments,
-    enchantmentId,
-    params,
-  );
-  if (!added) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("common.added"));
-}
-
-// Keeps the entry's own id so its list position and price-lookup identity survive the edit.
-export function updateMagicGearEnchantment(
-  instanceId,
-  entryInstanceId,
-  enchantmentId,
-  params,
-) {
-  const instance = findMagicGearByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  const updated = updateEnchantmentEntry(
-    instance.enchantments,
-    entryInstanceId,
-    enchantmentId,
-    params,
-  );
-  if (!updated) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function removeMagicGearEnchantment(instanceId, entryInstanceId) {
-  const instance = findMagicGearByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function findMagicGearByInstanceId(instanceId) {
-  return selected.magicGear.find((g) => g.id === instanceId) || null;
-}
+export {
+  removeMagicGear,
+  sendMagicGearToAlly,
+  saveMagicGearCustomFields,
+  addMagicGearEnchantment,
+  updateMagicGearEnchantment,
+  removeMagicGearEnchantment,
+  findMagicGearByInstanceId,
+};

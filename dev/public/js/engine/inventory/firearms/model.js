@@ -5,18 +5,21 @@ import { renderListsPreserving } from "../../../ui.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
-import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  addEnchantmentEntry,
-  updateEnchantmentEntry,
-  removeEnchantmentEntry,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
-import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { createEquippableItemActions } from "../shared/equippableItemActions.js";
 
 const data = state.data;
 const selected = state.selected;
+
+const {
+  move: moveFirearm,
+  remove: removeFirearm,
+  sendToAlly: sendFirearmToAlly,
+  saveCustomFields: saveFirearmCustomFields,
+  addEnchantment: addFirearmEnchantment,
+  updateEnchantment: updateFirearmEnchantment,
+  removeEnchantment: removeFirearmEnchantment,
+  findByInstanceId: findFirearmByInstanceId,
+} = createEquippableItemActions("firearms", "weapon");
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadFirearms() {
@@ -157,65 +160,12 @@ export function addStoredFirearm(
   triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
-export function moveFirearm(instanceId, storedAt) {
-  const firearm = findFirearmByInstanceId(instanceId);
-  if (!firearm) return;
-
-  firearm.is_equipped = false;
-  firearm.storedAt = storedAt;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function removeFirearm(instanceId) {
-  const before = structuredClone(selected.firearms);
-
-  selected.firearms = selected.firearms.filter((w) => w.id !== instanceId);
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.firearms = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function sendFirearmToAlly(
-  instanceId,
-  destinationCharacterId,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.firearms);
-
-  const clone = transferInstance({
-    sourceArray: selected.firearms,
-    instanceId,
-    destinationCharacterId,
-    destinationInventoryKey: "firearms",
-    destinationStoredAt: storedAt,
-  });
-  if (!clone) return false;
-
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferInstance({
-      destinationCharacterId,
-      destinationInventoryKey: "firearms",
-      cloneId: clone.id,
-    });
-    selected.firearms = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
+export {
+  moveFirearm,
+  removeFirearm,
+  sendFirearmToAlly,
+  findFirearmByInstanceId,
+};
 
 export function computeFinalMagazineSize(instance, weaponData) {
   const base = Number(weaponData?.weapon_magazine_size || 0);
@@ -223,97 +173,10 @@ export function computeFinalMagazineSize(instance, weaponData) {
   return Math.max(0, base + modifier);
 }
 
-// Called only on "Salvar" in the custom-fields editor, never per keystroke. Blank strings normalize to null.
-export function saveFirearmCustomFields(
-  instanceId,
-  { name, description, effect },
-) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance) return;
-
-  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
-
-  instance.weapon_custom_name = norm(name);
-  instance.weapon_custom_description = norm(description);
-  instance.weapon_custom_effect = norm(effect);
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
 // Firearms are in no dual-use pair, so there is no counterpart to sync.
-
-export function addFirearmEnchantment(instanceId, enchantmentId, params) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance) return;
-  if (!instance.enchantments) instance.enchantments = [];
-
-  const before = structuredClone(instance.enchantments);
-
-  const added = addEnchantmentEntry(
-    instance.enchantments,
-    enchantmentId,
-    params,
-  );
-  if (!added) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("common.added"));
-}
-
-export function updateFirearmEnchantment(
-  instanceId,
-  entryInstanceId,
-  enchantmentId,
-  params,
-) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  const updated = updateEnchantmentEntry(
-    instance.enchantments,
-    entryInstanceId,
-    enchantmentId,
-    params,
-  );
-  if (!updated) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function removeFirearmEnchantment(instanceId, entryInstanceId) {
-  const instance = findFirearmByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function findFirearmByInstanceId(instanceId) {
-  return selected.firearms.find((w) => w.id === instanceId) || null;
-}
+export {
+  saveFirearmCustomFields,
+  addFirearmEnchantment,
+  updateFirearmEnchantment,
+  removeFirearmEnchantment,
+};

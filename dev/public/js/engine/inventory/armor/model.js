@@ -5,18 +5,21 @@ import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
-import { offerUndo } from "../../../components/undo.js";
-import { t } from "../../../localization/pt-BR/index.js";
-import {
-  addEnchantmentEntry,
-  updateEnchantmentEntry,
-  removeEnchantmentEntry,
-  clearEnchantmentAddFormSelection,
-} from "../shared/enchantments/model.js";
-import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
+import { createEquippableItemActions } from "../shared/equippableItemActions.js";
 
 const data = state.data;
 const selected = state.selected;
+
+const {
+  findByInstanceId: findArmorByInstanceId,
+  move: moveArmor,
+  remove: removeArmor,
+  sendToAlly: sendArmorToAlly,
+  saveCustomFields: saveArmorCustomFields,
+  addEnchantment: addArmorEnchantment,
+  updateEnchantment: updateArmorEnchantment,
+  removeEnchantment: removeArmorEnchantment,
+} = createEquippableItemActions("armors", "armor");
 
 // Rendering is not triggered here — main.js renders once after every load*() resolves.
 export async function loadArmors() {
@@ -154,156 +157,16 @@ export function addStoredArmor(
   triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
-export function moveArmor(instanceId, storedAt) {
-  const armor = findArmorByInstanceId(instanceId);
-  if (!armor) return;
-
-  armor.is_equipped = false;
-  armor.storedAt = storedAt;
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-export function removeArmor(instanceId) {
-  const before = structuredClone(selected.armors);
-  selected.armors = selected.armors.filter((a) => a.id !== instanceId);
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    selected.armors = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function sendArmorToAlly(
-  instanceId,
-  destinationCharacterId,
-  storedAt = STORED_AT.BACKPACK,
-) {
-  const before = structuredClone(selected.armors);
-
-  const clone = transferInstance({
-    sourceArray: selected.armors,
-    instanceId,
-    destinationCharacterId,
-    destinationInventoryKey: "armors",
-    destinationStoredAt: storedAt,
-  });
-  if (!clone) return false;
-
-  clearEnchantmentAddFormSelection(instanceId);
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    undoTransferInstance({
-      destinationCharacterId,
-      destinationInventoryKey: "armors",
-      cloneId: clone.id,
-    });
-    selected.armors = before;
-    renderListsPreserving(selected, data);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("undo.sentMessage"));
-
-  return true;
-}
-
-// Commits all three custom fields at once, only on "Salvar", never per keystroke. Blank strings normalize to null.
-export function saveArmorCustomFields(
-  instanceId,
-  { name, description, effect },
-) {
-  const instance = findArmorByInstanceId(instanceId);
-  if (!instance) return;
-
-  const norm = (v) => (v == null || v.trim() === "" ? null : v.trim());
-
-  instance.armor_custom_name = norm(name);
-  instance.armor_custom_description = norm(description);
-  instance.armor_custom_effect = norm(effect);
-
-  renderListsPreserving(selected, data);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-}
-
-// Saves from before enchantments existed have no enchantments field.
-
-export function addArmorEnchantment(instanceId, enchantmentId, params) {
-  const instance = findArmorByInstanceId(instanceId);
-  if (!instance) return;
-  if (!instance.enchantments) instance.enchantments = [];
-
-  const before = structuredClone(instance.enchantments);
-
-  const added = addEnchantmentEntry(
-    instance.enchantments,
-    enchantmentId,
-    params,
-  );
-  if (!added) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  }, t("common.added"));
-}
-
-// Edits an entry in place, keeping its own id so list position and price-lookup identity survive the edit.
-export function updateArmorEnchantment(
-  instanceId,
-  entryInstanceId,
-  enchantmentId,
-  params,
-) {
-  const instance = findArmorByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  const updated = updateEnchantmentEntry(
-    instance.enchantments,
-    entryInstanceId,
-    enchantmentId,
-    params,
-  );
-  if (!updated) return;
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
-
-export function removeArmorEnchantment(instanceId, entryInstanceId) {
-  const instance = findArmorByInstanceId(instanceId);
-  if (!instance || !instance.enchantments) return;
-
-  const before = structuredClone(instance.enchantments);
-
-  removeEnchantmentEntry(instance.enchantments, entryInstanceId);
-
-  renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-
-  offerUndo(() => {
-    instance.enchantments = before;
-    renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
-  });
-}
+export {
+  moveArmor,
+  removeArmor,
+  sendArmorToAlly,
+  saveArmorCustomFields,
+  addArmorEnchantment,
+  updateArmorEnchantment,
+  removeArmorEnchantment,
+  findArmorByInstanceId,
+};
 
 export function findEquippedArmorInSlot(slot) {
   return selected.armors.find((inst) => {
@@ -311,8 +174,4 @@ export function findEquippedArmorInSlot(slot) {
     const db = data.armors.find((a) => a.armor_id === inst.armor_id);
     return db?.armor_piece_location === slot;
   });
-}
-
-export function findArmorByInstanceId(instanceId) {
-  return selected.armors.find((a) => a.id === instanceId) || null;
 }
