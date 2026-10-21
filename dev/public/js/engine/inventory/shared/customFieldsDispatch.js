@@ -6,20 +6,16 @@ import {
   closeCustomFieldsEditor,
   readCustomFieldsEditorValues,
 } from "../../../shared/renderUtils.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
 // The saveXCustomFields model functions render internally via the global
-// renderListsPreserving (unwrapped), which would collapse open <details>
-// elsewhere on the page; this snapshots/restores synchronously around them.
-// Returns whatever saveCustomFields returns, so a validating caller (customInventory)
-// can still signal failure through the wrapper.
+// renderListsPreserving, which used to collapse open <details> elsewhere on the page —
+// every list it touches now writes through morphHTML (shared/morph.js), which preserves that
+// state on its own, so this no longer needs to snapshot/restore around the save. Kept as a
+// named wrapper (not inlined at each call site) only because every caller already imports it
+// by this name; it returns whatever saveCustomFields returns, so a validating caller
+// (customInventory) can still signal failure through it.
 export function withPreservedOpenState(saveCustomFields) {
-  return function saveCustomFieldsPreserving(instanceId, values) {
-    const snapshots = snapshotAll();
-    const result = saveCustomFields(instanceId, values);
-    restoreAll(snapshots);
-    return result;
-  };
+  return saveCustomFields;
 }
 
 // findByInstanceId is the ownership guard (falsy return means the click isn't for this type).

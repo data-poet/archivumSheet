@@ -36,7 +36,6 @@ import {
 } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
-// shared/openState.js is intentionally not mocked — events.js's real ammoDetailKeyFn composes the open-panel snapshot around renderListsPreserving(), which is worth exercising for real here.
 
 beforeEach(() => {
   resetDOM("<div></div>");

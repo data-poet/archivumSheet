@@ -9,10 +9,6 @@ jest.mock("dev/public/js/engine/inventory/customInventory/model.js", () => ({
 jest.mock("dev/public/js/engine/inventory/customInventory/render.js", () => ({
   renderCustomInventory: jest.fn(),
 }));
-jest.mock("dev/public/js/shared/openState.js", () => ({
-  snapshotAll: jest.fn(() => "SNAPSHOT"),
-  restoreAll: jest.fn(),
-}));
 jest.mock("dev/public/js/shared/renderUtils.js", () => ({
   openCustomFieldsEditor: jest.fn(),
   closeCustomFieldsEditor: jest.fn(),
@@ -21,7 +17,6 @@ jest.mock("dev/public/js/shared/renderUtils.js", () => ({
 
 import * as model from "dev/public/js/engine/inventory/customInventory/model.js";
 import * as render from "dev/public/js/engine/inventory/customInventory/render.js";
-import * as openStateModule from "dev/public/js/shared/openState.js";
 import * as renderUtils from "dev/public/js/shared/renderUtils.js";
 import {
   handleCustomInventoryClick,
@@ -70,16 +65,13 @@ describe("handleCustomInventoryClick", () => {
     expect(model.removeCustomItem).toHaveBeenCalledWith("CUSTOM-1");
   });
 
-  test("clicking .custom-item-edit-btn opens the editor and re-renders (rAF-deferred, snapshot-preserving)", () => {
+  test("clicking .custom-item-edit-btn opens the editor and re-renders (rAF-deferred)", () => {
     const target = elWithClass("button", "custom-item-edit-btn", {
       customItemId: "CUSTOM-1",
     });
 
     expect(handleCustomInventoryClick({ target })).toBe(true);
     expect(renderUtils.openCustomFieldsEditor).toHaveBeenCalledWith("CUSTOM-1");
-
-    // Snapshot is taken synchronously, render itself is rAF-deferred.
-    expect(openStateModule.snapshotAll).toHaveBeenCalledTimes(1);
     expect(render.renderCustomInventory).not.toHaveBeenCalled();
 
     jest.advanceTimersToNextFrame();
@@ -88,7 +80,6 @@ describe("handleCustomInventoryClick", () => {
       state.data,
       state.sheet,
     );
-    expect(openStateModule.restoreAll).toHaveBeenCalledWith("SNAPSHOT");
   });
 
   test("clicking .custom-item-cancel-btn closes the editor and re-renders", () => {

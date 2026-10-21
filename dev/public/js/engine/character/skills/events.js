@@ -2,16 +2,12 @@ import { state } from "../../../state.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { removeSkill, updateSkill } from "./model.js";
 import { renderSkills } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
 // Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 
 function _renderSkillList(sheet) {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderSkills(state.selected, state.data, sheet);
-    restoreAll(snapshots);
   });
 }
 

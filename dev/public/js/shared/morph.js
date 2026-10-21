@@ -10,7 +10,7 @@ import { Idiomorph } from "../../vendor/idiomorph/idiomorph.esm.js";
 // row template needs one.
 
 // Mobile card-expand (tables.css's table-wrapper--stack, tr.is-card-expanded) and an open
-// <details> are both toggled imperatively by a click handler (cardCollapse.js; openState.js),
+// <details> are both toggled imperatively by a click handler (cardCollapse.js),
 // never present in the freshly rendered markup itself — without this guard, idiomorph strips
 // both because the new source doesn't have them, silently re-collapsing whatever the user just
 // opened on the very next render. Confirmed empirically (no callback: class → "", open → false;

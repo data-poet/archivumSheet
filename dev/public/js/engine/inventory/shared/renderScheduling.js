@@ -1,24 +1,21 @@
 // Shared render-scheduling helpers for the equipment events files.
 
 import { state } from "../../../state.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { DEFAULT_AUTORUN_DELAY_MS } from "../../../shared/constants.js";
 
 const data = state.data;
 const selected = state.selected;
 
-// Re-renders only the passed render functions rather than the full renderLists() sweep, preserving open <details>
-// and horizontal scroll. Uses snapshotAll()/restoreAll() because one action can move an item between an equipped
-// container and a storage list. Deferred by one rAF: callers fire from native <select> "change" handlers, and
-// replacing the select's ancestor before the browser finishes its change cycle flickers (worst on mobile Safari);
-// restoring in the same frame keeps the rebuilt DOM from painting collapsed first.
+// Re-renders only the passed render functions rather than the full renderLists() sweep — each
+// one now writes through morphHTML (shared/morph.js), which preserves open <details> and
+// horizontal scroll on its own, so there's no snapshot/restore to do here anymore. Still
+// deferred by one rAF: callers fire from native <select> "change" handlers, and replacing the
+// select's ancestor before the browser finishes its change cycle flickers (worst on mobile
+// Safari).
 export function createListRenderer(...renderFns) {
   return function renderScopedLists(sheet) {
-    const snapshots = snapshotAll();
-
     requestAnimationFrame(() => {
       renderFns.forEach((render) => render(selected, data, sheet));
-      restoreAll(snapshots);
     });
   };
 }

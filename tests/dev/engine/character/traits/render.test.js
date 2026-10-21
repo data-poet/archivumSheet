@@ -84,8 +84,9 @@ describe("renderAdvantages — a purely player-selected advantage (engine hasn't
   });
 
   // Collapsed by default: the name is a real button so it's keyboard-operable, and its
-  // state survives the section's full re-renders via shared/openState.js (see that module's
-  // tests) — here we just check the row is set up with a stable key and starts collapsed.
+  // state survives the section's re-renders via morphHTML's identity tracking (shared/
+  // morph.js, see morph.test.js) — here we just check the row is set up with a stable key
+  // and starts collapsed.
   test("the name cell is a collapse-toggle button, collapsed by default", () => {
     renderAdvantages(
       { advantages: { "ADV-1": true } },

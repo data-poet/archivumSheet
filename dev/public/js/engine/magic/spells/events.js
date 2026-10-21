@@ -1,16 +1,12 @@
 import { state } from "../../../state.js";
 import { removeSpell, updateSpell } from "./model.js";
 import { renderSpells } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 
 // Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
 
 function _renderSpellList(sheet) {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderSpells(state.selected, state.data, sheet);
-    restoreAll(snapshots);
   });
 }
 

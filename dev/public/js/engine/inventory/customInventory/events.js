@@ -8,7 +8,6 @@ import {
 } from "./model.js";
 import { state } from "../../../state.js";
 import { renderCustomInventory } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { readCustomItemEditorValues } from "../../../shared/renderUtils.js";
 import {
   createCustomFieldsClickHandler,
@@ -18,11 +17,8 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 // Re-renders only the custom-inventory list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderCustomInventoryLists() {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderCustomInventory(state.selected, state.data, state.sheet);
-    restoreAll(snapshots);
   });
 }
 

@@ -6,8 +6,8 @@ import { renderCoinPurse } from "dev/public/js/engine/inventory/coinPurse/render
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 // Collapsed by default, and the row must be keyable — the click-to-expand state (a
-// separate concern, see shared/cardCollapse.js and shared/openState.js) only survives
-// this section's frequent full re-renders if openState's row-identity lookup finds a key.
+// separate concern, see shared/cardCollapse.js) only survives this section's re-renders if
+// the row has a stable id for morphHTML's identity tracking (shared/morph.js) to find.
 function expectCollapsibleCard(row) {
   const toggle = row.querySelector(".card-toggle");
   expect(toggle).not.toBeNull();
@@ -175,9 +175,9 @@ describe("stored inventory tables opt into the stacked card layout", () => {
   });
 
   // Alchemy/survivalGear/coinPurse key their rows on domain-specific attributes
-  // (data-consumable-id, data-gear-id, data-coin-type) rather than data-instance-id — these
-  // had to be added to openState.js's ROW_KEY_ATTRS for the expand state to survive a
-  // re-render at all (see that module).
+  // (data-consumable-id, data-gear-id, data-coin-type) rather than data-instance-id — each
+  // row's real DOM id (what morphHTML actually tracks identity by) is built from the same
+  // attribute, per equipment type.
   test("alchemy's card is collapsible and its row resolves a stable key via data-consumable-id", () => {
     renderAlchemy(
       {

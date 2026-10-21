@@ -1,7 +1,7 @@
 // Traits/Skills/Spells cards start collapsed on mobile (see tables.css's
 // table-wrapper--stack rules), showing just the name until tapped. State survives each
-// section's frequent full re-renders via shared/openState.js, which snapshots/restores
-// .is-card-expanded the same way it already does for open <details>.
+// section's frequent re-renders via morphHTML's identity tracking (shared/morph.js), which
+// preserves .is-card-expanded the same way it preserves an open <details>.
 
 const EXPANDED_CLASS = "is-card-expanded";
 

@@ -41,7 +41,6 @@ import {
 } from "../engine/inventory/magicGear/render.js";
 import { renderCustomInventory } from "../engine/inventory/customInventory/render.js";
 import { renderCoinPurse } from "../engine/inventory/coinPurse/render.js";
-import { snapshotAll, restoreAll } from "../shared/openState.js";
 
 export function renderLists(selected, data, sheet) {
   renderMetaRaces(selected, data, sheet);
@@ -71,11 +70,11 @@ export function renderLists(selected, data, sheet) {
   renderCustomInventory(selected, data, sheet);
 }
 
-// renderLists() innerHTMLs every managed section, collapsing all open <details> and scroll
-// positions app-wide; this snapshots/restores open state around it. Use instead of renderLists()
-// everywhere except call sites that already re-render only their own narrow DOM slice.
+// Every list renderLists() calls now writes through morphHTML (shared/morph.js), which
+// preserves open <details>/card-expand/scroll state on its own — renderListsPreserving used to
+// snapshot/restore that state around a full sweep, but there's nothing left for it to do.
+// Kept as its own name (not inlined at each call site) only because every caller already
+// imports it by this name.
 export function renderListsPreserving(selected, data, sheet) {
-  const snapshots = snapshotAll();
   renderLists(selected, data, sheet);
-  restoreAll(snapshots);
 }

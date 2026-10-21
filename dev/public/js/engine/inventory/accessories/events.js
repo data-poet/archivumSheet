@@ -33,11 +33,10 @@ function _renderAccessoryLists(sheet) {
 }
 
 // render.js now writes through morphHTML, whose idiomorph-based identity tracking preserves
-// open <details>/card-expand state on its own — openState.js's snapshot/restore is no longer
-// needed here. The one-rAF defer survives on its own merit: these fire from native <select>
-// "change" handlers, and rebuilding before the browser finishes closing the native option
-// picker flickers worst on mobile Safari (shared/openState.js's withOpenState has the same
-// reasoning, just no longer paired with a snapshot for this container).
+// open <details>/card-expand state on its own — no snapshot/restore needed here anymore. The
+// one-rAF defer survives on its own merit: these fire from native <select> "change" handlers,
+// and rebuilding before the browser finishes closing the native option picker flickers worst
+// on mobile Safari.
 function _deferRender(e, fn) {
   requestAnimationFrame(fn);
 }

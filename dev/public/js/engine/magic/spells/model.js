@@ -1,7 +1,6 @@
 import { state } from "../../../state.js";
 import { fetchSpells, fetchMagicAptitudeAdvantageIds } from "../../../api.js";
 import { renderSpells } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSpellAttributeBase } from "../../../shared/attributeUtils.js";
@@ -12,11 +11,8 @@ const selected = state.selected;
 
 // Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
 function _renderSpellList() {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderSpells(selected, data);
-    restoreAll(snapshots);
   });
 }
 

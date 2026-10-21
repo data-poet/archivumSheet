@@ -1,7 +1,8 @@
 import { toBool } from "../../../shared/rowParsers.js";
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -11,6 +12,7 @@ import {
   detailRow,
   formatRichText,
   cardTitleCell,
+  safeId,
 } from "../../../shared/renderUtils.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import {
@@ -122,15 +124,15 @@ export function renderAmmoContainers(selected, data, sheet) {
   const containerData = data.ammo_containers ?? [];
 
   if (containers.length === 0) {
-    setHTML(
-      "ammoContainerList",
+    morphHTML(
+      el("ammoContainerList"),
       `<p class="empty-storage">${t("ammo.noContainers")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "ammoContainerList",
+  morphHTML(
+    el("ammoContainerList"),
     containers
       .map((inst) =>
         renderContainerSlot(inst, ammoData, containerData, sheet, containers),
@@ -206,8 +208,10 @@ function renderContainerSlot(
               </select>`;
             })();
 
+            const entryKey = `${instanceId}-${safeId(entry.ammo_id)}`;
+
             return `
-            <tr>
+            <tr id="ammo-entry-${entryKey}">
               ${cardTitleCell(getAmmoName(entry.ammo_id, ammoData))}
               <td class="col-num" data-label="${t("ammo.qty")}">
                 <div class="num-stepper">
@@ -235,7 +239,7 @@ function renderContainerSlot(
                 >${icon("remove")}</button>
               </td>
             </tr>
-            ${detailRow(3, ammoDetailFields(ammoRecord))}`;
+            ${detailRow(3, ammoDetailFields(ammoRecord), `ammo-entry-${entryKey}`)}`;
           })
           .join("");
 
@@ -246,7 +250,7 @@ function renderContainerSlot(
   );
 
   return `
-    <details class="ammo-container-details" data-instance-id="${instanceId}">
+    <details class="ammo-container-details" id="ammo-container-${instanceId}" data-instance-id="${instanceId}">
       <summary class="ammo-container-summary">
         <span class="ammo-container-name">${displayName}</span>
         <span class="ammo-type-badge">${ammoType}</span>
@@ -307,7 +311,7 @@ export function renderLooseAmmo(selected, data, sheet) {
     renderLooseSection(loc, looseAmmo, ammoData, sheet),
   ).join("");
 
-  setHTML("looseAmmoList", sections);
+  morphHTML(el("looseAmmoList"), sections);
 }
 
 function renderLooseSection(location, looseAmmo, ammoData, sheet) {
@@ -329,9 +333,10 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
           (e) => e.ammo_id === entry.ammo_id,
         );
         const totalWeight = resolvedEntry?.total_weight ?? "—";
+        const rowKey = `${safeId(entry.ammo_id)}-${location}`;
 
         return `
-          <tr>
+          <tr id="loose-ammo-${rowKey}">
             ${cardTitleCell(ammoName)}
             <td class="col-num" data-label="${t("common.type")}">${ammoType}</td>
             <td class="col-num" data-label="${t("ammo.qty")}">
@@ -372,7 +377,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
                 : ""
             }
           </tr>
-          ${detailRow(colCount, ammoDetailFields(ammoRecord))}`;
+          ${detailRow(colCount, ammoDetailFields(ammoRecord), `loose-ammo-${rowKey}`)}`;
       })
       .join("");
   }
@@ -393,5 +398,6 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "loose-ammo",
   );
 }

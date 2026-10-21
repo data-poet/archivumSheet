@@ -1,7 +1,6 @@
 import { state } from "../../../../state.js";
 import { fetchAdvantages } from "../../../../api.js";
 import { renderAdvantages } from "../render.js";
-import { snapshotAll, restoreAll } from "../../../../shared/openState.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../../compute/autorun.js";
 import { t } from "../../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../../components/undo.js";
@@ -15,11 +14,8 @@ const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
 // Re-renders only the advantages list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderAdvantagesList() {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderAdvantages(selected, data);
-    restoreAll(snapshots);
   });
 }
 

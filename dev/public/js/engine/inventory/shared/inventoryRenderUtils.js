@@ -51,11 +51,10 @@ export function hpModifierBlock({
 
 /**
  * Wrap one storage-location's table (backpack/stash/camp) in a collapsed-by-default
- * <details>, keyed by location so openState.js can restore its state across re-renders.
- * `idPrefix` is optional: only a caller migrated to morphHTML needs a stable id here
- * (idiomorph's own identity tracking, not openState.js's), scoped per equipment type since
- * this block repeats per container — "backpack" alone would collide across e.g. shield's
- * and armor's own storage lists.
+ * <details>. `idPrefix` gives it a stable id for morphHTML's identity tracking (shared/
+ * morph.js), scoped per equipment type since this block repeats per container — "backpack"
+ * alone would collide across e.g. shield's and armor's own storage lists. Every current
+ * caller passes one; the default only covers a caller that hasn't been migrated yet.
  */
 export function renderStorageLocationBlock(location, label, tableHtml, idPrefix = "") {
   const idAttr = idPrefix ? ` id="${idPrefix}-storage-${location}"` : "";

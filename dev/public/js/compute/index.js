@@ -12,7 +12,6 @@ import {
   renderResume,
   syncViewMode,
 } from "../ui.js";
-import { snapshotAll, restoreAll } from "../shared/openState.js";
 import {
   toEngineCharacter,
   toEngineInventory,
@@ -26,9 +25,6 @@ const selected = state.selected;
 
 const _round = (ms) => Math.round(ms * 100) / 100;
 
-// renderLists() here is wrapped in a synchronous snapshot/restore (see call site below)
-// so equipment selects aren't destroyed mid-interaction on every autorun tick.
-//
 // `signal`/`isCurrent` are only ever supplied by compute/autorun.js's scheduler — a direct call
 // (every existing test, and any future one-off use) runs unconditionally, same as before.
 export async function runEngine({ signal, isCurrent } = {}) {
@@ -173,14 +169,7 @@ export async function runEngine({ signal, isCurrent } = {}) {
       }
     }
 
-    // Restore must happen synchronously in the same task, not a later rAF — fresh <details>
-    // markup never carries `open`, so a deferred restore paints collapsed then flashes open.
-    // See openState.js's withOpenState for the identical fix.
-    const snapshots = snapshotAll();
-
     renderLists(selected, state.data, state.sheet);
-
-    restoreAll(snapshots);
 
     if (timing) {
       const tEnd = mark();

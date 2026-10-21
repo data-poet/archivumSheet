@@ -18,7 +18,6 @@ import {
   sendLooseAmmoToAlly,
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { detailKeyFn } from "../../../shared/openState.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const selected = state.selected;
@@ -65,41 +64,11 @@ function _applyResumeAmmoQty(ammoId, firstInstanceId, newTotal) {
   }
 }
 
-function _snapshot() {
-  return {
-    containers: _snap("#ammoContainerList", detailKeyFn),
-    loose: _snap("#looseAmmoList", detailKeyFn),
-  };
-}
-function _snap(sel, keyFn) {
-  const open = new Set();
-  document
-    .querySelector(sel)
-    ?.querySelectorAll("details[open]")
-    .forEach((d) => {
-      const k = keyFn(d);
-      if (k) open.add(k);
-    });
-  return open;
-}
-function _restore(snap) {
-  _rest("#ammoContainerList", detailKeyFn, snap.containers);
-  _rest("#looseAmmoList", detailKeyFn, snap.loose);
-}
-function _rest(sel, keyFn, open) {
-  if (!open.size) return;
-  document
-    .querySelector(sel)
-    ?.querySelectorAll("details")
-    .forEach((d) => {
-      const k = keyFn(d);
-      if (k && open.has(k)) d.setAttribute("open", "");
-    });
-}
+// Ammo's own containers now write through morphHTML (render.js), whose idiomorph-based
+// identity tracking preserves open <details> on its own — the manual snapshot/restore this
+// used to do around renderListsPreserving() is no longer needed.
 function _renderAll() {
-  const snap = _snapshot();
   renderListsPreserving(selected, data);
-  _restore(snap);
 }
 
 const _handleSendContainerToAllyClick = createSendToAllyHandler({

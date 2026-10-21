@@ -1,7 +1,6 @@
 import { state } from "../../../state.js";
 import { fetchMetaRaces } from "../../../api.js";
 import { renderMetaRaces } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { escapeHtml } from "../../../shared/renderUtils.js";
@@ -16,11 +15,8 @@ const selected = state.selected;
 // Re-renders only the meta-race list, avoiding a full renderLists() sweep — mirrors advantages'
 // own _renderAdvantagesList.
 function _renderMetaRacesList() {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderMetaRaces(selected, data);
-    restoreAll(snapshots);
   });
 }
 

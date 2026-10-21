@@ -191,9 +191,8 @@ export function buildDetailContent(fields) {
     .join("");
 }
 
-// `key` is optional: only a caller migrated to morphHTML needs a stable id here (idiomorph's
-// own identity tracking, not openState.js's) — omit it and nothing changes for callers still
-// on innerHTML/openState.js.
+// `key` gives the row a stable id for morphHTML's identity tracking (idiomorph); every
+// current caller passes one. Optional only for a caller that hasn't been migrated yet.
 export function detailRow(colspan, fields, key) {
   const content = buildDetailContent(fields);
   if (!content) return "";

@@ -32,31 +32,15 @@ import {
 } from "dev/public/js/ui.js";
 import { state } from "dev/public/js/state.js";
 import { runEngine } from "dev/public/js/compute/index.js";
-import * as openStateModule from "dev/public/js/shared/openState.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
 
 const selected = state.selected;
 
-let callOrder;
-const realSnapshotAll = openStateModule.snapshotAll;
-const realRestoreAll = openStateModule.restoreAll;
-
 beforeEach(() => {
   resetDOM();
   resetState();
   jest.clearAllMocks();
-  callOrder = [];
-
-  jest.spyOn(openStateModule, "snapshotAll").mockImplementation((...args) => {
-    callOrder.push("snapshotAll");
-    return realSnapshotAll(...args);
-  });
-  jest.spyOn(openStateModule, "restoreAll").mockImplementation((...args) => {
-    callOrder.push("restoreAll");
-    return realRestoreAll(...args);
-  });
-  renderLists.mockImplementation(() => callOrder.push("renderLists"));
 
   buildSheet.mockResolvedValue(makeJson());
 });
@@ -444,12 +428,11 @@ describe("render orchestration", () => {
     expect(state.sheet).toBe(json);
   });
 
-  // The module's top comment claims renderLists() is never called; that's stale — it is, wrapped in a synchronous snapshotAll()/restoreAll() pair.
-  test("calls renderLists once, wrapped by a synchronous snapshotAll → restoreAll pair", async () => {
+  test("calls renderLists once with the sheet's selected/data/sheet", async () => {
     await runEngine();
 
+    expect(renderLists).toHaveBeenCalledTimes(1);
     expect(renderLists).toHaveBeenCalledWith(selected, state.data, state.sheet);
-    expect(callOrder).toEqual(["snapshotAll", "renderLists", "restoreAll"]);
   });
 });
 

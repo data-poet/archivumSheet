@@ -55,11 +55,6 @@ jest.mock("dev/public/js/engine/inventory/customInventory/render.js", () => ({
 jest.mock("dev/public/js/engine/inventory/coinPurse/render.js", () => ({
   renderCoinPurse: jest.fn(),
 }));
-jest.mock("dev/public/js/shared/openState.js", () => ({
-  snapshotAll: jest.fn(),
-  restoreAll: jest.fn(),
-}));
-
 import {
   renderAdvantages,
   renderDisadvantages,
@@ -102,7 +97,6 @@ import {
 } from "dev/public/js/engine/inventory/magicGear/render.js";
 import { renderCustomInventory } from "dev/public/js/engine/inventory/customInventory/render.js";
 import { renderCoinPurse } from "dev/public/js/engine/inventory/coinPurse/render.js";
-import { snapshotAll, restoreAll } from "dev/public/js/shared/openState.js";
 import {
   renderLists,
   renderListsPreserving,
@@ -165,46 +159,20 @@ describe("renderLists", () => {
     expect(callOrder).toEqual(ALL_RENDER_FNS);
   });
 
-  test("does not call snapshotAll/restoreAll on its own (that's renderListsPreserving's job)", () => {
-    renderLists(selected, data, sheet);
-    expect(snapshotAll).not.toHaveBeenCalled();
-    expect(restoreAll).not.toHaveBeenCalled();
-  });
-
   test("forwards a missing sheet argument through as undefined rather than substituting a default", () => {
     renderLists(selected, data);
     expect(renderAdvantages).toHaveBeenCalledWith(selected, data, undefined);
   });
 });
 
+// Every list it touches now writes through morphHTML (shared/morph.js), which preserves open
+// <details>/card-expand/scroll state on its own — renderListsPreserving no longer needs to
+// snapshot/restore anything itself, so it's equivalent to renderLists.
 describe("renderListsPreserving", () => {
-  test("snapshots before rendering and restores with that exact snapshot afterward, in order", () => {
-    const fakeSnapshot = { some: "snapshot" };
-    snapshotAll.mockReturnValue(fakeSnapshot);
-    const callOrder = [];
-    snapshotAll.mockImplementation(() => {
-      callOrder.push("snapshot");
-      return fakeSnapshot;
-    });
-    renderAdvantages.mockImplementation(() => callOrder.push("render"));
-    restoreAll.mockImplementation(() => callOrder.push("restore"));
-
-    renderListsPreserving(selected, data, sheet);
-
-    expect(callOrder).toEqual(["snapshot", "render", "restore"]);
-    expect(restoreAll).toHaveBeenCalledWith(fakeSnapshot);
-  });
-
-  test("still renders every managed section, same as calling renderLists directly", () => {
+  test("renders every managed section, same as calling renderLists directly", () => {
     renderListsPreserving(selected, data, sheet);
     ALL_RENDER_FNS.forEach((fn) => {
       expect(fn).toHaveBeenCalledWith(selected, data, sheet);
     });
-  });
-
-  test("restores even when a snapshot came back empty/falsy, rather than skipping restore", () => {
-    snapshotAll.mockReturnValue(null);
-    renderListsPreserving(selected, data, sheet);
-    expect(restoreAll).toHaveBeenCalledWith(null);
   });
 });

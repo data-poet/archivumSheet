@@ -1,7 +1,6 @@
 import { state } from "../../../state.js";
 import { fetchSkills, fetchMasterEligibleCategories } from "../../../api.js";
 import { renderSkills } from "./render.js";
-import { snapshotAll, restoreAll } from "../../../shared/openState.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSkillAttributeBase } from "../../../shared/attributeUtils.js";
@@ -12,11 +11,8 @@ const selected = state.selected;
 
 // Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderSkillList() {
-  const snapshots = snapshotAll();
-
   requestAnimationFrame(() => {
     renderSkills(selected, data);
-    restoreAll(snapshots);
   });
 }
 

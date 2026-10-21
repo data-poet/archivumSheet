@@ -1,9 +1,3 @@
-jest.mock("dev/public/js/shared/openState.js", () => ({
-  snapshotAll: jest.fn(() => "SNAPSHOT"),
-  restoreAll: jest.fn(),
-}));
-
-import { snapshotAll, restoreAll } from "dev/public/js/shared/openState.js";
 import {
   createListRenderer,
   createDeferredRender,
@@ -20,13 +14,12 @@ afterEach(() => {
 });
 
 describe("createListRenderer", () => {
-  test("snapshots open state immediately but defers the render by one animation frame", () => {
+  test("defers the render by one animation frame", () => {
     const render = jest.fn();
     const renderLists = createListRenderer(render);
 
     renderLists();
 
-    expect(snapshotAll).toHaveBeenCalledTimes(1);
     expect(render).not.toHaveBeenCalled();
 
     jest.advanceTimersToNextFrame();
@@ -46,19 +39,6 @@ describe("createListRenderer", () => {
     expect(calls).toEqual(["first", "second"]);
     expect(first).toHaveBeenCalledWith(state.selected, state.data, "SHEET");
     expect(second).toHaveBeenCalledWith(state.selected, state.data, "SHEET");
-  });
-
-  test("restores the snapshot in the same frame as the render, never a later one", () => {
-    const render = jest.fn(() => {
-      // restoreAll must not have run yet when the render itself executes
-      expect(restoreAll).not.toHaveBeenCalled();
-    });
-    const renderLists = createListRenderer(render);
-
-    renderLists();
-    jest.advanceTimersToNextFrame();
-
-    expect(restoreAll).toHaveBeenCalledWith("SNAPSHOT");
   });
 
   test("passes sheet through as undefined when called with no argument", () => {
