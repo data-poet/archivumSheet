@@ -17,9 +17,16 @@ import {
 import { runEngine } from "./compute/index.js";
 import { initAutoRun } from "./compute/autorun.js";
 import { initCharacterImage } from "./engine/character/portrait/index.js";
-import { initCharacters, getActiveKind } from "./store/characters.js";
+import {
+  initCharacters,
+  getActiveKind,
+  saveActiveCharacter,
+} from "./store/characters.js";
 import { reloadCatalogs } from "./store/catalogs.js";
-import { initCharacterSelector } from "./components/characterSelector.js";
+import {
+  initCharacterSelector,
+  updateSelectorButton,
+} from "./components/characterSelector.js";
 import { renderEntryKind } from "./components/entryKind.js";
 import { renderAllyLinkControl } from "./components/allies/allyLinkControl.js";
 import { initAllyAddControl } from "./components/allies/allyAddInline.js";
@@ -31,7 +38,12 @@ import { initCardCollapse } from "./shared/cardCollapse.js";
 export async function bootstrap() {
   buildSheetLayout();
   mountResumePanel();
-  initAutoRun(runEngine);
+  // Save is decoupled from the engine run itself (compute/autorun.js) — it only needs the
+  // selector button to mirror the store's display name once that save actually lands.
+  initAutoRun(runEngine, () => {
+    saveActiveCharacter();
+    updateSelectorButton();
+  });
   bindUI();
   initNav();
   initGroupNav();

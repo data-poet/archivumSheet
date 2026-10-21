@@ -4,6 +4,7 @@
 
 import { state } from "../state.js";
 import { getPrimaryAttributes } from "../compute/attributes.js";
+import { buildPcPayload } from "../shared/pcPayload.js";
 
 // Bump if the shape below ever changes in a breaking way.
 export const SCHEMA_VERSION = 1;
@@ -13,12 +14,10 @@ export function capturePersistedSheet() {
 
   return {
     version: SCHEMA_VERSION,
-    // `image` is taken from selected rather than the built sheet: it is edited live and the last
-    // build may predate the current crop/scale.
-    pc: {
-      ...(sheet?.pc ?? selected.character),
-      image: selected.character.image,
-    },
+    // Built straight from selected.character, never from sheet.pc: a save can now fire before
+    // the engine has ever answered (autorun's save is decoupled from its run — see
+    // compute/autorun.js), and sheet.pc is only ever an echo of a past request anyway.
+    pc: buildPcPayload(selected.character),
     race: sheet?.race ?? {},
     character: {
       primary: getPrimaryAttributes(),

@@ -113,12 +113,14 @@ jest.mock("dev/public/js/shared/rules.js", () => ({
 jest.mock("dev/public/js/store/characters.js", () => ({
   initCharacters: jest.fn(() => true),
   getActiveKind: jest.fn(() => "character"),
+  saveActiveCharacter: jest.fn(),
 }));
 jest.mock("dev/public/js/components/entryKind.js", () => ({
   renderEntryKind: jest.fn(),
 }));
 jest.mock("dev/public/js/components/characterSelector.js", () => ({
   initCharacterSelector: jest.fn(),
+  updateSelectorButton: jest.fn(),
 }));
 jest.mock("dev/public/js/components/allies/allyAddInline.js", () => ({
   initAllyAddControl: jest.fn(() => Promise.resolve()),
@@ -160,8 +162,14 @@ import { loadEnchantments } from "dev/public/js/engine/inventory/shared/enchantm
 import { loadDualUseWeapons } from "dev/public/js/engine/inventory/shared/dualUseWeapons.js";
 import { loadMaterials } from "dev/public/js/engine/inventory/shared/materials.js";
 import { loadRules } from "dev/public/js/shared/rules.js";
-import { initCharacters } from "dev/public/js/store/characters.js";
-import { initCharacterSelector } from "dev/public/js/components/characterSelector.js";
+import {
+  initCharacters,
+  saveActiveCharacter,
+} from "dev/public/js/store/characters.js";
+import {
+  initCharacterSelector,
+  updateSelectorButton,
+} from "dev/public/js/components/characterSelector.js";
 
 import { bootstrap } from "dev/public/js/main.js";
 
@@ -229,12 +237,24 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
     expect(order).toEqual(["mount", "initViewMode", "updateActualValues"]);
   });
 
-  test("initializes autorun with the real runEngine function", async () => {
+  test("initializes autorun with the real runEngine function and a save callback", async () => {
     const { runEngine } = require("dev/public/js/compute/index.js");
 
     await bootstrap();
 
-    expect(initAutoRun).toHaveBeenCalledWith(runEngine);
+    expect(initAutoRun).toHaveBeenCalledWith(runEngine, expect.any(Function));
+  });
+
+  // Save is decoupled from runEngine itself (compute/autorun.js) — main.js's onSave callback
+  // is what still keeps the selector button's display name in sync once a save actually lands.
+  test("the onSave callback saves and refreshes the selector button", async () => {
+    await bootstrap();
+
+    const [, onSave] = initAutoRun.mock.calls[0];
+    onSave();
+
+    expect(saveActiveCharacter).toHaveBeenCalledTimes(1);
+    expect(updateSelectorButton).toHaveBeenCalledTimes(1);
   });
 
   test("awaits every data loader before proceeding to character init", async () => {

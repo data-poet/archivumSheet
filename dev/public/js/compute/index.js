@@ -1,7 +1,5 @@
 import { state } from "../state.js";
 import { buildSheet, getLastServerTiming } from "../api.js";
-import { saveActiveCharacter } from "../store/characters.js";
-import { updateSelectorButton } from "../components/characterSelector.js";
 import { getPrimaryAttributes } from "./attributes.js";
 import {
   renderOutput,
@@ -22,6 +20,7 @@ import {
 import { showToast } from "../shared/toast.js";
 import { t } from "../localization/pt-BR/index.js";
 import { isTimingEnabled, mark, logRunTiming } from "../shared/timing.js";
+import { buildPcPayload } from "../shared/pcPayload.js";
 
 const selected = state.selected;
 
@@ -29,35 +28,19 @@ const _round = (ms) => Math.round(ms * 100) / 100;
 
 // renderLists() here is wrapped in a synchronous snapshot/restore (see call site below)
 // so equipment selects aren't destroyed mid-interaction on every autorun tick.
-export async function runEngine() {
+//
+// `signal`/`isCurrent` are only ever supplied by compute/autorun.js's scheduler — a direct call
+// (every existing test, and any future one-off use) runs unconditionally, same as before.
+export async function runEngine({ signal, isCurrent } = {}) {
   const timing = isTimingEnabled();
   const tStart = timing ? mark() : 0;
 
   try {
     const info = selected.character ?? {};
-    const pc = {
-      player_name: info.player_name || "",
-      character_name: info.character_name || "",
-      character_sex: info.character_sex || "",
-      character_age: info.character_age ?? null,
-      character_weight: info.character_weight ?? null,
-      starting_points: info.starting_points ?? null,
-      experience_points: info.experience_points ?? null,
-      ability_points: info.ability_points ?? null,
-      magic_points: info.magic_points ?? null,
-      // Mirrors store/characters.js's _applyData — see that whitelist entry's comment.
-      tier_label: info.tier_label ?? "",
-      image: info.image ?? {
-        uploaded: false,
-        data: "",
-        background: "",
-        color: { r: "", g: "", b: "" },
-        orientation: "",
-        position: { x: "", y: "" },
-        size: { width: "", height: "" },
-        scale: "",
-      },
-    };
+    // image never leaves the device: it can be several KB of base64 and the engine only
+    // echoes pc back, so sending it would cost bytes both ways for nothing read on return —
+    // state.selected.character.image stays the source of truth (see resumeImage.js).
+    const { image: _unused, ...pc } = buildPcPayload(info);
 
     const payload = {
       pc,
@@ -95,8 +78,12 @@ export async function runEngine() {
     };
 
     const tPayload = timing ? mark() : 0;
-    const json = await buildSheet(payload);
+    const json = await buildSheet(payload, { signal });
     const tResponse = timing ? mark() : 0;
+
+    // A newer trigger already started another run while this one was in flight — that run
+    // owns the next render and save, so applying this now-stale response would overwrite it.
+    if (isCurrent && !isCurrent()) return;
 
     const sec = json.character?.secondary_attributes || {};
 
@@ -195,9 +182,6 @@ export async function runEngine() {
 
     restoreAll(snapshots);
 
-    saveActiveCharacter();
-    updateSelectorButton();
-
     if (timing) {
       const tEnd = mark();
       logRunTiming({
@@ -205,13 +189,16 @@ export async function runEngine() {
         requestMs: _round(tResponse - tPayload),
         serverTiming: getLastServerTiming(),
         renderMs: _round(tRender - tResponse),
-        listsAndSaveMs: _round(tEnd - tRender),
+        listsMs: _round(tEnd - tRender),
         totalMs: _round(tEnd - tStart),
         requestBytes: JSON.stringify(payload).length,
         responseBytes: JSON.stringify(json).length,
       });
     }
   } catch (err) {
+    // A superseded request's own abort, not a failure — the run that superseded it already
+    // owns rendering the error, if there is one.
+    if (err?.name === "AbortError") return;
     renderOutput({ error: err.message });
   }
 }

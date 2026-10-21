@@ -134,6 +134,18 @@ describe("buildSheet", () => {
     );
   });
 
+  test("forwards an AbortSignal through to fetch, for compute/autorun.js's scheduler", async () => {
+    mockFetchResponse("/api/sheet/build", { sheet: "computed" });
+    const { signal } = new AbortController();
+
+    await buildSheet({}, { signal });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/sheet/build",
+      expect.objectContaining({ signal }),
+    );
+  });
+
   test("getLastServerTiming() exposes the response's Server-Timing header", async () => {
     mockFetchResponse(
       "/api/sheet/build",

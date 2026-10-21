@@ -59,7 +59,7 @@ describe("capturePersistedSheet", () => {
     expect(capturePersistedSheet().inventory.weight).toBe(7.5);
   });
 
-  test("falls back to selected.character when no sheet has been built yet", () => {
+  test("pc comes from live state when no sheet has been built yet", () => {
     state.sheet = null;
     state.selected.character.character_name = "Sem Build";
 
@@ -69,15 +69,19 @@ describe("capturePersistedSheet", () => {
     expect(payload.race).toEqual({});
   });
 
-  test("prefers the built sheet's pc and race once one exists", () => {
+  // A save can fire before the engine ever answers (it's debounced independently — see
+  // compute/autorun.js) or after selected.character has moved on from the last successful
+  // build, so pc must never trust sheet.pc, only race (genuinely engine-resolved) still does.
+  test("pc always reflects live state, even once a (possibly stale) sheet exists", () => {
+    state.selected.character.character_name = "Ao Vivo";
     state.sheet = {
-      pc: { character_name: "Construído" },
+      pc: { character_name: "Desatualizado" },
       race: { race_id: "RACE-023" },
     };
 
     const payload = capturePersistedSheet();
 
-    expect(payload.pc.character_name).toBe("Construído");
+    expect(payload.pc.character_name).toBe("Ao Vivo");
     expect(payload.race.race_id).toBe("RACE-023");
   });
 

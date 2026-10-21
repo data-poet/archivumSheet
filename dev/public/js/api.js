@@ -16,11 +16,12 @@ async function getJSON(url) {
   return audience ? availableFor(json, audience, { record: true }) : json;
 }
 
-async function postJSON(url, body) {
+async function postJSON(url, body, { signal } = {}) {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    signal,
   });
 
   // Captured regardless of outcome so a failed build's timing isn't lost — see shared/timing.js.
@@ -36,8 +37,7 @@ async function postJSON(url, body) {
 let _lastServerTiming = null;
 
 // The server's own build;dur=<ms> for the most recent buildSheet() call, read by
-// compute/index.js's timing instrumentation. Not request-scoped — fine for a single in-flight
-// build, which is all autorun.js allows today.
+// compute/index.js's timing instrumentation. Not request-scoped — just the latest value seen.
 export function getLastServerTiming() {
   return _lastServerTiming;
 }
@@ -158,8 +158,8 @@ export async function fetchAlly(allyId) {
   return getJSON(`/api/allies/${encodeURIComponent(allyId)}`);
 }
 
-export async function buildSheet(payload) {
-  return postJSON("/api/sheet/build", payload);
+export async function buildSheet(payload, options) {
+  return postJSON("/api/sheet/build", payload, options);
 }
 
 export async function fetchAppInfo() {

@@ -2,12 +2,6 @@ jest.mock("dev/public/js/api.js", () => ({
   buildSheet: jest.fn(),
   getLastServerTiming: jest.fn(() => null),
 }));
-jest.mock("dev/public/js/store/characters.js", () => ({
-  saveActiveCharacter: jest.fn(),
-}));
-jest.mock("dev/public/js/components/characterSelector.js", () => ({
-  updateSelectorButton: jest.fn(),
-}));
 jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
@@ -24,8 +18,6 @@ jest.mock("dev/public/js/ui.js", () => ({
 }));
 
 import { buildSheet, getLastServerTiming } from "dev/public/js/api.js";
-import { saveActiveCharacter } from "dev/public/js/store/characters.js";
-import { updateSelectorButton } from "dev/public/js/components/characterSelector.js";
 import { showToast } from "dev/public/js/shared/toast.js";
 import {
   renderOutput,
@@ -101,16 +93,6 @@ describe("buildSheet payload — pc", () => {
       ability_points: null,
       magic_points: null,
       tier_label: "",
-      image: {
-        uploaded: false,
-        data: "",
-        background: "",
-        color: { r: "", g: "", b: "" },
-        orientation: "",
-        position: { x: "", y: "" },
-        size: { width: "", height: "" },
-        scale: "",
-      },
     });
   });
 
@@ -125,6 +107,19 @@ describe("buildSheet payload — pc", () => {
     expect(pc.player_name).toBe("Player One");
     expect(pc.character_name).toBe("Aria");
     expect(pc.character_age).toBe(27);
+  });
+
+  // image can be several KB of base64 and the engine never reads it back — see pcPayload.js.
+  test("never sends image, however it is set", async () => {
+    selected.character.image = {
+      uploaded: true,
+      data: "data:image/png;base64,AAAA",
+    };
+
+    await runEngine();
+
+    const { pc } = buildSheet.mock.calls[0][0];
+    expect(pc.image).toBeUndefined();
   });
 });
 
@@ -192,7 +187,6 @@ describe("buildSheet payload — character", () => {
     await runEngine();
 
     expect(selected.conditions).toEqual({ "dor-moderada": true, coma: true });
-    expect(saveActiveCharacter).toHaveBeenCalledTimes(1);
   });
 
   test("leaves the conditions object alone when nothing is unknown", async () => {
@@ -457,12 +451,6 @@ describe("render orchestration", () => {
     expect(renderLists).toHaveBeenCalledWith(selected, state.data, state.sheet);
     expect(callOrder).toEqual(["snapshotAll", "renderLists", "restoreAll"]);
   });
-
-  test("persists the character and refreshes the selector after a successful run", async () => {
-    await runEngine();
-    expect(saveActiveCharacter).toHaveBeenCalledTimes(1);
-    expect(updateSelectorButton).toHaveBeenCalledTimes(1);
-  });
 });
 
 describe("insufficient points warning", () => {
@@ -518,21 +506,46 @@ describe("insufficient points warning", () => {
 });
 
 describe("error handling", () => {
-  test("renders the error and skips every other render/persist step when buildSheet rejects", async () => {
+  test("renders the error and skips every other render step when buildSheet rejects", async () => {
     buildSheet.mockRejectedValue(new Error("network exploded"));
 
     await runEngine();
 
     expect(renderOutput).toHaveBeenCalledWith({ error: "network exploded" });
     expect(renderLists).not.toHaveBeenCalled();
-    expect(saveActiveCharacter).not.toHaveBeenCalled();
-    expect(updateSelectorButton).not.toHaveBeenCalled();
     expect(state.sheet).toBeUndefined();
   });
 
   test("does not throw out of runEngine when buildSheet rejects", async () => {
     buildSheet.mockRejectedValue(new Error("boom"));
     await expect(runEngine()).resolves.toBeUndefined();
+  });
+
+  test("a superseded request's own abort is silent: no error render, no state write", async () => {
+    const abortError = new DOMException(
+      "The operation was aborted.",
+      "AbortError",
+    );
+    buildSheet.mockRejectedValue(abortError);
+
+    await runEngine();
+
+    expect(renderOutput).not.toHaveBeenCalled();
+    expect(state.sheet).toBeUndefined();
+  });
+
+  test("a stale response (isCurrent() false) is dropped: no render, no state write", async () => {
+    await runEngine({ isCurrent: () => false });
+
+    expect(renderOutput).not.toHaveBeenCalled();
+    expect(renderLists).not.toHaveBeenCalled();
+    expect(state.sheet).toBeUndefined();
+  });
+
+  test("a current response (isCurrent() true, or omitted) renders as usual", async () => {
+    await runEngine({ isCurrent: () => true });
+
+    expect(renderOutput).toHaveBeenCalledWith(makeJson());
   });
 });
 
@@ -561,7 +574,7 @@ describe("timing (shared/timing.js's debugTiming flag)", () => {
       "requestMs",
       "serverTiming",
       "renderMs",
-      "listsAndSaveMs",
+      "listsMs",
       "totalMs",
       "requestBytes",
       "responseBytes",

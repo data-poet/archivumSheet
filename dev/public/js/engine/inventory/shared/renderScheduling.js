@@ -2,6 +2,7 @@
 
 import { state } from "../../../state.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
+import { DEFAULT_AUTORUN_DELAY_MS } from "../../../shared/constants.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -25,7 +26,7 @@ export function createListRenderer(...renderFns) {
 // Trailing-debounced render so holding a stepper button or typing into a
 // modifier field doesn't rebuild the list on every keystroke. Each call site
 // gets its own timer.
-export function createDeferredRender(render, delay = 300) {
+export function createDeferredRender(render, delay = DEFAULT_AUTORUN_DELAY_MS) {
   let timer = null;
 
   return function deferRender() {

@@ -60,6 +60,11 @@ export const VITAL_ATTRIBUTES = [
   { key: "Toxicity", bar: "toxicity" },
 ];
 
+// Shared by compute/autorun.js (its TYPING trailing delay) and
+// engine/inventory/shared/renderScheduling.js's createDeferredRender default — one number,
+// not two independently hardcoded ones that could drift apart.
+export const DEFAULT_AUTORUN_DELAY_MS = 300;
+
 export function hasEditableBase(key) {
   return key === "DamageResistance";
 }

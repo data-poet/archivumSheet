@@ -192,10 +192,3 @@ describe("state.selected shape", () => {
     });
   });
 });
-
-describe("state.ui shape", () => {
-  test("has exactly the expected top-level keys, defaulting debounceTimer to null", () => {
-    expect(Object.keys(state.ui)).toEqual(["debounceTimer"]);
-    expect(state.ui.debounceTimer).toBeNull();
-  });
-});
