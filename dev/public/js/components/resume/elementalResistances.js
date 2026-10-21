@@ -35,7 +35,7 @@ export function renderResumeElementalResistances(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("resume.elementalResistances"))}
+    ${collapsibleHeader(t("resume.elementalResistances"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table resume-table--elemental-resistances">

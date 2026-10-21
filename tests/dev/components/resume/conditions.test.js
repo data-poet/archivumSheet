@@ -551,14 +551,23 @@ describe("the full list", () => {
     expect(label.title).toBe("Não pode usar a perícia Furtividade.");
   });
 
-  test("starts collapsed and carries the clear button", () => {
+  test("the edit list starts collapsed and carries the clear button", () => {
+    renderResumeConditions({}, { conditions: CATALOG }, {});
+
+    expect(
+      container().querySelector(".conditions-list .resume-collapse-body")
+        .hidden,
+    ).toBe(true);
+    expect(container().querySelector(".conditions-clear").textContent).toBe(
+      t("conditions.clear"),
+    );
+  });
+
+  test("the card itself starts open", () => {
     renderResumeConditions({}, { conditions: CATALOG }, {});
 
     expect(container().querySelector(".resume-collapse-body").hidden).toBe(
-      true,
-    );
-    expect(container().querySelector(".conditions-clear").textContent).toBe(
-      t("conditions.clear"),
+      false,
     );
   });
 });

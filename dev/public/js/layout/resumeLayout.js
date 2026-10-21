@@ -9,7 +9,6 @@ export const RESUME_LAYOUT = [
     icon: "attributes",
     sections: [
       { id: "resume-section-attributes" },
-      { id: "resume-section-secondary" },
       { id: "resume-section-status" },
     ],
   },
@@ -17,7 +16,9 @@ export const RESUME_LAYOUT = [
     group: "offense",
     icon: "weapons",
     sections: [
-      { id: "resume-section-weapons" },
+      { id: "resume-section-melee" },
+      { id: "resume-section-ranged" },
+      { id: "resume-section-firearms" },
       { id: "resume-section-supplies" },
     ],
   },
@@ -25,7 +26,8 @@ export const RESUME_LAYOUT = [
     group: "defense",
     icon: "defense",
     sections: [
-      { id: "resume-section-defense" },
+      { id: "resume-section-armor" },
+      { id: "resume-section-shield" },
       { id: "resume-section-alchemy" },
     ],
   },
@@ -35,7 +37,8 @@ export const RESUME_LAYOUT = [
     sections: [
       { id: "resume-section-magic" },
       { id: "resume-section-skills" },
-      { id: "resume-section-traits" },
+      { id: "resume-section-advantages" },
+      { id: "resume-section-disadvantages" },
     ],
   },
   {

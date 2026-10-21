@@ -43,13 +43,11 @@ export const RESUME_PANEL_HTML = `
     <nav class="resume-groupnav" id="resume-groupnav"></nav>
 
     <div class="resume-groups">
-      <!-- Status: primary and secondary attrs, conditions, resistances -->
+      <!-- Status: left column is attrs (primary, then secondary below); right is
+           conditions, then resistances below — two stacks, not row-paired parts. -->
       <section class="l-section resume-group-section" id="resume-section-attributes" data-group="status">
         <h3 class="resume-col-title" id="sec-resume-attributes-group"></h3>
         <div class="resume-row resume-row--primary-attrs" id="resume_primary_attrs"></div>
-      </section>
-
-      <section class="l-section resume-group-section" id="resume-section-secondary" data-group="status">
         <div class="resume-row">
           <div id="resume_secondary_snapshot"></div>
         </div>
@@ -64,12 +62,21 @@ export const RESUME_PANEL_HTML = `
         </div>
       </section>
 
-      <!-- Ataque: melee, ranged, firearms, ammo -->
-      <section class="l-section resume-group-section" id="resume-section-weapons" data-group="offense">
-        <div class="resume-row resume-row--two-col">
-          <div class="resume-col" id="resume_melee_container"></div>
-          <div class="resume-col" id="resume_ranged_container"></div>
+      <!-- Ataque: each weapon type and ammo is its own part, paired two-per-row by the
+           desktop grid purely through DOM order — no nested two-col rows here. -->
+      <section class="l-section resume-group-section" id="resume-section-melee" data-group="offense">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_melee_container"></div>
         </div>
+      </section>
+
+      <section class="l-section resume-group-section" id="resume-section-ranged" data-group="offense">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_ranged_container"></div>
+        </div>
+      </section>
+
+      <section class="l-section resume-group-section" id="resume-section-firearms" data-group="offense">
         <div class="resume-row">
           <div class="resume-full-col" id="resume_firearms_container"></div>
         </div>
@@ -81,21 +88,26 @@ export const RESUME_PANEL_HTML = `
         </div>
       </section>
 
-      <!-- Defesa: armor, shield, alchemy -->
-      <section class="l-section resume-group-section" id="resume-section-defense" data-group="defense">
-        <div class="resume-row resume-row--two-col">
-          <div class="resume-col" id="resume_armor_container"></div>
-          <div class="resume-col" id="resume_shield_container"></div>
+      <!-- Defesa: armor, shield, alchemy — each its own part, same pairing rule as Ataque. -->
+      <section class="l-section resume-group-section" id="resume-section-armor" data-group="defense">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_armor_container"></div>
         </div>
       </section>
 
-      <section class="l-section resume-group-section" id="resume-section-alchemy" data-group="defense">
+      <section class="l-section resume-group-section" id="resume-section-shield" data-group="defense">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_shield_container"></div>
+        </div>
+      </section>
+
+      <section class="l-section resume-group-section resume-span-full" id="resume-section-alchemy" data-group="defense">
         <div class="resume-row">
           <div class="resume-full-col" id="resume_alchemy_container"></div>
         </div>
       </section>
 
-      <!-- Habilidades: magic, skills, traits -->
+      <!-- Habilidades: magic, skills, advantages, disadvantages — same pairing rule. -->
       <section class="l-section resume-group-section" id="resume-section-magic" data-group="abilities">
         <div class="resume-row">
           <div class="resume-full-col" id="resume_magic_container"></div>
@@ -108,10 +120,15 @@ export const RESUME_PANEL_HTML = `
         </div>
       </section>
 
-      <section class="l-section resume-group-section" id="resume-section-traits" data-group="abilities">
-        <div class="resume-row resume-row--two-col">
-          <div class="resume-col" id="resume_advantages_container"></div>
-          <div class="resume-col" id="resume_disadvantages_container"></div>
+      <section class="l-section resume-group-section" id="resume-section-advantages" data-group="abilities">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_advantages_container"></div>
+        </div>
+      </section>
+
+      <section class="l-section resume-group-section" id="resume-section-disadvantages" data-group="abilities">
+        <div class="resume-row">
+          <div class="resume-full-col" id="resume_disadvantages_container"></div>
         </div>
       </section>
 
@@ -175,7 +192,7 @@ export const RESUME_PANEL_HTML = `
 
       <!-- Points/XP: a panel copy of the edit page's Pontos tab (kept in both places by design,
            see renderExperienceBar/renderResumePoints — the edit page loses nothing here). -->
-      <section class="l-section resume-group-section" id="resume-section-points" data-group="info">
+      <section class="l-section resume-group-section resume-span-full" id="resume-section-points" data-group="info">
         <h3 class="resume-col-title" id="sec-resume-points-group"></h3>
         <div id="resume_bar_experience_panel"></div>
         <table class="resume-table">

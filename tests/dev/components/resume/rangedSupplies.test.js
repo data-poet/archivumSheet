@@ -137,6 +137,7 @@ describe("renderResumeAmmo", () => {
     expect(rows[0].textContent).toContain("Flecha");
     const qtyInput = rows[0].querySelector(".resume-ammo-qty");
     expect(qtyInput.value).toBe("15");
+    expect(container.querySelector(".resume-collapse-body").hidden).toBe(false);
   });
 
   test("falls back to the raw ammo_id as the display name when the catalog has no match", () => {
@@ -263,6 +264,7 @@ describe("renderResumeAlchemy", () => {
     expect(qtyInput.value).toBe("3");
     expect(qtyInput.dataset.consumableId).toBe("POT-1");
     expect(qtyInput.dataset.storedAt).toBe("backpack");
+    expect(container.querySelector(".resume-collapse-body").hidden).toBe(false);
   });
 
   test("defaults quantity to 1 when the entry has none", () => {

@@ -79,6 +79,10 @@ export function createGroupNav({
       section.hidden = !members.has(section.id);
     });
 
+    // Lets a group's own CSS vary (Ataque's uneven row widths) without a second instance —
+    // document has no dataset of its own, so the default sheet/reference bar skips this.
+    if (sectionsRoot.dataset) sectionsRoot.dataset.activeGroup = group;
+
     _getButtons().forEach((btn) => {
       const isActive = btn.dataset.group === group;
       btn.classList.toggle("is-active", isActive);

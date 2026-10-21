@@ -107,7 +107,7 @@ export function renderResumeAmmo(sheet, data, selected) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("sections.munition"))}
+    ${collapsibleHeader(t("sections.munition"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table">
@@ -168,7 +168,7 @@ export function renderResumeAlchemy(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("alchemy.title"))}
+    ${collapsibleHeader(t("alchemy.title"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table">

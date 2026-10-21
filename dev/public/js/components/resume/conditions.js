@@ -208,10 +208,7 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
     ${_checklist(scope, catalog, flags, immune)}
     <button type="button" class="conditions-clear">${t("conditions.clear")}</button>`;
 
-  morphHTML(
-    container,
-    `
-    ${inTab ? "" : `<h3 class="resume-col-title">${t("conditions.title")}</h3>`}
+  const active = `
     ${
       entries
         ? `<ul class="conditions-active">${entries}</ul>`
@@ -226,6 +223,15 @@ function _renderCard(container, sheet, data, selected, { inTab }) {
       <div class="resume-collapse-body">${list}</div>`
       }
     </div>
+  `;
+
+  morphHTML(
+    container,
+    inTab
+      ? active
+      : `
+    ${collapsibleHeader(t("conditions.title"), { defaultOpen: true })}
+    <div class="resume-collapse-body">${active}</div>
   `,
   );
   if (!inTab) bindCollapse(container);

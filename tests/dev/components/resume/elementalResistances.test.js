@@ -73,6 +73,7 @@ describe("renderResumeElementalResistances (view mode, read-only)", () => {
     expect(container.textContent).not.toContain(
       getElementalResistanceLabel("Water"),
     );
+    expect(container.querySelector(".resume-collapse-body").hidden).toBe(false);
   });
 
   test("shows an element that became weaker than normal via a negative-flooring case", () => {

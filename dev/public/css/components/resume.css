@@ -13,64 +13,70 @@
   margin-bottom: var(--space-7);
 }
 
-@media (min-width: 768px) {
-  /* Every group's sections show at once as columns — nothing left to switch between. */
-  .resume-groupnav {
-    display: none;
-  }
+/* A missing category (no firearms, no alchemy, ...) is marked by groupBalance.js, not by
+   groupNav's own `hidden` (that one means "not this tab," independent of content) — kept as
+   a class so the two never fight over the same attribute. */
+.resume-section-empty {
+  display: none;
+}
 
+/* Alchemy and points are deliberately solo rows (room for more parts later without
+   re-pairing them); groupBalance.js also reaches for this on a row's surviving half when
+   its partner is empty. Inert outside the grid (mobile), so no breakpoint guard needed. */
+.resume-span-full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  /* Same tab switching, same collapse-by-default as mobile — just wide enough to place
+     an active group's sections two per row instead of stacking them full-width. Each
+     `.l-section` here is one "part" (one weapon table, one card); pairing them is purely
+     DOM order, not nested two-col rows, so a row never holds more than two parts. */
   .resume-groups {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-8);
     align-items: start;
   }
 
-  .resume-group-section {
-    margin-bottom: 0;
+  /* Ataque: melee needs more room than its ammo count, so that row is 2:1 instead of 1:1 —
+     a finer 6-col track lets row 2 (ranged/firearms) stay even on the very same grid. `dense`
+     backfills ammo (span 2) into the gap melee's span 4 leaves in row 1 instead of pushing it
+     to a row of its own — DOM order stays melee/ranged/firearms/ammo either way. */
+  #tab-char-resume[data-active-group="offense"] .resume-groups {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-flow: row dense;
   }
 
-  /* Overrides the `hidden` attribute groupNav still sets (it only ever runs on mobile widths,
-     but the attribute itself isn't width-aware) so every section stays visible here. */
-  .resume-group-section[hidden] {
-    display: block !important;
+  #tab-char-resume[data-active-group="offense"] #resume-section-melee {
+    grid-column: span 4;
   }
 
-  .resume-group-section[data-group="status"] {
-    grid-column: 1;
+  #tab-char-resume[data-active-group="offense"] #resume-section-supplies {
+    grid-column: span 2;
   }
 
-  .resume-group-section[data-group="offense"] {
-    grid-column: 2;
+  #tab-char-resume[data-active-group="offense"] #resume-section-ranged,
+  #tab-char-resume[data-active-group="offense"] #resume-section-firearms {
+    grid-column: span 3;
   }
 
-  .resume-group-section[data-group="defense"] {
-    grid-column: 3;
-  }
-
-  .resume-group-section[data-group="abilities"] {
-    grid-column: 4;
-  }
-
-  .resume-group-section[data-group="info"] {
-    grid-column: 5;
+  /* Outranks the span-N rules above (same selectors plus the class) for whichever side
+     groupBalance.js marks as the lone survivor of its row. */
+  #tab-char-resume[data-active-group="offense"]
+    #resume-section-melee.resume-span-full,
+  #tab-char-resume[data-active-group="offense"]
+    #resume-section-supplies.resume-span-full,
+  #tab-char-resume[data-active-group="offense"]
+    #resume-section-ranged.resume-span-full,
+  #tab-char-resume[data-active-group="offense"]
+    #resume-section-firearms.resume-span-full {
+    grid-column: 1 / -1;
   }
 }
 
 .resume-row {
   margin-bottom: 1rem;
-}
-
-.resume-row--two-col {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-@media (max-width: 600px) {
-  .resume-row--two-col {
-    grid-template-columns: 1fr;
-  }
 }
 
 .resume-full-col {

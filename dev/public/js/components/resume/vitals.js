@@ -183,7 +183,7 @@ export function renderResumeSecondarySnapshot(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("resume.secondarySnapshot"))}
+    ${collapsibleHeader(t("resume.secondarySnapshot"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table resume-table--secondary-snapshot">

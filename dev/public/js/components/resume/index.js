@@ -6,6 +6,7 @@
 
 import { renderResumeImage } from "../../engine/character/portrait/resumeImage.js";
 import { initResumeExpanders } from "./shared.js";
+import { balanceResumeRows } from "./groupBalance.js";
 import {
   renderResumeHeader,
   renderExperienceBar,
@@ -72,4 +73,6 @@ export function renderResume(sheet, data = {}, selected = {}) {
   for (const render of SECTIONS) {
     render(ctx);
   }
+
+  balanceResumeRows();
 }

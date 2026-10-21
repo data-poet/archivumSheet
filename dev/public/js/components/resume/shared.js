@@ -86,27 +86,32 @@ export function quantityStepperCell({ cssClass, dataAttrs, quantity }) {
   });
 }
 
-export function collapsibleHeader(title) {
+export function collapsibleHeader(title, { defaultOpen = false } = {}) {
   return `
-    <button class="resume-section-toggle" type="button" aria-expanded="false">
+    <button class="resume-section-toggle" type="button" aria-expanded="false" data-default-open="${defaultOpen}">
       <span class="resume-expander-arrow">&#8250;</span>
       <span class="resume-section-title">${title}</span>
     </button>
   `;
 }
 
+// Scoped per toggle (its own parent, not the whole container) so a card with nested
+// collapsibles — conditions.js wraps its own card toggle around the edit-list's toggle —
+// gets each one's initial state set independently, matching the click handler's own scoping.
 export function bindCollapse(container) {
-  const btn = container.querySelector(".resume-section-toggle");
-  const body = container.querySelector(".resume-collapse-body");
-  if (!btn || !body) return;
+  container.querySelectorAll(".resume-section-toggle").forEach((btn) => {
+    const body = btn.parentElement?.querySelector(".resume-collapse-body");
+    if (!body) return;
 
-  const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
-  const isOpen = _collapseOpen.get(title) ?? false;
+    const title = btn.querySelector(".resume-section-title")?.textContent ?? "";
+    const defaultOpen = btn.dataset.defaultOpen === "true";
+    const isOpen = _collapseOpen.get(title) ?? defaultOpen;
 
-  body.hidden = !isOpen;
-  btn.setAttribute("aria-expanded", String(isOpen));
-  const arrow = btn.querySelector(".resume-expander-arrow");
-  if (arrow) arrow.classList.toggle("resume-expander-arrow--open", isOpen);
+    body.hidden = !isOpen;
+    btn.setAttribute("aria-expanded", String(isOpen));
+    const arrow = btn.querySelector(".resume-expander-arrow");
+    if (arrow) arrow.classList.toggle("resume-expander-arrow--open", isOpen);
+  });
 }
 
 // Shared shape for melee/ranged/firearms' equipped-weapon tables: a name column, caller-supplied
@@ -180,7 +185,7 @@ export function renderResumeWeaponTable({
   morphHTML(
     container,
     `
-    ${collapsibleHeader(title)}
+    ${collapsibleHeader(title, { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table">

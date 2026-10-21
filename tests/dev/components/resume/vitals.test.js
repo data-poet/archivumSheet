@@ -339,13 +339,13 @@ describe("collapsible sections — shared infrastructure (first exercised here v
     if (!isOpen(container)) toggleBtn(container).click();
   }
 
-  test("renders collapsed (hidden body) by default the first time a title is ever seen", () => {
+  test("renders expanded (visible body) by default the first time a title is ever seen", () => {
     // Only meaningful in isolation (fresh module instance) — later tests intentionally flip this shared state.
     renderResume(sheetWithSnapshot);
     const container = id("resume_secondary_snapshot");
-    ensureCollapsed(container);
-    expect(container.querySelector(".resume-collapse-body").hidden).toBe(true);
-    expect(toggleBtn(container).getAttribute("aria-expanded")).toBe("false");
+    ensureOpen(container);
+    expect(container.querySelector(".resume-collapse-body").hidden).toBe(false);
+    expect(toggleBtn(container).getAttribute("aria-expanded")).toBe("true");
   });
 
   test("clicking the toggle button expands the section and updates aria-expanded", () => {

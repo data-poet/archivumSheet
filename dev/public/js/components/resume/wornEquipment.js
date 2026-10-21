@@ -61,7 +61,7 @@ export function renderResumeArmor(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("sections.armor"))}
+    ${collapsibleHeader(t("sections.armor"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table">
@@ -117,7 +117,7 @@ export function renderResumeShield(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("sections.shields"))}
+    ${collapsibleHeader(t("sections.shields"), { defaultOpen: true })}
     <div class="resume-collapse-body">
       <div class="table-wrapper">
         <table class="resume-table">
