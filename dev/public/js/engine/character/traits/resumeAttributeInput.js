@@ -8,6 +8,7 @@ import {
   isUnbuyableSecondary,
   secondaryMaxBought,
 } from "../../../shared/rules.js";
+import { updateResumeVitalDisplay } from "../../../components/resume/vitals.js";
 
 export function handleResumeAttributeInput(e, target) {
   if (e.target.classList.contains("resume-primary-mod-input")) {
@@ -44,15 +45,19 @@ export function handleResumeAttributeInput(e, target) {
     }
     if (field === "modifier") {
       // A vital's modifier tracks missing points, so it's capped at 0; gear bonuses flow through enchantment_modifier.
-      const normalized = isVitalAttribute(name)
+      const isVital = isVitalAttribute(name);
+      const normalized = isVital
         ? Math.min(0, value)
         : name === "BasicSpeed"
           ? Math.round(value * 2) / 2
           : value;
       target.setSecondary(name, "modifier", normalized);
+      // Instant bar feedback while the debounced engine run is still pending — see vitals.js.
+      if (isVital) updateResumeVitalDisplay(name);
     }
     if (field === "max_modifier" && isVitalAttribute(name)) {
       target.setSecondary(name, "max_modifier", Math.min(0, value));
+      updateResumeVitalDisplay(name);
     }
     return true;
   }

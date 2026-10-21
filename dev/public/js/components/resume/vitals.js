@@ -7,6 +7,7 @@ import {
   getExperienceRankName,
 } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
+import { state } from "../../state.js";
 import {
   PRIMARY_ATTRIBUTES,
   VITAL_ATTRIBUTES,
@@ -268,10 +269,9 @@ function _vitalStepper(attrName, field, value, label) {
       </label>`;
 }
 
-function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
-  const container = el(`resume_bar_${bar}`);
-  if (!container || !attr) return;
-
+// Pure arithmetic the client already has every number for — no rule, just re-display (see
+// updateResumeVitalDisplay, the instant-feedback path that reuses this between engine runs).
+function _vitalDisplay(attr, zone) {
   // Max includes equipment/enchantment bonuses (e.g. a Fortify Mana ring) and any max reduction, not just base+bought.
   const maxMod = attr.max_modifier ?? 0;
   const total = Math.max(
@@ -284,8 +284,20 @@ function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
   const rawMod = attr.modifier ?? 0;
   const current = zone ? total + rawMod : Math.max(0, total + rawMod);
   const pct = total > 0 ? Math.round((Math.max(0, current) / total) * 100) : 0;
-  const label = getSecondaryAttributeLabel(attrName);
   const caption = zone && current <= 0 ? zone.caption(current) : "";
+
+  return { maxMod, total, rawMod, current, pct, caption };
+}
+
+function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
+  const container = el(`resume_bar_${bar}`);
+  if (!container || !attr) return;
+
+  const { maxMod, total, rawMod, current, pct, caption } = _vitalDisplay(
+    attr,
+    zone,
+  );
+  const label = getSecondaryAttributeLabel(attrName);
 
   container.innerHTML = `
     <div class="resume-bar-header">
@@ -312,6 +324,48 @@ function _renderBar(bar, attr, attrName, { chip = "", zone = null } = {}) {
       ${_vitalStepper(attrName, "max_modifier", maxMod, t("resume.vitalMax"))}
     </div>
   `;
+}
+
+// Instant feedback for a vital's modifier/max_modifier stepper: patches the bar's text and
+// (track shape permitting) its width from the last engine response plus whatever was just
+// typed, without touching the stepper inputs — the engine response due moments later still
+// fully re-renders the bar via _renderBar, same as before this existed.
+export function updateResumeVitalDisplay(attrName) {
+  const vital = VITAL_ATTRIBUTES.find((v) => v.key === attrName);
+  if (!vital) return;
+
+  const sheetAttr = state.sheet?.character?.secondary_attributes?.[attrName];
+  if (!sheetAttr) return;
+
+  const liveSelected = state.selected.secondary[attrName];
+  const attr = {
+    ...sheetAttr,
+    modifier: liveSelected?.modifier ?? sheetAttr.modifier,
+    max_modifier: liveSelected?.max_modifier ?? sheetAttr.max_modifier,
+  };
+
+  const thresholds = state.sheet?.character?.thresholds;
+  const zone = thresholds ? ZONES[attrName]?.(thresholds) : null;
+  const { total, current, pct, caption } = _vitalDisplay(attr, zone);
+
+  const container = el(`resume_bar_${vital.bar}`);
+  if (!container) return;
+
+  const valuesEl = container.querySelector(".resume-bar-values");
+  if (valuesEl) {
+    valuesEl.textContent = `${current}/${total}${caption ? ` · ${caption}` : ""}`;
+  }
+
+  // The negative-zone track (death-check ticks) is a different shape; a mode switch needs
+  // _renderBar's full markup, which the engine response due moments later supplies — skip
+  // the width patch here rather than risk a half-updated track.
+  const fillEl = container.querySelector(
+    ".resume-bar-track:not(.resume-bar-track--negative) .resume-bar-fill",
+  );
+  if (fillEl && !(zone && current < 0)) {
+    fillEl.style.width = `${pct}%`;
+    fillEl.setAttribute("aria-valuenow", String(current));
+  }
 }
 
 // Read-only here — the editable modifier stepper lives in components/resistances.js.

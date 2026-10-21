@@ -1,9 +1,12 @@
 import { renderResume } from "dev/public/js/components/resume/index.js";
+import { updateResumeVitalDisplay } from "dev/public/js/components/resume/vitals.js";
 import {
   t,
   getSecondaryAttributeLabel,
 } from "dev/public/js/localization/pt-BR/index.js";
 import { resetResumeDOM } from "tests/dev/helpers/resumeDomFixture.js";
+import { resetState } from "tests/dev/helpers/stateFixture.js";
+import { state } from "dev/public/js/state.js";
 
 function id(x) {
   return document.getElementById(x);
@@ -11,6 +14,7 @@ function id(x) {
 
 beforeEach(() => {
   resetResumeDOM();
+  resetState();
 });
 
 describe("renderResume — orchestration", () => {
@@ -394,5 +398,111 @@ describe("collapsible sections — shared infrastructure (first exercised here v
     document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
     expect(container.querySelector(".resume-collapse-body").hidden).toBe(true);
+  });
+});
+
+describe("updateResumeVitalDisplay", () => {
+  function buildHpSheet() {
+    return {
+      character: {
+        secondary_attributes: {
+          HP: { final_base_value: 20, modifier: -5 },
+        },
+      },
+    };
+  }
+
+  test("is a no-op when there is no sheet yet", () => {
+    id("resume_bar_hp").innerHTML = "<div>stale</div>";
+    expect(() => updateResumeVitalDisplay("HP")).not.toThrow();
+    expect(id("resume_bar_hp").innerHTML).toBe("<div>stale</div>");
+  });
+
+  test("is a no-op for a key that isn't a vital attribute", () => {
+    state.sheet = buildHpSheet();
+    renderResume(state.sheet);
+    const before = id("resume_bar_hp").innerHTML;
+
+    expect(() => updateResumeVitalDisplay("Will")).not.toThrow();
+
+    expect(id("resume_bar_hp").innerHTML).toBe(before);
+  });
+
+  test("patches the values text and fill width from the live modifier, without a full re-render", () => {
+    state.sheet = buildHpSheet();
+    renderResume(state.sheet);
+    const fill = id("resume_bar_hp").querySelector(".resume-bar-fill");
+
+    state.selected.secondary.HP = { modifier: -12 };
+    updateResumeVitalDisplay("HP");
+
+    expect(
+      id("resume_bar_hp").querySelector(".resume-bar-values").textContent,
+    ).toBe("8/20");
+    // Same node — a full re-render would have replaced it, taking any focus/caret with it.
+    expect(id("resume_bar_hp").querySelector(".resume-bar-fill")).toBe(fill);
+    expect(fill.style.width).toBe("40%"); // round(8/20*100)
+    expect(fill.getAttribute("aria-valuenow")).toBe("8");
+  });
+
+  test("falls back to the engine's own modifier when nothing has been typed yet", () => {
+    state.sheet = buildHpSheet();
+    renderResume(state.sheet);
+
+    updateResumeVitalDisplay("HP");
+
+    expect(
+      id("resume_bar_hp").querySelector(".resume-bar-values").textContent,
+    ).toBe("15/20"); // engine's modifier: -5
+  });
+
+  test("leaves the stepper inputs themselves untouched", () => {
+    state.sheet = buildHpSheet();
+    renderResume(state.sheet);
+    const input = id("resume_bar_hp").querySelector(
+      '.secondary-input[data-field="modifier"]',
+    );
+
+    state.selected.secondary.HP = { modifier: -1 };
+    input.value = "-1"; // what the user is mid-typing
+    updateResumeVitalDisplay("HP");
+
+    expect(
+      id("resume_bar_hp").querySelector(
+        '.secondary-input[data-field="modifier"]',
+      ),
+    ).toBe(input);
+    expect(input.value).toBe("-1");
+  });
+
+  test("skips the fill width (but still patches the text) when the bar is already in its negative death zone", () => {
+    state.sheet = {
+      character: {
+        secondary_attributes: { HP: { final_base_value: 20, modifier: -25 } },
+        thresholds: {
+          hp: {
+            state: "dying",
+            death_checks: 1,
+            death_check_values: [-5, -10, -15, -20],
+            next_death_check: -10,
+            death_at: -20,
+          },
+          fp: { state: "ok", unconscious_at: -12 },
+        },
+      },
+    };
+    renderResume(state.sheet);
+    const negativeFill = id("resume_bar_hp").querySelector(
+      ".resume-bar-fill--negative",
+    );
+    const widthBefore = negativeFill.getAttribute("style");
+
+    state.selected.secondary.HP = { modifier: -26 };
+    updateResumeVitalDisplay("HP");
+
+    expect(
+      id("resume_bar_hp").querySelector(".resume-bar-values").textContent,
+    ).toContain("-6/20");
+    expect(negativeFill.getAttribute("style")).toBe(widthBefore);
   });
 });

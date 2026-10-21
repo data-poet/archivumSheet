@@ -1,4 +1,9 @@
+jest.mock("dev/public/js/components/resume/vitals.js", () => ({
+  updateResumeVitalDisplay: jest.fn(),
+}));
+
 import { handleResumeAttributeInput } from "dev/public/js/engine/character/traits/resumeAttributeInput.js";
+import { updateResumeVitalDisplay } from "dev/public/js/components/resume/vitals.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { seedRules } from "tests/dev/helpers/stateFixture.js";
 
@@ -21,6 +26,7 @@ function fakeTarget() {
 beforeEach(() => {
   resetDOM();
   seedRules();
+  jest.clearAllMocks();
 });
 
 describe("handleResumeAttributeInput — resume-primary-mod-input", () => {
@@ -198,6 +204,54 @@ describe("handleResumeAttributeInput — secondary-input", () => {
       "max_modifier",
       expect.anything(),
     );
+  });
+
+  test("a vital's modifier edit patches the bar instantly; a non-vital's does not", () => {
+    const target = fakeTarget();
+
+    handleResumeAttributeInput(
+      {
+        target: elWithClass(
+          "input",
+          "secondary-input",
+          { name: "HP", field: "modifier" },
+          "-3",
+        ),
+      },
+      target,
+    );
+    expect(updateResumeVitalDisplay).toHaveBeenCalledWith("HP");
+
+    handleResumeAttributeInput(
+      {
+        target: elWithClass(
+          "input",
+          "secondary-input",
+          { name: "Will", field: "modifier" },
+          "1",
+        ),
+      },
+      target,
+    );
+    expect(updateResumeVitalDisplay).not.toHaveBeenCalledWith("Will");
+  });
+
+  test("a vital's max_modifier edit also patches the bar instantly", () => {
+    const target = fakeTarget();
+
+    handleResumeAttributeInput(
+      {
+        target: elWithClass(
+          "input",
+          "secondary-input",
+          { name: "Mana", field: "max_modifier" },
+          "-2",
+        ),
+      },
+      target,
+    );
+
+    expect(updateResumeVitalDisplay).toHaveBeenCalledWith("Mana");
   });
 
   test("Movement's 'bought' field is never written", () => {
