@@ -42,6 +42,7 @@ export const RESUME = {
   vitalCurrent: "Atual",
   vitalMax: "Máx.",
   attributesGroupTitle: "Atributos",
+  vitalsTitle: "Vitais",
 };
 
 // Labels for the resume's own group bar (RESUME_LAYOUT) — separate from NAV.groups/sections,

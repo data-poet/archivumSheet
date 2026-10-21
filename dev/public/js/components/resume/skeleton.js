@@ -13,6 +13,7 @@ import { VITAL_ATTRIBUTES } from "../../shared/constants.js";
 import { STORAGE_KEYS } from "../../shared/storageKeys.js";
 import { createGroupNav } from "../groupNav.js";
 import { RESUME_LAYOUT } from "../../layout/resumeLayout.js";
+import { collapsibleHeader, bindCollapse } from "./shared.js";
 
 const HOST_ID = "resume-panel-host";
 const PANEL_ID = "tab-char-resume";
@@ -30,10 +31,15 @@ export const RESUME_PANEL_HTML = `
         <p class="resume-char-name" id="resume_header_name"></p>
       </div>
 
-      <!-- Vitals: always visible, whichever group is active -->
-      <div class="resume-row">
-        <div class="resume-bars-block">
-          ${VITAL_ATTRIBUTES.map(({ bar }) => `<div id="resume_bar_${bar}"></div>`).join("")}
+      <!-- Vitals: collapsible (starts expanded); the toggle state persists across group
+           switches and character changes for the session, same as every other resume
+           collapsible (shared.js's module-level _collapseOpen, keyed by title text). -->
+      <div class="resume-row" id="resume-vitals-collapse">
+        ${collapsibleHeader(t("resume.vitalsTitle"), { defaultOpen: true })}
+        <div class="resume-collapse-body">
+          <div class="resume-bars-block">
+            ${VITAL_ATTRIBUTES.map(({ bar }) => `<div id="resume_bar_${bar}"></div>`).join("")}
+          </div>
         </div>
       </div>
     </div>
@@ -325,6 +331,7 @@ export function mountResumePanel(hostId = HOST_ID) {
 
   host.innerHTML = RESUME_PANEL_HTML;
   applyResumeStaticLabels();
+  bindCollapse(document.getElementById("resume-vitals-collapse"));
 }
 
 // Scoped to the panel node itself, not the document — #tab-char-resume moves between the edit
