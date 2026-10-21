@@ -11,6 +11,12 @@ let _holdInterval = null;
 // must not apply one more on top of them.
 let _wasHeld = false;
 
+// A short tick on every applied step/delta — feature-detected, no dependency, silently a
+// no-op on platforms without it (desktop browsers, iOS Safari).
+function _buzz() {
+  if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(10);
+}
+
 function _applyStep(btn) {
   const input = btn.closest(".num-stepper")?.querySelector("input");
   if (!input) return;
@@ -26,6 +32,7 @@ function _applyStep(btn) {
     next = Math.min(next, Number(input.dataset.max));
   input.value = next;
   input.dispatchEvent(new Event("input", { bubbles: true }));
+  _buzz();
 }
 
 function _stopHold() {
