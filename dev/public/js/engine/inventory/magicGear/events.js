@@ -17,7 +17,6 @@ import {
 import { renderEquippedMagicGear, renderStoredMagicGear } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
-import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
@@ -29,18 +28,21 @@ function _renderMagicGearLists(sheet) {
   renderStoredMagicGear(selected, data, sheet);
 }
 
-function _withPreservedOpenState(e, mutateAndRenderFn) {
-  const scope = e.target.closest("#magicGearSlots")
-    ? "#magicGearSlots"
-    : "#magicGearStorageList";
-  withOpenState(scope, mutateAndRenderFn);
+// render.js now writes through morphHTML, whose idiomorph-based identity tracking preserves
+// open <details>/card-expand state on its own — openState.js's snapshot/restore is no longer
+// needed here. The one-rAF defer survives on its own merit: these fire from native <select>
+// "change" handlers, and rebuilding before the browser finishes closing the native option
+// picker flickers worst on mobile Safari (shared/openState.js's withOpenState has the same
+// reasoning, just no longer paired with a snapshot for this container).
+function _deferRender(e, fn) {
+  requestAnimationFrame(fn);
 }
 
 const _handleMagicGearCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findMagicGearByInstanceId,
   saveCustomFields: saveMagicGearCustomFields,
   render: _renderMagicGearLists,
-  runWithOpenState: _withPreservedOpenState,
+  runWithOpenState: _deferRender,
 });
 
 const _magicGearEnchantments = createEnchantmentsHandlers({
@@ -50,7 +52,7 @@ const _magicGearEnchantments = createEnchantmentsHandlers({
   updateEnchantment: updateMagicGearEnchantment,
   removeEnchantment: removeMagicGearEnchantment,
   render: () => _renderMagicGearLists(state.sheet),
-  runWithOpenState: _withPreservedOpenState,
+  runWithOpenState: _deferRender,
 });
 
 const _handleSendMagicGearToAllyClick = createSendToAllyHandler({

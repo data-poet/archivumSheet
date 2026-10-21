@@ -21,16 +21,10 @@ import {
 } from "./render.js";
 import { createEnchantmentsHandlers } from "../shared/enchantments/dispatch.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
-import { withOpenState } from "../../../shared/openState.js";
 import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.js";
 
 const data = state.data;
 const selected = state.selected;
-
-// _withPreservedOpenState mirrors, for the direct renders below, what global
-// snapshotAll/restoreAll already does for the debounced triggerAutoRun() path
-// (see openState.js's MANAGED_CONTAINER_IDS) — so an open custom-fields
-// <details> doesn't collapse mid-edit.
 
 // Re-renders only the accessory lists, not the full renderLists() sweep — a full sweep was the actual cause of the enchantment-type-select flicker.
 function _renderAccessoryLists(sheet) {
@@ -38,18 +32,21 @@ function _renderAccessoryLists(sheet) {
   renderStoredAccessories(selected, data, sheet);
 }
 
-function _withPreservedOpenState(e, mutateAndRenderFn) {
-  const scope = e.target.closest("#accessorySlots")
-    ? "#accessorySlots"
-    : "#accessoryStorageList";
-  withOpenState(scope, mutateAndRenderFn);
+// render.js now writes through morphHTML, whose idiomorph-based identity tracking preserves
+// open <details>/card-expand state on its own — openState.js's snapshot/restore is no longer
+// needed here. The one-rAF defer survives on its own merit: these fire from native <select>
+// "change" handlers, and rebuilding before the browser finishes closing the native option
+// picker flickers worst on mobile Safari (shared/openState.js's withOpenState has the same
+// reasoning, just no longer paired with a snapshot for this container).
+function _deferRender(e, fn) {
+  requestAnimationFrame(fn);
 }
 
 const _handleAccessoryCustomFieldsClick = createCustomFieldsClickHandler({
   findByInstanceId: findAccessoryByInstanceId,
   saveCustomFields: saveAccessoryCustomFields, // mutates + renders + runs engine
   render: _renderAccessoryLists,
-  runWithOpenState: _withPreservedOpenState,
+  runWithOpenState: _deferRender,
 });
 
 const _accessoryEnchantments = createEnchantmentsHandlers({
@@ -59,7 +56,7 @@ const _accessoryEnchantments = createEnchantmentsHandlers({
   updateEnchantment: updateAccessoryEnchantment,
   removeEnchantment: removeAccessoryEnchantment,
   render: () => _renderAccessoryLists(state.sheet),
-  runWithOpenState: _withPreservedOpenState,
+  runWithOpenState: _deferRender,
 });
 
 const _handleSendAccessoryToAllyClick = createSendToAllyHandler({

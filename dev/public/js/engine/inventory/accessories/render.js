@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -66,15 +67,15 @@ export function renderEquippedAccessories(selected, data, sheet) {
   const equipped = selected.accessories.filter((a) => a.is_equipped);
 
   if (equipped.length === 0) {
-    setHTML(
-      "accessorySlots",
+    morphHTML(
+      el("accessorySlots"),
       `<p class="empty-storage">${t("common.noEquipped")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "accessorySlots",
+  morphHTML(
+    el("accessorySlots"),
     equipped
       .map((inst) => renderEquippedAccessorySlot(inst, data, sheet))
       .join(""),
@@ -89,7 +90,7 @@ function renderEquippedAccessorySlot(inst, data, sheet) {
   const resolved = resolvedAccessory(sheet, instanceId);
 
   return `
-    <div class="equipped-slot-grid" data-instance-id="${instanceId}">
+    <div class="equipped-slot-grid" id="accessory-equipped-${instanceId}" data-instance-id="${instanceId}">
       <div class="equipped-slot-label">${t("accessories.accessory")}</div>
       <div class="equipped-slot-controls">
         <strong class="equipped-accessory-name">${escapeHtml(displayName(inst, record))}</strong>
@@ -139,7 +140,7 @@ export function renderStoredAccessories(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, selected, data, sheet),
   ).join("");
-  setHTML("accessoryStorageList", sections);
+  morphHTML(el("accessoryStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, selected, data, sheet) {
@@ -161,7 +162,7 @@ function renderStorageSection(location, stored, selected, data, sheet) {
         const resolved = resolvedAccessory(sheet, instanceId);
 
         return `
-        <tr data-instance-id="${instanceId}">
+        <tr id="accessory-stored-${instanceId}" data-instance-id="${instanceId}">
           ${cardTitleCell(escapeHtml(displayName(inst, record)))}
           <td class="col-num" data-label="${t("common.price")}">
             <input
@@ -232,5 +233,6 @@ function renderStorageSection(location, stored, selected, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "accessory",
   );
 }

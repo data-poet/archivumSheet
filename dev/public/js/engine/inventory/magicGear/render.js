@@ -3,7 +3,8 @@ import {
   t,
   getMagicGearLimitReachedLabel,
 } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -56,15 +57,15 @@ export function renderEquippedMagicGear(selected, data, sheet) {
   const equipped = selected.magicGear.filter((g) => g.is_equipped);
 
   if (equipped.length === 0) {
-    setHTML(
-      "magicGearSlots",
+    morphHTML(
+      el("magicGearSlots"),
       `<p class="empty-storage">${t("common.noEquipped")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "magicGearSlots",
+  morphHTML(
+    el("magicGearSlots"),
     equipped
       .map((inst) => renderEquippedMagicGearSlot(inst, data, sheet))
       .join(""),
@@ -79,7 +80,7 @@ function renderEquippedMagicGearSlot(inst, data, sheet) {
   const resolved = resolvedMagicGear(sheet, instanceId);
 
   return `
-    <div class="equipped-slot-grid" data-instance-id="${instanceId}">
+    <div class="equipped-slot-grid" id="magic-gear-equipped-${instanceId}" data-instance-id="${instanceId}">
       <div class="equipped-slot-label">${t("magicGear.magicGear")}</div>
       <div class="equipped-slot-controls">
         <strong class="equipped-magic-gear-name">${escapeHtml(displayName(inst, record))}</strong>
@@ -119,7 +120,7 @@ export function renderStoredMagicGear(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("magicGearStorageList", sections);
+  morphHTML(el("magicGearStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, data, sheet) {
@@ -148,7 +149,7 @@ function renderStorageSection(location, stored, data, sheet) {
           : "";
 
         return `
-        <tr data-instance-id="${instanceId}">
+        <tr id="magic-gear-stored-${instanceId}" data-instance-id="${instanceId}">
           ${cardTitleCell(escapeHtml(displayName(inst, record)))}
           <td class="col-num" data-label="${t("common.price")}">${resolved?.total_value ?? record.magic_gear_price}</td>
           <td class="col-storage" data-label="${t("common.storage")}">
@@ -209,5 +210,6 @@ function renderStorageSection(location, stored, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "magic-gear",
   );
 }
