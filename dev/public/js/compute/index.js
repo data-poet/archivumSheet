@@ -25,6 +25,18 @@ const selected = state.selected;
 
 const _round = (ms) => Math.round(ms * 100) / 100;
 
+// A key the engine returns that selected[target] doesn't have yet (new secondary attribute,
+// damage type, or resistance from a dataset revamp) gets seeded with the engine's own values.
+function _seedMissingEntries(target, source, fields) {
+  Object.entries(source).forEach(([key, data]) => {
+    if (!target[key]) {
+      target[key] = Object.fromEntries(
+        fields.map((field) => [field, data[field] || 0]),
+      );
+    }
+  });
+}
+
 // `signal`/`isCurrent` are only ever supplied by compute/autorun.js's scheduler — a direct call
 // (every existing test, and any future one-off use) runs unconditionally, same as before.
 export async function runEngine({ signal, isCurrent } = {}) {
@@ -82,31 +94,13 @@ export async function runEngine({ signal, isCurrent } = {}) {
     if (isCurrent && !isCurrent()) return;
 
     const sec = json.character?.secondary_attributes || {};
-
-    Object.entries(sec).forEach(([name, data]) => {
-      if (!selected.secondary[name]) {
-        selected.secondary[name] = {
-          bought: data.bought || 0,
-          modifier: data.modifier || 0,
-        };
-      }
-    });
+    _seedMissingEntries(selected.secondary, sec, ["bought", "modifier"]);
 
     const dmg = json.character?.base_damage || {};
-
-    Object.entries(dmg).forEach(([type, data]) => {
-      if (!selected.damage[type]) {
-        selected.damage[type] = { modifier: data.modifier || 0 };
-      }
-    });
+    _seedMissingEntries(selected.damage, dmg, ["modifier"]);
 
     const resist = json.character?.elemental_resistances || {};
-
-    Object.entries(resist).forEach(([type, data]) => {
-      if (!selected.resistances[type]) {
-        selected.resistances[type] = { modifier: data.modifier || 0 };
-      }
-    });
+    _seedMissingEntries(selected.resistances, resist, ["modifier"]);
 
     // A flag for a condition the dataset no longer has would stay invisible, and uncheckable, until "Limpar".
     const unknownConditions = (json.character?.conditions?.dropped ?? [])
