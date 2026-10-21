@@ -1,3 +1,11 @@
+/* Containment root for every @container query below (and for table-wrapper--stack's own
+   card-collapse query in tables.css) — reacts to the panel's own width, not the viewport's,
+   so the same CSS still works correctly if the resume is ever embedded narrower than the
+   full screen (it isn't today: view mode is always full width — see the resume study doc). */
+#tab-char-resume {
+  container-type: inline-size;
+}
+
 /* Layout only — .resume-groupnav's own tab-pill look comes from the generic .groupnav-*
    classes it shares with the edit/reference pages' group bars (group-nav.css); its container
    deliberately isn't .l-groupnav, which is fixed-positioned and hidden in view mode. */
@@ -23,7 +31,7 @@
   gap: var(--space-2);
 }
 
-@media (min-width: 768px) {
+@container (min-width: 768px) {
   /* The edit page's tab-strips sit next to varying tab counts and a help/collapse button,
      so they stay left-aligned there; the resume has the row to itself, so its own tab-strips
      stretch across it instead of leaving a wide dead band after the last tab. */
@@ -42,7 +50,7 @@
   grid-column: 1 / -1;
 }
 
-@media (min-width: 768px) {
+@container (min-width: 768px) {
   /* Same tab switching, same collapse-by-default as mobile — just wide enough to place
      an active group's sections two per row instead of stacking them full-width. Each
      `.l-section` here is one "part" (one weapon table, one card); pairing them is purely

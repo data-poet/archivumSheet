@@ -5,6 +5,10 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
+  /* Lets table-wrapper--stack's card-collapse breakpoint (tables.css) react to this box's
+     own width rather than the viewport's — matters once a box sits in a layout narrower
+     than the full screen (e.g. character-panel's auto-fit columns). */
+  container-type: inline-size;
 }
 
 details summary {

@@ -468,8 +468,12 @@ tr.detail-row details[open] summary {
 /* Stacked cards for the inventory tables on phones. Their control columns (num-stepper,
    storage select, Equipar + ✕) can't shrink, so a 6-column row needs ~540px against ~345px
    of usable width and the whole table scrolls sideways. Opt-in per table: the numeric grids
-   (skills, spells, resume) keep scrolling, since there the column alignment is the point. */
-@media (max-width: 600px) {
+   (skills, spells, resume) keep scrolling, since there the column alignment is the point.
+   A container query (not viewport media query): reacts to the nearest containing block's
+   own width — .box in edit mode (box-card.css), #tab-char-resume in the resume (resume.css)
+   — so a table narrower than 600px because of its *layout*, not the screen, still collapses
+   correctly; "phones" was always a proxy for "narrow column," this makes that explicit. */
+@container (max-width: 600px) {
   .table-wrapper--stack {
     overflow-x: visible;
   }
