@@ -13,22 +13,17 @@ function _withDetailKind(detailsEl, key) {
   return kind ? `${key}:${kind}` : key;
 }
 
-// Single source of truth for which containers snapshotAll/restoreAll and withOpenState operate on.
+// Single source of truth for which containers snapshotAll/restoreAll and withOpenState operate
+// on. Shield, armor, melee, ranged and firearms are deliberately absent: migrated to
+// morphHTML (shared/morph.js), whose idiomorph-based identity tracking preserves
+// <details>-open/card-expand/scroll on its own — no snapshot/restore needed. Part of a wider
+// pass (see the resume study doc's phase J); the rest stay snapshot/restore-managed until
+// migrated the same way.
 const MANAGED_CONTAINER_IDS = [
   "advList",
   "disList",
   "skillList",
   "spellList",
-  "armorSlots",
-  "armorStorageList",
-  "shieldSlot",
-  "shieldStorageList",
-  "meleeSlots",
-  "meleeStorageList",
-  "rangedSlots",
-  "rangedStorageList",
-  "firearmSlots",
-  "firearmStorageList",
   "ammoContainerList",
   "looseAmmoList",
   "alchemyList",

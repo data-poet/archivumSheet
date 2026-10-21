@@ -102,4 +102,30 @@ describe("morphHTML", () => {
 
     expect(document.activeElement.classList.contains("x")).toBe(true);
   });
+
+  test("keeps an imperatively-opened <details> open across a re-render", () => {
+    document.body.innerHTML = `<div id="c"><details id="d"><summary>s</summary>x</details></div>`;
+    document.getElementById("d").setAttribute("open", "");
+
+    morphHTML(
+      document.getElementById("c"),
+      `<details id="d"><summary>s</summary>y</details>`,
+    );
+
+    expect(document.getElementById("d").hasAttribute("open")).toBe(true);
+  });
+
+  test("keeps an imperatively-added is-card-expanded class across a re-render", () => {
+    document.body.innerHTML = `<table id="c"><tbody><tr id="r"><td>a</td></tr></tbody></table>`;
+    document.getElementById("r").classList.add("is-card-expanded");
+
+    morphHTML(
+      document.getElementById("c"),
+      `<tbody><tr id="r"><td>b</td></tr></tbody>`,
+    );
+
+    expect(
+      document.getElementById("r").classList.contains("is-card-expanded"),
+    ).toBe(true);
+  });
 });

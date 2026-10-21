@@ -352,27 +352,27 @@ describe("snapshotAll / restoreAll", () => {
 
   test("restores .table-wrapper scroll positions per container using snapshotAll's generic keyFn", () => {
     document.body.innerHTML = `
-      <div id="armorSlots">
+      <div id="skillList">
         <div class="table-wrapper"></div>
       </div>
     `;
-    const wrapper = document.querySelector("#armorSlots .table-wrapper");
+    const wrapper = document.querySelector("#skillList .table-wrapper");
     Object.defineProperty(wrapper, "scrollLeft", {
       value: 77,
       writable: true,
     });
 
     const snapshot = snapshotAll();
-    document.querySelector("#armorSlots").innerHTML = `
+    document.querySelector("#skillList").innerHTML = `
       <div class="table-wrapper"></div>
     `;
     restoreAll(snapshot);
 
-    const rebuilt = document.querySelector("#armorSlots .table-wrapper");
+    const rebuilt = document.querySelector("#skillList .table-wrapper");
     expect(rebuilt.scrollLeft).toBe(77);
   });
 
-  test.each(["firearmSlots", "firearmStorageList"])(
+  test.each(["ammoContainerList", "alchemyList"])(
     "keeps an open <details> in %s across a rebuild",
     (containerId) => {
       document.body.innerHTML = `

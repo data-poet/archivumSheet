@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -157,15 +158,15 @@ export function renderEquippedFirearms(selected, data, sheet) {
   const names = [...new Set(data.firearms.map((w) => w.weapon_name))];
 
   if (equippedFirearms.length === 0) {
-    setHTML(
-      "firearmSlots",
+    morphHTML(
+      el("firearmSlots"),
       `<p class="empty-storage">${t("common.noEquipped")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "firearmSlots",
+  morphHTML(
+    el("firearmSlots"),
     equippedFirearms
       .map((inst) => renderEquippedFirearmSlot(inst, names, data, sheet))
       .join(""),
@@ -190,7 +191,7 @@ function renderEquippedFirearmSlot(inst, names, data, sheet) {
     0;
 
   return `
-    <div class="equipped-slot-grid" data-instance-id="${instanceId}">
+    <div class="equipped-slot-grid" id="firearm-equipped-${instanceId}" data-instance-id="${instanceId}">
       <div class="equipped-slot-label">${t("firearms.firearm")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-firearm-name" data-instance-id="${instanceId}">
@@ -274,7 +275,7 @@ export function renderStoredFirearms(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("firearmStorageList", sections);
+  morphHTML(el("firearmStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, data, sheet) {
@@ -302,7 +303,7 @@ function renderStorageSection(location, stored, data, sheet) {
           0;
 
         return `
-        <tr data-instance-id="${instanceId}">
+        <tr id="firearm-stored-${instanceId}" data-instance-id="${instanceId}">
           ${cardTitleCell(weaponData.weapon_name)}
           <td data-label="${t("common.tier")}">${weaponData.weapon_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
@@ -326,7 +327,7 @@ function renderStorageSection(location, stored, data, sheet) {
           </td>
           ${showSendToAlly ? `<td class="col-send-ally" data-label="${t("inventory.sendToAlly.header")}">${sendToAllyRowHTML(instanceId)}</td>` : ""}
         </tr>
-        <tr class="magazine-row" data-instance-id="${instanceId}">
+        <tr class="magazine-row" id="firearm-stored-${instanceId}-magazine" data-instance-id="${instanceId}">
           <td colspan="${colCount}">
             ${magazineBlock({
               roundsLoaded: resolved?.rounds_loaded ?? inst.rounds_loaded ?? 0,
@@ -390,5 +391,6 @@ function renderStorageSection(location, stored, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "firearm",
   );
 }

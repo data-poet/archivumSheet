@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -103,15 +104,15 @@ export function renderEquippedRanged(selected, data, sheet) {
   const names = [...new Set(data.ranged_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML(
-      "rangedSlots",
+    morphHTML(
+      el("rangedSlots"),
       `<p class="empty-storage">${t("common.noEquipped")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "rangedSlots",
+  morphHTML(
+    el("rangedSlots"),
     equippedWeapons
       .map((inst) => renderEquippedRangedSlot(inst, names, data, sheet))
       .join(""),
@@ -133,7 +134,7 @@ function renderEquippedRangedSlot(inst, names, data, sheet) {
   const instanceId = inst.id;
 
   return `
-    <div class="equipped-slot-grid">
+    <div class="equipped-slot-grid" id="ranged-equipped-${instanceId}">
       <div class="equipped-slot-label">${t("ranged.ranged")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-ranged-name" data-instance-id="${instanceId}">
@@ -201,7 +202,7 @@ export function renderStoredRanged(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("rangedStorageList", sections);
+  morphHTML(el("rangedStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, data, sheet) {
@@ -224,7 +225,7 @@ function renderStorageSection(location, stored, data, sheet) {
         const instanceId = inst.id;
 
         return `
-        <tr>
+        <tr id="ranged-stored-${instanceId}">
           ${cardTitleCell(weaponData.weapon_name)}
           <td data-label="${t("common.tier")}">${weaponData.weapon_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
@@ -291,5 +292,6 @@ function renderStorageSection(location, stored, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "ranged",
   );
 }

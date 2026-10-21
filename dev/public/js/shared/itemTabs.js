@@ -49,7 +49,7 @@ export function equippedItemTabs(instanceId, tabs) {
   if (!markup) return "";
 
   return `
-    <div class="equipped-detail item-detail-tabs">
+    <div class="equipped-detail item-detail-tabs" id="equipped-detail-${instanceId}">
       ${markup}
     </div>`;
 }
@@ -59,7 +59,7 @@ export function itemTabsDetailRow(colspan, instanceId, tabs) {
   if (!markup) return "";
 
   return `
-    <tr class="detail-row">
+    <tr class="detail-row" id="detail-row-${instanceId}">
       <td colspan="${colspan}">
         ${markup}
       </td>

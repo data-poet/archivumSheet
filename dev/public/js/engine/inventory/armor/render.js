@@ -1,8 +1,10 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   ARMOR_SLOTS,
+  ARMOR_SLOT_KEYS,
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
 } from "../../../shared/constants.js";
@@ -118,7 +120,7 @@ export function renderArmorSlots(selected, data, sheet) {
   const html = ARMOR_SLOTS.map((slot) =>
     renderArmorSlot(slot, selected, data, sheet),
   ).join("");
-  setHTML("armorSlots", html);
+  morphHTML(el("armorSlots"), html);
 }
 
 function renderArmorSlot(slot, selected, data, sheet) {
@@ -150,7 +152,7 @@ function renderArmorSlot(slot, selected, data, sheet) {
     : [];
 
   return `
-    <div class="equipped-slot-grid">
+    <div class="equipped-slot-grid" id="armor-equipped-${ARMOR_SLOT_KEYS[slot]}">
       <div class="equipped-slot-label">${slot}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-armor-name" data-slot="${slot}">
@@ -222,7 +224,7 @@ export function renderStoredArmors(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("armorStorageList", sections);
+  morphHTML(el("armorStorageList"), sections);
 }
 
 function renderStorageSection(location, storedArmors, data, sheet) {
@@ -243,7 +245,7 @@ function renderStorageSection(location, storedArmors, data, sheet) {
         const instanceId = inst.id;
 
         return `
-        <tr>
+        <tr id="armor-stored-${instanceId}">
           <td data-label="${t("armor.slot")}">${armorData.armor_piece_location}</td>
           ${cardTitleCell(armorData.armor_name)}
           <td data-label="${t("common.tier")}">${armorData.armor_tier}</td>
@@ -311,5 +313,6 @@ function renderStorageSection(location, storedArmors, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "armor",
   );
 }

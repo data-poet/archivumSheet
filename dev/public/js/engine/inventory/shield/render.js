@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import { conditionCell } from "../../../shared/conditionDisplay.js";
 import {
   STORAGE_LOCATIONS,
@@ -132,10 +133,10 @@ export function renderEquippedShield(selected, data, sheet) {
     ? shieldDetailFields(resolved, equippedShield)
     : [];
 
-  setHTML(
-    "shieldSlot",
+  morphHTML(
+    el("shieldSlot"),
     `
-    <div class="equipped-slot-grid">
+    <div class="equipped-slot-grid" id="shield-equipped-slot">
       <div class="equipped-slot-label">${t("shield.shield")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-shield-name">
@@ -207,7 +208,7 @@ export function renderStoredShields(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("shieldStorageList", sections);
+  morphHTML(el("shieldStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, data, sheet) {
@@ -230,7 +231,7 @@ function renderStorageSection(location, stored, data, sheet) {
         const instanceId = inst.id;
 
         return `
-        <tr>
+        <tr id="shield-stored-${instanceId}">
           ${cardTitleCell(shieldData.shield_name)}
           <td data-label="${t("common.tier")}">${shieldData.shield_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
@@ -297,5 +298,6 @@ function renderStorageSection(location, stored, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "shield",
   );
 }

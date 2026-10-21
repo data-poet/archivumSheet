@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -99,15 +100,15 @@ export function renderEquippedMelee(selected, data, sheet) {
   const names = [...new Set(data.melee_weapons.map((w) => w.weapon_name))];
 
   if (equippedWeapons.length === 0) {
-    setHTML(
-      "meleeSlots",
+    morphHTML(
+      el("meleeSlots"),
       `<p class="empty-storage">${t("common.noEquipped")}</p>`,
     );
     return;
   }
 
-  setHTML(
-    "meleeSlots",
+  morphHTML(
+    el("meleeSlots"),
     equippedWeapons
       .map((inst) => renderEquippedMeleeSlot(inst, names, data, sheet))
       .join(""),
@@ -129,7 +130,7 @@ function renderEquippedMeleeSlot(inst, names, data, sheet) {
   const instanceId = inst.id;
 
   return `
-    <div class="equipped-slot-grid">
+    <div class="equipped-slot-grid" id="melee-equipped-${instanceId}">
       <div class="equipped-slot-label">${t("melee.melee")}</div>
       <div class="equipped-slot-controls">
         <select class="equipped-melee-name" data-instance-id="${instanceId}">
@@ -197,7 +198,7 @@ export function renderStoredMelee(selected, data, sheet) {
   const sections = STORAGE_LOCATIONS.map((loc) =>
     renderStorageSection(loc, stored, data, sheet),
   ).join("");
-  setHTML("meleeStorageList", sections);
+  morphHTML(el("meleeStorageList"), sections);
 }
 
 function renderStorageSection(location, stored, data, sheet) {
@@ -220,7 +221,7 @@ function renderStorageSection(location, stored, data, sheet) {
         const instanceId = inst.id;
 
         return `
-        <tr>
+        <tr id="melee-stored-${instanceId}">
           ${cardTitleCell(weaponData.weapon_name)}
           <td data-label="${t("common.tier")}">${weaponData.weapon_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
@@ -287,5 +288,6 @@ function renderStorageSection(location, stored, data, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "melee",
   );
 }
