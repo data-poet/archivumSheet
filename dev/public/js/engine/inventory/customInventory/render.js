@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import {
   STORAGE_LOCATIONS,
   STORAGE_LABELS,
@@ -35,7 +36,7 @@ export function renderCustomInventory(selected, data, sheet) {
     renderCustomInventorySection(loc, entries, sheet),
   ).join("");
 
-  setHTML("customInventoryList", sections);
+  morphHTML(el("customInventoryList"), sections);
 }
 
 function renderCustomInventorySection(location, entries, sheet) {
@@ -55,7 +56,7 @@ function renderCustomInventorySection(location, entries, sheet) {
         const totalWeight = resolvedEntry?.total_weight ?? "—";
 
         return `
-          <tr>
+          <tr id="custom-item-stored-${entry.id}">
             ${cardTitleCell(escapeHtml(entry.name))}
             <td class="col-num" data-label="${t("customInventory.qty")}">
               <div class="num-stepper">
@@ -109,5 +110,6 @@ function renderCustomInventorySection(location, entries, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "custom-item",
   );
 }

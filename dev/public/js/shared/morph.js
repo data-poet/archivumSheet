@@ -15,8 +15,18 @@ import { Idiomorph } from "../../vendor/idiomorph/idiomorph.esm.js";
 // both because the new source doesn't have them, silently re-collapsing whatever the user just
 // opened on the very next render. Confirmed empirically (no callback: class → "", open → false;
 // with it: both survive) before adding this, not assumed.
+//
+// `data-store-driven-open` is the opt-out: customItemEditRow's <details> isn't imperative —
+// its `open` attribute mirrors isCustomFieldsEditorOpen(), so the new source omitting it means
+// "the store says closed," and this guard must let that removal through rather than freeze it
+// open forever. Imperative <details> (the common case) never carry this attribute.
 function _preserveImperativeState(attr, element) {
-  if (attr === "open" && element.tagName === "DETAILS") return false;
+  if (
+    attr === "open" &&
+    element.tagName === "DETAILS" &&
+    !element.hasAttribute("data-store-driven-open")
+  )
+    return false;
   if (attr === "class" && element.classList.contains("is-card-expanded"))
     return false;
   return true;

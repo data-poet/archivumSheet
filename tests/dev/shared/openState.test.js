@@ -372,7 +372,7 @@ describe("snapshotAll / restoreAll", () => {
     expect(rebuilt.scrollLeft).toBe(77);
   });
 
-  test.each(["ammoContainerList", "customInventoryList"])(
+  test.each(["ammoContainerList", "looseAmmoList"])(
     "keeps an open <details> in %s across a rebuild",
     (containerId) => {
       document.body.innerHTML = `

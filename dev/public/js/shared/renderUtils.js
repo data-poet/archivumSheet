@@ -414,9 +414,9 @@ export function customItemEditRow(
       </div>`;
 
   return `
-    <tr class="detail-row">
+    <tr class="detail-row" id="detail-row-${customItemId}">
       <td colspan="${colspan}">
-        <details ${editing ? "open" : ""}>
+        <details data-store-driven-open ${editing ? "open" : ""}>
           <summary>${editing ? t("common.edit") : t("common.details")}</summary>
           ${body}
         </details>

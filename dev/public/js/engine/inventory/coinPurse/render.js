@@ -1,6 +1,7 @@
 import { icon } from "../../../shared/icons.js";
 import { t } from "../../../localization/pt-BR/index.js";
-import { setHTML } from "../../../shared/dom.js";
+import { el } from "../../../shared/dom.js";
+import { morphHTML } from "../../../shared/morph.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
 import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
 import { cardTitleCell } from "../../../shared/renderUtils.js";
@@ -54,7 +55,7 @@ function renderCoinSection(location, coins, sheet) {
         const totalValue = resolved?.total_value ?? "—";
 
         return `
-          <tr>
+          <tr id="coin-${entry.coin_type}-${location}">
             ${cardTitleCell(coinLabel(entry.coin_type))}
             <td class="col-num" data-label="${t("coinPurse.qty")}">
               <div class="num-stepper">
@@ -115,6 +116,7 @@ function renderCoinSection(location, coins, sheet) {
       </thead>
       <tbody>${bodyRows}</tbody>
     </table>`,
+    "coin",
   );
 }
 
@@ -154,5 +156,5 @@ export function renderCoinPurse(selected, data, sheet) {
     renderCoinSection(loc, coins, sheet),
   ).join("");
 
-  setHTML("coinPurseList", `${renderAddForm()}${sections}`);
+  morphHTML(el("coinPurseList"), `${renderAddForm()}${sections}`);
 }

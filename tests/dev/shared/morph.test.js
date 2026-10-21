@@ -128,4 +128,19 @@ describe("morphHTML", () => {
       document.getElementById("r").classList.contains("is-card-expanded"),
     ).toBe(true);
   });
+
+  // customItemEditRow's <details> is the one exception: its `open` mirrors a store flag
+  // (isCustomFieldsEditorOpen), not a user click on the <details> itself, so the new source
+  // omitting `open` means "the store says closed" and must be allowed through — unlike every
+  // other (imperative) <details>, which the guard above protects instead.
+  test("lets a store-driven <details> (data-store-driven-open) close when the new source omits open", () => {
+    document.body.innerHTML = `<div id="c"><details id="d" data-store-driven-open open><summary>s</summary>x</details></div>`;
+
+    morphHTML(
+      document.getElementById("c"),
+      `<details id="d" data-store-driven-open><summary>s</summary>y</details>`,
+    );
+
+    expect(document.getElementById("d").hasAttribute("open")).toBe(false);
+  });
 });
