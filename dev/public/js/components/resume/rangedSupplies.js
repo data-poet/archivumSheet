@@ -19,7 +19,6 @@ export function renderResumeFirearms(sheet) {
 
   renderResumeWeaponTable({
     containerId: "resume_firearms_container",
-    title: t("sections.firearms"),
     weapons: sheet?.inventory?.firearms?.equipped ?? [],
     hpCssClass: "resume-firearm-hp",
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,

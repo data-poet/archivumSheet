@@ -136,11 +136,11 @@ export function bindCollapse(container) {
 // Shared shape for melee/ranged/firearms' equipped-weapon tables: a name column, caller-supplied
 // stat columns, and an HP stepper (maxHp computed per weapon type — melee alone falls back to a
 // derived value when weapon_final_hit_points is absent, so that stays a per-caller function
-// rather than a fixed field name). `secondaryStepper` (firearms' loaded-rounds) shares the HP
 // rather than a fixed field name), and an optional extra column (firearms' loaded-rounds stepper).
+// No collapsible header/title: each table lives inside its own tab panel now, whose tab button
+// already names it — a second title would just repeat the tab label.
 export function renderResumeWeaponTable({
   containerId,
-  title,
   weapons,
   columns,
   hpCssClass,
@@ -207,25 +207,21 @@ export function renderResumeWeaponTable({
   morphHTML(
     container,
     `
-    ${collapsibleHeader(title, { defaultOpen: true })}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper table-wrapper--stack">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              ${headerCells}
-              <th class="col-num">${t("armor.hp")}</th>
-              ${extraHeader}
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <div class="table-wrapper table-wrapper--stack">
+      <table class="resume-table">
+        <thead>
+          <tr>
+            <th>${t("common.name")}</th>
+            ${headerCells}
+            <th class="col-num">${t("armor.hp")}</th>
+            ${extraHeader}
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }
 
 // Row keys across the resume are mostly dataset ids (safe as bare DOM ids already) but some
@@ -266,7 +262,9 @@ export function nhCell(check, skills = {}) {
 
 // entries are [id, item] pairs (e.g. Object.entries(sheet.character.advantages)) — the id is
 // only ever the object key, never a field on the item itself, so it can't be dropped upstream.
-export function renderCollapsibleNameList(containerId, entries, title) {
+// No title/collapsible header: advantages/disadvantages each live inside their own tab panel,
+// whose tab button already names it.
+export function renderNameList(containerId, entries) {
   const container = el(containerId);
   if (!container) return;
 
@@ -286,17 +284,13 @@ export function renderCollapsibleNameList(containerId, entries, title) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(title)}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper">
-        <table class="resume-table">
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <div class="table-wrapper">
+      <table class="resume-table">
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }
 
 let _expandersBound = false;

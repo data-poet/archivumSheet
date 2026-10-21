@@ -7,8 +7,6 @@ import { morphHTML } from "../../shared/morph.js";
 import { ARMOR_SLOTS, ARMOR_SLOT_KEYS } from "../../shared/constants.js";
 import { calcActualHp } from "../../engine/inventory/shared/durabilityUtils.js";
 import {
-  collapsibleHeader,
-  bindCollapse,
   hpStepperCell,
   renderResumeWeaponTable,
   formatCritical,
@@ -66,24 +64,20 @@ export function renderResumeArmor(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("sections.armor"), { defaultOpen: true })}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper table-wrapper--stack">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("armor.slot")}</th>
-              <th class="col-num">${t("armor.dr")}</th>
-              <th class="col-num">${t("armor.hp")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <div class="table-wrapper table-wrapper--stack">
+      <table class="resume-table">
+        <thead>
+          <tr>
+            <th>${t("armor.slot")}</th>
+            <th class="col-num">${t("armor.dr")}</th>
+            <th class="col-num">${t("armor.hp")}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }
 
 export function renderResumeShield(sheet) {
@@ -124,38 +118,34 @@ export function renderResumeShield(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("sections.shields"), { defaultOpen: true })}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper table-wrapper--stack">
-        <table class="resume-table">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("traits.nh")}</th>
-              <th class="col-num resume-critical">${t("traits.critical")}</th>
-              <th class="col-num">${t("traits.actions")}</th>
-              <th class="col-num">${t("shield.dr")}</th>
-              <th class="col-num">${t("shield.block")}</th>
-              <th class="col-num">${hpLabel}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="resume-shield-equipped">
-              ${cardTitleCell(equippedShield.shield_name ?? "—")}
-              <td class="col-num" data-label="${t("traits.nh")}">${nh}</td>
-              <td class="col-num resume-critical" data-label="${t("traits.critical")}">${critical}</td>
-              <td class="col-num" data-label="${t("traits.actions")}">${actions}</td>
-              <td class="col-num" data-label="${t("shield.dr")}">${dr}</td>
-              <td class="col-num" data-label="${t("shield.block")}">${block}</td>
-              ${hpCell}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="table-wrapper table-wrapper--stack">
+      <table class="resume-table">
+        <thead>
+          <tr>
+            <th>${t("common.name")}</th>
+            <th class="col-num">${t("traits.nh")}</th>
+            <th class="col-num resume-critical">${t("traits.critical")}</th>
+            <th class="col-num">${t("traits.actions")}</th>
+            <th class="col-num">${t("shield.dr")}</th>
+            <th class="col-num">${t("shield.block")}</th>
+            <th class="col-num">${hpLabel}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="resume-shield-equipped">
+            ${cardTitleCell(equippedShield.shield_name ?? "—")}
+            <td class="col-num" data-label="${t("traits.nh")}">${nh}</td>
+            <td class="col-num resume-critical" data-label="${t("traits.critical")}">${critical}</td>
+            <td class="col-num" data-label="${t("traits.actions")}">${actions}</td>
+            <td class="col-num" data-label="${t("shield.dr")}">${dr}</td>
+            <td class="col-num" data-label="${t("shield.block")}">${block}</td>
+            ${hpCell}
+          </tr>
+        </tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }
 
 // Melee alone falls back to a derived max HP (final_hit_points minus the modifier) when
@@ -198,7 +188,6 @@ export function renderResumeMelee(sheet) {
 
   renderResumeWeaponTable({
     containerId: "resume_melee_container",
-    title: t("sections.melee"),
     weapons,
     hpCssClass: "resume-melee-hp",
     computeMaxHp: meleeMaxHp,
@@ -229,7 +218,6 @@ export function renderResumeRanged(sheet) {
 
   renderResumeWeaponTable({
     containerId: "resume_ranged_container",
-    title: t("sections.ranged"),
     weapons: sheet?.inventory?.ranged?.equipped ?? [],
     hpCssClass: "resume-ranged-hp",
     computeMaxHp: (w) => w.weapon_final_hit_points ?? 0,

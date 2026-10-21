@@ -47,19 +47,6 @@ describe("renderResumeArmor", () => {
     expect(id("resume_armor_container").hidden).toBe(true);
   });
 
-  test("starts expanded, unlike Habilidades' collapsibles", () => {
-    renderResume({
-      inventory: {
-        armor: { equipped: { torso: { final_damage_resistance: 4 } } },
-      },
-    });
-
-    expect(
-      id("resume_armor_container").querySelector(".resume-collapse-body")
-        .hidden,
-    ).toBe(false);
-  });
-
   test("renders an HP stepper only when the piece has a positive max HP", () => {
     renderResume({
       inventory: {
@@ -132,7 +119,6 @@ describe("renderResumeShield", () => {
     expect(cells[4].textContent).toBe("2");
     expect(cells[5].textContent).toBe("8");
     expect(container.querySelector(".resume-shield-hp")).not.toBeNull();
-    expect(container.querySelector(".resume-collapse-body").hidden).toBe(false);
   });
 
   test("omits the HP stepper and shows dashes when the shield has no HP/DR/block/NH data", () => {
@@ -172,10 +158,6 @@ describe("renderResumeMelee", () => {
 
     const row = id("resume_melee_container").querySelector("tbody tr");
     expect(row.textContent).toContain("11/12");
-    expect(
-      id("resume_melee_container").querySelector(".resume-collapse-body")
-        .hidden,
-    ).toBe(false);
   });
 
   test("falls back to final_hit_points minus the modifier when weapon_final_hit_points is absent", () => {

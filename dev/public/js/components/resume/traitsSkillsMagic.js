@@ -2,9 +2,7 @@ import { t } from "../../localization/pt-BR/index.js";
 import { el } from "../../shared/dom.js";
 import { morphHTML } from "../../shared/morph.js";
 import {
-  collapsibleHeader,
-  bindCollapse,
-  renderCollapsibleNameList,
+  renderNameList,
   formatCritical,
   safeId,
 } from "./shared.js";
@@ -15,15 +13,10 @@ export function renderResumeTraits(sheet) {
   const advantages = sheet?.character?.advantages || {};
   const disadvantages = sheet?.character?.disadvantages || {};
 
-  renderCollapsibleNameList(
-    "resume_advantages_container",
-    Object.entries(advantages),
-    t("resume.advantages"),
-  );
-  renderCollapsibleNameList(
+  renderNameList("resume_advantages_container", Object.entries(advantages));
+  renderNameList(
     "resume_disadvantages_container",
     Object.entries(disadvantages),
-    t("resume.disadvantages"),
   );
 }
 
@@ -77,26 +70,22 @@ export function renderResumeSkills(sheet) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("resume.skills"))}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper table-wrapper--stack">
-        <table class="resume-table resume-table--skills">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("traits.final")}</th>
-              <th class="col-num">${t("traits.critical")}</th>
-              <th class="col-num">${t("traits.parry")}</th>
-              <th class="col-num">${t("traits.actions")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <div class="table-wrapper table-wrapper--stack">
+      <table class="resume-table resume-table--skills">
+        <thead>
+          <tr>
+            <th>${t("common.name")}</th>
+            <th class="col-num">${t("traits.final")}</th>
+            <th class="col-num">${t("traits.critical")}</th>
+            <th class="col-num">${t("traits.parry")}</th>
+            <th class="col-num">${t("traits.actions")}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }
 
 export function renderResumeMagic(sheet, data) {
@@ -130,23 +119,19 @@ export function renderResumeMagic(sheet, data) {
   morphHTML(
     container,
     `
-    ${collapsibleHeader(t("resume.spells"))}
-    <div class="resume-collapse-body">
-      <div class="table-wrapper table-wrapper--stack">
-        <table class="resume-table resume-table--magic">
-          <thead>
-            <tr>
-              <th>${t("common.name")}</th>
-              <th class="col-num">${t("traits.spellCost")}</th>
-              <th class="col-num">${t("traits.final")}</th>
-              <th class="col-num">${t("traits.critical")}</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <div class="table-wrapper table-wrapper--stack">
+      <table class="resume-table resume-table--magic">
+        <thead>
+          <tr>
+            <th>${t("common.name")}</th>
+            <th class="col-num">${t("traits.spellCost")}</th>
+            <th class="col-num">${t("traits.final")}</th>
+            <th class="col-num">${t("traits.critical")}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `,
   );
-  bindCollapse(container);
 }

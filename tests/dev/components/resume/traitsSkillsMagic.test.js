@@ -23,7 +23,6 @@ describe("renderResumeTraits — advantages", () => {
 
     const container = id("resume_advantages_container");
     expect(container.hidden).toBe(false);
-    expect(container.textContent).toContain(t("resume.advantages"));
     const rows = container.querySelectorAll("tbody tr");
     expect(rows).toHaveLength(2);
     expect(rows[0].textContent).toBe("Visão Aguçada");
@@ -56,9 +55,6 @@ describe("renderResumeTraits — disadvantages", () => {
       id("resume_disadvantages_container").querySelector("tbody tr")
         .textContent,
     ).toBe("Coxeadura");
-    expect(id("resume_disadvantages_container").textContent).toContain(
-      t("resume.disadvantages"),
-    );
     expect(id("resume_advantages_container").hidden).toBe(false);
   });
 
@@ -92,7 +88,6 @@ describe("renderResumeSkills", () => {
 
     const container = id("resume_skills_container");
     expect(container.hidden).toBe(false);
-    expect(container.textContent).toContain(t("resume.skills"));
     const row = container.querySelector("tbody tr");
     const cells = row.querySelectorAll("td");
     expect(cells[0].querySelector(".card-title-text").textContent).toBe(
@@ -221,7 +216,6 @@ describe("renderResumeMagic", () => {
 
     const container = id("resume_magic_container");
     expect(container.hidden).toBe(false);
-    expect(container.textContent).toContain(t("resume.spells"));
     const cells = container.querySelectorAll("tbody td");
     expect(cells[0].querySelector(".card-title-text").textContent).toBe(
       "Bola de Fogo",
