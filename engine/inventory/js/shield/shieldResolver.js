@@ -9,33 +9,28 @@ const {
   round2,
   sumEnchantmentValues,
 } = require("../shared/enchantmentMath.js");
+const {
+  applyMaterialModifiers,
+  resolveCommonEquippableTail,
+} = require("../shared/equippableResolution.js");
+
+const MATERIAL_FIELDS = [
+  {
+    key: "damage_resistance",
+    materialField: "material_dr_modifier",
+    mode: "add",
+  },
+  { key: "weight", materialField: "material_weight_modifier", mode: "multiply" },
+  { key: "price", materialField: "material_price_modifier", mode: "multiply" },
+  {
+    key: "hit_points",
+    materialField: "material_hit_points_modifier",
+    mode: "multiply",
+  },
+];
 
 function applyMaterialToShield(shield, material) {
-  if (!material) {
-    return {
-      shield_final_damage_resistance: round2(shield.shield_damage_resistance),
-      shield_final_weight: round2(shield.shield_weight),
-      shield_final_price: round2(shield.shield_price),
-      shield_final_hit_points: round2(shield.shield_hit_points),
-    };
-  }
-
-  return {
-    shield_final_damage_resistance: round2(
-      shield.shield_damage_resistance +
-        Number(material.material_dr_modifier || 0),
-    ),
-    shield_final_weight: round2(
-      shield.shield_weight * Number(material.material_weight_modifier || 1),
-    ),
-    shield_final_price: round2(
-      shield.shield_price * Number(material.material_price_modifier || 1),
-    ),
-    shield_final_hit_points: round2(
-      shield.shield_hit_points *
-        Number(material.material_hit_points_modifier || 1),
-    ),
-  };
+  return applyMaterialModifiers(shield, material, "shield", MATERIAL_FIELDS);
 }
 
 // shield_final_* stay material-derived; final_* layer enchantments on top, as in armorResolver.js.
@@ -47,8 +42,6 @@ function resolveShieldPiece(
   targetsDb = {},
 ) {
   const finalStats = applyMaterialToShield(shield, material);
-
-  const hitPointsModifier = Number(instance.hit_points_modifier || 0);
 
   const { resolved: enchantments, total_price: enchantments_total_price } =
     resolveItemEnchantments(
@@ -85,31 +78,16 @@ function resolveShieldPiece(
     enchantment_weight_modifier,
     enchantment_damage_resistance_modifier,
 
-    hit_points_modifier: hitPointsModifier,
-    final_hit_points: round2(
-      finalStats.shield_final_hit_points + hitPointsModifier,
-    ),
-
-    final_weight: round2(
-      finalStats.shield_final_weight * (1 + enchantment_weight_modifier),
-    ),
     final_damage_resistance: round2(
       finalStats.shield_final_damage_resistance +
         enchantment_damage_resistance_modifier,
     ),
 
-    total_value: round2(
-      finalStats.shield_final_price + enchantments_total_price,
-    ),
-
-    shield_custom_name: instance.shield_custom_name?.trim() || null,
-    shield_custom_description:
-      instance.shield_custom_description?.trim() || null,
-    shield_custom_effect: instance.shield_custom_effect?.trim() || null,
-
-    is_equipped: instance.is_equipped,
-    storedAt: instance.storedAt,
-    id: instance.id ?? null,
+    ...resolveCommonEquippableTail(instance, finalStats, {
+      prefix: "shield",
+      enchantments_total_price,
+      enchantment_weight_modifier,
+    }),
   };
 }
 

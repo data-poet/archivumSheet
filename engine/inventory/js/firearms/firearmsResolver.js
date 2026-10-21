@@ -12,29 +12,24 @@ const {
   sumEnchantmentValues,
   sumEnchantmentValuesByTarget,
 } = require("../shared/enchantmentMath.js");
+const {
+  applyMaterialModifiers,
+  resolveCommonEquippableTail,
+} = require("../shared/equippableResolution.js");
+
+const MATERIAL_FIELDS = [
+  { key: "weight", materialField: "material_weight_modifier", mode: "multiply" },
+  { key: "price", materialField: "material_price_modifier", mode: "multiply" },
+  {
+    key: "hit_points",
+    materialField: "material_hit_points_modifier",
+    mode: "multiply",
+  },
+];
 
 // Unlike ranged/melee, firearm damage is never influenced by material — only weight/price/hit points are. GDP is resolved separately in resolveFirearmWeapon.
 function applyMaterialToFirearm(weapon, material) {
-  if (!material) {
-    return {
-      weapon_final_weight: round2(weapon.weapon_weight),
-      weapon_final_price: round2(weapon.weapon_price),
-      weapon_final_hit_points: round2(weapon.weapon_hit_points),
-    };
-  }
-
-  return {
-    weapon_final_weight: round2(
-      weapon.weapon_weight * Number(material.material_weight_modifier || 1),
-    ),
-    weapon_final_price: round2(
-      weapon.weapon_price * Number(material.material_price_modifier || 1),
-    ),
-    weapon_final_hit_points: round2(
-      weapon.weapon_hit_points *
-        Number(material.material_hit_points_modifier || 1),
-    ),
-  };
+  return applyMaterialModifiers(weapon, material, "weapon", MATERIAL_FIELDS);
 }
 
 // Firearms don't depend on character ST: damage comes from the weapon's dice, and GDP/TR/PREC/magazine are a CSV base plus a runtime modifier.
@@ -47,8 +42,6 @@ function resolveFirearmWeapon(
   targetsDb = {},
 ) {
   const finalStats = applyMaterialToFirearm(weapon, material);
-
-  const hitPointsModifier = Number(instance.hit_points_modifier || 0);
 
   const gdpModifier = Number(instance.gdp_modifier || 0);
   const trModifier = Number(instance.tr_modifier || 0);
@@ -148,32 +141,17 @@ function resolveFirearmWeapon(
     enchantments_total_price,
     enchantment_weight_modifier,
 
-    hit_points_modifier: hitPointsModifier,
-    final_hit_points: round2(
-      finalStats.weapon_final_hit_points + hitPointsModifier,
-    ),
     gdp_modifier: gdpModifier,
     tr_modifier: trModifier,
     prec_modifier: precModifier,
     magazine_size_modifier: magazineSizeModifier,
     rounds_loaded: roundsLoaded,
 
-    final_weight: round2(
-      finalStats.weapon_final_weight * (1 + enchantment_weight_modifier),
-    ),
-
-    total_value: round2(
-      finalStats.weapon_final_price + enchantments_total_price,
-    ),
-
-    weapon_custom_name: instance.weapon_custom_name?.trim() || null,
-    weapon_custom_description:
-      instance.weapon_custom_description?.trim() || null,
-    weapon_custom_effect: instance.weapon_custom_effect?.trim() || null,
-
-    is_equipped: instance.is_equipped,
-    storedAt: instance.storedAt,
-    id: instance.id ?? null,
+    ...resolveCommonEquippableTail(instance, finalStats, {
+      prefix: "weapon",
+      enchantments_total_price,
+      enchantment_weight_modifier,
+    }),
   };
 }
 

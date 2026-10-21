@@ -11,6 +11,22 @@ const {
   sumEnchantmentValues,
   sumEnchantmentValuesByTarget,
 } = require("../shared/enchantmentMath.js");
+const {
+  applyMaterialModifiers,
+  resolveCommonEquippableTail,
+} = require("../shared/equippableResolution.js");
+
+const MATERIAL_FIELDS = [
+  { key: "bal_modifier", materialField: "material_bal_modifier", mode: "add" },
+  { key: "gdp_modifier", materialField: "material_gdp_modifier", mode: "add" },
+  { key: "weight", materialField: "material_weight_modifier", mode: "multiply" },
+  { key: "price", materialField: "material_price_modifier", mode: "multiply" },
+  {
+    key: "hit_points",
+    materialField: "material_hit_points_modifier",
+    mode: "multiply",
+  },
+];
 
 function calculateHex(length) {
   if (length < 1) {
@@ -21,34 +37,7 @@ function calculateHex(length) {
 }
 
 function applyMaterialToMelee(weapon, material) {
-  if (!material) {
-    return {
-      weapon_final_bal_modifier: round2(weapon.weapon_bal_modifier),
-      weapon_final_gdp_modifier: round2(weapon.weapon_gdp_modifier),
-      weapon_final_weight: round2(weapon.weapon_weight),
-      weapon_final_price: round2(weapon.weapon_price),
-      weapon_final_hit_points: round2(weapon.weapon_hit_points),
-    };
-  }
-
-  return {
-    weapon_final_bal_modifier: round2(
-      weapon.weapon_bal_modifier + Number(material.material_bal_modifier || 0),
-    ),
-    weapon_final_gdp_modifier: round2(
-      weapon.weapon_gdp_modifier + Number(material.material_gdp_modifier || 0),
-    ),
-    weapon_final_weight: round2(
-      weapon.weapon_weight * Number(material.material_weight_modifier || 1),
-    ),
-    weapon_final_price: round2(
-      weapon.weapon_price * Number(material.material_price_modifier || 1),
-    ),
-    weapon_final_hit_points: round2(
-      weapon.weapon_hit_points *
-        Number(material.material_hit_points_modifier || 1),
-    ),
-  };
+  return applyMaterialModifiers(weapon, material, "weapon", MATERIAL_FIELDS);
 }
 
 // BAL/GDP/Min Strength enchantment deltas apply directly onto the terminal fields (no separate final tier).
@@ -61,8 +50,6 @@ function resolveMeleeWeapons(
   targetsDb = {},
 ) {
   const finalStats = applyMaterialToMelee(weapon, material);
-
-  const hitPointsModifier = Number(instance.hit_points_modifier || 0);
 
   const { resolved: enchantments, total_price: enchantments_total_price } =
     resolveItemEnchantments(
@@ -124,27 +111,11 @@ function resolveMeleeWeapons(
     enchantments_total_price,
     enchantment_weight_modifier,
 
-    hit_points_modifier: hitPointsModifier,
-    final_hit_points: round2(
-      finalStats.weapon_final_hit_points + hitPointsModifier,
-    ),
-
-    final_weight: round2(
-      finalStats.weapon_final_weight * (1 + enchantment_weight_modifier),
-    ),
-
-    total_value: round2(
-      finalStats.weapon_final_price + enchantments_total_price,
-    ),
-
-    weapon_custom_name: instance.weapon_custom_name?.trim() || null,
-    weapon_custom_description:
-      instance.weapon_custom_description?.trim() || null,
-    weapon_custom_effect: instance.weapon_custom_effect?.trim() || null,
-
-    is_equipped: instance.is_equipped,
-    storedAt: instance.storedAt,
-    id: instance.id ?? null,
+    ...resolveCommonEquippableTail(instance, finalStats, {
+      prefix: "weapon",
+      enchantments_total_price,
+      enchantment_weight_modifier,
+    }),
   };
 }
 
