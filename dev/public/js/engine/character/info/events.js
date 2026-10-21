@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 
 const selected = state.selected;
 
@@ -43,7 +43,7 @@ export function handleCharacterChange(e) {
 
   if (el.id === "characterSexSelect") {
     selected.character.character_sex = el.value;
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 

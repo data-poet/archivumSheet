@@ -1,7 +1,7 @@
 import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { offerUndo } from "../../../components/undo.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { transferInstance, undoTransferInstance } from "../shared/transfer.js";
@@ -31,7 +31,7 @@ export function addCustomItem({
   });
 
   renderListsPreserving(selected, state.data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function updateCustomItemQuantity(customItemId, quantity) {
@@ -54,12 +54,12 @@ export function removeCustomItem(customItemId) {
   );
 
   renderListsPreserving(selected, state.data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.customInventory = before;
     renderListsPreserving(selected, state.data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -80,7 +80,7 @@ export function sendCustomItemToAlly(
   if (!clone) return false;
 
   renderListsPreserving(selected, state.data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -90,7 +90,7 @@ export function sendCustomItemToAlly(
     });
     selected.customInventory = before;
     renderListsPreserving(selected, state.data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -104,7 +104,7 @@ export function moveCustomItem(customItemId, toLocation) {
   entry.storedAt = toLocation;
 
   renderListsPreserving(selected, state.data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Unlike catalog-backed items, every field here IS the item, so invalid input is rejected outright
@@ -133,6 +133,6 @@ export function saveCustomItemFields(
   entry.description = description?.trim() || null;
 
   renderListsPreserving(selected, state.data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   return true;
 }

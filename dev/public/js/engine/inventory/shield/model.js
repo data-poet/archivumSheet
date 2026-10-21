@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { fetchShields } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
@@ -85,7 +85,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
 
   if (!shieldId) {
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return;
   }
 
@@ -103,7 +103,7 @@ export function equipShield(shieldId, materialId = DEFAULT_MATERIAL_ID) {
   });
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredShield(
@@ -127,7 +127,7 @@ export function addStoredShield(
   });
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveShield(instanceId, storedAt) {
@@ -138,7 +138,7 @@ export function moveShield(instanceId, storedAt) {
   shield.storedAt = storedAt;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeShield(instanceId) {
@@ -146,12 +146,12 @@ export function removeShield(instanceId) {
   selected.shields = selected.shields.filter((s) => s.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.shields = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -173,7 +173,7 @@ export function sendShieldToAlly(
 
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -183,7 +183,7 @@ export function sendShieldToAlly(
     });
     selected.shields = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -204,7 +204,7 @@ export function saveShieldCustomFields(
   instance.shield_custom_effect = norm(effect);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addShieldEnchantment(instanceId, enchantmentId, params) {
@@ -222,12 +222,12 @@ export function addShieldEnchantment(instanceId, enchantmentId, params) {
   if (!added) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -251,12 +251,12 @@ export function updateShieldEnchantment(
   if (!updated) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -269,12 +269,12 @@ export function removeShieldEnchantment(instanceId, entryInstanceId) {
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

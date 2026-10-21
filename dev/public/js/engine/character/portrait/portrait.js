@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { showToast } from "../../../shared/toast.js";
 import { showConfirm } from "../../../components/dialog.js";
@@ -206,7 +206,7 @@ function _bindDrag(previewEl) {
   const onEnd = () => {
     if (!dragging) return;
     dragging = false;
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   };
 
   previewEl.addEventListener("mousedown", (e) => {
@@ -279,7 +279,7 @@ async function _loadFile(file) {
 
         renderCharacterImage();
         renderResumeImage();
-        triggerAutoRun();
+        triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
         resolve();
       };
       tmp.src = base64;
@@ -298,7 +298,7 @@ export function handleCharacterImageClick(e) {
     _applyBackground();
     _syncBgRadios();
     renderResumeImage();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -332,7 +332,7 @@ export function handleCharacterImageClick(e) {
     _setImg({ scale, position: { x: 50, y: 50 } });
     _syncScaleControls();
     renderResumeImage();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -370,7 +370,7 @@ export function handleCharacterImageClick(e) {
     imgEl.style.top = y + "%";
     _setImg({ position: { x, y } });
     renderResumeImage();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -397,7 +397,7 @@ export function handleCharacterImageClick(e) {
       });
       renderCharacterImage();
       renderResumeImage();
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     });
     return true;
   }

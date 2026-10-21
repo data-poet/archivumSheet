@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { fetchMeleeWeapons } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
@@ -129,7 +129,7 @@ export function equipMelee(
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 function _findLinkedRanged(meleeInstance) {
@@ -197,7 +197,7 @@ export function addEquippedMelee(weaponId, materialId = null) {
   _syncRangedCounterpart(instanceId, weaponId, materialId, true, null);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredMelee(
@@ -225,7 +225,7 @@ export function addStoredMelee(
   _syncRangedCounterpart(instanceId, meleeId, materialId, false, storedAt);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveMelee(instanceId, storedAt) {
@@ -243,7 +243,7 @@ export function moveMelee(instanceId, storedAt) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeMelee(instanceId) {
@@ -258,13 +258,13 @@ export function removeMelee(instanceId) {
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.melee_weapons = beforeMelee;
     selected.ranged_weapons = beforeRanged;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -323,7 +323,7 @@ export function sendMeleeToAlly(
 
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -341,7 +341,7 @@ export function sendMeleeToAlly(
     selected.melee_weapons = beforeMelee;
     selected.ranged_weapons = beforeRanged;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -370,7 +370,7 @@ export function saveMeleeCustomFields(
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // A melee/ranged pair is one physical weapon: its enchantments stay identical on both sides, as in
@@ -394,13 +394,13 @@ export function addMeleeEnchantment(instanceId, enchantmentId, params) {
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -428,13 +428,13 @@ export function updateMeleeEnchantment(
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -450,13 +450,13 @@ export function removeMeleeEnchantment(instanceId, entryInstanceId) {
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { fetchRangedWeapons } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
@@ -129,7 +129,7 @@ export function equipRanged(
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // If weaponId is dual-use, pushes a mirrored melee instance linked back via _linkedInstanceId.
@@ -197,7 +197,7 @@ export function addEquippedRanged(weaponId, materialId = null) {
   _syncMeleeCounterpart(instanceId, weaponId, materialId, true, null);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredRanged(
@@ -225,7 +225,7 @@ export function addStoredRanged(
   _syncMeleeCounterpart(instanceId, rangedId, materialId, false, storedAt);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveRanged(instanceId, storedAt) {
@@ -243,7 +243,7 @@ export function moveRanged(instanceId, storedAt) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeRanged(instanceId) {
@@ -258,13 +258,13 @@ export function removeRanged(instanceId) {
   );
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.ranged_weapons = beforeRanged;
     selected.melee_weapons = beforeMelee;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -323,7 +323,7 @@ export function sendRangedToAlly(
 
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -341,7 +341,7 @@ export function sendRangedToAlly(
     selected.ranged_weapons = beforeRanged;
     selected.melee_weapons = beforeMelee;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -370,7 +370,7 @@ export function saveRangedCustomFields(
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addRangedEnchantment(instanceId, enchantmentId, params) {
@@ -391,13 +391,13 @@ export function addRangedEnchantment(instanceId, enchantmentId, params) {
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -424,13 +424,13 @@ export function updateRangedEnchantment(
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -446,13 +446,13 @@ export function removeRangedEnchantment(instanceId, entryInstanceId) {
   if (linked) linked.enchantments = structuredClone(instance.enchantments);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     if (linked) linked.enchantments = structuredClone(before);
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

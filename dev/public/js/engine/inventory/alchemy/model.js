@@ -2,7 +2,7 @@ import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAlchemy } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { offerUndo } from "../../../components/undo.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
@@ -121,7 +121,7 @@ export function addAlchemy(
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Removes the entry if quantity reaches zero. */
@@ -145,12 +145,12 @@ export function removeAlchemy(consumableId, storedAt) {
     (e) => !(e.consumable_id === consumableId && e.storedAt === storedAt),
   );
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.alchemy = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -181,7 +181,7 @@ export function moveAlchemy(consumableId, fromLocation, toLocation) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function sendAlchemyToAlly(
@@ -204,7 +204,7 @@ export function sendAlchemyToAlly(
   if (!result) return false;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferStackQuantity({
@@ -215,7 +215,7 @@ export function sendAlchemyToAlly(
     });
     selected.alchemy = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;

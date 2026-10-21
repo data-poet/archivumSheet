@@ -2,7 +2,7 @@ import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAccessories } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -108,7 +108,7 @@ export function addEquippedAccessory(accessoryId, price = 0) {
 
   updateAccessoryEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Add an accessory directly to storage (not equipped). */
@@ -124,7 +124,7 @@ export function addStoredAccessory(
   );
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Equip a stored accessory. Refuses silently if at the type's equip limit. */
@@ -138,7 +138,7 @@ export function equipAccessory(instanceId) {
 
   updateAccessoryEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Moves to storedAt, or back to equipped if storedAt is empty (used by the equipped-move select). */
@@ -162,7 +162,7 @@ export function moveAccessory(instanceId, storedAt) {
 
   updateAccessoryEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Remove an accessory instance by instanceId, with undo support. */
@@ -175,13 +175,13 @@ export function removeAccessory(instanceId) {
   clearEnchantmentAddFormSelection(instanceId);
   updateAccessoryEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.accessories = before;
     updateAccessoryEquipOptionAvailability();
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -204,7 +204,7 @@ export function sendAccessoryToAlly(
   clearEnchantmentAddFormSelection(instanceId);
   updateAccessoryEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -215,7 +215,7 @@ export function sendAccessoryToAlly(
     selected.accessories = before;
     updateAccessoryEquipOptionAvailability();
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -246,7 +246,7 @@ export function saveAccessoryCustomFields(
   instance.accessory_custom_effect = norm(effect);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Saves from before enchantments existed have no enchantments field.
@@ -266,12 +266,12 @@ export function addAccessoryEnchantment(instanceId, enchantmentId, params) {
   if (!added) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -296,12 +296,12 @@ export function updateAccessoryEnchantment(
   if (!updated) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -314,12 +314,12 @@ export function removeAccessoryEnchantment(instanceId, entryInstanceId) {
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

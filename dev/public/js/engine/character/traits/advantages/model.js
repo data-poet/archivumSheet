@@ -2,7 +2,7 @@ import { state } from "../../../../state.js";
 import { fetchAdvantages } from "../../../../api.js";
 import { renderAdvantages } from "../render.js";
 import { snapshotAll, restoreAll } from "../../../../shared/openState.js";
-import { triggerAutoRun } from "../../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../../compute/autorun.js";
 import { t } from "../../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../../components/undo.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
@@ -75,18 +75,18 @@ export function addAdv() {
   selected.advantages[opt.value] = true;
 
   _renderAdvantagesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeAdv(id) {
   const before = structuredClone(selected.advantages);
   delete selected.advantages[id];
   _renderAdvantagesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.advantages = before;
     _renderAdvantagesList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }

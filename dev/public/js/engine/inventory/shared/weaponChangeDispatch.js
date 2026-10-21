@@ -2,7 +2,7 @@
 // firearms. Armor and shield do not use it: armor addresses its equipped rows by body slot and shield has one
 // equippable instance, so both need extra equip/unequip fallbacks.
 
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 
 // onMoved runs after is_equipped/storedAt are written, and onMaterialChanged after
 // material_id/hit_points_modifier are — melee and ranged use both to mirror the change
@@ -49,7 +49,7 @@ export function createWeaponChangeHandler({
 
       instance.weapon_id = first.weapon_id;
       instance.hit_points_modifier = 0;
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 
@@ -71,7 +71,7 @@ export function createWeaponChangeHandler({
 
       instance.weapon_id = weapon.weapon_id;
       instance.hit_points_modifier = 0;
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 
@@ -83,7 +83,7 @@ export function createWeaponChangeHandler({
       instance.hit_points_modifier = 0;
       onMaterialChanged(instance);
       renderAfterMaterial();
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 
@@ -102,7 +102,7 @@ export function createWeaponChangeHandler({
 
       onMoved(instance);
       renderAfterMove();
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 

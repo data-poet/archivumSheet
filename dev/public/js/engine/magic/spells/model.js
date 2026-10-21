@@ -2,7 +2,7 @@ import { state } from "../../../state.js";
 import { fetchSpells, fetchMagicAptitudeAdvantageIds } from "../../../api.js";
 import { renderSpells } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSpellAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -78,19 +78,19 @@ export function addSpell() {
   }
 
   _renderSpellList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeSpell(name) {
   const before = structuredClone(selected.spells);
   delete selected.spells[name];
   _renderSpellList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.spells = before;
     _renderSpellList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

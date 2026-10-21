@@ -2,7 +2,7 @@ import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchMagicGear, fetchMagicGearEquipLimits } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -142,7 +142,7 @@ export function addEquippedMagicGear(magicGearId) {
 
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredMagicGear(magicGearId, storedAt = STORED_AT.BACKPACK) {
@@ -151,7 +151,7 @@ export function addStoredMagicGear(magicGearId, storedAt = STORED_AT.BACKPACK) {
   selected.magicGear.push(_newMagicGearInstance(magicGearId, false, storedAt));
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Refuses silently if the item's type is at its equip limit.
@@ -165,7 +165,7 @@ export function equipMagicGear(instanceId) {
 
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Empty storedAt means "back to equipped" — used by the equipped-move select.
@@ -189,7 +189,7 @@ export function moveMagicGear(instanceId, storedAt) {
 
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeMagicGear(instanceId) {
@@ -199,13 +199,13 @@ export function removeMagicGear(instanceId) {
   clearEnchantmentAddFormSelection(instanceId);
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.magicGear = before;
     updateMagicGearEquipOptionAvailability();
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -228,7 +228,7 @@ export function sendMagicGearToAlly(
   clearEnchantmentAddFormSelection(instanceId);
   updateMagicGearEquipOptionAvailability();
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -239,7 +239,7 @@ export function sendMagicGearToAlly(
     selected.magicGear = before;
     updateMagicGearEquipOptionAvailability();
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -260,7 +260,7 @@ export function saveMagicGearCustomFields(
   instance.magic_gear_custom_effect = norm(effect);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addMagicGearEnchantment(instanceId, enchantmentId, params) {
@@ -278,12 +278,12 @@ export function addMagicGearEnchantment(instanceId, enchantmentId, params) {
   if (!added) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -308,12 +308,12 @@ export function updateMagicGearEnchantment(
   if (!updated) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -326,12 +326,12 @@ export function removeMagicGearEnchantment(instanceId, entryInstanceId) {
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

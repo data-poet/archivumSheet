@@ -16,6 +16,7 @@ jest.mock("dev/public/js/engine/inventory/shield/render.js", () => ({
 }));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import { DEFAULT_MATERIAL_ID } from "dev/public/js/shared/constants.js";

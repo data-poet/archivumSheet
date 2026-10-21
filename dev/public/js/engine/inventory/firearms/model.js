@@ -2,7 +2,7 @@ import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchFirearms } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -110,7 +110,7 @@ export function equipFirearm(instanceId, weaponId, materialId = null) {
   instance.storedAt = null;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 function _newFirearmInstance(weaponId, materialId, isEquipped, storedAt) {
@@ -139,7 +139,7 @@ export function addEquippedFirearm(weaponId, materialId = null) {
   selected.firearms.push(_newFirearmInstance(weaponId, materialId, true, null));
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredFirearm(
@@ -154,7 +154,7 @@ export function addStoredFirearm(
   );
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveFirearm(instanceId, storedAt) {
@@ -165,7 +165,7 @@ export function moveFirearm(instanceId, storedAt) {
   firearm.storedAt = storedAt;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeFirearm(instanceId) {
@@ -174,12 +174,12 @@ export function removeFirearm(instanceId) {
   selected.firearms = selected.firearms.filter((w) => w.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.firearms = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -201,7 +201,7 @@ export function sendFirearmToAlly(
 
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -211,7 +211,7 @@ export function sendFirearmToAlly(
     });
     selected.firearms = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -238,7 +238,7 @@ export function saveFirearmCustomFields(
   instance.weapon_custom_effect = norm(effect);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Firearms are in no dual-use pair, so there is no counterpart to sync.
@@ -258,12 +258,12 @@ export function addFirearmEnchantment(instanceId, enchantmentId, params) {
   if (!added) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -287,12 +287,12 @@ export function updateFirearmEnchantment(
   if (!updated) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -305,12 +305,12 @@ export function removeFirearmEnchantment(instanceId, entryInstanceId) {
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

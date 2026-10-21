@@ -7,6 +7,7 @@ jest.mock("dev/public/js/engine/character/skills/render.js", () => ({
 }));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import {

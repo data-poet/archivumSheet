@@ -3,6 +3,7 @@
 // but never leaves the device, discovered only on another machine.
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import {

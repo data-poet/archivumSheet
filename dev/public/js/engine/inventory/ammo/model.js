@@ -2,7 +2,7 @@ import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { fetchAmmo, fetchAmmoContainers } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -118,7 +118,7 @@ export function addContainer(containerId, storedAt = STORED_AT.EQUIPPED) {
   });
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveContainer(instanceId, storedAt) {
@@ -128,7 +128,7 @@ export function moveContainer(instanceId, storedAt) {
   container.storedAt = storedAt;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeContainer(instanceId) {
@@ -137,12 +137,12 @@ export function removeContainer(instanceId) {
     (c) => c.id !== instanceId,
   );
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.ammo_containers = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -164,7 +164,7 @@ export function sendContainerToAlly(
   if (!clone) return false;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -174,7 +174,7 @@ export function sendContainerToAlly(
     });
     selected.ammo_containers = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -214,7 +214,7 @@ export function addAmmoToContainer(instanceId, ammoId, quantity) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Update the quantity of an ammo entry inside a container, clamped to capacity. */
@@ -246,12 +246,12 @@ export function removeAmmoFromContainer(instanceId, ammoId) {
   container.contents = container.contents.filter((e) => e.ammo_id !== ammoId);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.ammo_containers = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -273,7 +273,7 @@ export function addLooseAmmo(ammoId, quantity, storedAt = STORED_AT.BACKPACK) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function updateLooseAmmoQuantity(ammoId, storedAt, quantity) {
@@ -298,12 +298,12 @@ export function removeLooseAmmo(ammoId, storedAt) {
     (a) => !(a.ammo_id === ammoId && a.storedAt === storedAt),
   );
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.loose_ammo = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -336,7 +336,7 @@ export function moveLooseAmmo(ammoId, fromLocation, toLocation) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Clamped to destination capacity; merges if the destination already has that ammo_id. */
@@ -378,7 +378,7 @@ export function moveAmmoInContainer(fromInstanceId, toInstanceId, ammoId) {
   }
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function sendLooseAmmoToAlly(
@@ -401,7 +401,7 @@ export function sendLooseAmmoToAlly(
   if (!result) return false;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferStackQuantity({
@@ -412,7 +412,7 @@ export function sendLooseAmmoToAlly(
     });
     selected.loose_ammo = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;

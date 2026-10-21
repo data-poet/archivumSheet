@@ -1,6 +1,6 @@
 import { state } from "../../../state.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import {
   equipArmor,
   addStoredArmor,
@@ -95,7 +95,7 @@ export function handleArmorClick(e) {
     armorToEquip.is_equipped = true;
     armorToEquip.storedAt = null;
     _renderArmorLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -162,7 +162,7 @@ export function handleArmorChange(e) {
     if (currentEquipped) {
       currentEquipped.armor_id = firstArmor.armor_id;
       currentEquipped.hit_points_modifier = 0;
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 
@@ -191,7 +191,7 @@ export function handleArmorChange(e) {
     if (currentEquipped) {
       currentEquipped.armor_id = armor.armor_id;
       currentEquipped.hit_points_modifier = 0;
-      triggerAutoRun();
+      triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
       return true;
     }
 
@@ -206,7 +206,7 @@ export function handleArmorChange(e) {
     equippedArmor.material_id = e.target.value;
     equippedArmor.hit_points_modifier = 0;
     _renderArmorLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -228,7 +228,7 @@ export function handleArmorChange(e) {
       equippedArmor.storedAt = destination;
     }
     _renderArmorLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 

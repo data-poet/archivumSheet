@@ -2,7 +2,7 @@ import { state } from "../../../state.js";
 import { fetchSkills, fetchMasterEligibleCategories } from "../../../api.js";
 import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSkillAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -78,19 +78,19 @@ export function addSkill() {
   }
 
   _renderSkillList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeSkill(id) {
   const before = structuredClone(selected.skills);
   delete selected.skills[id];
   _renderSkillList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.skills = before;
     _renderSkillList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

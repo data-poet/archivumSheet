@@ -1,6 +1,6 @@
 import { state } from "../../../state.js";
 import { fetchRaces } from "../../../api.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { escapeHtml } from "../../../shared/renderUtils.js";
 
@@ -49,7 +49,7 @@ export function filterSubRacesByName() {
     subSelect.style.display = "none";
     subSelect.innerHTML = `<option value="">${t("character.selectSubRace")}</option>`;
     updateRaceModifiers();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return;
   }
 
@@ -76,7 +76,7 @@ export function selectSubRace() {
   const raceId = document.getElementById("raceSubSelect").value;
   selected.character.race_id = raceId || null;
   updateRaceModifiers();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function updateRaceModifiers() {

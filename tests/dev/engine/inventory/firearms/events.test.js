@@ -18,6 +18,7 @@ jest.mock("dev/public/js/engine/inventory/firearms/render.js", () => ({
 }));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import * as model from "dev/public/js/engine/inventory/firearms/model.js";

@@ -1,6 +1,6 @@
 import { state } from "../../../state.js";
 import { fetchConditions } from "../../../api.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
 
@@ -33,7 +33,7 @@ export function setCondition(key, on) {
   }
 
   selected.conditions = next;
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function toggleCondition(key) {
@@ -45,10 +45,10 @@ export function clearConditions() {
   if (Object.keys(before).length === 0) return;
 
   selected.conditions = {};
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.conditions = before;
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("conditions.clearedMessage"));
 }

@@ -9,7 +9,7 @@ import {
   DEFAULT_PRIMARY_VALUE,
 } from "../shared/constants.js";
 import { renderListsPreserving } from "../ui.js";
-import { triggerAutoRun } from "../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../compute/autorun.js";
 import { ensureInstanceIds } from "./instanceId.js";
 import { restoreRaceSelection } from "../engine/character/races/model.js";
 import {
@@ -209,7 +209,7 @@ function _applyData(data) {
   renderListsPreserving(selected, state.data);
   renderCharacterImage();
   renderResumeImage();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function getStore() {

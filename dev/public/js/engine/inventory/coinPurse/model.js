@@ -1,7 +1,7 @@
 import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
 import { offerUndo } from "../../../components/undo.js";
 import { t } from "../../../localization/pt-BR/index.js";
@@ -35,7 +35,7 @@ export function addCoins(coinType, quantity, storedAt = STORED_AT.BACKPACK) {
   }
 
   renderListsPreserving(selected, state.data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 /** Removes the entry if quantity reaches zero. */
@@ -80,7 +80,7 @@ export function moveCoins(coinType, fromLocation, toLocation) {
   }
 
   renderListsPreserving(selected, state.data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function sendCoinsToAlly(
@@ -103,7 +103,7 @@ export function sendCoinsToAlly(
   if (!result) return false;
 
   renderListsPreserving(selected, state.data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferStackQuantity({
@@ -114,7 +114,7 @@ export function sendCoinsToAlly(
     });
     selected.coins = before;
     renderListsPreserving(selected, state.data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;

@@ -1,6 +1,7 @@
 jest.mock("dev/public/js/api.js", () => ({ fetchRaces: jest.fn() }));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import { fetchRaces } from "dev/public/js/api.js";

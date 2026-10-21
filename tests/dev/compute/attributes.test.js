@@ -4,6 +4,7 @@ import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 
 import { triggerAutoRun } from "dev/public/js/compute/autorun.js";

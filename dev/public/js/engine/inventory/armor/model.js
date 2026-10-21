@@ -1,7 +1,7 @@
 import { state } from "../../../state.js";
 import { fetchArmors } from "../../../api.js";
 import { renderListsPreserving } from "../../../ui.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { el, populateSelect } from "../../../shared/dom.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { generateInstanceId } from "../../../store/instanceId.js";
@@ -109,7 +109,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
 
   if (!armorId) {
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return;
   }
 
@@ -127,7 +127,7 @@ export function equipArmor(slot, armorId, materialId = DEFAULT_MATERIAL_ID) {
   });
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function addStoredArmor(
@@ -151,7 +151,7 @@ export function addStoredArmor(
   });
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function moveArmor(instanceId, storedAt) {
@@ -162,7 +162,7 @@ export function moveArmor(instanceId, storedAt) {
   armor.storedAt = storedAt;
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeArmor(instanceId) {
@@ -170,12 +170,12 @@ export function removeArmor(instanceId) {
   selected.armors = selected.armors.filter((a) => a.id !== instanceId);
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.armors = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -197,7 +197,7 @@ export function sendArmorToAlly(
 
   clearEnchantmentAddFormSelection(instanceId);
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     undoTransferInstance({
@@ -207,7 +207,7 @@ export function sendArmorToAlly(
     });
     selected.armors = before;
     renderListsPreserving(selected, data);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("undo.sentMessage"));
 
   return true;
@@ -228,7 +228,7 @@ export function saveArmorCustomFields(
   instance.armor_custom_effect = norm(effect);
 
   renderListsPreserving(selected, data);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 // Saves from before enchantments existed have no enchantments field.
@@ -248,12 +248,12 @@ export function addArmorEnchantment(instanceId, enchantmentId, params) {
   if (!added) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   }, t("common.added"));
 }
 
@@ -278,12 +278,12 @@ export function updateArmorEnchantment(
   if (!updated) return;
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 
@@ -296,12 +296,12 @@ export function removeArmorEnchantment(instanceId, entryInstanceId) {
   removeEnchantmentEntry(instance.enchantments, entryInstanceId);
 
   renderListsPreserving(selected, data, state.sheet);
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     instance.enchantments = before;
     renderListsPreserving(selected, data, state.sheet);
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

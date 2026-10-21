@@ -1,6 +1,7 @@
 jest.mock("dev/public/js/api.js", () => ({ fetchMetaRaces: jest.fn() }));
 jest.mock("dev/public/js/compute/autorun.js", () => ({
   triggerAutoRun: jest.fn(),
+  AUTORUN_KIND: { IMMEDIATE: "immediate", BURST: "burst", TYPING: "typing" },
 }));
 jest.mock("dev/public/js/engine/character/metaRaces/render.js", () => ({
   renderMetaRaces: jest.fn(),

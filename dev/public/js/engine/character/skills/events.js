@@ -1,5 +1,5 @@
 import { state } from "../../../state.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { removeSkill, updateSkill } from "./model.js";
 import { renderSkills } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
@@ -30,7 +30,7 @@ export function handleSkillChange(e) {
     if (!selected.skills[id]) return true;
     selected.skills[id].isTrainedWithMaster = e.target.checked;
     _renderSkillList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
   return false;

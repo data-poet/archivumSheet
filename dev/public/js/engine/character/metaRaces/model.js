@@ -2,7 +2,7 @@ import { state } from "../../../state.js";
 import { fetchMetaRaces } from "../../../api.js";
 import { renderMetaRaces } from "./render.js";
 import { snapshotAll, restoreAll } from "../../../shared/openState.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { escapeHtml } from "../../../shared/renderUtils.js";
 import { offerUndo } from "../../../components/undo.js";
@@ -92,7 +92,7 @@ export function addMetaRace() {
 
   _resetMetaRacePicker();
   _renderMetaRacesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeMetaRace(id) {
@@ -102,12 +102,12 @@ export function removeMetaRace(id) {
   );
 
   _renderMetaRacesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.meta_race_ids = before;
     _renderMetaRacesList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }
 

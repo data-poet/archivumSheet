@@ -2,7 +2,7 @@ import { state } from "../../../../state.js";
 import { fetchDisadvantages } from "../../../../api.js";
 import { renderDisadvantages } from "../render.js";
 import { snapshotAll, restoreAll } from "../../../../shared/openState.js";
-import { triggerAutoRun } from "../../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../../compute/autorun.js";
 import { t } from "../../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../../components/undo.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
@@ -75,18 +75,18 @@ export function addDis() {
   selected.disadvantages[opt.value] = true;
 
   _renderDisadvantagesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 }
 
 export function removeDis(id) {
   const before = structuredClone(selected.disadvantages);
   delete selected.disadvantages[id];
   _renderDisadvantagesList();
-  triggerAutoRun();
+  triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
 
   offerUndo(() => {
     selected.disadvantages = before;
     _renderDisadvantagesList();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
   });
 }

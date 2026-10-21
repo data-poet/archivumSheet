@@ -1,6 +1,6 @@
 import { state } from "../../../state.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
-import { triggerAutoRun } from "../../../compute/autorun.js";
+import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import {
   equipShield,
   addStoredShield,
@@ -86,7 +86,7 @@ export function handleShieldClick(e) {
     shieldToEquip.is_equipped = true;
     shieldToEquip.storedAt = null;
     _renderShieldLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
   if (_handleShieldCustomFieldsClick(e)) return true;
@@ -150,7 +150,7 @@ export function handleShieldChange(e) {
       equipShield(firstShield.shield_id, DEFAULT_MATERIAL_ID);
       return true;
     }
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -170,7 +170,7 @@ export function handleShieldChange(e) {
       equipShield(shield.shield_id, DEFAULT_MATERIAL_ID);
       return true;
     }
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -180,7 +180,7 @@ export function handleShieldChange(e) {
     equippedShield.material_id = e.target.value;
     equippedShield.hit_points_modifier = 0;
     _renderShieldLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
@@ -201,7 +201,7 @@ export function handleShieldChange(e) {
       equippedShield.storedAt = destination;
     }
     _renderShieldLists();
-    triggerAutoRun();
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
     return true;
   }
 
