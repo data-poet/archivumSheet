@@ -45,7 +45,7 @@ function request(method, route, body) {
           } catch {
             // not JSON (static file)
           }
-          resolve({ status: res.statusCode, json });
+          resolve({ status: res.statusCode, json, headers: res.headers });
         });
       },
     );
@@ -130,6 +130,14 @@ describe("POST builders", () => {
     expect(status).toBe(200);
     expect(json.race.race_id).toBe(race_id);
     expect(json.character.primary_attributes.ST.value).toBeGreaterThan(0);
+  });
+
+  // Lets the client tell engine cost apart from network cost — see shared/timing.js.
+  test("/api/sheet/build reports its own build time via Server-Timing", async () => {
+    const { headers } = await request("POST", "/api/sheet/build", {
+      inventory: {},
+    });
+    expect(headers["server-timing"]).toMatch(/^build;dur=\d+(\.\d+)?$/);
   });
 
   test("/api/sheet/build reports an engine failure as a 500 with a message", async () => {

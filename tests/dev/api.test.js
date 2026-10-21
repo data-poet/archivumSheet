@@ -33,6 +33,7 @@ import {
   fetchRules,
   fetchAppInfo,
   buildSheet,
+  getLastServerTiming,
 } from "dev/public/js/api.js";
 
 beforeEach(() => {
@@ -131,5 +132,35 @@ describe("buildSheet", () => {
     await expect(buildSheet({})).rejects.toThrow(
       "POST /api/sheet/build failed: 500",
     );
+  });
+
+  test("getLastServerTiming() exposes the response's Server-Timing header", async () => {
+    mockFetchResponse(
+      "/api/sheet/build",
+      { sheet: "computed" },
+      { headers: { "Server-Timing": "build;dur=1.23" } },
+    );
+
+    await buildSheet({});
+
+    expect(getLastServerTiming()).toBe("build;dur=1.23");
+  });
+
+  test("getLastServerTiming() is null when the response carries no header", async () => {
+    mockFetchResponse("/api/sheet/build", { sheet: "computed" });
+
+    await buildSheet({});
+
+    expect(getLastServerTiming()).toBeNull();
+  });
+
+  test("getLastServerTiming() is still captured when the response is an error", async () => {
+    mockFetchError("/api/sheet/build", 500, null, {
+      headers: { "Server-Timing": "build;dur=4.56" },
+    });
+
+    await expect(buildSheet({})).rejects.toThrow();
+
+    expect(getLastServerTiming()).toBe("build;dur=4.56");
   });
 });

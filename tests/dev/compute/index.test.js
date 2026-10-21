@@ -1,4 +1,7 @@
-jest.mock("dev/public/js/api.js", () => ({ buildSheet: jest.fn() }));
+jest.mock("dev/public/js/api.js", () => ({
+  buildSheet: jest.fn(),
+  getLastServerTiming: jest.fn(() => null),
+}));
 jest.mock("dev/public/js/store/characters.js", () => ({
   saveActiveCharacter: jest.fn(),
 }));
@@ -20,7 +23,7 @@ jest.mock("dev/public/js/ui.js", () => ({
   syncViewMode: jest.fn(),
 }));
 
-import { buildSheet } from "dev/public/js/api.js";
+import { buildSheet, getLastServerTiming } from "dev/public/js/api.js";
 import { saveActiveCharacter } from "dev/public/js/store/characters.js";
 import { updateSelectorButton } from "dev/public/js/components/characterSelector.js";
 import { showToast } from "dev/public/js/shared/toast.js";
@@ -530,5 +533,53 @@ describe("error handling", () => {
   test("does not throw out of runEngine when buildSheet rejects", async () => {
     buildSheet.mockRejectedValue(new Error("boom"));
     await expect(runEngine()).resolves.toBeUndefined();
+  });
+});
+
+// Opt-in instrumentation that must stay inert for everyone who hasn't flipped the flag.
+describe("timing (shared/timing.js's debugTiming flag)", () => {
+  beforeEach(() => localStorage.clear());
+
+  test("logs nothing when the flag is unset", async () => {
+    const spy = jest.spyOn(console, "table").mockImplementation(() => {});
+    await runEngine();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  test("logs a full breakdown when the flag is set", async () => {
+    localStorage.setItem("archivum:debugTiming", "1");
+    getLastServerTiming.mockReturnValue("build;dur=1.23");
+    const spy = jest.spyOn(console, "table").mockImplementation(() => {});
+
+    await runEngine();
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    const entry = spy.mock.calls[0][0];
+    expect(Object.keys(entry)).toEqual([
+      "payloadBuildMs",
+      "requestMs",
+      "serverTiming",
+      "renderMs",
+      "listsAndSaveMs",
+      "totalMs",
+      "requestBytes",
+      "responseBytes",
+    ]);
+    expect(entry.serverTiming).toBe("build;dur=1.23");
+    expect(entry.requestBytes).toBeGreaterThan(0);
+    expect(entry.responseBytes).toBeGreaterThan(0);
+    spy.mockRestore();
+  });
+
+  test("does not log when buildSheet rejects, even with the flag set", async () => {
+    localStorage.setItem("archivum:debugTiming", "1");
+    buildSheet.mockRejectedValue(new Error("boom"));
+    const spy = jest.spyOn(console, "table").mockImplementation(() => {});
+
+    await runEngine();
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });

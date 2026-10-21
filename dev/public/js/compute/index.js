@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { buildSheet } from "../api.js";
+import { buildSheet, getLastServerTiming } from "../api.js";
 import { saveActiveCharacter } from "../store/characters.js";
 import { updateSelectorButton } from "../components/characterSelector.js";
 import { getPrimaryAttributes } from "./attributes.js";
@@ -21,12 +21,18 @@ import {
 } from "../shared/enginePayload.js";
 import { showToast } from "../shared/toast.js";
 import { t } from "../localization/pt-BR/index.js";
+import { isTimingEnabled, mark, logRunTiming } from "../shared/timing.js";
 
 const selected = state.selected;
+
+const _round = (ms) => Math.round(ms * 100) / 100;
 
 // renderLists() here is wrapped in a synchronous snapshot/restore (see call site below)
 // so equipment selects aren't destroyed mid-interaction on every autorun tick.
 export async function runEngine() {
+  const timing = isTimingEnabled();
+  const tStart = timing ? mark() : 0;
+
   try {
     const info = selected.character ?? {};
     const pc = {
@@ -53,7 +59,7 @@ export async function runEngine() {
       },
     };
 
-    const json = await buildSheet({
+    const payload = {
       pc,
       race_id: info.race_id ?? null,
       character: toEngineCharacter(
@@ -86,7 +92,11 @@ export async function runEngine() {
         customInventory: selected.customInventory,
         coins: selected.coins,
       }),
-    });
+    };
+
+    const tPayload = timing ? mark() : 0;
+    const json = await buildSheet(payload);
+    const tResponse = timing ? mark() : 0;
 
     const sec = json.character?.secondary_attributes || {};
 
@@ -135,6 +145,8 @@ export async function runEngine() {
     renderEditConditions(json, state.data, state.selected);
     renderResume(json, state.data, state.selected);
     syncViewMode();
+
+    const tRender = timing ? mark() : 0;
 
     state.sheet = json;
 
@@ -185,6 +197,20 @@ export async function runEngine() {
 
     saveActiveCharacter();
     updateSelectorButton();
+
+    if (timing) {
+      const tEnd = mark();
+      logRunTiming({
+        payloadBuildMs: _round(tPayload - tStart),
+        requestMs: _round(tResponse - tPayload),
+        serverTiming: getLastServerTiming(),
+        renderMs: _round(tRender - tResponse),
+        listsAndSaveMs: _round(tEnd - tRender),
+        totalMs: _round(tEnd - tStart),
+        requestBytes: JSON.stringify(payload).length,
+        responseBytes: JSON.stringify(json).length,
+      });
+    }
   } catch (err) {
     renderOutput({ error: err.message });
   }

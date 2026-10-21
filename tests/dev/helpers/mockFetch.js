@@ -10,20 +10,28 @@ export function installMockFetch() {
         new Error(`mockFetch: no stubbed response registered for "${url}"`),
       );
     }
-    const { body, status, ok } = routes.get(url);
+    const { body, status, ok, headers } = routes.get(url);
     return Promise.resolve({
       ok,
       status,
+      headers: {
+        get: (name) => headers?.[name] ?? null,
+      },
       json: () => Promise.resolve(body),
     });
   });
   return global.fetch;
 }
 
-export function mockFetchResponse(url, body) {
-  routes.set(url, { body, status: 200, ok: true });
+export function mockFetchResponse(url, body, { headers } = {}) {
+  routes.set(url, { body, status: 200, ok: true, headers });
 }
 
-export function mockFetchError(url, status = 500, body = null) {
-  routes.set(url, { body, status, ok: false });
+export function mockFetchError(
+  url,
+  status = 500,
+  body = null,
+  { headers } = {},
+) {
+  routes.set(url, { body, status, ok: false, headers });
 }

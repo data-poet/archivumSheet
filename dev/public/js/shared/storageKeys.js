@@ -7,4 +7,6 @@ export const STORAGE_KEYS = Object.freeze({
   viewMode: "archivum:viewMode",
   activeGroup: "archivum:activeGroup",
   referenceGroup: "archivum:referenceGroup",
+  // Opt-in only, never set by the app itself — see shared/timing.js.
+  debugTiming: "archivum:debugTiming",
 });

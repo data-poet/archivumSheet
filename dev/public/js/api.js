@@ -23,11 +23,23 @@ async function postJSON(url, body) {
     body: JSON.stringify(body),
   });
 
+  // Captured regardless of outcome so a failed build's timing isn't lost — see shared/timing.js.
+  _lastServerTiming = res.headers?.get?.("Server-Timing") ?? null;
+
   if (!res.ok) {
     throw new Error(`POST ${url} failed: ${res.status}`);
   }
 
   return res.json();
+}
+
+let _lastServerTiming = null;
+
+// The server's own build;dur=<ms> for the most recent buildSheet() call, read by
+// compute/index.js's timing instrumentation. Not request-scoped — fine for a single in-flight
+// build, which is all autorun.js allows today.
+export function getLastServerTiming() {
+  return _lastServerTiming;
 }
 
 export async function fetchAdvantages() {

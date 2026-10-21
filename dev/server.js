@@ -168,13 +168,17 @@ app.post("/api/sheet/build", (req, res) => {
   const { pc = {}, race_id = null, character = {}, inventory = {} } = req.body;
 
   try {
+    const start = process.hrtime.bigint();
     const result = buildSheet({
       pc,
       race_id,
       character,
       inventory,
     });
+    const buildMs = Number(process.hrtime.bigint() - start) / 1e6;
 
+    // Lets the client's own timing (shared/timing.js) tell engine cost apart from network cost.
+    res.set("Server-Timing", `build;dur=${buildMs.toFixed(2)}`);
     res.json(result);
   } catch (err) {
     res.status(500).json({
