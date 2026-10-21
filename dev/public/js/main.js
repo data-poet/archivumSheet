@@ -6,7 +6,10 @@ import { initPageSelector } from "./components/pageSelector.js";
 import { initSelectLabels } from "./components/selectLabels.js";
 import { initTabs } from "./components/tabs.js";
 import { initViewMode } from "./components/viewMode.js";
-import { mountResumePanel } from "./components/resume/skeleton.js";
+import {
+  mountResumePanel,
+  initResumeGroupNav,
+} from "./components/resume/skeleton.js";
 import { initTheme } from "./components/theme.js";
 import { setupAutoRun } from "./compute/attributes.js";
 import {
@@ -38,6 +41,7 @@ import { initCardCollapse } from "./shared/cardCollapse.js";
 export async function bootstrap() {
   buildSheetLayout();
   mountResumePanel();
+  initResumeGroupNav();
   // Save is decoupled from the engine run itself (compute/autorun.js) — it only needs the
   // selector button to mirror the store's display name once that save actually lands.
   initAutoRun(runEngine, () => {

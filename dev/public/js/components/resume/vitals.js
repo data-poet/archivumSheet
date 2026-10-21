@@ -34,10 +34,14 @@ export function renderResumeHeader(sheet) {
   nameEl.textContent = parts.filter(Boolean).join(" | ");
 }
 
-export function renderExperienceBar(sheet) {
-  const container = el("resume_bar_experience");
-  if (!container) return;
+// Written to both the edit page's own copy and the resume panel's (see skeleton.js) — the
+// panel is display:none outside view mode, so the edit page would otherwise lose its XP bar.
+const EXPERIENCE_BAR_IDS = [
+  "resume_bar_experience",
+  "resume_bar_experience_panel",
+];
 
+export function renderExperienceBar(sheet) {
   const cp = sheet?.character?.character_points ?? {};
   const spentPoints =
     (cp.primary_attributes ?? 0) +
@@ -54,9 +58,7 @@ export function renderExperienceBar(sheet) {
     ? t("experience.maxRank")
     : `${rank.pointsToNext} ${t("experience.pointsToNextRank")}`;
 
-  morphHTML(
-    container,
-    `
+  const html = `
     <div class="resume-bar-header">
       <span>
         <span class="resume-bar-badge">${rank.badge}</span>
@@ -75,7 +77,12 @@ export function renderExperienceBar(sheet) {
       ></div>
     </div>
     <div class="resume-bar-caption">${caption}</div>
-  `,
+  `;
+
+  // Not el(): either id can legitimately be absent depending on which pages/fixtures are
+  // mounted, and el()'s console.warn is for a container a renderer expects to always find.
+  EXPERIENCE_BAR_IDS.forEach((id) =>
+    morphHTML(document.getElementById(id), html),
   );
 }
 

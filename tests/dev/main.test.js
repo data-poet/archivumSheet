@@ -20,6 +20,7 @@ jest.mock("dev/public/js/components/viewMode.js", () => ({
 }));
 jest.mock("dev/public/js/components/resume/skeleton.js", () => ({
   mountResumePanel: jest.fn(),
+  initResumeGroupNav: jest.fn(),
 }));
 jest.mock("dev/public/js/components/theme.js", () => ({
   initTheme: jest.fn(),
@@ -132,7 +133,10 @@ import { buildSheetLayout } from "dev/public/js/layout/buildSheetLayout.js";
 import { initGroupNav } from "dev/public/js/components/groupNav.js";
 import { initTabs } from "dev/public/js/components/tabs.js";
 import { initViewMode } from "dev/public/js/components/viewMode.js";
-import { mountResumePanel } from "dev/public/js/components/resume/skeleton.js";
+import {
+  mountResumePanel,
+  initResumeGroupNav,
+} from "dev/public/js/components/resume/skeleton.js";
 import { initTheme } from "dev/public/js/components/theme.js";
 import { setupAutoRun } from "dev/public/js/compute/attributes.js";
 import {
@@ -226,6 +230,9 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
   test("mounts the resume panel before anything that reads it", async () => {
     const order = [];
     mountResumePanel.mockImplementation(() => order.push("mount"));
+    initResumeGroupNav.mockImplementation(() =>
+      order.push("initResumeGroupNav"),
+    );
     initViewMode.mockImplementation(() => order.push("initViewMode"));
     updateActualValues.mockImplementation(() =>
       order.push("updateActualValues"),
@@ -234,7 +241,12 @@ describe("main.js bootstrap (DOMContentLoaded)", () => {
     await bootstrap();
 
     expect(order[0]).toBe("mount");
-    expect(order).toEqual(["mount", "initViewMode", "updateActualValues"]);
+    expect(order).toEqual([
+      "mount",
+      "initResumeGroupNav",
+      "initViewMode",
+      "updateActualValues",
+    ]);
   });
 
   test("initializes autorun with the real runEngine function and a save callback", async () => {

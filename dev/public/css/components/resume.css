@@ -1,3 +1,62 @@
+/* Layout only — .resume-groupnav's own tab-pill look comes from the generic .groupnav-*
+   classes it shares with the edit/reference pages' group bars (group-nav.css); its container
+   deliberately isn't .l-groupnav, which is fixed-positioned and hidden in view mode. */
+.resume-header {
+  margin-bottom: var(--space-6);
+}
+
+.resume-groupnav {
+  margin-bottom: var(--space-6);
+}
+
+.resume-group-section {
+  margin-bottom: var(--space-7);
+}
+
+@media (min-width: 768px) {
+  /* Every group's sections show at once as columns — nothing left to switch between. */
+  .resume-groupnav {
+    display: none;
+  }
+
+  .resume-groups {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .resume-group-section {
+    margin-bottom: 0;
+  }
+
+  /* Overrides the `hidden` attribute groupNav still sets (it only ever runs on mobile widths,
+     but the attribute itself isn't width-aware) so every section stays visible here. */
+  .resume-group-section[hidden] {
+    display: block !important;
+  }
+
+  .resume-group-section[data-group="status"] {
+    grid-column: 1;
+  }
+
+  .resume-group-section[data-group="offense"] {
+    grid-column: 2;
+  }
+
+  .resume-group-section[data-group="defense"] {
+    grid-column: 3;
+  }
+
+  .resume-group-section[data-group="abilities"] {
+    grid-column: 4;
+  }
+
+  .resume-group-section[data-group="info"] {
+    grid-column: 5;
+  }
+}
+
 .resume-row {
   margin-bottom: 1rem;
 }
@@ -192,20 +251,6 @@
 .resume-table--secondary-snapshot td:last-child {
   width: 90px;
   padding-right: 0;
-}
-
-.resume-row--bars-secondary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  align-items: start;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 600px) {
-  .resume-row--bars-secondary {
-    grid-template-columns: 1fr;
-  }
 }
 
 .resume-table--secondary-snapshot td:last-child {

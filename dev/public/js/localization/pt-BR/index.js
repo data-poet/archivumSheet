@@ -14,7 +14,7 @@ import { NAV } from "./components/nav.js";
 import { PAGES } from "./components/pageSelector.js";
 import { OUTPUT } from "./components/output.js";
 import { ELEMENTAL_RESISTANCES } from "./components/resistances.js";
-import { RESUME, SECTIONS } from "./components/resume.js";
+import { RESUME, RESUME_NAV, SECTIONS } from "./components/resume.js";
 import { TABS } from "./components/tabs.js";
 import { THRESHOLDS } from "./components/thresholds.js";
 import { THEME } from "./components/theme.js";
@@ -59,6 +59,7 @@ export const LABELS = {
   tabs: TABS,
   sections: SECTIONS,
   resume: RESUME,
+  resumeNav: RESUME_NAV,
   conditions: CONDITIONS,
   attributes: ATTRIBUTES,
   character: CHARACTER,

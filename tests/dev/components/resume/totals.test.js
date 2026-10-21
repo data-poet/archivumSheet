@@ -123,21 +123,12 @@ describe("renderResumeWeight", () => {
     );
   });
 
-  test("shows the Basic Lift and the lift values under the limits", () => {
+  test("shows the Basic Lift under the limits", () => {
     renderResume({ inventory: { carry_weight: carry() } });
     const limits = id("carry_limits");
 
     expect(limits.textContent).toContain(`${t("resume.basicLift")}:`);
     expect(limits.textContent).toContain("10 kg");
-    expect(limits.textContent).toContain(t("inventory.lifts.onBack"));
-    const liftCells = limits.querySelectorAll(".resume-lifts-table td");
-    expect(Array.from(liftCells, (c) => c.textContent)).toEqual([
-      "20",
-      "80",
-      "120",
-      "150",
-      "500",
-    ]);
   });
 });
 

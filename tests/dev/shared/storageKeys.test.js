@@ -13,6 +13,7 @@ describe("STORAGE_KEYS", () => {
       viewMode: "archivum:viewMode",
       activeGroup: "archivum:activeGroup",
       referenceGroup: "archivum:referenceGroup",
+      resumeGroup: "archivum:resumeGroup",
       debugTiming: "archivum:debugTiming",
     });
   });

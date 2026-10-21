@@ -41,6 +41,21 @@ export const RESUME = {
   coinsCarried: "na mochila",
   vitalCurrent: "Atual",
   vitalMax: "Máx.",
+  attributesGroupTitle: "Atributos",
+};
+
+// Labels for the resume's own group bar (RESUME_LAYOUT) — separate from NAV.groups/sections,
+// which are the edit and reference pages' groupings, sliced by where a rule lives rather than
+// when a player reaches for it.
+export const RESUME_NAV = {
+  groupsAriaLabel: "Grupos do resumo",
+  groups: {
+    status: { label: "Status", short: "Status" },
+    offense: { label: "Ataque", short: "Ataque" },
+    defense: { label: "Defesa", short: "Defesa" },
+    abilities: { label: "Habilidades", short: "Hab." },
+    info: { label: "Info", short: "Info" },
+  },
 };
 
 export const SECTIONS = {

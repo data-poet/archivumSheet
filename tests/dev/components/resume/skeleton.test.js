@@ -1,4 +1,8 @@
-import { mountResumePanel } from "dev/public/js/components/resume/skeleton.js";
+import {
+  mountResumePanel,
+  initResumeGroupNav,
+} from "dev/public/js/components/resume/skeleton.js";
+import { RESUME_LAYOUT } from "dev/public/js/layout/resumeLayout.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 
 // Every id a renderer in components/resume/ looks up, plus the legacy weight spans
@@ -32,10 +36,34 @@ const REQUIRED_IDS = [
   "resume_coins_row",
   "encumbrance",
   "carry_limits",
+  // The panel's own copy of the XP bar and points table — see vitals.js/totals.js, which
+  // write to these and their edit-page counterparts (outside the panel) alike.
+  "resume_bar_experience_panel",
+  "resume_points_tbody_panel",
+  "resume_total_points_cell_panel",
+];
+
+// One per RESUME_LAYOUT section (layout/resumeLayout.js) — groupNav hides/shows these by
+// group; a renamed or dropped one here would silently stop being reachable from any group.
+const REQUIRED_SECTIONS = [
+  "resume-section-status",
+  "resume-section-defense",
+  "resume-section-weapons",
+  "resume-section-supplies",
+  "resume-section-alchemy",
+  "resume-section-secondary",
+  "resume-section-attributes",
+  "resume-section-traits",
+  "resume-section-skills",
+  "resume-section-magic",
+  "resume-section-weight",
+  "resume-section-value",
+  "resume-section-points",
 ];
 
 beforeEach(() => {
   resetDOM();
+  window.scrollTo = jest.fn(); // jsdom has no layout, so this would otherwise log a not-implemented error
 });
 
 describe("mountResumePanel", () => {
@@ -103,5 +131,74 @@ describe("mountResumePanel", () => {
     expect(
       document.getElementById("tab-char-resume").querySelectorAll("input"),
     ).toHaveLength(0);
+  });
+
+  test("every RESUME_LAYOUT section exists as an .l-section inside the panel", () => {
+    resetDOM(`<div id="resume-panel-host"></div>`);
+
+    mountResumePanel();
+
+    const missing = REQUIRED_SECTIONS.filter(
+      (id) => !document.querySelector(`#tab-char-resume .l-section#${id}`),
+    );
+    expect(missing).toEqual([]);
+  });
+
+  // The vitals header must never be hidden by a group switch — it's a sibling of
+  // .resume-groups, not one of the .l-section elements groupNav toggles.
+  test("the header (name + vitals) sits outside .resume-groups", () => {
+    resetDOM(`<div id="resume-panel-host"></div>`);
+
+    mountResumePanel();
+
+    const header = document.querySelector("#tab-char-resume .resume-header");
+    expect(header.querySelector("#resume_header_name")).not.toBeNull();
+    expect(header.querySelector("#resume_bar_hp")).not.toBeNull();
+    expect(header.querySelector(".l-section")).toBeNull();
+  });
+});
+
+describe("initResumeGroupNav", () => {
+  test("does not throw when the panel hasn't been mounted", () => {
+    resetDOM();
+    expect(() => initResumeGroupNav()).not.toThrow();
+  });
+
+  test("renders one tab per RESUME_LAYOUT group and shows only the first group's sections", () => {
+    resetDOM(`<div id="resume-panel-host"></div>`);
+    mountResumePanel();
+
+    initResumeGroupNav();
+
+    const buttons = document.querySelectorAll("#resume-groupnav .groupnav-btn");
+    expect(buttons).toHaveLength(RESUME_LAYOUT.length);
+    expect(buttons[0].dataset.group).toBe(RESUME_LAYOUT[0].group);
+
+    const firstGroupSections = new Set(
+      RESUME_LAYOUT[0].sections.map((s) => s.id),
+    );
+    REQUIRED_SECTIONS.forEach((id) => {
+      const section = document.getElementById(id);
+      expect(section.hidden).toBe(!firstGroupSections.has(id));
+    });
+  });
+
+  test("switching groups shows only that group's sections, leaving the header alone", () => {
+    resetDOM(`<div id="resume-panel-host"></div>`);
+    mountResumePanel();
+    initResumeGroupNav();
+
+    const secondGroup = RESUME_LAYOUT[1];
+    document
+      .querySelector(`.groupnav-btn[data-group="${secondGroup.group}"]`)
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    const secondGroupSections = new Set(secondGroup.sections.map((s) => s.id));
+    REQUIRED_SECTIONS.forEach((id) => {
+      expect(document.getElementById(id).hidden).toBe(
+        !secondGroupSections.has(id),
+      );
+    });
+    expect(document.getElementById("resume_header_name")).not.toBeNull();
   });
 });

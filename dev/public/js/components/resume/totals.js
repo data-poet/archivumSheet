@@ -8,14 +8,6 @@ import {
 import { el } from "../../shared/dom.js";
 import { renderSumTable } from "../../shared/renderUtils.js";
 
-const LIFT_KEYS = [
-  "oneHanded",
-  "twoHanded",
-  "shove",
-  "onBack",
-  "shiftSlightly",
-];
-
 export function renderResumeWeight(sheet) {
   const carry = sheet?.inventory?.carry_weight;
 
@@ -123,20 +115,6 @@ export function renderResumeWeight(sheet) {
       <p class="resume-basic-lift">
         <strong>${t("resume.basicLift")}:</strong> ${carry.basic_lift} kg
       </p>
-      <div class="table-wrapper">
-        <table class="resume-limits-table resume-lifts-table">
-          <thead>
-            <tr>
-              ${LIFT_KEYS.map((key) => `<th>${t(`inventory.lifts.${key}`)}</th>`).join("")}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              ${LIFT_KEYS.map((key) => `<td class="col-num">${carry.lifts[key]}</td>`).join("")}
-            </tr>
-          </tbody>
-        </table>
-      </div>
     `;
   }
 }
@@ -202,18 +180,26 @@ export function renderResumePoints(sheet) {
   const skillsPoints = sheet?.character?.character_points?.skills ?? 0;
   const spellsPoints = sheet?.character?.character_points?.spells ?? 0;
 
-  renderSumTable(
-    [
-      { label: t("resume.primaryAttributes"), value: primaryAttributesPoints },
-      {
-        label: t("resume.secondaryAttributes"),
-        value: secondaryAttributesPoints,
-      },
-      { label: t("resume.advantages"), value: advantagesPoints },
-      { label: t("resume.disadvantages"), value: disadvantagesPoints },
-      { label: t("resume.skills"), value: skillsPoints },
-      { label: t("resume.spells"), value: spellsPoints },
-    ],
-    { tbodyId: "resume_points_tbody", totalCellId: "resume_total_points_cell" },
-  );
+  const rows = [
+    { label: t("resume.primaryAttributes"), value: primaryAttributesPoints },
+    {
+      label: t("resume.secondaryAttributes"),
+      value: secondaryAttributesPoints,
+    },
+    { label: t("resume.advantages"), value: advantagesPoints },
+    { label: t("resume.disadvantages"), value: disadvantagesPoints },
+    { label: t("resume.skills"), value: skillsPoints },
+    { label: t("resume.spells"), value: spellsPoints },
+  ];
+
+  // Written to both the edit page's own table and the resume panel's (see skeleton.js) —
+  // same reasoning as renderExperienceBar: the panel is invisible outside view mode.
+  renderSumTable(rows, {
+    tbodyId: "resume_points_tbody",
+    totalCellId: "resume_total_points_cell",
+  });
+  renderSumTable(rows, {
+    tbodyId: "resume_points_tbody_panel",
+    totalCellId: "resume_total_points_cell_panel",
+  });
 }
