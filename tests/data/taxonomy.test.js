@@ -6,12 +6,12 @@ const {
 } = require("helpers/taxonomy.js");
 
 describe("taxonomy registry resolves against the real datasets", () => {
-  // imp, pi-, pi+ and pi++ aren't assigned to any weapon row yet — the data only distinguishes
-  // cr/cut/pi today. Add them here once the weapon tables are reworked to use the granular types.
+  // pi-, pi, pi+ and pi++ aren't assigned to any melee weapon row — thrusting weapons use the
+  // more precise "imp" (impaling) type instead; piercing only appears on firearms in this dataset.
   test.each([
     DAMAGE_TYPES.CRUSHING,
     DAMAGE_TYPES.CUTTING,
-    DAMAGE_TYPES.PIERCING,
+    DAMAGE_TYPES.IMPALING,
   ])(
     "damage type %s appears in the melee weapon_damage_type column",
     (damageType) => {
