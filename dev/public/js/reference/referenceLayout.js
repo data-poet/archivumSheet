@@ -205,8 +205,9 @@ export const REFERENCE_LAYOUT = [
     accent: "magic",
     sections: [
       {
-        id: "section-spells",
-        icon: "spells",
+        id: "magic-1",
+        icon: "ordinal-1",
+        iconOnly: true,
         accent: "magic",
         tabs: [
           {
@@ -220,8 +221,9 @@ export const REFERENCE_LAYOUT = [
         ],
       },
       {
-        id: "section-magic",
-        icon: "casting",
+        id: "magic-2",
+        icon: "ordinal-2",
+        iconOnly: true,
         accent: "magic",
         tabs: [
           {
