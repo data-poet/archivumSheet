@@ -616,6 +616,12 @@ tr.detail-row details[open] summary {
     display: none;
   }
 
+  /* Drag-to-reorder is a desktop-only gesture: dragging between stacked cards reads as broken on
+     a phone. Hiding the handle also disables the drag, since Sortable has nothing to grab. */
+  .table-wrapper--stack td.col-drag {
+    display: none;
+  }
+
   .table-wrapper--stack td.col-action {
     grid-column: 1 / -1;
     order: 1;
