@@ -11,18 +11,26 @@ import {
   cardTitleCell,
   safeId,
 } from "../../../shared/renderUtils.js";
+import { dragHandleHTML } from "../../inventory/shared/inventoryRenderUtils.js";
+import { sortByOrder } from "../../../shared/traitOrder.js";
 
 export function renderSkills(selected, data, sheet) {
   const sheetSkills = sheet?.character?.skills ?? {};
 
   // Item-granted skills (is_enchantment: true) never appear in selected.skills, only in sheetSkills.
-  const ids = [
-    ...new Set([...Object.keys(selected.skills), ...Object.keys(sheetSkills)]),
-  ];
+  const ids = sortByOrder(
+    [
+      ...new Set([
+        ...Object.keys(selected.skills),
+        ...Object.keys(sheetSkills),
+      ]),
+    ],
+    selected.order?.skills,
+  );
 
   const rows =
     ids.length === 0
-      ? emptyRow(8)
+      ? emptyRow(9)
       : ids
           .map((id) => {
             const skillState = selected.skills[id]; // undefined for pure grants
@@ -134,10 +142,13 @@ export function renderSkills(selected, data, sheet) {
                   ${numStepper("skill-input", `data-id="${id}" data-field="modifier"`, mod)}
                 </td>`;
 
-            // Item-granted rows have nothing to remove, same as innate advantages.
+            // Item-granted rows have nothing to remove, same as innate advantages — and nothing to drag.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
               : `<td class="col-action"><button class="btn-remove remove-skill" data-id="${id}">${icon("remove")}</button></td>`;
+            const dragCell = isEnchantment
+              ? `<td class="col-drag"></td>`
+              : `<td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>`;
 
             const enchantmentTag = isEnchantment
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
@@ -145,6 +156,7 @@ export function renderSkills(selected, data, sheet) {
 
             return `
           <tr id="skill-${safeId(id)}" class="${isEnchantment ? "trait-enchantment" : ""}" data-id="${id}">
+            ${dragCell}
             ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td class="col-center" data-label="${t("traits.attr")}">${attr}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
@@ -154,7 +166,7 @@ export function renderSkills(selected, data, sheet) {
             <td class="col-num" data-label="${t("traits.final")}"><strong>${finalCell}</strong></td>
             ${actionCell}
           </tr>
-          ${detailRow(8, detailItems, `skill-${safeId(id)}`)}`;
+          ${detailRow(9, detailItems, `skill-${safeId(id)}`)}`;
           })
           .join("");
 
@@ -164,6 +176,7 @@ export function renderSkills(selected, data, sheet) {
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("traits.name")}</th>
           <th class="col-center">${t("traits.attr")}</th>
           <th class="col-center">${t("traits.diff")}</th>
@@ -174,7 +187,7 @@ export function renderSkills(selected, data, sheet) {
           <th class="col-action"></th>
         </tr>
       </thead>
-      <tbody>${rows}</tbody>
+      <tbody id="skill-tbody">${rows}</tbody>
     </table></div>
   `,
   );

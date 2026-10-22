@@ -76,6 +76,7 @@ function _blankData() {
       conditions: {},
       skills: {},
       spells: {},
+      order: { advantages: [], disadvantages: [], skills: [], spells: [] },
       allies: [],
       alliesActiveId: null,
       meta_race_ids: [],
@@ -189,6 +190,12 @@ function _applyData(data) {
   selected.conditions = character.conditions ?? {};
   selected.skills = character.skills ?? {};
   selected.spells = character.spells ?? {};
+  selected.order = {
+    advantages: character.order?.advantages ?? [],
+    disadvantages: character.order?.disadvantages ?? [],
+    skills: character.order?.skills ?? [],
+    spells: character.order?.spells ?? [],
+  };
   selected.allies = character.allies ?? [];
   selected.alliesActiveId = character.alliesActiveId ?? null;
   selected.meta_race_ids = character.meta_race_ids ?? [];

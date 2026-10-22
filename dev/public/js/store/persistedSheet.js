@@ -29,6 +29,8 @@ export function capturePersistedSheet() {
       conditions: selected.conditions,
       skills: selected.skills,
       spells: selected.spells,
+      // Display order only; engine payload ignores it. Absent on an old save = insertion order.
+      order: selected.order,
       allies: selected.allies,
       alliesActiveId: selected.alliesActiveId,
       meta_race_ids: selected.meta_race_ids,

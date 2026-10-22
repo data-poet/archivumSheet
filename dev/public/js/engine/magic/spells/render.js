@@ -12,6 +12,8 @@ import {
   cardTitleCell,
   safeId,
 } from "../../../shared/renderUtils.js";
+import { dragHandleHTML } from "../../inventory/shared/inventoryRenderUtils.js";
+import { sortByOrder } from "../../../shared/traitOrder.js";
 
 function normalize(str) {
   return String(str ?? "")
@@ -42,12 +44,13 @@ export function renderSpells(selected, data, sheet) {
   const grantedNames = Object.values(grimoire)
     .filter((entry) => entry.is_enchantment)
     .map((entry) => entry.name);
-  const names = [
-    ...new Set([...Object.keys(selected.spells), ...grantedNames]),
-  ];
+  const names = sortByOrder(
+    [...new Set([...Object.keys(selected.spells), ...grantedNames])],
+    selected.order?.spells,
+  );
 
   const showAptitude = hasMagicAptitude(sheet, data);
-  const COLS = showAptitude ? 10 : 9;
+  const COLS = showAptitude ? 11 : 10;
 
   const rows =
     names.length === 0
@@ -125,10 +128,13 @@ export function renderSpells(selected, data, sheet) {
                   ${numStepper("spell-input", `data-name="${name}" data-field="modifier"`, mod)}
                 </td>`;
 
-            // Item-granted rows have nothing in the player's own selection to remove.
+            // Item-granted rows have nothing in the player's own selection to remove or drag.
             const actionCell = isEnchantment
               ? `<td class="col-action"></td>`
               : `<td class="col-action"><button class="btn-remove remove-spell" data-name="${name}">${icon("remove")}</button></td>`;
+            const dragCell = isEnchantment
+              ? `<td class="col-drag"></td>`
+              : `<td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>`;
 
             const enchantmentTag = isEnchantment
               ? `<span class="trait-enchantment-tag">${t("character.enchanted")}</span>`
@@ -150,6 +156,7 @@ export function renderSpells(selected, data, sheet) {
 
             return `
           <tr id="${rowId}" class="${isEnchantment ? "trait-enchantment" : ""}" data-name="${name}">
+            ${dragCell}
             ${cardTitleCell(`${name}${enchantmentTag}`)}
             <td data-label="${t("traits.school")}">${school}</td>
             <td class="col-center" data-label="${t("traits.diff")}">${diff}</td>
@@ -172,6 +179,7 @@ export function renderSpells(selected, data, sheet) {
     <div class="table-wrapper table-wrapper--stack"><table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("traits.name")}</th>
           <th>${t("traits.school")}</th>
           <th class="col-center">${t("traits.diff")}</th>
@@ -185,7 +193,7 @@ export function renderSpells(selected, data, sheet) {
           <th class="col-action"></th>
         </tr>
       </thead>
-      <tbody>${rows}</tbody>
+      <tbody id="spell-tbody">${rows}</tbody>
     </table></div>
   `,
   );

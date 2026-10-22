@@ -5,6 +5,10 @@ import { triggerAutoRun, AUTORUN_KIND } from "../../../../compute/autorun.js";
 import { t } from "../../../../localization/pt-BR/index.js";
 import { offerUndo } from "../../../../components/undo.js";
 import { RACIAL_TRAIT_TYPE } from "../../../../shared/constants.js";
+import { attachReorderableOnce } from "../../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../../shared/renderSignal.js";
+import { reorderTrait } from "../../../../shared/traitOrder.js";
+import { el } from "../../../../shared/dom.js";
 
 const data = state.data;
 const selected = state.selected;
@@ -12,12 +16,28 @@ const selected = state.selected;
 // Race-innate grants only; excluded from filters below but data.advantages keeps every row so render.js can still display them.
 const RACIAL_TYPE = RACIAL_TRAIT_TYPE;
 
-// Re-renders only the advantages list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
+// Re-renders only the advantages list, avoiding a full renderLists() sweep — mirrors shield's
+// _renderShieldLists. Passes state.sheet so innate/meta-race/enchantment rows (only in the
+// engine's map, not selected.advantages) don't vanish until the next full engine run.
 function _renderAdvantagesList() {
   requestAnimationFrame(() => {
-    renderAdvantages(selected, data);
+    renderAdvantages(selected, data, state.sheet);
   });
 }
+
+onInventoryRendered(() => {
+  attachReorderableOnce(el("adv-tbody"), {
+    onReorder(tr) {
+      const id = tr.dataset.id;
+      if (!id) return;
+      const ids = [...tr.parentElement.querySelectorAll("tr[data-id]")].map(
+        (el) => el.dataset.id,
+      );
+      reorderTrait("advantages", id, ids.indexOf(id));
+      _renderAdvantagesList();
+    },
+  });
+});
 
 export async function loadAdvantages() {
   data.advantages = await fetchAdvantages();

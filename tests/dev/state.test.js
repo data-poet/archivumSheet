@@ -132,6 +132,7 @@ describe("state.selected shape", () => {
         "allies",
         "alliesActiveId",
         "meta_race_ids",
+        "order",
       ].sort(),
     );
   });

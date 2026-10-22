@@ -158,7 +158,7 @@ describe("renderSkills — a purely engine-granted skill (item enchantment)", ()
       character: { skills: { "SK-UNKNOWN": { is_enchantment: true } } },
     };
     renderSkills({ skills: {} }, { skills: [] }, sheet);
-    expect(parse().querySelector("tbody tr td").textContent).toContain(
+    expect(parse().querySelector("tbody tr .col-title").textContent).toContain(
       "SK-UNKNOWN",
     );
   });

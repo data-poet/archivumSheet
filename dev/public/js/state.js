@@ -83,6 +83,7 @@ export const state = {
     disadvantages: {},
     skills: {},
     spells: {},
+    order: { advantages: [], disadvantages: [], skills: [], spells: [] },
     secondary: {},
     damage: {},
     resistances: {},

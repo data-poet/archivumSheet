@@ -3,6 +3,7 @@ import path from "path";
 import {
   createSortableList,
   attachSortableOnce,
+  attachReorderableOnce,
   createStorageDragHandler,
   createReorderableList,
 } from "dev/public/js/shared/sortable.js";
@@ -222,6 +223,35 @@ describe("attachSortableOnce", () => {
     };
     return { Sortable, calls };
   }
+});
+
+describe("attachReorderableOnce", () => {
+  function fakeSortable() {
+    const calls = [];
+    const Sortable = {
+      create: jest.fn((container, options) => {
+        calls.push({ container, options });
+        return { option: jest.fn(), destroy: jest.fn() };
+      }),
+    };
+    return { Sortable, calls };
+  }
+
+  test("creates a Sortable instance only on the first call for a given container", () => {
+    const { Sortable, calls } = fakeSortable();
+    const container = document.createElement("tbody");
+
+    attachReorderableOnce(container, {}, Sortable);
+    attachReorderableOnce(container, {}, Sortable);
+
+    expect(calls).toHaveLength(1);
+    expect(container.dataset.sortableBound).toBe("true");
+  });
+
+  test("returns null without a container", () => {
+    const { Sortable } = fakeSortable();
+    expect(attachReorderableOnce(null, {}, Sortable)).toBeNull();
+  });
 });
 
 describe("createStorageDragHandler", () => {

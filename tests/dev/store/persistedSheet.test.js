@@ -125,6 +125,7 @@ describe("capturePersistedSheet", () => {
       "damage",
       "disadvantages",
       "meta_race_ids",
+      "order",
       "primary",
       "resistances",
       "secondary",

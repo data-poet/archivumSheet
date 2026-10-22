@@ -18,7 +18,7 @@ describe("renderSpells — empty state", () => {
     renderSpells({ spells: {} }, { spells: [] }, undefined);
     const row = spellList().querySelector(".empty-row");
     expect(row).not.toBeNull();
-    expect(row.querySelector("td").getAttribute("colspan")).toBe("10"); // 9 cols + detail col
+    expect(row.querySelector("td").getAttribute("colspan")).toBe("11"); // 10 cols + detail col
   });
 });
 
@@ -61,7 +61,7 @@ describe("renderSpells — a purely player-selected spell (engine hasn't run yet
     expect(row.classList.contains("trait-enchantment")).toBe(false);
     // final = base(10) + mod(2) + aptitude(0) = 12 → tier "Aprendiz" (<=12)
     expect(row.textContent).toContain("12");
-    expect(row.querySelector("td:nth-child(4)").textContent).toBe("Aprendiz");
+    expect(row.querySelector("td:nth-child(5)").textContent).toBe("Aprendiz");
   });
 
   test("does not show the aptitude column when the sheet grants no Magic Aptitude advantage", () => {
@@ -94,7 +94,7 @@ describe("renderSpells — a purely player-selected spell (engine hasn't run yet
     const row = spellList().querySelector("tbody tr");
     // 10 cols now: name/school/diff/tier/cost/base/mod/aptitude/enchantment/final
     const cells = row.querySelectorAll("td");
-    expect(cells).toHaveLength(10 + 1); // +1 for the action column
+    expect(cells).toHaveLength(11 + 1); // +1 for the action column
   });
 });
 
@@ -124,7 +124,7 @@ describe("renderSpells — an item-granted (pure enchantment) spell", () => {
     expect(row.querySelector(".remove-spell")).toBeNull();
     expect(row.querySelector("input.spell-input")).toBeNull();
     expect(row.textContent).toContain("15"); // engine's final value, used as-is
-    expect(row.querySelector("td:nth-child(4)").textContent).toBe("Experiente"); // engine's tier, used as-is
+    expect(row.querySelector("td:nth-child(5)").textContent).toBe("Experiente"); // engine's tier, used as-is
   });
 });
 
@@ -150,7 +150,7 @@ describe("renderSpells — engine (grimoire) values take precedence once the eng
 
     const row = spellList().querySelector("tbody tr");
     expect(row.textContent).toContain("99");
-    expect(row.querySelector("td:nth-child(4)").textContent).toBe("Mestre");
+    expect(row.querySelector("td:nth-child(5)").textContent).toBe("Mestre");
   });
 });
 
@@ -253,8 +253,8 @@ describe("renderSpells — catalog lookup by name+tier, falling back to name onl
     renderSpells(selected, { spells: [] }, undefined);
 
     const row = spellList().querySelector("tbody tr");
-    expect(row.children[1].textContent).toBe("—"); // school
-    expect(row.children[2].textContent).toBe("—"); // difficulty
+    expect(row.children[2].textContent).toBe("—"); // school
+    expect(row.children[3].textContent).toBe("—"); // difficulty
   });
 });
 

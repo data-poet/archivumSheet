@@ -5,16 +5,36 @@ import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSkillAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
+import { attachReorderableOnce } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
+import { reorderTrait } from "../../../shared/traitOrder.js";
+import { el } from "../../../shared/dom.js";
 
 const data = state.data;
 const selected = state.selected;
 
-// Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
+// Re-renders only the skill list, avoiding a full renderLists() sweep — mirrors shield's
+// _renderShieldLists. Passes state.sheet so enchantment-granted rows don't vanish until the
+// next full engine run.
 function _renderSkillList() {
   requestAnimationFrame(() => {
-    renderSkills(selected, data);
+    renderSkills(selected, data, state.sheet);
   });
 }
+
+onInventoryRendered(() => {
+  attachReorderableOnce(el("skill-tbody"), {
+    onReorder(tr) {
+      const id = tr.dataset.id;
+      if (!id) return;
+      const ids = [...tr.parentElement.querySelectorAll("tr[data-id]")].map(
+        (row) => row.dataset.id,
+      );
+      reorderTrait("skills", id, ids.indexOf(id));
+      _renderSkillList();
+    },
+  });
+});
 
 export async function loadSkills() {
   const [skills, masterEligibleCategories] = await Promise.all([

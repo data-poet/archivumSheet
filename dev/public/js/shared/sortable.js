@@ -82,6 +82,17 @@ export function attachSortableOnce(
   return createSortableList(container, options, Sortable);
 }
 
+// Same idempotency guard as attachSortableOnce, for createReorderableList.
+export function attachReorderableOnce(
+  container,
+  options,
+  Sortable = RealSortable,
+) {
+  if (!container || container.dataset.sortableBound === "true") return null;
+  container.dataset.sortableBound = "true";
+  return createReorderableList(container, options, Sortable);
+}
+
 // A plain reorder-within-one-list wrapper — no storage-location concept, just "this item moved to
 // this index". `canSwap(dragged, related)` is an optional guard (Sortable's `onMove`) for lists
 // that mix unrelated groups of rows, like the character selector's owners and each owner's own

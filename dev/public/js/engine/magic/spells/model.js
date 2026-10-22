@@ -5,16 +5,35 @@ import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
 import { t } from "../../../localization/pt-BR/index.js";
 import { getSpellAttributeBase } from "../../../shared/attributeUtils.js";
 import { offerUndo } from "../../../components/undo.js";
+import { attachReorderableOnce } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
+import { reorderTrait } from "../../../shared/traitOrder.js";
+import { el } from "../../../shared/dom.js";
 
 const data = state.data;
 const selected = state.selected;
 
-// Re-renders only the spell list, not a full renderLists() sweep of all 21 sections.
+// Re-renders only the spell list, not a full renderLists() sweep of all 21 sections. Passes
+// state.sheet so enchantment-granted rows don't vanish until the next full engine run.
 function _renderSpellList() {
   requestAnimationFrame(() => {
-    renderSpells(selected, data);
+    renderSpells(selected, data, state.sheet);
   });
 }
+
+onInventoryRendered(() => {
+  attachReorderableOnce(el("spell-tbody"), {
+    onReorder(tr) {
+      const name = tr.dataset.name;
+      if (!name) return;
+      const names = [...tr.parentElement.querySelectorAll("tr[data-name]")].map(
+        (row) => row.dataset.name,
+      );
+      reorderTrait("spells", name, names.indexOf(name));
+      _renderSpellList();
+    },
+  });
+});
 
 export async function loadSpells() {
   const [spells, magicAptitudeAdvantageIds] = await Promise.all([

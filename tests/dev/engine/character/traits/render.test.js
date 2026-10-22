@@ -78,7 +78,7 @@ describe("renderAdvantages — a purely player-selected advantage (engine hasn't
     expect(row.querySelector(".col-num").getAttribute("data-label")).toBe(
       t("traits.cost"),
     );
-    expect(row.querySelectorAll("td")[2].getAttribute("data-label")).toBe(
+    expect(row.querySelectorAll("td")[3].getAttribute("data-label")).toBe(
       t("traits.type"),
     );
   });
@@ -203,9 +203,9 @@ describe("renderAdvantages — name fallback", () => {
       { advantages: [] },
       undefined,
     );
-    expect(advList().querySelector("tbody tr td").textContent).toContain(
-      "Nome do Sheet",
-    );
+    expect(
+      advList().querySelector("tbody tr .col-title").textContent,
+    ).toContain("Nome do Sheet");
   });
 
   test("falls back to the raw id when neither the catalog nor the sheet entry has a name", () => {
@@ -214,9 +214,9 @@ describe("renderAdvantages — name fallback", () => {
       { advantages: [] },
       undefined,
     );
-    expect(advList().querySelector("tbody tr td").textContent).toContain(
-      "ADV-UNKNOWN",
-    );
+    expect(
+      advList().querySelector("tbody tr .col-title").textContent,
+    ).toContain("ADV-UNKNOWN");
   });
 });
 
