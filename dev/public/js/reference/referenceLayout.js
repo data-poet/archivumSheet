@@ -224,13 +224,6 @@ export const REFERENCE_LAYOUT = [
             id: "tab-magic-casting",
             file: `${CONTENT}/magic/casting.md`,
           },
-        ],
-      },
-      {
-        id: "section-mana-zones",
-        icon: "mana-zones",
-        accent: "magic",
-        tabs: [
           {
             id: "tab-mana-zones",
             file: `${CONTENT}/magic/mana_zones.md`,

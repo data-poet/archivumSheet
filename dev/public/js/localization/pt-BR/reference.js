@@ -39,7 +39,6 @@ export const REFERENCE = {
       "section-ranged": { label: "À Distância" },
       "section-spells": { label: "Feitiços" },
       "section-magic": { label: "Conjuração" },
-      "section-mana-zones": { label: "Áreas de Mana" },
       "section-conditions": { label: "Condições" },
       "section-combat-rules": { label: "Regras" },
       "section-maneuvers": { label: "Manobras" },
