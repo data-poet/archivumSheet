@@ -473,6 +473,9 @@ export function enchantmentsBody({
   return `
     <div class="enchantments-block" data-instance-id="${instanceId}">
       ${list}
-      ${renderAddForm(instanceId, itemCategory)}
+      <div class="enchantment-add-section">
+        <p class="enchantment-add-heading">${t("enchantments.addNew")}</p>
+        ${renderAddForm(instanceId, itemCategory)}
+      </div>
     </div>`;
 }

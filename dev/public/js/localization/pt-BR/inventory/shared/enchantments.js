@@ -1,5 +1,6 @@
 export const ENCHANTMENTS = {
   title: "Encantamentos",
+  addNew: "Adicionar Encantamento",
   categoryFilter: "— Categoria —",
   filterLabel: "Filtro",
   type: "Tipo de Encantamento",

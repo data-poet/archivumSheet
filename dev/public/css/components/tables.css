@@ -420,6 +420,21 @@ tr.detail-row details[open] summary {
   padding: var(--space-4);
 }
 
+.enchantment-add-section {
+  border: 1px dashed var(--color-border);
+  border-radius: 4px;
+  padding: var(--space-4);
+}
+
+.enchantment-add-heading {
+  font-size: var(--fs-xxs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-3);
+}
+
 .enchantment-form .item-detail-grid {
   grid-template-columns: 1fr 1fr;
 }
