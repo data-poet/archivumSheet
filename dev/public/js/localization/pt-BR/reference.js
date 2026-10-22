@@ -31,9 +31,8 @@ export const REFERENCE = {
     },
     sections: {
       "section-attributes": { label: "Atributos" },
-      "section-base-damage": { label: "Dano Base" },
+      "section-base-damage": { label: "Dano e Resistências" },
       "section-carry": { label: "Carga e Movimento" },
-      "section-resistances": { label: "Resistências" },
       "section-tests": { label: "Testes" },
       "section-reactions": { label: "Reações" },
       "section-hazards": { label: "Perigos" },

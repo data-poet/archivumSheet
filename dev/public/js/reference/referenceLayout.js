@@ -37,6 +37,10 @@ export const REFERENCE_LAYOUT = [
             id: "tab-attr-base-damage",
             file: `${CONTENT}/attributes/base_damage.md`,
           },
+          {
+            id: "tab-attr-resistances",
+            file: `${CONTENT}/attributes/elemental_resistances.md`,
+          },
         ],
       },
       {
@@ -47,17 +51,6 @@ export const REFERENCE_LAYOUT = [
           {
             id: "tab-attr-carry",
             file: `${CONTENT}/attributes/carry_and_movement.md`,
-          },
-        ],
-      },
-      {
-        id: "section-resistances",
-        icon: "resistances",
-        accent: "attributes",
-        tabs: [
-          {
-            id: "tab-attr-resistances",
-            file: `${CONTENT}/attributes/elemental_resistances.md`,
           },
         ],
       },
