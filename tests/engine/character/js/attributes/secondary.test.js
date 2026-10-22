@@ -45,7 +45,7 @@ describe("SECONDARY ATTRIBUTES", () => {
       expect(attributes.Movement.base_value).toBe(Math.floor(5.25));
       expect(attributes.Movement.value).toBe(Math.floor(5 * 0.4));
 
-      expect(attributes.Dodge.base_value).toBe(5 + 4 - 3);
+      expect(attributes.Dodge.base_value).toBe(5 + 3 - 3);
     });
   });
 
@@ -435,7 +435,7 @@ describe("SECONDARY ATTRIBUTES", () => {
   });
 
   describe("Dodge under load (4e)", () => {
-    it("Should start from unencumbered Move + 4 and take the load's dodge_penalty", () => {
+    it("Should start from floor(Basic Speed) + 3 and take the load's dodge_penalty", () => {
       const light = buildSecondaryAttributes(
         mockPrimary,
         {},
@@ -455,7 +455,7 @@ describe("SECONDARY ATTRIBUTES", () => {
         },
       ).attributes;
 
-      expect(none.Dodge.value).toBe(none.Movement.value + 4);
+      expect(none.Dodge.value).toBe(Math.floor(none.BasicSpeed.value) + 3);
       expect(light.Dodge.value).toBe(none.Dodge.value - 1);
       expect(light.Movement.value).toBe(Math.floor(none.Movement.value * 0.8));
     });

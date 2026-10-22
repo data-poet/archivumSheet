@@ -64,7 +64,7 @@ export const GLOSSARY = {
   Esquiva: {
     term: "Esquiva",
     definition:
-      "Defesa ativa para sair do caminho de um ataque. Deslocamento sem carga + 4, menos o nível de carga; role 3d6 e tire igual ou menos.",
+      "Defesa ativa para sair do caminho de um ataque. VB arredondada para baixo + 3, menos o nível de carga; role 3d6 e tire igual ou menos.",
   },
   NH: {
     term: "Nível de Habilidade",

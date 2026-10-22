@@ -52,5 +52,5 @@ Duas compras de PV: $+8$ PV por $2 \times 5 = 10$ pontos. Uma compra de VB leva 
 2. **Base dos secundários:** fórmulas aplicadas aos primários finais. Vantagens e desvantagens como Força de Vontade ou Audição Aguçada somam ou subtraem dessas bases automaticamente.
 3. **Secundários:** base + compras, depois modificadores e encantamentos.
 4. **Deslocamento:** VB arredondada para baixo, multiplicada pelo fator de carga (mínimo 1).
-5. **Esquiva:** Deslocamento sem carga + 4, menos o nível de carga, mais modificadores e encantamentos.
+5. **Esquiva:** VB arredondada para baixo + 3, menos o nível de carga, mais modificadores e encantamentos.
 6. **Ferido gravemente:** se os PV atuais estiverem abaixo de 1/3 dos PV naturais, o Deslocamento e a Esquiva caem pela metade, arredondando para cima. A VB não muda.

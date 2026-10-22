@@ -269,7 +269,7 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
     expect(markdown).toContain(
       `\\lfloor 5{,}75 \\rfloor = ${attributes.Movement.value}$ m/s`,
     );
-    expect(markdown).toContain(`$5 + 4 = ${attributes.Dodge.value}$`);
+    expect(markdown).toContain(`$5 + 3 = ${attributes.Dodge.value}$`);
     const {
       calculateCarryWeight: carryFor,
     } = require("engine/inventory/js/carryWeight");
@@ -281,7 +281,7 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
     expect(markdown).toContain(
       `\\lfloor 5 \\times 0{,}6 \\rfloor = ${medium.Movement.value}$ m/s`,
     );
-    expect(markdown).toContain(`$5 + 4 - 2 = ${medium.Dodge.value}$`);
+    expect(markdown).toContain(`$5 + 3 - 2 = ${medium.Dodge.value}$`);
   });
 
   test("PF equals HT, and below 1/3 PF Deslocamento and Esquiva halve", () => {
@@ -291,9 +291,9 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
       FP: { modifier: -8 },
     }).attributes;
     expect(exhausted.Movement.value).toBe(3);
-    expect(exhausted.Dodge.value).toBe(5);
+    expect(exhausted.Dodge.value).toBe(4);
     expect(markdown).toContain(
-      "o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**",
+      "o Deslocamento passa de 5 para **3** e a Esquiva de 8 para **4**",
     );
   });
 
@@ -303,9 +303,9 @@ describe("secondary.md worked examples (ST 10, DX 12, IQ 12, HT 11)", () => {
     }).attributes;
     expect(wounded.BasicSpeed.value).toBe(5.75);
     expect(wounded.Movement.value).toBe(3);
-    expect(wounded.Dodge.value).toBe(5);
+    expect(wounded.Dodge.value).toBe(4);
     expect(markdown).toContain(
-      "o Deslocamento passa de 5 para **3** e a Esquiva de 9 para **5**",
+      "o Deslocamento passa de 5 para **3** e a Esquiva de 8 para **4**",
     );
   });
 });

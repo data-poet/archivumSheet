@@ -34,6 +34,9 @@ const SECONDARY_PURCHASE = {
   DamageResistance: { step: 1, maxBought: 0 },
 };
 
+// 4e B17: Dodge = floor(Basic Speed) + 3, before the encumbrance penalty.
+const DODGE_BASE_OFFSET = 3;
+
 // A reserve under 1/3 of its natural max halves current Move and Dodge (round up); FP also halves lifting ST.
 const LOW_RESERVE = {
   keys: ["HP", "FP"],
@@ -121,6 +124,7 @@ module.exports = {
   POINTS_PER_PURCHASE,
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,
+  DODGE_BASE_OFFSET,
   LOW_RESERVE,
   TOXICITY_THRESHOLDS,
   HP_THRESHOLDS,

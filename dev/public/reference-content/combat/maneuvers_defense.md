@@ -23,13 +23,10 @@
 <details>
 <summary>Esquiva</summary>
 
-- **Cálculo Base:** [[Deslocamento]] sem carga **+4**, menos o nível de carga.
+- **Cálculo Base:** [[VB]] arredondada para baixo **+3**, menos o nível de carga.
 - **Uso:** Não há limite de quantas vezes você pode se esquivar por rodada.
 - **Esquiva Acrobática:** Role Acrobacia antes de se esquivar: sucesso dá **+2** na Esquiva, falha dá **-2**.
 - **Esquivar e Recuar:** Recuar para longe do atacante concede **+3** na Esquiva, ou **+1** em Aparar e Bloqueio (**+3** ao aparar com armas de esgrima ou com Boxe, Judô ou Caratê).
-
-> [!HOUSE]
-> No 4e a Esquiva é VB + 3; no Archivum ela é o Deslocamento sem carga + 4. A carga reduz como no 4e.
 
 </details>
 

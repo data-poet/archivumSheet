@@ -4,6 +4,7 @@ const {
   POINTS_PER_PURCHASE,
   DEFAULT_SECONDARY_PURCHASE,
   SECONDARY_PURCHASE,
+  DODGE_BASE_OFFSET,
   LOW_RESERVE,
 } = require("../../../../helpers/rules");
 
@@ -170,8 +171,9 @@ function buildSecondaryAttributes(
         : Math.max(1, Math.floor(unencumbered.value * carry.move_factor)),
   };
 
-  // Dodge starts from unencumbered Move (house: Move + 4) so the 4e load penalty isn't counted twice.
-  let dodgeBase = Math.floor(unencumbered.value + 4) + carry.dodge_penalty;
+  // 4e B17: Dodge = floor(Basic Speed) + 3 + the load penalty, independent of any Movement-only effect.
+  let dodgeBase =
+    Math.floor(result.BasicSpeed.value) + DODGE_BASE_OFFSET + carry.dodge_penalty;
 
   if (effects?.secondary?.Dodge?.base) {
     dodgeBase += effects.secondary.Dodge.base;

@@ -37,15 +37,12 @@ $$
 $$
 
 $$
-\text{Esquiva} = \text{Deslocamento sem carga} + 4 - \text{nível de carga}
+\text{Esquiva} = \lfloor \text{VB} \rfloor + 3 - \text{nível de carga}
 $$
 
 - Arredonde o Deslocamento para baixo. Dentro dos limites, ele nunca fica abaixo de **1**.
-- A Esquiva parte do Deslocamento **sem carga**, para a carga não contar duas vezes.
+- A Esquiva parte da VB, não do Deslocamento já com carga, para a carga não contar duas vezes.
 - O nível de carga também vale como redutor em testes de Escalada, Furtividade e Natação.
-
-> [!HOUSE]
-> A Esquiva parte do Deslocamento sem carga + 4, em vez da VB + 3 do 4e. O resto segue o 4e.
 
 <details>
 <summary>Exemplo</summary>
@@ -54,12 +51,12 @@ Com **ST 12** (CB 14 kg) e **VB 5,75** (Deslocamento sem carga 5):
 
 | Carga           | Limite (kg) | Deslocamento | Esquiva |
 | :-------------- | :---------: | :----------: | :-----: |
-| Nenhuma         |     14      |      5       |    9    |
-| Leve            |     28      |      4       |    8    |
-| Média           |     42      |      3       |    7    |
-| Pesada          |     84      |      2       |    6    |
-| Muito Pesada    |     140     |      1       |    5    |
-| Acima do limite | mais de 140 |      0       |    5    |
+| Nenhuma         |     14      |      5       |    8    |
+| Leve            |     28      |      4       |    7    |
+| Média           |     42      |      3       |    6    |
+| Pesada          |     84      |      2       |    5    |
+| Muito Pesada    |     140     |      1       |    4    |
+| Acima do limite | mais de 140 |      0       |    4    |
 
 </details>
 
