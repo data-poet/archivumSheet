@@ -13,6 +13,7 @@ import {
   recreateLinkedAllies,
   reorderCharacter,
   reorderAllyInRoster,
+  linkAllyToCharacter,
 } from "../store/allies/characterLinking.js";
 import { createReorderableList } from "../shared/sortable.js";
 import { exportSheet, exportAllySheet } from "../store/persistence.js";
@@ -120,7 +121,7 @@ export function renderPopover() {
       const isActive = c.id === activeId;
       const isAlly = c.kind === ENTRY_KINDS.ALLY;
       return `
-      <li data-tier="${c.indented ? "ally" : "owner"}" data-owner-id="${c.ownerId}">
+      <li data-tier="${c.indented ? "ally" : "owner"}" data-owner-id="${c.ownerId}" data-kind="${c.kind}">
         <button type="button" class="drag-handle" tabindex="-1" aria-label="${t("common.dragHandle")}">${icon("drag-handle")}</button>
         <button type="button"
             class="char-selector-item${isActive ? " is-active" : ""}${c.indented ? " char-selector-item--indented" : ""}"
@@ -175,6 +176,21 @@ function _canSwap(dragged, related) {
   return true;
 }
 
+// An orphan ally (tier "owner", kind "ally") dropped right next to a PC links to that PC instead
+// of just reordering — the only way a drag can turn an unlinked ally into one, so it needs no
+// explicit "drop zone": landing beside a PC is the gesture.
+function _adjacentOwnerCharacterId(li) {
+  for (const sibling of [li.previousElementSibling, li.nextElementSibling]) {
+    if (
+      sibling?.dataset.tier === "owner" &&
+      sibling.dataset.kind === ENTRY_KINDS.CHARACTER
+    ) {
+      return sibling.querySelector("[data-id]")?.dataset.id ?? null;
+    }
+  }
+  return null;
+}
+
 // popover.innerHTML is rebuilt from scratch on every renderPopover() call (no morphHTML here),
 // so the <ul> itself is a fresh node each time — a new Sortable instance is attached after every
 // render rather than once at bootstrap.
@@ -186,6 +202,15 @@ function _attachSelectorReorder() {
     onReorder(li) {
       const id = li.querySelector("[data-id]")?.dataset.id;
       if (!id) return;
+
+      if (li.dataset.tier === "owner" && li.dataset.kind === ENTRY_KINDS.ALLY) {
+        const targetOwnerId = _adjacentOwnerCharacterId(li);
+        if (targetOwnerId) {
+          linkAllyToCharacter(id, targetOwnerId);
+          renderPopover();
+          return;
+        }
+      }
 
       const siblings = [...li.parentElement.children].filter(
         (el) => el.dataset.tier === li.dataset.tier,

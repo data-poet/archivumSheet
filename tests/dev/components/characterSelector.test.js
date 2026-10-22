@@ -54,6 +54,7 @@ import {
   recreateLinkedAllies,
   reorderCharacter,
   reorderAllyInRoster,
+  linkAllyToCharacter,
 } from "dev/public/js/store/allies/characterLinking.js";
 import { createReorderableList } from "dev/public/js/shared/sortable.js";
 import {
@@ -380,6 +381,94 @@ describe("drag reorder", () => {
     expect(() => onReorder(bareLi)).not.toThrow();
     expect(reorderCharacter).not.toHaveBeenCalled();
     expect(reorderAllyInRoster).not.toHaveBeenCalled();
+  });
+
+  test("onReorder links an orphan ally dropped right after a PC, instead of just reordering it", () => {
+    listCharactersGrouped.mockReturnValue([
+      {
+        id: "c1",
+        name: "Aria",
+        indented: false,
+        ownerId: "c1",
+        kind: ENTRY_KINDS.CHARACTER,
+      },
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: false,
+        ownerId: "c2",
+      },
+    ]);
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+
+    const [ariaLi, fidoLi] = document.querySelectorAll(
+      ".char-selector-list > li",
+    );
+    // Simulate Sortable having already moved Fido's <li> to right after Aria's.
+    ariaLi.after(fidoLi);
+
+    onReorder(fidoLi);
+
+    expect(linkAllyToCharacter).toHaveBeenCalledWith("c2", "c1");
+    expect(reorderCharacter).not.toHaveBeenCalled();
+  });
+
+  test("onReorder links an orphan ally dropped right before a PC too (no preceding PC)", () => {
+    listCharactersGrouped.mockReturnValue([
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: false,
+        ownerId: "c2",
+      },
+      {
+        id: "c1",
+        name: "Aria",
+        indented: false,
+        ownerId: "c1",
+        kind: ENTRY_KINDS.CHARACTER,
+      },
+    ]);
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+
+    // Already adjacent (right before Aria, nothing before it) — no DOM move needed.
+    const [fidoLi] = document.querySelectorAll(".char-selector-list > li");
+
+    onReorder(fidoLi);
+
+    expect(linkAllyToCharacter).toHaveBeenCalledWith("c2", "c1");
+  });
+
+  test("onReorder just reorders an orphan ally not adjacent to any PC", () => {
+    listCharactersGrouped.mockReturnValue([
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: false,
+        ownerId: "c2",
+      },
+      {
+        id: "c4",
+        name: "Rex",
+        kind: ENTRY_KINDS.ALLY,
+        indented: false,
+        ownerId: "c4",
+      },
+    ]);
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+
+    const [fidoLi] = document.querySelectorAll(".char-selector-list > li");
+
+    onReorder(fidoLi);
+
+    expect(linkAllyToCharacter).not.toHaveBeenCalled();
+    expect(reorderCharacter).toHaveBeenCalledWith("c2", 0);
   });
 });
 
