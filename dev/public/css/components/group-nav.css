@@ -109,6 +109,10 @@ body.has-groupnav {
     padding-inline: clamp(12px, 2vw, 20px);
   }
 
+  .no-sidebar .l-groupnav {
+    left: 0;
+  }
+
   .groupnav-btn {
     flex-direction: row;
     gap: var(--space-3);

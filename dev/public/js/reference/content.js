@@ -43,7 +43,7 @@ function _buildSectionHTML(section) {
     </section>`;
 }
 
-// Call once, before initNav() / initGroupNav() / initTabs().
+// Call once, before initGroupNav() / initTabs().
 export function buildReferenceSections() {
   const main = document.getElementById(MAIN_ID);
   if (!main) return;

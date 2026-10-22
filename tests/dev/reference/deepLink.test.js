@@ -1,11 +1,11 @@
-jest.mock("dev/public/js/components/groupNav.js", () => ({
+jest.mock("dev/public/js/reference/groupNav.js", () => ({
   activateGroup: jest.fn(),
 }));
 jest.mock("dev/public/js/components/tabs.js", () => ({
   openSection: jest.fn(),
 }));
 
-import { activateGroup } from "dev/public/js/components/groupNav.js";
+import { activateGroup } from "dev/public/js/reference/groupNav.js";
 import { openSection } from "dev/public/js/components/tabs.js";
 import {
   revealAnchor,

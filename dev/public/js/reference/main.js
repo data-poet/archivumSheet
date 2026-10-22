@@ -1,11 +1,10 @@
 import { buildReferenceSections, loadReferenceContent } from "./content.js";
-import { REFERENCE_LAYOUT, REFERENCE_SECTIONS } from "./referenceLayout.js";
+import { REFERENCE_LAYOUT } from "./referenceLayout.js";
 import { configureMarked, mountGlossaryPopovers } from "./markdown.js";
 import { initAccordionScroll } from "./enhance.js";
 import { initDeepLinks } from "./deepLink.js";
 import { initSearch } from "./search.js";
-import { initNav } from "../components/nav.js";
-import { initGroupNav } from "../components/groupNav.js";
+import { initGroupNav } from "./groupNav.js";
 import { initTabs } from "../components/tabs.js";
 import { initTheme } from "../components/theme.js";
 import { initPageSelector } from "../components/pageSelector.js";
@@ -31,10 +30,6 @@ window.onload = async () => {
   _hydrateShell();
 
   buildReferenceSections();
-  initNav({
-    sections: REFERENCE_SECTIONS,
-    labels: LABELS.reference.nav.sections,
-  });
   initGroupNav({
     layout: REFERENCE_LAYOUT,
     labels: LABELS.reference.nav,

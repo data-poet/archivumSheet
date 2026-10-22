@@ -518,7 +518,7 @@
   .reference-search {
     left: auto;
     right: clamp(12px, 2vw, 20px);
-    width: min(520px, calc(100vw - var(--sidebar-w) - 40px));
+    width: min(520px, calc(100vw - 40px));
     border: 1px solid var(--color-border);
     border-top: none;
     border-radius: 0 0 var(--radius) var(--radius);

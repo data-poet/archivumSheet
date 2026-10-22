@@ -272,6 +272,11 @@
     max-width: calc(var(--content-max-w) + var(--sidebar-w));
   }
 
+  .no-sidebar .l-main {
+    margin-left: 0;
+    max-width: var(--content-max-w);
+  }
+
   .l-section {
     scroll-margin-top: var(--space-7);
     max-width: var(--content-max-w);

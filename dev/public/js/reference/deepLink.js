@@ -1,6 +1,6 @@
 // reference.html#<id> opens whatever holds that id: a tab panel, a section, or an item/heading anchor
 // (see _assignAnchors in enhance.js). Runs after the markdown has loaded, since anchors come from it.
-import { activateGroup } from "../components/groupNav.js";
+import { activateGroup } from "./groupNav.js";
 import { openSection } from "../components/tabs.js";
 import { REFERENCE_LAYOUT } from "./referenceLayout.js";
 
