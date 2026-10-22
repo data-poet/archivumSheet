@@ -9,43 +9,45 @@ Role contra o [[NH]] da perícia da arma, somando os modificadores abaixo.
 - **Tamanho:** alvos maiores que um humano são mais fáceis de acertar; menores, mais difíceis.
 - **Local de acerto:** redutor normal do local escolhido. Veja Combate › Regras › Locais de Acerto.
 
-### Tamanho e velocidade/distância
+### Distância, velocidade e tamanho
 
-Some a distância em metros à velocidade do alvo em metros por segundo. Se o resultado cair entre duas linhas, use a linha de baixo, com o redutor maior. O tamanho usa a mesma medida, aplicada à maior dimensão do alvo.
+Some a distância em metros até o alvo à velocidade dele em metros por segundo, e use essa soma na coluna **Distância + Velocidade**. Se o resultado cair entre duas linhas, use a linha de baixo, com o redutor maior. A coluna **Tamanho** usa a mesma escala de medida, só que aplicada à maior dimensão do alvo.
 
-| Medida (m) | Distância e velocidade | Tamanho |
-| ---------- | ---------------------- | ------- |
-| 0,5        | **0**                  | **-4**  |
-| 1          | **0**                  | **-2**  |
-| 2          | **0**                  | **0**   |
-| 3          | **-1**                 | **+1**  |
-| 5          | **-2**                 | **+2**  |
-| 7          | **-3**                 | **+3**  |
-| 10         | **-4**                 | **+4**  |
-| 15         | **-5**                 | **+5**  |
-| 20         | **-6**                 | **+6**  |
-| 30         | **-7**                 | **+7**  |
-| 50         | **-8**                 | **+8**  |
-| 70         | **-9**                 | **+9**  |
-| 100        | **-10**                | **+10** |
-| 150        | **-11**                | **+11** |
-| 200        | **-12**                | **+12** |
-| 300        | **-13**                | **+13** |
-| 500        | **-14**                | **+14** |
+| Medida (m) | Redutor por distância + velocidade | Modificador por tamanho |
+| ---------- | ----------------------------------- | ------------------------ |
+| 0,5        | **0**                                | **-4**                   |
+| 1          | **0**                                | **-2**                   |
+| 2          | **0**                                | **0**                    |
+| 3          | **-1**                               | **+1**                   |
+| 5          | **-2**                               | **+2**                   |
+| 7          | **-3**                               | **+3**                   |
+| 10         | **-4**                               | **+4**                   |
+| 15         | **-5**                               | **+5**                   |
+| 20         | **-6**                               | **+6**                   |
+| 30         | **-7**                               | **+7**                   |
+| 50         | **-8**                               | **+8**                   |
+| 70         | **-9**                               | **+9**                   |
+| 100        | **-10**                              | **+10**                  |
+| 150        | **-11**                              | **+11**                  |
+| 200        | **-12**                              | **+12**                  |
+| 300        | **-13**                              | **+13**                  |
+| 500        | **-14**                              | **+14**                  |
 
 > [!TIP]
 > A tabela continua no mesmo padrão: cada vez que a medida aumenta cerca de 50%, o redutor de distância cresce **-1**.
 
 <details>
-<summary>Exemplo</summary>
+<summary>Exemplos</summary>
 
-Uma arqueira com **NH 14** e arco de **Precisão 2** mira por um turno num lobo a **18 m**, parado. A linha de **20 m** dá **-6**, e o lobo, com cerca de 1 m de comprimento, dá **-2**:
+**Distância e velocidade:** uma arqueira com **NH 14** e arco de **Precisão 2** mira por um turno num lobo a **18 m**, parado. A linha de **20 m** dá **-6**, e o lobo, com cerca de 1 m de comprimento, dá **-2**:
 
 $$
 14 + 2 - 6 - 2 = 8
 $$
 
 Se o lobo estivesse correndo a **10 m/s**, a medida seria $18 + 10 = 28$, na linha de **30 m**, e o redutor de distância subiria para **-7**.
+
+**Tamanho:** um dragão de **20 m** de comprimento dá **+6** pelo tamanho, mesmo parado — o mesmo valor que o redutor de distância a 20 m, só que a favor de quem atira.
 
 </details>
 
@@ -75,17 +77,3 @@ O **Volume** mede o quanto a arma é desajeitada de manejar. Ele é usado como r
 
 - **Avançar e Atacar:** **-2** ou o Volume, o que for pior. Veja Combate › Manobras › Ataque e Movimento.
 - **Combate corpo a corpo:** disparar contra um alvo ao alcance das mãos aplica o Volume como redutor.
-
-### Situações especiais
-
-- **Cobertura:** se só parte do alvo estiver exposta, só essa parte pode ser atingida, com o redutor normal do local. Um tiro que atravessa a cobertura precisa vencer a [[RD]] dela primeiro.
-- **Postura do alvo:** atacar à distância um alvo agachado, ajoelhado ou sentado dá **-2**.
-- **Disparar contra um combate corpo a corpo:** cada pessoa na linha de tiro entre você e o alvo dá **-4**. Se você errar, o Mestre pode decidir que o disparo acertou alguém no caminho.
-- **Alvos em movimento:** some a velocidade do alvo à distância, como na tabela.
-- **Atirar sem ver:** a falta de luz dá de **-1** a **-9**, conforme a escuridão, e **-10** na escuridão total. Sem enxergar o alvo, também não é possível mirar.
-
-### Arremesso
-
-- **Armas de arremesso:** facas, machadinhas e lanças usam a perícia de arremesso correspondente e listam seu próprio dano, Meio Dano e Distância Máxima.
-- **Objetos improvisados:** pedras, garrafas e similares usam o teste de [[DX]] ou a perícia Arremesso. A distância e o dano dependem do peso do objeto em relação à [[ST]] de quem arremessa, e o Mestre define os valores.
-- **Recuperar a arma:** a arma arremessada deixa a mão. É preciso preparar outra antes do próximo ataque.

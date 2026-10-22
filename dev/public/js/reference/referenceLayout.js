@@ -180,8 +180,16 @@ export const REFERENCE_LAYOUT = [
         accent: "combat",
         tabs: [
           {
-            id: "tab-ranged-combat",
-            file: `${CONTENT}/combat/ranged_combat.md`,
+            id: "tab-ranged-attack",
+            file: `${CONTENT}/combat/ranged_attack.md`,
+          },
+          {
+            id: "tab-ranged-special-situations",
+            file: `${CONTENT}/combat/ranged_special_situations.md`,
+          },
+          {
+            id: "tab-ranged-throwing",
+            file: `${CONTENT}/combat/ranged_throwing.md`,
           },
         ],
       },
