@@ -9,6 +9,7 @@ jest.mock("dev/public/js/ui.js", () => ({
 let updateActualValues;
 let initAutoRun;
 let triggerAutoRun;
+let cancelPendingSave;
 let AUTORUN_KIND;
 let SAVE_DEBOUNCE_MS;
 
@@ -16,8 +17,13 @@ beforeEach(async () => {
   jest.useFakeTimers();
   jest.resetModules();
   ({ updateActualValues } = await import("dev/public/js/ui.js"));
-  ({ initAutoRun, triggerAutoRun, AUTORUN_KIND, SAVE_DEBOUNCE_MS } =
-    await import("dev/public/js/compute/autorun.js"));
+  ({
+    initAutoRun,
+    triggerAutoRun,
+    cancelPendingSave,
+    AUTORUN_KIND,
+    SAVE_DEBOUNCE_MS,
+  } = await import("dev/public/js/compute/autorun.js"));
 });
 
 afterEach(() => {
@@ -345,6 +351,26 @@ describe("save: decoupled from the engine run", () => {
 
     window.dispatchEvent(new Event("pagehide"));
 
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
+  test("cancelPendingSave stops a scheduled save from firing on pagehide", () => {
+    const onSave = jest.fn();
+    initAutoRun(pendingRunEngine(), onSave);
+
+    triggerAutoRun();
+    cancelPendingSave();
+    window.dispatchEvent(new Event("pagehide"));
+
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
+  test("cancelPendingSave with nothing scheduled is a no-op", () => {
+    const onSave = jest.fn();
+    initAutoRun(pendingRunEngine(), onSave);
+
+    expect(() => cancelPendingSave()).not.toThrow();
+    window.dispatchEvent(new Event("pagehide"));
     expect(onSave).not.toHaveBeenCalled();
   });
 });

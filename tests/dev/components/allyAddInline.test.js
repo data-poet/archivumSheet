@@ -13,6 +13,9 @@ jest.mock("dev/public/js/allies/catalog.js", () => ({
 jest.mock("dev/public/js/shared/toast.js", () => ({
   showToast: jest.fn(),
 }));
+jest.mock("dev/public/js/compute/autorun.js", () => ({
+  cancelPendingSave: jest.fn(),
+}));
 
 import {
   getActiveKind,
@@ -23,6 +26,7 @@ import {
 import { forkAndLinkAllyToCharacter } from "dev/public/js/store/allies/characterLinking.js";
 import { listAllies } from "dev/public/js/allies/catalog.js";
 import { showToast } from "dev/public/js/shared/toast.js";
+import { cancelPendingSave } from "dev/public/js/compute/autorun.js";
 import {
   renderAllyAddControl,
   initAllyAddControl,
@@ -114,6 +118,18 @@ describe("renderAllyAddControl", () => {
       "pc-1",
     );
     expect(loadCharacter).toHaveBeenCalledWith("c-new-ally");
+    errorSpy.mockRestore();
+  });
+
+  test("cancels the pending debounced save before reloading, so the reload's pagehide flush can't overwrite the new fork with the previous character's still-stale sheet", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    forkAndLinkAllyToCharacter.mockResolvedValue("c-new-ally");
+    await initAllyAddControl();
+
+    document.getElementById("ally-add-btn").click();
+    await flush();
+
+    expect(cancelPendingSave).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 

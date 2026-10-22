@@ -118,6 +118,15 @@ function _scheduleRun(kind) {
   }, trailing);
 }
 
+// For a caller that already saved correctly by other means and is about to unload the page
+// (e.g. allyAddInline.js's forced reload after switching the active character): without this,
+// the pagehide flush fires before the engine has rebuilt for the new character, so it captures
+// and persists the *previous* character's still-current state.sheet over the new one's own data.
+export function cancelPendingSave() {
+  clearTimeout(_saveTimer);
+  _saveTimer = null;
+}
+
 export function triggerAutoRun({ kind } = {}) {
   updateActualValues();
   _scheduleRun(kind);

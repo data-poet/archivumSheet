@@ -14,6 +14,7 @@ import {
   loadCharacter,
 } from "../../store/characters.js";
 import { forkAndLinkAllyToCharacter } from "../../store/allies/characterLinking.js";
+import { cancelPendingSave } from "../../compute/autorun.js";
 import { ENTRY_KINDS } from "../../shared/constants.js";
 import { showToast } from "../../shared/toast.js";
 import { escapeHtml } from "../../shared/renderUtils.js";
@@ -163,6 +164,11 @@ async function _handleAdd(mount) {
   }
 
   loadCharacter(newId);
+  // loadCharacter() already persisted the fork correctly by itself. _applyData()'s own
+  // triggerAutoRun() just armed a debounced save that would otherwise fire on the reload's
+  // pagehide and overwrite it with the engine's still-stale (previous character's) sheet —
+  // see cancelPendingSave()'s own comment.
+  cancelPendingSave();
   // Catalog audience (shared/availability.js) is only computed once, at bootstrap — a reload
   // is the only way the newly active ally's kind can re-filter races/etc, same as every other
   // active-character switch in characterSelector.js.
