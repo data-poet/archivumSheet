@@ -67,8 +67,20 @@ export const REFERENCE_LAYOUT = [
         accent: "skills",
         tabs: [
           {
-            id: "tab-success-rolls",
-            file: `${CONTENT}/system/success_rolls.md`,
+            id: "tab-success-rolls-basic",
+            file: `${CONTENT}/system/success_rolls_basic.md`,
+          },
+          {
+            id: "tab-success-rolls-repeated",
+            file: `${CONTENT}/system/success_rolls_repeated.md`,
+          },
+          {
+            id: "tab-success-rolls-contests",
+            file: `${CONTENT}/system/success_rolls_contests.md`,
+          },
+          {
+            id: "tab-success-rolls-resistance",
+            file: `${CONTENT}/system/success_rolls_resistance.md`,
           },
         ],
       },
