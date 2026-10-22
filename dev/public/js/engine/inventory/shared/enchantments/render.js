@@ -402,6 +402,16 @@ function renderEntryEditForm(parentInstanceId, entry, itemCategory) {
           data-instance-id="${parentInstanceId}"
           data-entry-instance-id="${formKey}"
         >${t("common.save")}</button>
+        ${
+          swapped
+            ? `<button
+          type="button"
+          class="enchantment-cancel-btn"
+          data-instance-id="${parentInstanceId}"
+          data-entry-instance-id="${formKey}"
+        >${t("common.cancel")}</button>`
+            : ""
+        }
         <button
           type="button"
           class="btn-remove enchantment-remove-btn"

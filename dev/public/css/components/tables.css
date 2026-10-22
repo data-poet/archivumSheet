@@ -298,6 +298,7 @@ tr.detail-row details[open] summary {
 
 .custom-fields-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
 }
 

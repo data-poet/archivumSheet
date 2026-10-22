@@ -71,6 +71,18 @@ export function createEnchantmentsHandlers({
       return true;
     }
 
+    if (e.target.classList.contains("enchantment-cancel-btn")) {
+      const instanceId = e.target.dataset.instanceId;
+      const entryInstanceId = e.target.dataset.entryInstanceId;
+      if (!findByInstanceId(instanceId)) return false;
+
+      // Drops the swapped-type selection so the form re-renders back to the entry's saved type/params.
+      clearEnchantmentAddFormSelection(entryInstanceId);
+
+      runWithOpenState(e, render);
+      return true;
+    }
+
     if (e.target.classList.contains("enchantment-add-btn")) {
       const instanceId = e.target.dataset.instanceId;
       if (!findByInstanceId(instanceId)) return false;
