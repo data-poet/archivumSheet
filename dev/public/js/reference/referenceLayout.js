@@ -138,8 +138,9 @@ export const REFERENCE_LAYOUT = [
     accent: "combat",
     sections: [
       {
-        id: "section-combat-rules",
-        icon: "combat-rules",
+        id: "combat-1",
+        icon: "ordinal-1",
+        iconOnly: true,
         accent: "combat",
         tabs: [
           {
@@ -157,8 +158,9 @@ export const REFERENCE_LAYOUT = [
         ],
       },
       {
-        id: "section-maneuvers",
-        icon: "maneuvers",
+        id: "combat-2",
+        icon: "ordinal-2",
+        iconOnly: true,
         accent: "combat",
         tabs: [
           {
@@ -176,8 +178,9 @@ export const REFERENCE_LAYOUT = [
         ],
       },
       {
-        id: "section-ranged",
-        icon: "ranged",
+        id: "combat-3",
+        icon: "ordinal-3",
+        iconOnly: true,
         accent: "combat",
         tabs: [
           {
