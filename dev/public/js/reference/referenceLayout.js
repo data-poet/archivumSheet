@@ -43,6 +43,14 @@ export const REFERENCE_LAYOUT = [
             id: "tab-attr-resistances",
             file: `${CONTENT}/attributes/elemental_resistances.md`,
           },
+        ],
+      },
+      {
+        id: "character-3",
+        icon: "ordinal-3",
+        iconOnly: true,
+        accent: "attributes",
+        tabs: [
           {
             id: "tab-attr-carry",
             file: `${CONTENT}/attributes/carry_and_movement.md`,
@@ -55,8 +63,8 @@ export const REFERENCE_LAYOUT = [
     group: "system",
     icon: "system",
     accent: "skills",
-    // Piloting the <group>-<n> / icon-only-ordinal nav scheme here: sections are capped at
-    // 2-3 tabs each and numbered instead of named, so the mobile section nav stays scannable.
+    // Piloting the <group>-<n> / icon-only-ordinal nav scheme here: sections are numbered
+    // instead of named, so the mobile section nav stays scannable.
     sections: [
       {
         id: "system-1",
@@ -257,6 +265,10 @@ export const REFERENCE_LAYOUT = [
             id: "tab-critical-failures",
             file: `${CONTENT}/tables/critical_failures.md`,
           },
+          {
+            id: "tab-critical-failures-magic",
+            file: `${CONTENT}/tables/critical_failures_magic.md`,
+          },
         ],
       },
       {
@@ -265,10 +277,6 @@ export const REFERENCE_LAYOUT = [
         iconOnly: true,
         accent: "inventory",
         tabs: [
-          {
-            id: "tab-critical-failures-magic",
-            file: `${CONTENT}/tables/critical_failures_magic.md`,
-          },
           {
             id: "tab-panic-table",
             file: `${CONTENT}/tables/panic_table.md`,

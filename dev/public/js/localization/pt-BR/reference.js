@@ -31,7 +31,8 @@ export const REFERENCE = {
     },
     sections: {
       "character-1": { label: "Atributos" },
-      "character-2": { label: "Dano, Resistências e Carga" },
+      "character-2": { label: "Dano e Resistências" },
+      "character-3": { label: "Carga e Movimento" },
       "system-1": { label: "Testes" },
       "system-2": { label: "Resistência e Reações" },
       "system-3": { label: "Condições" },
@@ -42,7 +43,7 @@ export const REFERENCE = {
       "combat-2": { label: "Manobras" },
       "combat-3": { label: "À Distância" },
       "tables-1": { label: "Críticos" },
-      "tables-2": { label: "Falhas Mágicas e Pânico" },
+      "tables-2": { label: "Pânico" },
       "section-homebrew": { label: "Regras do Mestre" },
     },
   },

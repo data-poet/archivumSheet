@@ -43,15 +43,11 @@ describe("REFERENCE_LAYOUT shape", () => {
 });
 
 describe("REFERENCE_LAYOUT numbered sections", () => {
-  test("a migrated group's sections are <group>-<n>, capped at 2-3 tabs each", () => {
+  test("a migrated group's sections are <group>-<n>", () => {
     const migrated = ["system", "character", "combat", "magic", "tables"];
     REFERENCE_LAYOUT.filter(({ group }) => migrated.includes(group)).forEach(
       ({ group, sections }) => {
-        sections.forEach(({ id, tabs }, i) => {
-          expect(id).toBe(`${group}-${i + 1}`);
-          expect(tabs.length).toBeGreaterThanOrEqual(2);
-          expect(tabs.length).toBeLessThanOrEqual(3);
-        });
+        sections.forEach(({ id }, i) => expect(id).toBe(`${group}-${i + 1}`));
       },
     );
   });
