@@ -78,6 +78,14 @@
   align-items: stretch;
 }
 
+/* Drag-to-reorder is desktop-only, same as the inventory lists — hiding the handle also
+   disables the drag, since Sortable has nothing to grab. */
+@media (max-width: 767px) {
+  .char-selector-list > li > .drag-handle {
+    display: none;
+  }
+}
+
 /* Both row types are <button>s so they're keyboard-operable; this strips the global button chrome back to a flush list row. */
 .char-selector-item,
 .char-selector-action-item {
