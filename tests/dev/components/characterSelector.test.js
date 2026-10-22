@@ -15,6 +15,11 @@ jest.mock("dev/public/js/store/allies/characterLinking.js", () => ({
   linkAllyToCharacter: jest.fn(),
   unlinkAlly: jest.fn(),
   forkAndLinkAllyToCharacter: jest.fn(),
+  reorderCharacter: jest.fn(),
+  reorderAllyInRoster: jest.fn(),
+}));
+jest.mock("dev/public/js/shared/sortable.js", () => ({
+  createReorderableList: jest.fn(),
 }));
 jest.mock("dev/public/js/components/entryKind.js", () => ({
   renderEntryKind: jest.fn(),
@@ -47,7 +52,10 @@ import {
 import {
   listCharactersGrouped,
   recreateLinkedAllies,
+  reorderCharacter,
+  reorderAllyInRoster,
 } from "dev/public/js/store/allies/characterLinking.js";
+import { createReorderableList } from "dev/public/js/shared/sortable.js";
 import {
   exportSheet,
   exportAllySheet,
@@ -235,6 +243,143 @@ describe("renderPopover", () => {
     const popover = document.getElementById("char-selector-popover");
     expect(popover.querySelector('[role="listbox"]')).toBeNull();
     expect(popover.querySelector('[role="option"]')).toBeNull();
+  });
+});
+
+describe("drag reorder", () => {
+  function lastWiring() {
+    const calls = createReorderableList.mock.calls;
+    return calls[calls.length - 1];
+  }
+
+  test("attaches to the character list after every render", () => {
+    renderPopover();
+    const [container] = lastWiring();
+    expect(container).toBe(document.querySelector(".char-selector-list"));
+  });
+
+  test("canSwap allows two owners, rejects an owner with an ally", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c1", name: "Aria", indented: false, ownerId: "c1" },
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+      { id: "c3", name: "Borin", indented: false, ownerId: "c3" },
+    ]);
+    renderPopover();
+    const [, { canSwap }] = lastWiring();
+
+    const [ownerLi, allyLi, otherOwnerLi] = document.querySelectorAll(
+      ".char-selector-list > li",
+    );
+    expect(canSwap(ownerLi, otherOwnerLi)).toBe(true);
+    expect(canSwap(ownerLi, allyLi)).toBe(false);
+  });
+
+  test("canSwap allows two allies under the same owner, rejects allies under different owners", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c1", name: "Aria", indented: false, ownerId: "c1" },
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+      {
+        id: "c3",
+        name: "Rex",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+      { id: "c4", name: "Borin", indented: false, ownerId: "c4" },
+      {
+        id: "c5",
+        name: "Tusk",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c4",
+      },
+    ]);
+    renderPopover();
+    const [, { canSwap }] = lastWiring();
+
+    const lis = document.querySelectorAll(".char-selector-list > li");
+    const [, fido, rex, , tusk] = lis;
+    expect(canSwap(fido, rex)).toBe(true);
+    expect(canSwap(fido, tusk)).toBe(false);
+  });
+
+  test("onReorder repositions an owner among owners only", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c1", name: "Aria", indented: false, ownerId: "c1" },
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+      { id: "c3", name: "Borin", indented: false, ownerId: "c3" },
+    ]);
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+
+    const lis = document.querySelectorAll(".char-selector-list > li");
+    const borinLi = lis[2];
+    // Simulate Sortable already having moved Borin's <li> to the front.
+    borinLi.parentElement.insertBefore(borinLi, lis[0]);
+
+    onReorder(borinLi);
+
+    expect(reorderCharacter).toHaveBeenCalledWith("c3", 0);
+    expect(reorderAllyInRoster).not.toHaveBeenCalled();
+  });
+
+  test("onReorder repositions an ally within its own owner's roster only", () => {
+    listCharactersGrouped.mockReturnValue([
+      { id: "c1", name: "Aria", indented: false, ownerId: "c1" },
+      {
+        id: "c2",
+        name: "Fido",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+      {
+        id: "c3",
+        name: "Rex",
+        kind: ENTRY_KINDS.ALLY,
+        indented: true,
+        ownerId: "c1",
+      },
+    ]);
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+
+    const lis = document.querySelectorAll(".char-selector-list > li");
+    const rexLi = lis[2];
+    rexLi.parentElement.insertBefore(rexLi, lis[1]);
+
+    onReorder(rexLi);
+
+    expect(reorderAllyInRoster).toHaveBeenCalledWith("c1", "c3", 0);
+    expect(reorderCharacter).not.toHaveBeenCalled();
+  });
+
+  test("onReorder is a no-op when the row has no resolvable id", () => {
+    renderPopover();
+    const [, { onReorder }] = lastWiring();
+    const bareLi = document.createElement("li");
+
+    expect(() => onReorder(bareLi)).not.toThrow();
+    expect(reorderCharacter).not.toHaveBeenCalled();
+    expect(reorderAllyInRoster).not.toHaveBeenCalled();
   });
 });
 

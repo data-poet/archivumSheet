@@ -71,6 +71,13 @@
   padding: var(--space-3) 0;
 }
 
+/* The drag handle sits beside the selectable row, not inside it, so a tap on the handle never
+   also triggers select-char. */
+.char-selector-list > li {
+  display: flex;
+  align-items: stretch;
+}
+
 /* Both row types are <button>s so they're keyboard-operable; this strips the global button chrome back to a flush list row. */
 .char-selector-item,
 .char-selector-action-item {

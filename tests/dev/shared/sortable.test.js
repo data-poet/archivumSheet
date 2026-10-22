@@ -4,6 +4,7 @@ import {
   createSortableList,
   attachSortableOnce,
   createStorageDragHandler,
+  createReorderableList,
 } from "dev/public/js/shared/sortable.js";
 
 // Same reasoning as the idiomorph parity test (tests/dev/shared/morph.test.js): the vendored
@@ -308,5 +309,56 @@ describe("createStorageDragHandler", () => {
 
     onEnd({ item, from, to: from });
     expect(moveFn).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("createReorderableList", () => {
+  function fakeSortable() {
+    const calls = [];
+    const Sortable = {
+      create: jest.fn((container, options) => {
+        calls.push({ container, options });
+        return { option: jest.fn(), destroy: jest.fn() };
+      }),
+    };
+    return { Sortable, calls };
+  }
+
+  test("returns null without a container", () => {
+    const { Sortable } = fakeSortable();
+    expect(createReorderableList(null, {}, Sortable)).toBeNull();
+  });
+
+  test("onEnd calls onReorder with the moved element", () => {
+    const { Sortable, calls } = fakeSortable();
+    const container = document.createElement("ul");
+    const onReorder = jest.fn();
+
+    createReorderableList(container, { onReorder }, Sortable);
+    const item = document.createElement("li");
+
+    calls[0].options.onEnd({ item });
+
+    expect(onReorder).toHaveBeenCalledWith(item);
+  });
+
+  test("omits onMove when no canSwap guard is given", () => {
+    const { Sortable, calls } = fakeSortable();
+    createReorderableList(document.createElement("ul"), {}, Sortable);
+
+    expect(calls[0].options.onMove).toBeUndefined();
+  });
+
+  test("onMove delegates to canSwap with the dragged and related elements", () => {
+    const { Sortable, calls } = fakeSortable();
+    const canSwap = jest.fn(() => false);
+    createReorderableList(document.createElement("ul"), { canSwap }, Sortable);
+
+    const dragged = document.createElement("li");
+    const related = document.createElement("li");
+    const result = calls[0].options.onMove({ dragged, related });
+
+    expect(canSwap).toHaveBeenCalledWith(dragged, related);
+    expect(result).toBe(false);
   });
 });

@@ -29,54 +29,94 @@ function _ownerIdOf(list, allyId) {
   return null;
 }
 
-// Same entries as listCharacters(), reordered so a forked local ally (kind: "ally") sits
-// right after the PC whose roster still references it (indented: true), for the selector to
-// visually group them. Ownership is derived from each PC's own roster ally_id, since forked
-// allies don't record their origin on themselves. An ally with no PC pointing at it anymore
-// (removed from the roster but never deleted, see unlinkAlly below) just
-// keeps its own place in list order, un-indented.
+// Same entries as listCharacters(), with each forked local ally nested right after the PC whose
+// roster references it (indented: true), in that roster's own order — not list order, so dragging
+// an ally within its roster (reorderAllyInRoster) changes what's shown here. An orphaned ally
+// keeps its own place, un-indented. `ownerId` (own id for owners, owner's id for allies) is what
+// the selector's drag-reorder uses to stop an ally from being dropped under a different PC.
 export function listCharactersGrouped() {
   const list = getStore().list;
+  const byId = new Map(list.map((entry) => [entry.id, entry]));
 
-  const ownerIdOf = new Map();
-  for (const entry of list) {
-    for (const roster of entry?.data?.character?.allies ?? []) {
-      ownerIdOf.set(roster.ally_id, entry.id);
-    }
-  }
-
-  const idsInStore = new Set(list.map((entry) => entry.id));
-  const childrenOf = new Map();
-  for (const entry of list) {
-    if (kindOf(entry) !== ENTRY_KINDS.ALLY) continue;
-    const ownerId = ownerIdOf.get(entry.id);
-    if (ownerId && idsInStore.has(ownerId)) {
-      if (!childrenOf.has(ownerId)) childrenOf.set(ownerId, []);
-      childrenOf.get(ownerId).push(entry);
-    }
-  }
-
-  const toRow = (entry, indented) => ({
+  const toRow = (entry, indented, ownerId) => ({
     id: entry.id,
     name: entry.name,
     race: entry.race,
     kind: kindOf(entry),
     indented,
+    ownerId,
   });
 
-  const owned = new Set(
-    [...childrenOf.values()].flat().map((entry) => entry.id),
-  );
+  const childrenOf = new Map();
+  const owned = new Set();
+  for (const entry of list) {
+    const children = (entry?.data?.character?.allies ?? [])
+      .map((roster) => byId.get(roster.ally_id))
+      .filter((child) => child && kindOf(child) === ENTRY_KINDS.ALLY);
+    if (children.length === 0) continue;
+
+    childrenOf.set(entry.id, children);
+    children.forEach((child) => owned.add(child.id));
+  }
+
   const result = [];
   for (const entry of list) {
     if (owned.has(entry.id)) continue;
 
-    result.push(toRow(entry, false));
+    result.push(toRow(entry, false, entry.id));
     for (const child of childrenOf.get(entry.id) ?? []) {
-      result.push(toRow(child, true));
+      result.push(toRow(child, true, entry.id));
     }
   }
   return result;
+}
+
+// Repositions id among the store's top-level entries, rebuilding `list` so each owner stays
+// immediately followed by its own roster. Drag reorder for the selector's top-level rows.
+export function reorderCharacter(id, newIndex) {
+  const store = getStore();
+  const grouped = listCharactersGrouped();
+  const topLevelIds = grouped.filter((c) => !c.indented).map((c) => c.id);
+  const fromIndex = topLevelIds.indexOf(id);
+  if (fromIndex === -1) return;
+
+  topLevelIds.splice(fromIndex, 1);
+  topLevelIds.splice(newIndex, 0, id);
+
+  const byId = new Map(store.list.map((entry) => [entry.id, entry]));
+  const rebuilt = [];
+  for (const topId of topLevelIds) {
+    const entry = byId.get(topId);
+    if (!entry) continue;
+    rebuilt.push(entry);
+    for (const roster of entry.data?.character?.allies ?? []) {
+      const child = byId.get(roster.ally_id);
+      if (child) rebuilt.push(child);
+    }
+  }
+  // Anything missed is appended, so nothing is lost.
+  for (const entry of store.list) {
+    if (!rebuilt.includes(entry)) rebuilt.push(entry);
+  }
+
+  store.list = rebuilt;
+  _save(store);
+}
+
+// Repositions allyId within ownerId's own roster array. Drag reorder for the selector's indented rows.
+export function reorderAllyInRoster(ownerId, allyId, newIndex) {
+  const store = getStore();
+  const owner = store.list.find((c) => c.id === ownerId);
+  if (!owner) return;
+
+  const roster = owner.data?.character?.allies ?? [];
+  const fromIndex = roster.findIndex((r) => r.ally_id === allyId);
+  if (fromIndex === -1) return;
+
+  const [moved] = roster.splice(fromIndex, 1);
+  roster.splice(newIndex, 0, moved);
+
+  _save(store);
 }
 
 // Returns the id of whichever character's roster currently references allyEntryId, or null.

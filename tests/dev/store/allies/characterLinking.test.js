@@ -24,6 +24,8 @@ import {
   getLinkedAllies,
   recreateLinkedAllies,
   forkAndLinkAllyToCharacter,
+  reorderCharacter,
+  reorderAllyInRoster,
 } from "dev/public/js/store/allies/characterLinking.js";
 import { resetDOM } from "tests/dev/helpers/domFixture.js";
 import { resetState } from "tests/dev/helpers/stateFixture.js";
@@ -76,14 +78,23 @@ describe("listCharactersGrouped", () => {
         race: "",
         kind: "character",
         indented: false,
+        ownerId: "pc-1",
       },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: true },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        indented: true,
+        ownerId: "pc-1",
+      },
       {
         id: "pc-2",
         name: "Borin",
         race: "",
         kind: "character",
         indented: false,
+        ownerId: "pc-2",
       },
     ]);
   });
@@ -113,8 +124,132 @@ describe("listCharactersGrouped", () => {
         race: "",
         kind: "character",
         indented: false,
+        ownerId: "pc-1",
       },
-      { id: "c-ally-1", name: "Fido", race: "", kind: "ally", indented: false },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        indented: false,
+        ownerId: "c-ally-1",
+      },
+    ]);
+  });
+});
+
+describe("reorderCharacter", () => {
+  test("moves a top-level entry to a new position, keeping each owner's roster attached", () => {
+    seedStore([
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [{ id: "ai-1", ally_id: "c-ally-1" }] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+      {
+        id: "pc-2",
+        name: "Borin",
+        race: "",
+        kind: "character",
+        data: { character: {} },
+      },
+    ]);
+
+    reorderCharacter("pc-2", 0);
+
+    expect(listCharactersGrouped().map((c) => c.id)).toEqual([
+      "pc-2",
+      "pc-1",
+      "c-ally-1",
+    ]);
+  });
+
+  test("does nothing for an id not in the store", () => {
+    seedStore([
+      { id: "pc-1", name: "Aria", race: "", kind: "character", data: {} },
+    ]);
+
+    reorderCharacter("missing", 0);
+
+    expect(listCharactersGrouped().map((c) => c.id)).toEqual(["pc-1"]);
+  });
+});
+
+describe("reorderAllyInRoster", () => {
+  test("repositions an ally within its owner's roster, which listCharactersGrouped reflects", () => {
+    seedStore([
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: {
+          character: {
+            allies: [
+              { id: "ai-1", ally_id: "c-ally-1" },
+              { id: "ai-2", ally_id: "c-ally-2" },
+            ],
+          },
+        },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+      {
+        id: "c-ally-2",
+        name: "Rex",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+    ]);
+
+    reorderAllyInRoster("pc-1", "c-ally-2", 0);
+
+    expect(listCharactersGrouped().map((c) => c.id)).toEqual([
+      "pc-1",
+      "c-ally-2",
+      "c-ally-1",
+    ]);
+  });
+
+  test("does nothing when the owner or the ally isn't found", () => {
+    seedStore([
+      {
+        id: "pc-1",
+        name: "Aria",
+        race: "",
+        kind: "character",
+        data: { character: { allies: [{ id: "ai-1", ally_id: "c-ally-1" }] } },
+      },
+      {
+        id: "c-ally-1",
+        name: "Fido",
+        race: "",
+        kind: "ally",
+        data: { character: {} },
+      },
+    ]);
+
+    reorderAllyInRoster("missing-owner", "c-ally-1", 0);
+    reorderAllyInRoster("pc-1", "missing-ally", 0);
+
+    expect(listCharactersGrouped().map((c) => c.id)).toEqual([
+      "pc-1",
+      "c-ally-1",
     ]);
   });
 });

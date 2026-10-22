@@ -82,6 +82,28 @@ export function attachSortableOnce(
   return createSortableList(container, options, Sortable);
 }
 
+// A plain reorder-within-one-list wrapper — no storage-location concept, just "this item moved to
+// this index". `canSwap(dragged, related)` is an optional guard (Sortable's `onMove`) for lists
+// that mix unrelated groups of rows, like the character selector's owners and each owner's own
+// indented allies: it returns false to reject a drop, letting the caller keep an ally from landing
+// under a different PC without a second Sortable `group`. `onReorder(item)` fires after the drop
+// with the moved element itself — the caller reads whatever context it needs off its dataset.
+export function createReorderableList(
+  container,
+  { canSwap, onReorder } = {},
+  Sortable = RealSortable,
+) {
+  if (!container) return null;
+
+  return Sortable.create(container, {
+    ...DEFAULTS,
+    onMove: canSwap ? (evt) => canSwap(evt.dragged, evt.related) : undefined,
+    onEnd(evt) {
+      onReorder?.(evt.item);
+    },
+  });
+}
+
 // One Sortable instance per storage location's <tbody> (`${idPrefix}-tbody-${location}`, the id
 // every storage render.js now gives it), scoped by `group` so an item can't drop into another
 // type's table. A same-location drop is a no-op: moveFn only changes storedAt, nothing persists a

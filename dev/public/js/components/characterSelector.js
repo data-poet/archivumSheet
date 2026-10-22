@@ -11,7 +11,10 @@ import {
 import {
   listCharactersGrouped,
   recreateLinkedAllies,
+  reorderCharacter,
+  reorderAllyInRoster,
 } from "../store/allies/characterLinking.js";
+import { createReorderableList } from "../shared/sortable.js";
 import { exportSheet, exportAllySheet } from "../store/persistence.js";
 import { showToast } from "../shared/toast.js";
 import { replaceActiveCharacter } from "../store/characters.js";
@@ -88,7 +91,8 @@ export function openSelector() {
   getPopover()?.classList.add("is-open");
   getTriggerButton()?.setAttribute("aria-expanded", "true");
   updateSelectorButton();
-  getPopover()?.querySelector("button")?.focus();
+  // Not the drag handle (tabindex="-1", first <button> in the row now) — the first real item.
+  getPopover()?.querySelector(".char-selector-item")?.focus();
 }
 
 // restoreFocus is skipped when the popover closes because focus already moved elsewhere
@@ -116,7 +120,8 @@ export function renderPopover() {
       const isActive = c.id === activeId;
       const isAlly = c.kind === ENTRY_KINDS.ALLY;
       return `
-      <li>
+      <li data-tier="${c.indented ? "ally" : "owner"}" data-owner-id="${c.ownerId}">
+        <button type="button" class="drag-handle" tabindex="-1" aria-label="${t("common.dragHandle")}">${icon("drag-handle")}</button>
         <button type="button"
             class="char-selector-item${isActive ? " is-active" : ""}${c.indented ? " char-selector-item--indented" : ""}"
             data-action="select-char"
@@ -155,6 +160,52 @@ export function renderPopover() {
       ${actionItem("replace-char", "replace", t("characters.replace"))}
     </ul>
   `;
+
+  _attachSelectorReorder();
+}
+
+// Owners swap freely; an ally only swaps with another ally under the same owner — this is the
+// one Sortable list's only guard against an ally landing under the wrong PC (no second `group`
+// needed, since owners and allies never need to swap with each other anyway).
+function _canSwap(dragged, related) {
+  if (dragged.dataset.tier !== related.dataset.tier) return false;
+  if (dragged.dataset.tier === "ally") {
+    return dragged.dataset.ownerId === related.dataset.ownerId;
+  }
+  return true;
+}
+
+// popover.innerHTML is rebuilt from scratch on every renderPopover() call (no morphHTML here),
+// so the <ul> itself is a fresh node each time — a new Sortable instance is attached after every
+// render rather than once at bootstrap.
+function _attachSelectorReorder() {
+  const list = getPopover()?.querySelector(".char-selector-list");
+
+  createReorderableList(list, {
+    canSwap: _canSwap,
+    onReorder(li) {
+      const id = li.querySelector("[data-id]")?.dataset.id;
+      if (!id) return;
+
+      const siblings = [...li.parentElement.children].filter(
+        (el) => el.dataset.tier === li.dataset.tier,
+      );
+
+      if (li.dataset.tier === "owner") {
+        const ownerIds = siblings.map(
+          (el) => el.querySelector("[data-id]")?.dataset.id,
+        );
+        reorderCharacter(id, ownerIds.indexOf(id));
+      } else {
+        const rosterIds = siblings
+          .filter((el) => el.dataset.ownerId === li.dataset.ownerId)
+          .map((el) => el.querySelector("[data-id]")?.dataset.id);
+        reorderAllyInRoster(li.dataset.ownerId, id, rosterIds.indexOf(id));
+      }
+
+      renderPopover();
+    },
+  });
 }
 
 export function initCharacterSelector() {
