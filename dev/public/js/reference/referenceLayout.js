@@ -10,8 +10,9 @@ export const REFERENCE_LAYOUT = [
     accent: "attributes",
     sections: [
       {
-        id: "section-attributes",
-        icon: "attributes",
+        id: "character-1",
+        icon: "ordinal-1",
+        iconOnly: true,
         accent: "attributes",
         tabs: [
           {
@@ -29,8 +30,9 @@ export const REFERENCE_LAYOUT = [
         ],
       },
       {
-        id: "section-base-damage",
-        icon: "base-damage",
+        id: "character-2",
+        icon: "ordinal-2",
+        iconOnly: true,
         accent: "attributes",
         tabs: [
           {
@@ -41,13 +43,6 @@ export const REFERENCE_LAYOUT = [
             id: "tab-attr-resistances",
             file: `${CONTENT}/attributes/elemental_resistances.md`,
           },
-        ],
-      },
-      {
-        id: "section-carry",
-        icon: "carry",
-        accent: "attributes",
-        tabs: [
           {
             id: "tab-attr-carry",
             file: `${CONTENT}/attributes/carry_and_movement.md`,

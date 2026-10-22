@@ -44,7 +44,7 @@ describe("REFERENCE_LAYOUT shape", () => {
 
 describe("REFERENCE_LAYOUT numbered sections", () => {
   test("a migrated group's sections are <group>-<n>, capped at 2-3 tabs each", () => {
-    const migrated = ["system"];
+    const migrated = ["system", "character"];
     REFERENCE_LAYOUT.filter(({ group }) => migrated.includes(group)).forEach(
       ({ group, sections }) => {
         sections.forEach(({ id, tabs }, i) => {

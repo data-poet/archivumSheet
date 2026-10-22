@@ -30,9 +30,8 @@ export const REFERENCE = {
       house: { label: "Mesa", short: "Mesa" },
     },
     sections: {
-      "section-attributes": { label: "Atributos" },
-      "section-base-damage": { label: "Dano e Resistências" },
-      "section-carry": { label: "Carga e Movimento" },
+      "character-1": { label: "Atributos" },
+      "character-2": { label: "Dano, Resistências e Carga" },
       "system-1": { label: "Testes" },
       "system-2": { label: "Resistência e Reações" },
       "system-3": { label: "Condições" },
