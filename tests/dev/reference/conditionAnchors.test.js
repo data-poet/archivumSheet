@@ -55,17 +55,21 @@ describe("the reference anchors the conditions link to", () => {
     );
     expect(byKey["atordoamento-mental"]).toBe(byKey["atordoamento-fisico"]);
     expect(byKey["choque-4"]).toBe("tab-combat-rules--choque");
-    expect(byKey["dor-grave"]).toBe("tab-afflictions-conditions--dor");
-    expect(byKey["paralisia"]).toBe("tab-afflictions-conditions--paralisia");
+    expect(byKey["dor-grave"]).toBe("tab-conditions-general--dor");
+    expect(byKey["paralisia"]).toBe("tab-conditions-general--paralisia");
   });
 
   test("the anchor helper finds titles with accents and a numbered repeat", () => {
-    const found = anchorsOf({
+    const general = anchorsOf({
       id: "tab-x",
-      file: "reference-content/effects/afflictions_and_conditions.md",
+      file: "reference-content/effects/conditions_general.md",
+    });
+    const mortal = anchorsOf({
+      id: "tab-x",
+      file: "reference-content/effects/mortal_conditions.md",
     });
 
-    expect(found.has("tab-x--extase")).toBe(true);
-    expect(found.has("tab-x--ataque-cardiaco")).toBe(true);
+    expect(general.has("tab-x--extase")).toBe(true);
+    expect(mortal.has("tab-x--ataque-cardiaco")).toBe(true);
   });
 });

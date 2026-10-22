@@ -101,8 +101,16 @@ export const REFERENCE_LAYOUT = [
         accent: "skills",
         tabs: [
           {
-            id: "tab-afflictions-conditions",
-            file: `${CONTENT}/effects/afflictions_and_conditions.md`,
+            id: "tab-conditions-general",
+            file: `${CONTENT}/effects/conditions_general.md`,
+          },
+          {
+            id: "tab-toxicity-mana",
+            file: `${CONTENT}/effects/toxicity_mana.md`,
+          },
+          {
+            id: "tab-mortal-conditions",
+            file: `${CONTENT}/effects/mortal_conditions.md`,
           },
           {
             id: "tab-fatigue-healing",

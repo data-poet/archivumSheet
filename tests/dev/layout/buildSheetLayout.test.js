@@ -178,7 +178,7 @@ describe("buildSheetLayout — reference help links", () => {
     expect(buttons.at(-1).textContent).toContain(
       LABELS.tabs["tab-survival-conditions"],
     );
-    expect(buttons.at(-1).dataset.reference).toBe("tab-afflictions-conditions");
+    expect(buttons.at(-1).dataset.reference).toBe("tab-conditions-general");
   });
 
   test("sections without mapped tabs get no link", () => {

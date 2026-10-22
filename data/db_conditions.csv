@@ -1,35 +1,35 @@
 condition_id,condition_key,condition_name,condition_group,condition_exclusive_group,condition_dx_modifier,condition_iq_modifier,condition_perception_modifier,condition_skills_modifier,condition_all_rolls_modifier,condition_self_control_modifier,condition_defense_modifier,condition_grants,condition_recovery_attribute,condition_recovery_interval,condition_scales_with_pain_threshold,condition_immune_trait_keys,condition_reminders,condition_reference_anchor
 COND-000,atordoamento-fisico,Atordoamento Físico,Atordoamento,,,,,,,,,stunned,HT,turn,,,,tab-combat-rules--atordoamento-e-nocaute
 COND-001,atordoamento-mental,Atordoamento Mental,Atordoamento,,,,,,,,,stunned,"Will,IQ",turn,,,Vontade após Verificação de Pânico; IQ após falha crítica de magia.,tab-combat-rules--atordoamento-e-nocaute
-COND-002,tosse-ou-espirro,Tosse ou Espirro,Irritante,,-3,-1,,,,,,,,,,,Não pode usar a perícia Furtividade.,tab-afflictions-conditions--tosse-ou-espirro
-COND-003,sonolencia,Sonolência,Irritante,,-2,-2,,,,-2,,,,,,,Vontade a cada 2 h inativo; falha = dorme. Marque só o estado após o sucesso.,tab-afflictions-conditions--sonolencia
-COND-004,embriaguez,Embriaguez,Irritante,embriaguez,-2,-2,,,,-4,,,,,,,Autocontrole -4 (exceto contra Covardia). Reduza Timidez em 2 níveis.,tab-afflictions-conditions--embriaguez
-COND-005,ligeiramente-embriagado,Ligeiramente Embriagado,Irritante,embriaguez,-1,-1,,,,-2,,,,,,,Autocontrole -2 (exceto contra Covardia). Reduza Timidez em 1 nível.,tab-afflictions-conditions--ligeiramente-embriagado
-COND-006,euforia,Euforia,Irritante,,-3,-3,,-3,,-3,,,,,,,,tab-afflictions-conditions--euforia
-COND-007,nauseado,Nauseado,Irritante,nausea,,,,,-2,,-1,,HT,trigger,,,"HT após comer, odor desagradável, Pânico, atordoamento, queda livre ou enjoo de movimento; falha = Gravemente Nauseado.",tab-afflictions-conditions--nauseado
-COND-008,dor-moderada,Dor Moderada,Irritante,dor,-2,-2,,-2,,-2,,,,,TRUE,,,tab-afflictions-conditions--dor
-COND-009,dor-grave,Dor Grave,Irritante,dor,-4,-4,,-4,,-4,,,,,TRUE,,,tab-afflictions-conditions--dor
-COND-010,dor-terrivel,Dor Terrível,Irritante,dor,-6,-6,,-6,,-6,,,,,TRUE,,,tab-afflictions-conditions--dor
-COND-011,agonia,Agonia,Incapacitante,,,,,,,,,incapacitated,,,,,Perde 1 PF por minuto. Cai se estiver de pé ou sentado. Hiperalgia dobra a perda de PF; Hipoalgia permite agir com -3 em DX e IQ.,tab-afflictions-conditions--agonia
-COND-012,sufocamento,Sufocamento,Incapacitante,,,,,,,,,incapacitated,,,,"nao-respira,tolerancia-a-ferimentos-homogeneo",Efeitos de asfixia.,tab-afflictions-conditions--sufocamento
-COND-013,torpor,Torpor,Incapacitante,,,,,,,,,incapacitated,,,,,"Se atingido, esbofeteado ou sacudido, recupera no próximo turno.",tab-afflictions-conditions--torpor
-COND-014,extase,Êxtase,Incapacitante,,,,,,,,,incapacitated,,,,estraga-prazeres,Como Agonia; Hiperalgia/Hipoalgia não têm efeito.,tab-afflictions-conditions--extase
-COND-015,alucinacao,Alucinação,Incapacitante,,,,,,,,,,Will,roll,,,Vontade antes de cada teste: sucesso -2 por 2d s; falha -5 por 1d min; falha crítica = surto por 3d min.,tab-afflictions-conditions--alucinacao
-COND-016,paralisia,Paralisia,Incapacitante,,,,,,,,,"incapacitated,paralyzed",,,,,Cai se não estiver equilibrado. Pode usar vantagens que não exijam fala nem movimento.,tab-afflictions-conditions--paralisia
-COND-017,gravemente-nauseado,Gravemente Nauseado,Incapacitante,nausea,-5,-5,-5,,,,,,,,,,Valores valem se tentar agir (não atordoado). Falha automática em Concentrar; perde 1 PF ao final.,tab-afflictions-conditions--gravemente-nauseado
-COND-018,convulsao,Convulsão,Incapacitante,,,,,,,,,incapacitated,,,,,"Ao final, perde 1d PF.",tab-afflictions-conditions--convulsao
-COND-019,inconsciencia,Inconsciência,Incapacitante,,,,,,,,,unconscious,,,,,,tab-afflictions-conditions--inconsciencia
-COND-020,coma,Coma,Mortal,,,,,,,,,unconscious,HT,12h,,,"Primeiro teste só após 12 h; sem tratamento, falhar é morte.",tab-afflictions-conditions--coma
-COND-021,ataque-cardiaco,Ataque Cardíaco,Mortal,,,,,,,,,incapacitated,,,,"tolerancia-a-ferimentos-difuso,tolerancia-a-ferimentos-homogeneo,tolerancia-a-ferimentos-sem-vitais",PF caem para -1 x PF. Morre em HT/3 minutos sem reanimação.,tab-afflictions-conditions--ataque-cardiaco
+COND-002,tosse-ou-espirro,Tosse ou Espirro,Irritante,,-3,-1,,,,,,,,,,,Não pode usar a perícia Furtividade.,tab-conditions-general--tosse-ou-espirro
+COND-003,sonolencia,Sonolência,Irritante,,-2,-2,,,,-2,,,,,,,Vontade a cada 2 h inativo; falha = dorme. Marque só o estado após o sucesso.,tab-conditions-general--sonolencia
+COND-004,embriaguez,Embriaguez,Irritante,embriaguez,-2,-2,,,,-4,,,,,,,Autocontrole -4 (exceto contra Covardia). Reduza Timidez em 2 níveis.,tab-conditions-general--embriaguez
+COND-005,ligeiramente-embriagado,Ligeiramente Embriagado,Irritante,embriaguez,-1,-1,,,,-2,,,,,,,Autocontrole -2 (exceto contra Covardia). Reduza Timidez em 1 nível.,tab-conditions-general--ligeiramente-embriagado
+COND-006,euforia,Euforia,Irritante,,-3,-3,,-3,,-3,,,,,,,,tab-conditions-general--euforia
+COND-007,nauseado,Nauseado,Irritante,nausea,,,,,-2,,-1,,HT,trigger,,,"HT após comer, odor desagradável, Pânico, atordoamento, queda livre ou enjoo de movimento; falha = Gravemente Nauseado.",tab-conditions-general--nauseado
+COND-008,dor-moderada,Dor Moderada,Irritante,dor,-2,-2,,-2,,-2,,,,,TRUE,,,tab-conditions-general--dor
+COND-009,dor-grave,Dor Grave,Irritante,dor,-4,-4,,-4,,-4,,,,,TRUE,,,tab-conditions-general--dor
+COND-010,dor-terrivel,Dor Terrível,Irritante,dor,-6,-6,,-6,,-6,,,,,TRUE,,,tab-conditions-general--dor
+COND-011,agonia,Agonia,Incapacitante,,,,,,,,,incapacitated,,,,,Perde 1 PF por minuto. Cai se estiver de pé ou sentado. Hiperalgia dobra a perda de PF; Hipoalgia permite agir com -3 em DX e IQ.,tab-conditions-general--agonia
+COND-012,sufocamento,Sufocamento,Incapacitante,,,,,,,,,incapacitated,,,,"nao-respira,tolerancia-a-ferimentos-homogeneo",Efeitos de asfixia.,tab-conditions-general--sufocamento
+COND-013,torpor,Torpor,Incapacitante,,,,,,,,,incapacitated,,,,,"Se atingido, esbofeteado ou sacudido, recupera no próximo turno.",tab-conditions-general--torpor
+COND-014,extase,Êxtase,Incapacitante,,,,,,,,,incapacitated,,,,estraga-prazeres,Como Agonia; Hiperalgia/Hipoalgia não têm efeito.,tab-conditions-general--extase
+COND-015,alucinacao,Alucinação,Incapacitante,,,,,,,,,,Will,roll,,,Vontade antes de cada teste: sucesso -2 por 2d s; falha -5 por 1d min; falha crítica = surto por 3d min.,tab-conditions-general--alucinacao
+COND-016,paralisia,Paralisia,Incapacitante,,,,,,,,,"incapacitated,paralyzed",,,,,Cai se não estiver equilibrado. Pode usar vantagens que não exijam fala nem movimento.,tab-conditions-general--paralisia
+COND-017,gravemente-nauseado,Gravemente Nauseado,Incapacitante,nausea,-5,-5,-5,,,,,,,,,,Valores valem se tentar agir (não atordoado). Falha automática em Concentrar; perde 1 PF ao final.,tab-conditions-general--gravemente-nauseado
+COND-018,convulsao,Convulsão,Incapacitante,,,,,,,,,incapacitated,,,,,"Ao final, perde 1d PF.",tab-conditions-general--convulsao
+COND-019,inconsciencia,Inconsciência,Incapacitante,,,,,,,,,unconscious,,,,,,tab-conditions-general--inconsciencia
+COND-020,coma,Coma,Mortal,,,,,,,,,unconscious,HT,12h,,,"Primeiro teste só após 12 h; sem tratamento, falhar é morte.",tab-mortal-conditions--coma
+COND-021,ataque-cardiaco,Ataque Cardíaco,Mortal,,,,,,,,,incapacitated,,,,"tolerancia-a-ferimentos-difuso,tolerancia-a-ferimentos-homogeneo,tolerancia-a-ferimentos-sem-vitais",PF caem para -1 x PF. Morre em HT/3 minutos sem reanimação.,tab-mortal-conditions--ataque-cardiaco
 COND-022,choque-1,Choque -1,Choque,choque,-1,-1,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
 COND-023,choque-2,Choque -2,Choque,choque,-2,-2,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
 COND-024,choque-3,Choque -3,Choque,choque,-3,-3,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
 COND-025,choque-4,Choque -4,Choque,choque,-4,-4,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
 COND-026,choque-6,Choque -6,Choque,choque,-6,-6,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
 COND-027,choque-8,Choque -8,Choque,choque,-8,-8,,,,,,,,,,,Dura só até o fim do seu próximo turno; desmarque ao fim dele.,tab-combat-rules--choque
-COND-028,saturado,Saturado,Irritante,toxicidade,,,,-1,,,,,,,,,Toxicidade abaixo de 1/3 do máximo. Risco de Intoxicação ao consumir outra poção.,tab-afflictions-conditions--saturado
-COND-029,intoxicado,Intoxicado,Irritante,toxicidade,-1,-1,,-1,,,,,,,,,Toxicidade no limite (0). Outra poção arrisca Envenenamento.,tab-afflictions-conditions--intoxicado
-COND-030,envenenamento-leve,Envenenamento Leve,Irritante,toxicidade,-2,-2,,-2,-1,,-1,,,,,,Toxicidade negativa (até 1/3 do mínimo). Removido automaticamente quando a Toxicidade volta a 0 ou mais.,tab-afflictions-conditions--envenenamento-leve
-COND-031,envenenamento-grave,Envenenamento Grave,Incapacitante,toxicidade,-4,-4,,-4,-2,,-2,,,,,,Toxicidade entre 1/3 e 2/3 do mínimo. Náusea e tremores; removido automaticamente quando a Toxicidade sobe acima do limiar.,tab-afflictions-conditions--envenenamento-grave
-COND-032,envenenamento-critico,Envenenamento Crítico,Incapacitante,toxicidade,,,,,,,,incapacitated,,,,,Toxicidade abaixo de 2/3 do mínimo: overdose alquímica. Cai e não pode agir até a Toxicidade subir acima do limiar.,tab-afflictions-conditions--envenenamento-critico
-COND-033,esgotamento-arcano,Esgotamento Arcano,Irritante,,,-1,,-1,,,,,,,,,Mana em 0: lançar magias paga o custo em PV. Removido automaticamente quando a Mana sobe acima de 0.,tab-afflictions-conditions--esgotamento-arcano
+COND-028,saturado,Saturado,Irritante,toxicidade,,,,-1,,,,,,,,,Toxicidade abaixo de 1/3 do máximo. Risco de Intoxicação ao consumir outra poção.,tab-toxicity-mana--saturado
+COND-029,intoxicado,Intoxicado,Irritante,toxicidade,-1,-1,,-1,,,,,,,,,Toxicidade no limite (0). Outra poção arrisca Envenenamento.,tab-toxicity-mana--intoxicado
+COND-030,envenenamento-leve,Envenenamento Leve,Irritante,toxicidade,-2,-2,,-2,-1,,-1,,,,,,Toxicidade negativa (até 1/3 do mínimo). Removido automaticamente quando a Toxicidade volta a 0 ou mais.,tab-toxicity-mana--envenenamento-leve
+COND-031,envenenamento-grave,Envenenamento Grave,Incapacitante,toxicidade,-4,-4,,-4,-2,,-2,,,,,,Toxicidade entre 1/3 e 2/3 do mínimo. Náusea e tremores; removido automaticamente quando a Toxicidade sobe acima do limiar.,tab-toxicity-mana--envenenamento-grave
+COND-032,envenenamento-critico,Envenenamento Crítico,Incapacitante,toxicidade,,,,,,,,incapacitated,,,,,Toxicidade abaixo de 2/3 do mínimo: overdose alquímica. Cai e não pode agir até a Toxicidade subir acima do limiar.,tab-toxicity-mana--envenenamento-critico
+COND-033,esgotamento-arcano,Esgotamento Arcano,Irritante,,,-1,,-1,,,,,,,,,Mana em 0: lançar magias paga o custo em PV. Removido automaticamente quando a Mana sobe acima de 0.,tab-toxicity-mana--esgotamento-arcano

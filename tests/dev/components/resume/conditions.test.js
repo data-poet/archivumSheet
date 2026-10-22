@@ -261,11 +261,11 @@ describe("the condition's name as a link to its rule", () => {
   const link = () => container().querySelector(".condition-entry-link");
 
   test("opens the reference entry in a new tab, safely", () => {
-    render("tab-afflictions-conditions--dor");
+    render("tab-conditions-general--dor");
 
     expect(link().textContent).toBe("Dor Grave");
     expect(link().getAttribute("href")).toBe(
-      "/reference.html#tab-afflictions-conditions--dor",
+      "/reference.html#tab-conditions-general--dor",
     );
     expect(link().target).toBe("_blank");
     expect(link().rel).toBe("noopener noreferrer");
@@ -288,7 +288,7 @@ describe("the condition's name as a link to its rule", () => {
           active: [{ key: "dor-grave", name: "Dor Grave", scale: 0.5 }],
         }),
       ),
-      { conditions: withAnchor("tab-afflictions-conditions--dor") },
+      { conditions: withAnchor("tab-conditions-general--dor") },
       { conditions: { "dor-grave": true } },
     );
 
@@ -299,7 +299,7 @@ describe("the condition's name as a link to its rule", () => {
   });
 
   test("an immune entry links too", () => {
-    render("tab-afflictions-conditions--dor", {
+    render("tab-conditions-general--dor", {
       immunities: [{ key: "dor-grave", trait_key: "x", trait_name: "Y" }],
     });
 
