@@ -685,8 +685,15 @@ tr.detail-row details[open] summary {
     padding: 0;
     border-radius: 0 0 var(--radius) var(--radius);
   }
-  .table-wrapper--stack tbody tr:has(+ tr.detail-row),
-  .table-wrapper--stack tbody tr:has(+ tr.magazine-row) {
+  /* :not(:has(.card-toggle):not(.is-card-expanded)) excludes a collapsed card: once its own
+     detail/magazine row is hidden below, nothing follows it any more, so it keeps its own full
+     border instead of looking cut off at the bottom. */
+  .table-wrapper--stack
+    tbody
+    tr:has(+ tr.detail-row):not(:has(.card-toggle):not(.is-card-expanded)),
+  .table-wrapper--stack
+    tbody
+    tr:has(+ tr.magazine-row):not(:has(.card-toggle):not(.is-card-expanded)) {
     margin-bottom: 0;
     border-bottom: none;
     border-radius: var(--radius) var(--radius) 0 0;
@@ -695,6 +702,27 @@ tr.detail-row details[open] summary {
   .table-wrapper--stack td[colspan] {
     display: block;
     border: none;
+  }
+
+  /* A collapsed card's own detail/magazine row(s) must collapse with it — the collapse selector
+     above only hides <td> children of the toggled <tr>, which never covers a sibling <tr>. Without
+     this, every collapsed card still shows its own "DETALHES" disclosure, and a long stored list
+     reads as a wall of DETALHES bars instead of titles. Chained for firearms' two-row tail
+     (magazine-row then detail-row); every other type is just the single +tr.detail-row case. */
+  .table-wrapper--stack
+    tbody
+    tr:has(.card-toggle):not(.is-card-expanded)
+    + tr.detail-row,
+  .table-wrapper--stack
+    tbody
+    tr:has(.card-toggle):not(.is-card-expanded)
+    + tr.magazine-row,
+  .table-wrapper--stack
+    tbody
+    tr:has(.card-toggle):not(.is-card-expanded)
+    + tr.magazine-row
+    + tr.detail-row {
+    display: none;
   }
 
   .table-wrapper--stack tr.magazine-row td {
