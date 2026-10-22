@@ -101,6 +101,7 @@ import {
   renderLists,
   renderListsPreserving,
 } from "dev/public/js/components/renderLists.js";
+import { onInventoryRendered } from "dev/public/js/shared/renderSignal.js";
 
 // Order matters: this list mirrors the exact call order in renderLists()'s source.
 const ALL_RENDER_FNS = [
@@ -162,6 +163,20 @@ describe("renderLists", () => {
   test("forwards a missing sheet argument through as undefined rather than substituting a default", () => {
     renderLists(selected, data);
     expect(renderAdvantages).toHaveBeenCalledWith(selected, data, undefined);
+  });
+
+  test("fires the inventory-rendered signal after every managed render function", () => {
+    const callOrder = [];
+    ALL_RENDER_FNS.forEach((fn) =>
+      fn.mockImplementation(() => callOrder.push(fn)),
+    );
+    const listener = jest.fn(() => callOrder.push("signal"));
+    onInventoryRendered(listener);
+
+    renderLists(selected, data, sheet);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(callOrder[callOrder.length - 1]).toBe("signal");
   });
 });
 

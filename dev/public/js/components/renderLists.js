@@ -41,6 +41,7 @@ import {
 } from "../engine/inventory/magicGear/render.js";
 import { renderCustomInventory } from "../engine/inventory/customInventory/render.js";
 import { renderCoinPurse } from "../engine/inventory/coinPurse/render.js";
+import { fireInventoryRendered } from "../shared/renderSignal.js";
 
 export function renderLists(selected, data, sheet) {
   renderMetaRaces(selected, data, sheet);
@@ -68,6 +69,7 @@ export function renderLists(selected, data, sheet) {
   renderStoredMagicGear(selected, data, sheet);
   renderCoinPurse(selected, data, sheet);
   renderCustomInventory(selected, data, sheet);
+  fireInventoryRendered();
 }
 
 // Every list renderLists() calls now writes through morphHTML (shared/morph.js), which

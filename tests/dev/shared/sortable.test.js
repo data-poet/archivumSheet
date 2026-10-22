@@ -3,6 +3,7 @@ import path from "path";
 import {
   createSortableList,
   attachSortableOnce,
+  createStorageDragHandler,
 } from "dev/public/js/shared/sortable.js";
 
 // Same reasoning as the idiomorph parity test (tests/dev/shared/morph.test.js): the vendored
@@ -148,4 +149,92 @@ describe("attachSortableOnce", () => {
     };
     return { Sortable, calls };
   }
+});
+
+describe("createStorageDragHandler", () => {
+  function fakeSortable() {
+    const calls = [];
+    const Sortable = {
+      create: jest.fn((container, options) => {
+        calls.push({ container, options });
+        return { option: jest.fn(), destroy: jest.fn() };
+      }),
+    };
+    return { Sortable, calls };
+  }
+
+  beforeEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  test("attaches one Sortable instance per storage location, scoped by group", () => {
+    const { Sortable, calls } = fakeSortable();
+    ["backpack", "stash", "camp"].forEach((location) => {
+      const tbody = document.createElement("tbody");
+      tbody.id = `melee-tbody-${location}`;
+      tbody.dataset.storedAt = location;
+      document.body.appendChild(tbody);
+    });
+
+    const attach = createStorageDragHandler({
+      idPrefix: "melee",
+      group: "melee-storage",
+      moveFn: jest.fn(),
+      locations: ["backpack", "stash", "camp"],
+      Sortable,
+    });
+    attach();
+
+    expect(calls).toHaveLength(3);
+    calls.forEach(({ options }) => expect(options.group).toBe("melee-storage"));
+  });
+
+  test("calling attach again is a no-op (idempotent per container)", () => {
+    const { Sortable, calls } = fakeSortable();
+    const tbody = document.createElement("tbody");
+    tbody.id = "melee-tbody-backpack";
+    document.body.appendChild(tbody);
+
+    const attach = createStorageDragHandler({
+      idPrefix: "melee",
+      group: "melee-storage",
+      moveFn: jest.fn(),
+      locations: ["backpack"],
+      Sortable,
+    });
+    attach();
+    attach();
+
+    expect(calls).toHaveLength(1);
+  });
+
+  test("calls moveFn only when the drop changes location", () => {
+    const { Sortable, calls } = fakeSortable();
+    const tbody = document.createElement("tbody");
+    tbody.id = "melee-tbody-backpack";
+    document.body.appendChild(tbody);
+    const moveFn = jest.fn();
+
+    createStorageDragHandler({
+      idPrefix: "melee",
+      group: "melee-storage",
+      moveFn,
+      locations: ["backpack"],
+      Sortable,
+    })();
+
+    const { onEnd } = calls[0].options;
+    const item = document.createElement("tr");
+    item.dataset.instanceId = "INST-1";
+    const from = document.createElement("tbody");
+    from.dataset.storedAt = "backpack";
+    const to = document.createElement("tbody");
+    to.dataset.storedAt = "stash";
+
+    onEnd({ item, from, to });
+    expect(moveFn).toHaveBeenCalledWith("INST-1", "stash");
+
+    onEnd({ item, from, to: from });
+    expect(moveFn).toHaveBeenCalledTimes(1);
+  });
 });

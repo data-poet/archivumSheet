@@ -2,6 +2,8 @@
 // same defaults instead of re-typing them, and so tests can inject a fake Sortable instead of the
 // real library (jsdom has no pointer/drag events for it to attach to).
 import RealSortable from "../../vendor/sortable/sortable.esm.js";
+import { el } from "./dom.js";
+import { STORAGE_LOCATIONS } from "./constants.js";
 
 // handle-only (never the whole row) so tapping a select/button inside a row doesn't start a drag;
 // delay + delayOnTouchOnly stop a scroll gesture on a phone from being mistaken for a drag.
@@ -55,4 +57,32 @@ export function attachSortableOnce(
   if (!container || container.dataset.sortableBound === "true") return null;
   container.dataset.sortableBound = "true";
   return createSortableList(container, options, Sortable);
+}
+
+// One Sortable instance per storage location's <tbody> (`${idPrefix}-tbody-${location}`, the id
+// every storage render.js now gives it), scoped by `group` so an item can't drop into another
+// type's table. A same-location drop is a no-op: moveFn only changes storedAt, nothing persists a
+// finer position yet, so the row returns to array order on the next render.
+export function createStorageDragHandler({
+  idPrefix,
+  group,
+  moveFn,
+  locations = STORAGE_LOCATIONS,
+  Sortable = RealSortable,
+}) {
+  return function attachStorageSortable() {
+    locations.forEach((location) => {
+      attachSortableOnce(
+        el(`${idPrefix}-tbody-${location}`),
+        {
+          group,
+          onDrop: ({ instanceId, toLocation, changed }) => {
+            if (!changed) return;
+            moveFn(instanceId, toLocation);
+          },
+        },
+        Sortable,
+      );
+    });
+  };
 }
