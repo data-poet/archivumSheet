@@ -31,6 +31,10 @@ export async function reloadCatalogs(audience) {
   setCatalogAudience(audience);
   state.data.races = [];
 
+  // Armor/shield/melee/ranged/firearms populate a material <select> from data.materials as soon
+  // as they load, so materials must resolve first or that select can come up empty.
+  await loadMaterials();
+
   await Promise.all([
     loadRaces(),
     loadMetaRaces(),
@@ -39,7 +43,6 @@ export async function reloadCatalogs(audience) {
     loadDisadvantages(),
     loadSkills(),
     loadSpells(),
-    loadMaterials(),
     loadArmors(),
     loadShields(),
     loadMeleeWeapons(),
