@@ -232,7 +232,7 @@ describe("createStorageDragHandler", () => {
     to.dataset.storedAt = "stash";
 
     onEnd({ item, from, to });
-    expect(moveFn).toHaveBeenCalledWith("INST-1", "stash");
+    expect(moveFn).toHaveBeenCalledWith("INST-1", "stash", "backpack");
 
     onEnd({ item, from, to: from });
     expect(moveFn).toHaveBeenCalledTimes(1);

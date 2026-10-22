@@ -123,7 +123,9 @@ describe("stored inventory tables opt into the stacked card layout", () => {
     expect(rows).toHaveLength(1);
     expectEveryCellLabelled(rows[0]);
 
-    const cells = [...rows[0].children];
+    const cells = [...rows[0].children].filter(
+      (td) => !td.classList.contains("col-drag"),
+    );
     expect(cells[0].dataset.label).toBeTruthy();
     expect(cells[0].textContent).toBe("Tronco");
     expect(rows[0].querySelector(".card-title-text").textContent).toBe(

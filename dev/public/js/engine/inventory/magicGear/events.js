@@ -1,5 +1,7 @@
 import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   addEquippedMagicGear,
   addStoredMagicGear,
@@ -21,6 +23,14 @@ import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.j
 
 const data = state.data;
 const selected = state.selected;
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "magic-gear",
+    group: "magic-gear-storage",
+    moveFn: moveMagicGear,
+  }),
+);
 
 // Re-renders only the magic gear lists, not the full sweep, so the enchantment-type select does not flicker.
 function _renderMagicGearLists(sheet) {

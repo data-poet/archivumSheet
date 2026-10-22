@@ -1,6 +1,8 @@
 import { state } from "../../../state.js";
 import { DEFAULT_MATERIAL_ID, STORED_AT } from "../../../shared/constants.js";
 import { triggerAutoRun, AUTORUN_KIND } from "../../../compute/autorun.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   equipArmor,
   addStoredArmor,
@@ -33,6 +35,14 @@ import {
 
 const data = state.data;
 const selected = state.selected;
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "armor",
+    group: "armor-storage",
+    moveFn: moveArmor,
+  }),
+);
 
 const _renderArmorLists = createListRenderer(
   renderArmorSlots,

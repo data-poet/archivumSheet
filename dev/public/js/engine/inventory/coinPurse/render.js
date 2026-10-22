@@ -3,7 +3,10 @@ import { t } from "../../../localization/pt-BR/index.js";
 import { el } from "../../../shared/dom.js";
 import { morphHTML } from "../../../shared/morph.js";
 import { STORAGE_LOCATIONS } from "../../../shared/constants.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  dragHandleHTML,
+} from "../shared/inventoryRenderUtils.js";
 import { cardTitleCell } from "../../../shared/renderUtils.js";
 import {
   sendToAllyRowHTML,
@@ -40,7 +43,7 @@ function locationSelect(coinType, currentLocation) {
 function renderCoinSection(location, coins, sheet) {
   const entries = coins.filter((c) => c.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 6 : 5;
+  const colCount = showSendToAlly ? 7 : 6;
 
   let bodyRows = "";
 
@@ -55,7 +58,8 @@ function renderCoinSection(location, coins, sheet) {
         const totalValue = resolved?.total_value ?? "—";
 
         return `
-          <tr id="coin-${entry.coin_type}-${location}">
+          <tr id="coin-${entry.coin_type}-${location}" data-instance-id="${entry.coin_type}">
+            <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
             ${cardTitleCell(coinLabel(entry.coin_type))}
             <td class="col-num" data-label="${t("coinPurse.qty")}">
               <div class="num-stepper">
@@ -106,6 +110,7 @@ function renderCoinSection(location, coins, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.type")}</th>
           <th class="col-num">${t("coinPurse.qty")}</th>
           <th class="col-num">${t("coinPurse.weight")}</th>
@@ -114,7 +119,7 @@ function renderCoinSection(location, coins, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="coin-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "coin",
   );

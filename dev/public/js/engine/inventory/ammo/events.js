@@ -19,9 +19,22 @@ import {
 } from "./model.js";
 import { renderListsPreserving } from "../../../ui.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 
 const selected = state.selected;
 const data = state.data;
+
+// Loose ammo only — ammo containers render as a flat list of <details>, not a per-location
+// table, so they have no storage drag target. moveLooseAmmo(ammoId, fromLocation, toLocation).
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "loose-ammo",
+    group: "loose-ammo-storage",
+    moveFn: (ammoId, toLocation, fromLocation) =>
+      moveLooseAmmo(ammoId, fromLocation, toLocation),
+  }),
+);
 
 // The resume view totals an ammo_id across equipped containers; a stepper change becomes a delta on the first equipped container holding it.
 

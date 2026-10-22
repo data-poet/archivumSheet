@@ -7,6 +7,17 @@ import {
   sendCoinsToAlly,
 } from "./model.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "coin",
+    group: "coin-storage",
+    moveFn: (coinType, toLocation, fromLocation) =>
+      moveCoins(coinType, fromLocation, toLocation),
+  }),
+);
 
 const _handleSendCoinsToAllyClick = createSendToAllyHandler({
   sendFn: sendCoinsToAlly,

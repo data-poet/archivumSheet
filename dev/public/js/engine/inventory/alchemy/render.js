@@ -11,7 +11,10 @@ import {
   formatRichText,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  dragHandleHTML,
+} from "../shared/inventoryRenderUtils.js";
 import {
   sendToAllyRowHTML,
   hasLinkedAllies,
@@ -92,7 +95,7 @@ export function renderAlchemy(selected, data, sheet) {
 function renderAlchemySection(location, entries, alchemyData, sheet) {
   const sectionEntries = entries.filter((e) => e.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 6 : 5;
+  const colCount = showSendToAlly ? 7 : 6;
 
   let bodyRows = "";
 
@@ -112,7 +115,8 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
         const rowKey = `${entry.consumable_id}-${location}`;
 
         return `
-          <tr id="alchemy-stored-${rowKey}">
+          <tr id="alchemy-stored-${rowKey}" data-instance-id="${entry.consumable_id}">
+            <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
             ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("alchemy.tier")}">${tier}</td>
             <td class="col-num" data-label="${t("alchemy.qty")}">
@@ -164,6 +168,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.name")}</th>
           <th>${t("alchemy.tier")}</th>
           <th>${t("alchemy.qty")}</th>
@@ -172,7 +177,7 @@ function renderAlchemySection(location, entries, alchemyData, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="alchemy-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "alchemy",
   );

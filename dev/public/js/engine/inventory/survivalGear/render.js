@@ -11,7 +11,10 @@ import {
   formatRichText,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  dragHandleHTML,
+} from "../shared/inventoryRenderUtils.js";
 import {
   sendToAllyRowHTML,
   hasLinkedAllies,
@@ -74,7 +77,7 @@ export function renderSurvivalGear(selected, data, sheet) {
 function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
   const sectionEntries = entries.filter((e) => e.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 5 : 4;
+  const colCount = showSendToAlly ? 6 : 5;
 
   let bodyRows = "";
 
@@ -93,7 +96,8 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
         const rowKey = `${entry.adventure_gear_id}-${location}`;
 
         return `
-          <tr id="survival-gear-stored-${rowKey}">
+          <tr id="survival-gear-stored-${rowKey}" data-instance-id="${entry.adventure_gear_id}">
+            <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
             ${cardTitleCell(name)}
             <td class="col-num" data-label="${t("survivalGear.qty")}">
               <div class="num-stepper">
@@ -144,6 +148,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.name")}</th>
           <th>${t("survivalGear.qty")}</th>
           <th>${t("common.weight")}</th>
@@ -151,7 +156,7 @@ function renderSurvivalGearSection(location, entries, survivalGearData, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="survival-gear-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "survival-gear",
   );

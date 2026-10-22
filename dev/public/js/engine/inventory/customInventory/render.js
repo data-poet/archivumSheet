@@ -11,7 +11,10 @@ import {
   escapeHtml,
   cardTitleCell,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  dragHandleHTML,
+} from "../shared/inventoryRenderUtils.js";
 import {
   sendToAllyRowHTML,
   hasLinkedAllies,
@@ -42,7 +45,7 @@ export function renderCustomInventory(selected, data, sheet) {
 function renderCustomInventorySection(location, entries, sheet) {
   const sectionEntries = entries.filter((e) => e.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 5 : 4;
+  const colCount = showSendToAlly ? 6 : 5;
 
   let bodyRows = "";
 
@@ -56,7 +59,8 @@ function renderCustomInventorySection(location, entries, sheet) {
         const totalWeight = resolvedEntry?.total_weight ?? "—";
 
         return `
-          <tr id="custom-item-stored-${entry.id}">
+          <tr id="custom-item-stored-${entry.id}" data-instance-id="${entry.id}">
+            <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
             ${cardTitleCell(escapeHtml(entry.name))}
             <td class="col-num" data-label="${t("customInventory.qty")}">
               <div class="num-stepper">
@@ -101,6 +105,7 @@ function renderCustomInventorySection(location, entries, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.name")}</th>
           <th>${t("customInventory.qty")}</th>
           <th>${t("common.weight")}</th>
@@ -108,7 +113,7 @@ function renderCustomInventorySection(location, entries, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="custom-item-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "custom-item",
   );

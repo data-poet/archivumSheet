@@ -14,7 +14,10 @@ import {
   cardTitleCell,
   safeId,
 } from "../../../shared/renderUtils.js";
-import { renderStorageLocationBlock } from "../shared/inventoryRenderUtils.js";
+import {
+  renderStorageLocationBlock,
+  dragHandleHTML,
+} from "../shared/inventoryRenderUtils.js";
 import {
   sendToAllyRowHTML,
   hasLinkedAllies,
@@ -317,7 +320,7 @@ export function renderLooseAmmo(selected, data, sheet) {
 function renderLooseSection(location, looseAmmo, ammoData, sheet) {
   const entries = looseAmmo.filter((a) => a.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 6 : 5;
+  const colCount = showSendToAlly ? 7 : 6;
 
   let bodyRows = "";
   if (entries.length === 0) {
@@ -336,7 +339,8 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
         const rowKey = `${safeId(entry.ammo_id)}-${location}`;
 
         return `
-          <tr id="loose-ammo-${rowKey}">
+          <tr id="loose-ammo-${rowKey}" data-instance-id="${entry.ammo_id}">
+            <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
             ${cardTitleCell(ammoName)}
             <td class="col-num" data-label="${t("common.type")}">${ammoType}</td>
             <td class="col-num" data-label="${t("ammo.qty")}">
@@ -388,6 +392,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.name")}</th>
           <th>${t("common.type")}</th>
           <th>${t("ammo.qty")}</th>
@@ -396,7 +401,7 @@ function renderLooseSection(location, looseAmmo, ammoData, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="loose-ammo-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "loose-ammo",
   );

@@ -1,5 +1,7 @@
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   addAlchemy,
   updateAlchemyQuantity,
@@ -14,6 +16,17 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const data = state.data;
 const selected = state.selected;
+
+// moveAlchemy(itemId, fromLocation, toLocation): a stackable move needs fromLocation too, since
+// the same consumable_id can have a separate stack in more than one location at once.
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "alchemy",
+    group: "alchemy-storage",
+    moveFn: (consumableId, toLocation, fromLocation) =>
+      moveAlchemy(consumableId, fromLocation, toLocation),
+  }),
+);
 
 const _handleSendAlchemyToAllyClick = createSendToAllyHandler({
   sendFn: sendAlchemyToAlly,

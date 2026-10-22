@@ -21,6 +21,7 @@ import {
 import {
   renderStorageLocationBlock,
   findInstance,
+  dragHandleHTML,
 } from "../shared/inventoryRenderUtils.js";
 import {
   equippedItemTabs,
@@ -126,7 +127,7 @@ export function renderStoredMagicGear(selected, data, sheet) {
 function renderStorageSection(location, stored, data, sheet) {
   const items = stored.filter((g) => g.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 5 : 4;
+  const colCount = showSendToAlly ? 6 : 5;
 
   let bodyRows;
   if (items.length === 0) {
@@ -150,6 +151,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
         return `
         <tr id="magic-gear-stored-${instanceId}" data-instance-id="${instanceId}">
+          <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
           ${cardTitleCell(escapeHtml(displayName(inst, record)))}
           <td class="col-num" data-label="${t("common.price")}">${resolved?.total_value ?? record.magic_gear_price}</td>
           <td class="col-storage" data-label="${t("common.storage")}">
@@ -201,6 +203,7 @@ function renderStorageSection(location, stored, data, sheet) {
     `<table>
       <thead>
         <tr>
+          <th class="col-drag"></th>
           <th>${t("common.name")}</th>
           <th>${t("common.price")}</th>
           <th>${t("common.storage")}</th>
@@ -208,7 +211,7 @@ function renderStorageSection(location, stored, data, sheet) {
           ${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="magic-gear-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "magic-gear",
   );

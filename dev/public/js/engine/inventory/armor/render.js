@@ -13,6 +13,7 @@ import {
   hpModifierBlock,
   renderStorageLocationBlock,
   findInstance,
+  dragHandleHTML,
 } from "../shared/inventoryRenderUtils.js";
 import { decimalToPercent } from "../../../components/resistances.js";
 import {
@@ -230,7 +231,7 @@ export function renderStoredArmors(selected, data, sheet) {
 function renderStorageSection(location, storedArmors, data, sheet) {
   const armorsInLocation = storedArmors.filter((a) => a.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 8 : 7;
+  const colCount = showSendToAlly ? 9 : 8;
 
   let bodyRows = "";
   if (armorsInLocation.length === 0) {
@@ -245,7 +246,8 @@ function renderStorageSection(location, storedArmors, data, sheet) {
         const instanceId = inst.id;
 
         return `
-        <tr id="armor-stored-${instanceId}">
+        <tr id="armor-stored-${instanceId}" data-instance-id="${instanceId}">
+          <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
           <td data-label="${t("armor.slot")}">${armorData.armor_piece_location}</td>
           ${cardTitleCell(armorData.armor_name)}
           <td data-label="${t("common.tier")}">${armorData.armor_tier}</td>
@@ -307,11 +309,11 @@ function renderStorageSection(location, storedArmors, data, sheet) {
     `<table>
       <thead>
         <tr>
-          <th>${t("armor.slot")}</th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th class="col-drag"></th><th>${t("armor.slot")}</th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
           <th>${t("common.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="armor-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "armor",
   );

@@ -1,5 +1,7 @@
 import { state } from "../../../state.js";
 import { renderListsPreserving } from "../../../ui.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   addSurvivalGear,
   updateSurvivalGearQuantity,
@@ -13,6 +15,15 @@ import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
 
 const data = state.data;
 const selected = state.selected;
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "survival-gear",
+    group: "survival-gear-storage",
+    moveFn: (gearId, toLocation, fromLocation) =>
+      moveSurvivalGear(gearId, fromLocation, toLocation),
+  }),
+);
 
 const _handleSendSurvivalGearToAllyClick = createSendToAllyHandler({
   sendFn: sendSurvivalGearToAlly,

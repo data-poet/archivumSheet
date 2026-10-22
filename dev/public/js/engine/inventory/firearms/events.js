@@ -1,5 +1,7 @@
 import { state } from "../../../state.js";
 import { triggerAutoRun } from "../../../compute/autorun.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   equipFirearm,
   moveFirearm,
@@ -37,6 +39,14 @@ const data = state.data;
 const selected = state.selected;
 
 // Firearms have their own dedicated tab, with its own containers.
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "firearm",
+    group: "firearm-storage",
+    moveFn: moveFirearm,
+  }),
+);
 
 const _renderFirearmLists = createListRenderer(
   renderEquippedFirearms,

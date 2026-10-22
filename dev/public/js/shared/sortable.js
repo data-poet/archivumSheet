@@ -63,6 +63,13 @@ export function attachSortableOnce(
 // every storage render.js now gives it), scoped by `group` so an item can't drop into another
 // type's table. A same-location drop is a no-op: moveFn only changes storedAt, nothing persists a
 // finer position yet, so the row returns to array order on the next render.
+//
+// moveFn is called as (instanceId, toLocation, fromLocation): every equipped-item type's
+// moveX(instanceId, storedAt) only needs the first two and ignores the third. Stackable types
+// (alchemy, custom items, survival gear, coins, ammo — createStackableInventory's move(itemId,
+// fromLocation, toLocation)) need fromLocation too, since the same item id can have a separate
+// stack in more than one location at once; their events.js passes a small adapter lambda instead
+// of the bare model function.
 export function createStorageDragHandler({
   idPrefix,
   group,
@@ -76,9 +83,9 @@ export function createStorageDragHandler({
         el(`${idPrefix}-tbody-${location}`),
         {
           group,
-          onDrop: ({ instanceId, toLocation, changed }) => {
+          onDrop: ({ instanceId, toLocation, fromLocation, changed }) => {
             if (!changed) return;
-            moveFn(instanceId, toLocation);
+            moveFn(instanceId, toLocation, fromLocation);
           },
         },
         Sortable,

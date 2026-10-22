@@ -1,5 +1,7 @@
 import { state } from "../../../state.js";
 import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   equipRanged,
   addStoredRanged,
@@ -36,6 +38,14 @@ import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 
 const data = state.data;
 const selected = state.selected;
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "ranged",
+    group: "ranged-storage",
+    moveFn: moveRanged,
+  }),
+);
 
 const _renderRangedLists = createListRenderer(
   renderEquippedRanged,

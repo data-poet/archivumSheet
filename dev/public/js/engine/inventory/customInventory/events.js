@@ -14,6 +14,16 @@ import {
   withPreservedOpenState,
 } from "../shared/customFieldsDispatch.js";
 import { createSendToAllyHandler } from "../shared/sendToAllyControl.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "custom-item",
+    group: "custom-item-storage",
+    moveFn: moveCustomItem,
+  }),
+);
 
 // Re-renders only the custom-inventory list, avoiding a full renderLists() sweep — mirrors shield's _renderShieldLists.
 function _renderCustomInventoryLists() {

@@ -1,5 +1,7 @@
 import { STORED_AT } from "../../../shared/constants.js";
 import { state } from "../../../state.js";
+import { createStorageDragHandler } from "../../../shared/sortable.js";
+import { onInventoryRendered } from "../../../shared/renderSignal.js";
 import {
   addEquippedAccessory,
   addStoredAccessory,
@@ -25,6 +27,14 @@ import { createCustomFieldsClickHandler } from "../shared/customFieldsDispatch.j
 
 const data = state.data;
 const selected = state.selected;
+
+onInventoryRendered(
+  createStorageDragHandler({
+    idPrefix: "accessory",
+    group: "accessory-storage",
+    moveFn: moveAccessory,
+  }),
+);
 
 // Re-renders only the accessory lists, not the full renderLists() sweep — a full sweep was the actual cause of the enchantment-type-select flicker.
 function _renderAccessoryLists(sheet) {

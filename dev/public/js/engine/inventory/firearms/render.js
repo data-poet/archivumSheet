@@ -13,6 +13,7 @@ import {
   renderStorageLocationBlock,
   findInstance,
   formatWeaponDamageType,
+  dragHandleHTML,
 } from "../shared/inventoryRenderUtils.js";
 import {
   materialOptions,
@@ -281,7 +282,7 @@ export function renderStoredFirearms(selected, data, sheet) {
 function renderStorageSection(location, stored, data, sheet) {
   const firearms = stored.filter((w) => w.storedAt === location);
   const showSendToAlly = hasLinkedAllies(getActiveCharacterId());
-  const colCount = showSendToAlly ? 7 : 6;
+  const colCount = showSendToAlly ? 8 : 7;
 
   let bodyRows;
   if (firearms.length === 0) {
@@ -304,6 +305,7 @@ function renderStorageSection(location, stored, data, sheet) {
 
         return `
         <tr id="firearm-stored-${instanceId}" data-instance-id="${instanceId}">
+          <td class="col-drag" data-label="${t("common.dragHandle")}">${dragHandleHTML()}</td>
           ${cardTitleCell(weaponData.weapon_name)}
           <td data-label="${t("common.tier")}">${weaponData.weapon_tier}</td>
           <td data-label="${t("common.material")}">${material?.material_name ?? "—"}</td>
@@ -385,11 +387,11 @@ function renderStorageSection(location, stored, data, sheet) {
     `<table>
       <thead>
         <tr>
-          <th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
+          <th class="col-drag"></th><th>${t("common.name")}</th><th>${t("common.tier")}</th><th>${t("common.material")}</th>
           <th>${t("ranged.hp")}</th><th>${t("common.storage")}</th><th class="col-action"></th>${showSendToAlly ? `<th class="col-send-ally">${t("inventory.sendToAlly.header")}</th>` : ""}
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody id="firearm-tbody-${location}" data-stored-at="${location}">${bodyRows}</tbody>
     </table>`,
     "firearm",
   );
