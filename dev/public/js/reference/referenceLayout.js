@@ -244,8 +244,9 @@ export const REFERENCE_LAYOUT = [
     accent: "inventory",
     sections: [
       {
-        id: "section-criticals",
-        icon: "criticals",
+        id: "tables-1",
+        icon: "ordinal-1",
+        iconOnly: true,
         accent: "inventory",
         tabs: [
           {
@@ -256,17 +257,18 @@ export const REFERENCE_LAYOUT = [
             id: "tab-critical-failures",
             file: `${CONTENT}/tables/critical_failures.md`,
           },
+        ],
+      },
+      {
+        id: "tables-2",
+        icon: "ordinal-2",
+        iconOnly: true,
+        accent: "inventory",
+        tabs: [
           {
             id: "tab-critical-failures-magic",
             file: `${CONTENT}/tables/critical_failures_magic.md`,
           },
-        ],
-      },
-      {
-        id: "section-panic",
-        icon: "panic",
-        accent: "inventory",
-        tabs: [
           {
             id: "tab-panic-table",
             file: `${CONTENT}/tables/panic_table.md`,
