@@ -8,6 +8,16 @@ Role contra o [[NH]] da perícia da arma, somando os modificadores abaixo.
 - **Distância e velocidade:** redutor pela distância até o alvo, somada à velocidade dele, se ele se mover rápido. Use a tabela abaixo.
 - **Tamanho:** alvos maiores que um humano são mais fáceis de acertar; menores, mais difíceis.
 - **Local de acerto:** redutor normal do local escolhido. Veja Combate › Regras › Locais de Acerto.
+- **Postura do atirador:** a posição de quem atira ao disparar. Veja a tabela abaixo.
+
+### Postura do atirador
+
+| Postura                | Ataque à distância |
+| ----------------------- | ------------------- |
+| Em pé                   | **0**                |
+| Agachado                | **-2**               |
+| Ajoelhado ou sentado    | **0**                |
+| Rastejando ou deitado   | **-2**               |
 
 ### Distância, velocidade e tamanho
 
