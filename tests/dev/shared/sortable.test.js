@@ -124,6 +124,78 @@ describe("createSortableList", () => {
 
     expect(onDrop).not.toHaveBeenCalled();
   });
+
+  test("onStart/onEnd carries a dragged row's detail-row along to its new position", () => {
+    const { Sortable, calls } = fakeSortableCreate();
+    const container = document.createElement("tbody");
+    container.dataset.storedAt = "backpack";
+
+    const other = document.createElement("tr");
+    other.id = "other-row";
+    const item = document.createElement("tr");
+    item.dataset.instanceId = "INST-1";
+    const detail = document.createElement("tr");
+    detail.className = "detail-row";
+    detail.id = "detail-row-INST-1";
+    container.append(other, item, detail);
+
+    createSortableList(container, { group: "melee" }, Sortable);
+    const { options } = calls[0];
+
+    options.onStart({ item });
+    // Simulate Sortable moving only the dragged row: `other` ends up after `item`, `detail`
+    // is left behind at its old position (still right after `item`'s old spot) — exactly the
+    // bug this fix targets.
+    container.insertBefore(item, other);
+
+    options.onEnd({ item, from: container, to: container });
+
+    expect([...container.children]).toEqual([item, detail, other]);
+  });
+
+  test("carries both a magazine-row and a detail-row, in order, for firearms", () => {
+    const { Sortable, calls } = fakeSortableCreate();
+    const container = document.createElement("tbody");
+    container.dataset.storedAt = "backpack";
+
+    const item = document.createElement("tr");
+    item.dataset.instanceId = "INST-1";
+    const magazine = document.createElement("tr");
+    magazine.className = "magazine-row";
+    const detail = document.createElement("tr");
+    detail.className = "detail-row";
+    const other = document.createElement("tr");
+    container.append(item, magazine, detail, other);
+
+    createSortableList(container, { group: "firearm" }, Sortable);
+    const { options } = calls[0];
+
+    options.onStart({ item });
+    container.insertBefore(other, item);
+
+    options.onEnd({ item, from: container, to: container });
+
+    expect([...container.children]).toEqual([other, item, magazine, detail]);
+  });
+
+  test("a row with no detail-row is unaffected", () => {
+    const { Sortable, calls } = fakeSortableCreate();
+    const container = document.createElement("tbody");
+    container.dataset.storedAt = "backpack";
+
+    const item = document.createElement("tr");
+    item.dataset.instanceId = "INST-1";
+    const other = document.createElement("tr");
+    container.append(item, other);
+
+    createSortableList(container, { group: "coin" }, Sortable);
+    const { options } = calls[0];
+
+    options.onStart({ item });
+    options.onEnd({ item, from: container, to: container });
+
+    expect([...container.children]).toEqual([item, other]);
+  });
 });
 
 describe("attachSortableOnce", () => {

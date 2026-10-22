@@ -27,10 +27,33 @@ export function createSortableList(
 ) {
   if (!container) return null;
 
+  // Sortable only drags the bound row, leaving its detail-row/magazine-row siblings stranded.
+  // Captured at drag-start and re-attached after the row's new position at drag-end.
+  let trailingSiblings = [];
+
   return Sortable.create(container, {
     ...DEFAULTS,
     group,
+    onStart(evt) {
+      trailingSiblings = [];
+      let sibling = evt.item.nextElementSibling;
+      while (
+        sibling &&
+        (sibling.classList.contains("detail-row") ||
+          sibling.classList.contains("magazine-row"))
+      ) {
+        trailingSiblings.push(sibling);
+        sibling = sibling.nextElementSibling;
+      }
+    },
     onEnd(evt) {
+      let anchor = evt.item;
+      trailingSiblings.forEach((row) => {
+        anchor.after(row);
+        anchor = row;
+      });
+      trailingSiblings = [];
+
       const instanceId = evt.item?.dataset?.instanceId;
       const toLocation = evt.to?.dataset?.storedAt;
       const fromLocation = evt.from?.dataset?.storedAt;
