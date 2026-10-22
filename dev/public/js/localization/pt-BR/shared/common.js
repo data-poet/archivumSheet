@@ -37,4 +37,5 @@ export const COMMON = {
   save: "Salvar",
   cancel: "Cancelar",
   noCustomFields: "Nenhuma personalização definida.",
+  dragHandle: "Arrastar para mover",
 };

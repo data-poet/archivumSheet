@@ -2,6 +2,14 @@ import { t } from "../../../localization/pt-BR/index.js";
 import { calcMaxHp, calcActualHp, resolveMaterial } from "./durabilityUtils.js";
 import { WEAPON_DAMAGE_TYPE_LABELS } from "../../../shared/constants.js";
 import { toList } from "../../../shared/rowParsers.js";
+import { icon } from "../../../shared/icons.js";
+
+// A handle-only drag target (shared/sortable.js's `handle: ".drag-handle"`) so tapping a select
+// or button elsewhere in the row never starts a drag. `tabindex="-1"` keeps it out of tab order —
+// the row's existing storage `<select>` is already the keyboard way to move an item.
+export function dragHandleHTML() {
+  return `<button type="button" class="drag-handle" tabindex="-1" aria-label="${t("common.dragHandle")}">${icon("drag-handle")}</button>`;
+}
 
 // weapon_damage_type cells hold comma-separated sigla (e.g. "cut, pi"); render the PT-BR labels instead.
 export function formatWeaponDamageType(weapon_damage_type) {
@@ -56,7 +64,12 @@ export function hpModifierBlock({
  * alone would collide across e.g. shield's and armor's own storage lists. Every current
  * caller passes one; the default only covers a caller that hasn't been migrated yet.
  */
-export function renderStorageLocationBlock(location, label, tableHtml, idPrefix = "") {
+export function renderStorageLocationBlock(
+  location,
+  label,
+  tableHtml,
+  idPrefix = "",
+) {
   const idAttr = idPrefix ? ` id="${idPrefix}-storage-${location}"` : "";
   return `
     <details class="storage-section" data-storage-loc="${location}"${idAttr}>

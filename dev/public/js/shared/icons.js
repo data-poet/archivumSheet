@@ -81,6 +81,7 @@ export const ICONS = {
   replace: "🔄",
   "radio-on": "⦿",
   "radio-off": "○",
+  "drag-handle": "⠿",
   "chevron-down": "⌄",
   "coins-carried": "💰",
   // Rendered inside <option>, which can only hold text: keep this one a character, not markup.

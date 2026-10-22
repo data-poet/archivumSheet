@@ -73,6 +73,39 @@ td.col-action {
 td.col-send-ally {
   text-align: center;
 }
+td.col-drag {
+  width: 44px;
+  text-align: center;
+}
+
+/* touch-action: none stops a phone from scrolling the page once a drag has started from the
+   handle — SortableJS's own delay/delayOnTouchOnly already tells a tap-to-scroll apart from a
+   drag, this just backs it up at the CSS level. */
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: grab;
+  color: var(--color-text-muted);
+  font-size: var(--fs-lg);
+  touch-action: none;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* SortableJS's default class names (ghost = drop placeholder, chosen = the lifted row). */
+.sortable-ghost {
+  opacity: 0.4;
+}
+.sortable-chosen {
+  background: var(--color-row-hover);
+}
 
 .send-to-ally-row {
   display: inline-flex;

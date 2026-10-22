@@ -1,5 +1,10 @@
 import { state } from "../../../state.js";
-import { DEFAULT_MATERIAL_ID } from "../../../shared/constants.js";
+import {
+  DEFAULT_MATERIAL_ID,
+  STORAGE_LOCATIONS,
+} from "../../../shared/constants.js";
+import { el } from "../../../shared/dom.js";
+import { attachSortableOnce } from "../../../shared/sortable.js";
 import {
   equipMelee,
   addStoredMelee,
@@ -37,20 +42,45 @@ import { createWeaponAddHandler } from "../shared/weaponAddForm.js";
 const data = state.data;
 const selected = state.selected;
 
-const _renderMeleeLists = createListRenderer(
-  renderEquippedMelee,
-  renderStoredMelee,
+// One Sortable instance per storage location's <tbody> (shared/sortable.js's `group` scopes the
+// drag to melee's own three lists, so a sword can't land in another type's table). The containers
+// survive re-renders by id (shared/morph.js), and attachSortableOnce is a no-op after the first
+// successful bind, so calling this on every render is safe and is what actually attaches it once
+// the tbody exists for the first time.
+function _attachMeleeSortable() {
+  STORAGE_LOCATIONS.forEach((location) => {
+    attachSortableOnce(el(`melee-tbody-${location}`), {
+      group: "melee-storage",
+      onDrop: ({ instanceId, toLocation, changed }) => {
+        if (!changed) return;
+        moveMelee(instanceId, toLocation);
+      },
+    });
+  });
+}
+
+function _withSortable(renderFn) {
+  return function renderThenAttach(sheet) {
+    renderFn(sheet);
+    requestAnimationFrame(_attachMeleeSortable);
+  };
+}
+
+const _renderMeleeLists = _withSortable(
+  createListRenderer(renderEquippedMelee, renderStoredMelee),
 );
 
 // Dual-use pairs mirror HP/equip/storage via _linkedInstanceId, so a melee-only
 // render would leave the linked ranged entry showing stale data. Always renders
 // ranged too, even with no link — cheaper than threading a "was anything linked"
 // check through every call site.
-const _renderMeleeAndRangedLists = createListRenderer(
-  renderEquippedMelee,
-  renderStoredMelee,
-  renderEquippedRanged,
-  renderStoredRanged,
+const _renderMeleeAndRangedLists = _withSortable(
+  createListRenderer(
+    renderEquippedMelee,
+    renderStoredMelee,
+    renderEquippedRanged,
+    renderStoredRanged,
+  ),
 );
 
 // HP-modifier inputs mirror to the linked ranged counterpart, so this always uses the melee+ranged variant.
