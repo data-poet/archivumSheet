@@ -27,6 +27,8 @@
 - **Uso:** Não há limite de quantas vezes você pode se esquivar por rodada.
 - **Esquiva Acrobática:** Role Acrobacia antes de se esquivar: sucesso dá **+2** na Esquiva, falha dá **-2**.
 - **Esquivar e Recuar:** Recuar para longe do atacante concede **+3** na Esquiva, ou **+1** em Aparar e Bloqueio (**+3** ao aparar com armas de esgrima ou com Boxe, Judô ou Caratê).
+- **Esquivar e Cair:** Jogue-se no chão como parte da esquiva para um bônus de **+3**. Funciona mesmo contra ataques que normalmente não dariam direito a defesa ativa (como um ataque pelas costas percebido a tempo). Você termina **deitado**, e precisa de uma manobra para se levantar.
+- **Mergulhar por Cobertura:** contra um ataque de área (uma explosão, por exemplo), se houver cobertura a até **1 metro**, role **[[DX]]** (com **-3** se não puder recuar nessa direção) em vez de esquivar normalmente. Sucesso: termina atrás da cobertura, protegido. Falha: continua exposto, com **-3** no teste de resistência contra o efeito.
 
 </details>
 
