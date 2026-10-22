@@ -58,6 +58,12 @@ export const ICONS = {
   spells: "🪄",
   "mana-zones": "🌀",
 
+  // Reference section ordinals (icon-only nav: numbered sections instead of named/labelled ones)
+  "ordinal-1": "1️⃣",
+  "ordinal-2": "2️⃣",
+  "ordinal-3": "3️⃣",
+  "ordinal-4": "4️⃣",
+
   // Reference callouts (> [!TYPE])
   "callout-note": "ℹ️",
   "callout-tip": "💡",

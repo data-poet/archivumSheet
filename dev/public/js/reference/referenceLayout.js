@@ -60,10 +60,13 @@ export const REFERENCE_LAYOUT = [
     group: "system",
     icon: "system",
     accent: "skills",
+    // Piloting the <group>-<n> / icon-only-ordinal nav scheme here: sections are capped at
+    // 2-3 tabs each and numbered instead of named, so the mobile section nav stays scannable.
     sections: [
       {
-        id: "section-tests",
-        icon: "success-rolls",
+        id: "system-1",
+        icon: "ordinal-1",
+        iconOnly: true,
         accent: "skills",
         tabs: [
           {
@@ -78,17 +81,18 @@ export const REFERENCE_LAYOUT = [
             id: "tab-success-rolls-contests",
             file: `${CONTENT}/system/success_rolls_contests.md`,
           },
+        ],
+      },
+      {
+        id: "system-2",
+        icon: "ordinal-2",
+        iconOnly: true,
+        accent: "skills",
+        tabs: [
           {
             id: "tab-success-rolls-resistance",
             file: `${CONTENT}/system/success_rolls_resistance.md`,
           },
-        ],
-      },
-      {
-        id: "section-reactions",
-        icon: "reactions",
-        accent: "skills",
-        tabs: [
           {
             id: "tab-reaction-table",
             file: `${CONTENT}/tables/reaction_table.md`,
@@ -96,8 +100,9 @@ export const REFERENCE_LAYOUT = [
         ],
       },
       {
-        id: "section-conditions",
-        icon: "conditions",
+        id: "system-3",
+        icon: "ordinal-3",
+        iconOnly: true,
         accent: "skills",
         tabs: [
           {
@@ -112,17 +117,18 @@ export const REFERENCE_LAYOUT = [
             id: "tab-mortal-conditions",
             file: `${CONTENT}/effects/mortal_conditions.md`,
           },
+        ],
+      },
+      {
+        id: "system-4",
+        icon: "ordinal-4",
+        iconOnly: true,
+        accent: "skills",
+        tabs: [
           {
             id: "tab-fatigue-healing",
             file: `${CONTENT}/effects/fatigue_and_healing.md`,
           },
-        ],
-      },
-      {
-        id: "section-hazards",
-        icon: "hazards",
-        accent: "skills",
-        tabs: [
           {
             id: "tab-hazards",
             file: `${CONTENT}/effects/hazards.md`,

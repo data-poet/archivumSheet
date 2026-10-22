@@ -42,6 +42,21 @@ describe("REFERENCE_LAYOUT shape", () => {
   });
 });
 
+describe("REFERENCE_LAYOUT numbered sections", () => {
+  test("a migrated group's sections are <group>-<n>, capped at 2-3 tabs each", () => {
+    const migrated = ["system"];
+    REFERENCE_LAYOUT.filter(({ group }) => migrated.includes(group)).forEach(
+      ({ group, sections }) => {
+        sections.forEach(({ id, tabs }, i) => {
+          expect(id).toBe(`${group}-${i + 1}`);
+          expect(tabs.length).toBeGreaterThanOrEqual(2);
+          expect(tabs.length).toBeLessThanOrEqual(3);
+        });
+      },
+    );
+  });
+});
+
 describe("REFERENCE_LAYOUT ↔ localization", () => {
   test("every group (with its mobile short label), section and tab has a label", () => {
     REFERENCE_LAYOUT.forEach(({ group }) =>

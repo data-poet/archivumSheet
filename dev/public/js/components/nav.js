@@ -12,7 +12,7 @@ function _buildSidebar(sections, labels) {
 
   const ul = nav.querySelector(".sidebar-nav") ?? document.createElement("ul");
   ul.innerHTML = sections
-    .map(({ id, accent, icon: iconName }, i) => {
+    .map(({ id, accent, icon: iconName, iconOnly }, i) => {
       const { label } = labels[id] ?? {};
       return `
       <li>
@@ -21,9 +21,10 @@ function _buildSidebar(sections, labels) {
           class="sidebar-link${i === 0 ? " is-active" : ""}"
           data-section="${id}"
           ${accent ? `data-accent="${accent}"` : ""}
+          ${iconOnly ? `aria-label="${label ?? ""}"` : ""}
         >
           <span class="sidebar-icon" aria-hidden="true">${icon(iconName)}</span>
-          <span class="sidebar-label">${label ?? ""}</span>
+          ${iconOnly ? "" : `<span class="sidebar-label">${label ?? ""}</span>`}
         </a>
       </li>`;
     })

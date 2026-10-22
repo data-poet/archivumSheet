@@ -98,6 +98,21 @@ describe("renderSidebarSections", () => {
   });
 });
 
+describe("renderSidebarSections — icon-only sections", () => {
+  test("an iconOnly section drops the visible label, using it as the link's aria-label instead", () => {
+    initNav();
+    const [a, b] = LAYOUT_SECTIONS;
+    renderSidebarSections([{ ...a, iconOnly: true }, b], LABELS.nav.sections);
+
+    const links = document.querySelectorAll("#sidebar .sidebar-link");
+    expect(links[0].querySelector(".sidebar-label")).toBeNull();
+    expect(links[0].getAttribute("aria-label")).toBe(
+      LABELS.nav.sections[a.id].label,
+    );
+    expect(links[1].querySelector(".sidebar-label")).not.toBeNull();
+  });
+});
+
 describe("initNav — click highlighting", () => {
   const nativeMatchMedia = window.matchMedia;
   afterEach(() => {
