@@ -1,9 +1,8 @@
 .box {
   margin-bottom: var(--space-5);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1.5px solid var(--color-border-strong);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   overflow: hidden;
   /* Lets table-wrapper--stack's card-collapse breakpoint (tables.css) react to this box's
      own width rather than the viewport's — matters once a box sits in a layout narrower
