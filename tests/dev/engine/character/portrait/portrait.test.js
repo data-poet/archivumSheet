@@ -760,6 +760,52 @@ describe("handleCharacterImageChange", () => {
 
     expect(state.selected.character.image.orientation).toBe("landscape");
   });
+
+  test("downscales an oversized image so a single portrait can't blow the localStorage quota for the whole store", async () => {
+    mockCanvasContext();
+    class HugeMockImage extends MockImage {
+      constructor() {
+        super();
+        this.naturalWidth = 1800;
+        this.naturalHeight = 900;
+      }
+    }
+    global.Image = HugeMockImage;
+    const toDataURL = jest.spyOn(HTMLCanvasElement.prototype, "toDataURL");
+    const file = new File(["x"], "a.png", { type: "image/png" });
+    const target = fileInput(file);
+
+    handleCharacterImageChange({ target });
+    await flush();
+
+    expect(state.selected.character.image.size).toEqual({
+      width: 900,
+      height: 450,
+    });
+    expect(toDataURL).toHaveBeenCalledWith("image/jpeg", 0.85);
+  });
+
+  test("leaves an image within the cap at its original dimensions", async () => {
+    mockCanvasContext();
+    class SmallMockImage extends MockImage {
+      constructor() {
+        super();
+        this.naturalWidth = 400;
+        this.naturalHeight = 300;
+      }
+    }
+    global.Image = SmallMockImage;
+    const file = new File(["x"], "a.png", { type: "image/png" });
+    const target = fileInput(file);
+
+    handleCharacterImageChange({ target });
+    await flush();
+
+    expect(state.selected.character.image.size).toEqual({
+      width: 400,
+      height: 300,
+    });
+  });
 });
 
 describe("handleCharacterImageInput", () => {

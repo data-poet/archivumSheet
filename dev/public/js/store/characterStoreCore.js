@@ -3,6 +3,8 @@
 
 import { ENTRY_KINDS } from "../shared/constants.js";
 import { STORAGE_KEYS } from "../shared/storageKeys.js";
+import { showToast } from "../shared/toast.js";
+import { t } from "../localization/pt-BR/index.js";
 
 export function generateId(prefix = "c") {
   return (
@@ -30,5 +32,6 @@ export function saveStore(store) {
     localStorage.setItem(STORAGE_KEYS.characters, JSON.stringify(store));
   } catch (err) {
     console.error("[characterStoreCore] localStorage write failed:", err);
+    showToast(t("characters.saveFailed"), "error");
   }
 }

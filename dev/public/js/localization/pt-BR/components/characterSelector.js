@@ -8,6 +8,8 @@ export const CHARACTERS = {
   confirmRemove: "Remover personagem",
   confirmRemoveTitle: "Remover personagem?",
   cannotRemoveLast: "Não é possível remover o único personagem.",
+  saveFailed:
+    "Não foi possível salvar: armazenamento do navegador cheio ou indisponível.",
   importErrorPrefix: "Erro ao importar",
 
   // Entry kind — a draft being authored for export as an ally file. The badge itself stays a

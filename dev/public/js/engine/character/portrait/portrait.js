@@ -15,6 +15,30 @@ function _setImg(patch) {
   Object.assign(state.selected.character.image, patch);
 }
 
+// Every character's data lives in one localStorage blob (store/characterStoreCore.js), so an
+// uncompressed photo (up to the 1MB raw cap, ~1.33MB as base64) can push that single write over
+// the browser's quota and silently drop every character's unsaved changes, not just the portrait.
+const MAX_PORTRAIT_DIMENSION = 900;
+const PORTRAIT_JPEG_QUALITY = 0.85;
+
+function _downscaleImage(img, width, height) {
+  const scale = Math.min(1, MAX_PORTRAIT_DIMENSION / Math.max(width, height));
+  const outWidth = Math.round(width * scale);
+  const outHeight = Math.round(height * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = outWidth;
+  canvas.height = outHeight;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, outWidth, outHeight);
+
+  return {
+    dataUrl: canvas.toDataURL("image/jpeg", PORTRAIT_JPEG_QUALITY),
+    width: outWidth,
+    height: outHeight,
+  };
+}
+
 function _averageColor(base64) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -260,15 +284,18 @@ async function _loadFile(file) {
     await new Promise((resolve) => {
       const tmp = new Image();
       tmp.onload = async () => {
-        const w = tmp.naturalWidth;
-        const h = tmp.naturalHeight;
+        const {
+          dataUrl,
+          width: w,
+          height: h,
+        } = _downscaleImage(tmp, tmp.naturalWidth, tmp.naturalHeight);
         const orientation = w > h ? "landscape" : w < h ? "portrait" : "square";
 
-        const color = await _averageColor(base64);
+        const color = await _averageColor(dataUrl);
 
         _setImg({
           uploaded: true,
-          data: base64,
+          data: dataUrl,
           background: "average",
           color,
           orientation,
