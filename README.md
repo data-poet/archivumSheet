@@ -141,6 +141,13 @@ Neither tests nor code hardcode a dataset id. `tests/helpers/dataRefs.js` finds 
 
 ---
 
+## Credits
+
+- Icons by [game-icons.net](https://game-icons.net) (Lorc, Delapouite, Carl Olsen, Sbed, Willdabeast, Skoll & contributors), licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Per-icon attribution: `dev/public/vendor/game-icons/VERSION`.
+- Fonts: [IBM Plex Sans / IBM Plex Mono](https://www.ibm.com/plex/), licensed [SIL OFL 1.1](https://scripts.sil.org/OFL), self-hosted under `dev/public/vendor/ibm-plex/`.
+
+---
+
 ## Contributing
 
 1. Read the relevant engine module(s) before proposing changes.
