@@ -53,3 +53,13 @@ export function selectWithValue(className, dataset, value) {
   select.value = value;
   return select;
 }
+
+// jsdom re-serializes self-closing SVG children (e.g. <path/>) as <path></path> on
+// read-back, so comparing a raw icon() string against element.innerHTML never matches
+// even when they're the same markup. Round-trip both sides through this to compare like
+// for like.
+export function normalizedHtml(html) {
+  const el = document.createElement("div");
+  el.innerHTML = html;
+  return el.innerHTML;
+}

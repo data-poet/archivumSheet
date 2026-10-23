@@ -4,7 +4,7 @@ import {
 } from "dev/public/js/components/nav.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { LAYOUT_SECTIONS } from "dev/public/js/layout/sheetLayout.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { resetDOM, normalizedHtml } from "tests/dev/helpers/domFixture.js";
 import {
   installMockFetch,
   mockFetchResponse,
@@ -62,9 +62,9 @@ describe("initNav — building the nav bars", () => {
     expect(links[0].dataset.section).toBe(first.id);
     expect(links[0].dataset.accent).toBe(first.accent);
     expect(links[0].getAttribute("href")).toBe(`#${first.id}`);
-    expect(links[0].querySelector(".sidebar-icon").textContent).toBe(
-      icon(first.icon),
-    );
+    expect(
+      normalizedHtml(links[0].querySelector(".sidebar-icon").innerHTML),
+    ).toBe(normalizedHtml(icon(first.icon)));
     expect(links[0].querySelector(".sidebar-label").textContent).toBe(label);
   });
 

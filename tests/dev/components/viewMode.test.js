@@ -6,7 +6,7 @@ jest.mock("dev/public/js/store/viewModeState.js", () => ({
 import { isViewMode, setViewMode } from "dev/public/js/store/viewModeState.js";
 import { initViewMode } from "dev/public/js/components/viewMode.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { resetDOM, normalizedHtml } from "tests/dev/helpers/domFixture.js";
 import { icon } from "dev/public/js/shared/icons.js";
 
 function viewModeDOM() {
@@ -34,8 +34,11 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(false);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(
-      icon("view-mode-view") + t("viewMode.btnView"),
+    expect(
+      normalizedHtml(btn.querySelector(".view-mode-btn-icon").innerHTML),
+    ).toBe(normalizedHtml(icon("view-mode-view")));
+    expect(btn.querySelector(".view-mode-btn-label").textContent).toBe(
+      t("viewMode.btnView"),
     );
     expect(btn.getAttribute("aria-label")).toBe(t("viewMode.ariaView"));
     expect(btn.getAttribute("aria-pressed")).toBe("false");
@@ -53,8 +56,11 @@ describe("initViewMode — initial resolution", () => {
 
     expect(document.body.classList.contains("is-view-mode")).toBe(true);
     const btn = document.getElementById("view-mode-btn");
-    expect(btn.textContent).toBe(
-      icon("view-mode-edit") + t("viewMode.btnEdit"),
+    expect(
+      normalizedHtml(btn.querySelector(".view-mode-btn-icon").innerHTML),
+    ).toBe(normalizedHtml(icon("view-mode-edit")));
+    expect(btn.querySelector(".view-mode-btn-label").textContent).toBe(
+      t("viewMode.btnEdit"),
     );
     expect(btn.getAttribute("aria-pressed")).toBe("true");
     expect(

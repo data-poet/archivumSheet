@@ -6,7 +6,7 @@ import { initNav } from "dev/public/js/components/nav.js";
 import { getActiveGroup } from "dev/public/js/store/groupState.js";
 import { LABELS } from "dev/public/js/localization/pt-BR/index.js";
 import { SHEET_LAYOUT } from "dev/public/js/layout/sheetLayout.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { resetDOM, normalizedHtml } from "tests/dev/helpers/domFixture.js";
 import { icon } from "dev/public/js/shared/icons.js";
 
 const GROUPS = SHEET_LAYOUT.map(({ group, sections, icon: iconName }) => ({
@@ -56,9 +56,9 @@ describe("initGroupNav — rendering", () => {
     const buttons = document.querySelectorAll("#groupnav .groupnav-btn");
     expect(buttons).toHaveLength(GROUPS.length);
     expect(buttons[0].getAttribute("role")).toBe("tab");
-    expect(buttons[0].querySelector(".groupnav-icon").textContent).toBe(
-      GROUPS[0].icon,
-    );
+    expect(
+      normalizedHtml(buttons[0].querySelector(".groupnav-icon").innerHTML),
+    ).toBe(normalizedHtml(GROUPS[0].icon));
     expect(buttons[0].querySelector(".groupnav-label").textContent).toBe(
       GROUPS[0].label,
     );
