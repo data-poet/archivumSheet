@@ -120,6 +120,7 @@
 }
 
 .resume-bar-values {
+  font-family: var(--font-mono);
   font-size: var(--fs-xxs);
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
@@ -152,6 +153,7 @@
   border-radius: 999px;
   background: var(--color-bar-experience);
   color: var(--color-on-accent);
+  font-family: var(--font-mono);
   font-size: var(--fs-xxs);
   font-weight: 700;
   line-height: 1;
@@ -211,6 +213,7 @@
 }
 
 .resume-attr-acronym {
+  font-family: var(--font-mono);
   font-size: var(--fs-xxs);
   font-weight: 700;
   text-transform: uppercase;
@@ -219,6 +222,7 @@
 }
 
 .resume-attr-value {
+  font-family: var(--font-mono);
   font-size: var(--fs-sm);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -267,6 +271,7 @@
 
 .resume-table--secondary-snapshot td:last-child {
   text-align: right;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   width: 3em;
 }

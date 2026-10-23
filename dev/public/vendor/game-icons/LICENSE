@@ -1,0 +1,12 @@
+Icons sourced from https://game-icons.net (https://github.com/game-icons/icons).
+
+Licensed under Creative Commons Attribution 3.0 Unported (CC BY 3.0):
+https://creativecommons.org/licenses/by/3.0/
+
+Per-icon author attribution is listed in VERSION in this directory; the
+project-facing credit line lives in the root README.md, as CC BY requires.
+
+Every SVG here has been modified from the original: the author's black
+background square was removed and the white foreground path was recolored
+to `fill="currentColor"`, so each icon inherits its section's accent color
+instead of being a fixed black/white silhouette.

@@ -49,6 +49,12 @@ tr.trait-meta-race td {
   color: var(--color-text-muted);
 }
 
+.trait-innate-tag,
+.trait-enchantment-tag,
+.trait-meta-race-tag {
+  font-family: var(--font-mono);
+}
+
 .trait-innate-tag {
   display: inline-block;
   margin-left: var(--space-3);

@@ -1,5 +1,43 @@
 /* Mobile-first: primary users are on phones during tabletop sessions. */
 
+/* Self-hosted (vendor/ibm-plex), not a Google Fonts CDN link: the sheet needs to keep
+   rendering offline mid-session. Latin subset only -- covers pt-BR diacritics (U+0000-00FF). */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-sans-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-700.woff2") format("woff2");
+}
+
 /* ── Breakpoints ──────────────────────────────────────────────────────────────
    Custom properties can't be used inside @media, so these three widths are the
    canonical set by convention — grep before introducing a fourth.
@@ -80,8 +118,8 @@
   --space-7: 16px;
   --space-8: 20px;
 
-  --radius: 6px;
-  --radius-sm: 4px;
+  --radius: 4px;
+  --radius-sm: 2px;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
 
@@ -96,8 +134,8 @@
   --sidebar-w: 64px; /* bumped up for desktop cursor target space */
   --sidebar-w-exp: 240px; /* expanded for readable text links on 1920px screens */
 
-  --font-body: "Segoe UI", system-ui, sans-serif;
-  --font-mono: "Courier New", monospace;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
   /* Floors are what a 320-430px phone actually gets, so none of them go below 10px. Maxima are unchanged. */
   --fs-base: clamp(13px, 0.4vw + 11.5px, 16px);
   --fs-sm: clamp(12px, 0.35vw + 10.7px, 14px);
@@ -190,9 +228,18 @@ body {
   font-family: var(--font-body);
   font-size: var(--fs-base);
   line-height: 1.5;
-  background: var(--color-bg);
+  /* feTurbulence noise, alpha baked into the SVG itself (feColorMatrix) so no element/opacity
+     layering is needed — it's just the bottom paint layer under --color-bg, like paper grain. */
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%222%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200.05%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
   color: var(--color-text);
   margin: 0;
   padding-top: var(--topbar-h);
   min-height: 100dvh;
+}
+
+/* Stat numbers and short all-caps labels in mono, so they read like a filled-in form
+   rather than body prose — case-file-visual-study.md. */
+.mono {
+  font-family: var(--font-mono);
 }

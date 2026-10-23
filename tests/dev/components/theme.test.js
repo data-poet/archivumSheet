@@ -6,7 +6,7 @@ jest.mock("dev/public/js/store/themeState.js", () => ({
 import { getTheme, setTheme } from "dev/public/js/store/themeState.js";
 import { initTheme } from "dev/public/js/components/theme.js";
 import { t } from "dev/public/js/localization/pt-BR/index.js";
-import { resetDOM } from "tests/dev/helpers/domFixture.js";
+import { resetDOM, normalizedHtml } from "tests/dev/helpers/domFixture.js";
 import { icon } from "dev/public/js/shared/icons.js";
 
 // jsdom doesn't implement matchMedia; stub it so tests can set the system preference and fire "change".
@@ -48,7 +48,9 @@ describe("initTheme — initial resolution", () => {
 
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     const btn = document.getElementById("theme-toggle-btn");
-    expect(btn.textContent).toBe(icon("theme-dark"));
+    expect(normalizedHtml(btn.innerHTML)).toBe(
+      normalizedHtml(icon("theme-dark")),
+    );
     expect(btn.getAttribute("aria-label")).toBe(t("theme.ariaDark"));
     expect(btn.getAttribute("aria-pressed")).toBe("true");
   });
@@ -62,7 +64,9 @@ describe("initTheme — initial resolution", () => {
 
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     const btn = document.getElementById("theme-toggle-btn");
-    expect(btn.textContent).toBe(icon("theme-light"));
+    expect(normalizedHtml(btn.innerHTML)).toBe(
+      normalizedHtml(icon("theme-light")),
+    );
     expect(btn.getAttribute("aria-pressed")).toBe("false");
   });
 
