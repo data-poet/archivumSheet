@@ -37,6 +37,7 @@
     "idiomorph": "0.8.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.4.1",
+    "katex": "0.16.11",
     "prettier": "^3.8.3",
     "sortablejs": "1.15.7"
   },

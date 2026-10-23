@@ -14,6 +14,16 @@ import {
 } from "../../../shared/renderUtils.js";
 import { dragHandleHTML } from "../../inventory/shared/inventoryRenderUtils.js";
 import { sortByOrder } from "../../../shared/traitOrder.js";
+import renderMathInElement from "../../../../vendor/katex/auto-render.esm.js";
+
+// Spell scaling/description text (e.g. Zoomancia, Aeromancia) embeds LaTeX like `$+2^{(n-1)}$`;
+// mirrors reference/content.js's _renderMath delimiter set.
+const MATH_DELIMITERS = [
+  { left: "$$", right: "$$", display: true },
+  { left: "\\[", right: "\\]", display: true },
+  { left: "$", right: "$", display: false },
+  { left: "\\(", right: "\\)", display: false },
+];
 
 function normalize(str) {
   return String(str ?? "")
@@ -197,4 +207,9 @@ export function renderSpells(selected, data, sheet) {
     </table></div>
   `,
   );
+
+  renderMathInElement(el("spellList"), {
+    delimiters: MATH_DELIMITERS,
+    throwOnError: false,
+  });
 }
