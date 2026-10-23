@@ -80,8 +80,8 @@
   --space-7: 16px;
   --space-8: 20px;
 
-  --radius: 6px;
-  --radius-sm: 4px;
+  --radius: 4px;
+  --radius-sm: 2px;
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   --shadow-top: 0 -2px 8px rgba(0, 0, 0, 0.08);
 
