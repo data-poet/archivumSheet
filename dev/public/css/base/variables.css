@@ -196,3 +196,9 @@ body {
   padding-top: var(--topbar-h);
   min-height: 100dvh;
 }
+
+/* Stat numbers and short all-caps labels in mono, so they read like a filled-in form
+   rather than body prose — case-file-visual-study.md. */
+.mono {
+  font-family: var(--font-mono);
+}

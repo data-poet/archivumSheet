@@ -9,8 +9,8 @@ export function renderDamage(sheet) {
       ([type, data]) => `
         <tr>
           <td><strong>${type}</strong></td>
-          <td>${data.dice}</td>
-          <td>${data.base_modifier}</td>
+          <td class="mono">${data.dice}</td>
+          <td class="mono">${data.base_modifier}</td>
           <td>
             <div class="num-stepper">
               <input

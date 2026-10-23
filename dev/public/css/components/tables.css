@@ -62,6 +62,7 @@ tbody tr:hover {
 
 td.col-num {
   text-align: center;
+  font-family: var(--font-mono);
 }
 td.col-center {
   text-align: center;
