@@ -1,5 +1,43 @@
 /* Mobile-first: primary users are on phones during tabletop sessions. */
 
+/* Self-hosted (vendor/ibm-plex), not a Google Fonts CDN link: the sheet needs to keep
+   rendering offline mid-session. Latin subset only -- covers pt-BR diacritics (U+0000-00FF). */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-sans-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../vendor/ibm-plex/plex-mono-700.woff2") format("woff2");
+}
+
 /* ── Breakpoints ──────────────────────────────────────────────────────────────
    Custom properties can't be used inside @media, so these three widths are the
    canonical set by convention — grep before introducing a fourth.
@@ -96,8 +134,8 @@
   --sidebar-w: 64px; /* bumped up for desktop cursor target space */
   --sidebar-w-exp: 240px; /* expanded for readable text links on 1920px screens */
 
-  --font-body: "Segoe UI", system-ui, sans-serif;
-  --font-mono: "Courier New", monospace;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
   /* Floors are what a 320-430px phone actually gets, so none of them go below 10px. Maxima are unchanged. */
   --fs-base: clamp(13px, 0.4vw + 11.5px, 16px);
   --fs-sm: clamp(12px, 0.35vw + 10.7px, 14px);
