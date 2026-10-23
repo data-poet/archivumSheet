@@ -118,8 +118,8 @@ Load-bearing constraints, not preferences — all contributions must follow them
 - **No literal rules.** Numbers go in `helpers/rules.js`, references to rows are stable keys (`helpers/ruleKeys.js`, `helpers/ids.js`), vocabularies live in `helpers/taxonomy.js` — see `CLAUDE.md`.
 - **All strings go through `localization/pt-BR/`.** No hardcoded text in JS/HTML.
 - **Delegated events.** The sheet's list and form interactions are wired once, on `document`, in `events/index.js`; the domain `events.js` files only export handlers. Self-contained widgets (dialogs, tabs, the character selector, toasts) bind their own listeners.
-- **Open-state preservation.** Re-rendering a list must not collapse rows the user had expanded (`shared/openState.js`).
-- **Debounced engine calls.** Modifier inputs debounce before triggering a rebuild, so the DOM doesn't rebuild mid-keystroke.
+- **Open-state preservation.** `morphHTML`'s identity tracking (`shared/morph.js`) patches the DOM in place, so re-rendering a list doesn't collapse rows the user had expanded or close an open `<details>`.
+- **Autorun trigger classes.** Modifier inputs trigger the engine through `compute/autorun.js`'s `AUTORUN_KIND` (immediate, burst, typing), each with its own trailing delay, so the DOM doesn't rebuild mid-keystroke.
 - **Comments explain WHY, not WHAT** — see `CLAUDE.md`.
 - **Conventional commits**, one-liners, never AI co-authored — see `CLAUDE.md`.
 
