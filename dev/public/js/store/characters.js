@@ -293,8 +293,8 @@ export function loadCharacter(id) {
 }
 
 // Saves the outgoing character first, same as switching does: autosave is debounced (see
-// compute/autorun.js's SAVE_DEBOUNCE_MS), so adding a character right after a keystroke would
-// otherwise drop that last edit. getStore() below re-reads, so it sees the write.
+// compute/autorun.js's per-kind trailing delays), so adding a character right after a keystroke
+// would otherwise drop that last edit. getStore() below re-reads, so it sees the write.
 export function addCharacter(name, kind = ENTRY_KINDS.CHARACTER) {
   saveActiveCharacter();
 

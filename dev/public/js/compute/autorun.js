@@ -21,8 +21,6 @@ const TRAILING_MS = Object.freeze({
 // delay or already have a leading edge.
 const TYPING_MAX_WAIT_MS = 600;
 
-export const SAVE_DEBOUNCE_MS = 750;
-
 let _runEngine = null;
 let _onSave = null;
 
@@ -61,9 +59,14 @@ function _flushSave() {
   _onSave?.();
 }
 
-function _scheduleSave() {
+// Same trailing delay as the engine run, not a longer fixed one: a localStorage write is cheap
+// and synchronous (unlike the network-bound engine call), and a backgrounded mobile tab can be
+// killed by the OS without ever running the pagehide/visibilitychange flush below — so an edit
+// should reach disk on the same cadence it reaches the screen, not sit in memory-only longer.
+function _scheduleSave(kind) {
+  const trailing = TRAILING_MS[kind] ?? DEFAULT_AUTORUN_DELAY_MS;
   clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(_flushSave, SAVE_DEBOUNCE_MS);
+  _saveTimer = setTimeout(_flushSave, trailing);
 }
 
 // Aborting the previous controller before handing out a new one means at most one request is
@@ -130,5 +133,5 @@ export function cancelPendingSave() {
 export function triggerAutoRun({ kind } = {}) {
   updateActualValues();
   _scheduleRun(kind);
-  _scheduleSave();
+  _scheduleSave(kind);
 }

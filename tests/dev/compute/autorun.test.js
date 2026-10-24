@@ -11,19 +11,16 @@ let initAutoRun;
 let triggerAutoRun;
 let cancelPendingSave;
 let AUTORUN_KIND;
-let SAVE_DEBOUNCE_MS;
+let DEFAULT_AUTORUN_DELAY_MS;
 
 beforeEach(async () => {
   jest.useFakeTimers();
   jest.resetModules();
   ({ updateActualValues } = await import("dev/public/js/ui.js"));
-  ({
-    initAutoRun,
-    triggerAutoRun,
-    cancelPendingSave,
-    AUTORUN_KIND,
-    SAVE_DEBOUNCE_MS,
-  } = await import("dev/public/js/compute/autorun.js"));
+  ({ DEFAULT_AUTORUN_DELAY_MS } =
+    await import("dev/public/js/shared/constants.js"));
+  ({ initAutoRun, triggerAutoRun, cancelPendingSave, AUTORUN_KIND } =
+    await import("dev/public/js/compute/autorun.js"));
 });
 
 afterEach(() => {
@@ -286,24 +283,38 @@ describe("save: decoupled from the engine run", () => {
     initAutoRun(pendingRunEngine(), onSave);
 
     triggerAutoRun();
-    jest.advanceTimersByTime(SAVE_DEBOUNCE_MS - 1);
+    jest.advanceTimersByTime(DEFAULT_AUTORUN_DELAY_MS - 1);
     expect(onSave).not.toHaveBeenCalled();
 
     jest.advanceTimersByTime(1);
     expect(onSave).toHaveBeenCalledTimes(1);
   });
 
-  test("rapid edits coalesce into a single save, SAVE_DEBOUNCE_MS after the last one", () => {
+  test("rapid edits coalesce into a single save, one trailing delay after the last one", () => {
     const onSave = jest.fn();
     initAutoRun(pendingRunEngine(), onSave);
 
     triggerAutoRun();
-    jest.advanceTimersByTime(SAVE_DEBOUNCE_MS - 1);
+    jest.advanceTimersByTime(DEFAULT_AUTORUN_DELAY_MS - 1);
     triggerAutoRun();
-    jest.advanceTimersByTime(SAVE_DEBOUNCE_MS - 1);
+    jest.advanceTimersByTime(DEFAULT_AUTORUN_DELAY_MS - 1);
     expect(onSave).not.toHaveBeenCalled();
 
     jest.advanceTimersByTime(1);
+    expect(onSave).toHaveBeenCalledTimes(1);
+  });
+
+  // A localStorage write is cheap and synchronous, unlike the network-bound engine run, and a
+  // backgrounded mobile tab can be killed by the OS before the pagehide/visibilitychange flush
+  // ever runs — so the save must trail the same short delay as the engine run per trigger class,
+  // not a longer fixed one, or an edit sits unprotected in memory for longer than it needs to.
+  test("an immediate trigger saves with no delay, same as its engine run", () => {
+    const onSave = jest.fn();
+    initAutoRun(pendingRunEngine(), onSave);
+
+    triggerAutoRun({ kind: AUTORUN_KIND.IMMEDIATE });
+    jest.advanceTimersByTime(0);
+
     expect(onSave).toHaveBeenCalledTimes(1);
   });
 
@@ -312,9 +323,8 @@ describe("save: decoupled from the engine run", () => {
     initAutoRun(jest.fn().mockRejectedValue(new Error("offline")), onSave);
 
     triggerAutoRun();
-    jest.advanceTimersByTime(300);
+    jest.advanceTimersByTime(DEFAULT_AUTORUN_DELAY_MS);
     await Promise.resolve().catch(() => {});
-    jest.advanceTimersByTime(SAVE_DEBOUNCE_MS);
 
     expect(onSave).toHaveBeenCalledTimes(1);
   });
